@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -10,8 +11,11 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -119,7 +123,7 @@ public class SyncTokenPolicyTest {
             () -> SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER) + "ABC"));
     }
 
-    @Test
+    @SyncAsyncTest
     public void setSyncTokenPolicyProcessTest() throws MalformedURLException {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
@@ -141,6 +145,13 @@ public class SyncTokenPolicyTest {
         final HttpPipeline pipeline =
             new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient() {
+
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        return new MockHttpResponse(request, 200,
+                            new HttpHeaders().set(SYNC_TOKEN, SYNC_TOKEN_VALUE + ";sn=1"));
+                    }
+
                     @Override
                     public Mono<HttpResponse> send(HttpRequest request) {
                         return Mono.just(new MockHttpResponse(request, 200,
@@ -152,12 +163,13 @@ public class SyncTokenPolicyTest {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
         request.getHeaders().set(REQUEST_ID, FIRST);
-        pipeline.send(request).block();
+
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
         request.getHeaders().set(REQUEST_ID, SECOND);
-        pipeline.send(request).block();
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 
-    @Test
+    @SyncAsyncTest
     public void externalSyncTokenIsSentWithRequestText() throws MalformedURLException {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
@@ -170,15 +182,22 @@ public class SyncTokenPolicyTest {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+        final HttpClient httpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .policies(syncTokenPolicy, auditorPolicy)
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
-        pipeline.send(request).block();
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 
-    @Test
+    @SyncAsyncTest
     public void externalSyncTokensFollowRulesWhenAddedTest() throws MalformedURLException {
         final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
 
@@ -194,12 +213,19 @@ public class SyncTokenPolicyTest {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+        final HttpClient httpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
                                           .policies(syncTokenPolicy, auditorPolicy)
                                           .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
-        pipeline.send(request).block();
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 
     private void syncTokenEquals(SyncToken syncToken, String id, String value, long sn) {

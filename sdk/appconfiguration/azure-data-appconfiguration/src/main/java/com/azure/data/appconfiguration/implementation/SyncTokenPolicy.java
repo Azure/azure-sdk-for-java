@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
@@ -43,21 +44,38 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
         context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
 
         return next.process().flatMap(httpResponse -> {
-            // Get the sync-token from HTTP response header
-            final String syncTokenValue = httpResponse.getHeaders().getValue(SYNC_TOKEN);
-
-            // Skip sync-token updates of concurrent map if no 'Sync-Token' header
-            if (syncTokenValue != null) {
-                updateSyncToken(syncTokenValue);
-            }
+            getUpdateSyncTokenHeaderValue(httpResponse);
 
             return Mono.just(httpResponse);
         });
     }
 
     /**
+     * Add or update the sync token to a thread safe map.
+     *
+     * @param context request context
+     * @param next The next policy to invoke.
+     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
+     */
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+
+        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/20355
+        // Add all of sync-tokens to HTTP request header
+        context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
+
+        HttpResponse httpResponse = next.processSync();
+
+        // Get the sync-token from HTTP response header
+        getUpdateSyncTokenHeaderValue(httpResponse);
+
+        return httpResponse;
+    }
+
+    /**
      * Get all latest sync-tokens from the concurrent map and convert to one sync-token string.
      * All sync-tokens concatenated by a comma delimiter.
+     *
      * @return sync-token string
      */
     private String getSyncTokenHeader() {
@@ -96,6 +114,16 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
                 }
                 return existingSyncToken;
             });
+        }
+    }
+
+    private void getUpdateSyncTokenHeaderValue(HttpResponse httpResponse) {
+        // Get the sync-token from HTTP response header
+        final String syncTokenValue = httpResponse.getHeaders().getValue(SYNC_TOKEN);
+
+        // Skip sync-token updates of concurrent map if no 'Sync-Token' header
+        if (syncTokenValue != null) {
+            updateSyncToken(syncTokenValue);
         }
     }
 }

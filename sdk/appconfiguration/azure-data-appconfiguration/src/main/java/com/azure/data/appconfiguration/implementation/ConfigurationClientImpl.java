@@ -131,7 +131,21 @@ public final class ConfigurationClientImpl {
         @Get("kv/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ConfigurationSetting>> getKeyValue(
+        Mono<Response<ConfigurationSetting>> getKeyValueAsync(
+            @HostParam("url") String url,
+            @PathParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$select") String fields,
+            @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            Context context);
+
+        @Get("kv/{key}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<ConfigurationSetting> getKeyValue(
             @HostParam("url") String url,
             @PathParam("key") String key,
             @QueryParam("label") String label,
@@ -145,7 +159,20 @@ public final class ConfigurationClientImpl {
         @Put("kv/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ConfigurationSetting>> setKey(
+        Mono<Response<ConfigurationSetting>> setKeyAsync(
+            @HostParam("url") String url,
+            @PathParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            Context context);
+
+        @Put("kv/{key}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<ConfigurationSetting> setKey(
             @HostParam("url") String url,
             @PathParam("key") String key,
             @QueryParam("label") String label,
@@ -158,7 +185,19 @@ public final class ConfigurationClientImpl {
         @Delete("kv/{key}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ConfigurationSetting>> delete(
+        Mono<Response<ConfigurationSetting>> deleteAsync(
+            @HostParam("url") String url,
+            @PathParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            Context context);
+
+        @Delete("kv/{key}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<ConfigurationSetting> delete(
             @HostParam("url") String url,
             @PathParam("key") String key,
             @QueryParam("label") String label,
@@ -170,7 +209,19 @@ public final class ConfigurationClientImpl {
         @Put("locks/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ConfigurationSetting>> lockKeyValue(
+        Mono<Response<ConfigurationSetting>> lockKeyValueAsync(
+            @HostParam("url") String url,
+            @PathParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            Context context);
+
+        @Put("locks/{key}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<ConfigurationSetting> lockKeyValue(
             @HostParam("url") String url,
             @PathParam("key") String key,
             @QueryParam("label") String label,
@@ -182,7 +233,19 @@ public final class ConfigurationClientImpl {
         @Delete("locks/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ConfigurationSetting>> unlockKeyValue(
+        Mono<Response<ConfigurationSetting>> unlockKeyValueAsync(
+            @HostParam("url") String url,
+            @PathParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            Context context);
+
+        @Delete("locks/{key}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<ConfigurationSetting> unlockKeyValue(
             @HostParam("url") String url,
             @PathParam("key") String key,
             @QueryParam("label") String label,
@@ -195,7 +258,20 @@ public final class ConfigurationClientImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(ConfigurationSettingPage.class)
-        Mono<PagedResponse<ConfigurationSetting>> listKeyValues(
+        Mono<PagedResponse<ConfigurationSetting>> listKeyValuesAsync(
+            @HostParam("url") String url,
+            @QueryParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$select") String fields,
+            @HeaderParam("Accept-Datetime") String acceptDatetime,
+            Context context);
+
+        @Get("kv")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(ConfigurationSettingPage.class)
+        PagedResponse<ConfigurationSetting> listKeyValues(
             @HostParam("url") String url,
             @QueryParam("key") String key,
             @QueryParam("label") String label,
@@ -208,7 +284,16 @@ public final class ConfigurationClientImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(ConfigurationSettingPage.class)
-        Mono<PagedResponse<ConfigurationSetting>> listKeyValues(
+        Mono<PagedResponse<ConfigurationSetting>> listKeyValuesAsync(
+            @HostParam("url") String url,
+            @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+            Context context);
+
+        @Get("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(ConfigurationSettingPage.class)
+        PagedResponse<ConfigurationSetting> listKeyValues(
             @HostParam("url") String url,
             @PathParam(value = "nextUrl", encoded = true) String nextUrl,
             Context context);
@@ -217,7 +302,21 @@ public final class ConfigurationClientImpl {
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(ConfigurationSettingPage.class)
-        Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisions(
+        Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisionsAsync(
+            @HostParam("url") String url,
+            @QueryParam("key") String key,
+            @QueryParam("label") String label,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$select") String fields,
+            @HeaderParam("Accept-Datetime") String acceptDatetime,
+            @HeaderParam("Range") String range,
+            Context context);
+
+        @Get("revisions")
+        @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(ConfigurationSettingPage.class)
+        PagedResponse<ConfigurationSetting> listKeyValueRevisions(
             @HostParam("url") String url,
             @QueryParam("key") String key,
             @QueryParam("label") String label,
@@ -236,7 +335,7 @@ public final class ConfigurationClientImpl {
                                                                         String ifNoneMatch) {
         return FluxUtil.withContext(
             context ->
-                service.setKey(
+                service.setKeyAsync(
                     this.getEndpoint(),
                     key,
                     label,
@@ -253,7 +352,7 @@ public final class ConfigurationClientImpl {
                                                                         ConfigurationSetting configurationSetting,
                                                                         String ifMatch, String ifNoneMatch,
                                                                         Context context) {
-        return service.setKey(
+        return service.setKeyAsync(
             this.getEndpoint(),
             key,
             label,
@@ -277,23 +376,21 @@ public final class ConfigurationClientImpl {
                     }
                 });
     }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting setKey(String key,
-                                       String label,
-                                       ConfigurationSetting configurationSetting,
-                                       String ifMatch,
-                                       String ifNoneMatch) {
-        return setKeyAsync(key, label, configurationSetting, ifMatch, ifNoneMatch).block();
-    }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setKeyWithResponse(String key,
                                                              String label,
                                                              ConfigurationSetting configurationSetting,
                                                              String ifMatch, String ifNoneMatch,
                                                              Context context) {
-        return setKeyWithResponseAsync(key, label, configurationSetting, ifMatch, ifNoneMatch, context).block();
-
+        return service.setKey(
+            this.getEndpoint(),
+            key,
+            label,
+            this.getApiVersion(),
+            configurationSetting,
+            ifMatch,
+            ifNoneMatch,
+            context);
     }
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getKeyValueWithResponseAsync(String key,
@@ -302,7 +399,7 @@ public final class ConfigurationClientImpl {
                                                                              String ifNoneMatch) {
         return FluxUtil.withContext(
             context ->
-                service.getKeyValue(
+                service.getKeyValueAsync(
                     this.getEndpoint(),
                     key,
                     label,
@@ -318,7 +415,7 @@ public final class ConfigurationClientImpl {
                                                                              String label, String fields,
                                                                              String acceptDatetime, String ifMatch,
                                                                              String ifNoneMatch, Context context) {
-        return service.getKeyValue(
+        return service.getKeyValueAsync(
             this.getEndpoint(),
             key,
             label,
@@ -346,20 +443,20 @@ public final class ConfigurationClientImpl {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getKeyValue(String key,
-                                            String label,
-                                            String fields, String acceptDatetime,
-                                            String ifMatch,
-                                            String ifNoneMatch) {
-        return getKeyValueAsync(key, label, fields, acceptDatetime, ifMatch, ifNoneMatch).block();
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getKeyValueWithResponse(String key,
                                                                   String label, String fields, String acceptDatetime,
                                                                   String ifMatch, String ifNoneMatch,
                                                                   Context context) {
-        return getKeyValueWithResponseAsync(key, label, fields, acceptDatetime, ifMatch, ifNoneMatch, context).block();
+        return service.getKeyValue(
+            this.getEndpoint(),
+            key,
+            label,
+            this.getApiVersion(),
+            fields,
+            acceptDatetime,
+            ifMatch,
+            ifNoneMatch,
+            context);
 
     }
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -368,7 +465,7 @@ public final class ConfigurationClientImpl {
                                                                         String ifNoneMatch) {
         return FluxUtil.withContext(
             context ->
-                service.delete(
+                service.deleteAsync(
                     this.getEndpoint(),
                     key,
                     label,
@@ -381,7 +478,7 @@ public final class ConfigurationClientImpl {
     public Mono<Response<ConfigurationSetting>> deleteWithResponseAsync(String key,
                                                                         String label, String ifMatch,
                                                                         String ifNoneMatch, Context context) {
-        return service.delete(
+        return service.deleteAsync(
             this.getEndpoint(),
             key,
             label,
@@ -406,19 +503,18 @@ public final class ConfigurationClientImpl {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting delete(String key,
-                                       String label,
-                                       String ifMatch,
-                                       String ifNoneMatch) {
-        return deleteAsync(key, label, ifMatch, ifNoneMatch).block();
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteWithResponse(String key,
                                                              String label,
                                                              String ifMatch, String ifNoneMatch,
                                                              Context context) {
-        return deleteWithResponseAsync(key, label, ifMatch, ifNoneMatch, context).block();
+        return service.delete(
+            this.getEndpoint(),
+            key,
+            label,
+            this.getApiVersion(),
+            ifMatch,
+            ifNoneMatch,
+            context);
 
     }
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -427,7 +523,7 @@ public final class ConfigurationClientImpl {
                                                                               String ifNoneMatch) {
         return FluxUtil.withContext(
             context ->
-                service.lockKeyValue(
+                service.lockKeyValueAsync(
                     this.getEndpoint(),
                     key,
                     label,
@@ -440,7 +536,7 @@ public final class ConfigurationClientImpl {
     public Mono<Response<ConfigurationSetting>> lockKeyValueWithResponseAsync(String key,
                                                                               String label, String ifMatch,
                                                                               String ifNoneMatch, Context context) {
-        return service.lockKeyValue(
+        return service.lockKeyValueAsync(
             this.getEndpoint(),
             key,
             label,
@@ -464,19 +560,18 @@ public final class ConfigurationClientImpl {
                 });
     }
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting lockKeyValue(String key,
-                                             String label,
-                                             String ifMatch,
-                                             String ifNoneMatch) {
-        return lockKeyValueAsync(key, label, ifMatch, ifNoneMatch).block();
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> lockKeyValueWithResponse(String key,
                                                                    String label,
                                                                    String ifMatch, String ifNoneMatch,
                                                                    Context context) {
-        return lockKeyValueWithResponseAsync(key, label, ifMatch, ifNoneMatch, context).block();
+        return service.lockKeyValue(
+            this.getEndpoint(),
+            key,
+            label,
+            this.getApiVersion(),
+            ifMatch,
+            ifNoneMatch,
+            context);
 
     }
 
@@ -486,7 +581,7 @@ public final class ConfigurationClientImpl {
                                                                               String ifNoneMatch) {
         return FluxUtil.withContext(
             context ->
-                service.unlockKeyValue(
+                service.unlockKeyValueAsync(
                     this.getEndpoint(),
                     key,
                     label,
@@ -499,7 +594,7 @@ public final class ConfigurationClientImpl {
     public Mono<Response<ConfigurationSetting>> unlockKeyValueWithResponseAsync(String key,
                                                                               String label, String ifMatch,
                                                                               String ifNoneMatch, Context context) {
-        return service.unlockKeyValue(
+        return service.unlockKeyValueAsync(
             this.getEndpoint(),
             key,
             label,
@@ -522,20 +617,20 @@ public final class ConfigurationClientImpl {
                     }
                 });
     }
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting unlockKeyValue(String key,
-                                             String label,
-                                             String ifMatch,
-                                             String ifNoneMatch) {
-        return unlockKeyValueAsync(key, label, ifMatch, ifNoneMatch).block();
-    }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> unlockKeyValueWithResponse(String key,
                                                                    String label,
                                                                    String ifMatch, String ifNoneMatch,
                                                                    Context context) {
-        return unlockKeyValueWithResponseAsync(key, label, ifMatch, ifNoneMatch, context).block();
+        return service.unlockKeyValue(
+            this.getEndpoint(),
+            key,
+            label,
+            this.getApiVersion(),
+            ifMatch,
+            ifNoneMatch,
+            context);
 
     }
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -544,7 +639,7 @@ public final class ConfigurationClientImpl {
                                                                                   String acceptDatetime) {
         return FluxUtil.withContext(
                 context ->
-                    service.listKeyValues(
+                    service.listKeyValuesAsync(
                         this.getEndpoint(), key, label, this.getApiVersion(), fields, acceptDatetime, context))
             .map(
                 res ->
@@ -562,7 +657,7 @@ public final class ConfigurationClientImpl {
                                                                                   String label, String fields,
                                                                                   String acceptDatetime,
                                                                                   Context context) {
-        return service.listKeyValues(this.getEndpoint(), key, label, this.getApiVersion(), fields, acceptDatetime,
+        return service.listKeyValuesAsync(this.getEndpoint(), key, label, this.getApiVersion(), fields, acceptDatetime,
                 context)
             .map(
                 res ->
@@ -578,7 +673,7 @@ public final class ConfigurationClientImpl {
     public Mono<PagedResponse<ConfigurationSetting>> listKeyValuesNextPageAsync(String continuationToken) {
         return FluxUtil.withContext(
                 context ->
-                    service.listKeyValues(
+                    service.listKeyValuesAsync(
                         this.getEndpoint(), continuationToken, context))
             .map(
                 res ->
@@ -594,7 +689,7 @@ public final class ConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ConfigurationSetting>> listKeyValuesNextPageAsync(String continuationToken,
                                                                                 Context context) {
-        return service.listKeyValues(this.getEndpoint(), continuationToken, context)
+        return service.listKeyValuesAsync(this.getEndpoint(), continuationToken, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -612,7 +707,7 @@ public final class ConfigurationClientImpl {
                                                                                           String acceptDatetime,
                                                                                           String range,
                                                                                           Context context) {
-        return service.listKeyValueRevisions(this.getEndpoint(), key, label, this.getApiVersion(), fields,
+        return service.listKeyValueRevisionsAsync(this.getEndpoint(), key, label, this.getApiVersion(), fields,
                 acceptDatetime, range, context)
             .map(
                 res ->
@@ -622,39 +717,6 @@ public final class ConfigurationClientImpl {
                         res.getHeaders(),
                         res.getValue(),
                         res.getContinuationToken(),
-                        null));
-    }
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisionsNextPageAsync(String continuationToken) {
-        return FluxUtil.withContext(
-                context ->
-                    service.listKeyValues(
-                        this.getEndpoint(), continuationToken, context))
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue(),
-                        res.getContinuationToken(),
-                        null));
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisionsNextPageAsync(String continuationToken,
-                                                                                        Context context) {
-        return
-            service.listKeyValues(
-                this.getEndpoint(), continuationToken, context)
-                .map(
-                    res ->
-                        new PagedResponseBase<>(
-                            res.getRequest(),
-                            res.getStatusCode(),
-                            res.getHeaders(),
-                            res.getValue(),
-                            res.getContinuationToken(),
                         null));
     }
 }

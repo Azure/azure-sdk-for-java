@@ -4,6 +4,7 @@ package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -63,6 +65,32 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
             .map(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()))
             .last()
             .flatMap(request -> next.process());
+    }
+
+    /**
+     * Adds the required headers to authenticate a request to Azure App Configuration service.
+     *
+     * @param context The request context
+     * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy
+     *     completes.
+     * @return A {@link HttpResponse} that will arrive synchronously.
+     */
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        final ByteBuffer contents = context.getHttpRequest().getBodyAsBinaryData()
+            == null ? getEmptyBuffer() : context.getHttpRequest().getBodyAsBinaryData().toByteBuffer();
+
+        Map<String, String> headers = credentials
+            .getAuthorizationHeaders(
+                context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(),
+                contents);
+
+        headers.entrySet()
+            .stream()
+            .forEach(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()));
+
+        return next.processSync();
     }
 
     private ByteBuffer getEmptyBuffer() {

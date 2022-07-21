@@ -1026,7 +1026,7 @@ public final class ConfigurationAsyncClient {
     Mono<PagedResponse<ConfigurationSetting>> listRevisionsNextPage(String nextPageLink, Context context) {
         try {
             return this.serviceClient
-                .listKeyValueRevisionsNextPageAsync(nextPageLink,
+                .listKeyValuesNextPageAsync(nextPageLink,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
                 .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                 .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
