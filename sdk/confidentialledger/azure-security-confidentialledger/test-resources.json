@@ -52,6 +52,11 @@
 			"type": "string",
 			"value": "https://[parameters('ledgerName')].confidential-ledger.azure.com"
 		},
+		// this should instead be the service principal for a test application we create for just Java SDK testing
+		// we fetch the secret from kv in the Java SDK pipeline
+		// the pipeline which creates the ledger is also the user that will be pinging the ledger
+		// we _should_ be able to use clientsecretcredentials (we will have client id, tenant id, and the client secret which we retrieve)
+		// we obtain a jwt token which we then use to provision the ledger
 		"USERAAD": {
 			"type": "string",
 			"value": "[parameters('principalId')]"

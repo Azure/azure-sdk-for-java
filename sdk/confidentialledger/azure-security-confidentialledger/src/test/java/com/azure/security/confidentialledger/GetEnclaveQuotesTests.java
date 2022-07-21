@@ -9,6 +9,8 @@ import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +23,15 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         BinaryData parsedResponse = enclaveQuotesWithResponse.getValue();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        JsonNode responseBodyJson = null;
+
+        try {
+            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+        
         JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
         String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
         Assertions.assertEquals(enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText(), "OE_SGX_v1");

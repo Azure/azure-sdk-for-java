@@ -32,6 +32,8 @@ import java.time.OffsetDateTime;
 
 import javax.net.ssl.SSLException;
 
+import org.junit.jupiter.api.Assertions;
+
 class ConfidentialLedgerClientTestBase extends TestBase {
     protected ConfidentialLedgerClient confidentialLedgerClient;
     protected ConfidentialLedgerClientBuilder confidentialLedgerClientBuilder;
@@ -41,8 +43,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
     protected void beforeTest() {
         try {
             ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientBuilder = new ConfidentialLedgerCertificateClientBuilder()
-                .certificateEndpoint(
-                        Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI", "https://identity.confidential-ledger.core.azure.com"))
+                .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
@@ -90,6 +91,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             jsonNode = mapper.readTree(identityResponse.toBytes());
         } catch (IOException ex) {
             System.out.println("Caught exception " + ex);
+            Assertions.assertTrue(false);
         }
         String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
@@ -101,6 +103,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             reactorClient.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
         } catch (SSLException ex) {
             System.out.println("Caught exception " + ex);
+            Assertions.assertTrue(false);
         }
 
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
