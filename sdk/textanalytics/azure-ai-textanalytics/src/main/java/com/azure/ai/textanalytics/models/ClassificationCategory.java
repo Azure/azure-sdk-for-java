@@ -3,28 +3,28 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifiedCategoryPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ClassificationCategoryPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
  * The document classification result which contains the classified category and the confidence score on it.
  */
 @Immutable
-public final class ClassifiedCategory {
+public final class ClassificationCategory {
     private String category;
     private double confidenceScore;
 
     static {
-        ClassifiedCategoryPropertiesHelper.setAccessor(
-            new ClassifiedCategoryPropertiesHelper.ClassifiedCategoryAccessor() {
+        ClassificationCategoryPropertiesHelper.setAccessor(
+            new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
                 @Override
-                public void setCategory(ClassifiedCategory classifiedCategory, String category) {
-                    classifiedCategory.setCategory(category);
+                public void setCategory(ClassificationCategory classificationCategory, String category) {
+                    classificationCategory.setCategory(category);
                 }
 
                 @Override
-                public void setConfidenceScore(ClassifiedCategory classifiedCategory, double confidenceScore) {
-                    classifiedCategory.setConfidenceScore(confidenceScore);
+                public void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore) {
+                    classificationCategory.setConfidenceScore(confidenceScore);
                 }
             });
     }

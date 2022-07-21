@@ -62,7 +62,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassifiedCategory;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -1274,21 +1274,21 @@ public final class Utility {
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
         // Single category classification will only have one category.
-        ClassifyDocumentResultPropertiesHelper.setClassifiedCategories(classifyDocumentResult,
+        ClassifyDocumentResultPropertiesHelper.setClassificationCategories(classifyDocumentResult,
             IterableStream.of(toDocumentClassifications(classificationResult)));
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
             new IterableStream<>(warnings));
         return classifyDocumentResult;
     }
 
-    private static List<ClassifiedCategory> toDocumentClassifications(List<ClassificationResult> classificationResults) {
-        List<ClassifiedCategory> classificationCategories = new ArrayList<>();
+    private static List<ClassificationCategory> toDocumentClassifications(List<ClassificationResult> classificationResults) {
+        List<ClassificationCategory> classificationCategories = new ArrayList<>();
         for (ClassificationResult classificationResult : classificationResults) {
-            final ClassifiedCategory classifiedCategory = new ClassifiedCategory();
-            ClassifiedCategoryPropertiesHelper.setCategory(classifiedCategory, classificationResult.getCategory());
-            ClassifiedCategoryPropertiesHelper.setConfidenceScore(classifiedCategory,
+            final ClassificationCategory classificationCategory = new ClassificationCategory();
+            ClassificationCategoryPropertiesHelper.setCategory(classificationCategory, classificationResult.getCategory());
+            ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory,
                 classificationResult.getConfidenceScore());
-            classificationCategories.add(classifiedCategory);
+            classificationCategories.add(classificationCategory);
         }
         return classificationCategories;
     }

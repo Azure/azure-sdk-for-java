@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.ClassifiedCategory;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -1574,15 +1574,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             assertNotNull(documentResult.getError());
         } else {
             assertNull(documentResult.getError());
-            for (ClassifiedCategory classification : documentResult.getClassifiedCategories()) {
+            for (ClassificationCategory classification : documentResult.getClassificationCategories()) {
                 validateDocumentClassification(classification);
             }
         }
     }
 
-    static void validateDocumentClassification(ClassifiedCategory classifiedCategory) {
-        assertNotNull(classifiedCategory.getCategory());
-        assertNotNull(classifiedCategory.getConfidenceScore());
+    static void validateDocumentClassification(ClassificationCategory classificationCategory) {
+        assertNotNull(classificationCategory.getCategory());
+        assertNotNull(classificationCategory.getConfidenceScore());
     }
 
     // Healthcare task

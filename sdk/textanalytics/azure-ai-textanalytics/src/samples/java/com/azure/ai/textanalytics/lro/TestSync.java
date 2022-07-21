@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
-import com.azure.ai.textanalytics.models.ClassifiedCategory;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
@@ -95,9 +95,9 @@ public class TestSync {
         for (ClassifyDocumentResult documentResult : documentsResults) {
             System.out.println("Document ID: " + documentResult.getId());
             if (!documentResult.isError()) {
-                for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
+                for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
                     System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                        classifiedCategory.getCategory(), classifiedCategory.getConfidenceScore());
+                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
                 }
             } else {
                 System.out.printf("\tCannot classify category of document. Error: %s%n",
@@ -166,9 +166,9 @@ public class TestSync {
         for (ClassifyDocumentResult documentResult : documentsResults) {
             System.out.println("Document ID: " + documentResult.getId());
             if (!documentResult.isError()) {
-                for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
+                for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
                     System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                        classifiedCategory.getCategory(), classifiedCategory.getConfidenceScore());
+                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
                 }
             } else {
                 System.out.printf("\tCannot classify multi categories of document. Error: %s%n",

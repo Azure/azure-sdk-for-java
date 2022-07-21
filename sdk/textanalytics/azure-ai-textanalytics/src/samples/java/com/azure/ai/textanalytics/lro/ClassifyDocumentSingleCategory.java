@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
-import com.azure.ai.textanalytics.models.ClassifiedCategory;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
@@ -68,9 +68,9 @@ public class ClassifyDocumentSingleCategory {
                     for (ClassifyDocumentResult documentResult : documentsResults) {
                         System.out.println("Document ID: " + documentResult.getId());
                         if (!documentResult.isError()) {
-                            for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
+                            for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
                                 System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                                    classifiedCategory.getCategory(), classifiedCategory.getConfidenceScore());
+                                    classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
                             }
                         } else {
                             System.out.printf("\tCannot classify category of document. Error: %s%n",

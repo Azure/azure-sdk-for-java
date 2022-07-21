@@ -12,17 +12,17 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class ClassifyDocumentResult extends TextAnalyticsResult {
-    private IterableStream<ClassifiedCategory> classifiedCategories;
+    private IterableStream<ClassificationCategory> classificationCategories;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         ClassifyDocumentResultPropertiesHelper.setAccessor(
             new ClassifyDocumentResultPropertiesHelper.ClassifyDocumentResultAccessor() {
                 @Override
-                public void setClassifiedCategories(
+                public void setClassificationCategories(
                     ClassifyDocumentResult classifyDocumentResult,
-                    IterableStream<ClassifiedCategory> classifiedCategories) {
-                    classifyDocumentResult.setClassifiedCategories(classifiedCategories);
+                    IterableStream<ClassificationCategory> classificationCategories) {
+                    classifyDocumentResult.setClassificationCategories(classificationCategories);
                 }
 
                 @Override
@@ -41,19 +41,18 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyDocumentResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error) {
+    public ClassifyDocumentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
 
     /**
-     * The document classification result which contains the classified category and the confidence score on it.
+     * The document classification result which contains the classification category and the confidence score on it.
      *
-     * @return The {@link ClassifiedCategory}.
+     * @return The {@link ClassificationCategory}.
      */
-    public IterableStream<ClassifiedCategory> getClassifiedCategories() {
+    public IterableStream<ClassificationCategory> getClassificationCategories() {
         throwExceptionIfError();
-        return classifiedCategories;
+        return classificationCategories;
     }
 
     /**
@@ -65,8 +64,8 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
         return this.warnings;
     }
 
-    private void setClassifiedCategories(IterableStream<ClassifiedCategory> classifiedCategories) {
-        this.classifiedCategories = classifiedCategories;
+    private void setClassificationCategories(IterableStream<ClassificationCategory> classificationCategories) {
+        this.classificationCategories = classificationCategories;
     }
 
     private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {
