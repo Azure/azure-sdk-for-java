@@ -1,9 +1,10 @@
 ---
 page_type: sample
-languages: java
+languages: 
+- java
 products:
-  - azure
-  - azure-cognitive-search
+- azure
+- azure-cognitive-search
 urlFragment: search-samples
 ---
 
