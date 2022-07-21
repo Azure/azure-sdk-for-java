@@ -89,12 +89,9 @@ parameters:
   type: boolean
   default: false
 
-
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: build-and-test.yml
   parameters:
-    ServiceDirectory: core
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-core
         groupId: com.azure
@@ -158,3 +155,4 @@ extends:
         releaseInBatch: ${{ parameters.release_azurejsongson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
+    ReleaseDependsOnLiveTests: false
