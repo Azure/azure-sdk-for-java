@@ -187,6 +187,8 @@ class PartitionResolver {
                 break;
             case 0:
                 return new Hashed(c, b);
+            default:
+                break;
         }
 
         c ^= b;
