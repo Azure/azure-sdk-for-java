@@ -72,6 +72,14 @@ public class RestProxyTests {
 
         @Get("my/url/path")
         @ExpectedResponses({200})
+        Mono<Void> testMethodReturnsMonoVoid();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        void testVoidMethod();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
         StreamResponse testDownload();
 
         @Get("my/url/path")
@@ -177,6 +185,35 @@ public class RestProxyTests {
         Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper.getContent(
             client.getLastHttpRequest().getBodyAsBinaryData()).getClass();
         assertEquals(expectedContentClazz, actualContentClazz);
+    }
+
+    @Test
+    public void monoVoidReturningApiClosesResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StepVerifier.create(
+                testInterface.testMethodReturnsMonoVoid())
+            .verifyComplete();
+
+        Mockito.verify(client.lastResponseSpy).close();
+    }
+
+    @Test
+    public void voidReturningApiClosesResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+
+        testInterface.testVoidMethod();
+
+        Mockito.verify(client.lastResponseSpy).close();
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
