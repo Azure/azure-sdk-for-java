@@ -65,6 +65,9 @@ parameters:
 - name: LiveTestStages
   type: stageList
   default: []
+- name: ReleaseDependsOnLiveTests
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -116,8 +119,9 @@ stages:
         parameters:
           DependsOn:
           - Build
-          - ${{ each liveTestStage in parameters.LiveTestStages }}:
-            - ${{ liveTestStage.stage }}
+          - ${{ if eq(parameters.ReleaseDependsOnLiveTests, 'true') }}:
+            - ${{ each liveTestStage in parameters.LiveTestStages }}:
+              - ${{ liveTestStage.stage }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
