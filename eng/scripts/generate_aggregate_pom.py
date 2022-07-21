@@ -234,9 +234,10 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/resourcemanagerhybrid, sdk/e2e and sdk/template
+        # Ignore sdk/resourcemanagerhybrid, sdk/e2e, sdk/template and azure-security-test-keyvault-jca 
         if 'resourcemanagerhybrid' in root \
             or 'e2e' in root \
+            or 'azure-security-test-keyvault-jca' in root \
             or 'template' in root:
             continue
 
