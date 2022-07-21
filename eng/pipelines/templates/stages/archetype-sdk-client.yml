@@ -115,7 +115,9 @@ stages:
       - template: archetype-java-release-batch.yml
         parameters:
           DependsOn:
-            - Build
+          - Build
+          - ${{ each liveTestStage in parameters.LiveTestStages }}:
+            - ${{ liveTestStage.stage }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
