@@ -333,14 +333,14 @@ public final class CallingServerClientBuilder implements
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
 
-        if (isConnectionStringSet && isEndpointSet && !isDebug) {
+        if ((isConnectionStringSet || isTokenCredentialSet) && isEndpointSet && !isDebug) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
+                "Both 'connectionString/tokenCredential' and 'endpoint' are set. Just one may be used."));
         }
 
-        if ((!isConnectionStringSet || !isEndpointSet) && isDebug) {
+        if (((!isConnectionStringSet && !isTokenCredentialSet) || !isEndpointSet) && isDebug) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Debug mode requires ConnectionString and Endpoint both to be set. Requirement is not fulfilled, changing back to normal mode."));
+                "Debug mode requires 'ConnectionString/TokenCredential' and 'Endpoint' both to be set. Requirement is not fulfilled, changing back to normal mode."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
@@ -358,7 +358,7 @@ public final class CallingServerClientBuilder implements
                 "Both 'tokenCredential' and 'keyCredential' are set. Just one may be used."));
         }
 
-        if (isDebug) {
+        if (isDebug && !isTokenCredentialSet) {
             CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
             String accessKey = connectionStringObject.getAccessKey();
             credential(new AzureKeyCredential(accessKey));
