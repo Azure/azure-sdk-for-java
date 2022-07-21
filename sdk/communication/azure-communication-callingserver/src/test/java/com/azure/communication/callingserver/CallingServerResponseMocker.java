@@ -45,6 +45,16 @@ public class CallingServerResponseMocker {
             .buildClient();
     }
 
+    public static CallConnection getCallConnection(ArrayList<SimpleEntry<String, Integer>> responses) {
+        CallingServerClient callingServerClient = getCallingServerClient(responses);
+        return callingServerClient.getCallConnection("callConnectionId");
+    }
+
+    public static CallConnectionAsync getCallConnectionAsync(ArrayList<SimpleEntry<String, Integer>> responses) {
+        CallingServerAsyncClient callingServerClient = getCallingServerAsyncClient(responses);
+        return callingServerClient.getCallConnectionAsync("callConnectionId");
+    }
+
     public static HttpResponse generateMockResponse(String body, HttpRequest request, int statusCode) {
         return new HttpResponse(request) {
             @Override
