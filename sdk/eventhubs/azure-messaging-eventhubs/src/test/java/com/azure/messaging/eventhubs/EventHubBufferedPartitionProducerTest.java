@@ -272,6 +272,71 @@ public class EventHubBufferedPartitionProducerTest {
         assertEquals(1, holder.failedContexts.size());
     }
 
+    @Test
+    public void getBufferedEventCounts() throws InterruptedException {
+        // Arrange
+        final CountDownLatch success = new CountDownLatch(2);
+        failedSemaphore.acquire();
+
+        final InvocationHolder holder = new InvocationHolder();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(3));
+        options.setSendSucceededContext(context -> {
+            System.out.println("Batch received.");
+            holder.onSucceed(context);
+            success.countDown();
+        });
+        options.setSendFailedContext(context -> holder.onFailed(context));
+
+        final Duration waitTime = options.getMaxWaitTime().plus(options.getMaxWaitTime());
+
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1);
+
+        final List<EventData> batchEvents2 = new ArrayList<>();
+        setupBatchMock(batch2, batchEvents2, event2, event3);
+
+        final List<EventData> batchEvents3 = new ArrayList<>();
+        final EventData event5 = new EventData("five");
+        setupBatchMock(batch3, batchEvents3, event4, event5);
+
+        // Delaying send operation.
+        when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options);
+
+        // Act & Assert
+        StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2), producer.enqueueEvent(event3)), 1L)
+            .then(() -> {
+                // event1 was enqueued, event2 is in a batch, and event3 is currently in the queue waiting to be
+                // pushed downstream.
+                // batch1 (with event1) is being sent at the moment with the delay of options.getMaxWaitTime(), so the
+                // buffer doesn't drain so quickly.
+                final int bufferedEventCount = producer.getBufferedEventCount();
+                assertEquals(1, bufferedEventCount);
+            })
+            .verifyComplete();
+
+        StepVerifier.create(Mono.when(producer.enqueueEvent(event4), producer.enqueueEvent(event5)))
+            .verifyComplete();
+
+        final long totalTime = waitTime.toMillis() + waitTime.toMillis();
+        assertTrue(success.await(totalTime, TimeUnit.MILLISECONDS),
+            "Should have been able to get a successful signal downstream.");
+
+        assertEquals(2, holder.succeededContexts.size());
+
+        // Verify the completed ones.
+        final SendBatchSucceededContext first = holder.succeededContexts.get(0);
+        assertEquals(PARTITION_ID, first.getPartitionId());
+        assertEquals(batchEvents, first.getEvents());
+
+        final SendBatchSucceededContext second = holder.succeededContexts.get(1);
+        assertEquals(PARTITION_ID, second.getPartitionId());
+        assertEquals(batchEvents2, second.getEvents());
+    }
+
     private class InvocationHolder {
         private final List<SendBatchSucceededContext> succeededContexts = new ArrayList<>();
         private final List<SendBatchFailedContext> failedContexts = new ArrayList<>();
