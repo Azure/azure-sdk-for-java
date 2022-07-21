@@ -1,14 +1,53 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.10 (2022-07-21)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2022-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ReestablishReplicationRequest` was added
 
-### Bugs Fixed
+#### `models.Volume` was modified
 
-### Other Changes
+* `reestablishReplication(models.ReestablishReplicationRequest)` was added
+* `keyVaultPrivateEndpointResourceId()` was added
+* `reestablishReplication(models.ReestablishReplicationRequest,com.azure.core.util.Context)` was added
+
+#### `models.Volume$Update` was modified
+
+* `withCoolAccess(java.lang.Boolean)` was added
+* `withCoolnessPeriod(java.lang.Integer)` was added
+
+#### `models.VolumePatch` was modified
+
+* `withCoolnessPeriod(java.lang.Integer)` was added
+* `withCoolAccess(java.lang.Boolean)` was added
+* `coolAccess()` was added
+* `coolnessPeriod()` was added
+
+#### `models.CapacityPool$Update` was modified
+
+* `withCoolAccess(java.lang.Boolean)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withKeyVaultPrivateEndpointResourceId(java.lang.String)` was added
+
+#### `models.Volumes` was modified
+
+* `reestablishReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ReestablishReplicationRequest,com.azure.core.util.Context)` was added
+* `reestablishReplication(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ReestablishReplicationRequest)` was added
+
+#### `models.CapacityPoolPatch` was modified
+
+* `coolAccess()` was added
+* `withCoolAccess(java.lang.Boolean)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withKeyVaultPrivateEndpointResourceId(java.lang.String)` was added
+* `keyVaultPrivateEndpointResourceId()` was added
 
 ## 1.0.0-beta.9 (2022-06-20)
 
