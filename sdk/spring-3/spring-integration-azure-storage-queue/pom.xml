@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-integration-azure-storage-queue</artifactId>
+  <version>5.0.0-beta.1</version> <!-- {x-version-update;spring3_com.azure.spring:spring-integration-azure-storage-queue;current} -->
+
+  <name>Spring Integration Azure Storage Queue</name>
+  <description>Spring Integration Azure Storage Queue</description>
+  <url>https://microsoft.github.io/spring-cloud-azure</url>
+  <developers>
+    <developer>
+      <name>Spring Cloud Azure</name>
+      <email>SpringIntegSupport@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-integration-azure-core</artifactId>
+      <version>5.0.0-beta.1</version> <!-- {x-version-update;spring3_com.azure.spring:spring-integration-azure-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-messaging-azure-storage-queue</artifactId>
+      <version>5.0.0-beta.1</version> <!-- {x-version-update;spring3_com.azure.spring:spring-messaging-azure-storage-queue;current} -->
+    </dependency>
+
+    <!-- Added this dependency to include necessary annotations used by reactor core.
+        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+        which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.5.1</version> <!-- {x-version-update;spring3_org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.8.2</version> <!-- {x-version-update;spring3_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.integration.storage.queue</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

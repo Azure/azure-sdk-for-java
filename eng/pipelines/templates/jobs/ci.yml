@@ -168,7 +168,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -P${{parameters.BuildProfile}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -331,7 +331,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -P${{parameters.BuildProfile}} -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -342,7 +342,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -P${{parameters.BuildProfile}} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
