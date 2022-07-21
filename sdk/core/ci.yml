@@ -137,4 +137,4 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
-    ReleaseDependsOnLiveTests: true
+    ReleaseDependsOnLiveTests: false
