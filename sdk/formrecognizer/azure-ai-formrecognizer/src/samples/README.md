@@ -2,11 +2,11 @@
 page_type: sample
 languages:
 - java
-  products:
+products:
 - azure
 - azure-cognitive-services
 - azure-form-recognizer
-  urlFragment: formrecognizer-java-samples
+urlFragment: formrecognizer-java-samples
 ---
 
 # Azure Form Recognizer client library samples for Java
