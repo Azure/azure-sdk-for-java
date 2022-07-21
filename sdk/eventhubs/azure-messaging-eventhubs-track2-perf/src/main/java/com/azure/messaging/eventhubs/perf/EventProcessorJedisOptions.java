@@ -12,7 +12,7 @@ public class EventProcessorJedisOptions extends PerfStressOptions {
     @Parameter(names = {"-hn", "--hostName"}, description = "Host name of Azure Redis cache.")
     private String hostName = "$Default";
 
-    @Parameter(names = {"-p", "--password"}, description = "The primary key for Azure Redis Cache.")
+    @Parameter(names = {"-pw", "--password"}, description = "The primary key for Azure Redis Cache.")
     private String password = "$Default";
 
     @Parameter(names = {"-u", "--userName"}, description = "The username required to configure a JedisPool object.")
