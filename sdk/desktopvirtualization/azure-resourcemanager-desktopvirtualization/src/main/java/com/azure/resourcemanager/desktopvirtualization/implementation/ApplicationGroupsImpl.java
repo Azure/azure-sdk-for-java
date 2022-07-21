@@ -13,10 +13,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.ApplicationGroupsC
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupInner;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroup;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplicationGroupsImpl implements ApplicationGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupsImpl.class);
 
     private final ApplicationGroupsClient innerClient;
 
@@ -86,7 +85,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
     public ApplicationGroup getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
     public Response<ApplicationGroup> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class ApplicationGroupsImpl implements ApplicationGroups {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

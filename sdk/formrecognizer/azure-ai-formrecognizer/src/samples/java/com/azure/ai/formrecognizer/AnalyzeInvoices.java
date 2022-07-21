@@ -9,13 +9,12 @@ import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +40,11 @@ public class AnalyzeInvoices {
 
         File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
                                     + "sample-forms/invoices/sample_invoice.jpg");
-        byte[] fileContent = Files.readAllBytes(invoice.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        Path filePath = invoice.toPath();
+        BinaryData invoiceData = BinaryData.fromFile(filePath);
 
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeInvoicesPoller =
-            client.beginAnalyzeDocument("prebuilt-invoice", targetStream, invoice.length());
+            client.beginAnalyzeDocument("prebuilt-invoice", invoiceData, invoice.length());
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 

@@ -49,6 +49,8 @@ public class AadPropertiesConfiguration {
             global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
         aad.getCredential().setClientId(global.getCredential().getClientId());
         aad.getCredential().setClientSecret(global.getCredential().getClientSecret());
+        aad.getCredential().setClientCertificatePath(global.getCredential().getClientCertificatePath());
+        aad.getCredential().setClientCertificatePassword(global.getCredential().getClientCertificatePassword());
         aad.getProfile().setTenantId(global.getProfile().getTenantId());
         return aad;
     }

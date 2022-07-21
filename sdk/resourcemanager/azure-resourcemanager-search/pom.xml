@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-search</artifactId>
-  <version>2.16.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-search;current} -->
+  <version>2.17.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-search;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Cognitive Search Management</name>
@@ -43,6 +43,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.search/com.azure.resourcemanager.search=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
@@ -56,7 +57,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.16.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.17.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -73,7 +74,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CassandraResources GetCassandraKeyspaceThroughput. */
 public final class CassandraResourcesGetCassandraKeyspaceThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCassandraKeyspaceThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraKeyspaceThroughputGet.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceThroughputGet.

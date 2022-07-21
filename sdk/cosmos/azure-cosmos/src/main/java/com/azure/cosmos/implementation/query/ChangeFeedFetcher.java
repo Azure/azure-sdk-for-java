@@ -258,7 +258,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                     e);
                             }
 
-                            return Mono.just(shouldRetryResult);
+                            return Mono.just(splitShouldRetryResult);
                         });
                 }
 

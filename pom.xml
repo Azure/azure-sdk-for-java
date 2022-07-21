@@ -103,6 +103,9 @@
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
 
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
+
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
         <module>sdk/purview/azure-analytics-purview-scanning</module>
@@ -268,6 +271,9 @@
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
 
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
+
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
         <module>sdk/purview/azure-analytics-purview-scanning</module>
@@ -345,9 +351,10 @@
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                 <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-                <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
-                  for more Java documentation, including quick starts, tutorials, and code samples.
-                </footer>
+                <!-- footer is deprecated and throws warning in Java 17 and fails the aggregate javadoc build -->
+<!--                <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site-->
+<!--                  for more Java documentation, including quick starts, tutorials, and code samples.-->
+<!--                </footer>-->
                 <linksource>false</linksource>
                 <excludePackageNames>
                   *.impl*:
@@ -476,6 +483,10 @@
                   <group>
                     <title>Azure Security Attestation</title>
                     <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Personalizer</title>
+                    <packages>com.azure.ai.personalizer*</packages>
                   </group>
                   <group>
                     <title>Azure Purview Catalog</title>
@@ -902,6 +913,7 @@
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/extendedlocation</module>
+        <module>sdk/fluidrelay</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -940,11 +952,14 @@
         <module>sdk/mysql</module>
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
+        <module>sdk/networkfunction</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
+        <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
+        <module>sdk/personalizer</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
@@ -957,6 +972,7 @@
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
+        <module>sdk/resourceconnector</module>
         <module>sdk/resourcegraph</module>
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>

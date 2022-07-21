@@ -36,7 +36,11 @@ public final class ElasticPoolEdition extends ExpandableStringEnum<ElasticPoolEd
         return fromString(name, ElasticPoolEdition.class);
     }
 
-    /** @return known ElasticPoolEdition values. */
+    /**
+     * Gets known ElasticPoolEdition values.
+     *
+     * @return known ElasticPoolEdition values.
+     */
     public static Collection<ElasticPoolEdition> values() {
         return values(ElasticPoolEdition.class);
     }

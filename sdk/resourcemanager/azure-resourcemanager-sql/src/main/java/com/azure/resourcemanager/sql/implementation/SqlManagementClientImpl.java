@@ -7,7 +7,6 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.sql.fluent.BackupLongTermRetentionPoliciesClient;
@@ -107,8 +106,6 @@ import java.time.Duration;
 /** Initializes a new instance of the SqlManagementClientImpl type. */
 @ServiceClient(builder = SqlManagementClientBuilder.class)
 public final class SqlManagementClientImpl extends AzureServiceClient implements SqlManagementClient {
-    private final ClientLogger logger = new ClientLogger(SqlManagementClientImpl.class);
-
     /** The subscription ID that identifies an Azure subscription. */
     private final String subscriptionId;
 

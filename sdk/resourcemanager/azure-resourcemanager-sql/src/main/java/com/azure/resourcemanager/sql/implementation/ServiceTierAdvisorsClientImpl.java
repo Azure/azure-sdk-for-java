@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.ServiceTierAdvisorsClient;
 import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
 import com.azure.resourcemanager.sql.models.ServiceTierAdvisorListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceTierAdvisorsClient. */
 public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsClient {
-    private final ClientLogger logger = new ClientLogger(ServiceTierAdvisorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServiceTierAdvisorsService service;
 
@@ -58,7 +56,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     private interface ServiceTierAdvisorsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/serviceTierAdvisors/{serviceTierAdvisorName}")
@@ -72,9 +70,10 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("serviceTierAdvisorName") String serviceTierAdvisorName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/serviceTierAdvisors")
@@ -87,6 +86,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -101,7 +101,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a service tier advisor.
+     * @return a service tier advisor along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceTierAdvisorInner>> getWithResponseAsync(
@@ -134,6 +134,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                     new IllegalArgumentException("Parameter serviceTierAdvisorName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -146,8 +147,9 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                             serverName,
                             databaseName,
                             serviceTierAdvisorName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -162,7 +164,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a service tier advisor.
+     * @return a service tier advisor along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceTierAdvisorInner>> getWithResponseAsync(
@@ -199,6 +201,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                     new IllegalArgumentException("Parameter serviceTierAdvisorName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -209,6 +212,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                 serverName,
                 databaseName,
                 serviceTierAdvisorName,
+                accept,
                 context);
     }
 
@@ -223,20 +227,13 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a service tier advisor.
+     * @return a service tier advisor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceTierAdvisorInner> getAsync(
         String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName)
-            .flatMap(
-                (Response<ServiceTierAdvisorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -270,7 +267,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a service tier advisor.
+     * @return a service tier advisor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceTierAdvisorInner> getWithResponse(
@@ -293,7 +290,8 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list service tier advisor request.
+     * @return represents the response to a list service tier advisor request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceTierAdvisorInner>> listByDatabaseSinglePageAsync(
@@ -321,6 +319,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -332,12 +331,13 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            accept,
                             context))
             .<PagedResponse<ServiceTierAdvisorInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -351,7 +351,8 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list service tier advisor request.
+     * @return represents the response to a list service tier advisor request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceTierAdvisorInner>> listByDatabaseSinglePageAsync(
@@ -379,6 +380,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -388,6 +390,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                 resourceGroupName,
                 serverName,
                 databaseName,
+                accept,
                 context)
             .map(
                 res ->
@@ -405,7 +408,8 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list service tier advisor request.
+     * @return represents the response to a list service tier advisor request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceTierAdvisorInner> listByDatabaseAsync(
@@ -424,7 +428,8 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list service tier advisor request.
+     * @return represents the response to a list service tier advisor request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServiceTierAdvisorInner> listByDatabaseAsync(
@@ -443,7 +448,8 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list service tier advisor request.
+     * @return represents the response to a list service tier advisor request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceTierAdvisorInner> listByDatabase(
@@ -462,7 +468,8 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list service tier advisor request.
+     * @return represents the response to a list service tier advisor request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceTierAdvisorInner> listByDatabase(

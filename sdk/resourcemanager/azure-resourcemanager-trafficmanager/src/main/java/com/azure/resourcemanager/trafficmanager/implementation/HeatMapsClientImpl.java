@@ -6,6 +6,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -55,7 +56,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     private interface HeatMapsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/trafficmanagerprofiles/{profileName}/heatMaps/{heatMapType}")
@@ -70,6 +71,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
             @QueryParam("topLeft") String topLeft,
             @QueryParam("botRight") String botRight,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -78,8 +80,8 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -108,6 +110,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         final String heatMapType = "default";
+        final String accept = "application/json";
         String topLeftConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(topLeft, CollectionFormat.CSV);
         String botRightConverted =
@@ -125,8 +128,9 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
                             topLeftConverted,
                             botRightConverted,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -134,8 +138,8 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -165,6 +169,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         final String heatMapType = "default";
+        final String accept = "application/json";
         String topLeftConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(topLeft, CollectionFormat.CSV);
         String botRightConverted =
@@ -180,6 +185,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
                 topLeftConverted,
                 botRightConverted,
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -188,8 +194,8 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,8 +262,8 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

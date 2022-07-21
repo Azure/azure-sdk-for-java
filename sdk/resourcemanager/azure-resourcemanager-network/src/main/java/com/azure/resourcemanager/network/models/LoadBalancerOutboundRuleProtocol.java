@@ -30,7 +30,11 @@ public final class LoadBalancerOutboundRuleProtocol extends ExpandableStringEnum
         return fromString(name, LoadBalancerOutboundRuleProtocol.class);
     }
 
-    /** @return known LoadBalancerOutboundRuleProtocol values. */
+    /**
+     * Gets known LoadBalancerOutboundRuleProtocol values.
+     *
+     * @return known LoadBalancerOutboundRuleProtocol values.
+     */
     public static Collection<LoadBalancerOutboundRuleProtocol> values() {
         return values(LoadBalancerOutboundRuleProtocol.class);
     }

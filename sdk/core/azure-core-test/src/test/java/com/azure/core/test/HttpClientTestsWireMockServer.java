@@ -48,7 +48,9 @@ public class HttpClientTestsWireMockServer {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
             .extensions(new HttpClientResponseTransformer())
             .dynamicPort()
+            .dynamicHttpsPort()
             .disableRequestJournal()
+            .containerThreads(50) // bumping from default 10 to sustain test runner parallelization load.
             .gzipDisabled(true));
 
         // Basic bytes response.

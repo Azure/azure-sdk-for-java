@@ -179,6 +179,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- try-with-resources bug https://github.com/spotbugs/spotbugs/issues/1694 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
+      <Method name="getBytes"/>
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
   <Match>
     <Or>
@@ -592,6 +600,14 @@
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
       <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -1041,7 +1057,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
-    <Field name="durationInMicroSec"/>
+    <Field name="durationInMilliSecs"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2594,6 +2610,12 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- Generated implementation of Personalizer is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- Some generated base clients in Purview Catalog do not send api-version -->
   <Match>
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
@@ -2715,7 +2737,7 @@
   </Match>
   <Match>
     <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-    <Method name="getAnalyzedSentimentResponse"/>  
+    <Method name="getAnalyzedSentimentResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
   <Match>
@@ -2737,10 +2759,15 @@
     <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
     <Method name="getRecognizedLinkedEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>  
+  </Match>
   <Match>
     <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+ <Match>
+    <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+    <Method name="locateExceptionConstructor"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 </FindBugsFilter>

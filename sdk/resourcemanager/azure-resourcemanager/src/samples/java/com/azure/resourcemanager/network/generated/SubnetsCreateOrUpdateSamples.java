@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Subnets CreateOrUpdate. */
 public final class SubnetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/SubnetCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/SubnetCreate.json
      */
     /**
      * Sample code: Create subnet.
@@ -30,7 +30,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/SubnetCreateServiceEndpoint.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/SubnetCreateServiceEndpoint.json
      */
     /**
      * Sample code: Create subnet with service endpoints.
@@ -55,7 +55,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/SubnetCreateWithDelegation.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/SubnetCreateWithDelegation.json
      */
     /**
      * Sample code: Create subnet with a delegation.

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Patchable volume properties. */
 @Fluent
 public final class VolumePatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatchProperties.class);
-
     /*
      * serviceLevel The service level of the file system
      */
@@ -82,6 +78,19 @@ public final class VolumePatchProperties {
      */
     @JsonProperty(value = "unixPermissions")
     private String unixPermissions;
+
+    /*
+     * Specifies whether Cool Access(tiering) is enabled for the volume.
+     */
+    @JsonProperty(value = "coolAccess")
+    private Boolean coolAccess;
+
+    /*
+     * Specifies the number of days after which data that is not accessed by
+     * clients will be tiered.
+     */
+    @JsonProperty(value = "coolnessPeriod")
+    private Integer coolnessPeriod;
 
     /**
      * Get the serviceLevel property: serviceLevel The service level of the file system.
@@ -278,6 +287,48 @@ public final class VolumePatchProperties {
      */
     public VolumePatchProperties withUnixPermissions(String unixPermissions) {
         this.unixPermissions = unixPermissions;
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.coolAccess;
+    }
+
+    /**
+     * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withCoolAccess(Boolean coolAccess) {
+        this.coolAccess = coolAccess;
+        return this;
+    }
+
+    /**
+     * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @return the coolnessPeriod value.
+     */
+    public Integer coolnessPeriod() {
+        return this.coolnessPeriod;
+    }
+
+    /**
+     * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @param coolnessPeriod the coolnessPeriod value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withCoolnessPeriod(Integer coolnessPeriod) {
+        this.coolnessPeriod = coolnessPeriod;
         return this;
     }
 

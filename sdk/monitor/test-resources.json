@@ -63,6 +63,39 @@
       "metadata": {
         "description": "The tenant id to which the application and resources belong."
       }
+    },
+    "dataCollectionEndpointName": {
+      "type": "string",
+      "defaultValue": "azmonitordce",
+      "metadata": {
+        "description": "Specifies the name of the Data Collection Endpoint to create."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "westus2",
+      "allowedValues": [
+        "westus2",
+        "eastus2",
+        "eastus2euap"
+      ],
+      "metadata": {
+        "description": "Specifies the location in which to create the Data Collection Endpoint."
+      }
+    },
+    "dataCollectionRuleName": {
+      "type": "string",
+      "defaultValue": "azmonitordcr",
+      "metadata": {
+        "description": "Specifies the name of the Data Collection Rule to create."
+      }
+    },
+    "workspaceName": {
+      "type": "String",
+      "defaultValue": "azmonitorlogsws",
+      "metadata": {
+        "description": "Specifies the Log Analytics workspace name to use."
+      }
     }
   },
   "variables": {
@@ -76,7 +109,9 @@
     "eventHubsApiVersion": "2017-04-01",
     "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
-    "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]"
+    "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
+    "dcrRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/3913510d-42f4-4e42-8a64-420c390055eb')]",
+    "dcrRoleName": "[concat('dcrrole', parameters('baseName'))]"
   },
   "resources": [
     {
@@ -167,6 +202,134 @@
         "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
         "principalId": "[parameters('testApplicationOid')]"
       }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('dcrRoleId', variables('dcrRoleName')))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('dcrRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/dataCollectionEndpoints",
+      "name": "[parameters('dataCollectionEndpointName')]",
+      "location": "[parameters('location')]",
+      "apiVersion": "2021-04-01",
+      "properties": {
+        "networkAcls": {
+          "publicNetworkAccess": "Enabled"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Insights/dataCollectionRules",
+      "name": "[parameters('dataCollectionRuleName')]",
+      "location": "[parameters('location')]",
+      "apiVersion": "2021-09-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('dataCollectionEndpointName'))]",
+        "[resourceId('microsoft.operationalinsights/workspaces', parameters('workspaceName'))]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces/tables', parameters('workspaceName'), 'MyTable_CL')]"
+      ],
+      "properties": {
+        "dataCollectionEndpointId": "[resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('dataCollectionEndpointName'))]",
+        "streamDeclarations": {
+          "Custom-MyTableRawData": {
+            "columns": [
+              {
+                "name": "Time",
+                "type": "datetime"
+              },
+              {
+                "name": "Computer",
+                "type": "string"
+              },
+              {
+                "name": "AdditionalContext",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "destinations": {
+          "logAnalytics": [
+            {
+              "workspaceResourceId": "[resourceId('microsoft.operationalinsights/workspaces', parameters('workspaceName'))]",
+              "name": "clv2ws1"
+            }
+          ]
+        },
+        "dataFlows": [
+          {
+            "streams": [
+              "Custom-MyTableRawData"
+            ],
+            "destinations": [
+              "clv2ws1"
+            ],
+            "transformKql": "source | extend jsonContext = parse_json(AdditionalContext) | project TimeGenerated = Time, Computer, AdditionalContext = jsonContext, ExtendedColumn=tostring(jsonContext.CounterName)",
+            "outputStream": "Custom-MyTable_CL"
+          }
+        ]
+      }
+    },
+    {
+      "type": "microsoft.operationalinsights/workspaces",
+      "apiVersion": "2021-12-01-preview",
+      "name": "[parameters('workspaceName')]",
+      "location": "westus2",
+      "properties": {
+        "sku": {
+          "name": "pergb2018"
+        },
+        "retentionInDays": 30,
+        "features": {
+          "enableLogAccessUsingOnlyResourcePermissions": true
+        },
+        "workspaceCapping": {
+          "dailyQuotaGb": -1
+        },
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces/tables",
+      "apiVersion": "2021-12-01-preview",
+      "name": "[concat(parameters('workspaceName'), '/', 'MyTable_CL')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
+      ],
+      "properties": {
+        "totalRetentionInDays": 30,
+        "plan": "Analytics",
+        "schema": {
+          "name": "MyTable_CL",
+          "columns": [
+            {
+              "name": "TimeGenerated",
+              "type": "datetime",
+              "description": "The time at which the data was generated"
+            },
+            {
+              "name": "AdditionalContext",
+              "type": "dynamic",
+              "description": "Additional message properties"
+            },
+            {
+              "name": "ExtendedColumn",
+              "type": "string",
+              "description": "An additional column extended at ingestion time"
+            }
+          ]
+        },
+        "retentionInDays": 30
+      }
     }
   ],
   "outputs": {
@@ -205,6 +368,14 @@
     "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
       "type": "string",
       "value": "[concat(variables('eventHubsNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
+    },
+    "AZURE_MONITOR_DCE": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Insights/dataCollectionEndpoints', parameters('dataCollectionEndpointName')), '2021-04-01').logsIngestion.endpoint]"
+    },
+    "AZURE_MONITOR_DCR_ID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleName')), '2021-04-01').immutableId]"
     }
   }
 }

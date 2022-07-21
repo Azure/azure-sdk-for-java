@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnGateways ListByResourceGroup. */
 public final class VpnGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnGatewayListByResourceGroup.json
      */
     /**
      * Sample code: VpnGatewayListByResourceGroup.

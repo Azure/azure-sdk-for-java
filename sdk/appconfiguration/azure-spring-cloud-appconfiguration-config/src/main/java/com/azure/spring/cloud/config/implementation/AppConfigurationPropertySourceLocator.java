@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
+import static org.springframework.cloud.bootstrap.config.PropertySourceBootstrapConfiguration.BOOTSTRAP_PROPERTY_SOURCE_NAME;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,8 +61,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
-    private static final AtomicBoolean CONFIG_LOADED = new AtomicBoolean(false);
-
     static final AtomicBoolean STARTUP = new AtomicBoolean(true);
 
     /**
@@ -92,7 +92,16 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
-        if (CONFIG_LOADED.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
+        boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
+            String storeName = configStores.get(0).getEndpoint();
+            AppConfigurationStoreSelects selectedKey = configStores.get(0).getSelects().get(0);
+            if (source.getName()
+                .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/")) {
+                return true;
+            }
+            return false;
+        });
+        if (currentlyLoaded && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
         }
 
@@ -223,7 +232,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         StateHolder.updateState(newState);
-        CONFIG_LOADED.set(true);
         STARTUP.set(false);
 
         return composite;

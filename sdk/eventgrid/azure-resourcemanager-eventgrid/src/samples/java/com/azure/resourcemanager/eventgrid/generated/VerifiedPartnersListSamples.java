@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VerifiedPartners List. */
 public final class VerifiedPartnersListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/VerifiedPartners_List.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/VerifiedPartners_List.json
      */
     /**
      * Sample code: VerifiedPartners_List.

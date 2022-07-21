@@ -94,19 +94,7 @@ stages:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageName: "azure-sdk-template"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageName: "azure-sdk-template-two"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageName: "azure-sdk-template-three"
+                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -140,10 +128,9 @@ stages:
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
             # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
-            # This prevents us from releasing a library whose dependency is not being released.
-            # Note: Where-Object -Not "uberJar" skips verifiction of uberJars which would fail during creation. It's
-            #       also worth mentioning that because uberJar is on the Where-Object it also needs to be one of the
-            #       objects selected in Select-Object
+            # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
+            # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
+            # select any artifacts to be released.
             - task: PowerShell@2
               displayName: Verify Release Set
               inputs:
@@ -151,7 +138,7 @@ stages:
                 filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
                 arguments: >
                   -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                  -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
+                  -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
 
         - deployment: TagRepository
           displayName: "Create release tag"

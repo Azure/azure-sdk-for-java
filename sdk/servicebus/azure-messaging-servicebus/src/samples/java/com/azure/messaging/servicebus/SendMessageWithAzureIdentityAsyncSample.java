@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus using Azure Identity.
+ * Sample demonstrates how to send a {@link ServiceBusMessage} to an Azure Service Bus using Azure Identity.
  *
  * @see DefaultAzureCredentialBuilder
  * @see <a href="https://devblogs.microsoft.com/azure-sdk/authentication-and-the-azure-sdk/">Authentication and the
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SendMessageWithAzureIdentityAsyncSample {
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service bus Queue.
+     * Main method to invoke this demo on how to send a {@link ServiceBusMessage} to an Azure Service bus Queue.
      *
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.

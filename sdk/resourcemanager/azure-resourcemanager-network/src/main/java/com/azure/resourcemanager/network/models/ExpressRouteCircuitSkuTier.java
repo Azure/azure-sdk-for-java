@@ -33,7 +33,11 @@ public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<Expre
         return fromString(name, ExpressRouteCircuitSkuTier.class);
     }
 
-    /** @return known ExpressRouteCircuitSkuTier values. */
+    /**
+     * Gets known ExpressRouteCircuitSkuTier values.
+     *
+     * @return known ExpressRouteCircuitSkuTier values.
+     */
     public static Collection<ExpressRouteCircuitSkuTier> values() {
         return values(ExpressRouteCircuitSkuTier.class);
     }
