@@ -322,7 +322,7 @@ public final class CallingServerClientBuilder implements
         boolean isEndpointSet = endpoint != null && !endpoint.trim().isEmpty();
         boolean isAzureKeyCredentialSet = azureKeyCredential != null;
         boolean isTokenCredentialSet = tokenCredential != null;
-        boolean isDebug = false;
+        boolean isDebug;
 
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("config.properties");
