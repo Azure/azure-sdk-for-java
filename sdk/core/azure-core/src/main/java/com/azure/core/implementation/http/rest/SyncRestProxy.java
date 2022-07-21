@@ -210,7 +210,8 @@ public class SyncRestProxy extends RestProxyBase {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-            result = expectedResponse;
+            expectedResponse.close();
+            result = null;
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
             // Block the deserialization until a value T is received
