@@ -55,6 +55,8 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
 
     @Override
     public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
+        // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
+        // Caller is responsible for that.
         this.channel.write(src, attachment,
             new DelegatingCompletionHandler<A>(handler, BYTES_WRITTEN_ATOMIC_UPDATER, writeProgressReporter));
     }
@@ -62,6 +64,8 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
     @Override
     public Future<Integer> write(ByteBuffer src) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
+        // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
+        // Caller is responsible for that.
         channel.write(src, src,
             new DelegatingCompletionHandler<>(future, BYTES_WRITTEN_ATOMIC_UPDATER, writeProgressReporter));
         return future;
