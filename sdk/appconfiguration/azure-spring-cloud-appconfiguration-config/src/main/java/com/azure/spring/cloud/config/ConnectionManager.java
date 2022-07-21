@@ -5,9 +5,11 @@ package com.azure.spring.cloud.config;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.ConfigurationClientWrapper;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
@@ -63,13 +66,17 @@ public class ConnectionManager {
 
     private final ConfigStore configStore;
 
-    private final String storeIdentifier;
+    private final String originEndpoint;
 
     // Used if only one connection method is given.
     private ConfigurationClientWrapper client;
 
     // Used if multiple connection method is given.
     private List<ConfigurationClientWrapper> clients;
+
+    private String currentReplica;
+
+    private AppConfigurationStoreHealth health;
 
     /**
      * Creates a set of connections to a app configuration store.
@@ -92,77 +99,86 @@ public class ConnectionManager {
         this.isKeyVaultConfigurated = isKeyVaultConfigured;
         this.clientId = clientId;
 
-        this.storeIdentifier = makeStoreIdentifier();
-    }
-
-    private String makeStoreIdentifier() {
-        return configStore.getEndpoint();
-    }
-
-    /**
-     * Unique identifier for a store with multiple geo-replicated instances.
-     * @return store identifier
-     */
-    public String getStoreIdentifier() {
-        return storeIdentifier;
+        this.originEndpoint = configStore.getEndpoint();
+        this.health = AppConfigurationStoreHealth.NOT_LOADED;
+        this.currentReplica = configStore.getEndpoint();
     }
 
     /**
      * Returns a client.
      * @return ConfiguraitonClient
      */
-    public ConfigurationClientWrapper getClient() {
+    String getCurrentClient() {
+        String currentClientEndpoint = currentReplica;
+
+        // This should always be reset after use. Any refresh event could trigger a check. Only ones that go through our
+        // code shouldn't try all replicas.
+        this.currentReplica = configStore.getEndpoint();
+
+        return currentClientEndpoint;
+    }
+
+    void setCurrentClient(String replicaEndpoint) {
+        this.currentReplica = replicaEndpoint;
+    }
+
+    /**
+     * @return the originEndpoint
+     */
+    String getOriginEndpoint() {
+        return originEndpoint;
+    }
+
+    /**
+     * Returns a client.
+     * @return ConfiguraitonClient
+     */
+    List<ConfigurationClientWrapper> getAvalibleClients() {
         if (client == null && clients == null) {
             buildClients();
-        }
-
-        if (client != null) {
-            return client;
-        }
-
-        for (ConfigurationClientWrapper wrapper : clients) {
-            if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
-                LOGGER.debug("Using Client: " + wrapper.getEndpoint());
-                return wrapper;
+            if (client == null && clients == null) {
+                this.health = AppConfigurationStoreHealth.NOT_LOADED;
             }
-        }
-
-        LOGGER.error("No client avaiable for use currently.");
-        return null;
-    }
-
-    /**
-     * Returns a client.
-     * @return ConfiguraitonClient
-     */
-    public List<ConfigurationClientWrapper> getAvalibleClients() {
-        if (client == null && clients == null) {
-            buildClients();
         }
 
         List<ConfigurationClientWrapper> avalibleClients = new ArrayList<>();
 
-        for (ConfigurationClientWrapper wrapper : clients) {
-            if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
-                LOGGER.debug("Using Client: " + wrapper.getEndpoint());
-                avalibleClients.add(wrapper);
+        if (client != null) {
+            avalibleClients.add(client);
+        } else if (clients != null) {
+            for (ConfigurationClientWrapper wrapper : clients) {
+                if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
+                    LOGGER.debug("Using Client: " + wrapper.getEndpoint());
+                    avalibleClients.add(wrapper);
+                }
+            }
+            if (avalibleClients.size() == 0) {
+                this.health = AppConfigurationStoreHealth.DOWN;
             }
         }
+
         return avalibleClients;
+    }
+
+    List<String> getAllEndpoints() {
+        if (client != null) {
+            return Arrays.asList(client.getEndpoint());
+        }
+        return clients.stream().map(client -> client.getEndpoint()).collect(Collectors.toList());
     }
 
     /**
      * Call when the current client failed
      * @param endpoint replica endpoint
      */
-    public void backoffClient(String endpoint) {
-        clients.stream().filter(client -> client.getEndpoint() == endpoint).map(client -> {
+    void backoffClient(String endpoint) {
+        clients.stream().filter(client -> endpoint.equals(client.getEndpoint())).map(client -> {
             int failedAttempt = client.getFailedAttempts();
             long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt,
                 appProperties.getDefaultMaxBackoff(),
                 appProperties.getDefaultMinBackoff());
             client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
-
+            client.setHealth(AppConfigurationStoreHealth.DOWN);
             return client;
         });
     }
@@ -297,6 +313,14 @@ public class ConnectionManager {
      */
     ConfigurationClientBuilder getBuilder() {
         return new ConfigurationClientBuilder();
+    }
+
+    /**
+     * Gets the current health information on the Connection to the Config Store
+     * @return AppConfigurationConfigStoreHealth
+     */
+    AppConfigurationStoreHealth getHealth() {
+        return this.health;
     }
 
 }

@@ -30,48 +30,49 @@ final class StateHolder {
 
     StateHolder() {
     }
-    
+
     static void updateState(StateHolder newState) {
         STATE.putAll(newState.getState());
         LOAD_STATE.putAll(newState.getLoadState());
     }
 
     /**
+     * @param originEndpoint the endpoint for the origin config store
      * @return the state
      */
-    static State getState(String endpoint) {
-        return STATE.get(endpoint);
+    static State getState(String originEndpoint) {
+        return STATE.get(originEndpoint);
     }
-    
-    Map<String, State> getState(){
+
+    Map<String, State> getState() {
         return STATE;
     }
 
     /**
+     * @param originEndpoint the endpoint for the origin config store
      * @return the state
      */
-    static State getStateFeatureFlag(String endpoint) {
-        return STATE.get(endpoint + FEATURE_ENDPOINT);
+    static State getStateFeatureFlag(String originEndpoint) {
+        return STATE.get(originEndpoint + FEATURE_ENDPOINT);
     }
 
     /**
-     * @param endpoint the stores endpoint
+     * @param originEndpoint the stores origin endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param duration refresh duration.
      */
-    void setState(String endpoint, List<ConfigurationSetting> watchKeys,
-        Duration duration) {
-        STATE.put(endpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds()), endpoint));
+    void setState(String originEndpoint, List<ConfigurationSetting> watchKeys, Duration duration) {
+        STATE.put(originEndpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
-     * @param endpoint the stores endpoint
+     * @param originEndpoint the stores origin endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param duration refresh duration.
      */
-    void setStateFeatureFlag(String endpoint, List<ConfigurationSetting> watchKeys,
+    void setStateFeatureFlag(String originEndpoint, List<ConfigurationSetting> watchKeys,
         Duration duration) {
-        setState(endpoint + FEATURE_ENDPOINT, watchKeys, duration);
+        setState(originEndpoint + FEATURE_ENDPOINT, watchKeys, duration);
     }
 
     /**
@@ -79,56 +80,55 @@ final class StateHolder {
      * @param duration nextRefreshPeriod
      */
     void setState(State state, Duration duration) {
-        STATE.put(state.getConfigStoreIdentifier(),
-            new State(state.getWatchKeys(), Math.toIntExact(duration.getSeconds()), state.getConfigStoreIdentifier()));
-    }
-    
-    static void updateStateRefresh(State state, Duration duration) {
-        STATE.put(state.getConfigStoreIdentifier(),
-            new State(state.getWatchKeys(), Math.toIntExact(duration.getSeconds()), state.getConfigStoreIdentifier()));
+        STATE.put(state.getOriginEndpoint(),
+            new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
-    static void expireState(String endpoint) {
-        // TODO (mametcal) This needs to be updated to be configStoreIdentifier.
-        State oldState = STATE.get(endpoint);
-        SecureRandom random = new SecureRandom();
-        long wait = (long) (random.nextDouble() * MAX_JITTER);
+    static void updateStateRefresh(State state, Duration duration) {
+        STATE.put(state.getOriginEndpoint(),
+            new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
+    }
+
+    static void expireState(String originEndpoint) {
+        State oldState = STATE.get(originEndpoint);
+        long wait = (long) (new SecureRandom().nextDouble() * MAX_JITTER);
+        
         long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
         if (wait < timeLeft) {
-            STATE.put(endpoint, new State(oldState.getWatchKeys(), (int) wait, oldState.getConfigStoreIdentifier()));
+            STATE.put(originEndpoint, new State(oldState, Instant.now().plusSeconds(wait)));
         }
     }
 
     /**
      * @return the loadState
      */
-    static boolean getLoadState(String name) {
-        return LOAD_STATE.getOrDefault(name, false);
+    static boolean getLoadState(String originEndpoint) {
+        return LOAD_STATE.getOrDefault(originEndpoint, false);
     }
 
     /**
      * @return the loadState
      */
-    static boolean getLoadStateFeatureFlag(String name) {
-        return getLoadState(name + FEATURE_ENDPOINT);
+    static boolean getLoadStateFeatureFlag(String originEndpoint) {
+        return getLoadState(originEndpoint + FEATURE_ENDPOINT);
     }
-    
-    Map<String, Boolean> getLoadState(){
+
+    Map<String, Boolean> getLoadState() {
         return LOAD_STATE;
     }
 
     /**
      * @param name the loadState name to set
      */
-    void setLoadState(String name, Boolean loaded) {
-        LOAD_STATE.put(name, loaded);
+    void setLoadState(String originEndpoint, Boolean loaded) {
+        LOAD_STATE.put(originEndpoint, loaded);
     }
 
     /**
      * @param name the loadState feature flag name to set
      */
-    void setLoadStateFeatureFlag(String name, Boolean loaded) {
-        setLoadState(name + FEATURE_ENDPOINT, loaded);
+    void setLoadStateFeatureFlag(String originEndpoint, Boolean loaded) {
+        setLoadState(originEndpoint + FEATURE_ENDPOINT, loaded);
     }
 
     /**
@@ -201,7 +201,8 @@ final class StateHolder {
         }
 
         return now.plusNanos(
-            BackoffTimeCalculator.calculateBackoff(attempt, properties.getDefaultMaxBackoff(), properties.getDefaultMinBackoff()));
+            BackoffTimeCalculator.calculateBackoff(attempt, properties.getDefaultMaxBackoff(),
+                properties.getDefaultMinBackoff()));
     }
 
 }

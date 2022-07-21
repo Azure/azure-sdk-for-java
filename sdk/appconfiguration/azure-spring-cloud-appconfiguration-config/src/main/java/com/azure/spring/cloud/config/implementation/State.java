@@ -13,26 +13,25 @@ class State {
 
     private final Instant nextRefreshCheck;
 
-    private final String configStoreIdentifier;
+    private final String originEndpoint;
 
     private Integer refreshAttempt;
 
     private final int refreshInterval;
 
-    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String configStoreIdentifier) {
+    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String originEndpoint) {
         this.watchKeys = watchKeys;
         this.refreshInterval = refreshInterval;
         nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
-        this.configStoreIdentifier = configStoreIdentifier;
+        this.originEndpoint = originEndpoint;
         this.refreshAttempt = 1;
     }
 
-    // TODO (mametcal) Not used, but should be.
     State(State oldState, Instant newRefresh) {
         this.watchKeys = oldState.getWatchKeys();
         this.refreshInterval = oldState.getRefreshInterval();
         this.nextRefreshCheck = newRefresh;
-        this.configStoreIdentifier = oldState.getConfigStoreIdentifier();
+        this.originEndpoint = oldState.getOriginEndpoint();
         this.refreshAttempt = oldState.getRefreshAttempt();
     }
 
@@ -51,10 +50,10 @@ class State {
     }
 
     /**
-     * @return the key
+     * @return the originEndpoint
      */
-    public String getConfigStoreIdentifier() {
-        return configStoreIdentifier;
+    public String getOriginEndpoint() {
+        return originEndpoint;
     }
 
     /**

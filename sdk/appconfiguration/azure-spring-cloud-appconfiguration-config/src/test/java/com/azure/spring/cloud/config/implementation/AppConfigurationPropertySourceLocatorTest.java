@@ -2,25 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
-import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
-import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING_2;
-import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_LABEL_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_2;
-import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
-import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +21,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -74,14 +67,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     private static final String KEY_FILTER = "/foo/";
 
-    private static final ConfigurationSetting FEATURE_ITEM = createItem(".appconfig.featureflag/", "Alpha",
-        FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
-
-    private static final String EMPTY_CONTENT_TYPE = "";
-
-    private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
-        EMPTY_CONTENT_TYPE);
-
     @Mock
     private ConfigurableEnvironment emptyEnvironment;
 
@@ -95,7 +80,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ClientFactory clientFactoryMock;
 
     @Mock
-    private ConfigStore configStore;
+    private ConfigurationClientWrapper clientWrapperMock;
 
     @Mock
     private FeatureFlagStore featureFlagStoreMock;
@@ -123,6 +108,9 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Mock
     private ConfigStore configStoreMock;
+
+    @Mock
+    private ConfigStore configStoreMockError;
 
     @Mock
     private Iterator<ConfigStore> configStoreIterator;
@@ -198,9 +186,12 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(pagedMock.getItems()).thenReturn(new ArrayList<ConfigurationSetting>());
 
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        // when(clientFactoryMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
-        // .thenReturn(pagedFluxMock);
-        // when(clientFactoryMock.getFeatureFlagWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
+        when(clientFactoryMock.getCurrentConfigStoreClient(Mockito.any())).thenReturn(TEST_STORE_NAME);
+        when(clientWrapperMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
+            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(clientWrapperMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         appProperties = new AppConfigurationProviderProperties();
         appProperties.setVersion("1.0");
@@ -211,12 +202,12 @@ public class AppConfigurationPropertySourceLocatorTest {
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        AppConfigurationPropertySourceLocator.startup.set(true);
-        
+        AppConfigurationPropertySourceLocator.STARTUP.set(true);
+
         StateHolder state = new StateHolder();
-        
+
         state.setLoadState(TEST_STORE_NAME, false);
-        
+
         StateHolder.updateState(state);
     }
 
@@ -351,29 +342,29 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientFactoryMock, tokenCredentialProvider, null, null);
 
-        // when(clientFactoryMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-        // .thenThrow(new RuntimeException());
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
+        when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
-        assertNull(e.getMessage());
-        verify(configStoreMock, times(1)).isFailFast();
+        assertEquals("Failed to generate property sources for " + TEST_STORE_NAME, e.getMessage());
+        verify(configStoreMock, times(2)).isFailFast();
     }
 
     @Test
     public void refreshThrowException() throws IOException, IllegalArgumentException {
-        AppConfigurationPropertySourceLocator.startup.set(false);
-        
+        AppConfigurationPropertySourceLocator.STARTUP.set(false);
+
         StateHolder state = new StateHolder();
-        
+
         state.setLoadState(TEST_STORE_NAME, true);
-        
+
         StateHolder.updateState(state);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientFactoryMock, tokenCredentialProvider, null, null);
 
-        // when(clientFactoryMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-        // .thenThrow(new RuntimeException());
-        // when(clientFactoryMock.getFeatureFlagWatchKey(any(), anyString())).thenThrow(new RuntimeException());
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
+        when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
+        when(clientWrapperMock.listSettings(any())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
     }
@@ -385,7 +376,6 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientFactoryMock, tokenCredentialProvider, null, null);
 
         when(configStoreMock.isFailFast()).thenReturn(false);
-        // when(clientFactoryMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         PropertySource<?> source = locator.locate(emptyEnvironment);
@@ -424,7 +414,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void awaitOnError() throws Exception {
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
-        configStores.add(configStore);
+        configStores.add(configStoreMockError);
         AppConfigurationProperties properties = new AppConfigurationProperties();
         properties.setStores(configStores);
 
@@ -448,9 +438,15 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/");
         List<AppConfigurationStoreSelects> selects = new ArrayList<>();
         selects.add(selectedKeys);
-        when(configStoreMock.getSelects()).thenReturn(selects);
-        when(configStore.isEnabled()).thenReturn(true);
-        // when(clientFactoryMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
+        when(configStoreMockError.getSelects()).thenReturn(selects);
+        when(configStoreMockError.isEnabled()).thenReturn(true);
+        when(configStoreMockError.isFailFast()).thenReturn(true);
+        when(configStoreMockError.getEndpoint()).thenReturn("");
+
+        when(configStoreMockError.getFeatureFlags()).thenReturn(featureFlagStoreMock);
+
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
+        when(clientWrapperMock.listSettings(Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 

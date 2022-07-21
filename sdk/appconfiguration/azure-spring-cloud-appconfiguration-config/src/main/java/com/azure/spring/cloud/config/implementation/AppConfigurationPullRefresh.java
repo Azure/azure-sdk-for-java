@@ -58,6 +58,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
         this.configStores = properties.getStores();
         this.refreshInterval = properties.getRefreshInterval();
         this.clientFactory = clientFactory;
+
     }
 
     @Override
@@ -84,15 +85,16 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * @param syncToken syncToken to verify latest changes are available on pull
      */
     public void expireRefreshInterval(String endpoint, String syncToken) {
-        for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().equals(endpoint)) {
-                // TODO (mametcal)
-                LOGGER.debug("Expiring refresh interval for " + configStore.getEndpoint());
-                // clientFactory.getClient(endpoint).updateSyncToken(syncToken);
-                StateHolder.expireState(configStore.getEndpoint());
-                break;
-            }
+        LOGGER.debug("Expiring refresh interval for " + endpoint);
+
+        String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
+
+        // Sync token can only be used if no replicas are being used.
+        if (clientFactory.hasReplicas(endpoint)) {
+            clientFactory.getAvailableClients(endpoint).get(0).updateSyncToken(syncToken);
         }
+
+        StateHolder.expireState(originEndpoint);
     }
 
     /**
@@ -106,8 +108,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
-                eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactory, configStores,
-                    refreshInterval);
+                AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactory, configStores,
+                    refreshInterval, eventData);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                 }
@@ -124,7 +126,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
     @Override
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
-        return AppConfigurationRefreshUtil.getAppConfigurationStoresHealth();
+        return clientFactory.getHealth();
     }
 
 }

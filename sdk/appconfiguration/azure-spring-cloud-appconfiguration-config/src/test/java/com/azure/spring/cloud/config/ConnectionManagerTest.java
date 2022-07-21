@@ -71,7 +71,7 @@ public class ConnectionManagerTest {
     public void getStoreIdentifierTest() {
         connectionManager = new ConnectionManager(configStore, providerProperties, null, null, false, false, null);
 
-        assertEquals(TEST_ENDPOINT, connectionManager.getStoreIdentifier());
+        assertEquals(TEST_ENDPOINT, connectionManager.getOriginEndpoint());
 
         configStore.setEndpoint(null);
 
@@ -84,7 +84,7 @@ public class ConnectionManagerTest {
 
         connectionManager = new ConnectionManager(configStore, providerProperties, null, null, false, false, null);
 
-        assertEquals("first.endpoint", connectionManager.getStoreIdentifier());
+        assertEquals("first.endpoint", connectionManager.getOriginEndpoint());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -119,7 +119,7 @@ public class ConnectionManagerTest {
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
         when(tokenProviderMock.getAppConfigCredential(Mockito.eq(TEST_ENDPOINT))).thenReturn(credentialMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -142,7 +142,7 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -166,7 +166,7 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq("test.endpoint"))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -185,7 +185,7 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -216,7 +216,7 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -225,7 +225,7 @@ public class ConnectionManagerTest {
 
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
-        clientWrapper = spy.getClient();
+        clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -254,7 +254,7 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getClient();
+        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -263,7 +263,7 @@ public class ConnectionManagerTest {
         
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
-        clientWrapper = spy.getClient();
+        clientWrapper = spy.getAvalibleClients().get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -285,7 +285,7 @@ public class ConnectionManagerTest {
         connectionManager = new ConnectionManager(configStore, providerProperties, tokenProviderMock, null, false,
             false, null);
 
-        String message = assertThrows(IllegalArgumentException.class, () -> connectionManager.getClient()).getMessage();
+        String message = assertThrows(IllegalArgumentException.class, () -> connectionManager.getAvalibleClients().get(0)).getMessage();
 
         assertEquals("More than 1 Conncetion method was set for connecting to App Configuration.", message);
     }

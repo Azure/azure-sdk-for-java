@@ -10,6 +10,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.NormalizeNull;
+import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 
 /**
  * Wrapper for Configuration Client to manage backoff.
@@ -24,6 +25,8 @@ public class ConfigurationClientWrapper {
 
     private int failedAttempts;
 
+    private AppConfigurationStoreHealth health;
+
     /**
      * Wrapper for Configuration Client to manage backoff.
      * @param endpoint client endpoint
@@ -34,6 +37,7 @@ public class ConfigurationClientWrapper {
         this.client = client;
         this.backoffEndTime = Instant.now();
         this.failedAttempts = 0;
+        this.health = AppConfigurationStoreHealth.UP;
     }
 
     /**
@@ -89,17 +93,21 @@ public class ConfigurationClientWrapper {
      * @param endpoint Endpoint of the App Configuration store to query against.
      * @return The first returned configuration.
      */
-    public ConfigurationSetting getWatchKey(String key, String label) throws AppConfigurationStatusException {
+    public ConfigurationSetting getWatchKey(String key, String label)
+        throws HttpResponseException, AppConfigurationStatusException {
         try {
-            return NormalizeNull
+            ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(client.getConfigurationSetting(key, label));
+            this.health = AppConfigurationStoreHealth.UP;
+            return watchKey;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
+
+            this.health = AppConfigurationStoreHealth.DOWN;
             if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
                 throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
             }
-            // TODO (mametcal) ...
-            return null;
+            throw e;
         }
     }
 
@@ -111,16 +119,19 @@ public class ConfigurationClientWrapper {
      * @return List of Configuration Settings.
      */
     public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
-        throws AppConfigurationStatusException {
+        throws HttpResponseException, AppConfigurationStatusException {
         try {
-            return client.listConfigurationSettings(settingSelector);
+            PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
+            this.health = AppConfigurationStoreHealth.UP;
+            return settings;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
+
+            this.health = AppConfigurationStoreHealth.DOWN;
             if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
                 throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
             }
-            // TODO (mametcal) ...
-            return null;
+            throw e;
         }
     }
 
@@ -132,6 +143,14 @@ public class ConfigurationClientWrapper {
         if (syncToken != null) {
             client.updateSyncToken(syncToken);
         }
+    }
+
+    public AppConfigurationStoreHealth getHealth() {
+        return health;
+    }
+
+    public void setHealth(AppConfigurationStoreHealth health) {
+        this.health = health;
     }
 
 }

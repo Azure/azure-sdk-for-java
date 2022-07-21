@@ -42,7 +42,7 @@ public class AppConfigurationBootstrapConfiguration {
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
-    public AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
+    AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientFactory clientFactory,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,

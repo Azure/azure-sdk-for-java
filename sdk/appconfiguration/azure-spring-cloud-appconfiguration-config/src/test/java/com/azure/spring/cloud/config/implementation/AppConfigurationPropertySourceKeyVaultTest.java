@@ -43,11 +43,9 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.config.ClientFactory;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
-import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySource;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
@@ -65,7 +63,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private static final String EMPTY_CONTENT_TYPE = "";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
@@ -88,10 +86,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private AppConfigurationProviderProperties appProperties;
 
     @Mock
-    private ClientFactory clientFactoryMock;
+    private SecretClientBuilder builderMock;
 
     @Mock
-    private SecretClientBuilder builderMock;
+    private ConfigurationClientWrapper clientWrapperMock;
 
     @Mock
     private SecretAsyncClient clientMock;
@@ -136,7 +134,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(testStore, selects, new ArrayList<>(),
-            appConfigurationProperties, null, appProperties, tokenCredentialProvider, null,
+            appConfigurationProperties, clientWrapperMock, appProperties, tokenCredentialProvider, null,
             new TestClient());
 
         TEST_ITEMS.add(ITEM_1);
@@ -154,8 +152,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
         when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
             .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        //when(clientFactoryMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
-        //   .thenReturn(pagedFluxMock);
+        when(clientWrapperMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 

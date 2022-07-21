@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 
+import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.health.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
@@ -25,10 +26,13 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
 public class AppConfigurationHealthIndicatorTest {
-    
+
     @Mock
     private AppConfigurationRefresh refreshMock;
-    
+
+    @Mock
+    private ConfigurationClient client;
+
     @BeforeEach
     public void setup(TestInfo testInfo) {
         MockitoAnnotations.openMocks(this);
@@ -36,85 +40,83 @@ public class AppConfigurationHealthIndicatorTest {
 
     @Test
     public void noConfigurationStores() {
-        AppConfigurationProperties properties = new AppConfigurationProperties();
-        AppConfigurationRefresh refresh = new AppConfigurationPullRefresh(properties, null, null);
-        AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
-        
+        AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
+        Map<String, AppConfigurationStoreHealth> storeHealth = new HashMap<>();
+
+        when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(storeHealth);
+
         Health health = indicator.health();
         assertEquals(Status.UP, health.getStatus());
         assertEquals(0, health.getDetails().size());
     }
-    
+
     @Test
     public void heathlyConfigurationStore() {
         String storeName = "singleHealthyStoreIndicatorTest";
-        
-        AppConfigurationProperties properties = new AppConfigurationProperties();
-        List<ConfigStore> stores = new ArrayList<>();
-        
-        ConfigStore store = new ConfigStore();
-        store.setEndpoint(storeName);
-        store.setEnabled(true);
-        stores.add(store);
-        
-        properties.setStores(stores);
-        
-        StateHolder state = new StateHolder();
-        
-        state.setLoadState(storeName, true);
-        
-        StateHolder.updateState(state);
-        
-        AppConfigurationRefresh refresh = new AppConfigurationPullRefresh(properties, null, null);
-        AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
-        
+
+        AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
+        Map<String, AppConfigurationStoreHealth> storeHealth = new HashMap<>();
+
+        List<ConfigurationClientWrapper> clients = new ArrayList<>();
+
+        clients.add(new ConfigurationClientWrapper(storeName, client));
+
+        storeHealth.put(storeName, AppConfigurationStoreHealth.UP);
+
+        when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(storeHealth);
+
         Health health = indicator.health();
         assertEquals(Status.UP, health.getStatus());
         assertEquals(1, health.getDetails().size());
         assertEquals("UP", health.getDetails().get(storeName));
     }
-    
+
     @Test
     public void unloadedConfigurationStore() {
         String storeName = "singleUnloadedStoreIndicatorTest";
-        
+
         AppConfigurationProperties properties = new AppConfigurationProperties();
         List<ConfigStore> stores = new ArrayList<>();
-        
+
         ConfigStore store = new ConfigStore();
         store.setEndpoint(storeName);
         store.setEnabled(true);
         stores.add(store);
-        
+
         properties.setStores(stores);
+
+        AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
         
-        AppConfigurationRefresh refresh = new AppConfigurationPullRefresh(properties, null, null);
-        AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
+        Map<String,  AppConfigurationStoreHealth> mockHealth = new HashMap<String, AppConfigurationStoreHealth>();
         
+        mockHealth.put(storeName, AppConfigurationStoreHealth.NOT_LOADED);
+        
+        when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(mockHealth);
+
         Health health = indicator.health();
         assertEquals(Status.UP, health.getStatus());
         assertEquals(1, health.getDetails().size());
         assertEquals("NOT LOADED", health.getDetails().get(storeName));
     }
-    
+
     @Test
     public void unheathlyConfigurationStore() {
         String storeName = "singleUnhealthyStoreIndicatorTest";
-        
+
         StateHolder state = new StateHolder();
-        
+
         state.setLoadState(storeName, true);
-        
+
         StateHolder.updateState(state);
-        
+
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
-        
+
         Map<String, AppConfigurationStoreHealth> healthStatus = new HashMap<>();
-        
+
         healthStatus.put(storeName, AppConfigurationStoreHealth.DOWN);
-        
+
         when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(healthStatus);
-        
+
         Health health = indicator.health();
         assertEquals(Status.DOWN, health.getStatus());
         assertEquals(1, health.getDetails().size());

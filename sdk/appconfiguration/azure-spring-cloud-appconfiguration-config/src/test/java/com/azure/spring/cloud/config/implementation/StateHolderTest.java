@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -14,8 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.implementation.State;
-import com.azure.spring.cloud.config.implementation.StateHolder;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 
 public class StateHolderTest {
@@ -29,13 +25,12 @@ public class StateHolderTest {
         StateHolder testState = new StateHolder();
         testState.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(testState);
-        
+
         State state = StateHolder.getState(endpoint);
         StateHolder.expireState(endpoint);
         State currentState = StateHolder.getState(endpoint);
         assertNotEquals(state, currentState);
     }
-
 
     @Test
     public void notExpireState() {
@@ -44,11 +39,11 @@ public class StateHolderTest {
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setRefreshInterval(Duration.ofSeconds(-30));
-        
+
         StateHolder testState = new StateHolder();
         testState.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(testState);
-        
+
         State state = StateHolder.getState(endpoint);
         StateHolder.expireState(endpoint);
         State currentState = StateHolder.getState(endpoint);

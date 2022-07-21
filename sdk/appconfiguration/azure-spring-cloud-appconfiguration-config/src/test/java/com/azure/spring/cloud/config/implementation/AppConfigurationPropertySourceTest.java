@@ -80,7 +80,7 @@ public class AppConfigurationPropertySourceTest {
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
@@ -92,7 +92,8 @@ public class AppConfigurationPropertySourceTest {
     private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
+    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+        null);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
         "Alpha",
@@ -184,8 +185,6 @@ public class AppConfigurationPropertySourceTest {
         contexts.add("/application/*");
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
-        propertySource = new AppConfigurationPropertySource(configStoreMock, selectedKeys, new ArrayList<>(),
-            appConfigurationProperties, clientMock, appProperties, tokenCredentialProvider, null, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
         testItems.add(ITEM_1);
@@ -201,6 +200,9 @@ public class AppConfigurationPropertySourceTest {
         when(collectionMock.block()).thenReturn(itemsMock);
         when(itemsMock.iterator()).thenReturn(itemsIteratorMock);
         when(itemsIteratorMock.next()).thenReturn(pagedResponseMock);
+
+        propertySource = new AppConfigurationPropertySource(configStoreMock, selectedKeys, new ArrayList<>(),
+            appConfigurationProperties, clientMock, appProperties, tokenCredentialProvider, null, null);
     }
 
     @AfterEach

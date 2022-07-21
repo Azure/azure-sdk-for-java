@@ -306,6 +306,29 @@
           "code": "java.class.removed",
           "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
           "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationPropertySource",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationPropertySourceLocator",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.stores\\.ClientStore",
+          "justification": "Not a public api"
+        },{
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "Thi isn't an external class"
         }
       ]
     }
