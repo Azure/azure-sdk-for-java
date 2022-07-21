@@ -81,12 +81,9 @@ parameters:
   type: boolean
   default: true
 
-
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: intermediate.yml
   parameters:
-    ServiceDirectory: core
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-core
         groupId: com.azure
@@ -140,5 +137,3 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
-    MatrixReplace:
-      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
