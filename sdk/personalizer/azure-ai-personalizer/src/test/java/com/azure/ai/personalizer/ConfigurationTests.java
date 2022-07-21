@@ -34,10 +34,8 @@ public class ConfigurationTests extends PersonalizerTestBase {
         ResetPolicy(client);
     }
 
-    private PersonalizerAdminClient GetAdministrationClient() {
-        return new PersonalizerClientBuilder()
-            .credential(new AzureKeyCredential("{apikey}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+    private PersonalizerAdminClient GetAdministrationClient(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
+        return getPersonalizerClientBuilder(httpClient, serviceVersion, true)
             .buildAdminClient();
     }
 
@@ -64,7 +62,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
 
     private void UpdateAndGetPolicy(PersonalizerAdminClient client)
     {
-        var newPolicy = new PolicyContract()
+        PolicyContract newPolicy = new PolicyContract()
             .setName("app1")
             .setArguments("--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2");
         PolicyContract updatedPolicy = client.updatePolicy(newPolicy);
@@ -80,4 +78,5 @@ public class ConfigurationTests extends PersonalizerTestBase {
         PolicyContract policy = client.resetPolicy();
         assertEquals("--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::",
             policy.getArguments());
-    }}
+    }
+}
