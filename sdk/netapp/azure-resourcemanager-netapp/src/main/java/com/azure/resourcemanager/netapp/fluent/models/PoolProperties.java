@@ -40,13 +40,13 @@ public final class PoolProperties {
     private String provisioningState;
 
     /*
-     * Total throughput of pool in Mibps
+     * Total throughput of pool in MiB/s
      */
     @JsonProperty(value = "totalThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
     private Float totalThroughputMibps;
 
     /*
-     * Utilized throughput of pool in Mibps
+     * Utilized throughput of pool in MiB/s
      */
     @JsonProperty(value = "utilizedThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
     private Float utilizedThroughputMibps;
@@ -132,7 +132,7 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the totalThroughputMibps property: Total throughput of pool in Mibps.
+     * Get the totalThroughputMibps property: Total throughput of pool in MiB/s.
      *
      * @return the totalThroughputMibps value.
      */
@@ -141,7 +141,7 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
+     * Get the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
      *
      * @return the utilizedThroughputMibps value.
      */
