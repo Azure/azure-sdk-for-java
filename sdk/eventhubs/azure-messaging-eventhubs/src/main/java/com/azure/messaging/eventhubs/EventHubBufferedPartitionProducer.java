@@ -10,7 +10,9 @@ import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.Buffere
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
+import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -22,6 +24,7 @@ import java.io.Closeable;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -43,6 +46,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         }
     });
     private final CreateBatchOptions createBatchOptions;
+    private final Queue<EventData> eventQueue;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options) {
@@ -54,7 +58,8 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.logger = new ClientLogger(EventHubBufferedPartitionProducer.class + "-" + partitionId);
 
         final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
-        this.eventSink = Sinks.many().unicast().onBackpressureBuffer(queueSupplier.get());
+        this.eventQueue = queueSupplier.get();
+        this.eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
 
         final Flux<EventDataBatch> eventDataBatchFlux = Flux.defer(() -> {
             return new EventDataAggregator(eventSink.asFlux(),
@@ -69,23 +74,12 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 client.getFullyQualifiedNamespace(), options);
         }).retryWhen(retryWhenPolicy);
 
+        final PublishResultSubscriber publishResultSubscriber = new PublishResultSubscriber(partitionId,
+            options.getSendSucceededContext(), options.getSendFailedContext(), logger);
+
         this.publishSubscription = publishEvents(eventDataBatchFlux)
-            .publishOn(Schedulers.boundedElastic())
-            .subscribe(result -> {
-                    if (result.error == null) {
-                        options.getSendSucceededContext().accept(new SendBatchSucceededContext(result.batch.getEvents(),
-                            partitionId));
-                    } else {
-                        options.getSendFailedContext().accept(new SendBatchFailedContext(result.batch.getEvents(),
-                            partitionId, result.error));
-                    }
-                }, error -> {
-                    logger.error("Publishing subscription completed and ended in an error.", error);
-                    options.getSendFailedContext().accept(new SendBatchFailedContext(null, partitionId, error));
-                },
-                () -> {
-                    logger.info("Publishing subscription completed.");
-                });
+            .publishOn(Schedulers.boundedElastic(), 1)
+            .subscribeWith(publishResultSubscriber);
     }
 
     Mono<Void> enqueueEvent(EventData eventData) {
@@ -113,6 +107,15 @@ class EventHubBufferedPartitionProducer implements Closeable {
         return partitionId;
     }
 
+    /**
+     * Gets the number of events in queue.
+     *
+     * @return the number of events in the queue.
+     */
+    int getBufferedEventCount() {
+        return eventQueue.size();
+    }
+
     @Override
     public void close() {
         if (isClosed.getAndSet(true)) {
@@ -136,7 +139,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
                     // Resuming on error because an error is a terminal signal, so we want to wrap that with a result,
                     // so it doesn't stop publishing.
                     .onErrorResume(error -> Mono.just(new PublishResult(batch, error)));
-            });
+            }, 1, 1);
         }).retryWhen(retryWhenPolicy);
     }
 
@@ -150,6 +153,50 @@ class EventHubBufferedPartitionProducer implements Closeable {
         PublishResult(EventDataBatch batch, Throwable error) {
             this.batch = batch;
             this.error = error;
+        }
+    }
+
+    private static final class PublishResultSubscriber extends BaseSubscriber<PublishResult> {
+        private static final long REQUEST = 1L;
+        private final String partitionId;
+        private final Consumer<SendBatchSucceededContext> onSucceed;
+        private final Consumer<SendBatchFailedContext> onFailed;
+        private final ClientLogger logger;
+
+        PublishResultSubscriber(String partitionId, Consumer<SendBatchSucceededContext> onSucceed,
+            Consumer<SendBatchFailedContext> onFailed, ClientLogger logger) {
+            this.partitionId = partitionId;
+            this.onSucceed = onSucceed;
+            this.onFailed = onFailed;
+            this.logger = logger;
+        }
+
+        @Override
+        protected void hookOnSubscribe(Subscription subscription) {
+            upstream().request(REQUEST);
+        }
+
+        @Override
+        protected void hookOnNext(PublishResult result) {
+            if (result.error == null) {
+                onSucceed.accept(new SendBatchSucceededContext(result.batch.getEvents(), partitionId));
+            } else {
+                onFailed.accept(new SendBatchFailedContext(result.batch.getEvents(), partitionId, result.error));
+            }
+
+            // Request one more PublishResult, which is equivalent to asking for another batch.
+            upstream().request(REQUEST);
+        }
+
+        @Override
+        protected void hookOnError(Throwable throwable) {
+            logger.error("Publishing subscription completed and ended in an error.", throwable);
+            onFailed.accept(new SendBatchFailedContext(null, partitionId, throwable));
+        }
+
+        @Override
+        protected void hookOnComplete() {
+            logger.info("Publishing subscription completed.");
         }
     }
 }
