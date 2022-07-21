@@ -1,0 +1,14 @@
+{
+  "displayNames": {
+
+  },
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+    },
+    "JavaTestVersion": "1.17",
+    "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION": [
+
+    ]
+  }
+}
