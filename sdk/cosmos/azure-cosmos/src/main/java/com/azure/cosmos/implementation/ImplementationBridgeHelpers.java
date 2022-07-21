@@ -16,6 +16,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -40,12 +41,14 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -227,6 +230,7 @@ public class ImplementationBridgeHelpers {
             CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
+            CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
         }
@@ -982,6 +986,44 @@ public class ImplementationBridgeHelpers {
         public interface CosmosAsyncClientEncryptionKeyAccessor {
             Mono<CosmosClientEncryptionKeyResponse> readClientEncryptionKey(CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey,
                                                                             RequestOptions requestOptions);
+        }
+    }
+
+    public static final class CosmosAsyncClientHelper {
+        private static final AtomicReference<CosmosAsyncClientAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosAsyncClientClassLoaded = new AtomicBoolean(false);
+
+        private CosmosAsyncClientHelper() {}
+
+        public static void setCosmosAsyncClientAccessor(final CosmosAsyncClientAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosAsyncClientAccessor already initialized!");
+            } else {
+                logger.info("Setting CosmosAsyncClientAccessor...");
+                cosmosAsyncClientClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosAsyncClientAccessor getCosmosAsyncClientAccessor() {
+            if (!cosmosAsyncClientClassLoaded.get()) {
+                logger.debug("Initializing CosmosAsyncClientAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosAsyncClientAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosAsyncClientAccessor is not initialized yet!");
+                System.exit(9723); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosAsyncClientAccessor {
+            Tag getClientCorrelationTag(CosmosAsyncClient client);
+            Tag getAccountTag(CosmosAsyncClient client);
+            EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
+            boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
         }
     }
 

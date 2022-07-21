@@ -43,6 +43,7 @@ public class ClientSideRequestStatistics {
     private GatewayStatistics gatewayStatistics;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
+    private int requestPayloadSizeInBytes = 0;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -58,6 +59,7 @@ public class ClientSideRequestStatistics {
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
+        this.requestPayloadSizeInBytes = 0;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -76,6 +78,7 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext =
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
+        this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
     }
 
     public Duration getDuration() {
@@ -101,6 +104,9 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestResourceType = request.getResourceType();
         activityId = request.getActivityId().toString();
 
+        if (request != null) {
+            this.requestPayloadSizeInBytes = request.getContentLength();
+        }
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
@@ -152,6 +158,7 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
+                this.requestPayloadSizeInBytes = rxDocumentServiceRequest.getContentLength();
             }
             this.gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
             this.gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
@@ -163,6 +170,10 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
             this.activityId = storeResponseDiagnostics.getActivityId();
         }
+    }
+
+    public int getRequestPayloadSizeInBytes() {
+        return this.requestPayloadSizeInBytes;
     }
 
     public String recordAddressResolutionStart(
@@ -260,6 +271,27 @@ public class ClientSideRequestStatistics {
 
     public List<StoreResponseStatistics> getResponseStatisticsList() {
         return responseStatisticsList;
+    }
+
+    public int getMaxResponsePayloadSizeInBytes() {
+        if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
+            return 0;
+        }
+
+        int maxResponsePayloadSizeInBytes = 0;
+        int currentResponsePayloadSizeInBytes = 0;
+        for (StoreResponseStatistics responseDiagnostic : responseStatisticsList) {
+            StoreResultDiagnostics storeResultDiagnostics;
+            StoreResponseDiagnostics storeResponseDiagnostics;
+            if ((storeResultDiagnostics = responseDiagnostic.getStoreResult()) != null &&
+                (storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics()) != null &&
+                (currentResponsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength()) > maxResponsePayloadSizeInBytes) {
+
+                maxResponsePayloadSizeInBytes = currentResponsePayloadSizeInBytes;
+            }
+        }
+
+        return maxResponsePayloadSizeInBytes;
     }
 
     public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {

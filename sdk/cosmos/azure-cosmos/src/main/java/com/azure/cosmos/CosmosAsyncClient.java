@@ -14,8 +14,11 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -31,11 +34,14 @@ import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -72,6 +78,11 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
     private final ApiType apiType;
+    private final String clientCorrelationId;
+    private final Tag clientCorrelationTag;
+    private final Tag accountTag;
+    private final EnumSet<TagName> metricTagNames;
+    private final boolean clientMetricsEnabled;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -99,6 +110,8 @@ public final class CosmosAsyncClient implements Closeable {
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
         this.apiType = builder.apiType();
+        this.clientCorrelationId =  builder.getClientCorrelationId();
+        this.metricTagNames = builder.getMetricTagNames();
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -126,7 +139,21 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withPermissionFeed(permissionList)
                                        .withApiType(this.apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
+                                       .withClientCorrelationId(this.clientCorrelationId)
+                                       .withMetricTagNames(this.metricTagNames)
                                        .build();
+
+        String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
+        this.clientCorrelationTag = Tag.of(
+            TagName.ClientCorrelationId.toString(),
+            ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
+
+        MeterRegistry clientMetricRegistrySnapshot = builder.getClientMetricRegistry();
+        this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
+        if (clientMetricRegistrySnapshot != null) {
+            ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
+        }
+        this.accountTag = Tag.of(TagName.Account.toString(), URI.create(this.serviceEndpoint).getHost());
     }
 
     AsyncDocumentClient getContextClient() {
@@ -410,7 +437,13 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, "readAllDatabases", this.serviceEndpoint, null);
+            String spanName = "readAllDatabases";
+            pagedFluxOptions.setTracerInformation(
+                this.tracerProvider,
+                spanName,
+                this.serviceEndpoint,
+                null,
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
@@ -518,7 +551,13 @@ public final class CosmosAsyncClient implements Closeable {
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.tracerProvider, "queryDatabases", this.serviceEndpoint, null);
+            String spanName = "queryDatabases";
+            pagedFluxOptions.setTracerInformation(
+                this.tracerProvider,
+                spanName,
+                this.serviceEndpoint,
+                null,
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -570,4 +609,36 @@ public final class CosmosAsyncClient implements Closeable {
             database.getId(),
             this.serviceEndpoint);
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.setCosmosAsyncClientAccessor(
+            new ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor() {
+
+                @Override
+                public Tag getClientCorrelationTag(CosmosAsyncClient client) {
+                    return client.clientCorrelationTag;
+                }
+
+                @Override
+                public Tag getAccountTag(CosmosAsyncClient client) {
+                    return client.accountTag;
+                }
+
+                @Override
+                public EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client) {
+                    return client.metricTagNames;
+                }
+
+                @Override
+                public boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client) {
+                    return client.clientMetricsEnabled;
+                }
+            }
+        );
+    }
+
+    static { initialize(); }
 }

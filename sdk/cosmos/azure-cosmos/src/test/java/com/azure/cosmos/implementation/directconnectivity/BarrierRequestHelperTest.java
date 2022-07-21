@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -28,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -174,7 +176,9 @@ public class BarrierRequestHelperTest {
                 false,
                 null,
                 null,
-                ClientTelemetryConfig.getDefaultConfig());
+                ClientTelemetryConfig.getDefaultConfig(),
+                null,
+                EnumSet.allOf(TagName.class));
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;

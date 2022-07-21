@@ -13,19 +13,27 @@ import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.util.Beta;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
@@ -119,6 +127,9 @@ public class CosmosClientBuilder implements
     private boolean readRequestsFallbackEnabled = true;
     private final ClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
+    private String clientCorrelationId = null;
+    private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
+    private MeterRegistry clientMetricRegistry = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -666,6 +677,86 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets the client correlationId used for tags in metrics. While we strongly encourage usage of singleton
+     * instances of CosmosClient there are cases when it is necessary to instantiate multiple CosmosClient instances -
+     * for example when an application connects to multiple Cosmos accounts. The client correlationId is used to
+     * distinguish client instances in metrics. By default an auto-incrementing number is used but with this method
+     * you can define your own correlationId (for example an identifier for the account)
+     *
+     * @param clientCorrelationId the client correlationId to be used to identify this client instance in metrics
+     * @return current cosmosClientBuilder
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientBuilder clientCorrelationId(String clientCorrelationId) {
+        this.clientCorrelationId = clientCorrelationId;
+        return this;
+    }
+
+    /**
+     * Sets the tags that should be considered for metrics. By default all supported tags are used - and for most
+     * use-cases that should be sufficient. But each tag/dimension adds some overhead when collecting the metrics -
+     * especially for percentile calculations - so, when it is clear that a certain dimension is not needed, it can
+     * be prevented from even considering it when collecting metrics.
+     *
+     * @param tagNames - a comma-separated list of tag names that should be considered
+     * @return current cosmosClientBuilder
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientBuilder metricTagNames(String tagNames) {
+        if (Strings.isNullOrWhiteSpace(tagNames)) {
+            this.metricTagNames = EnumSet.allOf(TagName.class);
+        }
+
+        Map<String, TagName> tagNameMap = new HashMap<>();
+        for (TagName tagName : TagName.values()) {
+            tagNameMap.put(tagName.toLowerCase(), tagName);
+        }
+
+        Stream<TagName> tagNameStream =
+            Arrays.stream(tagNames.toLowerCase(Locale.ROOT).split(","))
+                  .filter(tagName -> !Strings.isNullOrWhiteSpace(tagName))
+                  .map(tagName -> {
+                      String trimmedTagName = tagName.trim();
+
+                      if (!tagNameMap.containsKey(trimmedTagName)) {
+
+                          String validTagNames = String.join(
+                              ", ",
+                              (String[]) Arrays.stream(TagName.values()).map(tag -> tag.toString()).toArray());
+
+                          throw new IllegalArgumentException(
+                              String.format(
+                                  "TagName '%s' is invalid. Valid tag names are:"
+                                      + " %s",
+                                  tagName,
+                                  validTagNames));
+                      }
+
+                      return tagNameMap.get(trimmedTagName);
+                  });
+
+        EnumSet<TagName> newTagNames = EnumSet.noneOf(TagName.class);
+        tagNameStream.forEach(tagName -> newTagNames.add(tagName));
+
+        this.metricTagNames = newTagNames;
+
+        return this;
+    }
+
+    /**
+     * Sets MetricRegistry to be used to emit client metrics
+     *
+     * @param clientMetricRegistry - the MetricRegistry to be used to emit client metrics
+     * @return current cosmosClientBuilder
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientBuilder clientMetrics(MeterRegistry clientMetricRegistry) {
+        this.clientMetricRegistry = clientMetricRegistry;
+
+        return this;
+    }
+
+    /**
      * Gets the GATEWAY connection configuration to be used.
      *
      * @return gateway connection config
@@ -766,6 +857,12 @@ public class CosmosClientBuilder implements
     ClientTelemetryConfig getClientTelemetryConfig() {
         return this.clientTelemetryConfig;
     }
+
+    String getClientCorrelationId() { return this.clientCorrelationId; }
+
+    EnumSet<TagName> getMetricTagNames() { return this.metricTagNames; }
+
+    MeterRegistry getClientMetricRegistry() { return this.clientMetricRegistry; }
 
     /**
      * Builds a cosmos async client with the provided properties

@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
@@ -80,6 +81,7 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,6 +181,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final AtomicBoolean throughputControlEnabled;
     private ThroughputControlStore throughputControlStore;
     private final ClientTelemetryConfig clientTelemetryConfig;
+    private final String clientCorrelationId;
+    private final EnumSet<TagName> metricTagNames;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -193,7 +197,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
-                                ClientTelemetryConfig clientTelemetryConfig) {
+                                ClientTelemetryConfig clientTelemetryConfig,
+                                String clientCorrelationId,
+                                EnumSet<TagName> tagNames) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -208,7 +214,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 contentResponseOnWriteEnabled,
                 metadataCachesSnapshot,
                 apiType,
-                clientTelemetryConfig);
+                clientTelemetryConfig,
+                clientCorrelationId,
+                tagNames);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -226,7 +234,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
-                                ClientTelemetryConfig clientTelemetryConfig) {
+                                ClientTelemetryConfig clientTelemetryConfig,
+                                String clientCorrelationId,
+                                EnumSet<TagName> tagNames) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -241,7 +251,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 contentResponseOnWriteEnabled,
                 metadataCachesSnapshot,
                 apiType,
-                clientTelemetryConfig);
+                clientTelemetryConfig,
+                clientCorrelationId,
+                tagNames);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -258,7 +270,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
-                                ClientTelemetryConfig clientTelemetryConfig) {
+                                ClientTelemetryConfig clientTelemetryConfig,
+                                String clientCorrelationId,
+                                EnumSet<TagName> tagNames) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -272,7 +286,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 contentResponseOnWriteEnabled,
                 metadataCachesSnapshot,
                 apiType,
-                clientTelemetryConfig);
+                clientTelemetryConfig,
+                clientCorrelationId,
+                tagNames);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -328,10 +344,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean contentResponseOnWriteEnabled,
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                          ApiType apiType,
-                         ClientTelemetryConfig clientTelemetryConfig) {
+                         ClientTelemetryConfig clientTelemetryConfig,
+                         String clientCorrelationId,
+                         EnumSet<TagName> tagNames) {
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.incrementAndGet();
+        this.clientCorrelationId = Strings.isNullOrWhiteSpace(clientCorrelationId) ?
+            String.format("%05d",this.clientId): clientCorrelationId;
+        this.metricTagNames = tagNames;
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
         this.diagnosticsClientConfig.withActiveClientCounter(activeClientsCnt);
@@ -668,6 +689,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ClientTelemetry getClientTelemetry() {
         return this.clientTelemetry;
+    }
+
+    @Override
+    public String getClientCorrelationId() {
+        return this.clientCorrelationId;
     }
 
     @Override

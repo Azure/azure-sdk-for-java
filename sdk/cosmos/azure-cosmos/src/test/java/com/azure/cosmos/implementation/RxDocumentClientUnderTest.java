@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ClientUnderTestBuilder;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import static org.mockito.Mockito.doAnswer;
@@ -53,7 +55,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 contentResponseOnWriteEnabled,
                 null,
                 apiType,
-                clientTelemetryConfig);
+                clientTelemetryConfig,
+                null,
+                EnumSet.allOf(TagName.class));
         init(null, null);
     }
 

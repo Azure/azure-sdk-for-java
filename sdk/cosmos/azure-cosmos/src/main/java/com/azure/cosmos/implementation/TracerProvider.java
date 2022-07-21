@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -45,6 +46,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public class TracerProvider {
     private Tracer tracer;
     private static final Logger LOGGER = LoggerFactory.getLogger(TracerProvider.class);
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
     private static final ObjectMapper mapper = new ObjectMapper();
     private final static String JSON_STRING = "JSON";
     public final static String DB_TYPE_VALUE = "Cosmos";
@@ -336,6 +339,50 @@ public class TracerProvider {
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) cosmosBatchResponse.getRequestCharge());
                 }
+
+                if (clientAccessor.isClientTelemetryMetricsEnabled(client) && response instanceof CosmosItemResponse) {
+                    @SuppressWarnings("unchecked")
+                    CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
+                    CosmosDiagnostics diagnostics = itemResponse.getDiagnostics();
+                    ClientTelemetryMetrics.recordOperation(
+                        client,
+                        diagnostics,
+                        itemResponse.getStatusCode(),
+                        ModelBridgeInternal.getPayloadLength(itemResponse),
+                        -1,
+                        -1,
+                        containerId,
+                        databaseId,
+                        operationType,
+                        resourceType,
+                        consistencyLevel,
+                        null,
+                        (float) itemResponse.getRequestCharge(),
+                        diagnostics.getDuration());
+                } else if (clientAccessor.isClientTelemetryMetricsEnabled(client) &&
+                    response instanceof CosmosBatchResponse) {
+
+                    @SuppressWarnings("unchecked")
+                    CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
+                    int itemCount = cosmosBatchResponse.getResults().size();
+                    CosmosDiagnostics diagnostics = cosmosBatchResponse.getDiagnostics();
+                    ClientTelemetryMetrics.recordOperation(
+                        client,
+                        diagnostics,
+                        cosmosBatchResponse.getStatusCode(),
+                        ModelBridgeInternal.getPayloadLength(cosmosBatchResponse),
+                        itemCount,
+                        itemCount,
+                        containerId,
+                        databaseId,
+                        operationType,
+                        resourceType,
+                        consistencyLevel,
+                        null,
+                        (float) cosmosBatchResponse.getRequestCharge(),
+                        diagnostics.getDuration());
+                }
+
             }).doOnError(throwable -> {
                 if (BridgeInternal.isClientTelemetryEnabled(client) && throwable instanceof CosmosException) {
                     CosmosException cosmosException = (CosmosException) throwable;

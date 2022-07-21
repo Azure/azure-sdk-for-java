@@ -419,8 +419,12 @@ public class CosmosAsyncDatabase {
         CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllContainers." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint(), getId());
+            pagedFluxOptions.setTracerInformation(
+                this.getClient().getTracerProvider(),
+                spanName,
+                this.getClient().getServiceEndpoint(),
+                getId(),
+                requestOptions.getQueryNameOrDefault(spanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDocClientWrapper().readCollections(getLink(), requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -596,8 +600,12 @@ public class CosmosAsyncDatabase {
     CosmosPagedFlux<CosmosUserProperties> readAllUsers(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllUsers." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint(), getId());
+            pagedFluxOptions.setTracerInformation(
+                this.getClient().getTracerProvider(),
+                spanName,
+                this.getClient().getServiceEndpoint(),
+                getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -647,8 +655,12 @@ public class CosmosAsyncDatabase {
     public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllClientEncryptionKeys." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint(), getId());
+            pagedFluxOptions.setTracerInformation(
+                this.getClient().getTracerProvider(),
+                spanName,
+                this.getClient().getServiceEndpoint(),
+                getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readClientEncryptionKeys(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -734,8 +746,12 @@ public class CosmosAsyncDatabase {
     private CosmosPagedFlux<CosmosClientEncryptionKeyProperties> queryClientEncryptionKeysInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryClientEncryptionKeys." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint(), getId());
+            pagedFluxOptions.setTracerInformation(
+                this.getClient().getTracerProvider(),
+                spanName,
+                this.getClient().getServiceEndpoint(),
+                getId(),
+                options != null ? options.getQueryNameOrDefault(spanName): spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryClientEncryptionKeys(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
@@ -882,8 +898,12 @@ public class CosmosAsyncDatabase {
         , CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryContainers." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint(), getId());
+            pagedFluxOptions.setTracerInformation(
+                this.getClient().getTracerProvider(),
+                spanName,
+                this.getClient().getServiceEndpoint(),
+                getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -895,8 +915,12 @@ public class CosmosAsyncDatabase {
     private CosmosPagedFlux<CosmosUserProperties> queryUsersInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryUsers." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
-                this.getClient().getServiceEndpoint(), getId());
+            pagedFluxOptions.setTracerInformation(
+                this.getClient().getTracerProvider(),
+                spanName,
+                this.getClient().getServiceEndpoint(),
+                getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
