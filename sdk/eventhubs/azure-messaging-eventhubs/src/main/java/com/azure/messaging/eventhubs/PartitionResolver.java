@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Allows events to be resolved to partitions using common patterns such as round-robin assignment and hashing of
+ * Allows events to be resolved to a partition using common patterns such as round-robin assignment and hashing of
  * partitions keys.
  */
 class PartitionResolver {
@@ -93,12 +93,15 @@ class PartitionResolver {
      * This implementation is a direct port of the Event Hubs service code; it is intended to match the gateway hashing
      * algorithm as closely as possible and should not be adjusted without careful consideration.
      *
+     * NOTE: Suppressing fallthrough warning for switch-case because we want it to fall into the subsequent cases.
+     *
      * @param data The data to base the hash on.
      * @param seed1 Seed value for the first hash.
      * @param seed2 Seed value for the second hash.
      *
      * @return An object containing the computed hash for {@code seed1} and {@code seed2}.
      */
+    @SuppressWarnings("fallthrough")
     private static Hashed computeHash(byte[] data, int seed1, int seed2) {
         int a;
         int b;
