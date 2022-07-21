@@ -2,6 +2,9 @@ parameters:
 - name: Artifacts
   type: object
   default: []
+- name: ReleaseDependsOnLiveTests
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -52,3 +55,4 @@ extends:
       parameters:
         AdditionalMatrixReplace:
           - TestFromSource=(.*)/true
+    ReleaseDependsOnLiveTests: ${{ parameters.ReleaseDependsOnLiveTests }}
