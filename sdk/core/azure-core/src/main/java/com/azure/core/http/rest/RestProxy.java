@@ -30,7 +30,7 @@ import java.lang.reflect.Proxy;
 public final class RestProxy implements InvocationHandler {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final boolean GLOBAL_SYNC_PROXY_ENABLE = Configuration.getGlobalConfiguration()
-        .get("AZURE_HTTP_RESTPROXY_SYNC_PROXY_ENABLED", false);
+        .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", false);
 
     private final SwaggerInterfaceParser interfaceParser;
     private final AsyncRestProxy asyncRestProxy;
