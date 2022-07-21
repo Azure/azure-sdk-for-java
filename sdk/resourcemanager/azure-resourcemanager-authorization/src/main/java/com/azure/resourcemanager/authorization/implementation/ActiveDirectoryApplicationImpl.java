@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.core.management.exception.ManagementException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPasswordRequestBodyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
@@ -86,8 +86,8 @@ class ActiveDirectoryApplicationImpl
         return Retry
             // 10 + 20 + 40 = 70 seconds
             .backoff(3, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
-            .filter(e -> (e instanceof ManagementException)
-                && (((ManagementException) e).getResponse().getStatusCode() == 404))
+            .filter(e -> (e instanceof HttpResponseException)
+                && (((HttpResponseException) e).getResponse().getStatusCode() == 404))
             // do not convert to RetryExhaustedException
             .onRetryExhaustedThrow((spec, signal) -> signal.failure());
     }
