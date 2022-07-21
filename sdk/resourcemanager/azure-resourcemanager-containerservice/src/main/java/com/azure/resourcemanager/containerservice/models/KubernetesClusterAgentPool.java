@@ -15,7 +15,7 @@ import java.util.Map;
 /** A client-side representation for a Kubernetes cluster agent pool. */
 @Fluent
 public interface KubernetesClusterAgentPool
-    extends ChildResource<KubernetesCluster>, HasInnerModel<ManagedClusterAgentPoolProfile> {
+    extends ChildResource<KubernetesCluster>, HasInnerModel<ManagedClusterAgentPoolProfile>, AgentPool {
 
     /** @return the provisioning state of the agent pool */
     String provisioningState();

@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.containerservice.models.AgentPool;
+import com.azure.resourcemanager.containerservice.models.AgentPoolData;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
@@ -21,6 +23,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -411,5 +415,51 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
         Assertions.assertTrue(kubernetesCluster.isAzureRbacEnabled());
         Assertions.assertTrue(kubernetesCluster.enableRBAC());
+    }
+
+    @Test
+    public void testBeginCreateAgentPool() {
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+        String agentPoolName1 = generateRandomResourceName("ap1", 10);
+
+        // create cluster
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+            .withRegion(Region.US_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .create();
+
+        Accepted<AgentPool> acceptedAgentPool = kubernetesCluster.beginCreateAgentPool(agentPoolName1,
+            new AgentPoolData()
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.USER)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                .withAgentPoolVirtualMachineCount(1));
+
+        ActivationResponse<AgentPool> activationResponse = acceptedAgentPool.getActivationResponse();
+        Assertions.assertEquals("Creating", activationResponse.getStatus().toString());
+        Assertions.assertEquals("Creating", activationResponse.getValue().provisioningState());
+
+        Assertions.assertEquals(agentPoolName1, activationResponse.getValue().name());
+        Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, activationResponse.getValue().type());
+        Assertions.assertEquals(AgentPoolMode.USER, activationResponse.getValue().mode());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_A2_V2, activationResponse.getValue().vmSize());
+        Assertions.assertEquals(1, activationResponse.getValue().count());
+
+        AgentPool agentPool = acceptedAgentPool.getFinalResult();
+        Assertions.assertEquals("Succeeded", agentPool.provisioningState());
+        Assertions.assertEquals(agentPoolName1, agentPool.name());
     }
 }

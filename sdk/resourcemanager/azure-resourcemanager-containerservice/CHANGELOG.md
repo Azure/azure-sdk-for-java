@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `beginCreateAgentPool` in `KubernetesCluster`.
 
 ## 2.16.0 (2022-06-24)
 
