@@ -72,6 +72,9 @@ parameters:
 stages:
   - stage: Build
     jobs:
+    - job: test
+      steps:
+      - pwsh: Write-Host ${{ convertToJson(parameters) }}
     - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
@@ -149,4 +152,3 @@ stages:
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
           UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
-
