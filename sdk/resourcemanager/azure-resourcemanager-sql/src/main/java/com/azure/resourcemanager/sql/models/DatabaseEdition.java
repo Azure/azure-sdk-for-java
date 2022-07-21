@@ -63,7 +63,11 @@ public final class DatabaseEdition extends ExpandableStringEnum<DatabaseEdition>
         return fromString(name, DatabaseEdition.class);
     }
 
-    /** @return known DatabaseEdition values. */
+    /**
+     * Gets known DatabaseEdition values.
+     *
+     * @return known DatabaseEdition values.
+     */
     public static Collection<DatabaseEdition> values() {
         return values(DatabaseEdition.class);
     }

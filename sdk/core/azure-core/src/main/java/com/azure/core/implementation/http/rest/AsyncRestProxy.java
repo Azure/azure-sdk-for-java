@@ -9,6 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -124,7 +125,9 @@ public class AsyncRestProxy extends RestProxyBase {
 
     private Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                                  final SwaggerMethodParser methodParser, final Type entityType) {
-        if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
+        if (methodParser.isStreamResponse()) {
+            return Mono.fromSupplier(() -> new StreamResponse(response.getSourceResponse()));
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 return response.getSourceResponse().getBody().ignoreElements()
@@ -203,7 +206,7 @@ public class AsyncRestProxy extends RestProxyBase {
             final Type monoTypeParam = TypeUtil.getTypeArgument(returnType);
             if (TypeUtil.isTypeOrSubTypeOf(monoTypeParam, Void.class)) {
                 // ProxyMethod ReturnType: Mono<Void>
-                result = asyncExpectedResponse.then();
+                result = asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).then();
             } else {
                 // ProxyMethod ReturnType: Mono<? extends RestResponseBase<?, ?>>
                 result = asyncExpectedResponse.flatMap(response ->
@@ -215,7 +218,7 @@ public class AsyncRestProxy extends RestProxyBase {
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-            asyncExpectedResponse.block();
+            asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).block();
             result = null;
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void

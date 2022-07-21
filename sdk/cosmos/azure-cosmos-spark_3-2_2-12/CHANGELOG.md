@@ -7,6 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `NotFoundException` for changeFeed after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
 
 #### Other Changes
 * Added a new `spark.cosmos.serialization.dateTimeConversionMode` mode called `AlwaysEpochMillisecondsWithSystemDefaultTimezone` that will assume SystemDefault time zone instead of UTC when a Date/time to be parsed has no explicit time zone. - See [PR 30001](https://github.com/Azure/azure-sdk-for-java/pull/30001)

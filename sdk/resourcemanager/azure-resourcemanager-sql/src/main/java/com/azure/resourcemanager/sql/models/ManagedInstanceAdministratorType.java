@@ -24,7 +24,11 @@ public final class ManagedInstanceAdministratorType extends ExpandableStringEnum
         return fromString(name, ManagedInstanceAdministratorType.class);
     }
 
-    /** @return known ManagedInstanceAdministratorType values. */
+    /**
+     * Gets known ManagedInstanceAdministratorType values.
+     *
+     * @return known ManagedInstanceAdministratorType values.
+     */
     public static Collection<ManagedInstanceAdministratorType> values() {
         return values(ManagedInstanceAdministratorType.class);
     }

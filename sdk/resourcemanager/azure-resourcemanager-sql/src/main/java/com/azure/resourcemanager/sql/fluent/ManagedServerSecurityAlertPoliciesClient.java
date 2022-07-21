@@ -33,7 +33,8 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy.
+     * @return a managed server's threat detection policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedServerSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -51,7 +52,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy.
+     * @return a managed server's threat detection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedServerSecurityAlertPolicyInner> getAsync(
@@ -88,7 +89,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server's threat detection policy.
+     * @return a managed server's threat detection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedServerSecurityAlertPolicyInner> getWithResponse(
@@ -104,11 +105,12 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
+     * @return a managed server security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -124,13 +126,13 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
+     * @return the {@link PollerFlux} for polling of a managed server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedServerSecurityAlertPolicyInner>, ManagedServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -145,13 +147,13 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
+     * @return the {@link SyncPoller} for polling of a managed server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedServerSecurityAlertPolicyInner>, ManagedServerSecurityAlertPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -166,14 +168,14 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
+     * @return the {@link SyncPoller} for polling of a managed server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedServerSecurityAlertPolicyInner>, ManagedServerSecurityAlertPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -189,11 +191,11 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server security alert policy.
+     * @return a managed server security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedServerSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -209,7 +211,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -229,7 +231,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed server security alert policy.
+     * @param parameters The managed server security alert policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,7 +255,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed server's threat detection policies.
+     * @return the managed server's threat detection policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedServerSecurityAlertPolicyInner> listByInstanceAsync(
@@ -268,7 +270,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed server's threat detection policies.
+     * @return the managed server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedServerSecurityAlertPolicyInner> listByInstance(
@@ -284,7 +286,7 @@ public interface ManagedServerSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed server's threat detection policies.
+     * @return the managed server's threat detection policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedServerSecurityAlertPolicyInner> listByInstance(
