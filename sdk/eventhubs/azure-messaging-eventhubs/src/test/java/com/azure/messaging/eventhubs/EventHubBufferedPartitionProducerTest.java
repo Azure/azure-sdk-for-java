@@ -145,6 +145,7 @@ public class EventHubBufferedPartitionProducerTest {
         assertTrue(holder.failedContexts.isEmpty());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void publishesErrors() throws InterruptedException {
         // Arrange

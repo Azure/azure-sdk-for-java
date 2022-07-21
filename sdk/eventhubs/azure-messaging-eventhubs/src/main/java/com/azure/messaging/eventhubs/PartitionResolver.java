@@ -110,10 +110,12 @@ class PartitionResolver {
         a = b = c = (0xdeadbeef + data.length + seed1);
         c += seed2;
 
+
         final ByteBuffer buffer = ByteBuffer.allocate(data.length)
-            .put(data)
-            .flip()
-            .order(ByteOrder.LITTLE_ENDIAN);
+            .put(data);
+
+        buffer.flip();
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         int index = 0;
         int size = data.length;
