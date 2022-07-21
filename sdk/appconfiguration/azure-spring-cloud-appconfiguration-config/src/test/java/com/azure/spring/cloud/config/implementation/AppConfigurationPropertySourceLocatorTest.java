@@ -105,6 +105,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Mock
     private ConfigStore configStoreMock;
+
     @Mock
     private ConfigStore configStoreMockError;
 
@@ -331,6 +332,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void refreshThrowException() throws IOException, IllegalArgumentException {
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         AppConfigurationPropertySourceLocator.STARTUP.set(false);
 
         StateHolder state = new StateHolder();
@@ -428,7 +430,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appPropertiesMock, clientFactoryMock,
             tokenCredentialProvider, null, null);
 
-        assertThrows(NullPointerException.class, () -> locator.locate(env));
+        assertThrows(RuntimeException.class, () -> locator.locate(env));
         verify(appPropertiesMock, times(1)).getPrekillTime();
     }
 
