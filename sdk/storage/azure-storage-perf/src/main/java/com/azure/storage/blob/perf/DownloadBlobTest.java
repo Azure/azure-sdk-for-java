@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.perf.core.AbstractDownloadTest;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandle;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
@@ -19,11 +21,19 @@ import java.util.concurrent.Future;
 
 public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions> {
 
-    private static final boolean HAS_NEW_DOWNLOAD;
+    private static final MethodHandle NEW_DOWNLOAD;
 
     static {
-        HAS_NEW_DOWNLOAD = Arrays.stream(BlobDownloadAsyncResponse.class.getDeclaredMethods())
-            .anyMatch(method -> method.getName().equals("writeValueToAsync"));
+        NEW_DOWNLOAD = Arrays.stream(BlobDownloadAsyncResponse.class.getDeclaredMethods())
+            .filter(method -> method.getName().equals("writeValueToAsync"))
+            .findFirst()
+            .map(method -> {
+                try {
+                    return ReflectionUtilsApi.INSTANCE.getLookupToUse(BlobDownloadAsyncResponse.class).unreflect(method);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }).orElse(null);
     }
 
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
@@ -46,9 +56,15 @@ public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions
 
     @Override
     public Mono<Void> runAsync() {
-        if (HAS_NEW_DOWNLOAD) {
+        if (NEW_DOWNLOAD != null) {
             return blobAsyncClient.downloadStreamWithResponse(null, null, null, false)
-                .flatMap(response -> response.writeValueToAsync(DEV_NULL_CHANNEL, null));
+                .flatMap(response -> {
+                    try {
+                        return (Mono<Void>) NEW_DOWNLOAD.invokeWithArguments(response, DEV_NULL_CHANNEL, null);
+                    } catch (Throwable e) {
+                        return Mono.error(e);
+                    }
+                });
         } else {
             return blobAsyncClient.downloadStream()
                 .map(b -> {
