@@ -1,11 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.models.*;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -18,83 +22,164 @@ public final class PersonalizerAdminClient {
         this.client = client;
     }
 
-    public Response<Evaluation> createEvaluation(EvaluationContract evaluationContract) {
-        Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> response = client.createEvaluation(evaluationContract);
-        return response.block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Evaluation createEvaluation(EvaluationContract evaluationContract) {
+        return createEvaluationWithResponse(evaluationContract, Context.NONE).getValue();
     }
 
-    public Response<Evaluation> getEvaluation(String evaluationId) {
-        Mono<Response<Evaluation>> response = client.getEvaluation(evaluationId);
-        return response.block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Evaluation> createEvaluationWithResponse(EvaluationContract evaluationContract, Context context) {
+        return client.createEvaluationWithResponse(evaluationContract, context).block();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Evaluation getEvaluation(String evaluationId) {
+        return getEvaluationWithResponse(evaluationId, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Evaluation> getEvaluationWithResponse(String evaluationId, Context context) {
+        return client.getEvaluationWithResponse(evaluationId, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEvaluation(String evaluationId) {
-        Mono<Response<Void>> response = client.deleteEvaluation(evaluationId);
-        response.block();
+        deleteEvaluationWithResponse(evaluationId, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteEvaluationWithResponse(String evaluationId, Context context) {
+        return client.deleteEvaluationWithResponse(evaluationId, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<Evaluation> getEvaluations() {
-        Mono<Response<List<Evaluation>>> response = client.getEvaluations();
-        return response.block().getValue();
+        return getEvaluationsWithResponse(Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Response<List<Evaluation>> getEvaluationsWithResponse(Context context) {
+        return client.getEvaluationsWithResponse(context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsProperties getLogsProperties() {
-        Mono<Response<LogsProperties>> response = client.getLogsProperties();
-        return response.block().getValue();
+        return getLogsPropertiesWithResponse(Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogsProperties> getLogsPropertiesWithResponse(Context context) {
+        return client.getLogsPropertiesWithResponse(context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteLogs() {
-        Mono<Response<Void>> response = client.deleteLogs();
-        response.block();
+        deleteLogsWithResponse(Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteLogsWithResponse(Context context) {
+        return client.deleteLogsWithResponse(context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceConfiguration updateProperties(ServiceConfiguration configuration) {
-        Mono<Response<ServiceConfiguration>> updatedConfiguration = client.updateProperties(configuration);
-        return updatedConfiguration.block().getValue();
+        return updatePropertiesWithResponse(configuration, Context.NONE).getValue();
     }
 
-    public ServiceConfiguration getProperties(ServiceConfiguration configuration) {
-        Mono<Response<ServiceConfiguration>> updatedConfiguration = client.getProperties(configuration);
-        return updatedConfiguration.block().getValue();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceConfiguration> updatePropertiesWithResponse(ServiceConfiguration configuration, Context context) {
+        return client.updatePropertiesWithResponse(configuration, context).block();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceConfiguration getProperties() {
+        return getPropertiesWithResponse(Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceConfiguration> getPropertiesWithResponse(Context context) {
+        return client.getPropertiesWithResponse(context).block();
+    }
+
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void applyEvaluation(PolicyReferenceContract policyReferenceContract) {
-        Mono<Response<Void>> updatedConfiguration = client.applyEvaluation(policyReferenceContract);
-        updatedConfiguration.block();
+        applyEvaluationWithResponse(policyReferenceContract, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> applyEvaluationWithResponse(PolicyReferenceContract policyReferenceContract, Context context) {
+        return client.applyEvaluationWithResponse(policyReferenceContract, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelProperties getModelProperties() {
-        Mono<Response<ModelProperties>> response = client.getModelProperties();
-        return response.block().getValue();
+        return getModelPropertiesWithResponse(Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ModelProperties> getModelPropertiesWithResponse(Context context) {
+        return client.getModelPropertiesWithResponse(context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyContract getPolicy() {
-        Mono<Response<PolicyContract>> response = client.getPolicy();
-        return response.block().getValue();
+        return getPolicyWithResponse(Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyContract> getPolicyWithResponse(Context context) {
+        return client.getPolicyWithResponse(context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyContract updatePolicy(PolicyContract policy) {
-        Mono<Response<PolicyContract>> response = client.updatePolicy(policy);
-        return response.block().getValue();
+        return updatePolicyWithResponse(policy, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyContract> updatePolicyWithResponse(PolicyContract policy, Context context) {
+        return client.updatePolicyWithResponse(policy, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyContract resetPolicy() {
-        Mono<Response<PolicyContract>> response = client.resetPolicy();
-        return response.block().getValue();
+        return resetPolicyWithResponse(Context.NONE).getValue();
     }
 
-    public StreamResponse exportModel(boolean isSigned) {
-        Mono<StreamResponse> response = client.exportModel(isSigned);
-        return response.block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyContract> resetPolicyWithResponse(Context context) {
+        return client.resetPolicyWithResponse(context).block();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> exportModel(boolean isSigned) {
+        return exportModelWithResponse(isSigned, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamResponse exportModelWithResponse(boolean isSigned, Context context) {
+        return client.exportModelWithResponse(isSigned, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetModel() {
-        Mono<Response<Void>> response = client.resetModel();
-        response.block();
+        resetModelWithResponse(Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetModelWithResponse(Context context) {
+        return client.resetModelWithResponse(context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void importModel(Flux<ByteBuffer> body, long contentLength) {
-        Mono<Response<Void>> response = client.importModel(body, contentLength);
-        response.block();
+        importModelWithResponse(body, contentLength, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> importModelWithResponse(Flux<ByteBuffer> body, long contentLength, Context context) {
+        return client.importModelWithResponse(body, contentLength, context).block();
     }
 }

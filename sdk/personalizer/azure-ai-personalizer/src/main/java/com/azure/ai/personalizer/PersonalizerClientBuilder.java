@@ -3,23 +3,27 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.implementation.util.Utility;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder;
 import com.azure.ai.personalizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.*;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -56,6 +60,18 @@ public final class PersonalizerClientBuilder implements
     }
 
     public PersonalizerAsyncClient buildAsyncClient() {
+        return new PersonalizerAsyncClient(GetService());
+    }
+
+    public PersonalizerAdminClient buildAdminClient() {
+        return new PersonalizerAdminClient(buildAdminAsyncClient());
+    }
+
+    public PersonalizerAdminAsyncClient buildAdminAsyncClient() {
+        return new PersonalizerAdminAsyncClient(GetService());
+    }
+
+    public PersonalizerClientV1Preview3Impl GetService() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
@@ -86,12 +102,10 @@ public final class PersonalizerClientBuilder implements
                 httpClient);
         }
 
-        final PersonalizerClientV1Preview3Impl PersonalizerAPI = new PersonalizerClientV1Preview3ImplBuilder()
+        return new PersonalizerClientV1Preview3ImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
             .buildClient();
-
-        return new PersonalizerAsyncClient(PersonalizerAPI);
     }
 
     @Override

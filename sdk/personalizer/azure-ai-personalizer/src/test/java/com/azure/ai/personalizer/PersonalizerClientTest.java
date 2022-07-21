@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.models.RankRequest;
@@ -28,7 +31,7 @@ public class PersonalizerClientTest {
     public void testRankThenReward() {
         String eventId = UUID.randomUUID().toString();
         RankResponse response = client.rank(createRankRequest(eventId));
-        assertEquals(eventId, response.getEventId(),"Event Ids must match");
+        assertEquals(eventId, response.getEventId(), "Event Ids must match");
         RewardRequest rewardRequest = new RewardRequest().setValue(0.5f);
         client.reward(eventId, rewardRequest);
     }
@@ -37,7 +40,7 @@ public class PersonalizerClientTest {
     public void testRankThenActivateAndReward() {
         String eventId = "123456789";
         RankResponse response = client.rank(createRankRequest(eventId));
-        assertEquals(eventId, response.getEventId(),"Event Ids must match");
+        assertEquals(eventId, response.getEventId(), "Event Ids must match");
         client.activate(eventId);
         RewardRequest rewardRequest = new RewardRequest().setValue(0.5f);
         client.reward(eventId, rewardRequest);
@@ -45,8 +48,8 @@ public class PersonalizerClientTest {
 
     public RankRequest createRankRequest(String eventId) {
         List<Object> contextFeatures = new ArrayList<>();
-        contextFeatures.add(new Object() { Object Features = new Object() { String day = "tuesday"; String time = "night"; String weather = "rainy"; };});
-        contextFeatures.add(new Object() { Object Features = new Object() { String userId = "1234"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastwatchedType = "movie"; };});
+        contextFeatures.add(new Object() { Object features = new Object() { String day = "tuesday"; String time = "night"; String weather = "rainy"; }; });
+        contextFeatures.add(new Object() { Object features = new Object() { String userId = "1234"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastwatchedType = "movie"; }; });
 
         List<Object> person1features = new ArrayList<>();
         person1features.add(new Object() {
@@ -55,7 +58,7 @@ public class PersonalizerClientTest {
             String director = "CarlSagan";
         });
 
-        person1features.add(new Object(){
+        person1features.add(new Object() {
             String mostWatchedByAge = "30-35";
         });
 
@@ -66,7 +69,7 @@ public class PersonalizerClientTest {
             String director = "CarlSagan";
         });
 
-        person2features.add(new Object(){
+        person2features.add(new Object() {
             String mostWatchedByAge = "40-45";
         });
 

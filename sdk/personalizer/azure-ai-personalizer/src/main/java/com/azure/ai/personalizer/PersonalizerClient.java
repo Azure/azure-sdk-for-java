@@ -1,16 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
-import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder;
-import com.azure.ai.personalizer.implementation.models.*;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.ai.personalizer.implementation.models.MultiSlotRankRequest;
+import com.azure.ai.personalizer.implementation.models.MultiSlotRankResponse;
+import com.azure.ai.personalizer.implementation.models.MultiSlotRewardRequest;
+import com.azure.ai.personalizer.implementation.models.RankRequest;
+import com.azure.ai.personalizer.implementation.models.RankResponse;
+import com.azure.ai.personalizer.implementation.models.RewardRequest;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import reactor.core.publisher.Mono;
 
 public final class PersonalizerClient {
 
@@ -20,33 +22,63 @@ public final class PersonalizerClient {
         this.client = client;
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public RankResponse rank(RankRequest rankRequest) {
-        Mono<Response<RankResponse>> response = client.rank(rankRequest, Context.NONE);
-        return response.block().getValue();
+        return rankWithResponse(rankRequest, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RankResponse> rankWithResponse(RankRequest rankRequest, Context context) {
+        return client.rankWithResponse(rankRequest, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void reward(String eventId, RewardRequest rewardRequest) {
-        Mono<Response<Void>> response = client.reward(eventId, rewardRequest, Context.NONE);
-        response.block();
+        rewardWithResponse(eventId, rewardRequest, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> rewardWithResponse(String eventId, RewardRequest rewardRequest, Context context) {
+        return client.rewardWithResponse(eventId, rewardRequest, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void activate(String eventId) {
-        Mono<Response<Void>> response = client.activate(eventId, Context.NONE);
-        response.block();
+        activateWithResponse(eventId, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> activateWithResponse(String eventId, Context context) {
+        return client.activateWithResponse(eventId, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public MultiSlotRankResponse rankMultiSlot(MultiSlotRankRequest rankRequest) {
-        Mono<Response<MultiSlotRankResponse>> response = client.rankMultiSlot(rankRequest, Context.NONE);
-        return response.block().getValue();
+        return rankMultiSlotWithResponse(rankRequest, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MultiSlotRankResponse> rankMultiSlotWithResponse(MultiSlotRankRequest rankRequest, Context context) {
+        return client.rankMultiSlotWithResponse(rankRequest, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void rewardMultiSlot(String eventId, MultiSlotRewardRequest rewardRequest) {
-        Mono<Response<Void>> response = client.rewardMultiSlot(eventId, rewardRequest, Context.NONE);
-        response.block();
+        rewardMultiSlotWithResponse(eventId, rewardRequest, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> rewardMultiSlotWithResponse(String eventId, MultiSlotRewardRequest rewardRequest, Context context) {
+        return client.rewardMultiSlotWithResponse(eventId, rewardRequest, context).block();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void activateMultiSlot(String eventId) {
-        Mono<Response<Void>> response = client.activateMultiSlot(eventId, Context.NONE);
-        response.block();
+        activateMultiSlotWithResponse(eventId, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> activateMultiSlotWithResponse(String eventId, Context context) {
+        return client.activateMultiSlotWithResponse(eventId, context).block();
     }
 }

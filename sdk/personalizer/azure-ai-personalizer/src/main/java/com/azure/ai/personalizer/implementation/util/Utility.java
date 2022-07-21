@@ -29,9 +29,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -39,11 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Utility method class.
@@ -53,7 +46,7 @@ public final class Utility {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
     static {
-        Map<String, String> properties = CoreUtils.getProperties(Constants.FORM_RECOGNIZER_PROPERTIES);
+        Map<String, String> properties = CoreUtils.getProperties(Constants.PERSONALIZER_PROPERTIES);
         CLIENT_NAME = properties.getOrDefault(Constants.NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(Constants.VERSION, "UnknownVersion");
     }
@@ -138,34 +131,5 @@ public final class Utility {
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
-    }
-
-    /**
-     * Extracts the result ID from the URL.
-     *
-     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
-     * resultId used to track the progress and obtain the result of the analyze operation.
-     * @return The resultId used to track the progress.
-     */
-    public static String parseResultId(String operationLocation) {
-
-        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
-            int lastIndex = operationLocation.lastIndexOf('/');
-            int firstIndex = operationLocation.indexOf('?');
-            if (firstIndex != -1 && lastIndex != -1) {
-                return operationLocation.substring(operationLocation.lastIndexOf('/') + 1,
-                    operationLocation.indexOf('?'));
-            }
-        }
-        throw LOGGER.logExceptionAsError(
-            new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
-    }
-
-    /**
-     * Generates a random UUID String.
-     * @return the UUID model Identifier.
-     */
-    public static String generateRandomModelID() {
-        return UUID.randomUUID().toString();
     }
 }
