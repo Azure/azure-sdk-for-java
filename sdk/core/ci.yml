@@ -92,6 +92,7 @@ parameters:
 extends:
   template: build-and-test.yml
   parameters:
+    ServiceDirectory: core
     Artifacts:
       - name: azure-core
         groupId: com.azure

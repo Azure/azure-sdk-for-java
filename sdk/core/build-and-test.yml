@@ -5,11 +5,14 @@ parameters:
 - name: ReleaseDependsOnLiveTests
   type: boolean
   default: true
+- name: ServiceDirectory
+  type: string
+  default: not-specified
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: core
+    ServiceDirectory: ${{ parameters.ServiceDirectory }}
     EnableBatchRelease: true
     Artifacts: ${{ parameters.Artifacts }}
     MatrixReplace:
@@ -17,13 +20,16 @@ extends:
     LiveTestStages:
     - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
-        ServiceDirectory: core
-        Artifacts: ${{ parameters.Artifacts }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        Artifacts:
+        - ${{ each artifact in parameters.Artifacts }}:
+          - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+            - ${{ artifact }}
         MatrixReplace:
           - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
-        ServiceDirectory: core
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
         TestName: 'jackson_supported_versions'
         MatrixConfigs:
           - Name: jackson_supported_version_tests
@@ -38,7 +44,7 @@ extends:
             safeName: azurecorejacksontests
     - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
-        ServiceDirectory: core
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
         TestName: 'jackson_unsupported_versions'
         MatrixConfigs:
           - Name: jackson_unsupported_version_tests
