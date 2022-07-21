@@ -252,8 +252,8 @@ public class CallConnection {
      * @return a CallContentAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallMedia getCallMediaClient() {
-        return new CallMedia(callConnectionAsync.getCallMediaAsyncClient());
+    public CallMedia getCallMedia() {
+        return new CallMedia(callConnectionAsync.getCallMediaAsync());
     }
 
     //endregion

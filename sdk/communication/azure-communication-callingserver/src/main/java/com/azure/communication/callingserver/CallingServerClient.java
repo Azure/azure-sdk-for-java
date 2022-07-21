@@ -157,8 +157,8 @@ public final class CallingServerClient {
      * @return a CallConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection getCallConnectionClient(String callConnectionId) {
-        return new CallConnection(callingServerAsyncClient.getCallConnectionAsyncClient(callConnectionId));
+    public CallConnection getCallConnection(String callConnectionId) {
+        return new CallConnection(callingServerAsyncClient.getCallConnectionAsync(callConnectionId));
     }
     //endregion
 
@@ -171,8 +171,8 @@ public final class CallingServerClient {
      * @return a CallRecording.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecording getCallRecordingClient() {
-        return new CallRecording(callingServerAsyncClient.getCallRecordingAsyncClient());
+    public CallRecording getCallRecording() {
+        return new CallRecording(callingServerAsyncClient.getCallRecordingAsync());
     }
     //endregion
 }

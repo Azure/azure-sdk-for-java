@@ -287,7 +287,7 @@ public final class CallingServerAsyncClient {
      * @return a CallContentAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionAsync getCallConnectionAsyncClient(String callConnectionId) {
+    public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
         return new CallConnectionAsync(callConnectionId, callConnectionInternal, contentsInternal);
     }
     //endregion
@@ -299,7 +299,7 @@ public final class CallingServerAsyncClient {
      * @return a CallRecordingAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingAsync getCallRecordingAsyncClient() {
+    public CallRecordingAsync getCallRecordingAsync() {
         return new CallRecordingAsync(serverCallsInternal, contentsInternal,
             contentDownloader, httpPipelineInternal, resourceEndpoint);
     }

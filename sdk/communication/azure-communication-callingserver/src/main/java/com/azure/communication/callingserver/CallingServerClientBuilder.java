@@ -39,6 +39,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
+
 
 /**
  * Client builder that creates CallingServerAsyncClient and CallingServerClient.
@@ -292,13 +296,12 @@ public final class CallingServerClientBuilder implements
      * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
      * specified by additionalPolicies will be applied after them
      *
-     * @param isDebug Debug mode is for using custom PMA endpoint with custom ACS resource
      * @return The updated {@link CallingServerClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerAsyncClient buildAsyncClient(boolean isDebug) {
-        return new CallingServerAsyncClient(createServiceImpl(isDebug));
+    public CallingServerAsyncClient buildAsyncClient() {
+        return new CallingServerAsyncClient(createServiceImpl());
     }
 
     /**
@@ -306,20 +309,29 @@ public final class CallingServerClientBuilder implements
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
      * additionalPolicies will be applied after them.
      *
-     * @param isDebug Debug mode is for using custom PMA endpoint with custom ACS resource
      * @return Updated {@link CallingServerClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerClient buildClient(boolean isDebug) {
-        return new CallingServerClient(buildAsyncClient(isDebug));
+    public CallingServerClient buildClient() {
+        return new CallingServerClient(buildAsyncClient());
     }
 
-    private AzureCommunicationCallingServerServiceImpl createServiceImpl(boolean isDebug) {
+    private AzureCommunicationCallingServerServiceImpl createServiceImpl() {
         boolean isConnectionStringSet = connectionString != null && !connectionString.trim().isEmpty();
         boolean isEndpointSet = endpoint != null && !endpoint.trim().isEmpty();
         boolean isAzureKeyCredentialSet = azureKeyCredential != null;
         boolean isTokenCredentialSet = tokenCredential != null;
+        boolean isDebug = false;
+
+        try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("config.properties");
+            Properties props = new Properties();
+            props.load(inputStream);
+            isDebug = Objects.equals(props.getProperty("env"), "TEST");
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
 
         if (isConnectionStringSet && isEndpointSet && !isDebug) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
