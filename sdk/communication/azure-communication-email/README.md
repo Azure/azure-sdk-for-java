@@ -57,12 +57,14 @@ add the direct dependency to your project as follows.
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
+## Key concepts
+> More details coming soon.
 
 ## Examples
 
 `EmailClient` provides the functionality to send email messages .
 
-## Client Creation and Authentication
+### Client Creation and Authentication
 
 Email clients can be created and authenticated using the connection string acquired from an Azure Communication Resource in the [Azure Portal][azure_portal].
 
@@ -208,6 +210,9 @@ The result from the `send` call contains a `messageId` which can be used to quer
 SendStatusResult response = emailClient.getSendStatus("<sent-message-id>");
 System.out.println("Status: " + response.getStatus());
 ```
+
+## Troubleshooting
+> More details coming soon,
 
 ## Next steps
 
