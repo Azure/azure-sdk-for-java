@@ -55,6 +55,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: BuildProfile
+    type: string
+    default: 'default'
 
 jobs:
   - job: 'Build'
