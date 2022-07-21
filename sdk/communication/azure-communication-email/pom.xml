@@ -29,7 +29,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.1</version>
+        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
           <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
