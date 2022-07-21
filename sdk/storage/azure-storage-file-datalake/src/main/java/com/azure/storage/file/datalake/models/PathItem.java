@@ -20,6 +20,7 @@ public class PathItem {
     private final String permissions;
     private final OffsetDateTime creationTime;
     private final OffsetDateTime expiryTime;
+    private final String encryptionScope;
 
     /**
      * Constructs a {@link PathItem}
@@ -52,6 +53,26 @@ public class PathItem {
      */
     public PathItem(String eTag, OffsetDateTime lastModified, long contentLength, String group, boolean isDirectory,
         String name, String owner, String permissions, OffsetDateTime creationTime, OffsetDateTime expiryTime) {
+        this(eTag, lastModified, contentLength, group, isDirectory, name, owner, permissions, creationTime, expiryTime, null);
+    }
+
+    /**
+     * Constructs a {@link PathItem}
+     * @param eTag ETag of the path.
+     * @param lastModified Datetime when the path was last modified.
+     * @param contentLength The content length of the path.
+     * @param group The group the path belongs to.
+     * @param isDirectory Whether or not the path is a directory.
+     * @param name The name of the path.
+     * @param owner The owner the path belongs to.
+     * @param permissions The permissions set on the path.
+     * @param creationTime The creation time of the path item.
+     * @param expiryTime The expiry time of the path item.
+     * @param encryptionScope The name of the encryption scope under which the path is encrypted.
+     */
+    public PathItem(String eTag, OffsetDateTime lastModified, long contentLength, String group, boolean isDirectory,
+        String name, String owner, String permissions, OffsetDateTime creationTime, OffsetDateTime expiryTime,
+        String encryptionScope) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentLength = contentLength;
@@ -62,6 +83,7 @@ public class PathItem {
         this.permissions = permissions;
         this.creationTime = creationTime;
         this.expiryTime = expiryTime;
+        this.encryptionScope = encryptionScope;
     }
 
     /**
@@ -152,5 +174,14 @@ public class PathItem {
      */
     public OffsetDateTime getExpiryTime() {
         return expiryTime;
+    }
+
+    /**
+     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
     }
 }

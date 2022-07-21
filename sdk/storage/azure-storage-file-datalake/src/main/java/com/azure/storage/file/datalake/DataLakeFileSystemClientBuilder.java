@@ -33,6 +33,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScope;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -75,6 +76,7 @@ public class DataLakeFileSystemClientBuilder implements
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
+    private FileSystemEncryptionScope fileSystemEncryptionScope;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -154,8 +156,9 @@ public class DataLakeFileSystemClientBuilder implements
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
-        return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName,
-            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient(), azureSasCredential);
+        return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            blobContainerClientBuilder.blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScope))
+                .buildAsyncClient(), azureSasCredential);
     }
 
     /**
@@ -281,6 +284,19 @@ public class DataLakeFileSystemClientBuilder implements
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.azureSasCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link FileSystemEncryptionScope encryption scope} that is used to determine how file systems are
+     * encrypted on the server.
+     *
+     * @param fileSystemEncryptionScope Encryption scope containing the encryption key information.
+     * @return the updated DataLakeFileSystemClientBuilder object
+     */
+    public DataLakeFileSystemClientBuilder fileSystemEncryptionScope(
+        FileSystemEncryptionScope fileSystemEncryptionScope) {
+        this.fileSystemEncryptionScope = fileSystemEncryptionScope;
         return this;
     }
 
