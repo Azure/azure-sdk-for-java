@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.PartnerInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** A failover group. */
-@JsonFlatten
 @Fluent
-public class FailoverGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverGroupInner.class);
-
+public final class FailoverGroupInner extends ProxyResource {
     /*
      * Resource location.
      */
@@ -33,43 +28,14 @@ public class FailoverGroupInner extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * Read-write endpoint of the failover group instance.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.readWriteEndpoint")
-    private FailoverGroupReadWriteEndpoint readWriteEndpoint;
-
-    /*
-     * Read-only endpoint of the failover group instance.
-     */
-    @JsonProperty(value = "properties.readOnlyEndpoint")
-    private FailoverGroupReadOnlyEndpoint readOnlyEndpoint;
-
-    /*
-     * Local replication role of the failover group instance.
-     */
-    @JsonProperty(value = "properties.replicationRole", access = JsonProperty.Access.WRITE_ONLY)
-    private FailoverGroupReplicationRole replicationRole;
-
-    /*
-     * Replication state of the failover group instance.
-     */
-    @JsonProperty(value = "properties.replicationState", access = JsonProperty.Access.WRITE_ONLY)
-    private String replicationState;
-
-    /*
-     * List of partner server information for the failover group.
-     */
-    @JsonProperty(value = "properties.partnerServers")
-    private List<PartnerInfo> partnerServers;
-
-    /*
-     * List of databases in the failover group.
-     */
-    @JsonProperty(value = "properties.databases")
-    private List<String> databases;
+    @JsonProperty(value = "properties")
+    private FailoverGroupProperties innerProperties;
 
     /**
      * Get the location property: Resource location.
@@ -101,12 +67,21 @@ public class FailoverGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private FailoverGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
      *
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
-        return this.readWriteEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().readWriteEndpoint();
     }
 
     /**
@@ -116,7 +91,10 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the FailoverGroupInner object itself.
      */
     public FailoverGroupInner withReadWriteEndpoint(FailoverGroupReadWriteEndpoint readWriteEndpoint) {
-        this.readWriteEndpoint = readWriteEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupProperties();
+        }
+        this.innerProperties().withReadWriteEndpoint(readWriteEndpoint);
         return this;
     }
 
@@ -126,7 +104,7 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
-        return this.readOnlyEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().readOnlyEndpoint();
     }
 
     /**
@@ -136,7 +114,10 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the FailoverGroupInner object itself.
      */
     public FailoverGroupInner withReadOnlyEndpoint(FailoverGroupReadOnlyEndpoint readOnlyEndpoint) {
-        this.readOnlyEndpoint = readOnlyEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupProperties();
+        }
+        this.innerProperties().withReadOnlyEndpoint(readOnlyEndpoint);
         return this;
     }
 
@@ -146,7 +127,7 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {
-        return this.replicationRole;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationRole();
     }
 
     /**
@@ -155,7 +136,7 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the replicationState value.
      */
     public String replicationState() {
-        return this.replicationState;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationState();
     }
 
     /**
@@ -164,7 +145,7 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the partnerServers value.
      */
     public List<PartnerInfo> partnerServers() {
-        return this.partnerServers;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServers();
     }
 
     /**
@@ -174,7 +155,10 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the FailoverGroupInner object itself.
      */
     public FailoverGroupInner withPartnerServers(List<PartnerInfo> partnerServers) {
-        this.partnerServers = partnerServers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupProperties();
+        }
+        this.innerProperties().withPartnerServers(partnerServers);
         return this;
     }
 
@@ -184,7 +168,7 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the databases value.
      */
     public List<String> databases() {
-        return this.databases;
+        return this.innerProperties() == null ? null : this.innerProperties().databases();
     }
 
     /**
@@ -194,7 +178,10 @@ public class FailoverGroupInner extends ProxyResource {
      * @return the FailoverGroupInner object itself.
      */
     public FailoverGroupInner withDatabases(List<String> databases) {
-        this.databases = databases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupProperties();
+        }
+        this.innerProperties().withDatabases(databases);
         return this;
     }
 
@@ -204,14 +191,8 @@ public class FailoverGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (readWriteEndpoint() != null) {
-            readWriteEndpoint().validate();
-        }
-        if (readOnlyEndpoint() != null) {
-            readOnlyEndpoint().validate();
-        }
-        if (partnerServers() != null) {
-            partnerServers().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

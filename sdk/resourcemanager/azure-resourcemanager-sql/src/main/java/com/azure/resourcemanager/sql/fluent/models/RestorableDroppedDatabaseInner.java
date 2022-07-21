@@ -4,20 +4,14 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A restorable dropped database. */
-@JsonFlatten
-@Immutable
-public class RestorableDroppedDatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedDatabaseInner.class);
-
+@Fluent
+public final class RestorableDroppedDatabaseInner extends ProxyResource {
     /*
      * The geo-location where the resource lives
      */
@@ -25,52 +19,10 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     private String location;
 
     /*
-     * The name of the database
+     * The properties of a restorable dropped database
      */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
-
-    /*
-     * The edition of the database
-     */
-    @JsonProperty(value = "properties.edition", access = JsonProperty.Access.WRITE_ONLY)
-    private String edition;
-
-    /*
-     * The max size in bytes of the database
-     */
-    @JsonProperty(value = "properties.maxSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private String maxSizeBytes;
-
-    /*
-     * The service level objective name of the database
-     */
-    @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceLevelObjective;
-
-    /*
-     * The elastic pool name of the database
-     */
-    @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
-    private String elasticPoolName;
-
-    /*
-     * The creation date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The deletion date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.deletionDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime deletionDate;
-
-    /*
-     * The earliest restore date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime earliestRestoreDate;
+    @JsonProperty(value = "properties")
+    private RestorableDroppedDatabaseProperties innerProperties;
 
     /**
      * Get the location property: The geo-location where the resource lives.
@@ -82,12 +34,21 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties of a restorable dropped database.
+     *
+     * @return the innerProperties value.
+     */
+    private RestorableDroppedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the databaseName property: The name of the database.
      *
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -96,7 +57,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the edition value.
      */
     public String edition() {
-        return this.edition;
+        return this.innerProperties() == null ? null : this.innerProperties().edition();
     }
 
     /**
@@ -105,7 +66,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
-        return this.maxSizeBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
     }
 
     /**
@@ -114,7 +75,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
-        return this.serviceLevelObjective;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevelObjective();
     }
 
     /**
@@ -123,7 +84,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
-        return this.elasticPoolName;
+        return this.innerProperties() == null ? null : this.innerProperties().elasticPoolName();
     }
 
     /**
@@ -132,7 +93,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -141,7 +102,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
-        return this.deletionDate;
+        return this.innerProperties() == null ? null : this.innerProperties().deletionDate();
     }
 
     /**
@@ -150,7 +111,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
-        return this.earliestRestoreDate;
+        return this.innerProperties() == null ? null : this.innerProperties().earliestRestoreDate();
     }
 
     /**
@@ -159,5 +120,8 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

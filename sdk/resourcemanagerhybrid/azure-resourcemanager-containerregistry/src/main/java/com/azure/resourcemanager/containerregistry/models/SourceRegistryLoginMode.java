@@ -27,7 +27,11 @@ public final class SourceRegistryLoginMode extends ExpandableStringEnum<SourceRe
         return fromString(name, SourceRegistryLoginMode.class);
     }
 
-    /** @return known SourceRegistryLoginMode values. */
+    /**
+     * Gets known SourceRegistryLoginMode values.
+     *
+     * @return known SourceRegistryLoginMode values.
+     */
     public static Collection<SourceRegistryLoginMode> values() {
         return values(SourceRegistryLoginMode.class);
     }

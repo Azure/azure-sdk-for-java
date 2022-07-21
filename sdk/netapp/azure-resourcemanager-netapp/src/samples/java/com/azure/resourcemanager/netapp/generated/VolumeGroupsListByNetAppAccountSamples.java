@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VolumeGroups ListByNetAppAccount. */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeGroups_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeGroups_List.json
      */
     /**
      * Sample code: VolumeGroups_List.

@@ -25,7 +25,8 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -45,7 +46,7 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseSecurityAlertPolicyInner> getAsync(
@@ -86,7 +87,7 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseSecurityAlertPolicyInner> getWithResponse(
@@ -104,11 +105,12 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -126,11 +128,11 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -148,7 +150,7 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,12 +172,12 @@ public interface DatabaseThreatDetectionPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(

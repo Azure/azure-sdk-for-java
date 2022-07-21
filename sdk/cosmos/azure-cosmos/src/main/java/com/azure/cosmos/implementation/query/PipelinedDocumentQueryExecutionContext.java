@@ -90,6 +90,24 @@ public class PipelinedDocumentQueryExecutionContext<T>
         return createAggregateComponentFunction;
     }
 
+    private static
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
+        createDistinctPipelineComponentFunction(
+            BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
+                createBaseComponent,
+            QueryInfo queryInfo) {
+
+        if (queryInfo.hasDistinct()) {
+            return
+                (continuationToken, documentQueryParams) ->
+                    DistinctDocumentQueryExecutionContext.createAsync(createBaseComponent,
+                        queryInfo.getDistinctQueryType(),
+                        continuationToken,
+                        documentQueryParams);
+        }
+        return createBaseComponent;
+    }
+
     private static BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createPipelineComponentFunction(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
