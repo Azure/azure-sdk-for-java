@@ -991,6 +991,7 @@
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
         <module>sdk/storageimportexport</module>
+        <module>sdk/storagemover</module>
         <module>sdk/storagepool</module>
         <module>sdk/streamanalytics</module>
         <module>sdk/subscription</module>

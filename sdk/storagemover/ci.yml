@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storagemover/ci.yml
+      - sdk/storagemover/azure-resourcemanager-storagemover/
+    exclude:
+      - sdk/storagemover/pom.xml
+      - sdk/storagemover/azure-resourcemanager-storagemover/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storagemover/ci.yml
+      - sdk/storagemover/azure-resourcemanager-storagemover/
+    exclude:
+      - sdk/storagemover/pom.xml
+      - sdk/storagemover/azure-resourcemanager-storagemover/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerstoragemover
+    displayName: azure-resourcemanager-storagemover
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: storagemover
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-storagemover
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstoragemover
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerstoragemover }}
