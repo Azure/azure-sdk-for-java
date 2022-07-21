@@ -13,23 +13,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
-import java.util.List;
 
-import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DownloadContentUnitTests {
 
-    private final String CONTENT = "VideoContents";
-    private final String AMS_ENDPOINT = "https://url.com";
+    private static final String CONTENT = "VideoContents";
+    private static final String AMS_ENDPOINT = "https://url.com";
     private CallRecording callRecording;
 
     @BeforeEach

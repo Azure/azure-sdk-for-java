@@ -97,14 +97,11 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
         try {
             StepVerifier.create(conversationAsyncClient.getCallRecordingAsync()
                     .downloadStreamWithResponse(VIDEO_URL, null, Context.NONE))
-                    .consumeNextWith(response -> {
-                        StepVerifier.create(response.getValue())
-                            .consumeNextWith(byteBuffer -> {
-                                assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
-                                    is(equalTo(byteBuffer.array().length)));
-                            })
-                            .verifyComplete();
-                    })
+                    .consumeNextWith(response -> StepVerifier.create(response.getValue())
+                        .consumeNextWith(byteBuffer ->
+                            assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
+                            is(equalTo(byteBuffer.array().length))))
+                        .verifyComplete())
                     .verifyComplete();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

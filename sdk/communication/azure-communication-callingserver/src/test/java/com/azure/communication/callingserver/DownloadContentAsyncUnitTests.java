@@ -33,7 +33,7 @@ import reactor.test.StepVerifier;
 public class DownloadContentAsyncUnitTests {
 
     private static final String CONTENTS = "VideoContents";
-    private final String AMS_ENDPOINT = "https://url.com";
+    private static final String AMS_ENDPOINT = "https://url.com";
 
     private CallRecordingAsync callRecording;
 
@@ -81,10 +81,8 @@ public class DownloadContentAsyncUnitTests {
 
         StepVerifier.create(
             callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length()), Context.NONE)
-        ).consumeNextWith(response -> {
-            StepVerifier.create(response.getValue())
-                .verifyError(NullPointerException.class);
-        });
+        ).consumeNextWith(response ->
+            StepVerifier.create(response.getValue()).verifyError(NullPointerException.class));
     }
 
     @Test
@@ -97,9 +95,7 @@ public class DownloadContentAsyncUnitTests {
 
         try {
             StepVerifier.create(callRecording.downloadToWithResponse(AMS_ENDPOINT, path, options, Context.NONE))
-                .consumeNextWith(response -> {
-                    assertEquals(200, response.getStatusCode());
-                }).verifyComplete();
+                .consumeNextWith(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
 
             file = path.toFile();
             assertTrue(file.exists(), "file does not exist");
