@@ -73,6 +73,7 @@ stages:
   - stage: Build
     jobs:
     - job: test
+      dependsOn:
       steps:
       - pwsh: Write-Host ${{ convertToJson(parameters) }}
     - template: /eng/pipelines/templates/jobs/ci.yml
