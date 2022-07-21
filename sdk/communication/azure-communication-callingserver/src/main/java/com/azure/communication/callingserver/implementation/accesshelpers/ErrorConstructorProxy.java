@@ -50,10 +50,9 @@ public final class ErrorConstructorProxy {
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new CallingServerErrorException();
+            throw new CallingServerErrorException();
         }
 
-        assert accessor != null;
         return accessor.create(internalResponse);
     }
 }

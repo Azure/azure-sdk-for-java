@@ -11,6 +11,7 @@ import com.azure.communication.callingserver.models.AddParticipantsResponse;
  */
 public final class AddParticipantsResponseConstructorProxy {
     private static AddParticipantsResponseConstructorAccessor accessor;
+    private static AddParticipantsResponse dummy;
 
     private AddParticipantsResponseConstructorProxy() { }
 
@@ -50,7 +51,7 @@ public final class AddParticipantsResponseConstructorProxy {
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new AddParticipantsResponse();
+            dummy = new AddParticipantsResponse();
         }
 
         assert accessor != null;
