@@ -84,6 +84,7 @@ parameters:
 extends:
   template: build-and-test.yml
   parameters:
+    ServiceDirectory: core
     Artifacts:
       - name: azure-core
         groupId: com.azure
@@ -137,4 +138,4 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
-    ReleaseDependsOnLiveTests: false
+    ReleaseDependsOnLiveTests: true
