@@ -4,14 +4,31 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.CompletionHandler;
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions> {
+
+    private static final boolean HAS_NEW_DOWNLOAD;
+
+    static {
+        HAS_NEW_DOWNLOAD = Arrays.stream(BlobDownloadAsyncResponse.class.getDeclaredMethods())
+            .anyMatch(method -> method.getName().equals("writeValueToAsync"));
+    }
+
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
+    private final AsynchronousByteChannel DEV_NULL_CHANNEL = new BlackHoleAsynchronousByteChannel();
 
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
@@ -29,17 +46,66 @@ public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.download()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
+        if (HAS_NEW_DOWNLOAD) {
+            return blobAsyncClient.downloadStreamWithResponse(null, null, null, false)
+                .flatMap(response -> response.writeValueToAsync(DEV_NULL_CHANNEL, null));
+        } else {
+            return blobAsyncClient.downloadStream()
+                .map(b -> {
+                    int readCount = 0;
+                    int remaining = b.remaining();
+                    while (readCount < remaining) {
+                        int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                        b.get(buffer, 0, expectedReadCount);
+                        readCount += expectedReadCount;
+                    }
 
-                return 1;
-            }).then();
+                    return 1;
+                }).then();
+        }
+    }
+
+    private final class BlackHoleAsynchronousByteChannel implements AsynchronousByteChannel {
+
+        @Override
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            handler.failed(new UnsupportedOperationException(), attachment);
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst) {
+            CompletableFuture<Integer> future = new CompletableFuture<>();
+            future.completeExceptionally(new UnsupportedOperationException());
+            return future;
+        }
+
+        @Override
+        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            int readCount = 0;
+            int remaining = src.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                src.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
+            handler.completed(readCount, attachment);
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src) {
+            CompletableFuture<Integer> future = new CompletableFuture<>();
+            future.completeExceptionally(new UnsupportedOperationException());
+            return future;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return true;
+        }
+
+        @Override
+        public void close() throws IOException {
+
+        }
     }
 }
