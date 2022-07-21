@@ -103,13 +103,9 @@ class PartitionResolver {
      */
     @SuppressWarnings("fallthrough")
     private static Hashed computeHash(byte[] data, int seed1, int seed2) {
-        int a;
-        int b;
-        int c;
-
-        a = b = c = (0xdeadbeef + data.length + seed1);
-        c += seed2;
-
+        int a = (0xdeadbeef + data.length + seed1);
+        int b = a;
+        int c = a + seed2;
 
         final ByteBuffer buffer = ByteBuffer.allocate(data.length)
             .put(data);
@@ -159,27 +155,38 @@ class PartitionResolver {
                 b += buffer.getInt(index + 4);
                 c += buffer.getInt(index + 8);
                 break;
+
+            // fallthrough
             case 11:
                 c += data[index + 10] << 16;
+            // fallthrough
             case 10:
                 c += data[index + 9] << 8;
+            // fallthrough
             case 9:
                 c += data[index + 8];
             case 8:
                 b += buffer.getInt(index + 4);
                 a += buffer.getInt(index);
                 break;
+
+            // fallthrough
             case 7:
                 b += data[index + 6] << 16;
+            // fallthrough
             case 6:
                 b += data[index + 5] << 8;
+            // fallthrough
             case 5:
                 b += data[index + 4];
             case 4:
                 a += buffer.getInt(index);
                 break;
+
+            // fallthrough
             case 3:
                 a += data[index + 2] << 16;
+            // fallthrough
             case 2:
                 a += data[index + 1] << 8;
             case 1:

@@ -64,7 +64,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             batchSupplier, LOGGER);
 
         if (!downstreamSubscription.compareAndSet(null, subscription)) {
-            throw new IllegalArgumentException("Cannot resubscribe to multiple upstreams.");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                "Cannot resubscribe to multiple upstreams."));
         }
 
         source.subscribe(subscription);
