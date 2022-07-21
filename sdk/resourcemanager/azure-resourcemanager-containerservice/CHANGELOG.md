@@ -2,6 +2,10 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `beginCreateAgentPool` in `KubernetesCluster`.
+
 ### Other Changes
 
 - Deprecated method `KubernetesClusters.listKubernetesVersions`. Use `KubernetesClusters.listOrchestrators`.
@@ -17,8 +21,6 @@
 - Replaced property `azureDefender` with `defender` of type `ManagedClusterSecurityProfileDefender` 
   in `ManagedClusterSecurityProfile`.
 - Removed class `ManagedClusterSecurityProfileAzureDefender`.
-
-### Other Changes
 
 #### Dependency Updates
 

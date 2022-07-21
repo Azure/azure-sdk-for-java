@@ -8,14 +8,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourceInner;
+import com.azure.resourcemanager.containerservice.models.AgentPool;
+import com.azure.resourcemanager.containerservice.models.AgentPoolData;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
@@ -39,6 +43,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
@@ -295,6 +301,21 @@ public class KubernetesClusterImpl
     @Override
     public Mono<Void> stopAsync() {
         return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public Accepted<AgentPool> beginCreateAgentPool(String agentPoolName, AgentPoolData agentPool) {
+        return AcceptedImpl.<AgentPool, AgentPoolInner>newAccepted(
+            logger,
+            this.manager().serviceClient().getHttpPipeline(),
+            this.manager().serviceClient().getDefaultPollInterval(),
+            () -> this.manager().serviceClient().getAgentPools()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel())
+                .block(),
+            AgentPoolData::new,
+            AgentPoolInner.class,
+            null,
+            Context.NONE);
     }
 
     @Override
