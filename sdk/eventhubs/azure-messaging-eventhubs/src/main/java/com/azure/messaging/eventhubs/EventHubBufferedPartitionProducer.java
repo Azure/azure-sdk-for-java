@@ -146,7 +146,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
     /**
      * Static class to hold results.
      */
-    private static final class PublishResult {
+    private static class PublishResult {
         private final EventDataBatch batch;
         private final Throwable error;
 
@@ -156,7 +156,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         }
     }
 
-    private static final class PublishResultSubscriber extends BaseSubscriber<PublishResult> {
+    private static class PublishResultSubscriber extends BaseSubscriber<PublishResult> {
         private static final long REQUEST = 1L;
         private final String partitionId;
         private final Consumer<SendBatchSucceededContext> onSucceed;
