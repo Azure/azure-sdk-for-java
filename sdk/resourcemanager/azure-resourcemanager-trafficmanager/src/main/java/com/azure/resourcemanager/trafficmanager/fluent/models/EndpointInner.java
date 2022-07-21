@@ -123,7 +123,6 @@ public class EndpointInner extends ProxyResource {
     @JsonProperty(value = "type")
     private String type;
 
-
     /**
      * Get the targetResourceId property: The Azure Resource URI of the of the endpoint. Not applicable to endpoints of
      * type 'ExternalEndpoints'.
