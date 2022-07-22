@@ -24,7 +24,7 @@ parameters:
 
 steps:
 - pwsh: |
-    $serviceDirectory = ${{ parameters.ServiceDirectory }}
+    $serviceDirectory = '${{ parameters.ServiceDirectory }}'
     $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
     $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
 
