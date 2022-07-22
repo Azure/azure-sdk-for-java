@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -27,9 +27,14 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.implementation.http.rest.ErrorOptions;
-import com.azure.core.implementation.http.rest.MissingRequiredAnnotationException;
-import com.azure.core.implementation.http.rest.SwaggerMethodParser;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.TypeUtil;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -39,13 +44,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -369,7 +381,7 @@ public class SwaggerMethodParserTests {
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @Get("test")
-        @Headers({ "sub1:sub1", "sub2:false" })
+        @Headers({"sub1:sub1", "sub2:false"})
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @Get("test")
@@ -507,7 +519,8 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("setRequestOptionsSupplier")
-    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments, RequestOptions expectedRequestOptions) {
+    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
+        RequestOptions expectedRequestOptions) {
         assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
     }
 
@@ -525,14 +538,15 @@ public class SwaggerMethodParserTests {
         RequestOptions urlOptions = new RequestOptions()
             .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
 
-        RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
+        // Add this test back if error options is ever made public.
+        // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(
             Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
             Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray(urlOptions), urlOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
+            Arguments.of(swaggerMethodParser, toObjectArray(urlOptions), urlOptions)
+            // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
         );
     }
 
@@ -541,11 +555,11 @@ public class SwaggerMethodParserTests {
         void noExpectedStatusCodes();
 
         @Get("test")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         void only200IsExpected();
 
         @Get("test")
-        @ExpectedResponses({ 429, 503 })
+        @ExpectedResponses({429, 503})
         void retryAfterExpected();
     }
 
@@ -570,14 +584,14 @@ public class SwaggerMethodParserTests {
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 200, null, true),
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 201, null, true),
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 400, null, false),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[] {200}, true),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[] {200}, false),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[] {200}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[] {429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[] {429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[] {429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[] {429, 503}, true),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[] {429, 503}, true)
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[]{200}, true),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[]{200}, false),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[]{200}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[]{429, 503}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[]{429, 503}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[]{429, 503}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[]{429, 503}, true),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[]{429, 503}, true)
         );
     }
 
@@ -620,6 +634,207 @@ public class SwaggerMethodParserTests {
             Arguments.of(customDefault, 400, ResourceNotFoundException.class),
             Arguments.of(customDefault, 404, ResourceNotFoundException.class)
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("isReturnTypeDecodeableSupplier")
+    public void isReturnTypeDecodable(Type returnType, boolean expected) {
+        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
+        assertEquals(expected, SwaggerMethodParser.isReturnTypeDecodeable(unwrappedReturnType));
+    }
+
+    private static Stream<Arguments> isReturnTypeDecodeableSupplier() {
+        return returnTypeSupplierForDecodeableAndEagerReading(false);
+    }
+
+    @ParameterizedTest
+    @MethodSource("isResponseEagerlyReadSupplier")
+    public void isResponseEagerlyRead(Type returnType, boolean expected) {
+        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
+        assertEquals(expected, SwaggerMethodParser.isResponseEagerlyRead(unwrappedReturnType));
+    }
+
+    private static Stream<Arguments> isResponseEagerlyReadSupplier() {
+        return returnTypeSupplierForDecodeableAndEagerReading(true);
+    }
+
+    private static Stream<Arguments> returnTypeSupplierForDecodeableAndEagerReading(boolean voidTypeStatus) {
+        return Stream.of(
+            // Unknown response type can't be determined to be decode-able.
+            Arguments.of(null, false),
+
+            // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decode-able.
+            Arguments.of(BinaryData.class, false),
+
+            Arguments.of(byte[].class, false),
+
+            // Both ByteBuffer and sub-types shouldn't be decode-able.
+            Arguments.of(ByteBuffer.class, false),
+            Arguments.of(MappedByteBuffer.class, false),
+
+            // Both InputSteam and sub-types shouldn't be decode-able.
+            Arguments.of(InputStream.class, false),
+            Arguments.of(FileInputStream.class, false),
+
+            Arguments.of(void.class, voidTypeStatus),
+            Arguments.of(Void.class, voidTypeStatus),
+            Arguments.of(Void.TYPE, voidTypeStatus),
+
+            // Other POJO types are decode-able.
+            Arguments.of(JsonPatchDocument.class, true),
+
+            // In addition to the direct types, reactive and Response generic types should be handled.
+
+            // Reactive generics.
+            // Mono generics.
+            Arguments.of(createParameterizedMono(BinaryData.class), false),
+            Arguments.of(createParameterizedMono(byte[].class), false),
+            Arguments.of(createParameterizedMono(ByteBuffer.class), false),
+            Arguments.of(createParameterizedMono(MappedByteBuffer.class), false),
+            Arguments.of(createParameterizedMono(InputStream.class), false),
+            Arguments.of(createParameterizedMono(FileInputStream.class), false),
+            Arguments.of(createParameterizedMono(void.class), voidTypeStatus),
+            Arguments.of(createParameterizedMono(Void.class), voidTypeStatus),
+            Arguments.of(createParameterizedMono(Void.TYPE), voidTypeStatus),
+            Arguments.of(createParameterizedMono(JsonPatchDocument.class), true),
+
+            // Flux generics.
+            Arguments.of(createParameterizedFlux(BinaryData.class), false),
+            Arguments.of(createParameterizedFlux(byte[].class), false),
+            Arguments.of(createParameterizedFlux(ByteBuffer.class), false),
+            Arguments.of(createParameterizedFlux(MappedByteBuffer.class), false),
+            Arguments.of(createParameterizedFlux(InputStream.class), false),
+            Arguments.of(createParameterizedFlux(FileInputStream.class), false),
+            Arguments.of(createParameterizedFlux(void.class), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(Void.class), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(Void.TYPE), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(JsonPatchDocument.class), true),
+
+
+            // Response generics.
+            // If the raw type is Response it should check the first, and only, generic type.
+            Arguments.of(createParameterizedResponse(BinaryData.class), false),
+            Arguments.of(createParameterizedResponse(byte[].class), false),
+            Arguments.of(createParameterizedResponse(ByteBuffer.class), false),
+            Arguments.of(createParameterizedResponse(MappedByteBuffer.class), false),
+            Arguments.of(createParameterizedResponse(InputStream.class), false),
+            Arguments.of(createParameterizedResponse(FileInputStream.class), false),
+            Arguments.of(createParameterizedResponse(void.class), voidTypeStatus),
+            Arguments.of(createParameterizedResponse(Void.class), voidTypeStatus),
+            Arguments.of(createParameterizedResponse(Void.TYPE), voidTypeStatus),
+            Arguments.of(createParameterizedResponse(JsonPatchDocument.class), true),
+
+            // If the raw type is ResponseBase it should check the second generic type, the first is deserialized
+            // headers.
+            Arguments.of(createParameterizedResponseBase(BinaryData.class), false),
+            Arguments.of(createParameterizedResponseBase(byte[].class), false),
+            Arguments.of(createParameterizedResponseBase(ByteBuffer.class), false),
+            Arguments.of(createParameterizedResponseBase(MappedByteBuffer.class), false),
+            Arguments.of(createParameterizedResponseBase(InputStream.class), false),
+            Arguments.of(createParameterizedResponseBase(FileInputStream.class), false),
+            Arguments.of(createParameterizedResponseBase(void.class), voidTypeStatus),
+            Arguments.of(createParameterizedResponseBase(Void.class), voidTypeStatus),
+            Arguments.of(createParameterizedResponseBase(Void.TYPE), voidTypeStatus),
+            Arguments.of(createParameterizedResponseBase(JsonPatchDocument.class), true),
+
+            // Reactive generics containing response generics.
+            // Mono of Response
+            Arguments.of(createParameterizedMono(createParameterizedResponse(BinaryData.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(byte[].class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(ByteBuffer.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(InputStream.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(FileInputStream.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(Void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)), true),
+
+            // Mono of ResponseBase
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(BinaryData.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(byte[].class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(ByteBuffer.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(InputStream.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)), false),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)), true),
+
+            // Flux of Response
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(BinaryData.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(byte[].class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(ByteBuffer.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(InputStream.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(FileInputStream.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)), true),
+
+            // Flux of ResponseBase
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(BinaryData.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(byte[].class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(ByteBuffer.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(InputStream.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)), false),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.class)), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), true),
+
+            // Custom implementations of Response and ResponseBase.
+            Arguments.of(VoidResponse.class, voidTypeStatus),
+            Arguments.of(StringResponse.class, true),
+
+            Arguments.of(VoidResponseWithDeserializedHeaders.class, voidTypeStatus),
+            Arguments.of(StringResponseWithDeserializedHeaders.class, true)
+        );
+    }
+
+    private static ParameterizedType createParameterizedMono(Type genericType) {
+        return TypeUtil.createParameterizedType(Mono.class, genericType);
+    }
+
+    private static ParameterizedType createParameterizedFlux(Type genericType) {
+        return TypeUtil.createParameterizedType(Flux.class, genericType);
+    }
+
+    private static ParameterizedType createParameterizedResponse(Type genericType) {
+        return TypeUtil.createParameterizedType(Response.class, genericType);
+    }
+
+    private static ParameterizedType createParameterizedResponseBase(Type genericType) {
+        return TypeUtil.createParameterizedType(ResponseBase.class, HttpHeaders.class, genericType);
+    }
+
+    private static final class VoidResponse extends SimpleResponse<Void> {
+        VoidResponse(Response<?> response, Void value) {
+            super(response, value);
+        }
+    }
+
+    private static final class StringResponse extends SimpleResponse<String> {
+        StringResponse(Response<?> response, String value) {
+            super(response, value);
+        }
+    }
+
+    private static final class VoidResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, Void> {
+        VoidResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers, Void value,
+            HttpHeaders deserializedHeaders) {
+            super(request, statusCode, headers, value, deserializedHeaders);
+        }
+    }
+
+    private static final class StringResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, String> {
+        StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers,
+            String value, HttpHeaders deserializedHeaders) {
+            super(request, statusCode, headers, value, deserializedHeaders);
+        }
     }
 
     private static Object[] toObjectArray(Object... objects) {
