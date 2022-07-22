@@ -20,23 +20,6 @@ import java.util.concurrent.ConcurrentMap;
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
  */
 public final class QueryMetrics {
-    public final static QueryMetrics ZERO = new QueryMetrics(
-        new ArrayList<>(), /* */
-        0, /* retrievedDocumentCount */
-        0, /* retrievedDocumentSize */
-        0, /* outputDocumentCount */
-        0, /* outputDocumentSize */
-        0, /* indexHitCount */
-        Duration.ZERO,
-        QueryPreparationTimes.ZERO,
-        Duration.ZERO,
-        Duration.ZERO,
-        Duration.ZERO,
-        RuntimeExecutionTimes.ZERO,
-        Duration.ZERO,
-        ClientSideMetrics.ZERO,
-        IndexUtilizationInfo.ZERO);
-
     private final long retrievedDocumentCount;
     private final long retrievedDocumentSize;
     private final long outputDocumentCount;
