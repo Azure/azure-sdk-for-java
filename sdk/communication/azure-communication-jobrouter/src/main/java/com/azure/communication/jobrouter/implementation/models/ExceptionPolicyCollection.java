@@ -4,7 +4,6 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
-import com.azure.communication.jobrouter.models.PagedExceptionPolicy;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +15,7 @@ public final class ExceptionPolicyCollection {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<PagedExceptionPolicy> value;
+    private List<ExceptionPolicyItem> value;
 
     /*
      * The nextLink property.
@@ -29,7 +28,7 @@ public final class ExceptionPolicyCollection {
      *
      * @return the value value.
      */
-    public List<PagedExceptionPolicy> getValue() {
+    public List<ExceptionPolicyItem> getValue() {
         return this.value;
     }
 
@@ -39,7 +38,7 @@ public final class ExceptionPolicyCollection {
      * @param value the value value to set.
      * @return the ExceptionPolicyCollection object itself.
      */
-    public ExceptionPolicyCollection setValue(List<PagedExceptionPolicy> value) {
+    public ExceptionPolicyCollection setValue(List<ExceptionPolicyItem> value) {
         this.value = value;
         return this;
     }

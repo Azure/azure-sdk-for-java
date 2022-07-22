@@ -4,7 +4,6 @@
 
 package com.azure.communication.jobrouter.implementation.models;
 
-import com.azure.communication.jobrouter.models.JobExceptionTrigger;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,31 +15,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class WaitTimeExceptionTrigger extends JobExceptionTrigger {
     /*
-     * Threshold for wait time for this trigger. Requires input conforming to
-     * ISO8601 duration format.
+     * Threshold for wait time for this trigger.
      */
-    @JsonProperty(value = "threshold", required = true)
-    private String threshold;
+    @JsonProperty(value = "thresholdSeconds", required = true)
+    private double thresholdSeconds;
 
     /**
-     * Get the threshold property: Threshold for wait time for this trigger. Requires input conforming to ISO8601
-     * duration format.
+     * Get the thresholdSeconds property: Threshold for wait time for this trigger.
      *
-     * @return the threshold value.
+     * @return the thresholdSeconds value.
      */
-    public String getThreshold() {
-        return this.threshold;
+    public double getThresholdSeconds() {
+        return this.thresholdSeconds;
     }
 
     /**
-     * Set the threshold property: Threshold for wait time for this trigger. Requires input conforming to ISO8601
-     * duration format.
+     * Set the thresholdSeconds property: Threshold for wait time for this trigger.
      *
-     * @param threshold the threshold value to set.
+     * @param thresholdSeconds the thresholdSeconds value to set.
      * @return the WaitTimeExceptionTrigger object itself.
      */
-    public WaitTimeExceptionTrigger setThreshold(String threshold) {
-        this.threshold = threshold;
+    public WaitTimeExceptionTrigger setThresholdSeconds(double thresholdSeconds) {
+        this.thresholdSeconds = thresholdSeconds;
         return this;
     }
 }

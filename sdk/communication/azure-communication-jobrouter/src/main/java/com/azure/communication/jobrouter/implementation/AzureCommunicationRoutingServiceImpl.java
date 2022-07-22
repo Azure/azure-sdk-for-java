@@ -62,6 +62,18 @@ public final class AzureCommunicationRoutingServiceImpl {
         return this.serializerAdapter;
     }
 
+    /** The JobRouterAdministrationsImpl object to access its operations. */
+    private final JobRouterAdministrationsImpl jobRouterAdministrations;
+
+    /**
+     * Gets the JobRouterAdministrationsImpl object to access its operations.
+     *
+     * @return the JobRouterAdministrationsImpl object.
+     */
+    public JobRouterAdministrationsImpl getJobRouterAdministrations() {
+        return this.jobRouterAdministrations;
+    }
+
     /** The JobRoutersImpl object to access its operations. */
     private final JobRoutersImpl jobRouters;
 
@@ -115,6 +127,7 @@ public final class AzureCommunicationRoutingServiceImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
+        this.jobRouterAdministrations = new JobRouterAdministrationsImpl(this);
         this.jobRouters = new JobRoutersImpl(this);
     }
 }

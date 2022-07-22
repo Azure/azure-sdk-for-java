@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A paged collection of queues. */
+/** A paged collection of distribution policies. */
 @Fluent
-public final class QueueCollection {
+public final class DistributionPolicyCollection {
     /*
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<JobQueueItem> value;
+    private List<DistributionPolicyItem> value;
 
     /*
      * The nextLink property.
@@ -28,7 +28,7 @@ public final class QueueCollection {
      *
      * @return the value value.
      */
-    public List<JobQueueItem> getValue() {
+    public List<DistributionPolicyItem> getValue() {
         return this.value;
     }
 
@@ -36,9 +36,9 @@ public final class QueueCollection {
      * Set the value property: The value property.
      *
      * @param value the value value to set.
-     * @return the QueueCollection object itself.
+     * @return the DistributionPolicyCollection object itself.
      */
-    public QueueCollection setValue(List<JobQueueItem> value) {
+    public DistributionPolicyCollection setValue(List<DistributionPolicyItem> value) {
         this.value = value;
         return this;
     }
