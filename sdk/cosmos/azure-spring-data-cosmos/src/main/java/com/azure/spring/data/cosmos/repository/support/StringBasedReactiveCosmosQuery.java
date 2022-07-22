@@ -6,17 +6,19 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.exception.*;
 import com.azure.spring.data.cosmos.repository.query.AbstractReactiveCosmosQuery;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
 import com.azure.spring.data.cosmos.repository.query.SimpleReactiveCosmosEntityMetadata;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.ResultProcessor;
+import org.springframework.data.repository.query.*;
+import org.springframework.data.util.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -50,13 +52,27 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
                                                                                               parameters);
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
-        List<SqlParameter> sqlParameters = getQueryMethod().getParameters().stream()
-                            .filter(p -> !Sort.class.isAssignableFrom(p.getType()))
-                            .map(p -> new SqlParameter("@" + p.getName().orElse(""),
-                                                       toCosmosDbValue(parameters[p.getIndex()])))
-                            .collect(Collectors.toList());
+        String expandedQuery = query;
+        List<SqlParameter> sqlParameters = new ArrayList<>();
+        for (int i=0; i<parameters.length; i++) {
+            Parameter queryParam = getQueryMethod().getParameters().getParameter(i);
+            if (parameters[i] instanceof Collection) {
+                ArrayList expandParam = (ArrayList) parameters[i];
+                List<String> expandedParamKeys = new ArrayList<>();
+                for (int j=0; j<expandParam.size(); j++) {
+                    String paramName = "@" + queryParam.getName().orElse("") + j;
+                    expandedParamKeys.add(paramName);
+                    sqlParameters.add(new SqlParameter(paramName, toCosmosDbValue(expandParam.get(j))));
+                }
+                expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
+            } else {
+                if (!Sort.class.isAssignableFrom(queryParam.getType())) {
+                    sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[i])));
+                }
+            }
+        }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query, sqlParameters);
+        SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
         if (isCountQuery()) {
             final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             final Mono<Long> mono = this.operations.count(querySpec, container);

@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -31,6 +31,8 @@ public class ReactiveRoleRepositoryIT {
                                                      TestConstants.ROLE_NAME, TestConstants.LEVEL);
     private static final Role TEST_ROLE_3 = new Role(TestConstants.ID_3, true,
                                                      TestConstants.ROLE_NAME, TestConstants.LEVEL);
+    private static final Role TEST_ROLE_4 = new Role(TestConstants.ID_4, true,
+                                                     TestConstants.ROLE_NAME, TestConstants.LEVEL_2);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -43,7 +45,7 @@ public class ReactiveRoleRepositoryIT {
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Role.class);
-        final Flux<Role> savedFlux = repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3));
+        final Flux<Role> savedFlux = repository.saveAll(Arrays.asList(TEST_ROLE_1, TEST_ROLE_2, TEST_ROLE_3, TEST_ROLE_4));
         StepVerifier.create(savedFlux).thenConsumeWhile(role -> true).expectComplete().verify();
     }
 
@@ -68,4 +70,26 @@ public class ReactiveRoleRepositoryIT {
             .verifyComplete();
     }
 
+    @Test
+    public void testAnnotatedQueryWithMultipleLevels() {
+        List<String> levels = new ArrayList<>();
+        levels.add(TestConstants.LEVEL);
+        final Flux<Role> roleAscFlux = repository.annotatedFindRoleByLevelIn(levels, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .verifyComplete();
+
+        List<String> levels2 = new ArrayList<>();
+        levels2.add(TestConstants.LEVEL);
+        levels2.add(TestConstants.LEVEL_2);
+        final Flux<Role> roleAscFlux2 = repository.annotatedFindRoleByLevelIn(levels2, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux2)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
+            .verifyComplete();
+    }
 }

@@ -55,6 +55,7 @@ public final class TestConstants {
     public static final String UPDATED_FIRST_NAME = "updated_first_name";
     public static final String UPDATED_LAST_NAME = "updated_last_name";
     public static final String LEVEL = "B";
+    public static final String LEVEL_2 = "C";
     public static final String ROLE_NAME = "Developer";
     public static final String NOT_EXIST_ID = "non_exist_id";
 
