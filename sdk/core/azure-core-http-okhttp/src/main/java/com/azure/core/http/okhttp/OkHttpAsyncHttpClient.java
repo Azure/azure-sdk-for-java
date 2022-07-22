@@ -197,6 +197,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
          * empty.
          */
         if (eagerlyReadResponse) {
+            response.close();
             try (ResponseBody body = response.body()) {
                 if (Objects.nonNull(body)) {
                     byte[] bytes = body.bytes();

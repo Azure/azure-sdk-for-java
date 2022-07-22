@@ -8,11 +8,16 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Objects;
+
+import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
 
 /**
  * Default {@link XmlWriter} implementation based on {@link XMLStreamWriter}.
  */
 public final class DefaultXmlWriter extends XmlWriter {
+    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newFactory();
+
     private final XMLStreamWriter writer;
 
     /**
@@ -24,7 +29,7 @@ public final class DefaultXmlWriter extends XmlWriter {
      */
     public static XmlWriter fromOutputStream(OutputStream outputStream) {
         try {
-            return new DefaultXmlWriter(XMLOutputFactory.newFactory().createXMLStreamWriter(outputStream));
+            return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(outputStream));
         } catch (XMLStreamException ex) {
             throw new RuntimeException(ex);
         }
@@ -62,7 +67,13 @@ public final class DefaultXmlWriter extends XmlWriter {
     @Override
     public XmlWriter writeStartElement(String prefix, String namespaceUri, String localName) {
         try {
-            writer.writeStartElement(prefix, localName, getActualNamespaceUri(namespaceUri, prefix));
+            if (prefix == null && namespaceUri == null) {
+                writer.writeStartElement(localName);
+            } else if (prefix == null) {
+                writer.writeStartElement(namespaceUri, localName);
+            } else {
+                writer.writeStartElement(prefix, localName, getActualNamespaceUri(namespaceUri, prefix));
+            }
             return this;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
@@ -82,7 +93,46 @@ public final class DefaultXmlWriter extends XmlWriter {
     @Override
     public XmlWriter writeStartSelfClosingElement(String prefix, String namespaceUri, String localName) {
         try {
-            writer.writeEmptyElement(prefix, localName, getActualNamespaceUri(namespaceUri, prefix));
+            if (prefix == null && namespaceUri == null) {
+                writer.writeEmptyElement(localName);
+            } else if (prefix == null) {
+                writer.writeEmptyElement(namespaceUri, localName);
+            } else {
+                writer.writeEmptyElement(prefix, localName, getActualNamespaceUri(namespaceUri, prefix));
+            }
+            return this;
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public XmlWriter writeNamespace(String namespaceUri) {
+        if (Objects.equals(writer.getNamespaceContext().getNamespaceURI(DEFAULT_NS_PREFIX), namespaceUri)) {
+            return this;
+        }
+
+        try {
+            writer.setDefaultNamespace(namespaceUri);
+            writer.writeDefaultNamespace(namespaceUri);
+            return this;
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public XmlWriter writeNamespace(String prefix, String namespaceUri) {
+        if (prefix == null) {
+            return writeNamespace(namespaceUri);
+        }
+
+        if (Objects.equals(writer.getNamespaceContext().getNamespaceURI(prefix), namespaceUri)) {
+            return this;
+        }
+
+        try {
+            writer.writeNamespace(prefix, namespaceUri);
             return this;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
@@ -112,7 +162,13 @@ public final class DefaultXmlWriter extends XmlWriter {
     @Override
     public XmlWriter writeStringAttribute(String prefix, String namespaceUri, String localName, String value) {
         try {
-            writer.writeAttribute(prefix, getActualNamespaceUri(namespaceUri, prefix), localName, value);
+            if (prefix == null && namespaceUri == null) {
+                writer.writeAttribute(localName, value);
+            } else if (prefix == null) {
+                writer.writeAttribute(namespaceUri, localName, value);
+            } else {
+                writer.writeAttribute(prefix, localName, getActualNamespaceUri(namespaceUri, prefix), value);
+            }
             return this;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);

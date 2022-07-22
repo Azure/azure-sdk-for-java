@@ -17,30 +17,63 @@ import java.io.StringReader;
  * Default {@link XmlWriter} implementation based on {@link XMLStreamReader}.
  */
 public final class DefaultXmlReader extends XmlReader {
+    private static final XMLInputFactory XML_INPUT_FACTORY;
+
+    static {
+        XML_INPUT_FACTORY = XMLInputFactory.newFactory();
+        XML_INPUT_FACTORY.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+        XML_INPUT_FACTORY.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+    }
+
     private final XMLStreamReader reader;
 
-    private XmlToken currentToken = null;
-    private int attributeIndex = -1;
+    private XmlToken currentToken;
 
+    /**
+     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     */
     public static XmlReader fromBytes(byte[] xml) {
         return fromInputStream(new ByteArrayInputStream(xml));
     }
 
+    /**
+     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     */
     public static XmlReader fromString(String xml) {
         return fromReader(new StringReader(xml));
     }
 
-    public static XmlReader fromInputStream(InputStream inputStream) {
+    /**
+     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     * @throws RuntimeException If an {@link XmlReader} cannot be instantiated.
+     */
+    public static XmlReader fromInputStream(InputStream xml) {
         try {
-            return new DefaultXmlReader(XMLInputFactory.newFactory().createXMLStreamReader(inputStream));
+            return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static XmlReader fromReader(Reader reader) {
+    /**
+     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     *
+     * @param xml The XML to parse.
+     * @return A new {@link XmlReader} instance.
+     * @throws RuntimeException If an {@link XmlReader} cannot be instantiated.
+     */
+    public static XmlReader fromReader(Reader xml) {
         try {
-            return new DefaultXmlReader(XMLInputFactory.newFactory().createXMLStreamReader(reader));
+            return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
@@ -48,6 +81,7 @@ public final class DefaultXmlReader extends XmlReader {
 
     private DefaultXmlReader(XMLStreamReader reader) {
         this.reader = reader;
+        this.currentToken = convertEventToToken(reader.getEventType());
     }
 
     @Override
@@ -56,16 +90,14 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public XmlToken nextToken() {
+    public XmlToken nextElement() {
         try {
-            currentToken = convertEventToToken(reader);
-
-            if (currentToken == XmlToken.ATTRIBUTE) {
-                attributeIndex = attributeIndex == -1 ? 0 : attributeIndex + 1;
-            } else {
-                attributeIndex = -1;
+            XmlToken next = convertEventToToken(reader.next());
+            while (next != XmlToken.START_ELEMENT && next != XmlToken.END_ELEMENT && next != XmlToken.END_DOCUMENT) {
+                next = convertEventToToken(reader.next());
             }
 
+            currentToken = next;
             return currentToken;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
@@ -74,12 +106,21 @@ public final class DefaultXmlReader extends XmlReader {
 
     @Override
     public QName getElementName() {
-         return reader.getName();
+        return reader.getName();
     }
 
     @Override
-    public QName getAttributeName() {
-        return reader.getAttributeName(attributeIndex);
+    public String getElementStringValue() {
+        try {
+            return reader.getElementText();
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getAttributeStringValue(String namespaceUri, String localName) {
+        return reader.getAttributeValue(namespaceUri, localName);
     }
 
     @Override
@@ -91,9 +132,7 @@ public final class DefaultXmlReader extends XmlReader {
         }
     }
 
-    private static XmlToken convertEventToToken(XMLStreamReader reader) throws XMLStreamException {
-        int event = reader.next();
-
+    private static XmlToken convertEventToToken(int event) {
         switch (event) {
             case 1:
                 return XmlToken.START_ELEMENT;

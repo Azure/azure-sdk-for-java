@@ -116,6 +116,23 @@ public abstract class XmlWriter implements Closeable {
     public abstract XmlWriter writeEndElement();
 
     /**
+     * Writes a default XML namespace.
+     *
+     * @param namespaceUri Namespace URI to bind as the default namespace.
+     * @return The updated XmlWriter object.
+     */
+    public abstract XmlWriter writeNamespace(String namespaceUri);
+
+    /**
+     * Writes an XML namespace bound to the specified prefix.
+     *
+     * @param prefix Prefix to bind the namespace.
+     * @param namespaceUri Namespace URI to bind to the prefix.
+     * @return The updated XmlWriter object.
+     */
+    public abstract XmlWriter writeNamespace(String prefix, String namespaceUri);
+
+    /**
      * Writes a String attribute ({@code attribute="value"}).
      *
      * @param localName Name of the attribute.
