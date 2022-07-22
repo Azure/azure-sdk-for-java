@@ -56,13 +56,13 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
     $xmlPomFile = New-Object xml
     $xmlPomFile.Load($file.FullName)
     $serviceDirectory = (Get-Item $file).Directory.Parent
-    Write-Host "Moary debug *** service dir name=$serviceDirectory.name"
+    Write-Host $serviceDirectory.Name
     Write-Host "Moary debug ***" + $xmlPomFile.project.groupId + ":" + $xmlPomFile.project.artifactId
-    if ($serviceDirectory.name -ne "spring" -and $serviceDirectory.name -ne "spring-3")
+    if ($serviceDirectory.Name -ne "spring" -and $serviceDirectory.Name -ne "spring-3")
     {
         $library = $xmlPomFile.project.groupId + ":" + $xmlPomFile.project.artifactId
     } else {
-        $library = "./sdk/" + $serviceDirectory.name + "/" + $xmlPomFile.project.artifactId
+        $library = "./sdk/" + $serviceDirectory.Name + "/" + $xmlPomFile.project.artifactId
     }
     Write-Host "Moary debug ***library=$library"
     # This if check is only necessary because resourcemanager and resourcemanagerhybrid contain the
