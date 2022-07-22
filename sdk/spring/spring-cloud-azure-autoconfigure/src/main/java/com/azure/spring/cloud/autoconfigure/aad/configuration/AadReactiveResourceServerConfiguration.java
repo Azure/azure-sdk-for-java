@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
+import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebFluxSecurityConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
@@ -14,10 +14,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -26,6 +24,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -38,9 +37,9 @@ import java.util.List;
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @Conditional(ResourceServerCondition.class)
-public class AadResourceServerConfiguration {
+public class AadReactiveResourceServerConfiguration {
 
     /**
      * Use JwkKeySetUri to create JwtDecoder
@@ -86,23 +85,21 @@ public class AadResourceServerConfiguration {
      * Default configuration class for using AAD authentication and authorization. User can write another configuration
      * bean to override it.
      */
-    @EnableWebSecurity
-    @EnableGlobalMethodSecurity(prePostEnabled = true)
-    @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    @EnableWebFluxSecurity
+    @ConditionalOnMissingBean(SecurityWebFilterChain.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAadResourceServerWebSecurityConfigurerAdapter extends
-        AadResourceServerWebSecurityConfigurerAdapter {
+        AadResourceServerWebFluxSecurityConfiguration {
 
         /**
          * configure
          *
-         * @param http the {@link HttpSecurity} to use
-         * @throws Exception Configuration failed
-         *
+         * @param http the {@link ServerHttpSecurity} to use
+         * @return the filter chain
          */
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
+        @Bean
+        public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+            return super.serverHttpSecurity(http).build();
         }
     }
 }

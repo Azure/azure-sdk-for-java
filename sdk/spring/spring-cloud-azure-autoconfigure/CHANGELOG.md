@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Compatibility to use spring boot starter with WebFlux (available with Spring Boot 2.6 or higher).
+
 ### Breaking Changes
 
 ### Bugs Fixed

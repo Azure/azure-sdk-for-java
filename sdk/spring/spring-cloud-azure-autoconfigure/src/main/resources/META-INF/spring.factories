@@ -5,6 +5,7 @@ com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironment
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.AadReactiveAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration,\

@@ -161,6 +161,7 @@ org.springframework:spring-messaging;5.3.21
 org.springframework:spring-tx;5.3.21
 org.springframework:spring-web;5.3.21
 org.springframework:spring-webmvc;5.3.21
+org.springframework:spring-webflux;5.3.21
 org.springframework:spring-test;5.3.21
 org.springframework.retry:spring-retry;1.3.3
 org.springframework.boot:spring-boot-starter-parent;2.7.1

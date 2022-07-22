@@ -129,6 +129,12 @@
         },
         {
           "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.aad\\.configuration\\..*",
+          "justification": "For configuration to work properly, annotations on configuration classes are allowed."
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
           "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",

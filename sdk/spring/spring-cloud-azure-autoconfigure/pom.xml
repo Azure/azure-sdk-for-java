@@ -304,6 +304,13 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webflux</artifactId>
+      <version>5.3.21</version> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
     <!-- for the samples   -->
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -350,6 +357,7 @@
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.7.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.7.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.3.21]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-webflux:[5.3.21]</include> <!-- {x-include-update;org.springframework:spring-webflux;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2U
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
  * Configure the necessary beans used for Azure AD authentication and authorization.
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @Conditional(WebApplicationCondition.class)
 public class AadWebApplicationConfiguration {
 
@@ -44,6 +46,7 @@ public class AadWebApplicationConfiguration {
      */
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAadWebSecurityConfigurerAdapter extends AadWebSecurityConfigurerAdapter {

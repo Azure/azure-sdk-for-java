@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aad.AadReactiveClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.OAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
@@ -33,6 +34,7 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2PasswordGrantRe
 import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequestEntityConverter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
@@ -55,6 +57,18 @@ public class AadOAuth2ClientConfiguration {
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository(AadAuthenticationProperties properties) {
         return new AadClientRegistrationRepository(properties);
+    }
+
+    /**
+     * Declare ClientRegistrationRepository bean.
+     *
+     * @param properties the AAD authentication properties
+     * @return ClientRegistrationRepository bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public ReactiveClientRegistrationRepository reactiveClientRegistrationRepository(AadAuthenticationProperties properties) {
+        return new AadReactiveClientRegistrationRepository(new AadClientRegistrationRepository(properties));
     }
 
     /**
