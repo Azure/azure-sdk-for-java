@@ -158,6 +158,7 @@ public final class IOUtils {
         return response.writeValueToAsync(targetChannel)
             .doFinally(ignored -> response.close())
             .onErrorResume(Exception.class, exception -> {
+                response.close();
 
                 int updatedRetryCount = retryCount + 1;
 
