@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.ProgressReporter;
 import org.junit.jupiter.api.Test;

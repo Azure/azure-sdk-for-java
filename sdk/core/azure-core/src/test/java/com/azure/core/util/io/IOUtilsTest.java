@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.util.io;
 
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockFluxHttpResponse;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.FaultyAsynchronousByteChannel;
+import com.azure.core.util.PartialWriteAsynchronousChannel;
+import com.azure.core.util.PartialWriteChannel;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;

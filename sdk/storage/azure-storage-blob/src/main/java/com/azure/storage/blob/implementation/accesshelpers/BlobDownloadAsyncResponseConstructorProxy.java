@@ -29,11 +29,11 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
         /**
          * Creates a {@link BlobDownloadAsyncResponse}.
          *
-         * @param initialResponse The initial Stream Response
+         * @param sourceResponse The initial Stream Response
          * @param onErrorResume Function used to resume.
          * @param retryOptions Retry options.
          */
-        BlobDownloadAsyncResponse create(StreamResponse initialResponse,
+        BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
                                          BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
                                          DownloadRetryOptions retryOptions);
     }
@@ -50,11 +50,11 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
     /**
      * Creates a {@link BlobDownloadAsyncResponse}.
      *
-     * @param initialResponse The initial Stream Response
+     * @param sourceResponse The initial Stream Response
      * @param onErrorResume Function used to resume.
      * @param retryOptions Retry options.
      */
-    public static BlobDownloadAsyncResponse create(StreamResponse initialResponse,
+    public static BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
                                                    BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
                                                    DownloadRetryOptions retryOptions) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
@@ -67,6 +67,6 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
         }
 
         assert accessor != null;
-        return accessor.create(initialResponse, onErrorResume, retryOptions);
+        return accessor.create(sourceResponse, onErrorResume, retryOptions);
     }
 }
