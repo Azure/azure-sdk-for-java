@@ -1,6 +1,9 @@
 ## Release History
 
-### 3.24.1 (2022-07-22)
+### 3.25.0 (2022-07-22)
+
+#### Bugs Fixed
+* Fixed issues with offset and limit where you cannot use offset and limit. - See [PR 29841](https://github.com/Azure/azure-sdk-for-java/pull/29841)  
 
 #### Other Changes
 * Updated `azure-cosmos` to version `4.33.1`.
