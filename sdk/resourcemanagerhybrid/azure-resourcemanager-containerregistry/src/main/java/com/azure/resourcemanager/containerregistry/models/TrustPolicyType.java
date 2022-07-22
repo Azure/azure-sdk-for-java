@@ -24,7 +24,11 @@ public final class TrustPolicyType extends ExpandableStringEnum<TrustPolicyType>
         return fromString(name, TrustPolicyType.class);
     }
 
-    /** @return known TrustPolicyType values. */
+    /**
+     * Gets known TrustPolicyType values.
+     *
+     * @return known TrustPolicyType values.
+     */
     public static Collection<TrustPolicyType> values() {
         return values(TrustPolicyType.class);
     }

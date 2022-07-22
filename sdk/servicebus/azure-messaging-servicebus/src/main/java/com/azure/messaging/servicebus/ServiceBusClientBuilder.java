@@ -677,7 +677,7 @@ public final class ServiceBusClientBuilder implements
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.boundedElastic();
         }
 
         synchronized (connectionLock) {

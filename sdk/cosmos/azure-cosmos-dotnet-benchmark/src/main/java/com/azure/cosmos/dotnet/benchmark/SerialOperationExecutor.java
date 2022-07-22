@@ -57,7 +57,7 @@ public class SerialOperationExecutor implements IExecutor {
 
         return Flux
             .range(0, iterationCount)
-            .subscribeOn(Schedulers.elastic())
+            .subscribeOn(Schedulers.boundedElastic())
             .flatMapSequential((i) -> {
                     final TelemetrySpan telemetry = TelemetrySpan.createNew(isWarmup);
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Namespace/Relay Connection String. */
 @Fluent
 public final class AccessKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessKeysInner.class);
-
     /*
      * Primary connection string of the created namespace authorization rule.
      */

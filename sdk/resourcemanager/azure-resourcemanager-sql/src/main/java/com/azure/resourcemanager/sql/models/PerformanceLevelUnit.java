@@ -27,7 +27,11 @@ public final class PerformanceLevelUnit extends ExpandableStringEnum<Performance
         return fromString(name, PerformanceLevelUnit.class);
     }
 
-    /** @return known PerformanceLevelUnit values. */
+    /**
+     * Gets known PerformanceLevelUnit values.
+     *
+     * @return known PerformanceLevelUnit values.
+     */
     public static Collection<PerformanceLevelUnit> values() {
         return values(PerformanceLevelUnit.class);
     }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.Backup;
 /** Samples for Backups Update. */
 public final class BackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Backups_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Backups_Update.json
      */
     /**
      * Sample code: Backups_Update.

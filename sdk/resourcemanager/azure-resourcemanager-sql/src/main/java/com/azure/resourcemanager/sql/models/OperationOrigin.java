@@ -27,7 +27,11 @@ public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin>
         return fromString(name, OperationOrigin.class);
     }
 
-    /** @return known OperationOrigin values. */
+    /**
+     * Gets known OperationOrigin values.
+     *
+     * @return known OperationOrigin values.
+     */
     public static Collection<OperationOrigin> values() {
         return values(OperationOrigin.class);
     }

@@ -10,7 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerConnectionPolicyInner;
 import com.azure.resourcemanager.sql.models.ConnectionPolicyName;
-import com.azure.resourcemanager.sql.models.ServerConnectionType;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerConnectionPoliciesClient. */
@@ -22,18 +21,18 @@ public interface ServerConnectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param connectionPolicyName The name of the connection policy.
-     * @param connectionType The server connection type.
+     * @param parameters The required parameters for updating a secure connection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server secure connection policy.
+     * @return a server secure connection policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerConnectionPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serverName,
         ConnectionPolicyName connectionPolicyName,
-        ServerConnectionType connectionType);
+        ServerConnectionPolicyInner parameters);
 
     /**
      * Creates or updates the server's connection policy.
@@ -42,18 +41,18 @@ public interface ServerConnectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param connectionPolicyName The name of the connection policy.
-     * @param connectionType The server connection type.
+     * @param parameters The required parameters for updating a secure connection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server secure connection policy.
+     * @return a server secure connection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerConnectionPolicyInner> createOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         ConnectionPolicyName connectionPolicyName,
-        ServerConnectionType connectionType);
+        ServerConnectionPolicyInner parameters);
 
     /**
      * Creates or updates the server's connection policy.
@@ -62,22 +61,7 @@ public interface ServerConnectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param connectionPolicyName The name of the connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server secure connection policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerConnectionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName);
-
-    /**
-     * Creates or updates the server's connection policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
+     * @param parameters The required parameters for updating a secure connection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -85,7 +69,10 @@ public interface ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServerConnectionPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName);
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionPolicyInner parameters);
 
     /**
      * Creates or updates the server's connection policy.
@@ -94,19 +81,19 @@ public interface ServerConnectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param connectionPolicyName The name of the connection policy.
-     * @param connectionType The server connection type.
+     * @param parameters The required parameters for updating a secure connection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server secure connection policy.
+     * @return a server secure connection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerConnectionPolicyInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String serverName,
         ConnectionPolicyName connectionPolicyName,
-        ServerConnectionType connectionType,
+        ServerConnectionPolicyInner parameters,
         Context context);
 
     /**
@@ -119,7 +106,8 @@ public interface ServerConnectionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's secure connection policy.
+     * @return the server's secure connection policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerConnectionPolicyInner>> getWithResponseAsync(
@@ -135,7 +123,7 @@ public interface ServerConnectionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's secure connection policy.
+     * @return the server's secure connection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerConnectionPolicyInner> getAsync(
@@ -168,7 +156,7 @@ public interface ServerConnectionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server's secure connection policy.
+     * @return the server's secure connection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerConnectionPolicyInner> getWithResponse(
