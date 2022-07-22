@@ -16,11 +16,11 @@ public class AzureJedisWrapperSample {
 
         // Create Jedis Client using the builder as follows.
         Jedis jedisClient = new AzureJedisClientBuilder()
-            .cacheHostName("<cache host name>")
-            .port(6380)
-            .useSSL(true)
-            .username("<username>")
-            .credential(defaultAzureCredential)
+            .cacheHostName("<HOST_NAME>") // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
+            .port(6380) // Port is requried.
+            .useSSL(true) // SSL Connection is required.
+            .username("<USERNAME>") // Username is required.
+            .credential(defaultAzureCredential) // A Token Credential is required to fetch Azure AD Access tokens.
             .build();
 
         // Set a value against your key in the Redis cache.

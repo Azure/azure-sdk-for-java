@@ -81,6 +81,24 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+      <version>6.2.0.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.redisson</groupId>
+      <artifactId>redisson</artifactId>
+      <version>3.17.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
       <version>2.2</version> <!-- {x-version-update;org.hamcrest:hamcrest;external_dependency} -->
@@ -137,7 +155,9 @@
             <configuration>
               <sources>
                 <source>src/samples/java</source>
-                <source>src/samples/Azure Cache For Redis/Jedis/java</source>
+                <source>src/samples/Azure-Cache-For-Redis/Jedis/java</source>
+                <source>src/samples/Azure-Cache-For-Redis/Lettuce/java</source>
+                <source>src/samples/Azure-Cache-For-Redis/Redisson/java</source>
               </sources>
             </configuration>
           </execution>

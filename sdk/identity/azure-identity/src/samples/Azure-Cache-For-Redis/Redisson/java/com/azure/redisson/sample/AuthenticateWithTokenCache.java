@@ -1,10 +1,20 @@
-package com.azure.sample;
+package com.azure.redisson.sample;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import io.lettuce.core.*;
+import io.lettuce.core.api.StatefulRedisConnection;
+import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.codec.StringCodec;
+import io.lettuce.core.protocol.ProtocolVersion;
+import org.redisson.Redisson;
+import org.redisson.api.RBucket;
+import org.redisson.api.RBuckets;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;
@@ -17,59 +27,68 @@ import java.util.TimerTask;
 public class AuthenticateWithTokenCache {
 
     public static void main(String[] args) {
+
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
         // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
         TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+
+        // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
         TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
-        // SSL connection is required.
-        boolean useSsl = true;
+        // Create Redisson Client
+        // Host Name, Port, Username and Azure AD Token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-        String cacheHostname = "<HOST_NAME>";
-
-        // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-        // Note: Cache Host Name, Port, Username, Azure AD Access Token and ssl connections are required below.
-        Jedis jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", accessToken, useSsl);
+        RedissonClient redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", accessToken);
 
         int maxTries = 3;
         int i = 0;
 
         while (i < maxTries) {
             try {
-                // Set a value against your key in the Redis cache.
-                jedis.set("Az:key", "testValue");
-                System.out.println(jedis.get("Az:key"));
+                // perform operations
+                RBuckets rBuckets = redisson.getBuckets();
+                RBucket bucket = redisson.getBucket("Az:key");
+                bucket.set("This is object value");
+
+                String objectValue = bucket.get().toString();
+                System.out.println("stored object value: " + objectValue);
                 break;
-            } catch (JedisException e) {
-                // Handle The Exception as required in your application.
-                e.printStackTrace();
+            } catch (RedisException exception) {
+                // TODO: Handle Exception as Required.
+                exception.printStackTrace();
 
                 // For Exceptions containing Invalid Username Password / Permissions not granted error messages, look at troubleshooting section at the end of document.
 
-                // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
-                if (jedis.isBroken()) {
-                    jedis.close();
-                    jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", tokenRefreshCache.getAccessToken(), useSsl);
+                if (redisson.isShutdown()) {
+                    // Recreate the client with a fresh token non-expired token as password for authentication.
+                    redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", tokenRefreshCache.getAccessToken());
                 }
+            } catch (Exception e) {
+                // Handle Exception as required
+                e.printStackTrace();
             }
             i++;
         }
-        // Close the Jedis Client
-        jedis.close();
-
+        redisson.shutdown();
     }
 
+
     // Helper Code
-    private static Jedis createJedisClient(String cacheHostname, int port, String username, AccessToken accessToken, boolean useSsl) {
-        return new Jedis(cacheHostname, port, DefaultJedisClientConfig.builder()
-            .password(accessToken.getToken())
-            .user(username)
-            .ssl(useSsl)
-            .build());
+    private static RedissonClient createRedissonClient(String address, String username, AccessToken accessToken) {
+
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress(address)
+            .setKeepAlive(true)
+            .setUsername(username)
+            .setPassword(accessToken.getToken())
+            .setClientName("Reddison-Client");
+
+        return Redisson.create(config);
     }
 
     /**

@@ -38,7 +38,7 @@ Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/late
   This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
 * [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
-  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache caching a non expired Azure AD token.
+  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache. The Token Cache stores and proactively refreshes the Azure AD Access Token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
   
 * [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper):
  This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
@@ -52,33 +52,7 @@ When migrating your existing your application code, you need to replace the pass
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
-//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-String token = defaultAzureCredential
-    .getToken(new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
-
-// SSL connection is required.
-boolean useSsl = true; 
-// TODO: Replace the host name with your Azure Cache for Redis Host Name.
-String cacheHostname = "<YOUR_HOST_NAME>";
-
-// Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-// Note, Redis Cache Host Name and Port are required below
-Jedis jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
-        .password(token) // Azure AD Token is required as password
-        .user("<username>") // Username is required
-        .ssl(useSsl) //Required to use SSL Conncections
-        .build());
-
-// Set a value against your key in the Redis cache.
-jedis.set("Az:key", "testValue");
-System.out.println(jedis.get("Az:key"));
-
-// Close the Jedis Client
-jedis.close();
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
@@ -100,173 +74,17 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 
 ```java
 
-//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
-
-// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
-
-// SSL connection is required.
-boolean useSsl = true;
-// TODO: Replace the host name with your Azure Cache for Redis Host Name.
-String cacheHostname = "<YOUR_HOST_NAME>";
-
-// Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-// Note: Cache Host Name, Port, Username, Azure AD Access Token and ssl connections are required below.
-Jedis jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
-
-int maxTries = 3;
-int i = 0;
-
-while (i < maxTries) {
-    try {
-        // Set a value against your key in the Redis cache.
-        jedis.set("Az:key", "testValue");
-        System.out.println(jedis.get("Az:key"));
-        break;
-    } catch (JedisException e) {
-        // Handle The Exception as required in your application.
-        e.printStackTrace();
-        
-        // DISCUSS: Catch Exceptions here containing Invalid Username Password / NOPERM errors and throw exception with link to troubleshooting section below.
-
-        // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
-        if (jedis.isBroken()) {
-            jedis.close();
-            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", getAccessToken(defaultAzureCredential, trc), useSsl);
-        }
-    }
-    i++;
-}
-
-// Close the Jedis Client
-jedis.close();
-
-
-// Helper Code
-private static Jedis createJedisClient(String cacheHostname, int port, String username, AccessToken accessToken, boolean useSsl) {
-    return new Jedis(cacheHostname, port, DefaultJedisClientConfig.builder()
-            .password(accessToken.getToken())
-            .user(username)
-            .ssl(useSsl)
-            .build());
-}
-
-private static AccessToken getAccessToken(TokenCredential tokenCredential, TokenRequestContext trc) {
-    return tokenCredential.getToken(trc).block();
-}
 ```
 
 #### Authenticate with Azure AD: Using Token Cache
-This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a Token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios.
+This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a Token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios. The Token Cache stores and proactively refreshes the Azure AD Access Token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library and store it in a Token Cache as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
-//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
-AccessToken accessToken = tokenRefreshCache.getAccessToken();
-
-// SSL connection is required for non 6379 ports.
-boolean useSsl = true;
-String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
-
-// Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-Jedis jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
-
-int maxTries = 3;
-int i = 0;
-
-while (i < maxTries) {
-    try {
-        // Set a value against your key in the Redis cache.
-        jedis.set("Az:key", "testValue");
-        System.out.println(jedis.get("Az:key"));
-        break;
-    } catch (JedisException e) {
-        // Handle The Exception as required in your application.
-        e.printStackTrace();
-
-        // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
-        if (jedis.isBroken()) {
-            jedis.close();
-            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", tokenRefreshCache.getAccessToken(), useSsl);
-        }
-    }
-    i++;
-}
-// Close the Jedis Client
-jedis.close();
-
-// Helper Code
-private static Jedis createJedisClient(String cacheHostname, int port, String username, AccessToken accessToken, boolean useSsl) {
-    return new Jedis(cacheHostname, port, DefaultJedisClientConfig.builder()
-        .password(accessToken.getToken())
-        .user(username)
-        .ssl(useSsl)
-        .build());
-}
-
-/**
- * The Token Cache to store and proactively refresh the Access Token.
- */
-public static class TokenRefreshCache {
-    private final TokenCredential tokenCredential;
-    private final TokenRequestContext tokenRequestContext;
-    private final Timer timer;
-    private volatile AccessToken accessToken;
-    private final Duration refreshOffset;
-
-    /**
-     * Creates an instance of TokenRefreshCache
-     * @param tokenCredential the token credential to be used for authentication.
-     * @param tokenRequestContext the token request context to be used for authentication.
-     * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
-     */
-    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
-        this.tokenCredential = tokenCredential;
-        this.tokenRequestContext = tokenRequestContext;
-        this.timer = new Timer();
-        this.refreshOffset = refreshOffset;
-    }
-
-    /**
-     * Gets the cached access token.
-     * @return the {@link AccessToken}
-     */
-    public AccessToken getAccessToken() {
-        if (accessToken != null) {
-            return  accessToken;
-        } else {
-            TokenRefreshTask tokenRefreshTask = new TokenRefreshTask();
-            accessToken = tokenCredential.getToken(tokenRequestContext).block();
-            timer.schedule(tokenRefreshTask, getTokenRefreshDelay());
-            return accessToken;
-        }
-    }
-
-    private class TokenRefreshTask extends TimerTask {
-        // Add your task here
-        public void run() {
-            accessToken = tokenCredential.getToken(tokenRequestContext).block();
-            System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
-            timer.schedule(new TokenRefreshTask(), getTokenRefreshDelay());
-        }
-    }
-
-    private long getTokenRefreshDelay() {
-        return ((accessToken.getExpiresAt()
-            .minusSeconds(refreshOffset.getSeconds()))
-            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
-    }
-}
 ```
 
 #### Authenticate with Azure AD: Azure Jedis Wrapper
@@ -313,24 +131,7 @@ Note: The wrapper code located [here](https://github.com/Azure/azure-sdk-for-jav
 
 
 ```java
-//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / ClientCertificateCredential / ManagedIdentityCredential etc.
-DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-
-//Create Jedis Client using the builder as follows.
-Jedis jedisClient = new AzureJedisClientBuilder()
-        .cacheHostName("<cache host name>") // Cache Host Name is required.
-        .port(6380) // Port is requried.
-        .useSSL(true) // SSL Connections are required.
-        .username("<username>") // Username is required.
-        .credential(defaultAzureCredential) // A Token Credential is required to fetch Azure AD Access tokens.
-        .build();
-
-// Set a value against your key in the Redis cache.
-jedisClient.set("Az:key", "sample");
-
-// Close the Jedis Client
-jedisClient.close();
 ```
 
 #### Troubleshooting
@@ -338,13 +139,13 @@ jedisClient.close();
 ##### Invalid Username Password Pair Error
 In this error scenario, the username provided and the access token used as password are not compatible.
 To mitigate this error, ensure that:
-* On Portal, Under your <Redis Cache Resource> -> RBAC Rules, you've assigned the required role to your user/service principal identity.
-* On Portal, Under your <Redis Cache Resource> -> Advanced settings -> AAD Access Authorization box is checked/enabled, if not enable it and press the Save button.
+* On Portal, Under your `Redis Cache Resource` -> RBAC Rules, you've assigned the required role to your user/service principal identity.
+* On Portal, Under your `Redis Cache Resource` -> Advanced settings -> AAD Access Authorization box is checked/enabled, if not enable it and press the Save button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
 To mitigate this error, ensure that:
-* On Portal, Under your <Redis Cache Resource> -> RBAC Rules, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
+* On Portal, Under your `Redis Cache Resource` -> RBAC Rules, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, then ensure the permissions granted under your custom role include the one required for your target action.
 
 
