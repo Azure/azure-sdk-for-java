@@ -270,7 +270,7 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       - task: PowerShell@2
         displayName: Generate directories variable for sparse checkout

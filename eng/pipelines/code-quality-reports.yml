@@ -44,6 +44,7 @@ jobs:
               groupId: com.azure
               safeName: azurecore
           JobType: 'linting'
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
       # is for FromSource runs or, in the case of code quality reports, a run that needs to build

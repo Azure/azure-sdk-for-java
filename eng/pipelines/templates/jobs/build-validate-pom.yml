@@ -55,6 +55,7 @@ jobs:
         parameters:
           JobType: 'Build and Validate'
           Artifacts: ${{ parameters.Artifacts }}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.

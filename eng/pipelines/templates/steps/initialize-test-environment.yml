@@ -51,6 +51,7 @@ steps:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
       JobType: 'test'
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
 
   # This call is used generate the sparse checkout variables for non-FromSource runs.
   - task: PowerShell@2
