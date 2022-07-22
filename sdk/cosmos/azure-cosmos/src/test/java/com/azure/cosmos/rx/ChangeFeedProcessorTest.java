@@ -1016,27 +1016,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 20 * TIMEOUT)
-    public void changeFeedProcessor_ffcf() {
-        CosmosAsyncContainer createdFeedContainer = createFeedCollection(FEED_COLLECTION_THROUGHPUT_MAX);
-        CosmosAsyncContainer createdLeaseContainer = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
-
-        ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-        changeFeedProcessorOptions.setStartFromBeginning(true);
-
-        ChangeFeedProcessor localChangeFeedProcessor = new ChangeFeedProcessorBuilder()
-            .feedContainer(createdFeedContainer)
-            .leaseContainer(createdLeaseContainer)
-            .handleChanges(jsonNodes -> {
-                for (JsonNode item : jsonNodes) {
-                    logger.info("Received Change Feed Item :: {}", item);
-                }
-            })
-            .hostName("TestHostName-1")
-            .options(changeFeedProcessorOptions)
-            .buildChangeFeedProcessor();
-    }
-
     void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, JsonNode> receivedDocuments, int sleepTime) throws InterruptedException {
         try {
             changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())

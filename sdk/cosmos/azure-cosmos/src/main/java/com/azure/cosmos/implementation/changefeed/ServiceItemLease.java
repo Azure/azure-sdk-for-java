@@ -14,6 +14,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -30,6 +32,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 @JsonSerialize(using = ServiceItemLease.ServiceItemLeaseJsonSerializer.class)
 public class ServiceItemLease implements Lease {
+    private final Logger logger = LoggerFactory.getLogger(ServiceItemLease.class);
+
     private static final ZonedDateTime UNIX_START_TIME = ZonedDateTime.parse("1970-01-01T00:00:00.0Z[UTC]");
     private static final String PROPERTY_NAME_LEASE_TOKEN = "LeaseToken";
     private static final String PROPERTY_NAME_CONTINUATION_TOKEN = "ContinuationToken";
@@ -128,6 +132,8 @@ public class ServiceItemLease implements Lease {
 
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        logger.info("Continuation token right now is {}", this.ContinuationToken);
 
         return new ChangeFeedStateV1(
             containerRid,
