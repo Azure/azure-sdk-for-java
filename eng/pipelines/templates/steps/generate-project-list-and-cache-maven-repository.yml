@@ -42,13 +42,13 @@ steps:
     Write-Host $serviceDirectory
 #    Write-Host -Object ${{parameters.ServiceDirectory}}
 #    Write-Host -Object ${{parameters}}
-    if ($serviceDirectory.Equals("spring") -or $serviceDirectory.Equals("spring-3")) {
+    if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       foreach ($artifact in $artifacts) {
         $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
 #        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
       }
     }
-    if ($serviceDirectory.Equals("spring") -or $serviceDirectory.Equals("spring-3")) {
+    if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       foreach ($artifact in $additionalModules) {
         $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
 #        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
@@ -56,13 +56,13 @@ steps:
     }
     
     $projects = $projectList -join ','
-    if ($serviceDirectory.Equals("spring") -or $serviceDirectory.Equals("spring-3")) {
+    if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       $pathProjects = $projectPathList -join ','
     }
     
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
-    if ($serviceDirectory.Equals("spring") -or $serviceDirectory.Equals("spring-3")) {
+    if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       Write-Host "Reset the project list value for multi Spring modules"
       Write-Host "##vso[task.setvariable variable=$projectListOriginal]$(projects)"
       Write-Host "##vso[task.setvariable variable=ProjectList]$($pathProjects)"
