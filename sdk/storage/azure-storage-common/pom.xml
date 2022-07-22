@@ -262,7 +262,6 @@
               </execution>
             </executions>
             <configuration>
-              <invokeDynamic>true</invokeDynamic>
               <testSources>
                 <testSource>
                   <directory>${project.basedir}/src/test</directory>

@@ -254,6 +254,7 @@
                   <goal>compileTests</goal>
                   <goal>removeTestStubs</goal>
                 </goals>
+                <phase>test-compile</phase>
               </execution>
             </executions>
             <configuration>
