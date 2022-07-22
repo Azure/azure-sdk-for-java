@@ -100,6 +100,7 @@ public class CosmosQuery {
      * To set limit number
      *
      * @param limit int
+     * @return CosmosQuery object
      */
     public CosmosQuery withLimit(int limit) {
         if (this.limit == 0) {
@@ -113,6 +114,7 @@ public class CosmosQuery {
      *
      * @param offset long
      * @param limit int
+     * @return CosmosQuery object
      */
     public CosmosQuery withOffsetAndLimit(long offset, int limit) {
         if (this.limit == 0) {
@@ -128,7 +130,7 @@ public class CosmosQuery {
      * With Sort
      *
      * @param sort Sort
-     * @return DocumentQuery object
+     * @return CosmosQuery object
      */
     public CosmosQuery with(@NonNull Sort sort) {
         if (sort.isSorted()) {
@@ -142,7 +144,7 @@ public class CosmosQuery {
      * With Sort
      *
      * @param pageable Sort
-     * @return DocumentQuery object
+     * @return CosmosQuery object
      */
     public CosmosQuery with(@NonNull Pageable pageable) {
         Assert.notNull(pageable, "pageable should not be null");
