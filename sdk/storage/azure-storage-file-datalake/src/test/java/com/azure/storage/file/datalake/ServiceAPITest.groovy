@@ -430,7 +430,7 @@ class ServiceAPITest extends APISpec {
         def properties = list.get(1).getProperties()
 
         then:
-        properties.getDefaultEncryptionScope() == encryptionScopeString
+        properties.getEncryptionScope() == encryptionScopeString
         properties.isEncryptionScopeOverridePrevented()
     }
 
