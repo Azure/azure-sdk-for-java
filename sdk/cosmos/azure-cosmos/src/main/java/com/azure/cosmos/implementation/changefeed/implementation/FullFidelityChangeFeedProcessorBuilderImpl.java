@@ -97,6 +97,7 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
      */
     @Override
     public Mono<Void> start() {
+        logger.info("Starting Full fidelity change feed processor");
         if (this.partitionManager == null) {
             return this.initializeCollectionPropertiesForBuild()
                 .flatMap( value -> this.getLeaseStoreManager()
@@ -118,6 +119,7 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
      */
     @Override
     public Mono<Void> stop() {
+        logger.info("Stopping full fidelity change feed processor");
         if (this.partitionManager == null || !this.partitionManager.isRunning()) {
             throw new IllegalStateException("The ChangeFeedProcessor instance has not fully started");
         }
@@ -158,6 +160,8 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
                     .flatMap(lease -> {
+                        logger.info("Lease Information: leaseToken: {}, continuationToken: {}, leaseId: {}",
+                            lease.getLeaseToken(), lease.getContinuationToken(), lease.getId());
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
@@ -165,6 +169,7 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
                                     this.collectionResourceId,
                                     feedRange));
                         options.setMaxItemCount(1);
+                        options.fullFidelity();
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
                                 this.feedContextClient.getContainerClient(),
@@ -241,16 +246,13 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
                     .flatMap(lease -> {
                         String leaseToken = lease.getLeaseToken();
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
-                        logger.info("Logging FeedRange {} and lease token {}", feedRange, leaseToken);
-                        ChangeFeedState state = lease.getFullFidelityContinuationState(
-                            this.collectionResourceId,
-                            feedRange);
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
                                 lease.getFullFidelityContinuationState(
                                     this.collectionResourceId,
                                     feedRange));
                         options.setMaxItemCount(1);
+                        options.fullFidelity();
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
                             this.feedContextClient.getContainerClient(),

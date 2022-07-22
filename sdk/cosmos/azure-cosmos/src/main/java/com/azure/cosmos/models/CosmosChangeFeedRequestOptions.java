@@ -14,6 +14,8 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
     Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
+
+    private static final Logger logger = LoggerFactory.getLogger(CosmosChangeFeedRequestOptions.class);
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private final ChangeFeedState continuationState;
@@ -257,11 +261,16 @@ public final class CosmosChangeFeedRequestOptions {
         FeedRangeContinuation continuation = changeFeedState.getContinuation();
         ChangeFeedMode mode = changeFeedState.getMode();
 
+        logger.info("Change feed state : {}", mode);
+
+        logger.info("Continuation is : {}", continuation);
         if (continuation != null) {
             CompositeContinuationToken continuationToken =
                 continuation.getCurrentContinuationToken();
+            logger.info("Continuation token is : {}", continuationToken);
             if (continuationToken != null) {
                 String etag = continuationToken.getToken();
+                logger.info("Starting from etag: {} and feed range : {}", etag, feedRange);
                 return new CosmosChangeFeedRequestOptions(
                     feedRange,
                     ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag, feedRange),
@@ -269,6 +278,7 @@ public final class CosmosChangeFeedRequestOptions {
                     changeFeedState);
             }
 
+            logger.info("Starting from beginning");
             return new CosmosChangeFeedRequestOptions(
                 feedRange,
                 ChangeFeedStartFromInternal.createFromBeginning(),
@@ -276,6 +286,9 @@ public final class CosmosChangeFeedRequestOptions {
                 changeFeedState);
         }
 
+        logger.info("Starting from something, supports full fidelity : {}", changeFeedState.getStartFromSettings().supportsFullFidelityRetention());
+        logger.info("Starting from something, class information : {}", changeFeedState.getStartFromSettings().getClass());
+        logger.info("Starting from something, object information : {}", changeFeedState.getStartFromSettings());
         return new CosmosChangeFeedRequestOptions(
             feedRange,
             changeFeedState.getStartFromSettings(),

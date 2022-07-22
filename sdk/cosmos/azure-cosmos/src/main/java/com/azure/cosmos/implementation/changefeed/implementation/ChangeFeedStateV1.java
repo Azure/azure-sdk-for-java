@@ -187,6 +187,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         }
 
         this.populateEffectiveRangeAndStartFromSettingsToRequest(request);
+        logger.info("Request is being sent with headers : {}", request.getHeaders());
     }
 
     @Override

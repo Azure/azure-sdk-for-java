@@ -158,6 +158,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
                     .flatMap(lease -> {
+                        logger.info("Lease Information: leaseToken: {}, continuationToken: {}, leaseId: {}",
+                            lease.getLeaseToken(), lease.getContinuationToken(), lease.getId());
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(

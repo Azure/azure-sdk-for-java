@@ -38,14 +38,13 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
 
     @Override
     public void populateRequest(RxDocumentServiceRequest request) {
-        logger.info("Populate request called in file with req headers {}", request.getHeaders());
+        //  logger.info("Populate request called in file with req headers {}", request.getHeaders());
 
         checkNotNull(request, "Argument 'request' must not be null.");
 
         request.getHeaders().put(
             HttpConstants.HttpHeaders.IF_NONE_MATCH,
             HttpConstants.HeaderValues.IF_NONE_MATCH_ALL);
-        logger.info("Headers updated to {}", request.getHeaders());
 
     }
 }

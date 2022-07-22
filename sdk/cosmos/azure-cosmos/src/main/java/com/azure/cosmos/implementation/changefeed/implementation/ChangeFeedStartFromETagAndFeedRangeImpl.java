@@ -28,7 +28,6 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         super();
 
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
-//        checkNotNull(eTag, "Argument ETag must not be null");
         this.eTag = eTag;
         this.feedRange = feedRange;
     }
@@ -73,7 +72,7 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
 
     @Override
     public void populateRequest(RxDocumentServiceRequest request) {
-        logger.info("Populate request called in file with req headers {} and eTag value {}", request.getHeaders(), this.eTag);
+//        logger.info("Populate request called in file with req headers {} and eTag value {}", request.getHeaders(), this.eTag);
         checkNotNull(request, "Argument 'request' must not be null.");
 
         if (this.eTag != null) {
@@ -83,6 +82,12 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
                 HttpConstants.HttpHeaders.IF_NONE_MATCH,
                 this.eTag);
         }
+//        else {
+//            logger.info("eTag is null, setting value if-none-match-all");
+//            request.getHeaders().put(
+//                HttpConstants.HttpHeaders.IF_NONE_MATCH,
+//                HttpConstants.HeaderValues.IF_NONE_MATCH_ALL);
+//        }
     }
 
     @Override

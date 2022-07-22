@@ -89,7 +89,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
             ChangeFeedProcessor changeFeedProcessorMain = new FullFidelityChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -104,6 +106,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             ChangeFeedProcessor changeFeedProcessorSideCart = new FullFidelityChangeFeedProcessorBuilder()
                 .hostName("side-cart")
+                .options(changeFeedProcessorOptions)
                 .handleChanges((List<JsonNode> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })

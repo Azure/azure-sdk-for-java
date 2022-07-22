@@ -31,7 +31,7 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
     @Override
     public void populateRequest(RxDocumentServiceRequest request) {
         // We don't need to set any headers to start from the beginning
-        logger.info("Populate request called in file with req headers {}", request.getHeaders());
+        //  logger.info("Populate request called in file with req headers {}", request.getHeaders());
     }
 
     @Override

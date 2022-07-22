@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
@@ -134,6 +135,16 @@ public class ServiceItemLease implements Lease {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         logger.info("Continuation token right now is {}", this.ContinuationToken);
+
+        //  TODO: (kuthapar) - Check this logic with Milis
+        if (Strings.isNullOrWhiteSpace(this.ContinuationToken)) {
+            return new ChangeFeedStateV1(
+                containerRid,
+                feedRange,
+                ChangeFeedMode.FULL_FIDELITY,
+                ChangeFeedStartFromInternal.createFromNow(),
+                null);
+        }
 
         return new ChangeFeedStateV1(
             containerRid,
