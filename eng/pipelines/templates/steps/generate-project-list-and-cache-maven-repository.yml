@@ -60,9 +60,11 @@ steps:
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
     if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
-      Write-Host "##vso[task.setvariable variable=projectListOriginal]$projects"
+      Write-Host "##vso[task.setvariable variable=ProjectListOriginal]$ProjectList"
       Write-Host "##vso[task.setvariable variable=ProjectList;]$pathProjects"
+      Write-Host "ProjectListOriginal = $projects"
       Write-Host "Reset the project list value for multi Spring modules"
+      Write-Host "ProjectList for Spring = $pathProjects"
     }
 
   displayName: Initialize project list variable

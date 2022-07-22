@@ -55,8 +55,14 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
     $xmlPomFile = $null
     $xmlPomFile = New-Object xml
     $xmlPomFile.Load($file.FullName)
-    $library = $xmlPomFile.project.groupId + ":" + $xmlPomFile.project.artifactId
     $serviceDirectory = (Get-Item $file).Directory.Parent
+    if ($serviceDirectory -ne "spring" -and $serviceDirectory -ne "spring-3")
+    {
+        $library = $xmlPomFile.project.groupId + ":" + $xmlPomFile.project.artifactId
+    } else {
+        $library = "./sdk/" + $serviceDirectory + "/" + $xmlPomFile.project.artifactId
+    }
+
     # This if check is only necessary because resourcemanager and resourcemanagerhybrid contain the
     # exact same group/artifact ids
     if ($file.FullName.Split([IO.Path]::DirectorySeparatorChar) -notcontains "resourcemanagerhybrid") {
@@ -74,7 +80,7 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
         }
     }
 }
-
+Write-Host "Moary debug log **********************"
 $sparseCheckoutDirectories = @()
 $serviceDirectories = @()
 $sparseCheckoutDirectories += "/sdk/parents"
