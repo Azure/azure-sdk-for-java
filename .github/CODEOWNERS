@@ -96,7 +96,7 @@
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft @ngastelum-ms
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @mssfang @srnagar @lmolkova @billwert
