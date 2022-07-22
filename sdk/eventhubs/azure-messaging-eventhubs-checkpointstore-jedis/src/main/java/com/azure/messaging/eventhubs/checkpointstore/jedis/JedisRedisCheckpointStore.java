@@ -22,6 +22,7 @@ import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
+import redis.clients.jedis.Pipeline;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -58,11 +59,14 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
 
                 if (currentPartitionOwnership == null) {
                     // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
+                    Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0));
+                    partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
                     jedis.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
                 } else {
                     // otherwise we have to change the ownership and "watch" the transaction
                     jedis.watch(key);
-
+                    Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0)) - jedis.objectIdletime(key);
+                    partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
                     Transaction transaction = jedis.multi();
                     transaction.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
                     List<Object> executionResponse = transaction.exec();
