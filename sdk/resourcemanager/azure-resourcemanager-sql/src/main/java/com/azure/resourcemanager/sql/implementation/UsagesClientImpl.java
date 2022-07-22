@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.UsagesClient;
 import com.azure.resourcemanager.sql.fluent.models.UsageInner;
 import com.azure.resourcemanager.sql.models.UsageListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsagesClient. */
 public final class UsagesClientImpl implements UsagesClient {
-    private final ClientLogger logger = new ClientLogger(UsagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UsagesService service;
 
@@ -57,7 +55,7 @@ public final class UsagesClientImpl implements UsagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientU")
     private interface UsagesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools"
                 + "/{instancePoolName}/usages")
@@ -70,14 +68,18 @@ public final class UsagesClientImpl implements UsagesClient {
             @QueryParam("expandChildren") Boolean expandChildren,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UsageListResult>> listByInstancePoolNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -90,7 +92,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listByInstancePoolSinglePageAsync(
@@ -116,6 +119,7 @@ public final class UsagesClientImpl implements UsagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -127,6 +131,7 @@ public final class UsagesClientImpl implements UsagesClient {
                             expandChildren,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<UsageInner>>map(
                 res ->
@@ -137,7 +142,7 @@ public final class UsagesClientImpl implements UsagesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -151,7 +156,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listByInstancePoolSinglePageAsync(
@@ -177,6 +183,7 @@ public final class UsagesClientImpl implements UsagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstancePool(
@@ -186,6 +193,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 expandChildren,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -208,7 +216,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByInstancePoolAsync(
@@ -227,7 +235,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName) {
@@ -248,7 +256,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UsageInner> listByInstancePoolAsync(
@@ -264,12 +272,29 @@ public final class UsagesClientImpl implements UsagesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName) {
+        final Boolean expandChildren = null;
+        return new PagedIterable<>(listByInstancePoolAsync(resourceGroupName, instancePoolName, expandChildren));
+    }
+
+    /**
+     * Gets all instance pool usage metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
      * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
+     * @return all instance pool usage metrics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByInstancePool(
@@ -279,38 +304,29 @@ public final class UsagesClientImpl implements UsagesClient {
     }
 
     /**
-     * Gets all instance pool usage metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all instance pool usage metrics.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listByInstancePool(String resourceGroupName, String instancePoolName) {
-        final Boolean expandChildren = null;
-        return new PagedIterable<>(listByInstancePoolAsync(resourceGroupName, instancePoolName, expandChildren));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of usages.
+     * @return a list of usages along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listByInstancePoolNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByInstancePoolNext(nextLink, context))
+            .withContext(
+                context -> service.listByInstancePoolNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<UsageInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -320,7 +336,7 @@ public final class UsagesClientImpl implements UsagesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -331,16 +347,23 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of usages.
+     * @return a list of usages along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listByInstancePoolNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstancePoolNext(nextLink, context)
+            .listByInstancePoolNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

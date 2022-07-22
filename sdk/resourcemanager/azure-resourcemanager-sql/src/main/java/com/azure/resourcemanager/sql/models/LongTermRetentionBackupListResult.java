@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.LongTermRetentionBackupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of long term retention backups. */
 @Immutable
 public final class LongTermRetentionBackupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LongTermRetentionBackupListResult.class);
-
     /*
      * Array of results.
      */

@@ -26,7 +26,7 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped managed databases.
+     * @return a list of restorable dropped managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableDroppedManagedDatabaseInner> listByInstanceAsync(
@@ -41,7 +41,7 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped managed databases.
+     * @return a list of restorable dropped managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(
@@ -57,7 +57,7 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped managed databases.
+     * @return a list of restorable dropped managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(
@@ -73,7 +73,8 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database.
+     * @return a restorable dropped managed database along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RestorableDroppedManagedDatabaseInner>> getWithResponseAsync(
@@ -89,7 +90,7 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database.
+     * @return a restorable dropped managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RestorableDroppedManagedDatabaseInner> getAsync(
@@ -122,7 +123,7 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database.
+     * @return a restorable dropped managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestorableDroppedManagedDatabaseInner> getWithResponse(

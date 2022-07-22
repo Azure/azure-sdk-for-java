@@ -34,7 +34,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
+     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedInstanceLongTermRetentionBackupInner>> getWithResponseAsync(
@@ -50,7 +51,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
+     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceLongTermRetentionBackupInner> getAsync(
@@ -83,7 +84,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
+     * @return a long term retention backup for a managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceLongTermRetentionBackupInner> getWithResponse(
@@ -99,7 +100,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -115,9 +116,9 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String locationName, String managedInstanceName, String databaseName, String backupName);
 
@@ -131,9 +132,9 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String locationName, String managedInstanceName, String databaseName, String backupName);
 
@@ -148,9 +149,9 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String locationName, String managedInstanceName, String databaseName, String backupName, Context context);
 
@@ -164,7 +165,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String locationName, String managedInstanceName, String databaseName, String backupName);
@@ -210,7 +211,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
@@ -229,10 +231,27 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByDatabaseAsync(
+        String locationName, String managedInstanceName, String databaseName);
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
         String locationName, String managedInstanceName, String databaseName);
 
     /**
@@ -247,7 +266,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
@@ -259,21 +279,6 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
         Context context);
 
     /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByDatabase(
-        String locationName, String managedInstanceName, String databaseName);
-
-    /**
      * Lists the long term retention backups for a given managed instance.
      *
      * @param locationName The location of the database.
@@ -283,7 +288,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByInstanceAsync(
@@ -297,10 +303,26 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByInstanceAsync(
+        String locationName, String managedInstanceName);
+
+    /**
+     * Lists the long term retention backups for a given managed instance.
+     *
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByInstance(
         String locationName, String managedInstanceName);
 
     /**
@@ -314,7 +336,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByInstance(
@@ -325,20 +348,6 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
         Context context);
 
     /**
-     * Lists the long term retention backups for a given managed instance.
-     *
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByInstance(
-        String locationName, String managedInstanceName);
-
-    /**
      * Lists the long term retention backups for managed databases in a given location.
      *
      * @param locationName The location of the database.
@@ -347,7 +356,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(
@@ -360,10 +370,24 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByLocationAsync(String locationName);
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(String locationName);
 
     /**
      * Lists the long term retention backups for managed databases in a given location.
@@ -375,23 +399,12 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(
         String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context);
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByLocation(String locationName);
 
     /**
      * Gets a long term retention backup for a managed database.
@@ -405,7 +418,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
+     * @return a long term retention backup for a managed database along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedInstanceLongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(
@@ -427,7 +441,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
+     * @return a long term retention backup for a managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceLongTermRetentionBackupInner> getByResourceGroupAsync(
@@ -472,7 +486,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup for a managed database.
+     * @return a long term retention backup for a managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceLongTermRetentionBackupInner> getByResourceGroupWithResponse(
@@ -495,7 +509,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(
@@ -517,9 +531,9 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(
         String resourceGroupName,
         String locationName,
@@ -539,9 +553,9 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
         String resourceGroupName,
         String locationName,
@@ -562,9 +576,9 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
         String resourceGroupName,
         String locationName,
@@ -585,7 +599,7 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteByResourceGroupAsync(
@@ -652,7 +666,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
@@ -674,10 +689,29 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
+        String resourceGroupName, String locationName, String managedInstanceName, String databaseName);
+
+    /**
+     * Lists all long term retention backups for a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
         String resourceGroupName, String locationName, String managedInstanceName, String databaseName);
 
     /**
@@ -694,7 +728,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
@@ -705,23 +740,6 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
         Boolean onlyLatestPerDatabase,
         DatabaseState databaseState,
         Context context);
-
-    /**
-     * Lists all long term retention backups for a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName, String locationName, String managedInstanceName, String databaseName);
 
     /**
      * Lists the long term retention backups for a given managed instance.
@@ -735,7 +753,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstanceAsync(
@@ -755,10 +774,28 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstanceAsync(
+        String resourceGroupName, String locationName, String managedInstanceName);
+
+    /**
+     * Lists the long term retention backups for a given managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstance(
         String resourceGroupName, String locationName, String managedInstanceName);
 
     /**
@@ -774,7 +811,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstance(
@@ -784,22 +822,6 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
         Boolean onlyLatestPerDatabase,
         DatabaseState databaseState,
         Context context);
-
-    /**
-     * Lists the long term retention backups for a given managed instance.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupInstance(
-        String resourceGroupName, String locationName, String managedInstanceName);
 
     /**
      * Lists the long term retention backups for managed databases in a given location.
@@ -812,7 +834,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
@@ -827,10 +850,27 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocationAsync(
+        String resourceGroupName, String locationName);
+
+    /**
+     * Lists the long term retention backups for managed databases in a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
         String resourceGroupName, String locationName);
 
     /**
@@ -845,7 +885,8 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
+     * @return a list of long term retention backups for managed database(s) as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
@@ -854,19 +895,4 @@ public interface LongTermRetentionManagedInstanceBackupsClient {
         Boolean onlyLatestPerDatabase,
         DatabaseState databaseState,
         Context context);
-
-    /**
-     * Lists the long term retention backups for managed databases in a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups for managed database(s).
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceLongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName, String locationName);
 }

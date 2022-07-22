@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list database metrics request. */
 @Fluent
 public final class DatabaseUsageListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseUsageListResult.class);
-
     /*
      * The list of database usages for the database.
      */
@@ -49,11 +46,13 @@ public final class DatabaseUsageListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model DatabaseUsageListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseUsageListResult.class);
 }
