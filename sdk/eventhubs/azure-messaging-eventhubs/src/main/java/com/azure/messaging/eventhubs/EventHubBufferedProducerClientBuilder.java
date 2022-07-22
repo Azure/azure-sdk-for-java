@@ -221,7 +221,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder enableIdempotentRetries(boolean enableIdempotentRetries) {
+    EventHubBufferedProducerClientBuilder enableIdempotentRetries(boolean enableIdempotentRetries) {
         clientOptions.setEnableIdempotentRetries(enableIdempotentRetries);
         return this;
     }
