@@ -40,18 +40,14 @@ steps:
           
     Write-Host "Moary test log ******************"
     Write-Host $serviceDirectory
-#    Write-Host -Object ${{parameters.ServiceDirectory}}
-#    Write-Host -Object ${{parameters}}
     if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       foreach ($artifact in $artifacts) {
-        $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
-#        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+        $projectPathList += "./sdk/$($serviceDirectory)/$(artifact.name)"
       }
     }
     if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       foreach ($artifact in $additionalModules) {
-        $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
-#        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+        $projectPathList += "./sdk/$($serviceDirectory)/$(artifact.name)"
       }
     }
     
