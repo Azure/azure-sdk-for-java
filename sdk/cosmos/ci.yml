@@ -95,11 +95,19 @@ extends:
     EnableBatchRelease: true
     SDKType: client
     MatrixConfigs:
+      - Name: Cosmos_ci_test
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
       - Name: Cosmos_emulator_integration
         Path: ./sdk/cosmos/cosmos-emulator-matrix.json
         Selection: all
         GenerateVMJobs: true
+    MatrixFilters:
+      - TestFromSource=^$|false
     MatrixReplace:
+      - AZURE_TEST.*=.*/
       - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
     PreTestSteps:
       - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
