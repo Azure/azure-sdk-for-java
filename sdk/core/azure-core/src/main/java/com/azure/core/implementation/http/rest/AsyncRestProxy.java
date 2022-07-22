@@ -153,7 +153,7 @@ public class AsyncRestProxy extends RestProxyBase {
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
             || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
-            boolean isSuccess = (responseStatusCode - 200) < 100; // No more division!
+            boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Mono.just(isSuccess);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // Mono<byte[]>
