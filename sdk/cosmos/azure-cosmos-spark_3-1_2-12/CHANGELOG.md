@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.13.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.12.1 (2022-07-22)
 
 #### Bugs Fixed
 * Fixed `NotFoundException` for changeFeed after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)

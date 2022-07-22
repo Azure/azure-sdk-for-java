@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.34.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.33.1 (2022-07-22)
 
 #### Bugs Fixed
 * Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
