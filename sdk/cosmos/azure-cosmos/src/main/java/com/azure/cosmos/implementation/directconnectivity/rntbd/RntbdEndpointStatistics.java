@@ -74,6 +74,14 @@ public class RntbdEndpointStatistics implements Serializable {
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
 
+    public int getAvailableChannels() { return this.availableChannels; }
+
+    public int getAcquiredChannels() { return this.acquiredChannels; }
+
+    public int getInflightRequests() { return this.inflightRequests; }
+
+    public int getExecutorTaskQueueSize() { return this.executorTaskQueueSize; }
+
     public static class RntbdEndpointStatsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdEndpointStatistics> {
         @Override
         public void serialize(RntbdEndpointStatistics stats,

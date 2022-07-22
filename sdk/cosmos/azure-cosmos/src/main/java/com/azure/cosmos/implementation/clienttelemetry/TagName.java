@@ -5,17 +5,18 @@ package com.azure.cosmos.implementation.clienttelemetry;
 import java.util.Locale;
 
 public enum TagName {
-    ClientCorrelationId("ClientCorrelationId", 1),
-    Account("Account", 2),
-    Database("Database", 4),
-    Container("Container", 8),
-    ResourceType("ResourceType", 16),
-    OperationType("OperationType", 32),
-    StatusCode("StatusCode", 64),
-    OperationId("OperationId", 128),
-    RegionsContacted("RegionsContacted", 256),
-    IsPayloadLargerThan1KB("IsPayloadLargerThan1KB", 512),
-    ConsistencyLevel("ConsistencyLevel", 1024);
+    Container("Container", 1),
+    Operation("Operation", 2),
+    OperationStatusCode("OperationStatusCode", 4),
+    ClientCorrelationId("ClientCorrelationId", 8),
+    IsPayloadLargerThan1KB("IsPayloadLargerThan1KB", 16),
+    ConsistencyLevel("ConsistencyLevel", 32),
+    PartitionKeyRangeId("PartitionKeyRangeId", 64),
+    RequestStatusCode("RequestStatusCode", 128),
+    RequestOperationType("RequestOperationType", 256),
+    RegionName("RegionName", 512),
+    ServiceEndpoint("ServiceEndpoint", 1024),
+    ServiceAddress("ServiceAddress", 2048);
 
     private final int value;
     private final String stringValue;

@@ -5,9 +5,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -167,7 +167,7 @@ public final class CosmosDiagnostics {
             return this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
         }
 
-        return List.of(this.clientSideRequestStatistics);
+        return ImmutableList.of(this.clientSideRequestStatistics);
     }
 
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {

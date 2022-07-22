@@ -35,7 +35,7 @@ public class StoreResultDiagnostics {
     private boolean isGoneException;
     private boolean isNotFoundException;
     private boolean isInvalidPartitionException;
-    private final String storePhysicalAddressAsString;
+    private final Uri storePhysicalAddress;
     private boolean isThroughputControlRequestRateTooLargeException;
     private final Double backendLatencyInMs;
 
@@ -58,7 +58,7 @@ public class StoreResultDiagnostics {
         this.currentReplicaSetSize = storeResult.currentReplicaSetSize;
         this.currentWriteQuorum = storeResult.currentWriteQuorum;
         this.isValid = storeResult.isValid;
-        this.storePhysicalAddressAsString = storeResult.storePhysicalAddress != null ? storeResult.storePhysicalAddress.getURIAsString() : null;
+        this.storePhysicalAddress = storeResult.storePhysicalAddress != null ? storeResult.storePhysicalAddress : null;
         this.globalCommittedLSN = storeResult.globalCommittedLSN;
         this.numberOfReadRegions = storeResult.numberOfReadRegions;
         this.itemLSN = storeResult.itemLSN;
@@ -124,7 +124,19 @@ public class StoreResultDiagnostics {
     }
 
     public String getStorePhysicalAddressAsString() {
-        return storePhysicalAddressAsString;
+        return storePhysicalAddress != null ? storePhysicalAddress.getURIAsString() : null;
+    }
+
+    public String getStorePhysicalAddressEscapedAuthority() {
+        return storePhysicalAddress != null
+            ? String.format("%s_%d", storePhysicalAddress.getURI().getHost(), storePhysicalAddress.getURI().getPort())
+            : null;
+    }
+
+    public String getStorePhysicalAddressEscapedPath() {
+        return storePhysicalAddress != null
+            ? storePhysicalAddress.getURI().getPath()
+            : null;
     }
 
     public boolean isThroughputControlRequestRateTooLargeException() {
@@ -152,7 +164,7 @@ public class StoreResultDiagnostics {
                               SerializerProvider serializerProvider) throws IOException {
             StoreResponseDiagnostics storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics();
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeStringField("storePhysicalAddress", storeResultDiagnostics.storePhysicalAddressAsString);
+            jsonGenerator.writeStringField("storePhysicalAddress", storeResultDiagnostics.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResultDiagnostics.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());

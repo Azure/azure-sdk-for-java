@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -119,7 +120,9 @@ public class ClientSideRequestStatistics {
             }
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+                storeResponseStatistics.regionName =
+                    globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
+                this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
@@ -314,6 +317,9 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private OperationType requestOperationType;
 
+        @JsonIgnore
+        private String regionName;
+
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
         }
@@ -329,6 +335,8 @@ public class ClientSideRequestStatistics {
         public OperationType getRequestOperationType() {
             return requestOperationType;
         }
+
+        public String getRegionName() { return regionName; }
     }
 
     public static class SystemInformation {

@@ -1024,7 +1024,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosAsyncClientAccessor {
             Tag getClientCorrelationTag(CosmosAsyncClient client);
-            Tag getAccountTag(CosmosAsyncClient client);
+            String getAccountTagValue(CosmosAsyncClient client);
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
             boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
         }

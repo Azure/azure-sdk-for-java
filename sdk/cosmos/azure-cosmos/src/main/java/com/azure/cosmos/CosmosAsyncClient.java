@@ -80,7 +80,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ApiType apiType;
     private final String clientCorrelationId;
     private final Tag clientCorrelationTag;
-    private final Tag accountTag;
+    private final String accountTagValue;
     private final EnumSet<TagName> metricTagNames;
     private final boolean clientMetricsEnabled;
 
@@ -153,7 +153,9 @@ public final class CosmosAsyncClient implements Closeable {
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
         }
-        this.accountTag = Tag.of(TagName.Account.toString(), URI.create(this.serviceEndpoint).getHost());
+        this.accountTagValue = URI.create(this.serviceEndpoint).getHost().replace(
+            ".documents.azure.com", ""
+        );
     }
 
     AsyncDocumentClient getContextClient() {
@@ -623,8 +625,8 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public Tag getAccountTag(CosmosAsyncClient client) {
-                    return client.accountTag;
+                public String getAccountTagValue(CosmosAsyncClient client) {
+                    return client.accountTagValue;
                 }
 
                 @Override
