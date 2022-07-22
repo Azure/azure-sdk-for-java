@@ -149,6 +149,9 @@
     <!-- To update the shaded jackson-core code, run Maven build with '-Dshade-jackson-core' included in the command. -->
     <!-- In the target folder, extract the sources azure-core JAR, the path com/azure/core/implementation/jackson/core will contain the jackson-core source code. -->
     <!-- Copy this code into the com.azure.core.implementation.jackson.core package in the azure-core project and overwrite the existing files. -->
+    <!-- -->
+    <!-- After following the steps above the project should be rebuilt with the 'add-license-comment' profile enable to add a comment about the shaded code's license. -->
+    <!-- This serves as another way to attribute the shaded code to Jackson Core. -->
     <profile>
       <id>shade-jackson-core</id>
       <activation>
@@ -214,6 +217,43 @@
                 </bannedDependencies>
               </rules>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- This profile runs a script that adds a code comment to each shaded file attributing the shaded code back to the Jackson Core project. -->
+    <!-- This profile must be run after every time the 'shade-jackson-core' profile is ran and the steps to copy the shaded source code is followed. -->
+    <profile>
+      <id>add-license-comment</id>
+      <activation>
+        <property>
+          <name>add-license-comment</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>add-license-comment</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>${project.basedir}/add-shaded-code-comment.py</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

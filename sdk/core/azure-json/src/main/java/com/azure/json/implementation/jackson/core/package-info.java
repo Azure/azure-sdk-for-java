@@ -1,3 +1,4 @@
+// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 /**
  * Main public API classes of the core streaming JSON
  * processor: most importantly {@link com.azure.json.implementation.jackson.core.JsonFactory}

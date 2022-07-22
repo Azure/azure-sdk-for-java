@@ -1,3 +1,4 @@
+// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 /**
  * Package that contains abstractions needed to support optional
  * non-blocking decoding (parsing) functionality.
