@@ -35,7 +35,7 @@ class ConfigurationClientWrapper {
     ConfigurationClientWrapper(String endpoint, ConfigurationClient client) {
         this.endpoint = endpoint;
         this.client = client;
-        this.backoffEndTime = Instant.now();
+        this.backoffEndTime = Instant.now().minusMillis(1);
         this.failedAttempts = 0;
         this.health = AppConfigurationStoreHealth.UP;
     }
