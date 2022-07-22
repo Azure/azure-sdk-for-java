@@ -45,7 +45,35 @@ When migrating your existing application code, replace the password input with t
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
+//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
+// Fetch an Azure AD token to be used for authentication.
+// Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+String token = defaultAzureCredential
+    .getToken(new TokenRequestContext()
+        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+
+// Create Client Configuration
+Config config = new Config();
+config.useSingleServer()
+    .setAddress("redis://<HOST_NAME>:6380") // TODO: Replace Host Name with Azure Cache for Redis Host Name.
+    .setKeepAlive(true) // Keep the connection alive.
+    .setUsername("<USERNAME>") // Username is Required
+    .setPassword(token) // Azure AD Access Token as password is required.
+    .setClientName("Reddison-Client");
+
+RedissonClient redisson = Redisson.create(config);
+
+// perform operations
+RBuckets rBuckets =  redisson.getBuckets();
+RBucket bucket = redisson.getBucket("Az:key");
+bucket.set("This is object value");
+
+String objectValue = bucket.get().toString();
+System.out.println("stored object value: " + objectValue);
+
+redisson.shutdown();
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
@@ -66,8 +94,67 @@ When migrating your existing application code, replace the password input with t
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
+//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
+// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
+// Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
+// Create Redisson Client
+// Host Name, Port, Username and Azure AD Token are required here.
+// TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
+RedissonClient redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", accessToken);
+
+int maxTries = 3;
+int i = 0;
+
+while (i < maxTries) {
+    try {
+        // perform operations
+        RBuckets rBuckets = redisson.getBuckets();
+        RBucket bucket = redisson.getBucket("Az:key");
+        bucket.set("This is object value");
+
+        String objectValue = bucket.get().toString();
+        System.out.println("stored object value: " + objectValue);
+        break;
+    } catch (RedisException exception) {
+        // TODO: Handle Exception as Required.
+        exception.printStackTrace();
+
+        // For Exceptions containing Invalid Username Password / Permissions not granted error messages, look at troubleshooting section at the end of document.
+
+        if (redisson.isShutdown()) {
+            // Recreate the client with a fresh token non-expired token as password for authentication.
+            redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", getAccessToken(defaultAzureCredential, trc));
+        }
+    } catch (Exception e) {
+        // Handle Exception as required
+        e.printStackTrace();
+    }
+    i++;
+}
+redisson.shutdown();
+
+// Helper Code
+private static RedissonClient createRedissonClient(String address, String username, AccessToken accessToken) {
+
+    Config config = new Config();
+    config.useSingleServer()
+        .setAddress(address)
+        .setKeepAlive(true)
+        .setUsername(username)
+        .setPassword(accessToken.getToken())
+        .setClientName("Reddison-Client");
+
+    return Redisson.create(config);
+}
+
+private static AccessToken getAccessToken(TokenCredential tokenCredential, TokenRequestContext trc) {
+    return tokenCredential.getToken(trc).block();
+}
 ```
 
 
@@ -79,7 +166,121 @@ When migrating your existing application code, replace the password input with t
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
+//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
+// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
+// Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+
+// Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
+TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
+AccessToken accessToken = tokenRefreshCache.getAccessToken();
+
+// Create Redisson Client
+// Host Name, Port, Username and Azure AD Token are required here.
+// TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
+RedissonClient redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", accessToken);
+
+int maxTries = 3;
+int i = 0;
+
+while (i < maxTries) {
+    try {
+        // perform operations
+        RBuckets rBuckets = redisson.getBuckets();
+        RBucket bucket = redisson.getBucket("Az:key");
+        bucket.set("This is object value");
+
+        String objectValue = bucket.get().toString();
+        System.out.println("stored object value: " + objectValue);
+        break;
+    } catch (RedisException exception) {
+        // TODO: Handle Exception as Required.
+        exception.printStackTrace();
+
+        // For Exceptions containing Invalid Username Password / Permissions not granted error messages, look at troubleshooting section at the end of document.
+
+        if (redisson.isShutdown()) {
+            // Recreate the client with a fresh token non-expired token as password for authentication.
+            redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", tokenRefreshCache.getAccessToken());
+        }
+    } catch (Exception e) {
+        // Handle Exception as required
+        e.printStackTrace();
+    }
+    i++;
+}
+redisson.shutdown();
+
+
+// Helper Code
+private static RedissonClient createRedissonClient(String address, String username, AccessToken accessToken) {
+
+    Config config = new Config();
+    config.useSingleServer()
+        .setAddress(address)
+        .setKeepAlive(true)
+        .setUsername(username)
+        .setPassword(accessToken.getToken())
+        .setClientName("Reddison-Client");
+
+    return Redisson.create(config);
+}
+
+/**
+ * The Token Cache to store and proactively refresh the Access Token.
+ */
+public static class TokenRefreshCache {
+    private final TokenCredential tokenCredential;
+    private final TokenRequestContext tokenRequestContext;
+    private final Timer timer;
+    private volatile AccessToken accessToken;
+    private final Duration refreshOffset;
+
+    /**
+     * Creates an instance of TokenRefreshCache
+     * @param tokenCredential the token credential to be used for authentication.
+     * @param tokenRequestContext the token request context to be used for authentication.
+     * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
+     */
+    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+        this.tokenCredential = tokenCredential;
+        this.tokenRequestContext = tokenRequestContext;
+        this.timer = new Timer();
+        this.refreshOffset = refreshOffset;
+    }
+
+    /**
+     * Gets the cached access token.
+     * @return the {@link AccessToken}
+     */
+    public AccessToken getAccessToken() {
+        if (accessToken != null) {
+            return  accessToken;
+        } else {
+            TokenRefreshTask tokenRefreshTask = new TokenRefreshTask();
+            accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            timer.schedule(tokenRefreshTask, getTokenRefreshDelay());
+            return accessToken;
+        }
+    }
+
+    private class TokenRefreshTask extends TimerTask {
+        // Add your task here
+        public void run() {
+            accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
+            timer.schedule(new TokenRefreshTask(), getTokenRefreshDelay());
+        }
+    }
+
+    private long getTokenRefreshDelay() {
+        return ((accessToken.getExpiresAt()
+            .minusSeconds(refreshOffset.getSeconds()))
+            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+    }
+}
 ```
 
 #### Troubleshooting
