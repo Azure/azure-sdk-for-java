@@ -93,7 +93,7 @@ org.apache.qpid:proton-j;0.33.8
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
-org.codehaus.gmavenplus:gmavenplus-plugin;1.13.0
+org.codehaus.gmavenplus:gmavenplus-plugin;1.13.1
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.codehaus.groovy:groovy-jsr223;3.0.11
@@ -240,8 +240,8 @@ org.junit.platform:junit-platform-testkit;1.8.2
 org.junit.vintage:junit-vintage-engine;5.8.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
-org.spockframework:spock-core;2.0-M4-groovy-2.5
-groovy3_org.spockframework:spock-core;2.0-groovy-3.0
+org.spockframework:spock-core;2.2-M3-groovy-2.5
+groovy3_org.spockframework:spock-core;2.2-M3-groovy-3.0
 org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 com.google.truth:truth;1.1.3
