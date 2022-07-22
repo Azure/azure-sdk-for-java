@@ -241,7 +241,7 @@ org.junit.vintage:junit-vintage-engine;5.8.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;2.2-M3-groovy-2.5
-groovy3_org.spockframework:spock-core;2.2-M3-groovy-3.0
+groovy4_org.spockframework:spock-core;2.2-M3-groovy-4.0
 org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 com.google.truth:truth;1.1.3

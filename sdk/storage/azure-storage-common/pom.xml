@@ -240,7 +240,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-          <version>2.2-M3-groovy-3.0</version> <!-- {x-version-update;groovy3_org.spockframework:spock-core;external_dependency} -->
+          <version>2.2-M3-groovy-4.0</version> <!-- {x-version-update;groovy4_org.spockframework:spock-core;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
