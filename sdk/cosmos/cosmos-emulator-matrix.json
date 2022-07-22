@@ -3,42 +3,51 @@
     "Agent": {
       "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" }
     },
+    "BuildParallelization": 1,
+    "AdditionalBuildOptions": "-DsparkShading",
+    "TestGoals": "clean verify",
     "JavaTestVersion": "1.8",
     "EmulatorConfig": {
       "Emulator Only Integration Tests Tcp": {
           "ProfileFlag": "-Pemulator",
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
-          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\"",
+          "TestOptions": "-Pemulator -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
       },
       "Emulator Only Integration Tests Https": {
           "ProfileFlag": "-Pemulator",
           "PROTOCOLS": "[\"Https\"]",
           "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
-          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\"",
+          "TestOptions": "-Pemulator -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
       },
       "Spring Emulator Only Integration Tests": {
           "ProfileFlag": "-Pintegration-test-emulator",
           "PROTOCOLS": "[\"Tcp\"]",
-          "AdditionalArgs": "-Dspring-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_ACCOUNT_HOST=https://localhost:8081/ -DNEW_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_SECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==\""
+          "AdditionalArgs": "-Dspring-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_ACCOUNT_HOST=https://localhost:8081/ -DNEW_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_SECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==\"",
+          "TestOptions": "-Pintegration-test-emulator -Dspring-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_ACCOUNT_HOST=https://localhost:8081/ -DNEW_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_SECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==\""
       },
       "Encryption Emulator Only Integration Tests": {
           "ProfileFlag": "-Pencryption-integration",
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
-          "AdditionalArgs": "-Dencryption-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+          "AdditionalArgs": "-Dencryption-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\"",
+          "TestOptions": "-Pencryption-integration -Dencryption-e2e -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
       },
       "Spark 3.1 Integration Tests targeting Cosmos Emulator'": {
         "ProfileFlag": "-Dspark-e2e_3-1",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\"",
+        "TestOptions": "-Dspark-e2e_3-1 -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
       },
       "Spark 3.2 Integration Tests targeting Cosmos Emulator'": {
         "ProfileFlag": "-Dspark-e2e_3-2",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
-        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\"",
+        "TestOptions": "-Dspark-e2e_3-2 -DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
       }
     }
   }

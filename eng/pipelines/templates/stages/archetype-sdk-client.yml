@@ -62,6 +62,15 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+- name: PreTestSteps
+  type: object
+  default: []
+- name: TimeoutInMinutes
+  type: number
+  default: 60
+- name: IsLiveTest
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -74,6 +83,7 @@ stages:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+        PreTestSteps: ${{ parameters.PreTestSteps }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:
             -  ${{ config }}
@@ -100,6 +110,7 @@ stages:
           JavaBuildVersion: '1.11'
         ${{ else }}:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+        IsLiveTest: ${{ parameters.IsLiveTest }}
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 

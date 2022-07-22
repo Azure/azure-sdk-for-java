@@ -101,13 +101,6 @@ extends:
         GenerateVMJobs: true
     MatrixReplace:
       - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
-    BuildParallelization: 1
-    AdditionalBuildOptions: '-DsparkShading'
-    # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
-    # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
-    TimeoutInMinutes: 90
-    TestGoals: 'clean verify'
-    TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
     PreTestSteps:
     - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
       parameters:

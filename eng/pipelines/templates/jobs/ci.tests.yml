@@ -49,6 +49,12 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: IsLiveTest
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Test'
@@ -68,6 +74,8 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
@@ -97,3 +105,4 @@ jobs:
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          IsLiveTest: ${{ parameters.IsLiveTest }}

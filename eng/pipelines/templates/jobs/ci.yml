@@ -55,6 +55,12 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: IsLiveTest
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Build'
@@ -389,3 +395,6 @@ jobs:
         AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+        IsLiveTest: ${{ parameters.IsLiveTest }}
+
