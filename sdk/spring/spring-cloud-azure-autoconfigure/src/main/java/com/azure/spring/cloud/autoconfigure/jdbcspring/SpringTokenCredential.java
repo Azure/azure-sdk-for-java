@@ -1,34 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.jdbcspring;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 
-public class CachedTokenCredential implements TokenCredential {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CachedTokenCredential.class);
+public class SpringTokenCredential implements TokenCredential {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringTokenCredential.class);
 
     // to one JVM, one system assigned managed identity, many client assigned managed identity
-
-    private static Cache<String, AccessToken> myCaffeineCache;
     private TokenCredential tokenCredential;
+    private static ApplicationContext context;
 
     @NotNull
-    public CachedTokenCredential(TokenCredential tokenCredential) {
+    public SpringTokenCredential(TokenCredential tokenCredential, ApplicationContext context) {
         this.tokenCredential = tokenCredential;
-        if (myCaffeineCache == null) {
-            myCaffeineCache = Caffeine.newBuilder().maximumSize(100)
-                .expireAfterWrite(Duration.ofSeconds(60)).build();
-        }
+        context = context;
     }
 
     public TokenCredential getTokenCredential() {
@@ -44,14 +38,6 @@ public class CachedTokenCredential implements TokenCredential {
             + tokenRequestContext.getClaims();
         LOGGER.info("key==" + key);
         //
-        AccessToken accessToken = myCaffeineCache.getIfPresent(key);
-        if (accessToken != null && !accessToken.isExpired()) {
-            return Mono.just(accessToken);
-        } else {
-            return tokenCredential
-                            .getToken(tokenRequestContext)
-                            .doOnNext(response -> myCaffeineCache.put(key, response));
-        }
+        return null;
     }
-
 }

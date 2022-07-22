@@ -2,37 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
-import com.azure.spring.cloud.autoconfigure.jdbc.TokenCredentialProvider;
+import com.azure.spring.cloud.autoconfigure.jdbc.implementation.JdbcPluginPropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.jdbc.resolver.PasswordResolver;
+import com.azure.spring.cloud.autoconfigure.jdbc.resolver.NativeJdbcPluginPasswordResolver;
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;
 
 import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 
+
 /**
  * The Authentication plugin that enables Azure AD managed identity support.
  */
 public class AzureIdentityPostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 
-    private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
-
-    /**
-     * Stores the properties.
-     */
-    private Properties properties;
-
-    private TokenCredentialProvider tokenCredentialProvider;
-
+    private PasswordResolver<String> passwordResolver;
 
     /**
      * Constructor with properties.
@@ -40,12 +29,9 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      * @param properties the properties.
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
-        this.properties = properties;
-
-        //todo check
         Map<String, String> map = new HashMap<>();
-        AzureJDBCPropertiesUtils.convertPropertiesToConfigMap(properties, map);
-        this.tokenCredentialProvider = new TokenCredentialProvider(map, true);
+        JdbcPluginPropertiesUtils.convertPropertiesToConfigMap(properties, map);
+        passwordResolver = new NativeJdbcPluginPasswordResolver(map);
     }
 
     /**
@@ -57,25 +43,12 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      */
     @Override
     public char[] getPassword(AuthenticationRequestType art) throws PSQLException {
-        char[] password;
-
-        AccessToken accessToken = getAccessToken();
-
-        if (accessToken != null) {
-            password = accessToken.getToken().toCharArray();
-        } else {
+        String password = passwordResolver.getPassword();
+        if (password != null) {
+            return passwordResolver.getPassword().toCharArray();
+        }else {
             throw new PSQLException("Unable to acquire access token", INVALID_PASSWORD);
         }
-
-        return password;
     }
 
-    private AccessToken getAccessToken() {
-        TokenCredential credential = tokenCredentialProvider.getTokenCredential();
-        TokenRequestContext request = new TokenRequestContext();
-        ArrayList<String> scopes = new ArrayList<>();
-        scopes.add(OSSRDBMS_SCOPE);
-        request.setScopes(scopes);
-        return credential.getToken(request).block(Duration.ofSeconds(30));
-    }
 }

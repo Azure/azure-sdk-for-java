@@ -2,17 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
-import com.azure.spring.cloud.autoconfigure.jdbc.TokenCredentialProvider;
+import com.azure.spring.cloud.autoconfigure.jdbc.implementation.JdbcPluginPropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.jdbc.resolver.PasswordResolver;
+import com.azure.spring.cloud.autoconfigure.jdbc.resolver.NativeJdbcPluginPasswordResolver;
 import com.mysql.cj.callback.MysqlCallbackHandler;
 import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
@@ -30,13 +26,12 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
 
     private static String PLUGIN_NAME = "mysql_clear_password";
 
-    private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
-
-    private TokenCredentialProvider tokenCredentialProvider;
+    private PasswordResolver<String> passwordResolver;
     /**
      * Stores the callback handler.
      */
     private MysqlCallbackHandler callbackHandler;
+
     /**
      * Stores the protocol.
      */
@@ -61,9 +56,13 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     @Override
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
+        initPasswordResolver(protocol);
+    }
+
+    public void initPasswordResolver(Protocol<NativePacketPayload> protocol) {
         Map<String, String> map = new HashMap<>();
-        AzureJDBCPropertiesUtils.convertPropertySetToConfigMap(protocol.getPropertySet(), map);
-        this.tokenCredentialProvider = new TokenCredentialProvider(map, true);
+        JdbcPluginPropertiesUtils.convertPropertySetToConfigMap(protocol.getPropertySet(), map);
+        passwordResolver = new NativeJdbcPluginPasswordResolver(map);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
         } else {
             if (protocol.getSocketConnection().isSSLEstablished()) {
                 try {
-                    String password = getAccessToken().getToken();
+                    String password = passwordResolver.getPassword();
                     byte[] content = password.getBytes(
                         protocol.getServerSession()
                             .getCharsetSettings()
@@ -132,15 +131,8 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
         this.sourceOfAuthData = sourceOfAuthData;
     }
 
-    /**
-     * @return AccessToken
-     */
-    private AccessToken getAccessToken() {
-        TokenCredential credential = tokenCredentialProvider.getTokenCredential();
-        TokenRequestContext request = new TokenRequestContext();
-        ArrayList<String> scopes = new ArrayList<>();
-        scopes.add(OSSRDBMS_SCOPE);
-        request.setScopes(scopes);
-        return credential.getToken(request).block(Duration.ofSeconds(30));
+
+    public void setPasswordResolver(PasswordResolver<String> passwordResolver) {
+        this.passwordResolver = passwordResolver;
     }
 }

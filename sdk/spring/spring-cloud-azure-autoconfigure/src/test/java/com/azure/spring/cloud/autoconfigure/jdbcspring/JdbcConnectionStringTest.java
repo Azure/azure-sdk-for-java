@@ -1,4 +1,4 @@
-package com.azure.spring.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.jdbcspring;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -6,17 +6,17 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.jdbc.JDBCPropertiesBeanPostProcessor.ENHANCED_PROPERTIES;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionString.INVALID_CONNECTION_STRING_FORMAT;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.MYSQL_PLUGIN_CLASS_NAME;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.NONE_VALUE;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_AUTHENTICATION_PLUGINS;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_USE_SSL;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcPropertiesBeanPostProcessor.ENHANCED_PROPERTIES;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionString.INVALID_CONNECTION_STRING_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.MYSQL_PLUGIN_CLASS_NAME;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.NONE_VALUE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_AUTHENTICATION_PLUGINS;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

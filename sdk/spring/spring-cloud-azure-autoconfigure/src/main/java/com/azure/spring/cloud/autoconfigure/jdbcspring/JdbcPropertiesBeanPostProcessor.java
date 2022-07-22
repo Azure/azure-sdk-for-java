@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.jdbcspring;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureSpringJDBCPropertiesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
@@ -21,30 +18,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.MYSQL_PLUGIN_CLASS_NAME;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.POSTGRES_PLUGIN_CLASS_NAME;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_AUTHENTICATION_PLUGINS;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_USE_SSL;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.PROPERTY_POSTGRESQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_POSTGRESQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.MYSQL_PLUGIN_CLASS_NAME;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.POSTGRES_PLUGIN_CLASS_NAME;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_AUTHENTICATION_PLUGINS;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_MYSQL_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.PROPERTY_POSTGRESQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.VALUE_POSTGRESQL_SSL_MODE;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
  */
-class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
+class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCPropertiesBeanPostProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
 
     private final AzureGlobalProperties azureGlobalProperties;
 
     private Environment environment;
 
-    public JDBCPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
+    public JdbcPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
 
@@ -68,7 +65,6 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
-            // what if this is sqlserver
             DataSourceProperties dataSourceProperties = Binder.get(environment).bindOrCreate("spring.datasource", DataSourceProperties.class);
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
 
@@ -91,12 +87,12 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             try {
                 if (ENHANCED_PROPERTIES.containsKey(databaseType)) {
-                    AzureJDBCProperties azureJDBCProperties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJDBCProperties.class);
+                    AzureJdbcProperties azureJDBCProperties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJdbcProperties.class);
                     copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azureJDBCProperties.getProfile());
                     copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azureJDBCProperties.getCredential());
 
                     Map<String, String> configMap = new HashMap<>();
-                    AzureSpringJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
+                    AzureSpringJdbcPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
                     configMap.putAll(ENHANCED_PROPERTIES.get(databaseType));
                     String enhancedUrl = connectionString.enhanceConnectionString(configMap);
                     LOGGER.debug("Enhanced url is " + enhancedUrl);

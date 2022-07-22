@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql;
+package com.azure.spring.cloud.autoconfigure.jdbcspring.postgresql;
 
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql.AzureIdentityPostgresqlAuthenticationPlugin;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Properties;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureIdentityPostgresqlAuthenticationPluginTest {
 
+   //TODO
     @Test
     void testDefaultScope() {
         AzureIdentityPostgresqlAuthenticationPlugin postgresqlPlugin = new AzureIdentityPostgresqlAuthenticationPlugin(new Properties());

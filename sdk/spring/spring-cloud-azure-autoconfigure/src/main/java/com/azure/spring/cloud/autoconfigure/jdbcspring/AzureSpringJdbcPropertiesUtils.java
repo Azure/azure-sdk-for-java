@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
+package com.azure.spring.cloud.autoconfigure.jdbcspring;
 
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
@@ -14,11 +14,14 @@ import java.util.function.Function;
 /**
  * Store the constants for customized Azure properties with Kafka.
  */
-public final class AzureSpringJDBCPropertiesUtils extends AzureJDBCPropertiesUtils{
+public final class AzureSpringJdbcPropertiesUtils {
 
     private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
+    static final String CREDENTIAL_PREFIX = "azure.credential.";
+    static final String PROFILE_PREFIX = "azure.profile.";
+    static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
-    public static void convertAzurePropertiesToConfigMap(AzureJDBCProperties source,
+    public static void convertAzurePropertiesToConfigMap(AzureJdbcProperties source,
                                                          Map<String, String> target) {
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql;
+package com.azure.spring.cloud.autoconfigure.jdbcspring.mysql;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql.AzureIdentityMysqlAuthenticationPlugin;
 import com.mysql.cj.conf.DefaultPropertySet;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.a.NativeProtocol;
@@ -20,8 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AzureIdentityMysqlAuthenticationPluginTest {
+class AzureSpringIdentityMysqlAuthenticationPluginTest {
 
+    //TODO
     @Test
     void testDefaultScope() {
         AzureIdentityMysqlAuthenticationPlugin mysqlPlugin = new AzureIdentityMysqlAuthenticationPlugin();

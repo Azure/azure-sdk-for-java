@@ -37,7 +37,7 @@ com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManag
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.compatibility.AzureCompatibilityVerifierAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.jdbc.JDBCPropertiesBeanPostProcessorConfiguration
+com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcCredentialFreeAutoConfiguration
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetFailureAnalyzer

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.jdbcspring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.NONE_VALUE;
+import static com.azure.spring.cloud.autoconfigure.jdbcspring.JdbcConnectionStringPropertyConstants.NONE_VALUE;
 
 public class JdbcConnectionString {
 
@@ -51,7 +51,10 @@ public class JdbcConnectionString {
             return;
         }
 
+        this.properties.put("servername", this.str.substring(databaseType.getSchema().length() + 3, pathQueryDelimiterIndex));
+
         String properties = this.str.substring(pathQueryDelimiterIndex + 1);
+
         final String[] tokenValuePairs = properties.split(this.databaseType.getQueryDelimiter());
 
         for (String tokenValuePair : tokenValuePairs) {

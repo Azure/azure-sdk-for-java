@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
+package com.azure.spring.cloud.autoconfigure.jdbcspring;
 
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
@@ -10,12 +10,14 @@ import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Implement {@link TokenCredentialOptionsProvider} and {@link AzureProfileOptionsProvider} for Spring Cloud Azure
  * support for other third party services.
  */
-public class AzureJDBCProperties implements AzureProperties {
+@ConfigurationProperties(prefix = "spring.datasource.azure")
+public class AzureJdbcProperties implements AzureProperties {
 
     private AzureProfileProperties profile = new AzureProfileProperties();
 
