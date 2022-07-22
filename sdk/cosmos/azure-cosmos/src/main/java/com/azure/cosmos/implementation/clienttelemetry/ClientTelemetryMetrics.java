@@ -29,6 +29,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public final class ClientTelemetryMetrics {
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    private static final
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-", false);
 
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetryMetrics.class);
@@ -103,7 +106,7 @@ public final class ClientTelemetryMetrics {
 
         int requestPayloadSizeInBytes = 0;
         if (cosmosDiagnostics != null) {
-            requestPayloadSizeInBytes = cosmosDiagnostics.getRequestPayloadSizeInBytes();
+            requestPayloadSizeInBytes = diagnosticsAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics);
         }
 
         EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(cosmosAsyncClient);

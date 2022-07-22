@@ -188,8 +188,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                 CosmosAsyncClient client = pagedFluxOptions.getCosmosAsyncClient();
                 boolean clientTelemetryEnabled = BridgeInternal.isClientTelemetryEnabled(client);
-                boolean clientMetricsEnabled = client != null &&
-                    ImplementationBridgeHelpers
+                boolean clientMetricsEnabled = ImplementationBridgeHelpers
                         .CosmosAsyncClientHelper
                         .getCosmosAsyncClientAccessor()
                         .isClientTelemetryMetricsEnabled(client);
@@ -239,7 +238,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                             client,
                                             diagnostics,
                                             cosmosException.getStatusCode(),
-                                            diagnostics.getTotalResponsePayloadSizeInBytes(),
+                                            cosmosDiagnosticsAccessor.getTotalResponsePayloadSizeInBytes(diagnostics),
                                             pagedFluxOptions.getMaxItemCount(),
                                             0,
                                             pagedFluxOptions.getContainerId(),
@@ -293,7 +292,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 Duration.between(Instant.now(), feedResponseConsumerStart).toNanos());
                         }
 
-                        CosmosDiagnostics diagnostics = feedResponse.getCosmosDiagnostics();
+                        CosmosDiagnostics diagnostics = feedResponse != null ?
+                            feedResponse.getCosmosDiagnostics() : null;
 
                         if (client != null &&
                             (clientTelemetryEnabled || clientMetricsEnabled)) {
@@ -324,7 +324,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                             client,
                                             diagnostics,
                                             HttpConstants.StatusCodes.OK,
-                                            diagnostics.getTotalResponsePayloadSizeInBytes(),
+                                            cosmosDiagnosticsAccessor.getTotalResponsePayloadSizeInBytes(diagnostics),
                                             pagedFluxOptions.getMaxItemCount(),
                                             feedResponse.getResults().size(),
                                             pagedFluxOptions.getContainerId(),

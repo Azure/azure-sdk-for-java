@@ -2275,6 +2275,7 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
   </Match>

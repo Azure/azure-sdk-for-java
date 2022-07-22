@@ -104,9 +104,7 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestResourceType = request.getResourceType();
         activityId = request.getActivityId().toString();
 
-        if (request != null) {
-            this.requestPayloadSizeInBytes = request.getContentLength();
-        }
+        this.requestPayloadSizeInBytes = request.getContentLength();
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {

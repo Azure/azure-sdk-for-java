@@ -649,6 +649,9 @@ public class ImplementationBridgeHelpers {
         public interface CosmosDiagnosticsAccessor {
             FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
+            List<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics);
+            int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
+            int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
