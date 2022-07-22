@@ -85,8 +85,8 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
       - pwsh: |
-          Write-Host ${{parameters.ServiceDirectory}}
-          Write-Host ${{parameters}}
+          Write-Host -Object ${{parameters.ServiceDirectory}}
+          Write-Host -Object ${{parameters}}
           displayName: Moary test log
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
