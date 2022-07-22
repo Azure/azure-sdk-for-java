@@ -219,7 +219,7 @@ public final class Path {
     }
 
     /**
-     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     * Get the encryptionScope property: The name of the encryption scope under which the path is encrypted.
      *
      * @return the encryptionScope value.
      */
@@ -228,7 +228,7 @@ public final class Path {
     }
 
     /**
-     * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     * Set the encryptionScope property: The name of the encryption scope under which the path is encrypted.
      *
      * @param encryptionScope the encryptionScope value to set.
      * @return the Path object itself.

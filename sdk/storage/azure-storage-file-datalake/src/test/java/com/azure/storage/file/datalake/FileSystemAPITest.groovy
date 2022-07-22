@@ -131,7 +131,7 @@ class FileSystemAPITest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        properties.getDefaultEncryptionScope() == encryptionScopeString
+        properties.getEncryptionScope() == encryptionScopeString
         properties.isEncryptionScopeOverridePrevented()
     }
 
@@ -257,9 +257,8 @@ class FileSystemAPITest extends APISpec {
 
     def "Create if not exists encryption scope"() {
         setup:
-        String scope = "testscope1"
         def encryptionScope = new FileSystemEncryptionScope()
-            .setDefaultEncryptionScope(scope)
+            .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -274,7 +273,7 @@ class FileSystemAPITest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        properties.getDefaultEncryptionScope() == scope
+        properties.getEncryptionScope() == encryptionScopeString
         properties.isEncryptionScopeOverridePrevented()
     }
 

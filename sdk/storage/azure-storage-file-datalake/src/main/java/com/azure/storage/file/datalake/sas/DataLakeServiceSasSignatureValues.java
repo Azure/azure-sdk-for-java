@@ -411,12 +411,20 @@ public final class DataLakeServiceSasSignatureValues {
     }
 
     /**
-     * @return the file system's encryption scope
+     * Get the encryptionScope property: The name of the encryption scope under which the file system is encrypted.
+     *
+     * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
         return encryptionScope;
     }
 
+    /**
+     * Set the encryptionScope property: The name of the encryption scope under which the file system is encrypted.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
     public DataLakeServiceSasSignatureValues setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
         return this;

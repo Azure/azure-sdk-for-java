@@ -243,7 +243,7 @@ class ServiceAPITest extends APISpec {
         def properties = fsClient.getProperties()
 
         then:
-        properties.getDefaultEncryptionScope() == encryptionScopeString
+        properties.getEncryptionScope() == encryptionScopeString
         properties.isEncryptionScopeOverridePrevented()
     }
 
