@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class CallingServerResponseMocker {
-
     public static final String MOCK_ENDPOINT = "https://REDACTED.communication.azure.com/";
     public static final String MOCK_CONNECTION_STRING = String.format("endpoint=%s;accesskey=eyJhbG", MOCK_ENDPOINT);
 
