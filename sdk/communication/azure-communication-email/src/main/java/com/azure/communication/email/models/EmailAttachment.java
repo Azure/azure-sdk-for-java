@@ -29,23 +29,24 @@ public final class EmailAttachment {
     private String contentBytesBase64;
 
     /**
+     * Constructor for EmailAttachment
+     * @param name the name of the attachment
+     * @param attachmentType the type of attachment file
+     * @param contentBytesBase64 the base64 encoded contents of the attachment
+     */
+    public EmailAttachment(String name, EmailAttachmentType attachmentType, String contentBytesBase64) {
+        this.name = name;
+        this.attachmentType = attachmentType;
+        this.contentBytesBase64 = contentBytesBase64;
+    }
+
+    /**
      * Get the name property: Name of the attachment.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: Name of the attachment.
-     *
-     * @param name the name value to set.
-     * @return the EmailAttachment object itself.
-     */
-    public EmailAttachment setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -58,33 +59,11 @@ public final class EmailAttachment {
     }
 
     /**
-     * Set the attachmentType property: The type of attachment file.
-     *
-     * @param attachmentType the attachmentType value to set.
-     * @return the EmailAttachment object itself.
-     */
-    public EmailAttachment setAttachmentType(EmailAttachmentType attachmentType) {
-        this.attachmentType = attachmentType;
-        return this;
-    }
-
-    /**
      * Get the contentBytesBase64 property: Base64 encoded contents of the attachment.
      *
      * @return the contentBytesBase64 value.
      */
     public String getContentBytesBase64() {
         return this.contentBytesBase64;
-    }
-
-    /**
-     * Set the contentBytesBase64 property: Base64 encoded contents of the attachment.
-     *
-     * @param contentBytesBase64 the contentBytesBase64 value to set.
-     * @return the EmailAttachment object itself.
-     */
-    public EmailAttachment setContentBytesBase64(String contentBytesBase64) {
-        this.contentBytesBase64 = contentBytesBase64;
-        return this;
     }
 }

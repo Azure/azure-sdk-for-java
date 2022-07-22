@@ -23,23 +23,20 @@ public final class EmailAddress {
     private String displayName;
 
     /**
+     * Constructor for EmailAddress
+     * @param email the email address.
+     */
+    public EmailAddress(String email) {
+        this.email = email;
+    }
+
+    /**
      * Get the email property: Email address.
      *
      * @return the email value.
      */
     public String getEmail() {
         return this.email;
-    }
-
-    /**
-     * Set the email property: Email address.
-     *
-     * @param email the email value to set.
-     * @return the EmailAddress object itself.
-     */
-    public EmailAddress setEmail(String email) {
-        this.email = email;
-        return this;
     }
 
     /**

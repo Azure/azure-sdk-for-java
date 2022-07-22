@@ -51,23 +51,18 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailToSingleRecipient
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail("<recipient-email-address>");
+        EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients(addressList);
 
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
+        EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender("<sender-email-address>")
-            .setRecipients(emailRecipients)
-            .setContent(content);
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
+            .setRecipients(emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());
@@ -78,11 +73,8 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailToMultipleRecipients
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail("<recipient-email-address>");
-
-        EmailAddress emailAddress2 = new EmailAddress()
-            .setEmail("<recipient-2-email-address>");
+        EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
+        EmailAddress emailAddress2 = new EmailAddress("<recipient-2-email-address>");
 
         ArrayList<EmailAddress> toAddressList = new ArrayList<>();
         toAddressList.add(emailAddress);
@@ -94,19 +86,15 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
         bccAddressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(toAddressList)
+        EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
             .setCc(ccAddressList)
             .setBcc(bccAddressList);
 
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
+        EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender("<sender-email-address>")
-            .setRecipients(emailRecipients)
-            .setContent(content);
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
+            .setRecipients(emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());
@@ -129,32 +117,24 @@ public class ReadmeSamples {
 
         String b64file = Base64.getEncoder().encodeToString(fileContent);
 
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail("<recipient-email-address>");
+        EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients(addressList);
 
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
+        EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailAttachment attachment = new EmailAttachment()
-            .setName("attachment.txt")
-            .setAttachmentType(EmailAttachmentType.TXT)
-            .setContentBytesBase64(b64file);
+        EmailAttachment attachment = new EmailAttachment("attachment.txt", EmailAttachmentType.TXT, b64file);
 
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender("<sender-email-address>")
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
             .setRecipients(emailRecipients)
-            .setAttachments(attachmentList)
-            .setContent(content);
+            .setAttachments(attachmentList);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());

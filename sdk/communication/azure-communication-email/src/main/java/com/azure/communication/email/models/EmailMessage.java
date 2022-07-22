@@ -62,6 +62,16 @@ public final class EmailMessage {
     private Boolean disableUserEngagementTracking;
 
     /**
+     * Constructor for EmailMessage
+     * @param sender the sender email address from a verified domain
+     * @param content the email content to be sent
+     */
+    public EmailMessage(String sender, EmailContent content) {
+        this.sender = sender;
+        this.content = content;
+    }
+
+    /**
      * Get the customHeaders property: Custom email headers to be passed.
      *
      * @return the customHeaders value.
@@ -91,34 +101,12 @@ public final class EmailMessage {
     }
 
     /**
-     * Set the sender property: Sender email address from a verified domain.
-     *
-     * @param sender the sender value to set.
-     * @return the EmailMessage object itself.
-     */
-    public EmailMessage setSender(String sender) {
-        this.sender = sender;
-        return this;
-    }
-
-    /**
      * Get the content property: Email content to be sent.
      *
      * @return the content value.
      */
     public EmailContent getContent() {
         return this.content;
-    }
-
-    /**
-     * Set the content property: Email content to be sent.
-     *
-     * @param content the content value to set.
-     * @return the EmailMessage object itself.
-     */
-    public EmailMessage setContent(EmailContent content) {
-        this.content = content;
-        return this;
     }
 
     /**

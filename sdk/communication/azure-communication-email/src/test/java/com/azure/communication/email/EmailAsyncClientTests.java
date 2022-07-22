@@ -27,23 +27,18 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail(RECIPIENT_ADDRESS);
+        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
 
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients(addressList);
 
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
+        EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender(SENDER_ADDRESS)
-            .setRecipients(emailRecipients)
-            .setContent(content);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
+            .setRecipients(emailRecipients);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -57,11 +52,8 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailToMultipleRecipients(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail(RECIPIENT_ADDRESS);
-
-        EmailAddress emailAddress2 = new EmailAddress()
-            .setEmail(SECOND_RECIPIENT_ADDRESS);
+        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
+        EmailAddress emailAddress2 = new EmailAddress(SECOND_RECIPIENT_ADDRESS);
 
         ArrayList<EmailAddress> toAddressList = new ArrayList<>();
         toAddressList.add(emailAddress);
@@ -73,19 +65,15 @@ public class EmailAsyncClientTests extends EmailTestBase {
         ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
         bccAddressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(toAddressList)
+        EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
             .setCc(ccAddressList)
             .setBcc(bccAddressList);
 
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
+        EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender(SENDER_ADDRESS)
-            .setRecipients(emailRecipients)
-            .setContent(content);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
+            .setRecipients(emailRecipients);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -99,32 +87,28 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailWithAttachment(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail(RECIPIENT_ADDRESS);
+        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
 
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients(addressList);
 
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
+        EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailAttachment attachment = new EmailAttachment()
-            .setName("attachment.txt")
-            .setAttachmentType(EmailAttachmentType.TXT)
-            .setContentBytesBase64("dGVzdA==");
+        EmailAttachment attachment = new EmailAttachment(
+            "attachment.txt",
+            EmailAttachmentType.TXT,
+            "dGVzdA=="
+        );
 
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender(SENDER_ADDRESS)
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
             .setRecipients(emailRecipients)
-            .setAttachments(attachmentList)
-            .setContent(content);
+            .setAttachments(attachmentList);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -133,39 +117,34 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .verifyComplete();
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getMessageStatus(HttpClient httpClient) {
-        emailAsyncClient = getEmailAsyncClient(httpClient);
-
-        EmailAddress emailAddress = new EmailAddress()
-            .setEmail(RECIPIENT_ADDRESS);
-
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
-
-        EmailContent content = new EmailContent()
-            .setSubject("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage()
-            .setSender(SENDER_ADDRESS)
-            .setRecipients(emailRecipients)
-            .setContent(content);
-
-        StepVerifier.create(emailAsyncClient.send(emailMessage))
-            .assertNext(sendResponse -> {
-                assertNotNull(sendResponse.getMessageId());
-
-                StepVerifier.create(emailAsyncClient.getSendStatus(sendResponse.getMessageId()))
-                    .assertNext(getStatusResponse -> {
-                        assertNotNull(getStatusResponse.getMessageId());
-                    })
-                    .verifyComplete();
-            })
-            .verifyComplete();
-    }
+//    @ParameterizedTest
+//    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+//    public void getMessageStatus(HttpClient httpClient) {
+//        emailAsyncClient = getEmailAsyncClient(httpClient);
+//
+//        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
+//
+//        ArrayList<EmailAddress> addressList = new ArrayList<>();
+//        addressList.add(emailAddress);
+//
+//        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+//
+//        EmailContent content = new EmailContent("test subject")
+//            .setPlainText("test message");
+//
+//        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
+//            .setRecipients(emailRecipients);
+//
+//        StepVerifier.create(emailAsyncClient.send(emailMessage))
+//            .assertNext(sendResponse -> {
+//                assertNotNull(sendResponse.getMessageId());
+//
+//                StepVerifier.create(emailAsyncClient.getSendStatus(sendResponse.getMessageId()))
+//                    .assertNext(getStatusResponse -> {
+//                        assertNotNull(getStatusResponse.getMessageId());
+//                    })
+//                    .verifyComplete();
+//            })
+//            .verifyComplete();
+//    }
 }

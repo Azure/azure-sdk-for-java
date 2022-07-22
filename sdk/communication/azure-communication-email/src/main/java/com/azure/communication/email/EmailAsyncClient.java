@@ -51,7 +51,8 @@ public final class EmailAsyncClient {
     public Mono<SendEmailResult> send(EmailMessage emailMessage) {
         return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(emailMessage), null)
                 .flatMap((Response<Void> response) -> {
-                    SendEmailResult result = new SendEmailResult(response.getHeaders().getValue("x-ms-request-id"));
+                    SendEmailResult result = new SendEmailResult()
+                        .setMessageId(response.getHeaders().getValue("x-ms-request-id"));
                     return Mono.just(result);
                 });
     }

@@ -30,23 +30,20 @@ public final class EmailRecipients {
     private List<EmailAddress> bcc;
 
     /**
+     * Constructor for EmailRecipients
+     * @param to the email to recipients
+     */
+    public EmailRecipients(List<EmailAddress> to) {
+        this.to = to;
+    }
+
+    /**
      * Get the to property: Email To recipients.
      *
      * @return the to value.
      */
     public List<EmailAddress> getTo() {
         return this.to;
-    }
-
-    /**
-     * Set the to property: Email To recipients.
-     *
-     * @param to the to value to set.
-     * @return the EmailRecipients object itself.
-     */
-    public EmailRecipients setTo(List<EmailAddress> to) {
-        this.to = to;
-        return this;
     }
 
     /**

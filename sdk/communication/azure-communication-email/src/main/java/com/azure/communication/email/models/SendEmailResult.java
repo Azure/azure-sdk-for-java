@@ -16,14 +16,6 @@ public final class SendEmailResult {
     private String messageId;
 
     /**
-     * Constructor for SendEmailResult
-     * @param messageId System generated id of an email message sent.
-     */
-    public SendEmailResult(String messageId) {
-        this.messageId = messageId;
-    }
-
-    /**
      * Get the messageId property: System generated id of an email message sent.
      *
      * @return the messageId value.

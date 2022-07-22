@@ -23,6 +23,16 @@ public final class EmailCustomHeader {
     private String value;
 
     /**
+     * Constructor for EmailCustomHeader
+     * @param name the header name
+     * @param value the header value
+     */
+    public EmailCustomHeader(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    /**
      * Get the name property: Header name.
      *
      * @return the name value.
@@ -32,33 +42,11 @@ public final class EmailCustomHeader {
     }
 
     /**
-     * Set the name property: Header name.
-     *
-     * @param name the name value to set.
-     * @return the EmailCustomHeader object itself.
-     */
-    public EmailCustomHeader setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the value property: Header value.
      *
      * @return the value value.
      */
     public String getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: Header value.
-     *
-     * @param value the value value to set.
-     * @return the EmailCustomHeader object itself.
-     */
-    public EmailCustomHeader setValue(String value) {
-        this.value = value;
-        return this;
     }
 }

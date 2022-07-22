@@ -29,23 +29,20 @@ public final class EmailContent {
     private String html;
 
     /**
+     * Constructor for EmailContent
+     * @param subject the subject of the email message
+     */
+    public EmailContent(String subject) {
+        this.subject = subject;
+    }
+
+    /**
      * Get the subject property: Subject of the email message.
      *
      * @return the subject value.
      */
     public String getSubject() {
         return this.subject;
-    }
-
-    /**
-     * Set the subject property: Subject of the email message.
-     *
-     * @param subject the subject value to set.
-     * @return the EmailContent object itself.
-     */
-    public EmailContent setSubject(String subject) {
-        this.subject = subject;
-        return this;
     }
 
     /**
