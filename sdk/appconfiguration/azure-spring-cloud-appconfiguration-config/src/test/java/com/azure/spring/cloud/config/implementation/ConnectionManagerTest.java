@@ -217,7 +217,11 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
+        List<ConfigurationClientWrapper> clients = spy.getAvalibleClients();
+        
+        assertEquals(2, clients.size());
+        
+        ConfigurationClientWrapper clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -226,7 +230,11 @@ public class ConnectionManagerTest {
 
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
-        clientWrapper = spy.getAvalibleClients().get(0);
+       clients = spy.getAvalibleClients();
+        
+        assertEquals(1, clients.size());
+        
+        clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -255,7 +263,11 @@ public class ConnectionManagerTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        ConfigurationClientWrapper clientWrapper = spy.getAvalibleClients().get(0);
+        List<ConfigurationClientWrapper> clients = spy.getAvalibleClients();
+        
+        assertEquals(2, clients.size());
+        
+        ConfigurationClientWrapper clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
@@ -264,7 +276,11 @@ public class ConnectionManagerTest {
         
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
-        clientWrapper = spy.getAvalibleClients().get(0);
+        clients = spy.getAvalibleClients();
+        
+        assertEquals(1, clients.size());
+        
+        clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
