@@ -557,7 +557,7 @@ public class CosmosQueryRequestOptions {
      * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
      * reasonably low - like significantly smaller than 100.
      *
-     * @param defaultQueryName - the default query name that should be used if none is specified on request options
+     * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
