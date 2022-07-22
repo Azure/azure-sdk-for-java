@@ -22,8 +22,6 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.keys.models.KeyType;
 
-import java.util.Date;
-
 /**
  * Azure Container Service (AKS) sample for managing a Kubernetes cluster with customer-managed key.
  *   - Create a key vault with purge-protection enabled
@@ -38,6 +36,7 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
      * Main function which runs the actual sample.
      *
      * @param azureResourceManager instance of the azure client
+     * @param clientId clientId of the app
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
@@ -123,8 +122,8 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
                 .withDnsPrefix("mp1" + aksName)
                 .create();
 
-            System.out.println("Created Azure Container Service (AKS) with managed Kubernetes cluster, " +
-                "os disk encrypted using customer-managed key");
+            System.out.println("Created Azure Container Service (AKS) with managed Kubernetes cluster, "
+                + "os disk encrypted using customer-managed key");
             Utils.print(kubernetesCluster);
 
             return true;
