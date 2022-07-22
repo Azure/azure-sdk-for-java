@@ -29,29 +29,36 @@ steps:
 
     $projectList = @()
     $projectPathList = @()
-    $projectListOriginal = @()
+    $pathProjects = @()
     foreach ($artifact in $artifacts) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
-      - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
-        $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
-        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
     }
     foreach ($artifact in $additionalModules) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
-      - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
-          $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
-          Write-Host "Add project path: " + "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
     }
+    - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
+      foreach ($artifact in $artifacts) {
+        $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+      }
+    - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
+      foreach ($artifact in $additionalModules) {
+        $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+      }
     $projects = $projectList -join ','
-
+    - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
+      $pathProjects = $projectPathList -join ','
+    
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
 
     - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
       - pwsh: |
-          Write-Host "##vso[task.setvariable variable=$projectListOriginal]$(ProjectList)"
-          Write-Host "##vso[task.setvariable variable=ProjectList]$($projectPathList)"
-        displayName: Reset ProjectList variable for Spring service directory
+          Write-Host "Reset the project list value for multi Spring modules"
+          Write-Host "##vso[task.setvariable variable=$projectListOriginal]$(projects)"
+          Write-Host "##vso[task.setvariable variable=ProjectList]$($pathProjects)"
+        displayName: Reset ProjectList variable for multi Spring service directory
 
   displayName: Initialize project list variable
 
