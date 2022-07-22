@@ -101,10 +101,11 @@ public class CosmosQuery {
      *
      * @param limit int
      */
-    public void withLimit(int limit) {
+    public CosmosQuery withLimit(int limit) {
         if (this.limit == 0) {
             this.limit = limit;
         }
+        return this;
     }
 
     /**
@@ -113,13 +114,14 @@ public class CosmosQuery {
      * @param offset long
      * @param limit int
      */
-    public void withOffsetAndLimit(long offset, int limit) {
+    public CosmosQuery withOffsetAndLimit(long offset, int limit) {
         if (this.limit == 0) {
             this.limit = limit;
         }
         if (this.offset == 0) {
             this.offset = offset;
         }
+        return this;
     }
 
     /**
