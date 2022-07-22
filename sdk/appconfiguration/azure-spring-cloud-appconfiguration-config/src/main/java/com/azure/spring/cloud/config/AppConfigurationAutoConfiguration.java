@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPullRefresh;
+import com.azure.spring.cloud.config.implementation.ClientFactory;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
@@ -26,11 +27,11 @@ public class AppConfigurationAutoConfiguration {
      */
     @Configuration
     @ConditionalOnClass(RefreshEndpoint.class)
-    public static class AppConfigurationWatchAutoConfiguration {
+    static class AppConfigurationWatchAutoConfiguration {
 
         @Bean
         public AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
-                AppConfigurationProviderProperties appProperties, ClientFactory clientFactory) {
+            AppConfigurationProviderProperties appProperties, ClientFactory clientFactory) {
             return new AppConfigurationPullRefresh(properties, appProperties, clientFactory);
         }
     }

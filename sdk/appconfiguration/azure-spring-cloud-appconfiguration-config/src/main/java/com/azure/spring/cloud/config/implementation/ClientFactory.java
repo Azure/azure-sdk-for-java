@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
+import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.implementation.ConfigurationClientWrapper;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
@@ -18,7 +19,7 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 public class ClientFactory {
 
     private static final HashMap<String, ConnectionManager> CONNECTIONS = new HashMap<>();;
-    
+
     /**
      * Sets up Connections to all configuration stores.
      * 
@@ -49,43 +50,43 @@ public class ClientFactory {
 
     /**
      * Returns the current used endpoint for a given config store.
-     * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store. 
+     * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @return ConfigurationClient for accessing App Configuration
      */
-    public List<ConfigurationClientWrapper> getAvailableClients(String originEndpoint) {
+    List<ConfigurationClientWrapper> getAvailableClients(String originEndpoint) {
         return CONNECTIONS.get(originEndpoint).getAvalibleClients();
     }
-    
+
     /**
      * Sets backoff time for the current client that is being used, and attempts to get a new one.
-     * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store. 
+     * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @param endpoint replica endpoint
      */
-    public void backoffClientClient(String originEndpoint, String endpoint) {
+    void backoffClientClient(String originEndpoint, String endpoint) {
         CONNECTIONS.get(originEndpoint).backoffClient(endpoint);
     }
-    
+
     /**
      * Gets the health of the client connections to App Configuration
      * @return map of endpoint origin it's health
      */
-    public Map<String, AppConfigurationStoreHealth> getHealth() {
+    Map<String, AppConfigurationStoreHealth> getHealth() {
         Map<String, AppConfigurationStoreHealth> health = new HashMap<>();
-        
+
         CONNECTIONS.forEach((key, value) -> health.put(key, value.getHealth()));
-        
+
         return health;
     }
-    
+
     /**
      * Returns the origin endpoint for a given endpoint. If not found will return the given endpoint;
      * 
      * @param endpoint App Configuration Endpoint
      * @return String Endpoint
      */
-    public String findOriginForEndpoint(String endpoint) {
-        for (ConnectionManager connection: CONNECTIONS.values()) {
-            for (String replica: connection.getAllEndpoints()) {
+    String findOriginForEndpoint(String endpoint) {
+        for (ConnectionManager connection : CONNECTIONS.values()) {
+            for (String replica : connection.getAllEndpoints()) {
                 if (replica.equals(endpoint)) {
                     return connection.getOriginEndpoint();
                 }
@@ -93,15 +94,15 @@ public class ClientFactory {
         }
         return endpoint;
     }
-    
+
     /**
      * Checks if a given endpoint has any configured replicas.
      * @param endpoint Endpoint to check for replics
      * @return true if at least one other unique endpoint connects to the same configuration store
      */
-    public boolean hasReplicas(String endpoint) {
-        for (ConnectionManager connection: CONNECTIONS.values()) {
-            for (String replica: connection.getAllEndpoints()) {
+    boolean hasReplicas(String endpoint) {
+        for (ConnectionManager connection : CONNECTIONS.values()) {
+            for (String replica : connection.getAllEndpoints()) {
                 if (replica.equals(endpoint)) {
                     return connection.getAllEndpoints().size() > 1;
                 }
@@ -109,22 +110,22 @@ public class ClientFactory {
         }
         return false;
     }
-    
+
     /**
      * Sets the replica as the currently used endpoint for connecting to the config store.
      * @param originEndpoint Origin Configuration Store
      * @param replicaEndpoint Replica that was last successfully connected to.
      */
-    public void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
+    void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
         CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
     }
-    
+
     /**
      * Gets the current replica to connect to when refreshing configurations.
      * @param originEndpoint Origin replica
      * @return endpoint
      */
-    public String getCurrentConfigStoreClient(String originEndpoint) {
+    String getCurrentConfigStoreClient(String originEndpoint) {
         return CONNECTIONS.get(originEndpoint).getCurrentClient();
     }
 

@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
+import com.azure.spring.cloud.config.implementation.ClientFactory;
 
 public class AppConfigurationBootstrapConfigurationTest {
 

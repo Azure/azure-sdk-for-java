@@ -15,7 +15,7 @@ import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 /**
  * Wrapper for Configuration Client to manage backoff.
  */
-public class ConfigurationClientWrapper {
+class ConfigurationClientWrapper {
 
     private final String endpoint;
 
@@ -32,7 +32,7 @@ public class ConfigurationClientWrapper {
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
-    public ConfigurationClientWrapper(String endpoint, ConfigurationClient client) {
+    ConfigurationClientWrapper(String endpoint, ConfigurationClient client) {
         this.endpoint = endpoint;
         this.client = client;
         this.backoffEndTime = Instant.now();
@@ -43,7 +43,7 @@ public class ConfigurationClientWrapper {
     /**
      * @return backOffEndTime
      */
-    public Instant getBackoffEndTime() {
+    Instant getBackoffEndTime() {
         return backoffEndTime;
     }
 
@@ -51,7 +51,7 @@ public class ConfigurationClientWrapper {
      * Updates the backoff time and increases the number of failed attempts.
      * @param backoffEndTime next time this client can be used.
      */
-    public void updateBackoffEndTime(Instant backoffEndTime) {
+    void updateBackoffEndTime(Instant backoffEndTime) {
         this.backoffEndTime = backoffEndTime;
         this.failedAttempts += 1;
     }
@@ -59,28 +59,28 @@ public class ConfigurationClientWrapper {
     /**
      * @return number of failed attempts
      */
-    public int getFailedAttempts() {
+    int getFailedAttempts() {
         return failedAttempts;
     }
 
     /**
      * Sets the number of failed attempts to 0.
      */
-    public void resetFailedAttempts() {
+    void resetFailedAttempts() {
         this.failedAttempts = 0;
     }
 
     /**
      * @return endpoint
      */
-    public String getEndpoint() {
+    String getEndpoint() {
         return endpoint;
     }
 
     /**
      * @return ConfiguraitonClinet
      */
-    public ConfigurationClient getClient() {
+    ConfigurationClient getClient() {
         return client;
     }
 
@@ -93,7 +93,7 @@ public class ConfigurationClientWrapper {
      * @param endpoint Endpoint of the App Configuration store to query against.
      * @return The first returned configuration.
      */
-    public ConfigurationSetting getWatchKey(String key, String label)
+    ConfigurationSetting getWatchKey(String key, String label)
         throws HttpResponseException, AppConfigurationStatusException {
         try {
             ConfigurationSetting watchKey = NormalizeNull
@@ -118,7 +118,7 @@ public class ConfigurationClientWrapper {
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
-    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
+    PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
         throws HttpResponseException, AppConfigurationStatusException {
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
@@ -139,17 +139,17 @@ public class ConfigurationClientWrapper {
      * Update the sync token for a client store.
      * @param syncToken the sync token.
      */
-    public void updateSyncToken(String syncToken) {
+    void updateSyncToken(String syncToken) {
         if (syncToken != null) {
             client.updateSyncToken(syncToken);
         }
     }
 
-    public AppConfigurationStoreHealth getHealth() {
+    AppConfigurationStoreHealth getHealth() {
         return health;
     }
 
-    public void setHealth(AppConfigurationStoreHealth health) {
+    void setHealth(AppConfigurationStoreHealth health) {
         this.health = health;
     }
 

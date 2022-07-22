@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.config.ConnectionManager;
+import com.azure.spring.cloud.config.implementation.ConnectionManager;
 
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.

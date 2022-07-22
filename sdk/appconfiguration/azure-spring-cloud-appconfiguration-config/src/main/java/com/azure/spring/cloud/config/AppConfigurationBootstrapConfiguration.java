@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
+import com.azure.spring.cloud.config.implementation.ClientFactory;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
@@ -94,7 +95,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public ClientFactory buildClientFactory(AppConfigurationProperties properties,
+    ClientFactory buildClientFactory(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,

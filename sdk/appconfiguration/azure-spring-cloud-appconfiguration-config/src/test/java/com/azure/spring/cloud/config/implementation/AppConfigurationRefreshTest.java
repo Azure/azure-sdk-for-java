@@ -35,7 +35,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
-import com.azure.spring.cloud.config.ClientFactory;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;

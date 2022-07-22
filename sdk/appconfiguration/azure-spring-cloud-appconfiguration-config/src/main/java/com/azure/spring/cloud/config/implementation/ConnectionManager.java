@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -21,8 +21,9 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
+import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.implementation.ConfigurationClientWrapper;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
@@ -88,7 +89,7 @@ public class ConnectionManager {
      * @param isKeyVaultConfigured is key vault configured
      * @param clientId Client Id for Managed Identity
      */
-    public ConnectionManager(ConfigStore configStore, AppConfigurationProviderProperties appProperties,
+    ConnectionManager(ConfigStore configStore, AppConfigurationProviderProperties appProperties,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured, String clientId) {
         this.configStore = configStore;
@@ -102,6 +103,42 @@ public class ConnectionManager {
         this.originEndpoint = configStore.getEndpoint();
         this.health = AppConfigurationStoreHealth.NOT_LOADED;
         this.currentReplica = configStore.getEndpoint();
+    }
+
+    /**
+     * Given a connection string, returns the endpoint inside of it.
+     * @param connectionString connection string to app configuration
+     * @return endpoint
+     * @throws IllegalStateException when connection string isn't valid.
+     */
+    public static String getEndpointFromConnectionString(String connectionString) {
+        Assert.hasText(connectionString, "Connection string cannot be empty.");
+
+        Matcher matcher = CONN_STRING_PATTERN.matcher(connectionString);
+        if (!matcher.find()) {
+            throw new IllegalStateException(ENDPOINT_ERR_MSG);
+        }
+
+        String endpoint = matcher.group(1);
+
+        Assert.hasText(endpoint, String.format(NON_EMPTY_MSG, "Endpoint"));
+
+        return endpoint;
+    }
+
+    /**
+     * @return creates an instance of ConfigurationClientBuilder
+     */
+    ConfigurationClientBuilder getBuilder() {
+        return new ConfigurationClientBuilder();
+    }
+
+    /**
+     * Gets the current health information on the Connection to the Config Store
+     * @return AppConfigurationConfigStoreHealth
+     */
+    AppConfigurationStoreHealth getHealth() {
+        return this.health;
     }
 
     /**
@@ -285,42 +322,6 @@ public class ConnectionManager {
         }
 
         return new ConfigurationClientWrapper(endpoint, builder.buildClient());
-    }
-
-    /**
-     * Given a connection string, returns the endpoint inside of it.
-     * @param connectionString connection string to app configuration
-     * @return endpoint
-     * @throws IllegalStateException when connection string isn't valid.
-     */
-    public static String getEndpointFromConnectionString(String connectionString) {
-        Assert.hasText(connectionString, "Connection string cannot be empty.");
-
-        Matcher matcher = CONN_STRING_PATTERN.matcher(connectionString);
-        if (!matcher.find()) {
-            throw new IllegalStateException(ENDPOINT_ERR_MSG);
-        }
-
-        String endpoint = matcher.group(1);
-
-        Assert.hasText(endpoint, String.format(NON_EMPTY_MSG, "Endpoint"));
-
-        return endpoint;
-    }
-
-    /**
-     * @return creates an instance of ConfigurationClientBuilder
-     */
-    ConfigurationClientBuilder getBuilder() {
-        return new ConfigurationClientBuilder();
-    }
-
-    /**
-     * Gets the current health information on the Connection to the Config Store
-     * @return AppConfigurationConfigStoreHealth
-     */
-    AppConfigurationStoreHealth getHealth() {
-        return this.health;
     }
 
 }

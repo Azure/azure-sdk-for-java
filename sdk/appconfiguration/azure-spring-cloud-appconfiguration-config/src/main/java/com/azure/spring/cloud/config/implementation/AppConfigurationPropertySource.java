@@ -159,7 +159,8 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * @param featureSet The set of Feature Management Flags from various config stores.
      * @return Updated Feature Set from Property Source
      * @throws IOException Thrown when processing key/value failed when reading feature flags
-     * @throws AppConfigurationStatusException An error occurred in connecting, and should be retried on a replica if possible.
+     * @throws AppConfigurationStatusException An error occurred in connecting, and should be retried on a replica if
+     * possible.
      */
     FeatureSet initProperties(FeatureSet featureSet) throws IOException, AppConfigurationStatusException {
         SettingSelector settingSelector = new SettingSelector();

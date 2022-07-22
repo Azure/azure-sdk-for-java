@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.util.Random;
 
 /**
  * Calculates the amount of time to the next refresh, if a refresh fails.
  */
-public final class BackoffTimeCalculator {
+final class BackoffTimeCalculator {
 
     private static final Long MAX_ATTEMPTS = (long) 63;
 
@@ -24,7 +24,7 @@ public final class BackoffTimeCalculator {
      * @return Nano Seconds to the next request
      * @throws IllegalArgumentException when backofftime or attempt number is invalid
      */
-    public static Long calculateBackoff(Integer attempts, Long maxBackoff, Long minBackoff) {
+    static Long calculateBackoff(Integer attempts, Long maxBackoff, Long minBackoff) {
 
         if (minBackoff < 0) {
             throw new IllegalArgumentException("Minimum Backoff time needs to be greater than or equal to 0.");

@@ -35,7 +35,7 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
 
     /**
      * Gets latest Health connection info for refresh.
-     * 
+     *
      * @return Map of String, endpoint, and Health information.
      */
     Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth();

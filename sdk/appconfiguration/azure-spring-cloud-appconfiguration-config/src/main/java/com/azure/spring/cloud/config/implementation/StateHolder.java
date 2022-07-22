@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.BackoffTimeCalculator;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
 final class StateHolder {
