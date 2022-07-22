@@ -139,7 +139,7 @@ extends:
           [System.Environment]::SetEnvironmentVariable("Path", $newPath,[System.EnvironmentVariableTarget]::Machine)
           $updatedPath = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
           Write-Host "New Path environment variable: $updatedPath"
-      displayName: 'Download and Extract Hadoop winutils and update env variables for Hadoop usage'
+        displayName: 'Download and Extract Hadoop winutils and update env variables for Hadoop usage'
     Artifacts:
       - name: azure-cosmos
         groupId: com.azure
