@@ -369,6 +369,6 @@ public final class EventHubBufferedProducerClientBuilder {
      * @return A new instance of {@link EventHubBufferedProducerClient}.
      */
     public EventHubBufferedProducerClient buildClient() {
-        return null;
+        return new EventHubBufferedProducerClient(buildAsyncClient());
     }
 }

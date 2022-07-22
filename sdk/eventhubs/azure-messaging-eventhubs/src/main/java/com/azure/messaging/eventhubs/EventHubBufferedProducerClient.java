@@ -42,4 +42,9 @@ import java.util.function.Consumer;
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = false)
 public final class EventHubBufferedProducerClient {
+    private final EventHubBufferedProducerAsyncClient asyncClient;
+
+    EventHubBufferedProducerClient(EventHubBufferedProducerAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
+    }
 }
