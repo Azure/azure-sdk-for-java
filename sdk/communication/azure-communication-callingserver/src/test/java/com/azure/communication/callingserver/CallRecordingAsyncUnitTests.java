@@ -3,8 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.models.RecordingStatusInternal;
-import com.azure.communication.callingserver.implementation.models.RecordingStatusResponseInternal;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
@@ -14,23 +12,18 @@ import com.azure.communication.callingserver.models.RecordingStatusResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.util.Context;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.reactivestreams.Publisher;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.security.InvalidParameterException;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CallRecordingAsyncUnitTests {
-    private static final String SERVER_CALL_ID = "aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM";
-
+public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
     private CallRecordingAsync callRecording;
 
     @BeforeEach
@@ -38,15 +31,13 @@ public class CallRecordingAsyncUnitTests {
         CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>());
         callRecording = callingServerClient.getCallRecordingAsync();
     }
+
     @Test
     public void startRecordingRelativeUriFails() {
-        assertThrows(
-            InvalidParameterException.class,
-            () -> callRecording.startRecording(
-                new ServerCallLocator(SERVER_CALL_ID),
-                URI.create("/not/absolute/uri")
-            ).block()
-        );
+        validateError(InvalidParameterException.class, callRecording.startRecording(
+            new ServerCallLocator(SERVER_CALL_ID),
+            URI.create("/not/absolute/uri")
+        ));
     }
 
     @Test
@@ -57,77 +48,64 @@ public class CallRecordingAsyncUnitTests {
             RecordingChannel.MIXED
         );
 
-        assertThrows(
-            InvalidParameterException.class,
-            () -> callRecording.startRecordingWithResponse(
-                new ServerCallLocator(SERVER_CALL_ID),
-                URI.create("/not/absolute/uri"),
-                startRecordingOptions,
-                Context.NONE
-            ).block()
-        );
+        validateError(InvalidParameterException.class, callRecording.startRecordingWithResponse(
+            new ServerCallLocator(SERVER_CALL_ID),
+            URI.create("/not/absolute/uri"),
+            startRecordingOptions,
+            Context.NONE
+        ));
     }
 
     @Test
     public void recordingOperationsTest() {
-        RecordingStatusResponseInternal recordingStatus = new RecordingStatusResponseInternal().setRecordingId("recordingId");
-        String recordingActive = serializeObject(recordingStatus.setRecordingStatus(RecordingStatusInternal.ACTIVE));
-        String recordingInactive = serializeObject(recordingStatus.setRecordingStatus(RecordingStatusInternal.INACTIVE));
-
-        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(Arrays.asList(
-            new AbstractMap.SimpleEntry<>(recordingActive, 200),   //startRecording
-            new AbstractMap.SimpleEntry<>(recordingActive, 200),   //getRecordingState
-            new AbstractMap.SimpleEntry<>("", 202),                //pauseRecording
-            new AbstractMap.SimpleEntry<>(recordingInactive, 200), //getRecordingState
-            new AbstractMap.SimpleEntry<>("", 202),                //resumeRecording
-            new AbstractMap.SimpleEntry<>(recordingActive, 200),   //getRecordingState
-            new AbstractMap.SimpleEntry<>("", 204),                //stopRecording
-            new AbstractMap.SimpleEntry<>("", 404)                 //getRecordingState
-        )
-        ));
+        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(
+            recordingOperationsResponses
+        );
         callRecording = callingServerClient.getCallRecordingAsync();
 
-        RecordingStatusResponse recordingState = callRecording.startRecording(
-            new ServerCallLocator(SERVER_CALL_ID),
-            URI.create("https://localhost/")
-        ).block();
-        validateRecordingActive(recordingState);
+        validateRecordingStatus(
+            callRecording.startRecording(new ServerCallLocator(SERVER_CALL_ID), URI.create("https://localhost/")),
+            RecordingStatus.ACTIVE
+        );
 
-        recordingState = callRecording.getRecordingState("recordingId").block();
-        validateRecordingActive(recordingState);
+        validateOperationWithRecordingStatus(callRecording.pauseRecording(RECORDING_ID),
+            RecordingStatus.INACTIVE
+        );
 
-        callRecording.pauseRecording("recordingId").block();
-        recordingState = callRecording.getRecordingState("recordingId").block();
-        validateRecordingInactive(recordingState);
+        validateOperationWithRecordingStatus(callRecording.resumeRecording(RECORDING_ID),
+            RecordingStatus.ACTIVE);
 
-        callRecording.resumeRecording("recordingId").block();
-        recordingState = callRecording.getRecordingState("recordingId").block();
-        validateRecordingActive(recordingState);
-
-        callRecording.stopRecording("recordingId").block();
-        assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState("recordingId").block());
+        validateOperation(callRecording.stopRecording(RECORDING_ID));
+        validateError(CallingServerErrorException.class, callRecording.getRecordingState(RECORDING_ID));
     }
 
-    private void validateRecordingActive(RecordingStatusResponse recordingState) {
-        validateRecording(recordingState, RecordingStatus.ACTIVE);
+    private void validateRecordingStatus(Publisher<RecordingStatusResponse> publisher, RecordingStatus status) {
+        StepVerifier.create(publisher)
+            .consumeNextWith(recordingStatusResponse -> validateRecording(recordingStatusResponse, status))
+            .verifyComplete();
     }
 
-    private void validateRecordingInactive(RecordingStatusResponse recordingState) {
-        validateRecording(recordingState, RecordingStatus.INACTIVE);
+    private void validateOperationWithRecordingStatus(Publisher<Void> operation, RecordingStatus expectedRecordingStatus) {
+        validateOperation(operation);
+        validateRecordingStatus(
+            callRecording.getRecordingState(RECORDING_ID),
+            expectedRecordingStatus
+        );
+    }
+
+    private void validateOperation(Publisher<Void> operation) {
+        StepVerifier.create(operation).verifyComplete();
+    }
+
+    private <T, U> void validateError(Class<T> exception, Publisher<U> publisher) {
+        StepVerifier.create(publisher)
+            .consumeErrorWith(error -> assertEquals(error.getClass().toString(),
+                exception.toString()))
+            .verify();
     }
 
     private void validateRecording(RecordingStatusResponse recordingStatus, RecordingStatus expectedStatus) {
-        assertEquals("recordingId", recordingStatus.getRecordingId());
+        assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
         assertEquals(expectedStatus, recordingStatus.getRecordingStatus());
-    }
-    private String serializeObject(Object o) {
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
-        try {
-            body = mapper.writeValueAsString(o);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return body;
     }
 }
