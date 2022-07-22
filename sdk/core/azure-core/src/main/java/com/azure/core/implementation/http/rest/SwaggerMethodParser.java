@@ -27,6 +27,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
@@ -34,6 +36,7 @@ import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -44,9 +47,11 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -54,8 +59,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.azure.core.implementation.TypeUtil.getRawClass;
+import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in
@@ -93,6 +102,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final int requestOptionsPosition;
     private final boolean isReactive;
     private final boolean isStreamResponse;
+    private final boolean returnTypeDecodeable;
+    private final boolean responseEagerlyRead;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -265,6 +276,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
+
+        Type unwrappedReturnType = unwrapReturnType(returnType);
+        this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
+        this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
     }
 
     /**
@@ -648,5 +663,91 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public boolean isStreamResponse() {
         return isStreamResponse;
+    }
+
+    @Override
+    public boolean isReturnTypeDecodeable() {
+        return returnTypeDecodeable;
+    }
+
+    @Override
+    public boolean isResponseEagerlyRead() {
+        return responseEagerlyRead;
+    }
+
+    static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {
+        if (unwrappedReturnType == null) {
+            return false;
+        }
+
+        return !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, BinaryData.class)
+            && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, byte[].class)
+            && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, ByteBuffer.class)
+            && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, InputStream.class)
+            && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
+            && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
+    }
+
+    static boolean isResponseEagerlyRead(Type unwrappedReturnType) {
+        if (unwrappedReturnType == null) {
+            return false;
+        }
+
+        return isReturnTypeDecodeable(unwrappedReturnType)
+            || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
+            || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
+    }
+
+    static Type unwrapReturnType(Type returnType) {
+        if (returnType == null) {
+            return null;
+        }
+
+        // First check if the return type is assignable, is a sub-type, to ResponseBase.
+        // If it is begin walking up the super type hierarchy until ResponseBase is the raw type.
+        // Then unwrap the second generic type (body type).
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
+            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == ResponseBase.class);
+
+            return unwrapReturnType(TypeUtil.getTypeArguments(returnType)[1]);
+        }
+
+        // Then, like ResponseBase, check if the return type is assignable to Response.
+        // If it is begin walking up the super type hierarchy until the raw type implements Response.
+        // Then unwrap its only generic type.
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
+            // Handling for Response is slightly different as it is an interface unlike ResponseBase which is a class.
+            // The super class hierarchy needs be walked until the super class itself implements Response.
+            returnType = walkSuperTypesUntil(returnType, type -> typeImplementsInterface(type, Response.class));
+
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        // Then check if the return type is a Mono or Flux and unwrap its only generic type.
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
+            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == Mono.class);
+
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
+            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == Flux.class);
+
+            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
+        }
+
+        // Finally, there is no more unwrapping to perform and return the type as-is.
+        return returnType;
+    }
+
+    /*
+     * Helper method that walks up the super types until the type is an instance of the Class.
+     */
+    private static Type walkSuperTypesUntil(Type type, Predicate<Type> untilChecker) {
+        while (!untilChecker.test(type)) {
+            type = TypeUtil.getSuperType(type);
+        }
+
+        return type;
     }
 }
