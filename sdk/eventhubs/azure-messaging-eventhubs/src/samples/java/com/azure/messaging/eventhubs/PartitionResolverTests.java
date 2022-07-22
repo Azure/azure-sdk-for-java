@@ -153,6 +153,8 @@ public class PartitionResolverTests {
 
     /**
      * Verifies that the same partition key is assigned to the same partition id.
+     *
+     * @param partitionsList  List of partitions.
      */
     @ParameterizedTest
     @MethodSource("partitionSetTestCases")

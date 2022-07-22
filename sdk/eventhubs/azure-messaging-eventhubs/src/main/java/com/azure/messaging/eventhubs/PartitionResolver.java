@@ -165,6 +165,7 @@ class PartitionResolver {
             // fallthrough
             case 9:
                 c += data[index + 8];
+            // fallthrough
             case 8:
                 b += buffer.getInt(index + 4);
                 a += buffer.getInt(index);
@@ -179,6 +180,7 @@ class PartitionResolver {
             // fallthrough
             case 5:
                 b += data[index + 4];
+            // fallthrough
             case 4:
                 a += buffer.getInt(index);
                 break;
@@ -189,6 +191,7 @@ class PartitionResolver {
             // fallthrough
             case 2:
                 a += data[index + 1] << 8;
+            // fallthrough
             case 1:
                 a += data[index];
                 break;
