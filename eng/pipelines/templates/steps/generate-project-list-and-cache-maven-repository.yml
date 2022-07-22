@@ -37,13 +37,15 @@ steps:
       $projectList += "$($artifact.groupId):$($artifact.name)"
     }
     
-    if ($parameters.ServiceDirectory.Equals('spring') -or $parameters.ServiceDirectory.Equals('spring-3')) {
+    Write-Host "moary ************: ${{parameters.ServiceDirectory}}"
+    Write-Host "moary ************: ${{parameters}}"
+    if ($parameters.ServiceDirectory.Equals("spring") -or $parameters.ServiceDirectory.Equals("spring-3")) {
       foreach ($artifact in $artifacts) {
         $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
         Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
       }
     }
-    if ($parameters.ServiceDirectory.Equals('spring') -or $parameters.ServiceDirectory.Equals('spring-3')) {
+    if ($parameters.ServiceDirectory.Equals("spring") -or $parameters.ServiceDirectory.Equals("spring-3")) {
       foreach ($artifact in $additionalModules) {
         $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
         Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
@@ -51,13 +53,13 @@ steps:
     }
     
     $projects = $projectList -join ','
-    if ($parameters.ServiceDirectory.Equals('spring') -or $parameters.ServiceDirectory.Equals('spring-3')) {
+    if ($parameters.ServiceDirectory.Equals("spring") -or $parameters.ServiceDirectory.Equals("spring-3")) {
       $pathProjects = $projectPathList -join ','
     }
     
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
-    if ($parameters.ServiceDirectory.Equals('spring') -or $parameters.ServiceDirectory.Equals('spring-3')) {
+    if ($parameters.ServiceDirectory.Equals("spring") -or $parameters.ServiceDirectory.Equals("spring-3")) {
       Write-Host "Reset the project list value for multi Spring modules"
       Write-Host "##vso[task.setvariable variable=$projectListOriginal]$(projects)"
       Write-Host "##vso[task.setvariable variable=ProjectList]$($pathProjects)"
