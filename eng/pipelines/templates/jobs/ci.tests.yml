@@ -57,7 +57,7 @@ parameters:
     default: false
 
 jobs:
-  - job: 'Test'
+  - job:
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
