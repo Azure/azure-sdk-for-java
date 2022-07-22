@@ -58,11 +58,11 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
     $serviceDirectory = (Get-Item $file).Directory.Parent
     Write-Host "Moary debug *** 1" $xmlPomFile.project.groupId ":" $xmlPomFile.project.artifactId
     Write-Host $serviceDirectory.Name $file.Name
-    if ($xmlPomFile.project.groupId -eq "com.azure.spring" -or $xmlPomFile.project.artifactId -eq "spring-cloud-azure")
+    if ($xmlPomFile.project.groupId -eq "com.azure.spring" -and $xmlPomFile.project.artifactId -eq "spring-cloud-azure")
     {
-        $SpecialServiceDirectory = (Get-Item $file).Directory
-        Write-Host $SpecialServiceDirectory.Name
-        $library = "./sdk/" + $SpecialServiceDirectory.Name
+        $specialServiceDirectory = (Get-Item $file).Directory
+        Write-Host $specialServiceDirectory.Name
+        $library = "./sdk/" + $specialServiceDirectory.Name
     } elseif ($serviceDirectory.Name -eq "spring" -or $serviceDirectory.Name -eq "spring-3")
     {
         $library = "./sdk/" + $serviceDirectory.Name + "/" + $xmlPomFile.project.artifactId
