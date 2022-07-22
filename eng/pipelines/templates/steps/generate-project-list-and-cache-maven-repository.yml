@@ -18,6 +18,9 @@ parameters:
   - name: JobType
     type: string
     default: test
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
 
 steps:
 - pwsh: |
@@ -25,16 +28,31 @@ steps:
     $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
 
     $projectList = @()
+    $projectPathList = @()
+    $projectListOriginal = @()
     foreach ($artifact in $artifacts) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
+      - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
+        $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+        Write-Host "Add project path: ./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
     }
     foreach ($artifact in $additionalModules) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
+      - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
+          $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
+          Write-Host "Add project path: " + "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
     }
     $projects = $projectList -join ','
 
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
+
+    - ${{if or(eq(parameters.ServiceDirectory, 'spring'), eq(parameters.ServiceDirectory, 'spring-3'))}}:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=$projectListOriginal]$(ProjectList)"
+          Write-Host "##vso[task.setvariable variable=ProjectList]$($projectPathList)"
+        displayName: Reset ProjectList variable for Spring service directory
+
   displayName: Initialize project list variable
 
 - task: Cache@2

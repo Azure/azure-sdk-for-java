@@ -90,6 +90,7 @@ jobs:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
           JobType: 'Build'
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -269,6 +270,7 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: PowerShell@2
         displayName: Generate directories variable for sparse checkout
