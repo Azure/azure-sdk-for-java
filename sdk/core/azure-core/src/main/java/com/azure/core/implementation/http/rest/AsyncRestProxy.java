@@ -206,7 +206,7 @@ public class AsyncRestProxy extends RestProxyBase {
             final Type monoTypeParam = TypeUtil.getTypeArgument(returnType);
             if (TypeUtil.isTypeOrSubTypeOf(monoTypeParam, Void.class)) {
                 // ProxyMethod ReturnType: Mono<Void>
-                result = asyncExpectedResponse.then();
+                result = asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).then();
             } else {
                 // ProxyMethod ReturnType: Mono<? extends RestResponseBase<?, ?>>
                 result = asyncExpectedResponse.flatMap(response ->
@@ -218,7 +218,7 @@ public class AsyncRestProxy extends RestProxyBase {
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-            asyncExpectedResponse.block();
+            asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).block();
             result = null;
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
