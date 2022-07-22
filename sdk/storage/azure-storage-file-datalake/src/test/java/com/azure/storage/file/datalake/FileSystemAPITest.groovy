@@ -161,7 +161,7 @@ class FileSystemAPITest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        properties.getDefaultEncryptionScope() == encryptionScopeString
+        properties.getEncryptionScope() == encryptionScopeString
         properties.isEncryptionScopeOverridePrevented()
         properties.getMetadata() == metadata
 
