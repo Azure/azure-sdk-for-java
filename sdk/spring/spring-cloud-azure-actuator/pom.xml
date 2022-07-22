@@ -41,7 +41,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator</artifactId>
-      <version>2.7.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
+      <version>2.7.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
       <scope>compile</scope>
     </dependency>
 
@@ -106,7 +106,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.7.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -121,7 +121,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-actuator:[2.7.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[2.7.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
