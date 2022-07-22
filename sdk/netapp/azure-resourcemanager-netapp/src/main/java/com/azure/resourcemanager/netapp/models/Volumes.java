@@ -230,6 +230,48 @@ public interface Volumes {
         Context context);
 
     /**
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body);
+
+    /**
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context);
+
+    /**
      * Get the status of the replication.
      *
      * @param resourceGroupName The name of the resource group.

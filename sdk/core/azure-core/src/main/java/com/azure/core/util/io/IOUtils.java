@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.util.io;
 
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
+import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
+import com.azure.core.implementation.logging.LoggingKeys;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
@@ -16,6 +20,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 /**
  * Utilities related to IO operations that involve channels, streams, byte transfers.
@@ -118,5 +123,56 @@ public final class IOUtils {
         } else {
             sink.success();
         }
+    }
+
+    /**
+     * Transfers the {@link StreamResponse} content to {@link AsynchronousByteChannel}.
+     * Resumes the transfer in case of errors.
+     *
+     * @param targetChannel The destination {@link AsynchronousByteChannel}.
+     * @param sourceResponse The initial {@link StreamResponse}.
+     * @param onErrorResume A {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs. The function accepts a {@link Throwable} and offset at the destination
+     * from beginning of writing at which the error occurred.
+     * @param progressReporter The {@link ProgressReporter}.
+     * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
+     * @return A {@link Mono} which completion indicates successful transfer.
+     */
+    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(
+        AsynchronousByteChannel targetChannel,
+        StreamResponse sourceResponse,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+        ProgressReporter progressReporter, int maxRetries) {
+
+        return transferStreamResponseToAsynchronousByteChannelHelper(
+            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter),
+            sourceResponse, onErrorResume, maxRetries, 0);
+    }
+
+    private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(
+        ByteCountingAsynchronousByteChannel targetChannel,
+        StreamResponse response,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+        int maxRetries, int retryCount) {
+
+        return response.writeValueToAsync(targetChannel)
+            .doFinally(ignored -> response.close())
+            .onErrorResume(Exception.class, exception -> {
+                response.close();
+
+                int updatedRetryCount = retryCount + 1;
+
+                if (updatedRetryCount > maxRetries) {
+                    LOGGER.atError()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                        .log(() -> "Retry attempts have been exhausted.", exception);
+                    return Mono.error(exception);
+                }
+
+                return onErrorResume.apply(exception, targetChannel.getBytesWritten())
+                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
+                        targetChannel, newResponse,
+                        onErrorResume, maxRetries, updatedRetryCount));
+            });
     }
 }
