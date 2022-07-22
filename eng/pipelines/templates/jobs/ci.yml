@@ -85,9 +85,9 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
-      - bash: |
-          echo "${{parameters.ServiceDirectory}}"
-        displayName: Moary test log
+#      - bash: |
+#          echo "${{parameters.ServiceDirectory}}"
+#        displayName: Moary test log
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -95,7 +95,6 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
           JobType: 'Build'
           ServiceDirectory: ${{parameters.ServiceDirectory}}
-
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'

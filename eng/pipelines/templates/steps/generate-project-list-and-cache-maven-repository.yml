@@ -36,9 +36,11 @@ steps:
     foreach ($artifact in $additionalModules) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
     }
-    
-    Write-Host -Object ${{parameters.ServiceDirectory}}
-    Write-Host -Object ${{parameters}}
+          
+    Write-Host "Moary test log ******************"
+    Write-Host ($parameters | Format-Table | Out-String)
+#    Write-Host -Object ${{parameters.ServiceDirectory}}
+#    Write-Host -Object ${{parameters}}
     if ($parameters.ServiceDirectory.Equals("spring") -or $parameters.ServiceDirectory.Equals("spring-3")) {
       foreach ($artifact in $artifacts) {
         $projectPathList += "./sdk/$(parameters.ServiceDirectory)/$(artifact.name)"
