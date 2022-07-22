@@ -30,6 +30,8 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
 
     @Override
     public int write(ByteBuffer src) throws IOException {
+        // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
+        // Caller is responsible for that.
         int written = channel.write(src);
         BYTES_WRITTEN_ATOMIC_UPDATER.addAndGet(this, written);
         if (progressReporter != null) {

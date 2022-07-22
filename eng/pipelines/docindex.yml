@@ -40,6 +40,17 @@ jobs:
           arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
         displayName: Update Docs Onboarding
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: >-
+            -DocRepoLocation $(DailyDocRepoLocation)
+            -TenantId '$(opensource-aad-tenant-id)' 
+            -ClientId '$(opensource-aad-app-id)' 
+            -ClientSecret '$(opensource-aad-secret)'
+
       - task: Powershell@2
         inputs:
           pwsh: true
