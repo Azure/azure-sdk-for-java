@@ -153,7 +153,7 @@ public class AsyncRestProxy extends RestProxyBase {
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
             || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
-            boolean isSuccess = (responseStatusCode / 100) == 2;
+            boolean isSuccess = (responseStatusCode - 200) < 100; // No more division!
             asyncResult = Mono.just(isSuccess);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // Mono<byte[]>
@@ -208,7 +208,7 @@ public class AsyncRestProxy extends RestProxyBase {
                 // ProxyMethod ReturnType: Mono<Void>
                 result = asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).then();
             } else {
-                // ProxyMethod ReturnType: Mono<? extends RestResponseBase<?, ?>>
+                // ProxyMethod ReturnType: Mono<? extends ResponseBase<?, ?>>
                 result = asyncExpectedResponse.flatMap(response ->
                     handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }
