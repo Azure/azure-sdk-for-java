@@ -244,7 +244,6 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
                     .flatMap(lease -> {
-                        String leaseToken = lease.getLeaseToken();
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
