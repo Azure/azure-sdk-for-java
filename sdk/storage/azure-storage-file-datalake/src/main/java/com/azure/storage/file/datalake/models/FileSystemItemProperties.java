@@ -5,8 +5,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.models.BlobContainerItemProperties;
-
 import java.time.OffsetDateTime;
 
 /**

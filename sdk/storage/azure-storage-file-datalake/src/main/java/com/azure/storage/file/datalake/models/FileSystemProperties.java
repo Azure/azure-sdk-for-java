@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
