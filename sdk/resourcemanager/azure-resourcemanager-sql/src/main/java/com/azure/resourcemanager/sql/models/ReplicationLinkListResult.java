@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the response to a List database replication link request. */
 @Fluent
 public final class ReplicationLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationLinkListResult.class);
-
     /*
      * The list of database replication links housed in the database.
      */

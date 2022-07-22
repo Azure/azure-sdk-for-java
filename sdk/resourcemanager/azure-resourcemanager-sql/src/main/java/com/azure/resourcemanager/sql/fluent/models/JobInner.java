@@ -5,36 +5,27 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.JobSchedule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A job. */
-@JsonFlatten
 @Fluent
-public class JobInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInner.class);
-
+public final class JobInner extends ProxyResource {
     /*
-     * User-defined description of the job.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private JobProperties innerProperties;
 
-    /*
-     * The job version number.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer version;
-
-    /*
-     * Schedule properties of the job.
-     */
-    @JsonProperty(value = "properties.schedule")
-    private JobSchedule schedule;
+    private JobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: User-defined description of the job.
@@ -42,7 +33,7 @@ public class JobInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -52,7 +43,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -62,7 +56,7 @@ public class JobInner extends ProxyResource {
      * @return the version value.
      */
     public Integer version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -71,7 +65,7 @@ public class JobInner extends ProxyResource {
      * @return the schedule value.
      */
     public JobSchedule schedule() {
-        return this.schedule;
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
     }
 
     /**
@@ -81,7 +75,10 @@ public class JobInner extends ProxyResource {
      * @return the JobInner object itself.
      */
     public JobInner withSchedule(JobSchedule schedule) {
-        this.schedule = schedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
         return this;
     }
 
@@ -91,8 +88,8 @@ public class JobInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schedule() != null) {
-            schedule().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

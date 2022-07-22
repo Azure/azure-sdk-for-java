@@ -90,12 +90,12 @@ public class ClientTelemetry {
     private final Configs configs;
     private final ClientTelemetryConfig clientTelemetryConfig;
     private final HttpClient httpClient;
+    private final HttpClient metadataHttpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
         new CosmosDaemonThreadFactory("ClientTelemetry-" + instanceCount.incrementAndGet()));
     private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
-    private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
 
     private static final double PERCENTILE_50 = 50.0;
     private static final double PERCENTILE_90 = 90.0;
@@ -138,7 +138,8 @@ public class ClientTelemetry {
         this.isClosed = false;
         this.configs = configs;
         this.clientTelemetryConfig = clientTelemetryConfig;
-        this.httpClient = httpClient();
+        this.httpClient = getHttpClientForClientTelemetry();
+        this.metadataHttpClient = getHttpClientForIMDS();
         this.clientTelemetrySchedulingSec = Configs.getClientTelemetrySchedulingInSec();
         this.tokenProvider = tokenProvider;
         this.globalDatabaseAccountName = globalDatabaseAccountName;
@@ -197,12 +198,22 @@ public class ClientTelemetry {
         logger.debug("GlobalEndpointManager closed.");
     }
 
-    private HttpClient httpClient() {
+    private HttpClient getHttpClientForClientTelemetry() {
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
                 .withMaxIdleConnectionTimeout(this.clientTelemetryConfig.getIdleHttpConnectionTimeout())
                 .withPoolSize(this.clientTelemetryConfig.getMaxConnectionPoolSize())
                 .withProxy(this.clientTelemetryConfig.getProxy())
                 .withNetworkRequestTimeout(this.clientTelemetryConfig.getHttpNetworkRequestTimeout());
+
+        return HttpClient.createFixed(httpClientConfig);
+    }
+
+    private HttpClient getHttpClientForIMDS() {
+        // Proxy is not supported for azure instance metadata service
+        HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
+                .withMaxIdleConnectionTimeout(IMDSConfig.DEFAULT_IDLE_CONNECTION_TIMEOUT)
+                .withPoolSize(IMDSConfig.DEFAULT_MAX_CONNECTION_POOL_SIZE)
+                .withNetworkRequestTimeout(IMDSConfig.DEFAULT_NETWORK_REQUEST_TIMEOUT);
 
         return HttpClient.createFixed(httpClientConfig);
     }
@@ -307,7 +318,7 @@ public class ClientTelemetry {
 
         URI targetEndpoint = null;
         try {
-            targetEndpoint = new URI(AZURE_VM_METADATA);
+            targetEndpoint = new URI(IMDSConfig.AZURE_VM_METADATA);
         } catch (URISyntaxException ex) {
             logger.info("Unable to parse azure vm metadata url");
             return;
@@ -317,7 +328,7 @@ public class ClientTelemetry {
         HttpHeaders httpHeaders = new HttpHeaders(headers);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono = this.metadataHttpClient.send(httpRequest);
         httpResponseMono
             .flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
                 AzureVMMetadata.class)).doOnSuccess(metadata -> {
@@ -397,5 +408,12 @@ public class ClientTelemetry {
         percentile.put(PERCENTILE_99, copyHistogram.getValueAtPercentile(PERCENTILE_99));
         percentile.put(PERCENTILE_999, copyHistogram.getValueAtPercentile(PERCENTILE_999));
         payload.getMetricInfo().setPercentiles(percentile);
+    }
+
+    static class IMDSConfig {
+        private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
+        private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+        private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+        private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
     }
 }

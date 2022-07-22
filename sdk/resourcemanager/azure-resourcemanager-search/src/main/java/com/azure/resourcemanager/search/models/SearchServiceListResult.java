@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response containing a list of Azure Cognitive Search services. */
 @Immutable
 public final class SearchServiceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SearchServiceListResult.class);
-
     /*
      * The list of search services.
      */

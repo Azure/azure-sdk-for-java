@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Export database parameters. */
 @Fluent
 public class ExportRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportRequest.class);
-
     /*
      * The type of the storage key to use.
      */
@@ -180,31 +177,33 @@ public class ExportRequest {
      */
     public void validate() {
         if (storageKeyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property storageKeyType in model ExportRequest"));
         }
         if (storageKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property storageKey in model ExportRequest"));
         }
         if (storageUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property storageUri in model ExportRequest"));
         }
         if (administratorLogin() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property administratorLogin in model ExportRequest"));
         }
         if (administratorLoginPassword() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property administratorLoginPassword in model ExportRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportRequest.class);
 }

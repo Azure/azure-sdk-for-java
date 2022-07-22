@@ -91,14 +91,14 @@ public interface CapacityPool {
     String provisioningState();
 
     /**
-     * Gets the totalThroughputMibps property: Total throughput of pool in Mibps.
+     * Gets the totalThroughputMibps property: Total throughput of pool in MiB/s.
      *
      * @return the totalThroughputMibps value.
      */
     Float totalThroughputMibps();
 
     /**
-     * Gets the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
+     * Gets the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
      *
      * @return the utilizedThroughputMibps value.
      */
@@ -295,7 +295,8 @@ public interface CapacityPool {
     CapacityPool.Update update();
 
     /** The template for CapacityPool update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType, UpdateStages.WithCoolAccess {
         /**
          * Executes the update request.
          *
@@ -344,6 +345,16 @@ public interface CapacityPool {
              * @return the next definition stage.
              */
             Update withQosType(QosType qosType);
+        }
+        /** The stage of the CapacityPool update allowing to specify coolAccess. */
+        interface WithCoolAccess {
+            /**
+             * Specifies the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes..
+             *
+             * @param coolAccess If enabled (true) the pool can contain cool Access enabled volumes.
+             * @return the next definition stage.
+             */
+            Update withCoolAccess(Boolean coolAccess);
         }
     }
     /**

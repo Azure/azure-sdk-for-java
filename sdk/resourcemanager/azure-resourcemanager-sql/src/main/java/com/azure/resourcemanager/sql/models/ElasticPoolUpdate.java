@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An elastic pool update. */
-@JsonFlatten
 @Fluent
-public class ElasticPoolUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolUpdate.class);
-
+public final class ElasticPoolUpdate {
     /*
      * An ARM Resource SKU.
      */
@@ -24,36 +20,17 @@ public class ElasticPoolUpdate {
     private Sku sku;
 
     /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private ElasticPoolUpdateProperties innerProperties;
+
+    /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * The storage limit for the database elastic pool in bytes.
-     */
-    @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
-
-    /*
-     * The per database settings for the elastic pool.
-     */
-    @JsonProperty(value = "properties.perDatabaseSettings")
-    private ElasticPoolPerDatabaseSettings perDatabaseSettings;
-
-    /*
-     * Whether or not this elastic pool is zone redundant, which means the
-     * replicas of this elastic pool will be spread across multiple
-     * availability zones.
-     */
-    @JsonProperty(value = "properties.zoneRedundant")
-    private Boolean zoneRedundant;
-
-    /*
-     * The license type to apply for this elastic pool.
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private ElasticPoolLicenseType licenseType;
 
     /**
      * Get the sku property: An ARM Resource SKU.
@@ -73,6 +50,15 @@ public class ElasticPoolUpdate {
     public ElasticPoolUpdate withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ElasticPoolUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -101,7 +87,7 @@ public class ElasticPoolUpdate {
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
-        return this.maxSizeBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
     }
 
     /**
@@ -111,7 +97,10 @@ public class ElasticPoolUpdate {
      * @return the ElasticPoolUpdate object itself.
      */
     public ElasticPoolUpdate withMaxSizeBytes(Long maxSizeBytes) {
-        this.maxSizeBytes = maxSizeBytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withMaxSizeBytes(maxSizeBytes);
         return this;
     }
 
@@ -121,7 +110,7 @@ public class ElasticPoolUpdate {
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
-        return this.perDatabaseSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().perDatabaseSettings();
     }
 
     /**
@@ -131,7 +120,10 @@ public class ElasticPoolUpdate {
      * @return the ElasticPoolUpdate object itself.
      */
     public ElasticPoolUpdate withPerDatabaseSettings(ElasticPoolPerDatabaseSettings perDatabaseSettings) {
-        this.perDatabaseSettings = perDatabaseSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withPerDatabaseSettings(perDatabaseSettings);
         return this;
     }
 
@@ -142,7 +134,7 @@ public class ElasticPoolUpdate {
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
-        return this.zoneRedundant;
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
     }
 
     /**
@@ -153,7 +145,10 @@ public class ElasticPoolUpdate {
      * @return the ElasticPoolUpdate object itself.
      */
     public ElasticPoolUpdate withZoneRedundant(Boolean zoneRedundant) {
-        this.zoneRedundant = zoneRedundant;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 
@@ -163,7 +158,7 @@ public class ElasticPoolUpdate {
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -173,7 +168,10 @@ public class ElasticPoolUpdate {
      * @return the ElasticPoolUpdate object itself.
      */
     public ElasticPoolUpdate withLicenseType(ElasticPoolLicenseType licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticPoolUpdateProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -186,8 +184,8 @@ public class ElasticPoolUpdate {
         if (sku() != null) {
             sku().validate();
         }
-        if (perDatabaseSettings() != null) {
-            perDatabaseSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

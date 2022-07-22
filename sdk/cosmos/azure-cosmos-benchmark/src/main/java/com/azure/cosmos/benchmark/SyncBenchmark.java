@@ -109,7 +109,9 @@ abstract class SyncBenchmark<T> {
             .preferredRegions(cfg.getPreferredRegionsList())
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {

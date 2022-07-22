@@ -7,6 +7,7 @@ package com.azure.security.confidentialledger;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -35,7 +36,7 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
     public void testPostLedgerEntryTests() throws Exception {
         String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
         // this is a built in test of getLedgerIdentity
-        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
         ObjectMapper mapper = new ObjectMapper();
@@ -68,7 +69,7 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.createLedgerEntryWithResponse(entry, requestOptions);
 
         String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
 
@@ -125,7 +126,7 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
     public void testGetCollectionIdsTests() throws Exception {
         String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
         // this is a built in test of getLedgerIdentity
-        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
         ObjectMapper mapper = new ObjectMapper();
@@ -157,31 +158,29 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         ConfidentialLedgerClient confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
 
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.listCollectionsWithResponse(requestOptions);
-        Assertions.assertEquals(200, response.getStatusCode());
-        
-        BinaryData parsedResponse = response.getValue();
+        PagedIterable<BinaryData> pagedIterableResponse = confidentialLedgerClient.listCollections(requestOptions);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = null;
-
-        try {
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-
-        JsonNode collections = responseBodyJson.get("collections");
         List<String> collectionKeys = new ArrayList<>();
 
-        collections.forEach((collection) -> {
-            JsonNode collectionJson = collection;
-            String value = collectionJson.get("collectionId").toString();
-            collectionKeys.add(value);
+        pagedIterableResponse.streamByPage().forEach(resp -> {
+            Assertions.assertEquals(200, resp.getStatusCode());
+            resp.getValue().forEach(item -> {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseBodyJson = null;
+
+                try {
+                    responseBodyJson = objectMapper.readTree(item.toBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Assertions.assertTrue(false);
+                }
+
+                Assertions.assertNotNull(responseBodyJson.get("collectionId"));
+                collectionKeys.add(responseBodyJson.get("collectionId").asText());
+            });
+
+            collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
         });
-        
-        collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
     }
 }
 

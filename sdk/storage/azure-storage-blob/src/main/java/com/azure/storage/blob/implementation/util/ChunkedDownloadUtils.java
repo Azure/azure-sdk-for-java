@@ -117,7 +117,7 @@ public class ChunkedDownloadUtils {
 
         // Make the download call.
         return downloader.apply(chunkRange, requestConditions)
-            .subscribeOn(Schedulers.elastic())
+            .subscribeOn(Schedulers.boundedElastic())
             .flatMapMany(returnTransformer);
     }
 

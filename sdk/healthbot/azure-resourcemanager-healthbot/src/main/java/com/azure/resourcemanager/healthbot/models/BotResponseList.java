@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.healthbot.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.fluent.models.HealthBotInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of Healthbot operation response. */
 @Immutable
 public final class BotResponseList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BotResponseList.class);
-
     /*
      * The link used to get the next page of bot service resources.
      */
