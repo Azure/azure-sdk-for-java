@@ -58,6 +58,8 @@ public final class DataLakeServiceSasSignatureValues {
 
     private String correlationId;
 
+    private String encryptionScope;
+
     /**
      * Creates an object with the specified expiry time and permissions
      *
@@ -405,6 +407,18 @@ public final class DataLakeServiceSasSignatureValues {
      */
     public DataLakeServiceSasSignatureValues setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * @return the file system's encryption scope
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    public DataLakeServiceSasSignatureValues setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 }
