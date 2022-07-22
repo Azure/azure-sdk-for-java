@@ -28,7 +28,7 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         super();
 
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
-        checkNotNull(eTag, "Argument ETag must not be null");
+//        checkNotNull(eTag, "Argument ETag must not be null");
         this.eTag = eTag;
         this.feedRange = feedRange;
     }
