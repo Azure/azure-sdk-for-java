@@ -40,7 +40,7 @@ final class FakeKey implements AsyncKeyEncryptionKey, IKey {
     }
 
     private static byte[] xor(byte[] arr1, byte[] arr2) {
-        byte[] ret = new byte[arr1.length]
+        def ret = new byte[arr1.length]
         for (int i = 0; i < arr1.length; i++) {
             ret[i] = (byte) (arr1[i] ^ arr2[i])
         }

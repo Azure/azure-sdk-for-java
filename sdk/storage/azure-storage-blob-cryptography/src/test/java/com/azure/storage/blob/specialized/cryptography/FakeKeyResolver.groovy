@@ -24,9 +24,9 @@ final class FakeKeyResolver implements AsyncKeyEncryptionKeyResolver, IKeyResolv
 
     @Override
     Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
-        return key.getKeyId().flatMap(kid -> keyId.equals(kid)
+        return key.getKeyId().flatMap({ keyId == it
             ? Mono.just(key)
-            : Mono.error(new IllegalArgumentException("Key does not exist")))
+            : Mono.error(new IllegalArgumentException("Key does not exist")) })
     }
 
     @SuppressWarnings("UnstableApiUsage")

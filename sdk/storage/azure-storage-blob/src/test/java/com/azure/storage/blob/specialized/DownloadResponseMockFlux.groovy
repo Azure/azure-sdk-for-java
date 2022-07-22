@@ -3,8 +3,10 @@
 
 package com.azure.storage.blob.specialized
 
-import com.azure.core.http.HttpHeader
+
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.http.MockHttpResponse
@@ -77,10 +79,10 @@ class DownloadResponseMockFlux {
                 return Flux.just(scenarioData.duplicate())
 
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
-                return Flux.range(0, 4).map(i -> {
-                    ByteBuffer toSend = this.scenarioData.duplicate()
-                    toSend.position(i * 256)
-                    toSend.limit((i + 1) * 256)
+                return Flux.range(0, 4).map({
+                    def toSend = this.scenarioData.duplicate()
+                    toSend.position(it * 256)
+                    toSend.limit((it + 1) * 256)
 
                     return toSend
                 })
@@ -102,14 +104,14 @@ class DownloadResponseMockFlux {
                         return Flux.error(new IllegalArgumentException("Info values are incorrect."))
                     }
 
-                    ByteBuffer toSend = this.scenarioData.duplicate()
+                    def toSend = this.scenarioData.duplicate()
                     toSend.position((this.tryNumber - 1) * 256)
                     toSend.limit(this.tryNumber * 256)
 
-                    Flux<ByteBuffer> dataStream = Flux.just(toSend)
+                    def dataStream = Flux.just(toSend)
 
                     // A slightly odd but sufficient means of exercising the different retriable exceptions.
-                    Exception e = tryNumber % 2 == 0 ? new IOException() : new TimeoutException()
+                    def e = tryNumber % 2 == 0 ? new IOException() : new TimeoutException()
 
                     return dataStream.concatWith(Flux.error(e))
                 }
@@ -117,7 +119,7 @@ class DownloadResponseMockFlux {
                     || count != this.scenarioData.remaining() - (this.tryNumber - 1L) * 256) {
                     return Flux.error(new IllegalArgumentException("Info values are incorrect."))
                 }
-                ByteBuffer toSend = this.scenarioData.duplicate()
+                def toSend = this.scenarioData.duplicate()
                 toSend.position((this.tryNumber - 1) * 256)
                 toSend.limit(this.tryNumber * 256)
 
@@ -150,96 +152,98 @@ class DownloadResponseMockFlux {
     }
 
     HttpPipelinePolicy asPolicy() {
-        return (context, next) -> {
-            tryNumber++
-            HttpHeader rangeHeader = context.getHttpRequest().getHeaders().get("x-ms-range")
-            String eTag = context.getHttpRequest().getHeaders().getValue("if-match")
-            long offset = 0
-            Long count = null
-            if (rangeHeader != null) {
-                String[] ranges = rangeHeader.getValue().replace("bytes=", "").split("-")
-                offset = Long.parseLong(ranges[0])
-                if (ranges.length > 1) {
-                    count = Long.parseLong(ranges[1]) - offset + 1
-                }
-            }
-            long finalOffset = offset
-            Long finalCount = count
-
-            MockHttpResponse response = new MockHttpResponse(null, 200) {
-                @Override
-                Flux<ByteBuffer> getBody() {
-                    return getDownloadStream(finalOffset, finalCount)
-                }
-            }
-            long contentUpperBound = finalCount == null
-                ? this.scenarioData.remaining() - 1 : finalOffset + finalCount - 1
-            response.addHeader("Content-Range", String.format("%d-%d/%d",
-                finalOffset, contentUpperBound, this.scenarioData.remaining()))
-
-            switch (scenario) {
-                case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
-                    switch (tryNumber) {
-                        case 1:
-                            return Mono.just(response)
-                        case 2:
-                            /*
-                             This validates that we don't retry in the getter even if it's a retryable error from the
-                             service.
-                             */
-                            throw new BlobStorageException("Message", new HttpResponse(null) {
-                                @Override
-                                int getStatusCode() {
-                                    return 500
-                                }
-
-                                @Override
-                                String getHeaderValue(String s) {
-                                    return null
-                                }
-
-                                @Override
-                                HttpHeaders getHeaders() {
-                                    return null
-                                }
-
-                                @Override
-                                Flux<ByteBuffer> getBody() {
-                                    return null
-                                }
-
-                                @Override
-                                Mono<byte[]> getBodyAsByteArray() {
-                                    return null
-                                }
-
-                                @Override
-                                Mono<String> getBodyAsString() {
-                                    return null
-                                }
-
-                                @Override
-                                Mono<String> getBodyAsString(Charset charset) {
-                                    return null
-                                }
-                            }, null)
-                        default:
-                            throw new IllegalArgumentException("Retried after error in getter")
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                tryNumber++
+                def rangeHeader = context.getHttpRequest().getHeaders().get("x-ms-range")
+                def eTag = context.getHttpRequest().getHeaders().getValue("if-match")
+                def offset = 0L
+                def count = null as Long
+                if (rangeHeader != null) {
+                    def ranges = rangeHeader.getValue().replace("bytes=", "").split("-")
+                    offset = Long.parseLong(ranges[0])
+                    if (ranges.length > 1) {
+                        count = Long.parseLong(ranges[1]) - offset + 1
                     }
-                case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
-                    // Construct a new flux each time to mimic getting a new download stream.
-                    // Construct a new flux each time to mimic getting a new download stream.
-                    DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(this.scenario, this.tryNumber,
-                        this.scenarioData, this.options)
-                    MockHttpResponse newResponse = new MockHttpResponse(null, 200) {
-                        @Override
-                        Flux<ByteBuffer> getBody() {
-                            return nextFlux.getDownloadStream(finalOffset, finalCount)
+                }
+                def finalOffset = offset
+                def finalCount = count
+
+                def response = new MockHttpResponse(null, 200) {
+                    @Override
+                    Flux<ByteBuffer> getBody() {
+                        return getDownloadStream(finalOffset, finalCount)
+                    }
+                }
+                def contentUpperBound = finalCount == null
+                    ? scenarioData.remaining() - 1 : finalOffset + finalCount - 1
+                response.addHeader("Content-Range", String.format("%d-%d/%d",
+                    finalOffset, contentUpperBound, scenarioData.remaining()))
+
+                switch (scenario) {
+                    case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
+                        switch (tryNumber) {
+                            case 1:
+                                return Mono.just(response)
+                            case 2:
+                                /*
+                                 This validates that we don't retry in the getter even if it's a retryable error from the
+                                 service.
+                                 */
+                                throw new BlobStorageException("Message", new HttpResponse(null) {
+                                    @Override
+                                    int getStatusCode() {
+                                        return 500
+                                    }
+
+                                    @Override
+                                    String getHeaderValue(String s) {
+                                        return null
+                                    }
+
+                                    @Override
+                                    HttpHeaders getHeaders() {
+                                        return null
+                                    }
+
+                                    @Override
+                                    Flux<ByteBuffer> getBody() {
+                                        return null
+                                    }
+
+                                    @Override
+                                    Mono<byte[]> getBodyAsByteArray() {
+                                        return null
+                                    }
+
+                                    @Override
+                                    Mono<String> getBodyAsString() {
+                                        return null
+                                    }
+
+                                    @Override
+                                    Mono<String> getBodyAsString(Charset charset) {
+                                        return null
+                                    }
+                                }, null)
+                            default:
+                                throw new IllegalArgumentException("Retried after error in getter")
                         }
-                    }
-                    return Mono.just(newResponse)
-                default:
-                    return Mono.just(response)
+                    case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
+                        // Construct a new flux each time to mimic getting a new download stream.
+                        // Construct a new flux each time to mimic getting a new download stream.
+                        def nextFlux = new DownloadResponseMockFlux(scenario, tryNumber, scenarioData, options)
+                        def newResponse = new MockHttpResponse(null, 200) {
+                            @Override
+                            Flux<ByteBuffer> getBody() {
+                                return nextFlux.getDownloadStream(finalOffset, finalCount)
+                            }
+                        }
+                        return Mono.just(newResponse)
+                    default:
+                        return Mono.just(response)
+                }
             }
         }
     }
