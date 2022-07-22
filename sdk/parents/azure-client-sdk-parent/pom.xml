@@ -190,7 +190,6 @@
     <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
     <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
     <skipCompile>false</skipCompile>
-    <skipTestCompile>false</skipTestCompile>
 
     <compiler.proc>none</compiler.proc>
 
@@ -526,7 +525,6 @@
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
             <skipMain>${skipCompile}</skipMain>
-            <skip>${skipTestCompile}</skip>
             <compilerArgs combine.children="append" combine.self="append">
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
