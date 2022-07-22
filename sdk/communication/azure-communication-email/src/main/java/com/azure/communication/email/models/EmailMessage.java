@@ -45,13 +45,13 @@ public final class EmailMessage {
      * list of attachments
      */
     @JsonProperty(value = "attachments")
-    private List<EmailAttachment> attachments;
+    private Iterable<EmailAttachment> attachments;
 
     /*
      * Email addresses where recipients' replies will be sent to.
      */
     @JsonProperty(value = "replyTo")
-    private List<EmailAddress> replyTo;
+    private Iterable<EmailAddress> replyTo;
 
     /*
      * Indicates whether user engagement tracking should be disabled for this
@@ -154,7 +154,7 @@ public final class EmailMessage {
      *
      * @return the attachments value.
      */
-    public List<EmailAttachment> getAttachments() {
+    public Iterable<EmailAttachment> getAttachments() {
         return this.attachments;
     }
 
@@ -174,7 +174,7 @@ public final class EmailMessage {
      *
      * @return the replyTo value.
      */
-    public List<EmailAddress> getReplyTo() {
+    public Iterable<EmailAddress> getReplyTo() {
         return this.replyTo;
     }
 
@@ -184,7 +184,7 @@ public final class EmailMessage {
      * @param replyTo the replyTo value to set.
      * @return the EmailMessage object itself.
      */
-    public EmailMessage setReplyTo(List<EmailAddress> replyTo) {
+    public EmailMessage setReplyTo(Iterable<EmailAddress> replyTo) {
         this.replyTo = replyTo;
         return this;
     }

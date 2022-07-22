@@ -6,7 +6,6 @@ package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Recipients of the email. */
 @Fluent
@@ -15,25 +14,25 @@ public final class EmailRecipients {
      * Email To recipients
      */
     @JsonProperty(value = "to", required = true)
-    private List<EmailAddress> to;
+    private Iterable<EmailAddress> to;
 
     /*
      * Email CC recipients
      */
     @JsonProperty(value = "CC")
-    private List<EmailAddress> cc;
+    private Iterable<EmailAddress> cc;
 
     /*
      * Email BCC recipients
      */
     @JsonProperty(value = "bCC")
-    private List<EmailAddress> bcc;
+    private Iterable<EmailAddress> bcc;
 
     /**
      * Constructor for EmailRecipients
      * @param to the email to recipients
      */
-    public EmailRecipients(List<EmailAddress> to) {
+    public EmailRecipients(Iterable<EmailAddress> to) {
         this.to = to;
     }
 
@@ -42,7 +41,7 @@ public final class EmailRecipients {
      *
      * @return the to value.
      */
-    public List<EmailAddress> getTo() {
+    public Iterable<EmailAddress> getTo() {
         return this.to;
     }
 
@@ -51,7 +50,7 @@ public final class EmailRecipients {
      *
      * @return the cc value.
      */
-    public List<EmailAddress> getCc() {
+    public Iterable<EmailAddress> getCc() {
         return this.cc;
     }
 
@@ -61,7 +60,7 @@ public final class EmailRecipients {
      * @param cc the cc value to set.
      * @return the EmailRecipients object itself.
      */
-    public EmailRecipients setCc(List<EmailAddress> cc) {
+    public EmailRecipients setCc(Iterable<EmailAddress> cc) {
         this.cc = cc;
         return this;
     }
@@ -71,7 +70,7 @@ public final class EmailRecipients {
      *
      * @return the bcc value.
      */
-    public List<EmailAddress> getBcc() {
+    public Iterable<EmailAddress> getBcc() {
         return this.bcc;
     }
 
@@ -81,7 +80,7 @@ public final class EmailRecipients {
      * @param bcc the bcc value to set.
      * @return the EmailRecipients object itself.
      */
-    public EmailRecipients setBcc(List<EmailAddress> bcc) {
+    public EmailRecipients setBcc(Iterable<EmailAddress> bcc) {
         this.bcc = bcc;
         return this;
     }
