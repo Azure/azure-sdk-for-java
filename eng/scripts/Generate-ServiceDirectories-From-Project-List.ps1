@@ -56,11 +56,11 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
     $xmlPomFile = New-Object xml
     $xmlPomFile.Load($file.FullName)
     $serviceDirectory = (Get-Item $file).Directory.Parent
-    if ($serviceDirectory -ne "spring" -and $serviceDirectory -ne "spring-3")
+    if ($serviceDirectory.Name -ne "spring" -and $serviceDirectory.Name -ne "spring-3")
     {
         $library = $xmlPomFile.project.groupId + ":" + $xmlPomFile.project.artifactId
     } else {
-        $library = "./sdk/" + $serviceDirectory + "/" + $xmlPomFile.project.artifactId
+        $library = "./sdk/" + $serviceDirectory.Name + "/" + $xmlPomFile.project.artifactId
     }
 
     # This if check is only necessary because resourcemanager and resourcemanagerhybrid contain the
@@ -70,12 +70,15 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
         # stripped off
         $tempDir = $serviceDirectory.FullName.Replace("$SourcesDirectory", "")
         $tempDir = $tempDir.Replace([IO.Path]::DirectorySeparatorChar, '/')
+        Write-Host "Moary debug log ********************** library=$library"
+        Write-Host "Moary debug log ********************** tempDir=$tempDir"
         $sparseCheckoutDirHash.Add($library, $tempDir)
         if ($tempDir.StartsWith("/sdk/")) {
             # Strip off the "/sdk/" to get the service directory. A ServiceDirectory will always have
             # the format of /SDK/<ServiceDirectory>. Whereas sparse checkout can have other directories
             # outside of /SDK, eg. /common
             $tempDir = $tempDir.Replace("/sdk/", "")
+            Write-Host "Moary debug log ********************** 2 tempDir=$tempDir"
             $serviceDirHash.Add($library, $tempDir)
         }
     }
