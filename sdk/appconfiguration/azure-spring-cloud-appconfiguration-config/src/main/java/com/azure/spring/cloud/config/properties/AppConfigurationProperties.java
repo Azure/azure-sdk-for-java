@@ -191,12 +191,7 @@ public final class AppConfigurationProperties {
         Map<String, Boolean> existingEndpoints = new HashMap<>();
 
         for (ConfigStore store : this.stores) {
-            if (StringUtils.hasText(store.getEndpoint())) {
-                if (existingEndpoints.containsKey(store.getEndpoint())) {
-                    throw new IllegalArgumentException("Duplicate store name exists.");
-                }
-                existingEndpoints.put(store.getEndpoint(), true);
-            }
+
             if (store.getEndpoints().size() > 0) {
                 for (String endpoint : store.getEndpoints()) {
                     if (existingEndpoints.containsKey(endpoint)) {
@@ -204,6 +199,11 @@ public final class AppConfigurationProperties {
                     }
                     existingEndpoints.put(endpoint, true);
                 }
+            } else if (StringUtils.hasText(store.getEndpoint())) {
+                if (existingEndpoints.containsKey(store.getEndpoint())) {
+                    throw new IllegalArgumentException("Duplicate store name exists.");
+                }
+                existingEndpoints.put(store.getEndpoint(), true);
             }
         }
         if (refreshInterval != null) {

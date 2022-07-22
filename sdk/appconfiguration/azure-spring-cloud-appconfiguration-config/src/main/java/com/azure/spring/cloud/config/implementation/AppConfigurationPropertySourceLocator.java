@@ -141,7 +141,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     }
                 }
 
-                boolean generatedPropertySources = true;
+                boolean generatedPropertySources = false;
 
                 List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
                 boolean reloadFailed = false;
@@ -196,6 +196,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         newState.setState(configStore.getEndpoint(), watchKeysSettings,
                             configStore.getMonitoring().getRefreshInterval());
                         newState.setLoadState(configStore.getEndpoint(), true);
+                        generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
                         reloadFailed = true;
                     } catch (Exception e) {
