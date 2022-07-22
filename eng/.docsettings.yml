@@ -8,6 +8,7 @@ omitted_paths:
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/boms/spring-cloud-azure-dependencies/*
   - sdk/spring/*
+  - sdk/spring-3/*
   - "sdk/spring/*/*"
   - sdk/spring-experimental/*
   - "sdk/spring-experimental/*/*"
