@@ -269,7 +269,6 @@ public final class QueryMetrics {
     }
 
     public static QueryMetrics createFromDelimitedString(String delimitedString) {
-        HashMap<String, Double> metrics = QueryMetricsUtils.parseDelimitedString(delimitedString);
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(delimitedString,
                 new ClientSideMetrics(0, 0, new ArrayList<FetchExecutionRange>(),
                         new ArrayList<ImmutablePair<String, SchedulingTimeSpan>>()), "", "");
