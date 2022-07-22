@@ -218,9 +218,9 @@ public class ConnectionManagerTest {
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
         List<ConfigurationClientWrapper> clients = spy.getAvalibleClients();
-        
+
         assertEquals(2, clients.size());
-        
+
         ConfigurationClientWrapper clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
@@ -230,10 +230,10 @@ public class ConnectionManagerTest {
 
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
-       clients = spy.getAvalibleClients();
-        
+        clients = spy.getAvalibleClients();
+
         assertEquals(1, clients.size());
-        
+
         clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
@@ -264,22 +264,22 @@ public class ConnectionManagerTest {
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
         List<ConfigurationClientWrapper> clients = spy.getAvalibleClients();
-        
+
         assertEquals(2, clients.size());
-        
+
         ConfigurationClientWrapper clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
         assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
         assertEquals(0, clientWrapper.getFailedAttempts());
-        
+
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
         clients = spy.getAvalibleClients();
-        
+
         assertEquals(1, clients.size());
-        
+
         clientWrapper = clients.get(0);
 
         assertNotNull(clientWrapper);
@@ -302,7 +302,8 @@ public class ConnectionManagerTest {
         connectionManager = new ConnectionManager(configStore, providerProperties, tokenProviderMock, null, false,
             false, null);
 
-        String message = assertThrows(IllegalArgumentException.class, () -> connectionManager.getAvalibleClients().get(0)).getMessage();
+        String message = assertThrows(IllegalArgumentException.class,
+            () -> connectionManager.getAvalibleClients().get(0)).getMessage();
 
         assertEquals("More than 1 Conncetion method was set for connecting to App Configuration.", message);
     }
