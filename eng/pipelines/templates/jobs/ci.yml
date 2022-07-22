@@ -85,8 +85,7 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
-      - script: |
-          echo "${{parameters}}"
+      - bash: |
           echo "${{parameters.ServiceDirectory}}"
         displayName: Moary test log
 
