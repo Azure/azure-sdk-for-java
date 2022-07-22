@@ -45,6 +45,9 @@ class Dependency {
       if ($split.Count -eq 3)
       {
           $this.curVer = $split[2]
+      } elseif ($split.Count -eq 2)
+      {
+        $this.curVer = $split[1]
       }
   }
 }
