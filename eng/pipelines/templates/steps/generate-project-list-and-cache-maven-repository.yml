@@ -42,12 +42,12 @@ steps:
     Write-Host $serviceDirectory
     if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       foreach ($artifact in $artifacts) {
-        $projectPathList += "./sdk/$serviceDirectory/$(artifact.name)"
+        $projectPathList += "./sdk/$serviceDirectory/$($artifact.name)"
       }
     }
     if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       foreach ($artifact in $additionalModules) {
-        $projectPathList += "./sdk/$serviceDirectory/$(artifact.name)"
+        $projectPathList += "./sdk/$serviceDirectory/$($artifact.name)"
       }
     }
     
