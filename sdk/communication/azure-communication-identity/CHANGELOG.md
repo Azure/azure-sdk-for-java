@@ -3,9 +3,9 @@
 ## 1.3.0
 
 ### Features Added
-- Added support for token custom expiration:
-    - Added `GetTokenOptions` options bag to contain mandatory arguments used to get a token together with optional argument for custom expiration.
-    - Added methods that provide the ability to create token with custom expiration:
+- Added support to customize the Communication Identity access token’s validity period:
+    - Added `GetTokenOptions` to pass mandatory and configurable parameters when using `GetToken` APIs.
+    - Added methods that provide the ability to create a Communication Identity access token with custom expiration:
         - `CommunicationIdentityClient.getToken(GetTokenOptions getTokenOptions)`
         - `CommunicationIdentityAsyncClient.getToken(GetTokenOptions getTokenOptions)`
         - `CommunicationIdentityClient.getTokenWithResponse(GetTokenOptions getTokenOptions, Context context)`

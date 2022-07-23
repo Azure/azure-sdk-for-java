@@ -159,19 +159,19 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for issuing a user token with custom expiration
+     * Sample code for issuing a Communication Identity access token with custom expiration
      *
-     * @return the issued user token
+     * @return the Communication Identity access token
      */
-    public AccessToken issueUserTokenWithCustomExpiration() {
+    public AccessToken issueTokenWithCustomExpiration() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 
-        // BEGIN: readme-sample-issueUserTokenWithCustomExpiration
-        // Define a list of communication token scopes
+        // BEGIN: readme-sample-issueTokenWithCustomExpiration
+        // Define a list of Communication Identity access token scopes
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
-        // Create options to hold request parameters and set custom expiration
+        // Create options to pass mandatory and configurable parameters to get a Communication Identity access token
         GetTokenOptions getTokenOptions = new GetTokenOptions(user, scopes);
         Duration customExpiration = Duration.ofMinutes(60);
         getTokenOptions.setExpiresInMinutes(customExpiration);
@@ -179,7 +179,7 @@ public class ReadmeSamples {
         AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
         System.out.println("User token value: " + userToken.getToken());
         System.out.println("Expires at: " + userToken.getExpiresAt());
-        // END: readme-sample-issueUserTokenWithCustomExpiration
+        // END: readme-sample-issueTokenWithCustomExpiration
 
         return userToken;
     }

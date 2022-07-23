@@ -187,10 +187,10 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Gets a token for an identity.
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
      *
      * @param getTokenOptions {@link GetTokenOptions} request options used to get a token for communication user.
-     * @return the token.
+     * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken getToken(GetTokenOptions getTokenOptions) {
@@ -213,11 +213,12 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Gets a token for an identity.
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
      *
-     * @param communicationUser The user to be issued tokens.
-     * @param scopes The scopes that the token should have.
-     * @return the token.
+     * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
+     * access token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
+     * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken getToken(CommunicationUserIdentifier communicationUser,
@@ -230,12 +231,12 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Gets a token for an identity.
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
      *
-     * @param getTokenOptions {@link GetTokenOptions} request options used to get a token for communication user.
-     * @param context the context of the request. Can also be null or
-     *                          Context.NONE.
-     * @return the token with response.
+     * @param getTokenOptions {@link GetTokenOptions} to pass mandatory and configurable parameters to get a
+     * Communication Identity access token for a {@link CommunicationUserIdentifier}.
+     * @param context the context of the request. Can also be null or Context.NONE.
+     * @return the Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> getTokenWithResponse(GetTokenOptions getTokenOptions, Context context) {
@@ -268,13 +269,13 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Gets a token for an identity.
+     * Gets a Communication Identity access token for a {@link CommunicationUserIdentifier}.
      *
-     * @param communicationUser The CommunicationUser from whom to issue a token.
-     * @param scopes The scopes that the token should have.
-     * @param context the context of the request. Can also be null or
-     *                          Context.NONE.
-     * @return the token with response.
+     * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
+     * access token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
+     * @param context the context of the request. Can also be null or Context.NONE.
+     * @return the Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> getTokenWithResponse(CommunicationUserIdentifier communicationUser,

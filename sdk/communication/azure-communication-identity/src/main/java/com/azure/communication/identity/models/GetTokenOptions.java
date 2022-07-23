@@ -11,9 +11,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.Duration;
 
 /**
- * Options class for configuring the {@link
- * CommunicationIdentityAsyncClient#getToken(GetTokenOptions)} and {@link
- * CommunicationIdentityClient#getToken(GetTokenOptions)} methods.
+ * Options used to get a Communication Identity access token for a {@link CommunicationUserIdentifier}.
  */
 @Immutable
 public final class GetTokenOptions {
@@ -25,8 +23,9 @@ public final class GetTokenOptions {
     /**
      * Constructor of {@link GetTokenOptions}.
      *
-     * @param communicationUser The user to be issued tokens.
-     * @param scopes The scopes that the token should have.
+     * @param communicationUser The {@link CommunicationUserIdentifier} for whom to get a Communication Identity access
+     * token.
+     * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
      */
     public GetTokenOptions(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes){
         this.communicationUser = communicationUser;
@@ -34,30 +33,32 @@ public final class GetTokenOptions {
     }
 
     /**
-     * Gets the communication user.
+     * Gets the {@link CommunicationUserIdentifier}.
      *
-     * @return the communication user.
+     * @return the {@link CommunicationUserIdentifier}.
      */
     public CommunicationUserIdentifier getCommunicationUser() { return this.communicationUser; }
 
     /**
-     * Gets the scopes that the token should have.
+     * Gets the scopes for the Communication Identity access token.
      *
-     * @return the scopes that the token should have.
+     * @return the scopes for the Communication Identity access token.
      */
     public Iterable<CommunicationTokenScope> getScopes() { return this.scopes; }
 
     /**
-     * Gets token expiration time.
+     * Gets the Communication Identity access token expiration time.
      *
-     * @return token expiration time.
+     * @return the Communication Identity access token expiration time.
      */
     public Duration getExpiresInMinutes() { return this.expiresInMinutes; }
 
     /**
-     * Sets token expiration time. Valid period of the token should be within [60,1440] minutes range.
+     * Sets the Communication Identity access token expiration time. Valid period of the token should be within
+     * &lt;60,1440&gt; minutes range.
      *
-     * @param expiresInMinutes duration of the token.
+     * @param expiresInMinutes Communication Identity access token expiration time. Valid period of the token should be
+     * within &lt;60,1440&gt; minutes range.
      * @return {@link GetTokenOptions}.
      */
     public GetTokenOptions setExpiresInMinutes(Duration expiresInMinutes){
