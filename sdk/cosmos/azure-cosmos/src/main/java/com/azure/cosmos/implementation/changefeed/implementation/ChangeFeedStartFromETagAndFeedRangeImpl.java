@@ -81,13 +81,14 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
             request.getHeaders().put(
                 HttpConstants.HttpHeaders.IF_NONE_MATCH,
                 this.eTag);
+        } else {
+            //  TODO: (kuthapar) - verify this 0 etag with backend folks.
+            //  If there is no continuation token, we start from beginning.
+            // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
+            logger.info("eTag is null, setting etag 0");
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.IF_NONE_MATCH, String.valueOf(0));
         }
-//        else {
-//            logger.info("eTag is null, setting value if-none-match-all");
-//            request.getHeaders().put(
-//                HttpConstants.HttpHeaders.IF_NONE_MATCH,
-//                HttpConstants.HeaderValues.IF_NONE_MATCH_ALL);
-//        }
     }
 
     @Override

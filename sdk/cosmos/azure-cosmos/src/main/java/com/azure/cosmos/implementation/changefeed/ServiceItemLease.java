@@ -134,18 +134,6 @@ public class ServiceItemLease implements Lease {
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
-        logger.info("Continuation token right now is {}", this.ContinuationToken);
-
-        //  TODO: (kuthapar) - Check this logic with Milis
-        if (Strings.isNullOrWhiteSpace(this.ContinuationToken)) {
-            return new ChangeFeedStateV1(
-                containerRid,
-                feedRange,
-                ChangeFeedMode.FULL_FIDELITY,
-                ChangeFeedStartFromInternal.createFromNow(),
-                null);
-        }
-
         return new ChangeFeedStateV1(
             containerRid,
             feedRange,

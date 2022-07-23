@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -66,7 +67,8 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
     private static final String PK_RANGE_ID_SEPARATOR = ":";
     private static final String SEGMENT_SEPARATOR = "#";
-    private static final String PROPERTY_NAME_LSN = "_lsn";
+    private static final String PROPERTY_NAME_METADATA = "metadata";
+    private static final String PROPERTY_NAME_METADATA_LSN = "lsn";
 
     private final Logger logger = LoggerFactory.getLogger(FullFidelityChangeFeedProcessorBuilderImpl.class);
     private final Duration sleepTime = Duration.ofSeconds(15);
@@ -160,8 +162,6 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
             .flatMap(leaseStoreManager1 ->
                 leaseStoreManager1.getAllLeases()
                     .flatMap(lease -> {
-                        logger.info("Lease Information: leaseToken: {}, continuationToken: {}, leaseId: {}",
-                            lease.getLeaseToken(), lease.getContinuationToken(), lease.getId());
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
@@ -200,7 +200,7 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
                                 int currentLsn = 0;
                                 int estimatedLag;
                                 try {
-                                    currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                                    currentLsn = Integer.parseInt(getMetadataLsn(feedResponse, "0"));
                                     estimatedLag = Integer.parseInt(latestLsn);
                                     estimatedLag = estimatedLag - currentLsn + 1;
                                 } catch (NumberFormatException ex) {
@@ -285,13 +285,12 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
                                     return changeFeedProcessorState;
                                 }
 
-                                changeFeedProcessorState.setContinuationToken(
-                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
+                                changeFeedProcessorState.setContinuationToken(getMetadataLsn(feedResponse, null));
 
                                 int currentLsn;
                                 int estimatedLag;
                                 try {
-                                    currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                                    currentLsn = Integer.parseInt(getMetadataLsn(feedResponse, "0"));
                                     estimatedLag = Integer.parseInt(latestLsn);
                                     estimatedLag = estimatedLag - currentLsn + 1;
                                     changeFeedProcessorState.setEstimatedLag(estimatedLag);
@@ -552,5 +551,9 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
     @Override
     public void close() {
         this.stop().subscribeOn(Schedulers.boundedElastic()).subscribe();
+    }
+
+    private String getMetadataLsn(FeedResponse<JsonNode> feedResponse, String defaultValue) {
+        return feedResponse.getResults().get(0).get(PROPERTY_NAME_METADATA).get(PROPERTY_NAME_METADATA_LSN).asText(defaultValue);
     }
 }
