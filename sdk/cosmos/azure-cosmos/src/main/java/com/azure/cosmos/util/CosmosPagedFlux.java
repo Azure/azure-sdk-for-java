@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -205,8 +204,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         break;
                     case ON_ERROR:
                         Throwable throwable = signal.getThrowable();
-                        if (client != null &&
-                            (clientTelemetryEnabled || clientMetricsEnabled) &&
+                        if ((clientTelemetryEnabled || clientMetricsEnabled) &&
                             throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
 
