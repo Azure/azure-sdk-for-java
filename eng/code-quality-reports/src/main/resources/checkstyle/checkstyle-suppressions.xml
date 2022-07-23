@@ -33,6 +33,9 @@
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
+  <!-- Nested blocks are useful in tests, e.g. when lambdas require effectively final variables. -->
+  <suppress checks="AvoidNestedBlocks" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
@@ -128,6 +131,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.vertx.VertxAsyncHttpClientBuilder"/>
+
+  <!-- False positive in this case : This should not change behavior for UseCaughtExceptionCauseCheck when checking for throwing caught exceptions -->
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.core.http.policy.RetryPolicy.java"/>
 
   <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"

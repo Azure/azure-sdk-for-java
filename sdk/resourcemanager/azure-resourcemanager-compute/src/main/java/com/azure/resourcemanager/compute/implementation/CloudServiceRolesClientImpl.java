@@ -102,8 +102,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -135,7 +135,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -157,8 +157,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -191,7 +191,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -210,8 +210,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,15 +220,22 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceRoleInner> getAsync(String roleName, String resourceGroupName, String cloudServiceName) {
         return getWithResponseAsync(roleName, resourceGroupName, cloudServiceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CloudServiceRoleInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -243,8 +250,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -261,8 +268,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -292,7 +299,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -322,8 +329,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -354,7 +361,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -381,8 +388,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -399,8 +406,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -419,8 +426,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,8 +442,8 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -456,7 +463,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceRoleInner>> listNextSinglePageAsync(String nextLink) {
@@ -492,7 +499,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceRoleInner>> listNextSinglePageAsync(String nextLink, Context context) {

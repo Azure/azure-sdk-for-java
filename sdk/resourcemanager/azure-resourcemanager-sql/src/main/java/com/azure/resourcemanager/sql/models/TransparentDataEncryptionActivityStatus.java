@@ -28,7 +28,11 @@ public final class TransparentDataEncryptionActivityStatus
         return fromString(name, TransparentDataEncryptionActivityStatus.class);
     }
 
-    /** @return known TransparentDataEncryptionActivityStatus values. */
+    /**
+     * Gets known TransparentDataEncryptionActivityStatus values.
+     *
+     * @return known TransparentDataEncryptionActivityStatus values.
+     */
     public static Collection<TransparentDataEncryptionActivityStatus> values() {
         return values(TransparentDataEncryptionActivityStatus.class);
     }

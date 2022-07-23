@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -26,7 +27,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.LongTermRetentionBackupsClient;
@@ -39,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LongTermRetentionBackupsClient. */
 public final class LongTermRetentionBackupsClientImpl implements LongTermRetentionBackupsClient {
-    private final ClientLogger logger = new ClientLogger(LongTermRetentionBackupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LongTermRetentionBackupsService service;
 
@@ -66,7 +64,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientL")
     private interface LongTermRetentionBackupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
                 + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
@@ -82,6 +80,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("backupName") String backupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -102,7 +101,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
                 + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases"
@@ -119,9 +118,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
                 + "/{locationName}/longTermRetentionBackups")
@@ -135,9 +135,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
                 + "/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
@@ -152,9 +153,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
                 + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
@@ -169,6 +171,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("backupName") String backupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -188,7 +191,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
                 + "/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}"
@@ -204,9 +207,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
         @ExpectedResponses({200})
@@ -218,9 +222,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers"
                 + "/{longTermRetentionServerName}/longTermRetentionBackups")
@@ -234,49 +239,68 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("databaseState") LongTermRetentionDatabaseState databaseState,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByResourceGroupDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByResourceGroupLocationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByResourceGroupServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByLocationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LongTermRetentionBackupListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -291,7 +315,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(
@@ -335,6 +359,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -348,8 +373,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             backupName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -365,7 +391,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(
@@ -410,6 +436,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -421,6 +448,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 backupName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -436,7 +464,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> getByResourceGroupAsync(
@@ -447,14 +475,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String backupName) {
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .flatMap(
-                (Response<LongTermRetentionBackupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -496,7 +517,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LongTermRetentionBackupInner> getByResourceGroupWithResponse(
@@ -528,7 +549,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(
@@ -586,7 +607,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -602,7 +623,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(
@@ -673,9 +694,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(
         String resourceGroupName,
         String locationName,
@@ -708,9 +729,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(
         String resourceGroupName,
         String locationName,
@@ -744,9 +765,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
         String resourceGroupName,
         String locationName,
@@ -771,9 +792,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(
         String resourceGroupName,
         String locationName,
@@ -803,7 +824,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByResourceGroupAsync(
@@ -831,7 +852,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteByResourceGroupAsync(
@@ -922,7 +943,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
@@ -964,6 +986,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -978,6 +1001,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             databaseState,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
@@ -988,7 +1012,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1005,7 +1029,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseSinglePageAsync(
@@ -1048,6 +1073,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupDatabase(
@@ -1060,6 +1086,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 databaseState,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1085,7 +1112,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
@@ -1118,7 +1145,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
@@ -1154,7 +1181,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(
@@ -1186,13 +1213,44 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
+        String resourceGroupName,
+        String locationName,
+        String longTermRetentionServerName,
+        String longTermRetentionDatabaseName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByResourceGroupDatabaseAsync(
+                resourceGroupName,
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                onlyLatestPerDatabase,
+                databaseState));
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
@@ -1215,37 +1273,6 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(
-        String resourceGroupName,
-        String locationName,
-        String longTermRetentionServerName,
-        String longTermRetentionDatabaseName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupDatabaseAsync(
-                resourceGroupName,
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                onlyLatestPerDatabase,
-                databaseState));
-    }
-
-    /**
      * Lists the long term retention backups for a given location.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -1256,7 +1283,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
@@ -1284,6 +1312,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1296,6 +1325,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             databaseState,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
@@ -1306,7 +1336,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1321,7 +1351,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
@@ -1350,6 +1381,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupLocation(
@@ -1360,6 +1392,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 databaseState,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1383,7 +1416,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
@@ -1407,7 +1440,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
@@ -1433,7 +1466,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(
@@ -1455,13 +1488,33 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
+        String resourceGroupName, String locationName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
@@ -1476,26 +1529,6 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(
-        String resourceGroupName, String locationName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
-    }
-
-    /**
      * Lists the long term retention backups for a given server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -1507,7 +1540,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
@@ -1542,6 +1576,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1555,6 +1590,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             databaseState,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
@@ -1565,7 +1601,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1581,7 +1617,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
@@ -1617,6 +1654,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupServer(
@@ -1628,6 +1666,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 databaseState,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1652,7 +1691,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
@@ -1678,7 +1717,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
@@ -1705,7 +1744,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(
@@ -1734,13 +1773,35 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
+        String resourceGroupName, String locationName, String longTermRetentionServerName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByResourceGroupServerAsync(
+                resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
@@ -1761,28 +1822,6 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(
-        String resourceGroupName, String locationName, String longTermRetentionServerName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupServerAsync(
-                resourceGroupName, locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
-    }
-
-    /**
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
@@ -1792,7 +1831,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(
@@ -1831,6 +1870,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1843,8 +1883,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             backupName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1858,7 +1899,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(
@@ -1898,6 +1939,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1908,6 +1950,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 backupName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1921,7 +1964,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> getAsync(
@@ -1931,14 +1974,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String backupName) {
         return getWithResponseAsync(
                 locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName)
-            .flatMap(
-                (Response<LongTermRetentionBackupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1973,7 +2009,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
+     * @return a long term retention backup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LongTermRetentionBackupInner> getWithResponse(
@@ -1997,7 +2033,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2049,7 +2085,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2063,7 +2099,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2126,9 +2162,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String locationName,
         String longTermRetentionServerName,
@@ -2154,9 +2190,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String locationName,
         String longTermRetentionServerName,
@@ -2182,9 +2218,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String locationName,
         String longTermRetentionServerName,
@@ -2205,9 +2241,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String locationName,
         String longTermRetentionServerName,
@@ -2229,7 +2265,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -2253,7 +2289,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -2322,7 +2358,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
@@ -2359,6 +2396,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2372,6 +2410,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             databaseState,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
@@ -2382,7 +2421,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2397,7 +2436,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseSinglePageAsync(
@@ -2435,6 +2475,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -2446,6 +2487,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 databaseState,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -2469,7 +2511,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
@@ -2498,7 +2540,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
@@ -2528,7 +2570,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(
@@ -2556,13 +2598,38 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
      * @param longTermRetentionDatabaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LongTermRetentionBackupInner> listByDatabase(
+        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByDatabaseAsync(
+                locationName,
+                longTermRetentionServerName,
+                longTermRetentionDatabaseName,
+                onlyLatestPerDatabase,
+                databaseState));
+    }
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
+     * @param longTermRetentionDatabaseName The name of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByDatabase(
@@ -2583,31 +2650,6 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists all long term retention backups for a database.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByDatabase(
-        String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByDatabaseAsync(
-                locationName,
-                longTermRetentionServerName,
-                longTermRetentionDatabaseName,
-                onlyLatestPerDatabase,
-                databaseState));
-    }
-
-    /**
      * Lists the long term retention backups for a given location.
      *
      * @param locationName The location of the database.
@@ -2616,7 +2658,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(
@@ -2637,6 +2680,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2648,6 +2692,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             databaseState,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
@@ -2658,7 +2703,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2671,7 +2716,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(
@@ -2695,6 +2741,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByLocation(
@@ -2704,6 +2751,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 databaseState,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -2725,7 +2773,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(
@@ -2742,7 +2790,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName) {
@@ -2763,7 +2811,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(
@@ -2780,13 +2828,29 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * Lists the long term retention backups for a given location.
      *
      * @param locationName The location of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
+    }
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
+     * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByLocation(
@@ -2795,22 +2859,6 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         LongTermRetentionDatabaseState databaseState,
         Context context) {
         return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, context));
-    }
-
-    /**
-     * Lists the long term retention backups for a given location.
-     *
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
     }
 
     /**
@@ -2823,7 +2871,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(
@@ -2853,6 +2902,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2865,6 +2915,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                             databaseState,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
@@ -2875,7 +2926,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2889,7 +2940,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(
@@ -2920,6 +2972,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -2930,6 +2983,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 databaseState,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -2952,7 +3006,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
@@ -2975,7 +3029,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
@@ -3000,7 +3054,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByServerAsync(
@@ -3021,13 +3075,32 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      *
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LongTermRetentionBackupInner> listByServer(
+        String locationName, String longTermRetentionServerName) {
+        final Boolean onlyLatestPerDatabase = null;
+        final LongTermRetentionDatabaseState databaseState = null;
+        return new PagedIterable<>(
+            listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+    }
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByServer(
@@ -3042,32 +3115,14 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     }
 
     /**
-     * Lists the long term retention backups for a given server.
-     *
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LongTermRetentionBackupInner> listByServer(
-        String locationName, String longTermRetentionServerName) {
-        final Boolean onlyLatestPerDatabase = null;
-        final LongTermRetentionDatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextSinglePageAsync(
@@ -3075,8 +3130,17 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupDatabaseNext(nextLink, context))
+            .withContext(
+                context ->
+                    service.listByResourceGroupDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3086,7 +3150,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3097,7 +3161,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupDatabaseNextSinglePageAsync(
@@ -3105,9 +3170,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupDatabaseNext(nextLink, context)
+            .listByResourceGroupDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3126,7 +3198,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationNextSinglePageAsync(
@@ -3134,8 +3207,17 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupLocationNext(nextLink, context))
+            .withContext(
+                context ->
+                    service.listByResourceGroupLocationNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3145,7 +3227,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3156,7 +3238,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationNextSinglePageAsync(
@@ -3164,9 +3247,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupLocationNext(nextLink, context)
+            .listByResourceGroupLocationNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3185,7 +3275,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerNextSinglePageAsync(
@@ -3193,8 +3284,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupServerNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupServerNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3204,7 +3303,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3215,7 +3314,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerNextSinglePageAsync(
@@ -3223,9 +3323,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupServerNext(nextLink, context)
+            .listByResourceGroupServerNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3244,15 +3351,23 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByDatabaseNext(nextLink, context))
+            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3262,7 +3377,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3273,7 +3388,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByDatabaseNextSinglePageAsync(
@@ -3281,9 +3397,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDatabaseNext(nextLink, context)
+            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3302,15 +3425,23 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByLocationNext(nextLink, context))
+            .withContext(context -> service.listByLocationNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3320,7 +3451,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3331,7 +3462,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationNextSinglePageAsync(
@@ -3339,9 +3471,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocationNext(nextLink, context)
+            .listByLocationNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3360,15 +3499,23 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, context))
+            .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3378,7 +3525,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3389,7 +3536,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerNextSinglePageAsync(
@@ -3397,9 +3545,16 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServerNext(nextLink, context)
+            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -1,20 +1,31 @@
 # Release History
 
-## 1.2.0
+## 1.3.0
+
 ### Features Added
 - Added support for token custom expiration:
     - Added `GetTokenOptions` options bag to contain mandatory arguments used to get a token together with optional argument for custom expiration.
     - Added methods that provide the ability to create token with custom expiration:
-      - `CommunicationIdentityClient.getToken(GetTokenOptions getTokenOptions)`
-      - `CommunicationIdentityAsyncClient.getToken(GetTokenOptions getTokenOptions)`
-      - `CommunicationIdentityClient.getTokenWithResponse(GetTokenOptions getTokenOptions, Context context)`
-      - `CommunicationIdentityAsyncClient.getTokenWithResponse(GetTokenOptions getTokenOptions)`
+        - `CommunicationIdentityClient.getToken(GetTokenOptions getTokenOptions)`
+        - `CommunicationIdentityAsyncClient.getToken(GetTokenOptions getTokenOptions)`
+        - `CommunicationIdentityClient.getTokenWithResponse(GetTokenOptions getTokenOptions, Context context)`
+        - `CommunicationIdentityAsyncClient.getTokenWithResponse(GetTokenOptions getTokenOptions)`
     - Added a new API version `CommunicationIdentityServiceVersion.V2022_10_01` that is now the default API version.
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added support to build a custom Teams endpoint using Microsoft 365 Teams identities:
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.0 (2022-07-21)
+
+### Features Added
+- Added support to integrate communication as Teams user with Azure Communication Services:
     - Added `getTokenForTeamsUser(GetTokenForTeamsUserOptions options)` method that provides the ability to exchange an Azure AD access token of a Teams user for a Communication Identity access token to `CommunicationIdentityClient`.
 - Removed `CommunicationIdentityServiceVersion.V2021_10_31_PREVIEW`.
 - Added a new API version `CommunicationIdentityServiceVersion.V2022_06_01` that is now the default API version.

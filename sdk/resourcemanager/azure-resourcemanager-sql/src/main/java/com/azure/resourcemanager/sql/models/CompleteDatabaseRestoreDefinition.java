@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the information necessary to perform a complete database restore operation. */
 @Fluent
 public final class CompleteDatabaseRestoreDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CompleteDatabaseRestoreDefinition.class);
-
     /*
      * The last backup name to apply
      */
@@ -47,10 +44,12 @@ public final class CompleteDatabaseRestoreDefinition {
      */
     public void validate() {
         if (lastBackupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastBackupName in model CompleteDatabaseRestoreDefinition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CompleteDatabaseRestoreDefinition.class);
 }

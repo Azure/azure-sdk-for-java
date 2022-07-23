@@ -13,6 +13,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Fail;
@@ -29,7 +30,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosItemIdEncodingTest extends TestSuiteBase {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().configure(
+        JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(),
+        true
+    );
+
     private CosmosClient client;
     private CosmosContainer container;
 
@@ -56,6 +61,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     public void plainVanillaId() {
         TestScenario scenario = new TestScenario(
             "PlainVanillaId",
+            "Test" + UUID.randomUUID(),
+            new TestScenarioExpectations(
+                ConnectionMode.GATEWAY,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
+            new TestScenarioExpectations(
+                ConnectionMode.DIRECT,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT));
+
+        this.executeTestCase(scenario);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void containerIdWithUnicodeCharacter() {
+        TestScenario scenario = new TestScenario(
+            "ContainerIdWithUnicode鱀",
             "Test" + UUID.randomUUID(),
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
@@ -144,9 +170,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
                 HttpConstants.StatusCodes.CREATED,
@@ -165,9 +191,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
                 HttpConstants.StatusCodes.CREATED,
@@ -186,9 +212,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
                 HttpConstants.StatusCodes.CREATED,
@@ -252,9 +278,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
                 HttpConstants.StatusCodes.CREATED,
@@ -273,9 +299,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
                 HttpConstants.StatusCodes.CREATED,
@@ -358,9 +384,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.UNAUTHORIZED),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
                 HttpConstants.StatusCodes.CREATED,
@@ -375,19 +401,19 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     public void idWithCarriageReturn() {
         TestScenario scenario = new TestScenario(
             "IdWithCarriageReturn",
-            "With\\rCarriageReturn" + UUID.randomUUID(),
+            "With\rCarriageReturn" + UUID.randomUUID(),
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST),
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST));
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -396,19 +422,19 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     public void idWithTab() {
         TestScenario scenario = new TestScenario(
             "IdWithTab",
-            "With\\tTab" + UUID.randomUUID(),
+            "With\tTab" + UUID.randomUUID(),
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST),
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST));
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -417,19 +443,19 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     public void idWithLineFeed() {
         TestScenario scenario = new TestScenario(
             "IdWithLineFeed",
-            "With\\nLineFeed" + UUID.randomUUID(),
+            "With\nLineFeed" + UUID.randomUUID(),
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST),
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.BADREQUEST));
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -456,7 +482,11 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                     throwable);
             }
 
-            assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedCreateStatusCode);
+            logger.error(cosmosError.toString());
+
+            assertThat(cosmosError.getStatusCode())
+                .isEqualTo(expected.ExpectedCreateStatusCode);
+
             return;
         }
 
