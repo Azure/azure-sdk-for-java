@@ -81,6 +81,52 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
+    // Using this test to verify basic functionality - need to find a way to retrieve records through CFP
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void BasicFFCFPTest() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
+                .hostName(hostName)
+                .handleChanges((List<JsonNode> docs) -> {
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (JsonNode item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribe();
+                logger.info("STARTED CHANGEFEED PROCESSOR");
+
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                logger.info("Set up read feed documents");
+
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT) //FullFidelity Change Feed must have valid If-None-Match header
     public void getEstimatedLag() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -627,7 +673,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = 20 * TIMEOUT)
-    public void inactiveOwnersRecovery() throws InterruptedException { // Change feed token format is invalid
+    public void inactiveOwnersRecovery() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT_MAX);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
@@ -762,6 +808,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
         changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
+        // Added this validation for now to verify received list has something - easy way to see size not being 10
+        assertThat(receivedDocuments.size()).isEqualTo(FEED_COUNT);
+
         for (InternalObjectNode item : createdDocuments) {
             assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
         }
@@ -882,7 +931,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
-            docDefList.add(getDocumentDefinition());
+            InternalObjectNode item = getDocumentDefinition();
+            docDefList.add(item);
+            logger.info("Adding the following item to bulk list: {}", item);
         }
 
         createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
@@ -934,7 +985,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     private static synchronized void processItem(JsonNode item, Map<String, JsonNode> receivedDocuments) {
         log.info("RECEIVED {}", item.toPrettyString());
-        receivedDocuments.put(item.get("id").asText(), item);
+        receivedDocuments.put(item.get("current").get("id").asText(), item);
     }
 
     class LeaseStateMonitor {
