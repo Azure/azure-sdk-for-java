@@ -28,7 +28,13 @@ public final class PlayRequest {
      * Defines options for playing the audio.
      */
     @JsonProperty(value = "playOptions")
-    private PlayOptions playOptions;
+    private PlayOptionsInternal playOptions;
+
+    /*
+     * The value to identify context of the operation.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
 
     /**
      * Get the playSourceInfo property: The source of the audio to be played.
@@ -77,7 +83,7 @@ public final class PlayRequest {
      *
      * @return the playOptions value.
      */
-    public PlayOptions getPlayOptions() {
+    public PlayOptionsInternal getPlayOptions() {
         return this.playOptions;
     }
 
@@ -87,8 +93,28 @@ public final class PlayRequest {
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlayOptions(PlayOptions playOptions) {
+    public PlayRequest setPlayOptions(PlayOptionsInternal playOptions) {
         this.playOptions = playOptions;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the PlayRequest object itself.
+     */
+    public PlayRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

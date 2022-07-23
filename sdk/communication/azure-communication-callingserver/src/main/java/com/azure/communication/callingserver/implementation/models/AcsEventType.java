@@ -25,11 +25,11 @@ public final class AcsEventType extends ExpandableStringEnum<AcsEventType> {
     /** Static value callTransferFailed for AcsEventType. */
     public static final AcsEventType CALL_TRANSFER_FAILED = fromString("callTransferFailed");
 
-    /** Static value addParticipantSucceeded for AcsEventType. */
-    public static final AcsEventType ADD_PARTICIPANT_SUCCEEDED = fromString("addParticipantSucceeded");
+    /** Static value addParticipantsSucceeded for AcsEventType. */
+    public static final AcsEventType ADD_PARTICIPANTS_SUCCEEDED = fromString("addParticipantsSucceeded");
 
-    /** Static value addParticipantFailed for AcsEventType. */
-    public static final AcsEventType ADD_PARTICIPANT_FAILED = fromString("addParticipantFailed");
+    /** Static value addParticipantsFailed for AcsEventType. */
+    public static final AcsEventType ADD_PARTICIPANTS_FAILED = fromString("addParticipantsFailed");
 
     /** Static value participantsUpdated for AcsEventType. */
     public static final AcsEventType PARTICIPANTS_UPDATED = fromString("participantsUpdated");
