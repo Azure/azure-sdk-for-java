@@ -15,8 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
@@ -53,31 +52,35 @@ import java.util.function.Consumer;
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubBufferedProducerAsyncClient.class);
-    private final EventHubAsyncClient client;
+    private final EventHubProducerAsyncClient client;
     private final EventHubClientBuilder builder;
     private final BufferedProducerClientOptions clientOptions;
+    private final Mono<Void> initialisationMono;
 
     //  Key: partitionId.
-    private final HashMap<String, ConcurrentLinkedDeque<EventDataBatch>> partitionBatchMap = new HashMap<>();
-    private final Mono<Void> initialisationMono;
+    private final ConcurrentHashMap<String, EventHubBufferedPartitionProducer> partitionProducers =
+        new ConcurrentHashMap<>();
 
     EventHubBufferedProducerAsyncClient(EventHubClientBuilder builder, BufferedProducerClientOptions clientOptions) {
         this.builder = builder;
-        this.client = builder.buildAsyncClient();
+        this.client = builder.buildAsyncProducerClient();
         this.clientOptions = clientOptions;
 
-        initialisationMono = Mono.using(
+        this.initialisationMono = Mono.using(
             () -> builder.buildAsyncClient(),
-            eventHubClient -> eventHubClient.getPartitionIds()
-                .handle((partitionId, sink) -> {
-                    try {
-                        partitionBatchMap.put(partitionId, new ConcurrentLinkedDeque<>());
-                        sink.complete();
-                    } catch (Exception e) {
-                        sink.error(e);
-                    }
-                }).then(),
-            eventHubClient -> eventHubClient.close());
+            eventHubClient -> {
+                return eventHubClient.getPartitionIds()
+                    .handle((partitionId, sink) -> {
+                        try {
+                            partitionProducers.put(partitionId, new EventHubBufferedPartitionProducer(client,
+                                partitionId, clientOptions));
+                            sink.complete();
+                        } catch (Exception e) {
+                            sink.error(e);
+                        }
+                    }).then();
+            },
+            eventHubClient -> eventHubClient.close()).cache();
     }
 
     /**
@@ -106,7 +109,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return client.getProperties();
+        return client.getEventHubProperties();
     }
 
     /**
@@ -141,7 +144,10 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *     partitions.
      */
     public int getBufferedEventCount() {
-        return 0;
+        return partitionProducers.values()
+            .parallelStream()
+            .mapToInt(producer -> producer.getBufferedEventCount())
+            .sum();
     }
 
     /**
@@ -152,7 +158,9 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @return The number of events that are buffered and waiting to be published for a given partition.
      */
     public int getBufferedEventCount(String partitionId) {
-        return 0;
+        final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
+
+        return producer != null ? producer.getBufferedEventCount() : 0;
     }
 
     /**
@@ -255,7 +263,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         private boolean enableIdempotentRetries = false;
         private int maxConcurrentSendsPerPartition = 1;
 
-        private int maxPendingEventCount = 1500;
+        private int maxEventBufferLengthPerPartition = 1500;
         private Duration maxWaitTime;
         private Consumer<SendBatchFailedContext> sendFailedContext;
         private Consumer<SendBatchSucceededContext> sendSucceededContext;
@@ -285,12 +293,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             this.maxConcurrentSendsPerPartition = maxConcurrentSendsPerPartition;
         }
 
-        int getMaxPendingEventCount() {
-            return maxPendingEventCount;
+        int getMaxEventBufferLengthPerPartition() {
+            return maxEventBufferLengthPerPartition;
         }
 
-        void setMaxPendingEventCount(int maxPendingEventCount) {
-            this.maxPendingEventCount = maxPendingEventCount;
+        void maxEventBufferLengthPerPartition(int maxPendingEventCount) {
+            this.maxEventBufferLengthPerPartition = maxPendingEventCount;
         }
 
         Duration getMaxWaitTime() {

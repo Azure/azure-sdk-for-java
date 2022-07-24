@@ -271,7 +271,7 @@ public final class EventHubBufferedProducerClientBuilder {
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
     public EventHubBufferedProducerClientBuilder maxEventBufferLengthPerPartition(int maxEventBufferLengthPerPartition) {
-        clientOptions.setMaxPendingEventCount(maxEventBufferLengthPerPartition);
+        clientOptions.maxEventBufferLengthPerPartition(maxEventBufferLengthPerPartition);
         return this;
     }
 
