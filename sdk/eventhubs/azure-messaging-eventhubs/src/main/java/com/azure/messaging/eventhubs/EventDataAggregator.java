@@ -201,21 +201,20 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 publishDownstream();
                 return;
             } else if (eventData == null) {
+                // EventData will be null in the case when options.maxWaitTime() has elapsed  and we want to push the
+                // batch downstream.
                 return;
             }
 
             boolean added;
             synchronized (lock) {
                 added = currentBatch.tryAdd(eventData);
-            }
 
-            if (added) {
-                return;
-            }
+                if (added) {
+                    return;
+                }
 
-            publishDownstream();
-
-            synchronized (lock) {
+                publishDownstream();
                 added = currentBatch.tryAdd(eventData);
             }
 
