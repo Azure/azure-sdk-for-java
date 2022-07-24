@@ -162,8 +162,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         @Override
         public void onNext(EventData eventData) {
             updateOrPublishBatch(eventData, false);
+
             eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
 
+            // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
+            // that means we did not publish the EventDataBatch (ie. because it was not full). We request another
+            // EventData upstream to try and fill this EventDataBatch and push it downstream.
             final long left = REQUESTED.get(this);
             if (left > 0) {
                 subscription.request(1L);
@@ -255,7 +259,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                         }
                     });
 
-                    logger.verbose("Batch published. Requested batches left: {}", batchesLeft);
+                    logger.verbose(previous + ": Batch published. Requested batches left: {}", batchesLeft);
 
                     if (!isCompleted.get()) {
                         this.currentBatch = batchSupplier.get();
