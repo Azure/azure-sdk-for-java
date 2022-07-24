@@ -37,6 +37,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private final Supplier<EventDataBatch> batchSupplier;
     private final String namespace;
     private final BufferedProducerClientOptions options;
+    private final String partitionId;
 
     /**
      * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
@@ -44,9 +45,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
      * @param source the {@link Publisher} to decorate
      */
     EventDataAggregator(Flux<? extends EventData> source, Supplier<EventDataBatch> batchSupplier,
-        String namespace, BufferedProducerClientOptions options) {
+        String namespace, BufferedProducerClientOptions options, String partitionId) {
         super(source);
 
+        this.partitionId = partitionId;
         this.batchSupplier = batchSupplier;
         this.namespace = namespace;
         this.options = options;
@@ -61,7 +63,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     @Override
     public void subscribe(CoreSubscriber<? super EventDataBatch> actual) {
         final EventDataAggregatorMain subscription = new EventDataAggregatorMain(actual, namespace, options,
-            batchSupplier, LOGGER);
+            batchSupplier, partitionId, LOGGER);
 
         if (!downstreamSubscription.compareAndSet(null, subscription)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException(
@@ -89,6 +91,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         private final AtomicBoolean isCompleted = new AtomicBoolean(false);
         private final CoreSubscriber<? super EventDataBatch> downstream;
+
+        private final String partitionId;
         private final ClientLogger logger;
         private final Supplier<EventDataBatch> batchSupplier;
         private final String namespace;
@@ -98,9 +102,11 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private EventDataBatch currentBatch;
 
         EventDataAggregatorMain(CoreSubscriber<? super EventDataBatch> downstream, String namespace,
-            BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, ClientLogger logger) {
+            BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, String partitionId,
+            ClientLogger logger) {
             this.namespace = namespace;
             this.downstream = downstream;
+            this.partitionId = partitionId;
             this.logger = logger;
             this.batchSupplier = batchSupplier;
             this.currentBatch = batchSupplier.get();
@@ -166,7 +172,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
 
             // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
-            // that means we did not publish the EventDataBatch (ie. because it was not full). We request another
+            // that means we did not publish the EventDataBatch (i.e. because it was not full). We request another
             // EventData upstream to try and fill this EventDataBatch and push it downstream.
             final long left = REQUESTED.get(this);
             if (left > 0) {

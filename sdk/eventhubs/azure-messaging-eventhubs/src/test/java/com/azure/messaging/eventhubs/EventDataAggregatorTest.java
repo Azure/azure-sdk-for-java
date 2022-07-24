@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 
 public class EventDataAggregatorTest {
     private static final String NAMESPACE = "test.namespace";
+    private static final String PARTITION_ID = "test-id";
 
     private AutoCloseable mockCloseable;
 
@@ -92,7 +93,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         // Act & Assert
         StepVerifier.create(aggregator)
@@ -129,7 +130,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
         final IllegalArgumentException testException = new IllegalArgumentException("Test exception.");
 
         // Act & Assert
@@ -181,7 +182,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         // Act & Assert
         StepVerifier.create(aggregator)
@@ -230,7 +231,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         StepVerifier.create(aggregator)
             .then(() -> {
@@ -274,7 +275,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         final long request = 1L;
 
