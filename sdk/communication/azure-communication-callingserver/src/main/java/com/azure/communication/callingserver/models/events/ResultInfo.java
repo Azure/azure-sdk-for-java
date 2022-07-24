@@ -3,29 +3,35 @@
 
 package com.azure.communication.callingserver.models.events;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResultInfo model. */
-@Fluent
+@Immutable
 public final class ResultInfo {
     /*
      * The code property.
      */
     @JsonProperty(value = "code")
-    private Integer code;
+    private final Integer code;
 
     /*
      * The subCode property.
      */
     @JsonProperty(value = "subCode")
-    private Integer subCode;
+    private final Integer subCode;
 
     /*
      * The message property.
      */
     @JsonProperty(value = "message")
-    private String message;
+    private final String message;
+
+    private ResultInfo() {
+        code = null;
+        subCode = null;
+        message = null;
+    }
 
     /**
      * Get the code property: The code property.
@@ -34,17 +40,6 @@ public final class ResultInfo {
      */
     public Integer getCode() {
         return this.code;
-    }
-
-    /**
-     * Set the code property: The code property.
-     *
-     * @param code the code value to set.
-     * @return the ResultInfo object itself.
-     */
-    public ResultInfo setCode(Integer code) {
-        this.code = code;
-        return this;
     }
 
     /**
@@ -57,33 +52,11 @@ public final class ResultInfo {
     }
 
     /**
-     * Set the subCode property: The subCode property.
-     *
-     * @param subCode the subCode value to set.
-     * @return the ResultInfo object itself.
-     */
-    public ResultInfo setSubCode(Integer subCode) {
-        this.subCode = subCode;
-        return this;
-    }
-
-    /**
      * Get the message property: The message property.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: The message property.
-     *
-     * @param message the message value to set.
-     * @return the ResultInfo object itself.
-     */
-    public ResultInfo setMessage(String message) {
-        this.message = message;
-        return this;
     }
 }

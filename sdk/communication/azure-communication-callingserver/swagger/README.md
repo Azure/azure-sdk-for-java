@@ -117,6 +117,17 @@ directive:
 - rename-model:
     from: FileSource
     to: FileSourceInternal
+    
+# Remove models
+- remove-model: AcsEventType
+- remove-model: AddParticipantsFailedEvent
+- remove-model: AddParticipantsSucceededEvent
+- remove-model: CallConnectedEvent
+- remove-model: CallDisconnectedEvent
+- remove-model: CallTransferAcceptedEvent
+- remove-model: CallTransferFailedEvent
+- remove-model: ParticipantsUpdatedEvent
+- remove-model: ResultInfo
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

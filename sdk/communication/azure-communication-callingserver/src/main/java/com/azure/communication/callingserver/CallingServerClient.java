@@ -151,6 +151,16 @@ public final class CallingServerClient {
 
     //region Mid-call Actions
     /***
+     * Returns the singleton object of EventHandler.
+     *
+     * @return the instance of EventHandler.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventHandler getEventHandler() {
+        return EventHandler.getEventHandler();
+    }
+
+    /***
      * Returns an object of CallConnection
      *
      * @param callConnectionId the id of the call connection

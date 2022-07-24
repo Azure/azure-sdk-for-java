@@ -19,7 +19,7 @@ public final class GroupCallLocator extends CallLocator {
      *
      * @param groupCallId Specify the group call id.
      */
-    GroupCallLocator(String groupCallId) {
+    public GroupCallLocator(String groupCallId) {
         super(CallLocatorKind.GROUP_CALL_LOCATOR);
         this.groupCallId = groupCallId;
     }
