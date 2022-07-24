@@ -30,7 +30,7 @@ public class PartitionResolverTests {
     public static Stream<List<String>> partitionSetTestCases() {
         final ArrayList<List<String>> arguments = new ArrayList<>();
 
-        for (var index = 1; index < 8; ++index) {
+        for (int index = 1; index < 8; ++index) {
             final List<String> partitions = IntStream.range(0, index).mapToObj(String::valueOf)
                 .collect(Collectors.toList());
 
@@ -73,6 +73,11 @@ public class PartitionResolverTests {
         return arguments.stream();
     }
 
+    /**
+     * Tests that events are distributed equally given the set of partitions.
+     *
+     * @param partitionsList List of partitions to distribute all events between.
+     */
     @ParameterizedTest
     @MethodSource("partitionSetTestCases")
     public void distributesRoundRobinFairly(List<String> partitionsList) {
@@ -106,7 +111,7 @@ public class PartitionResolverTests {
 
         // Create a function that assigns partitions in a loop and track them.
         Mono<Void> roundRobin = Mono.fromRunnable(() -> {
-            for (var index = 0; index < iterationCount; index++) {
+            for (int index = 0; index < iterationCount; index++) {
                 assigned.add(resolver.assignRoundRobin(partitions));
             }
         });
@@ -148,6 +153,8 @@ public class PartitionResolverTests {
 
     /**
      * Verifies that the same partition key is assigned to the same partition id.
+     *
+     * @param partitionsList  List of partitions.
      */
     @ParameterizedTest
     @MethodSource("partitionSetTestCases")

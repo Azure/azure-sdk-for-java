@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Allows events to be resolved to partitions using common patterns such as round-robin assignment and hashing of
+ * Allows events to be resolved to a partition using common patterns such as round-robin assignment and hashing of
  * partitions keys.
  */
 class PartitionResolver {
@@ -93,24 +93,25 @@ class PartitionResolver {
      * This implementation is a direct port of the Event Hubs service code; it is intended to match the gateway hashing
      * algorithm as closely as possible and should not be adjusted without careful consideration.
      *
+     * NOTE: Suppressing fallthrough warning for switch-case because we want it to fall into the subsequent cases.
+     *
      * @param data The data to base the hash on.
      * @param seed1 Seed value for the first hash.
      * @param seed2 Seed value for the second hash.
      *
      * @return An object containing the computed hash for {@code seed1} and {@code seed2}.
      */
+    @SuppressWarnings("fallthrough")
     private static Hashed computeHash(byte[] data, int seed1, int seed2) {
-        int a;
-        int b;
-        int c;
-
-        a = b = c = (0xdeadbeef + data.length + seed1);
-        c += seed2;
+        int a = (0xdeadbeef + data.length + seed1);
+        int b = a;
+        int c = a + seed2;
 
         final ByteBuffer buffer = ByteBuffer.allocate(data.length)
-            .put(data)
-            .flip()
-            .order(ByteOrder.LITTLE_ENDIAN);
+            .put(data);
+
+        buffer.flip();
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         int index = 0;
         int size = data.length;
@@ -154,34 +155,50 @@ class PartitionResolver {
                 b += buffer.getInt(index + 4);
                 c += buffer.getInt(index + 8);
                 break;
+
+            // fallthrough
             case 11:
                 c += data[index + 10] << 16;
+            // fallthrough
             case 10:
                 c += data[index + 9] << 8;
+            // fallthrough
             case 9:
                 c += data[index + 8];
+            // fallthrough
             case 8:
                 b += buffer.getInt(index + 4);
                 a += buffer.getInt(index);
                 break;
+
+            // fallthrough
             case 7:
                 b += data[index + 6] << 16;
+            // fallthrough
             case 6:
                 b += data[index + 5] << 8;
+            // fallthrough
             case 5:
                 b += data[index + 4];
+            // fallthrough
             case 4:
                 a += buffer.getInt(index);
                 break;
+
+            // fallthrough
             case 3:
                 a += data[index + 2] << 16;
+            // fallthrough
             case 2:
                 a += data[index + 1] << 8;
+            // fallthrough
             case 1:
                 a += data[index];
                 break;
             case 0:
                 return new Hashed(c, b);
+            default:
+                break;
         }
 
         c ^= b;

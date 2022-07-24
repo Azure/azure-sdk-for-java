@@ -2751,4 +2751,11 @@
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
+  <Match>
+    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
+    <Method name="computeHash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
 </FindBugsFilter>
