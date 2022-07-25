@@ -55,47 +55,48 @@ class VertxAsyncHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        return Mono.create(sink ->
-            toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-                vertxHttpRequest.exceptionHandler(sink::error);
+        return Mono.create(sink -> toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
+            vertxHttpRequest.exceptionHandler(sink::error);
 
-                HttpHeaders requestHeaders = request.getHeaders();
-                if (requestHeaders != null) {
-                    requestHeaders.stream().forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                    if (request.getHeaders().get("Content-Length") == null) {
-                        vertxHttpRequest.setChunked(true);
-                    }
-                } else {
+            HttpHeaders requestHeaders = request.getHeaders();
+            if (requestHeaders != null) {
+                requestHeaders.stream().forEach(header ->
+                    vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+                if (request.getHeaders().get("Content-Length") == null) {
                     vertxHttpRequest.setChunked(true);
                 }
+            } else {
+                vertxHttpRequest.setChunked(true);
+            }
 
-                vertxHttpRequest.response(event -> {
-                    if (event.succeeded()) {
-                        HttpClientResponse vertxHttpResponse = event.result();
-                        vertxHttpResponse.exceptionHandler(sink::error);
+            vertxHttpRequest.response(event -> {
+                if (event.succeeded()) {
+                    HttpClientResponse vertxHttpResponse = event.result();
+                    vertxHttpResponse.exceptionHandler(sink::error);
 
-                        if (eagerlyReadResponse) {
-                            vertxHttpResponse.body(bodyEvent -> {
-                                if (bodyEvent.succeeded()) {
-                                    sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
-                                } else {
-                                    sink.error(bodyEvent.cause());
-                                }
-                            });
-                        } else {
-                            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
-                        }
+                    if (eagerlyReadResponse) {
+                        vertxHttpResponse.body(bodyEvent -> {
+                            if (bodyEvent.succeeded()) {
+                                sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
+                                    bodyEvent.result()));
+                            } else {
+                                sink.error(bodyEvent.cause());
+                            }
+                        });
                     } else {
-                        sink.error(event.cause());
+                        sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
                     }
-                });
+                } else {
+                    sink.error(event.cause());
+                }
+            });
 
-                getRequestBody(request, progressReporter)
-                    .subscribeOn(scheduler)
-                    .map(Unpooled::wrappedBuffer)
-                    .map(Buffer::buffer)
-                    .subscribe(vertxHttpRequest::write, sink::error, vertxHttpRequest::end);
-            }, sink::error));
+            getRequestBody(request, progressReporter)
+                .subscribeOn(scheduler)
+                .map(Unpooled::wrappedBuffer)
+                .map(Buffer::buffer)
+                .subscribe(vertxHttpRequest::write, sink::error, vertxHttpRequest::end);
+        }, sink::error));
     }
 
     private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {

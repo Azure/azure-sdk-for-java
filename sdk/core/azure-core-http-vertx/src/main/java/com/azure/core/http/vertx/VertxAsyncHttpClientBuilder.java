@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
@@ -37,15 +38,16 @@ public class VertxAsyncHttpClientBuilder {
     private static final long DEFAULT_CONNECT_TIMEOUT;
     private static final long DEFAULT_WRITE_TIMEOUT;
     private static final long DEFAULT_READ_TIMEOUT;
+    private static final AtomicReference<Vertx> DEFAULT_VERTX = new AtomicReference<>();
 
     static {
         Configuration configuration = Configuration.getGlobalConfiguration();
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-                PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-                Duration.ofSeconds(60), LOGGER).getSeconds();
+            Duration.ofSeconds(60), LOGGER).getSeconds();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-                Duration.ofSeconds(60), LOGGER).getSeconds();
+            Duration.ofSeconds(60), LOGGER).getSeconds();
     }
 
     private Duration readIdleTimeout;
@@ -123,8 +125,9 @@ public class VertxAsyncHttpClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the HTTP client.
      * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * The default configuration store is a clone of the
+     * {@link Configuration#getGlobalConfiguration() global configuration store}, use {@link Configuration#NONE} to
+     * bypass using configuration settings during construction.
      *
      * @param configuration The configuration store.
      * @return The updated VertxAsyncHttpClientBuilder object.
@@ -146,7 +149,8 @@ public class VertxAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets a custom {@link Vertx} instance that the constructed {@link io.vertx.core.http.HttpClient} will be created with.
+     * Sets a custom {@link Vertx} instance that the constructed {@link io.vertx.core.http.HttpClient} will be created
+     * with.
      *
      * @param vertx The vertx instance.
      * @return The updated VertxAsyncHttpClientBuilder object
@@ -157,16 +161,16 @@ public class VertxAsyncHttpClientBuilder {
     }
 
     /**
-     * Creates a new Vert.x {@link HttpClient} instance on every call, using the
-     * configuration set in the builder at the time of the build method call.
+     * Creates a new Vert.x {@link HttpClient} instance on every call, using the configuration set in the builder at the
+     * time of the build method call.
      *
      * @return A new Vert.x backed {@link HttpClient} instance.
      */
     public HttpClient build() {
         Vertx configuredVertx = this.vertx;
-        boolean shutdownHookRequired = false;
         if (configuredVertx == null) {
-            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class, VertxProvider.class.getClassLoader());
+            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
+                VertxProvider.class.getClassLoader());
             Iterator<VertxProvider> iterator = vertxProviders.iterator();
             if (iterator.hasNext()) {
                 VertxProvider provider = iterator.next();
@@ -179,8 +183,9 @@ public class VertxAsyncHttpClientBuilder {
                         ignoredProvider.getClass().getName());
                 }
             } else {
-                configuredVertx = Vertx.vertx();
-                shutdownHookRequired = true;
+                if (DEFAULT_VERTX.compareAndSet(null, configuredVertx = Vertx.vertx())) {
+                    Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable(configuredVertx)));
+                }
             }
         }
 
@@ -237,7 +242,8 @@ public class VertxAsyncHttpClientBuilder {
                         ProxyType proxyType = ProxyType.valueOf(type.name());
                         vertxProxyOptions.setType(proxyType);
                     } catch (IllegalArgumentException e) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown Vert.x proxy type: " + type.name(), e));
+                        throw LOGGER.logExceptionAsError(
+                            new IllegalArgumentException("Unknown Vert.x proxy type: " + type.name(), e));
                     }
                 }
 
@@ -250,10 +256,6 @@ public class VertxAsyncHttpClientBuilder {
 
                 this.httpClientOptions.setProxyOptions(vertxProxyOptions);
             }
-        }
-
-        if (shutdownHookRequired) {
-            Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable(configuredVertx)));
         }
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(this.httpClientOptions);
