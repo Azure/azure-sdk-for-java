@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.implementation;
 
-import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.mysql.cj.conf.PropertySet;
-
 import java.util.Map;
 import java.util.Properties;
 

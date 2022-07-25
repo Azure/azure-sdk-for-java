@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -81,7 +80,7 @@ public class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, Envir
 
             JdbcConnectionString connectionString = new JdbcConnectionString(url);
             DatabaseType databaseType = connectionString.getDatabaseType();
-            if (!isDatabasePluginEnabled(databaseType)) {
+            if (!DatabaseType.isDatabasePluginEnabled(databaseType)) {
                 LOGGER.info("The jdbc plugin with provided jdbc schema is not on the classpath , skip JDBCPropertiesBeanPostProcessor");
             }
 
@@ -111,26 +110,4 @@ public class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, Envir
         this.environment = environment;
     }
 
-    private boolean isDatabasePluginEnabled(DatabaseType databaseType){
-        if (DatabaseType.POSTGRESQL.equals(databaseType)) {
-            return isPostgresqlPluginEnabled();
-        }else if (DatabaseType.MYSQL.equals(databaseType)){
-            return isMySqlPluginEnabled();
-        }
-        return false;
-    }
-
-    private boolean isPostgresqlPluginEnabled() {
-        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql.AzureIdentityPostgresqlAuthenticationPlugin")
-            && isOnClasspath("org.postgresql.Driver");
-    }
-
-    private boolean isMySqlPluginEnabled() {
-        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql.AzureIdentityMysqlAuthenticationPlugin")
-            && isOnClasspath("com.mysql.cj.jdbc.Driver");
-    }
-
-    private boolean isOnClasspath(String className) {
-        return ClassUtils.isPresent(className, null);
-    }
 }

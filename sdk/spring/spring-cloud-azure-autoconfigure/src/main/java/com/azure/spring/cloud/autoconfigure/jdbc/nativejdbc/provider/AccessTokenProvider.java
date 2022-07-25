@@ -1,6 +1,12 @@
 package com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.provider;
 
 
-interface AccessTokenProvider<T> {
-    T getAccessToken();
+import com.azure.core.credential.AccessToken;
+
+/**
+ * Interface to be implemented by classes that wish to provide accessToken
+ */
+interface AccessTokenProvider {
+
+    AccessToken getAccessToken();
 }

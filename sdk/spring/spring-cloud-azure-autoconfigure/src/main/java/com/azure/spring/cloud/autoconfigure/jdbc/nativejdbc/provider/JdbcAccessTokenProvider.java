@@ -7,9 +7,9 @@ import com.azure.core.credential.TokenRequestContext;
 import java.time.Duration;
 import java.util.ArrayList;
 
-public class JdbcAccessTokenProvider implements AccessTokenProvider<AccessToken> {
+public class JdbcAccessTokenProvider implements AccessTokenProvider {
 
-   //@TODO this is  public cloud specific, do we plan to support national clouds
+   //@TODO
     private String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
     private TokenCredential tokenCredential;

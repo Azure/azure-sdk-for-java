@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import org.springframework.util.ClassUtils;
+
 /**
  * The type of database URL.
  *
@@ -50,5 +52,28 @@ public enum DatabaseType {
 
     public String getQueryDelimiter() {
         return queryDelimiter;
+    }
+
+    public static boolean isDatabasePluginEnabled(DatabaseType databaseType){
+        if (DatabaseType.POSTGRESQL.equals(databaseType)) {
+            return isPostgresqlPluginEnabled();
+        }else if (DatabaseType.MYSQL.equals(databaseType)){
+            return isMySqlPluginEnabled();
+        }
+        return false;
+    }
+
+    private static boolean isPostgresqlPluginEnabled() {
+        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql.AzureIdentityPostgresqlAuthenticationPlugin")
+            && isOnClasspath("org.postgresql.Driver");
+    }
+
+    private static boolean isMySqlPluginEnabled() {
+        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql.AzureIdentityMysqlAuthenticationPlugin")
+            && isOnClasspath("com.mysql.cj.jdbc.Driver");
+    }
+
+    private static boolean isOnClasspath(String className) {
+        return ClassUtils.isPresent(className, null);
     }
 }

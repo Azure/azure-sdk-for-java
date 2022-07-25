@@ -15,44 +15,40 @@ import java.util.Optional;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.NONE_VALUE;
 
 
-public class JdbcConnectionString {
+class JdbcConnectionString {
 
     static final String INVALID_CONNECTION_STRING_FORMAT = "Invalid connection string: %s";
     static final String INVALID_PROPERTY_PAIR_FORMAT = "Connection string has invalid key value pair: %s";
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
     private static final String TOKEN_VALUE_SEPARATOR = "=";
-    private final String str;
+    private final String jdbcURL;
     private final Map<String, String> properties = new HashMap<>();
     private DatabaseType databaseType = null;
 
-    JdbcConnectionString(String str) {
-        this.str = str;
+    JdbcConnectionString(String jdbcURL) {
+        this.jdbcURL = jdbcURL;
         resolveSegments();
     }
 
     private void resolveSegments() {
-        if (!StringUtils.hasText(this.str)) {
+        if (!StringUtils.hasText(this.jdbcURL)) {
             LOGGER.warn("'connectionString' doesn't have text.");
-            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.str));
+            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.jdbcURL));
         }
 
         Optional<DatabaseType> optionalDatabaseType = Arrays.stream(DatabaseType.values())
-            .filter(databaseType -> this.str.startsWith(databaseType.getSchema()))
-            .findAny();
+                                                            .filter(databaseType -> this.jdbcURL.startsWith(databaseType.getSchema()))
+                                                            .findAny();
 
-        if (optionalDatabaseType.isPresent()) {
-            this.databaseType = optionalDatabaseType.get();
-        } else {
-            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.str));
-        }
+            this.databaseType = optionalDatabaseType.orElseThrow(() -> new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.jdbcURL)));
 
-        int pathQueryDelimiterIndex = this.str.indexOf(this.databaseType.getPathQueryDelimiter());
+        int pathQueryDelimiterIndex = this.jdbcURL.indexOf(this.databaseType.getPathQueryDelimiter());
 
         if (pathQueryDelimiterIndex < 0) {
             return;
         }
 
-        String hostInfo = this.str.substring(databaseType.getSchema().length() + 3, pathQueryDelimiterIndex);
+        String hostInfo = this.jdbcURL.substring(databaseType.getSchema().length() + 3, pathQueryDelimiterIndex);
         String[] hostInfoArray = hostInfo.split(":");
         if (hostInfoArray.length == 2) {
             this.properties.put("servername", hostInfoArray[0]);
@@ -61,7 +57,7 @@ public class JdbcConnectionString {
             this.properties.put("port", hostInfo);
         }
 
-        String properties = this.str.substring(pathQueryDelimiterIndex + 1);
+        String properties = this.jdbcURL.substring(pathQueryDelimiterIndex + 1);
 
         final String[] tokenValuePairs = properties.split(this.databaseType.getQueryDelimiter());
 
@@ -81,11 +77,11 @@ public class JdbcConnectionString {
 
     String enhanceConnectionString(Map<String, String> enhancedProperties) {
         if (enhancedProperties == null || enhancedProperties.isEmpty()) {
-            return this.str;
+            return this.jdbcURL;
         }
         LOGGER.debug("Trying to enhance url for {}", databaseType);
 
-        StringBuilder builder = new StringBuilder(this.str);
+        StringBuilder builder = new StringBuilder(this.jdbcURL);
 
         if (!this.hasProperties()) {
             builder.append(databaseType.getPathQueryDelimiter());
