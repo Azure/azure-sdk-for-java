@@ -93,7 +93,6 @@ parameters:
   type: boolean
   default: false
 
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -160,7 +159,7 @@ extends:
         groupId: com.azure
         safeName: azurejsongson
         releaseInBatch: ${{ parameters.release_azurejsongson }}
-      - name: azure-json
+      - name: azure-xml
         groupId: com.azure
         safeName: azurexml
         releaseInBatch: ${{ parameters.release_azurexml }}

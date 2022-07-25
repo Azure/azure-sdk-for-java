@@ -8,6 +8,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
@@ -29,7 +31,8 @@ public final class DefaultXmlWriter extends XmlWriter {
      */
     public static XmlWriter fromOutputStream(OutputStream outputStream) {
         try {
-            return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(outputStream));
+            return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
+                new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)));
         } catch (XMLStreamException ex) {
             throw new RuntimeException(ex);
         }
