@@ -1445,5 +1445,28 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>external-dependency-version-overrides</id>
+      <activation>
+        <property>
+          <name>AZURE_VERSION_OVERRIDE_TESTS</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>repository.spring.milestone</id>
+          <name>Spring Milestone Repository</name>
+          <url>https://repo.spring.io/milestone</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
   </profiles>
 </project>

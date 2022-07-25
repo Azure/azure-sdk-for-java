@@ -45,19 +45,6 @@
     </repository>
 
     <repository>
-      <id>repository.spring.milestone</id>
-      <name>Spring Milestone Repository</name>
-      <url>https://repo.spring.io/milestone</url>
-
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-
-    <repository>
       <id>azure-sdk-for-java</id>
       <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
       <releases>

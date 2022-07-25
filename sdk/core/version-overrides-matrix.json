@@ -12,6 +12,7 @@
         "jackson_2.12",
         "reactor_3.5"
     ],
+    "AZURE_VERSION_OVERRIDE_TESTS": true,
     "TestFromSource": true
   }
 }

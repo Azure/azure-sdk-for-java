@@ -32,6 +32,7 @@
 import argparse
 from datetime import timedelta
 import errno
+import json
 import os
 import re
 import sys
@@ -210,21 +211,21 @@ def load_version_map_from_file(the_file, version_map):
             version_map[module.name] = module
 
 def load_version_overrides(the_file, version_map, overrides_name):
-    overrides_name_found = False
     with open(the_file) as f:
-        for raw_line in f:
-            stripped_line = raw_line.strip()
-            if not stripped_line or stripped_line.startswith('#'):
-                continue
-            if stripped_line.startswith('-'):
-                if overrides_name_found:
-                    return
-                elif stripped_line == "- " + overrides_name:
-                    overrides_name_found = True
-                    continue
-            if overrides_name_found:
-                module = CodeModule(stripped_line)
+        data = json.load(f)
+        if overrides_name not in data:
+            raise ValueError('Version override name: {0} is not found in {1}'.format(overrides_name, the_file))
+
+        overrides = data[overrides_name]
+        for override in overrides:
+            if len(override) != 1:
+                raise ValueError('Expected exactly one module, but got: {0}'.format(override))
+
+            for module_name in override:
+                module_str = module_name + ";" + override[module_name]
+                module = CodeModule(module_str)
                 version_map[module.name] = module
+                break
 
 def display_version_info(version_map):
     for value in version_map.values():
@@ -247,8 +248,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
         load_version_map_from_file(dependency_file, ext_dep_map)
 
     if version_overrides:
-        load_version_overrides("eng/versioning/alternative_versions.yml", version_map, version_overrides)
-        load_version_overrides("eng/versioning/alternative_versions.yml", ext_dep_map, version_overrides)
+        load_version_overrides("eng/versioning/alternative_external_dependency_versions.json", ext_dep_map, version_overrides)
 
     display_version_info(version_map)
     display_version_info(ext_dep_map)
