@@ -3426,7 +3426,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -4694,7 +4694,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
