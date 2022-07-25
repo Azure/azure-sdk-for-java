@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
   <packaging>jar</packaging>
-  <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+  <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
 
   <name>Microsoft Azure Netty HTTP Client Library</name>
   <description>This package contains the Netty HTTP client plugin for azure-core.</description>
@@ -52,6 +52,9 @@
       --add-opens com.azure.http.netty/com.azure.core.http.netty.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <boring-ssl-classifier></boring-ssl-classifier>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
   </properties>
 
   <developers>
@@ -65,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -129,20 +132,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -209,17 +212,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:deprecation</arg>
-          </compilerArgs>
         </configuration>
       </plugin>
     </plugins>

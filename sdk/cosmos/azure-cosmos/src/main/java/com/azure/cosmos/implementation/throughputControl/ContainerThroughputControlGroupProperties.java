@@ -43,7 +43,7 @@ public class ContainerThroughputControlGroupProperties {
 
         if (group.isDefault()) {
             if (!this.defaultGroup.compareAndSet(null, group)) {
-                if (!this.defaultGroup.get().equals(group)) {
+                if (!this.defaultGroup.get().hasSameIdentity(group)) {
                     throw new IllegalArgumentException("A default group already exists");
                 }
             }

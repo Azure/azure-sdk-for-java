@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -21,16 +22,12 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
-import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
 import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
-import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -1140,7 +1137,7 @@ public final class QueueAsyncClient {
     }
 
     private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
-        MessagesDequeueResponse response) {
+        ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>> response) {
         List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
         if (queueMessageInternalItems == null) {
             queueMessageInternalItems = Collections.emptyList();
@@ -1301,7 +1298,7 @@ public final class QueueAsyncClient {
     }
 
     private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
-        MessagesPeekResponse response) {
+        ResponseBase<MessagesPeekHeaders, List<PeekedMessageItemInternal>> response) {
         List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue();
         if (peekedMessageInternalItems == null) {
             peekedMessageInternalItems = Collections.emptyList();
@@ -1644,7 +1641,8 @@ public final class QueueAsyncClient {
      * @param response Service response
      * @return Mapped response
      */
-    private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
+    private Response<QueueProperties> getQueuePropertiesResponse(
+        ResponseBase<QueuesGetPropertiesHeaders, Void> response) {
         QueuesGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
         QueueProperties properties = new QueueProperties(propertiesHeaders.getXMsMeta(),
             propertiesHeaders.getXMsApproximateMessagesCount());
@@ -1656,7 +1654,8 @@ public final class QueueAsyncClient {
      * @param response Service response
      * @return Mapped response
      */
-    private Response<UpdateMessageResult> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
+    private Response<UpdateMessageResult> getUpdatedMessageResponse(
+        ResponseBase<MessageIdsUpdateHeaders, Void> response) {
         MessageIdsUpdateHeaders headers = response.getDeserializedHeaders();
         UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getXMsPopreceipt(),
             headers.getXMsTimeNextVisible());

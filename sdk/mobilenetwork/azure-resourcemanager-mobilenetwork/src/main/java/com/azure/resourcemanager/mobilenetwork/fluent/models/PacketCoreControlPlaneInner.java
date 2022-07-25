@@ -8,10 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
-import com.azure.resourcemanager.mobilenetwork.models.CustomLocationResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
+import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -24,6 +27,13 @@ public final class PacketCoreControlPlaneInner extends Resource {
      */
     @JsonProperty(value = "properties", required = true)
     private PacketCoreControlPlanePropertiesFormat innerProperties = new PacketCoreControlPlanePropertiesFormat();
+
+    /*
+     * The identity used to retrieve the ingress certificate from Azure key
+     * vault.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy
@@ -39,6 +49,26 @@ public final class PacketCoreControlPlaneInner extends Resource {
      */
     private PacketCoreControlPlanePropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity used to retrieve the ingress certificate from Azure key vault.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity used to retrieve the ingress certificate from Azure key vault.
+     *
+     * @param identity the identity value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -74,7 +104,7 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network that this packet core control plane belongs to.
+     * Get the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
      *
      * @return the mobileNetwork value.
      */
@@ -83,7 +113,7 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network that this packet core control plane belongs to.
+     * Set the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
      *
      * @param mobileNetwork the mobileNetwork value to set.
      * @return the PacketCoreControlPlaneInner object itself.
@@ -97,30 +127,30 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the customLocation property: Azure ARC custom location where the packet core is deployed.
+     * Get the platform property: The platform where the packet core is deployed.
      *
-     * @return the customLocation value.
+     * @return the platform value.
      */
-    public CustomLocationResourceId customLocation() {
-        return this.innerProperties() == null ? null : this.innerProperties().customLocation();
+    public PlatformConfiguration platform() {
+        return this.innerProperties() == null ? null : this.innerProperties().platform();
     }
 
     /**
-     * Set the customLocation property: Azure ARC custom location where the packet core is deployed.
+     * Set the platform property: The platform where the packet core is deployed.
      *
-     * @param customLocation the customLocation value to set.
+     * @param platform the platform value to set.
      * @return the PacketCoreControlPlaneInner object itself.
      */
-    public PacketCoreControlPlaneInner withCustomLocation(CustomLocationResourceId customLocation) {
+    public PacketCoreControlPlaneInner withPlatform(PlatformConfiguration platform) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
         }
-        this.innerProperties().withCustomLocation(customLocation);
+        this.innerProperties().withPlatform(platform);
         return this;
     }
 
     /**
-     * Get the coreNetworkTechnology property: The core network technology generation.
+     * Get the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G core).
      *
      * @return the coreNetworkTechnology value.
      */
@@ -129,7 +159,7 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Set the coreNetworkTechnology property: The core network technology generation.
+     * Set the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G core).
      *
      * @param coreNetworkTechnology the coreNetworkTechnology value to set.
      * @return the PacketCoreControlPlaneInner object itself.
@@ -166,8 +196,8 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. In 5G networks
-     * this is called as N2 interface whereas in 4G networks this is called as S1-MME interface.
+     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
      * @return the controlPlaneAccessInterface value.
      */
@@ -176,8 +206,8 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. In 5G networks
-     * this is called as N2 interface whereas in 4G networks this is called as S1-MME interface.
+     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
      * @param controlPlaneAccessInterface the controlPlaneAccessInterface value to set.
      * @return the PacketCoreControlPlaneInner object itself.
@@ -188,6 +218,82 @@ public final class PacketCoreControlPlaneInner extends Resource {
             this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
         }
         this.innerProperties().withControlPlaneAccessInterface(controlPlaneAccessInterface);
+        return this;
+    }
+
+    /**
+     * Get the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
+     * deployment.
+     *
+     * @return the sku value.
+     */
+    public BillingSku sku() {
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
+    }
+
+    /**
+     * Set the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
+     * deployment.
+     *
+     * @param sku the sku value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withSku(BillingSku sku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withSku(sku);
+        return this;
+    }
+
+    /**
+     * Get the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to packet core
+     * diagnostics over local APIs.
+     *
+     * @return the localDiagnosticsAccess value.
+     */
+    public LocalDiagnosticsAccessConfiguration localDiagnosticsAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().localDiagnosticsAccess();
+    }
+
+    /**
+     * Set the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to packet core
+     * diagnostics over local APIs.
+     *
+     * @param localDiagnosticsAccess the localDiagnosticsAccess value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withLocalDiagnosticsAccess(
+        LocalDiagnosticsAccessConfiguration localDiagnosticsAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withLocalDiagnosticsAccess(localDiagnosticsAccess);
+        return this;
+    }
+
+    /**
+     * Get the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
+     * UEs.
+     *
+     * @return the interopSettings value.
+     */
+    public Object interopSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().interopSettings();
+    }
+
+    /**
+     * Set the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
+     * UEs.
+     *
+     * @param interopSettings the interopSettings value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withInteropSettings(Object interopSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withInteropSettings(interopSettings);
         return this;
     }
 
@@ -204,6 +310,9 @@ public final class PacketCoreControlPlaneInner extends Resource {
                         "Missing required property innerProperties in model PacketCoreControlPlaneInner"));
         } else {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 

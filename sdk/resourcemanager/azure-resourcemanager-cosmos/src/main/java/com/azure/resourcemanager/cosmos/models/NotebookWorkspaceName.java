@@ -24,7 +24,11 @@ public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWo
         return fromString(name, NotebookWorkspaceName.class);
     }
 
-    /** @return known NotebookWorkspaceName values. */
+    /**
+     * Gets known NotebookWorkspaceName values.
+     *
+     * @return known NotebookWorkspaceName values.
+     */
     public static Collection<NotebookWorkspaceName> values() {
         return values(NotebookWorkspaceName.class);
     }

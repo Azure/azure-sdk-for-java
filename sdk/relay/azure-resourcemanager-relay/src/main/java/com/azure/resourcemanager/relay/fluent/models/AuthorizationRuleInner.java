@@ -5,25 +5,29 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Description of a namespace authorization rule. */
-@JsonFlatten
 @Fluent
-public class AuthorizationRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationRuleInner.class);
-
+public final class AuthorizationRuleInner extends ProxyResource {
     /*
-     * The rights associated with the rule.
+     * Authorization rule properties.
      */
-    @JsonProperty(value = "properties.rights", required = true)
-    private List<AccessRights> rights;
+    @JsonProperty(value = "properties", required = true)
+    private AuthorizationRuleProperties innerProperties = new AuthorizationRuleProperties();
+
+    /**
+     * Get the innerProperties property: Authorization rule properties.
+     *
+     * @return the innerProperties value.
+     */
+    private AuthorizationRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the rights property: The rights associated with the rule.
@@ -31,7 +35,7 @@ public class AuthorizationRuleInner extends ProxyResource {
      * @return the rights value.
      */
     public List<AccessRights> rights() {
-        return this.rights;
+        return this.innerProperties() == null ? null : this.innerProperties().rights();
     }
 
     /**
@@ -41,7 +45,10 @@ public class AuthorizationRuleInner extends ProxyResource {
      * @return the AuthorizationRuleInner object itself.
      */
     public AuthorizationRuleInner withRights(List<AccessRights> rights) {
-        this.rights = rights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationRuleProperties();
+        }
+        this.innerProperties().withRights(rights);
         return this;
     }
 
@@ -51,10 +58,15 @@ public class AuthorizationRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rights() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rights in model AuthorizationRuleInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model AuthorizationRuleInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationRuleInner.class);
 }

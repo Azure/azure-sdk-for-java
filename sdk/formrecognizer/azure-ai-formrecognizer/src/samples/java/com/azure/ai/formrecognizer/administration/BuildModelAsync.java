@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -42,14 +42,14 @@ public class BuildModelAsync {
 
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<DocumentOperationResult, DocumentModel> buildModelPoller =
+        PollerFlux<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
             client.beginBuildModel(trainingFilesUrl,
                 DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("my custom model desc"));
 
-        Mono<DocumentModel> customFormModelResult = buildModelPoller
+        Mono<DocumentModelInfo> customFormModelResult = buildModelPoller
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {

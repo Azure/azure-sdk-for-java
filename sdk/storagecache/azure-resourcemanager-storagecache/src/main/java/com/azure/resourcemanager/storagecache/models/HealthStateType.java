@@ -37,6 +37,15 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
     /** Static value Flushing for HealthStateType. */
     public static final HealthStateType FLUSHING = fromString("Flushing");
 
+    /** Static value WaitingForKey for HealthStateType. */
+    public static final HealthStateType WAITING_FOR_KEY = fromString("WaitingForKey");
+
+    /** Static value StartFailed for HealthStateType. */
+    public static final HealthStateType START_FAILED = fromString("StartFailed");
+
+    /** Static value UpgradeFailed for HealthStateType. */
+    public static final HealthStateType UPGRADE_FAILED = fromString("UpgradeFailed");
+
     /**
      * Creates or finds a HealthStateType from its string representation.
      *
@@ -48,7 +57,11 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
         return fromString(name, HealthStateType.class);
     }
 
-    /** @return known HealthStateType values. */
+    /**
+     * Gets known HealthStateType values.
+     *
+     * @return known HealthStateType values.
+     */
     public static Collection<HealthStateType> values() {
         return values(HealthStateType.class);
     }

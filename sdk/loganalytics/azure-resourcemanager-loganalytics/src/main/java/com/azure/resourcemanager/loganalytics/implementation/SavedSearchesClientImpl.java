@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.SavedSearchesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchesListResultInner;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SavedSearchesClient. */
 public final class SavedSearchesClientImpl implements SavedSearchesClient {
-    private final ClientLogger logger = new ClientLogger(SavedSearchesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SavedSearchesService service;
 
@@ -131,7 +128,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -158,6 +155,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -168,7 +166,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             resourceGroupName,
                             workspaceName,
                             savedSearchId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -183,7 +181,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -210,6 +208,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -218,7 +217,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 resourceGroupName,
                 workspaceName,
                 savedSearchId,
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -231,12 +230,12 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, savedSearchId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -264,7 +263,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -282,7 +281,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
+     * @return value object for saved search results along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(
@@ -314,6 +314,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -325,7 +326,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             resourceGroupName,
                             workspaceName,
                             savedSearchId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -343,7 +344,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
+     * @return value object for saved search results along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> createOrUpdateWithResponseAsync(
@@ -379,6 +381,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -388,7 +391,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 resourceGroupName,
                 workspaceName,
                 savedSearchId,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -404,20 +407,13 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
+     * @return value object for saved search results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SavedSearchInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, parameters)
-            .flatMap(
-                (Response<SavedSearchInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -449,7 +445,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
+     * @return value object for saved search results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SavedSearchInner> createOrUpdateWithResponse(
@@ -471,7 +467,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
+     * @return the specified saved search for a given workspace along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> getWithResponseAsync(
@@ -498,6 +495,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -509,7 +507,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             resourceGroupName,
                             workspaceName,
                             savedSearchId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -525,7 +523,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
+     * @return the specified saved search for a given workspace along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchInner>> getWithResponseAsync(
@@ -552,6 +551,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -561,7 +561,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 resourceGroupName,
                 workspaceName,
                 savedSearchId,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -575,19 +575,12 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
+     * @return the specified saved search for a given workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SavedSearchInner> getAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, savedSearchId)
-            .flatMap(
-                (Response<SavedSearchInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -616,7 +609,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
+     * @return the specified saved search for a given workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SavedSearchInner> getWithResponse(
@@ -632,7 +625,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
+     * @return the saved searches for a given Log Analytics Workspace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(
@@ -656,6 +650,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -665,7 +660,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -681,7 +676,8 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
+     * @return the saved searches for a given Log Analytics Workspace along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SavedSearchesListResultInner>> listByWorkspaceWithResponseAsync(
@@ -705,6 +701,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -712,7 +709,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -726,19 +723,12 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
+     * @return the saved searches for a given Log Analytics Workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SavedSearchesListResultInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
         return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<SavedSearchesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -765,7 +755,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
+     * @return the saved searches for a given Log Analytics Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(

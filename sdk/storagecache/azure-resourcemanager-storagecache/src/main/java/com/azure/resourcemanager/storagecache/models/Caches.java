@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import java.util.List;
 
 /** Resource collection API of Caches. */
 public interface Caches {
@@ -208,6 +209,165 @@ public interface Caches {
     void stop(String resourceGroupName, String cacheName, Context context);
 
     /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingjob Object containing the definition of a priming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob);
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob(String resourceGroupName, String cacheName);
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingjob Object containing the definition of a priming job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob, Context context);
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob(String resourceGroupName, String cacheName);
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob(
+        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob(String resourceGroupName, String cacheName);
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob(
+        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId);
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob(String resourceGroupName, String cacheName);
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob(
+        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
+
+    /**
      * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
      *
      * @param resourceGroupName Target resource group.
@@ -231,6 +391,50 @@ public interface Caches {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void upgradeFirmware(String resourceGroupName, String cacheName, Context context);
+
+    /**
+     * Update cache space allocation.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param spaceAllocation List containing storage target cache space percentage allocations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void spaceAllocation(
+        String resourceGroupName, String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation);
+
+    /**
+     * Update cache space allocation.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void spaceAllocation(String resourceGroupName, String cacheName);
+
+    /**
+     * Update cache space allocation.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param spaceAllocation List containing storage target cache space percentage allocations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void spaceAllocation(
+        String resourceGroupName,
+        String cacheName,
+        List<StorageTargetSpaceAllocation> spaceAllocation,
+        Context context);
 
     /**
      * Returns a Cache.

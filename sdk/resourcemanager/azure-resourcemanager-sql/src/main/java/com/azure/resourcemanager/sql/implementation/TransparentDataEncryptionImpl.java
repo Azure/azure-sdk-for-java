@@ -85,7 +85,7 @@ class TransparentDataEncryptionImpl
                     this.sqlServerName,
                     this.databaseName(),
                     TransparentDataEncryptionName.CURRENT,
-                    transparentDataEncryptionState,
+                    new TransparentDataEncryptionInner().withStatus(transparentDataEncryptionState),
                     Context.NONE)
                 .getValue();
         this.setInner(transparentDataEncryptionInner);
@@ -106,7 +106,7 @@ class TransparentDataEncryptionImpl
                 self.sqlServerName,
                 self.databaseName(),
                 TransparentDataEncryptionName.CURRENT,
-                transparentDataEncryptionState)
+                new TransparentDataEncryptionInner().withStatus(transparentDataEncryptionState))
             .map(
                 transparentDataEncryptionInner -> {
                     self.setInner(transparentDataEncryptionInner);

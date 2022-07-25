@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableDatabaseAccountGetResultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the restorable database accounts and their properties. */
 @Immutable
 public final class RestorableDatabaseAccountsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDatabaseAccountsListResult.class);
-
     /*
      * List of restorable database accounts and their properties.
      */

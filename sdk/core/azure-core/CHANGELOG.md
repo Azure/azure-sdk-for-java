@@ -1,5 +1,17 @@
 # Release History
 
+## 1.31.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`.
+
+### Other Changes
+
 ## 1.30.0 (2022-06-30)
 
 ### Features Added

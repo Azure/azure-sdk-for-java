@@ -18,6 +18,7 @@ $resultsTime = [diagnostics.stopwatch]::StartNew()
 $script:FoundError = $false
 $librariesToRelease = @{}
 $missingLibraries = @{}
+$mavenPublished = @{}
 
 Write-Host "ServiceDirectory=$($ServiceDirectory)"
 Write-Host "ArtifactsList:"
@@ -66,6 +67,7 @@ if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
                 {
                     $artifactId = $dependencyNode.artifactId
                     $groupId = $dependencyNode.groupId
+                    $version = $dependencyNode.version
                     $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
 
                     $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
@@ -81,11 +83,25 @@ if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
                         {
                             $libraryToVerify = "$($groupId):$($artifactId)"
                             if (!$librariesToRelease.ContainsKey($libraryToVerify)) {
-                                if (!$missingLibraries.ContainsKey($libraryToVerify)) {
-                                    $missingLibraries[$libraryToVerify] = $true
+                                # Only check whether or not the library's version has been published if
+                                # it hasn't already been checked
+                                $releasedLibToVerify = "$($libraryToVerify):$($version)"
+                                Write-Host "$releasedLibToVerify is a current dependency of $($inputGroupId):$($inputArtifactId) and is not on the release list, checking if $version has been published."
+                                if (!$mavenPublished.ContainsKey($releasedLibToVerify)) {
+                                    $released = IsMavenPackageVersionPublished -pkgId $artifactId -pkgVersion $version -groupId $groupId
+                                    $mavenPublished.Add($releasedLibToVerify, $released)
                                 }
-                                $script:FoundError = $true
-                                LogError "Error: $($pomFile) contains a current dependency, groupId=$($groupId), artifactId=$($artifactId), which is not the list of libraries to be released."
+                                # If the current dependency isn't on the command line to be released and the version
+                                # isn't published on Maven, then report an error
+                                if (!$mavenPublished[$releasedLibToVerify]) {
+                                    if (!$missingLibraries.ContainsKey($libraryToVerify)) {
+                                        $missingLibraries[$libraryToVerify] = $true
+                                    }
+                                    $script:FoundError = $true
+                                    LogError "Error: $($pomFile) contains a current dependency, groupId=$($groupId), artifactId=$($artifactId), version=$($version), which is not the list of libraries to be released or already published on Maven."
+                                } else {
+                                    Write-Host "$releasedLibToVerify exists on Maven."
+                                }
                             }
                         }
                     }
@@ -102,7 +118,7 @@ if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
     Write-Host "Elapsed Time=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
     if ($script:FoundError) {
         if ($missingLibraries.Count -gt 0) {
-            LogError "The following library or libraries are dependencies of one or more of libaries to be released but not on the release list:"
+            LogError "The following library or libraries are dependencies of one or more of libaries to be released but not on the release list or publised to Maven:"
             foreach ($missingLibrary in $missingLibraries.Keys) {
                 LogError $missingLibrary
             }

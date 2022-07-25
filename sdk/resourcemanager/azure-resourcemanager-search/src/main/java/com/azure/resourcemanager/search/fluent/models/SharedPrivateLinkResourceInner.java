@@ -6,16 +6,12 @@ package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a Shared Private Link Resource managed by the Azure Cognitive Search service. */
 @Fluent
 public final class SharedPrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceInner.class);
-
     /*
      * Describes the properties of a Shared Private Link Resource managed by
      * the Azure Cognitive Search service.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedManagedDatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of restorable dropped managed databases. */
 @Immutable
 public final class RestorableDroppedManagedDatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedManagedDatabaseListResult.class);
-
     /*
      * Array of results.
      */

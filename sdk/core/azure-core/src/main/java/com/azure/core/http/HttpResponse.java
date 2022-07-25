@@ -7,14 +7,19 @@ import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -131,6 +136,35 @@ public abstract class HttpResponse implements Closeable {
      */
     public HttpResponse buffer() {
         return new BufferedHttpResponse(this);
+    }
+
+    /**
+     * Transfers body bytes to the {@link AsynchronousByteChannel}.
+     * @param channel The destination {@link AsynchronousByteChannel}.
+     * @return A {@link Mono} that completes when transfer is completed.
+     * @throws NullPointerException When {@code channel} is null.
+     */
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+        Objects.requireNonNull(channel, "'channel' must not be null");
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            return FluxUtil.writeToAsynchronousByteChannel(body, channel);
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    /**
+     * Transfers body bytes to the {@link WritableByteChannel}.
+     * @param channel The destination {@link WritableByteChannel}.
+     * @throws IOException When I/O operation fails.
+     * @throws NullPointerException When {@code channel} is null.
+     */
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            FluxUtil.writeToWritableByteChannel(body, channel).block();
+        }
     }
 
     /**

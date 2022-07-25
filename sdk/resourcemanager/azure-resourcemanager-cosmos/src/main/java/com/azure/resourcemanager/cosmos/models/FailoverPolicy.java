@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The failover policy for a given region of a database account. */
 @Fluent
 public final class FailoverPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverPolicy.class);
-
     /*
      * The unique identifier of the region in which the database account
      * replicates to. Example: &lt;accountName&gt;-&lt;locationName&gt;.

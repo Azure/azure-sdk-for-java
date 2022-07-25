@@ -40,6 +40,7 @@
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
@@ -76,7 +77,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

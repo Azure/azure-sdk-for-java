@@ -84,7 +84,7 @@ class EncryptorV2 extends Encryptor {
             UploadUtils.chunkSource(plainTextFlux,
                     new com.azure.storage.common.ParallelTransferOptions()
                         .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH))
-                .flatMapSequential(stagingArea::write)
+                .flatMapSequential(stagingArea::write, 1, 1)
                 .concatWith(Flux.defer(stagingArea::flush))
                 .index()
                 .flatMapSequential(tuple -> {

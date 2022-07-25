@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlResources ListSqlContainers. */
 public final class SqlResourcesListSqlContainersSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlContainerList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlContainerList.json
      */
     /**
      * Sample code: CosmosDBSqlContainerList.
