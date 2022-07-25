@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
@@ -38,7 +37,6 @@ public class VertxAsyncHttpClientBuilder {
     private static final long DEFAULT_CONNECT_TIMEOUT;
     private static final long DEFAULT_WRITE_TIMEOUT;
     private static final long DEFAULT_READ_TIMEOUT;
-    private static final AtomicReference<Vertx> DEFAULT_VERTX = new AtomicReference<>();
 
     static {
         Configuration configuration = Configuration.getGlobalConfiguration();
@@ -183,9 +181,7 @@ public class VertxAsyncHttpClientBuilder {
                         ignoredProvider.getClass().getName());
                 }
             } else {
-                if (DEFAULT_VERTX.compareAndSet(null, configuredVertx = Vertx.vertx())) {
-                    Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable(configuredVertx)));
-                }
+                configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
             }
         }
 
@@ -280,13 +276,29 @@ public class VertxAsyncHttpClientBuilder {
         return NON_PROXY_HOSTS_SPLIT.split(desanitzedNonProxyHosts);
     }
 
+    // Enum Singleton Pattern
+    private enum DefaultVertx {
+        DEFAULT_VERTX(Vertx.vertx());
+
+        private final Vertx vertx;
+
+        DefaultVertx(Vertx vertx) {
+            this.vertx = vertx;
+            Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable(vertx)));
+        }
+
+        private Vertx getVertx() {
+            return vertx;
+        }
+    }
+
     /**
      * Gets a {@link Runnable} to close the embedded {@link Vertx} instance on shutdown.
      *
      * @param vertxToClose The {@link Vertx} instance to close on shutdown
      * @return The {@link Runnable} action to close the embedded {@link Vertx} instance
      */
-    private Runnable getVertxCloseRunnable(Vertx vertxToClose) {
+    private static Runnable getVertxCloseRunnable(Vertx vertxToClose) {
         return () -> {
             CountDownLatch latch = new CountDownLatch(1);
             if (vertxToClose != null) {
