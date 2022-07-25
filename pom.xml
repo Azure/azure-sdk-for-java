@@ -58,6 +58,8 @@
         <module>sdk/core/azure-core-serializer-json-jackson</module>
         <module>sdk/core/azure-core-test</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
+        <module>sdk/core/azure-json</module>
+        <module>sdk/core/azure-json-gson</module>
 
         <!-- Cosmos -->
 <!--        <module>sdk/cosmos/azure-cosmos</module>-->
@@ -102,6 +104,9 @@
         <!-- Azure Monitor -->
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
 
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
@@ -223,6 +228,8 @@
         <module>sdk/core/azure-core-serializer-json-jackson</module>
         <module>sdk/core/azure-core-test</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
+        <module>sdk/core/azure-json</module>
+        <module>sdk/core/azure-json-gson</module>
 
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>
@@ -267,6 +274,9 @@
         <!-- Azure Monitor -->
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
 
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
@@ -423,6 +433,14 @@
                     <packages>com.azure.core.tracing.opentelemetry*</packages>
                   </group>
                   <group>
+                    <title>Azure JSON</title>
+                    <packages>com.azure.json*</packages>
+                  </group>
+                  <group>
+                    <title>Azure JSON - GSON</title>
+                    <packages>com.azure.json.gson*</packages>
+                  </group>
+                  <group>
                     <title>Azure Anomaly Detector</title>
                     <packages>com.azure.ai.anomalydetector*</packages>
                   </group>
@@ -477,6 +495,10 @@
                   <group>
                     <title>Azure Security Attestation</title>
                     <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Personalizer</title>
+                    <packages>com.azure.ai.personalizer*</packages>
                   </group>
                   <group>
                     <title>Azure Purview Catalog</title>
@@ -903,6 +925,7 @@
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/extendedlocation</module>
+        <module>sdk/fluidrelay</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -948,6 +971,7 @@
         <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
+        <module>sdk/personalizer</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>

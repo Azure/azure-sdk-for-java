@@ -73,6 +73,13 @@ public interface MobileNetworkManagementClient {
     SitesClient getSites();
 
     /**
+     * Gets the SimGroupsClient object to access its operations.
+     *
+     * @return the SimGroupsClient object.
+     */
+    SimGroupsClient getSimGroups();
+
+    /**
      * Gets the SimsClient object to access its operations.
      *
      * @return the SimsClient object.
@@ -92,6 +99,13 @@ public interface MobileNetworkManagementClient {
      * @return the PacketCoreControlPlanesClient object.
      */
     PacketCoreControlPlanesClient getPacketCoreControlPlanes();
+
+    /**
+     * Gets the PacketCoreControlPlaneVersionsClient object to access its operations.
+     *
+     * @return the PacketCoreControlPlaneVersionsClient object.
+     */
+    PacketCoreControlPlaneVersionsClient getPacketCoreControlPlaneVersions();
 
     /**
      * Gets the PacketCoreDataPlanesClient object to access its operations.

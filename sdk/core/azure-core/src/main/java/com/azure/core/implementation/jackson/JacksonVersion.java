@@ -11,13 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
  * Provides information about Jackson package versions used, detects and logs errors.
  */
 final class JacksonVersion {
-    private SemanticVersion annotationsVersion;
-    private SemanticVersion coreVersion;
-    private SemanticVersion databindVersion;
-    private SemanticVersion xmlVersion;
-    private SemanticVersion jsr310Version;
+    private final SemanticVersion coreVersion;
+    private final SemanticVersion databindVersion;
+    private final SemanticVersion xmlVersion;
+    private final SemanticVersion jsr310Version;
 
-    private static final String ANNOTATIONS_PACKAGE_NAME = "jackson-annotations";
     private static final String CORE_PACKAGE_NAME = "jackson-core";
     private static final String DATABIND_PACKAGE_NAME = "jackson-databind";
     private static final String XML_PACKAGE_NAME = "jackson-dataformat-xml";
@@ -41,12 +39,14 @@ final class JacksonVersion {
     private final String helpString;
 
     private JacksonVersion() {
-        annotationsVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.annotation.JsonProperty");
-        coreVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.core.JsonGenerator");
-        databindVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
-        xmlVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.dataformat.xml.XmlMapper");
-        jsr310Version = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
-        checkVersion(annotationsVersion, ANNOTATIONS_PACKAGE_NAME);
+        coreVersion = SemanticVersion.parse(
+            new com.fasterxml.jackson.core.json.PackageVersion().version().toString());
+        databindVersion = SemanticVersion.parse(
+            new com.fasterxml.jackson.databind.cfg.PackageVersion().version().toString());
+        xmlVersion = SemanticVersion.parse(
+            new com.fasterxml.jackson.dataformat.xml.PackageVersion().version().toString());
+        jsr310Version = SemanticVersion.parse(
+            new com.fasterxml.jackson.datatype.jsr310.PackageVersion().version().toString());
         checkVersion(coreVersion, CORE_PACKAGE_NAME);
         checkVersion(databindVersion, DATABIND_PACKAGE_NAME);
         checkVersion(xmlVersion, XML_PACKAGE_NAME);
@@ -85,7 +85,8 @@ final class JacksonVersion {
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {
-            LOGGER.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`), please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
+            LOGGER.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`)"
+                + ", please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
         }
 
         if (version.getMajorVersion() > MAX_SUPPORTED_MAJOR_VERSION) {
@@ -100,34 +101,12 @@ final class JacksonVersion {
      * Generates help information with versions detected in runtime.
      */
     private String formatHelpString() {
-        // TODO(limolkova): add  link to troubleshooting docs
-        return new StringBuilder()
-            .append("Package versions: ")
-            .append(ANNOTATIONS_PACKAGE_NAME)
-            .append("=")
-            .append(annotationsVersion.getVersionString())
-            .append(", ")
-            .append(CORE_PACKAGE_NAME)
-            .append("=")
-            .append(coreVersion.getVersionString())
-            .append(", ")
-            .append(DATABIND_PACKAGE_NAME)
-            .append("=")
-            .append(databindVersion.getVersionString())
-            .append(", ")
-            .append(XML_PACKAGE_NAME)
-            .append("=")
-            .append(xmlVersion.getVersionString())
-            .append(", ")
-            .append(JSR310_PACKAGE_NAME)
-            .append("=")
-            .append(jsr310Version.getVersionString())
-            .append(", ")
-            .append("azure-core=")
-            .append(AZURE_CORE_VERSION)
-            .append(", ")
-            .append("Troubleshooting version conflicts: ")
-            .append(TROUBLESHOOTING_DOCS_LINK)
-            .toString();
+        return "Package versions: "
+            + CORE_PACKAGE_NAME + "=" + coreVersion.getVersionString() + ", "
+            + DATABIND_PACKAGE_NAME + "=" + databindVersion.getVersionString() + ", "
+            + XML_PACKAGE_NAME + "=" + xmlVersion.getVersionString() + ", "
+            + JSR310_PACKAGE_NAME + "=" + jsr310Version.getVersionString() + ", "
+            + "azure-core=" + AZURE_CORE_VERSION + ", "
+            + "Troubleshooting version conflicts: " + TROUBLESHOOTING_DOCS_LINK;
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The platform properties against which the run has to happen. */
 @Fluent
 public final class PlatformProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlatformProperties.class);
-
     /*
      * The operating system type required for the run.
      */
@@ -99,9 +96,11 @@ public final class PlatformProperties {
      */
     public void validate() {
         if (os() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property os in model PlatformProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PlatformProperties.class);
 }

@@ -4,49 +4,27 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a database service objective. */
-@JsonFlatten
-@Immutable
-public class ServiceObjectiveInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceObjectiveInner.class);
-
+@Fluent
+public final class ServiceObjectiveInner extends ProxyResource {
     /*
-     * The name for the service objective.
+     * Represents the properties of the resource.
      */
-    @JsonProperty(value = "properties.serviceObjectiveName", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceObjectiveName;
+    @JsonProperty(value = "properties")
+    private ServiceObjectiveProperties innerProperties;
 
-    /*
-     * Gets whether the service level objective is the default service
-     * objective.
+    /**
+     * Get the innerProperties property: Represents the properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.isDefault", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isDefault;
-
-    /*
-     * Gets whether the service level objective is a system service objective.
-     */
-    @JsonProperty(value = "properties.isSystem", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isSystem;
-
-    /*
-     * The description for the service level objective.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Gets whether the service level objective is enabled.
-     */
-    @JsonProperty(value = "properties.enabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean enabled;
+    private ServiceObjectiveProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the serviceObjectiveName property: The name for the service objective.
@@ -54,7 +32,7 @@ public class ServiceObjectiveInner extends ProxyResource {
      * @return the serviceObjectiveName value.
      */
     public String serviceObjectiveName() {
-        return this.serviceObjectiveName;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceObjectiveName();
     }
 
     /**
@@ -63,7 +41,7 @@ public class ServiceObjectiveInner extends ProxyResource {
      * @return the isDefault value.
      */
     public Boolean isDefault() {
-        return this.isDefault;
+        return this.innerProperties() == null ? null : this.innerProperties().isDefault();
     }
 
     /**
@@ -72,7 +50,7 @@ public class ServiceObjectiveInner extends ProxyResource {
      * @return the isSystem value.
      */
     public Boolean isSystem() {
-        return this.isSystem;
+        return this.innerProperties() == null ? null : this.innerProperties().isSystem();
     }
 
     /**
@@ -81,7 +59,7 @@ public class ServiceObjectiveInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -90,7 +68,7 @@ public class ServiceObjectiveInner extends ProxyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -99,5 +77,8 @@ public class ServiceObjectiveInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

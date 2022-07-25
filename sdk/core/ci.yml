@@ -39,7 +39,7 @@ parameters:
 - name: release_azurecoreamqpexperimental
   displayName: 'azure-core-amqp-experimental'
   type: boolean
-  default: true
+  default: false
 - name: release_azurecoreexperimental
   displayName: 'azure-core-experimental'
   type: boolean
@@ -47,7 +47,7 @@ parameters:
 - name: release_azurecorehttpjdkhttpclient
   displayName: 'azure-core-http-jdk-httpclient'
   type: boolean
-  default: true
+  default: false
 - name: release_azurecorehttpnetty
   displayName: 'azure-core-http-netty'
   type: boolean
@@ -80,6 +80,14 @@ parameters:
   displayName: 'azure-core-tracing-opentelemetry'
   type: boolean
   default: true
+- name: release_azurejson
+  displayName: 'azure-json'
+  type: boolean
+  default: false
+- name: release_azurejsongson
+  displayName: 'azure-json-gson'
+  type: boolean
+  default: false
 
 
 extends:
@@ -140,5 +148,13 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
+      - name: azure-json
+        groupId: com.azure
+        safeName: azurejson
+        releaseInBatch: ${{ parameters.release_azurejson }}
+      - name: azure-json-gson
+        groupId: com.azure
+        safeName: azurejsongson
+        releaseInBatch: ${{ parameters.release_azurejsongson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

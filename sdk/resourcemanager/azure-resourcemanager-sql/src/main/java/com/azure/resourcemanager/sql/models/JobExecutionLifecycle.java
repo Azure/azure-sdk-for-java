@@ -52,7 +52,11 @@ public final class JobExecutionLifecycle extends ExpandableStringEnum<JobExecuti
         return fromString(name, JobExecutionLifecycle.class);
     }
 
-    /** @return known JobExecutionLifecycle values. */
+    /**
+     * Gets known JobExecutionLifecycle values.
+     *
+     * @return known JobExecutionLifecycle values.
+     */
     public static Collection<JobExecutionLifecycle> values() {
         return values(JobExecutionLifecycle.class);
     }

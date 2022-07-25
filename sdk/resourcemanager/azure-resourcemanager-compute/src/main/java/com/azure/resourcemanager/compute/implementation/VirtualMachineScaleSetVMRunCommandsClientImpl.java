@@ -1312,7 +1312,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
     public Mono<VirtualMachineRunCommandInner> getAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineRunCommandInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1332,7 +1339,14 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineRunCommandInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

@@ -2,13 +2,17 @@
 
 ## 2.17.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Property `protectedSettings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `settings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `communityGalleryInfo` in `SharingProfile` changed from `Object` to `CommunityGalleryInfo`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-04-04`.
 
 ## 2.16.0 (2022-06-24)
 

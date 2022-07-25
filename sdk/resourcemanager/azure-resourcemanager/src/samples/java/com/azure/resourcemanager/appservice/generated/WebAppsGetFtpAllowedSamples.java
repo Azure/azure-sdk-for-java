@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps GetFtpAllowed. */
 public final class WebAppsGetFtpAllowedSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetPublishingCredentialsPolicy.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetPublishingCredentialsPolicy.json
      */
     /**
      * Sample code: Get FTP Allowed.

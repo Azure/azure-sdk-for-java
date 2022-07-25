@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.fluent.models.WcfRelayInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the list WCF relay operation. */
 @Fluent
 public final class WcfRelaysListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WcfRelaysListResult.class);
-
     /*
      * Result of the list WCF relay operation.
      */

@@ -30,6 +30,15 @@ import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
 import com.azure.resourcemanager.appservice.fluent.TopLevelDomainsClient;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsRequestHistoriesClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionScopeRepetitionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowRunsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowTriggerHistoriesClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowTriggersClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowVersionsClient;
+import com.azure.resourcemanager.appservice.fluent.WorkflowsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -360,6 +369,114 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.webApps;
     }
 
+    /** The WorkflowsClient object to access its operations. */
+    private final WorkflowsClient workflows;
+
+    /**
+     * Gets the WorkflowsClient object to access its operations.
+     *
+     * @return the WorkflowsClient object.
+     */
+    public WorkflowsClient getWorkflows() {
+        return this.workflows;
+    }
+
+    /** The WorkflowRunsClient object to access its operations. */
+    private final WorkflowRunsClient workflowRuns;
+
+    /**
+     * Gets the WorkflowRunsClient object to access its operations.
+     *
+     * @return the WorkflowRunsClient object.
+     */
+    public WorkflowRunsClient getWorkflowRuns() {
+        return this.workflowRuns;
+    }
+
+    /** The WorkflowRunActionsClient object to access its operations. */
+    private final WorkflowRunActionsClient workflowRunActions;
+
+    /**
+     * Gets the WorkflowRunActionsClient object to access its operations.
+     *
+     * @return the WorkflowRunActionsClient object.
+     */
+    public WorkflowRunActionsClient getWorkflowRunActions() {
+        return this.workflowRunActions;
+    }
+
+    /** The WorkflowRunActionRepetitionsClient object to access its operations. */
+    private final WorkflowRunActionRepetitionsClient workflowRunActionRepetitions;
+
+    /**
+     * Gets the WorkflowRunActionRepetitionsClient object to access its operations.
+     *
+     * @return the WorkflowRunActionRepetitionsClient object.
+     */
+    public WorkflowRunActionRepetitionsClient getWorkflowRunActionRepetitions() {
+        return this.workflowRunActionRepetitions;
+    }
+
+    /** The WorkflowRunActionRepetitionsRequestHistoriesClient object to access its operations. */
+    private final WorkflowRunActionRepetitionsRequestHistoriesClient workflowRunActionRepetitionsRequestHistories;
+
+    /**
+     * Gets the WorkflowRunActionRepetitionsRequestHistoriesClient object to access its operations.
+     *
+     * @return the WorkflowRunActionRepetitionsRequestHistoriesClient object.
+     */
+    public WorkflowRunActionRepetitionsRequestHistoriesClient getWorkflowRunActionRepetitionsRequestHistories() {
+        return this.workflowRunActionRepetitionsRequestHistories;
+    }
+
+    /** The WorkflowRunActionScopeRepetitionsClient object to access its operations. */
+    private final WorkflowRunActionScopeRepetitionsClient workflowRunActionScopeRepetitions;
+
+    /**
+     * Gets the WorkflowRunActionScopeRepetitionsClient object to access its operations.
+     *
+     * @return the WorkflowRunActionScopeRepetitionsClient object.
+     */
+    public WorkflowRunActionScopeRepetitionsClient getWorkflowRunActionScopeRepetitions() {
+        return this.workflowRunActionScopeRepetitions;
+    }
+
+    /** The WorkflowTriggersClient object to access its operations. */
+    private final WorkflowTriggersClient workflowTriggers;
+
+    /**
+     * Gets the WorkflowTriggersClient object to access its operations.
+     *
+     * @return the WorkflowTriggersClient object.
+     */
+    public WorkflowTriggersClient getWorkflowTriggers() {
+        return this.workflowTriggers;
+    }
+
+    /** The WorkflowTriggerHistoriesClient object to access its operations. */
+    private final WorkflowTriggerHistoriesClient workflowTriggerHistories;
+
+    /**
+     * Gets the WorkflowTriggerHistoriesClient object to access its operations.
+     *
+     * @return the WorkflowTriggerHistoriesClient object.
+     */
+    public WorkflowTriggerHistoriesClient getWorkflowTriggerHistories() {
+        return this.workflowTriggerHistories;
+    }
+
+    /** The WorkflowVersionsClient object to access its operations. */
+    private final WorkflowVersionsClient workflowVersions;
+
+    /**
+     * Gets the WorkflowVersionsClient object to access its operations.
+     *
+     * @return the WorkflowVersionsClient object.
+     */
+    public WorkflowVersionsClient getWorkflowVersions() {
+        return this.workflowVersions;
+    }
+
     /**
      * Initializes an instance of WebSiteManagementClient client.
      *
@@ -384,7 +501,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2022-03-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
         this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);
@@ -406,5 +523,15 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.staticSites = new StaticSitesClientImpl(this);
         this.webApps = new WebAppsClientImpl(this);
+        this.workflows = new WorkflowsClientImpl(this);
+        this.workflowRuns = new WorkflowRunsClientImpl(this);
+        this.workflowRunActions = new WorkflowRunActionsClientImpl(this);
+        this.workflowRunActionRepetitions = new WorkflowRunActionRepetitionsClientImpl(this);
+        this.workflowRunActionRepetitionsRequestHistories =
+            new WorkflowRunActionRepetitionsRequestHistoriesClientImpl(this);
+        this.workflowRunActionScopeRepetitions = new WorkflowRunActionScopeRepetitionsClientImpl(this);
+        this.workflowTriggers = new WorkflowTriggersClientImpl(this);
+        this.workflowTriggerHistories = new WorkflowTriggerHistoriesClientImpl(this);
+        this.workflowVersions = new WorkflowVersionsClientImpl(this);
     }
 }

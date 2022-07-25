@@ -9,11 +9,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.ServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for Services API service call. */
+/** Response for services API service call. */
 @Fluent
 public final class ServiceListResult {
     /*
-     * A list of Services.
+     * A list of services.
      */
     @JsonProperty(value = "value")
     private List<ServiceInner> value;
@@ -25,7 +25,7 @@ public final class ServiceListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of Services.
+     * Get the value property: A list of services.
      *
      * @return the value value.
      */
@@ -34,7 +34,7 @@ public final class ServiceListResult {
     }
 
     /**
-     * Set the value property: A list of Services.
+     * Set the value property: A list of services.
      *
      * @param value the value value to set.
      * @return the ServiceListResult object itself.

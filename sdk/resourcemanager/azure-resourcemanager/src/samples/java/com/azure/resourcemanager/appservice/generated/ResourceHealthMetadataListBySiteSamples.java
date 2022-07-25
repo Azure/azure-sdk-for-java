@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceHealthMetadata ListBySite. */
 public final class ResourceHealthMetadataListBySiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListResourceHealthMetadataBySite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListResourceHealthMetadataBySite.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a site.

@@ -88,7 +88,11 @@ public class ParallelDocumentQueryExecutionContext<T>
                 queryInfo.getRewrittenQuery(),
                 initParams.getCorrelatedActivityId(),
                 queryInfo.hasSelectValue() &&
-                    !(queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasDCount()));
+                    !(queryInfo.hasOrderBy()
+                        || queryInfo.hasAggregates()
+                        || queryInfo.hasGroupBy()
+                        || queryInfo.hasDCount()
+                        || queryInfo.hasDistinct()));
         context.setTop(initParams.getTop());
 
         try {

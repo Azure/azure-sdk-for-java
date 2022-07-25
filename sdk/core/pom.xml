@@ -10,22 +10,24 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
-      <module>azure-core</module>
-      <module>azure-core-amqp</module>
-      <module>azure-core-amqp-experimental</module>
-      <module>azure-core-experimental</module>
-      <module>azure-core-http-jdk-httpclient</module>
-      <module>azure-core-http-netty</module>
-      <module>azure-core-http-okhttp</module>
-      <module>azure-core-http-vertx</module>
-      <module>azure-core-management</module>
-      <module>azure-core-perf</module>
-        <module>azure-core-serializer-avro-apache</module>
-        <module>azure-core-serializer-json-gson</module>
-        <module>azure-core-serializer-json-jackson</module>
-        <module>azure-core-test</module>
-        <module>azure-core-tracing-opentelemetry</module>
-        <module>azure-core-metrics-opentelemetry</module>
-        <module>azure-core-jackson-tests</module>
-      </modules>
+    <module>azure-core</module>
+    <module>azure-core-amqp</module>
+    <module>azure-core-amqp-experimental</module>
+    <module>azure-core-experimental</module>
+    <module>azure-core-http-jdk-httpclient</module>
+    <module>azure-core-http-netty</module>
+    <module>azure-core-http-okhttp</module>
+    <module>azure-core-http-vertx</module>
+    <module>azure-core-management</module>
+    <module>azure-core-metrics-opentelemetry</module>
+    <module>azure-core-perf</module>
+    <module>azure-core-serializer-avro-apache</module>
+    <module>azure-core-serializer-json-gson</module>
+    <module>azure-core-serializer-json-jackson</module>
+    <module>azure-core-test</module>
+    <module>azure-core-tracing-opentelemetry</module>
+    <module>azure-core-jackson-tests</module>
+    <module>azure-json</module>
+    <module>azure-json-gson</module>
+  </modules>
 </project>

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.containerregistry.fluent.models.TaskPropertiesUpdateParameters;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters for updating a task. */
-@JsonFlatten
 @Fluent
-public class TaskUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskUpdateParameters.class);
-
+public final class TaskUpdateParameters {
     /*
      * Identity for the resource.
      */
@@ -24,53 +20,17 @@ public class TaskUpdateParameters {
     private IdentityProperties identity;
 
     /*
+     * The properties for updating a task.
+     */
+    @JsonProperty(value = "properties")
+    private TaskPropertiesUpdateParameters innerProperties;
+
+    /*
      * The ARM resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * The current status of task.
-     */
-    @JsonProperty(value = "properties.status")
-    private TaskStatus status;
-
-    /*
-     * The platform properties against which the run has to happen.
-     */
-    @JsonProperty(value = "properties.platform")
-    private PlatformUpdateParameters platform;
-
-    /*
-     * The machine configuration of the run agent.
-     */
-    @JsonProperty(value = "properties.agentConfiguration")
-    private AgentProperties agentConfiguration;
-
-    /*
-     * Run timeout in seconds.
-     */
-    @JsonProperty(value = "properties.timeout")
-    private Integer timeout;
-
-    /*
-     * The properties for updating a task step.
-     */
-    @JsonProperty(value = "properties.step")
-    private TaskStepUpdateParameters step;
-
-    /*
-     * The properties for updating trigger properties.
-     */
-    @JsonProperty(value = "properties.trigger")
-    private TriggerUpdateParameters trigger;
-
-    /*
-     * The parameters that describes a set of credentials that will be used
-     * when this run is invoked.
-     */
-    @JsonProperty(value = "properties.credentials")
-    private Credentials credentials;
 
     /**
      * Get the identity property: Identity for the resource.
@@ -90,6 +50,15 @@ public class TaskUpdateParameters {
     public TaskUpdateParameters withIdentity(IdentityProperties identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: The properties for updating a task.
+     *
+     * @return the innerProperties value.
+     */
+    private TaskPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -118,7 +87,7 @@ public class TaskUpdateParameters {
      * @return the status value.
      */
     public TaskStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -128,7 +97,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withStatus(TaskStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -138,7 +110,7 @@ public class TaskUpdateParameters {
      * @return the platform value.
      */
     public PlatformUpdateParameters platform() {
-        return this.platform;
+        return this.innerProperties() == null ? null : this.innerProperties().platform();
     }
 
     /**
@@ -148,7 +120,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withPlatform(PlatformUpdateParameters platform) {
-        this.platform = platform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withPlatform(platform);
         return this;
     }
 
@@ -158,7 +133,7 @@ public class TaskUpdateParameters {
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
-        return this.agentConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().agentConfiguration();
     }
 
     /**
@@ -168,7 +143,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withAgentConfiguration(AgentProperties agentConfiguration) {
-        this.agentConfiguration = agentConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAgentConfiguration(agentConfiguration);
         return this;
     }
 
@@ -178,7 +156,7 @@ public class TaskUpdateParameters {
      * @return the timeout value.
      */
     public Integer timeout() {
-        return this.timeout;
+        return this.innerProperties() == null ? null : this.innerProperties().timeout();
     }
 
     /**
@@ -188,7 +166,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withTimeout(Integer timeout) {
-        this.timeout = timeout;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withTimeout(timeout);
         return this;
     }
 
@@ -198,7 +179,7 @@ public class TaskUpdateParameters {
      * @return the step value.
      */
     public TaskStepUpdateParameters step() {
-        return this.step;
+        return this.innerProperties() == null ? null : this.innerProperties().step();
     }
 
     /**
@@ -208,7 +189,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withStep(TaskStepUpdateParameters step) {
-        this.step = step;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withStep(step);
         return this;
     }
 
@@ -218,7 +202,7 @@ public class TaskUpdateParameters {
      * @return the trigger value.
      */
     public TriggerUpdateParameters trigger() {
-        return this.trigger;
+        return this.innerProperties() == null ? null : this.innerProperties().trigger();
     }
 
     /**
@@ -228,7 +212,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withTrigger(TriggerUpdateParameters trigger) {
-        this.trigger = trigger;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withTrigger(trigger);
         return this;
     }
 
@@ -239,7 +226,7 @@ public class TaskUpdateParameters {
      * @return the credentials value.
      */
     public Credentials credentials() {
-        return this.credentials;
+        return this.innerProperties() == null ? null : this.innerProperties().credentials();
     }
 
     /**
@@ -250,7 +237,10 @@ public class TaskUpdateParameters {
      * @return the TaskUpdateParameters object itself.
      */
     public TaskUpdateParameters withCredentials(Credentials credentials) {
-        this.credentials = credentials;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskPropertiesUpdateParameters();
+        }
+        this.innerProperties().withCredentials(credentials);
         return this;
     }
 
@@ -263,20 +253,8 @@ public class TaskUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
-        if (platform() != null) {
-            platform().validate();
-        }
-        if (agentConfiguration() != null) {
-            agentConfiguration().validate();
-        }
-        if (step() != null) {
-            step().validate();
-        }
-        if (trigger() != null) {
-            trigger().validate();
-        }
-        if (credentials() != null) {
-            credentials().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
