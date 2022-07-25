@@ -36,6 +36,25 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
+/**
+ * Async Client that supports job router administration operations.
+ *
+ * <p><strong>Instantiating an asynchronous JobRouter Administration Client</strong></p>
+ * <!-- src_embed com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; Initialize the router administration client builder
+ * final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * &#47;&#47; Build the router administration client
+ * RouterAdministrationAsyncClient routerAdminAsyncClient = builder.buildAsyncClient&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
+ *
+ * <p>View {@link RouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see RouterAdministrationClientBuilder
+ */
 @ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = true)
 public class RouterAdministrationAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(RouterAsyncClient.class);

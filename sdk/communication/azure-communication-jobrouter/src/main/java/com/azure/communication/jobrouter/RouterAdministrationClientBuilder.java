@@ -19,7 +19,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
@@ -170,7 +169,6 @@ public class RouterAdministrationClientBuilder implements ConfigurationTrait<Rou
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
-     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return The updated RouterAdministrationClientBuilder object.

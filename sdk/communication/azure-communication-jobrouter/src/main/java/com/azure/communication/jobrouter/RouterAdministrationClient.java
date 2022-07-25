@@ -28,6 +28,25 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+/**
+ * Sync Client that supports job router administration operations.
+ *
+ * <p><strong>Instantiating a synchronous JobRouter Administration Client</strong></p>
+ * <!-- src_embed com.azure.communication.jobrouter.routeradministrationclient.instantiation -->
+ * <pre>
+ * &#47;&#47; Initialize the router administration client builder
+ * final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * &#47;&#47; Build the router administration client
+ * RouterAdministrationClient routerAdminClient = builder.buildClient&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end com.azure.communication.jobrouter.routeradministrationclient.instantiation -->
+ *
+ * <p>View {@link RouterAdministrationClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see RouterAdministrationClientBuilder
+ */
 @ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = false)
 public class RouterAdministrationClient {
 
