@@ -2,16 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "testApplicationId": {
-      "type": "string"
-    },
-    "testApplicationSecret": {
-      "type": "string"
-    },
-    "tenantId": {
-      "defaultValue": "[subscription().tenantId]",
-      "type": "string"
-    },
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
@@ -371,25 +361,9 @@
     }
   ],
   "outputs": {
-    "AZURE_SPRING_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationID')]"
-    },
-    "AZURE_SPRING_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
-    "AZURE_SPRING_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
     "STORAGE_ACCOUNT_TEST_EVENTHUB": {
       "type": "string",
       "value": "[variables('storageAccountName')]"
-    },
-    "STORAGE_ACCOUNT_KEY_TEST_EVENTHUB": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value]"
     },
     "AZURE_EVENTHUBS_NAMESPACE": {
       "type": "string",

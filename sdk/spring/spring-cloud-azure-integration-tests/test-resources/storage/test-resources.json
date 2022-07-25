@@ -27,7 +27,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2019-06-01",
       "name": "[variables('storageAccountsName')]",
       "location": "[variables('location')]",
       "sku": {
@@ -36,13 +36,6 @@
       },
       "kind": "StorageV2",
       "properties": {
-        "dnsEndpointType": "Standard",
-        "defaultToOAuthAuthentication": false,
-        "publicNetworkAccess": "Enabled",
-        "allowCrossTenantReplication": true,
-        "minimumTlsVersion": "TLS1_2",
-        "allowBlobPublicAccess": true,
-        "allowSharedKeyAccess": true,
         "networkAcls": {
           "bypass": "AzureServices",
           "virtualNetworkRules": [],
@@ -51,7 +44,6 @@
         },
         "supportsHttpsTrafficOnly": true,
         "encryption": {
-          "requireInfrastructureEncryption": false,
           "services": {
             "file": {
               "keyType": "Account",
@@ -69,7 +61,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
@@ -79,30 +71,17 @@
         "tier": "Standard"
       },
       "properties": {
-        "changeFeed": {
-          "enabled": false
-        },
-        "restorePolicy": {
-          "enabled": false
-        },
-        "containerDeleteRetentionPolicy": {
-          "enabled": true,
-          "days": 7
-        },
         "cors": {
           "corsRules": []
         },
         "deleteRetentionPolicy": {
-          "allowPermanentDelete": false,
-          "enabled": true,
-          "days": 7
-        },
-        "isVersioningEnabled": false
+          "enabled": true
+        }
       }
     },
     {
       "type": "Microsoft.Storage/storageAccounts/fileServices",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
@@ -112,21 +91,14 @@
         "tier": "Standard"
       },
       "properties": {
-        "protocolSettings": {
-          "smb": {}
-        },
         "cors": {
           "corsRules": []
-        },
-        "shareDeleteRetentionPolicy": {
-          "enabled": true,
-          "days": 7
         }
       }
     },
     {
       "type": "Microsoft.Storage/storageAccounts/queueServices",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
@@ -139,7 +111,7 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
@@ -152,18 +124,13 @@
     },
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2021-09-01",
+      "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "properties": {
-        "immutableStorageWithVersioning": {
-          "enabled": false
-        },
-        "defaultEncryptionScope": "$account-encryption-key",
-        "denyEncryptionScopeOverride": false,
         "publicAccess": "None"
       }
     }
@@ -179,7 +146,7 @@
     },
     "AZURE_STORAGE_ACCOUNT_KEY": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName')), '2021-09-01').keys[0].value]"
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName')), '2019-06-01').keys[0].value]"
     },
     "AZURE_STORAGE_FILESHARE_ENDPOINT": {
       "type": "string",
