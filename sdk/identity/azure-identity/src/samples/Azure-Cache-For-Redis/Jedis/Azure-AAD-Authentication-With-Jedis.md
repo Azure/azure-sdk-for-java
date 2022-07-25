@@ -45,22 +45,25 @@ When migrating your existing your application code, you need to replace the pass
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
-//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
+//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
+        .clientId("YOUR-CLIENT-ID")
+        .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
+        .tenantId("YOUR-TENANT-ID")
+        .build();
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-String token = defaultAzureCredential
-    .getToken(new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+String token = clientCertificateCredential
+        .getToken(new TokenRequestContext()
+                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
 
-// SSL connection is required for non 6379 ports. It is recommeded to use SSL connections.
+// SSL connection is required for non 6379 ports.
 boolean useSsl = true; 
 String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 Jedis jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
         .password(token)
-        .user("<username>")
         .ssl(useSsl)
         .build());
 
@@ -183,25 +186,19 @@ The wrapper code located here requires to be added/integrated in your applicatio
 
 
 ```java
-//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-        .clientId("<clientId>")
-        .pfxCertificate("<Cert-File-Path>", "<Cert-Password-if-Applicable>")
-        .tenantId("<tenantId>")
-        .build();
+    .clientId("<clientId>")
+    .pfxCertificate("<Cert-File-Path>", "<Cert-Password-if-Applicable>")
+    .tenantId("<tenantId>")
+    .build();
 
-//Create Jedis Client using the builder as follows.
 Jedis jedisClient = new AzureJedisClientBuilder()
-        .cacheHostName("<cache host name>")
-        .port(6380)
-        .useSSL(true)
-        .username("<username>")
-        .credential(clientCertificateCredential)
-        .build();
+    .cacheHostName("<cache host name>")
+    .port(<port number>)
+    .username("<username>")
+    .credential(clientCertificateCredential)
+    .build();
 
-// Set a value against your key in the Redis cache.
 jedisClient.set("Az:key", "sample");
-
-// Close the Jedis Client
 jedisClient.close();
 ```

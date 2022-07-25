@@ -89,8 +89,8 @@ String token = clientCertificateCredential
 
 // Build Redis URI with host and authentication details.
 RedisURI redisURI = RedisURI.Builder.redis("YOUR_HOST_NAME.cache.windows.net")
-        .withPort(6380)
-        .withSsl(true)
+        .withPort(6379)
+        .withSsl(false) // Targeting Non-SSL 6379 port.
         .withAuthentication("USERNAME", token)
         .withClientName("LettuceClient")
         .build();
@@ -140,8 +140,8 @@ ClientCertificateCredential clientCertificateCredential = new ClientCertificateC
 
 // Build Redis URI with host and authentication details.
 RedisURI redisURI = RedisURI.Builder.redis("YOUR_HOST_NAME.cache.windows.net")
-        .withPort(6380)
-        .withSsl(true) // Targeting SSL based port.
+        .withPort(6379)
+        .withSsl(false) // Targeting Non-SSL 6379 port.
         .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", clientCertificateCredential)))
         .withClientName("LettuceClient")
         .build();
@@ -236,7 +236,7 @@ ClientCertificateCredential clientCertificateCredential = getClientCertificateCr
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
 AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
 
-RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6380, "USERNAME", accessToken);
+RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
 int maxTries = 3;
@@ -255,7 +255,7 @@ while (i < maxTries) {
 
         if (accessToken.isExpired()) {
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6380, "USERNAME", getAccessToken(clientCertificateCredential, trc));
+            client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", getAccessToken(clientCertificateCredential, trc));
             connection = client.connect(StringCodec.UTF8);
             sync = connection.sync();
         } else if (!connection.isOpen()) {
@@ -276,7 +276,7 @@ while (i < maxTries) {
         // Build Redis URI with host and authentication details.
         RedisURI redisURI = RedisURI.Builder.redis(hostName)
                 .withPort(port)
-                .withSsl(true) // Targeting SSL based port
+                .withSsl(false) // Targeting Non-SSL 6379 port.
                 .withAuthentication(username, accessToken.getToken())
                 .withClientName("LettuceClient")
                 .build();
@@ -313,7 +313,7 @@ while (i < maxTries) {
 //Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 ClientCertificateCredential clientCertificateCredential = getClientCertificateCredential();
 
-RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6380, "USERNAME", clientCertificateCredential);
+RedisClient client = createLettuceRedisClient("YOUR_HOST_NAME.redis.cache.windows.net", 6379, "USERNAME", clientCertificateCredential);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
 int maxTries = 3;
@@ -346,7 +346,7 @@ while (i < maxTries) {
         // Build Redis URI with host and authentication details.
         RedisURI redisURI = RedisURI.Builder.redis(hostName)
                 .withPort(port)
-                .withSsl(true) // Targeting SSL Based 6380 port.
+                .withSsl(false) // Targeting Non-SSL 6379 port.
                 .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", tokenCredential)))
                 .withClientName("LettuceClient")
                 .build();
