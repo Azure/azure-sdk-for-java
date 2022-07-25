@@ -4,11 +4,12 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotation.HeaderCollection;
-
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
@@ -18,9 +19,9 @@ import java.lang.reflect.Type;
  */
 public interface HttpResponseDecodeData {
     /**
-     * Get the type of the entity to deserialize the body.
+     * Gets the generic return type of the response.
      *
-     * @return the return type
+     * @return The generic return type.
      */
     Type getReturnType();
 
@@ -84,4 +85,42 @@ public interface HttpResponseDecodeData {
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
         return new UnexpectedExceptionInformation(HttpResponseException.class);
     }
+
+    /**
+     * Whether the {@link #getReturnType() returnType} is a decode-able type.
+     * <p>
+     * Types that aren't decode-able are the following (including sub-types):
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Whether the return type is decode-able.
+     */
+    boolean isReturnTypeDecodeable();
+
+    /**
+     * Whether the network response body should be eagerly read based on its {@link #getReturnType() returnType}.
+     * <p>
+     * The following types, including subtypes, aren't eagerly read from the network:
+     * <ul>
+     * <li>BinaryData</li>
+     * <li>byte[]</li>
+     * <li>ByteBuffer</li>
+     * <li>InputStream</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Whether the network response body should be eagerly read.
+     */
+    boolean isResponseEagerlyRead();
 }

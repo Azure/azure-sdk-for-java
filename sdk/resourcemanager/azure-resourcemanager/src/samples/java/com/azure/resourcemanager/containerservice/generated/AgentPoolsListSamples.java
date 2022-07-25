@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AgentPools List. */
 public final class AgentPoolsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/AgentPoolsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/AgentPoolsList.json
      */
     /**
      * Sample code: List Agent Pools by Managed Cluster.
