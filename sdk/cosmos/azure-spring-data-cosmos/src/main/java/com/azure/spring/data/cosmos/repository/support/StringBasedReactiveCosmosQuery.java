@@ -6,20 +6,20 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
-import com.azure.spring.data.cosmos.exception.*;
 import com.azure.spring.data.cosmos.repository.query.AbstractReactiveCosmosQuery;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.ReactiveCosmosQueryMethod;
 import com.azure.spring.data.cosmos.repository.query.SimpleReactiveCosmosEntityMetadata;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.*;
-import org.springframework.data.util.*;
+import org.springframework.data.repository.query.Parameter;
+import org.springframework.data.repository.query.ResultProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
 

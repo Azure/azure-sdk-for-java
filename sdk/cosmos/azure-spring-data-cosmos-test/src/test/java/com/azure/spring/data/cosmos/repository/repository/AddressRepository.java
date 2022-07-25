@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.repository;
 
-import com.azure.spring.data.cosmos.domain.Address;
+import com.azure.spring.data.cosmos.domain.*;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.Query;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.*;
 
 import java.util.List;
 
@@ -53,4 +54,7 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
 
     @Query("select DISTINCT value a.postalCode from a where a.city = @city")
     List<String> annotatedFindPostalCodeValuesByCity(@Param("city") String city);
+
+    @Query(value = "select * from a where a.city IN (@cities)")
+    List<Address> annotatedFindByCityIn(@Param("cities") List<String> cities, Sort sort);
 }
