@@ -554,7 +554,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
             .setLeaseId(leaseId)
             .setContentHash(contentMd5)
-            .setFlush(false);
+            .setFlush(null);
 
         return appendWithResponse(data, fileOffset, length, appendOptions, timeout, context);
     }
