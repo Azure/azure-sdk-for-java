@@ -1,14 +1,39 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2022-07-25)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2022-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.MonitoringSettings` was added
 
-### Bugs Fixed
+* `models.VaultPropertiesRedundancySettings` was added
 
-### Other Changes
+* `models.BackupStorageVersion` was added
+
+* `models.StandardTierStorageRedundancy` was added
+
+* `models.AzureMonitorAlertSettings` was added
+
+* `models.ClassicAlertSettings` was added
+
+* `models.CrossRegionRestore` was added
+
+* `models.AlertsState` was added
+
+#### `models.ResourceCertificateAndAadDetails` was modified
+
+* `aadAudience()` was added
+* `withAadAudience(java.lang.String)` was added
+
+#### `models.VaultProperties` was modified
+
+* `withMonitoringSettings(models.MonitoringSettings)` was added
+* `backupStorageVersion()` was added
+* `withRedundancySettings(models.VaultPropertiesRedundancySettings)` was added
+* `redundancySettings()` was added
+* `monitoringSettings()` was added
 
 ## 1.0.0-beta.2 (2022-07-19)
 
