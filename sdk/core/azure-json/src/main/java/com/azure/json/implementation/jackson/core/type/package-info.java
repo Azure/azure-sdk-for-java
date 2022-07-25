@@ -1,3 +1,4 @@
+// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 /**
  * Contains classes needed for type introspection, mostly used by data binding
  * functionality. Most of this functionality is needed to properly handled

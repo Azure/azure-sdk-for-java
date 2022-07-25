@@ -1,3 +1,4 @@
+// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 /**
  * JSON-specific parser and generator implementation classes that
  * Jackson defines and uses.

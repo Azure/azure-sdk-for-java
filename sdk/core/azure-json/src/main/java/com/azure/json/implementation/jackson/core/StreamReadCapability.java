@@ -1,3 +1,4 @@
+// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core;
 
 import com.azure.json.implementation.jackson.core.util.JacksonFeature;

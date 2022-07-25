@@ -1,3 +1,4 @@
+// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 /**
  * Base classes used by concrete Parser and Generator implementations;
  * contain functionality that is not specific to JSON or input

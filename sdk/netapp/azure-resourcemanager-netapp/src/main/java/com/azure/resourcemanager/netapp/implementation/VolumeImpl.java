@@ -18,6 +18,7 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
@@ -188,6 +189,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public EncryptionKeySource encryptionKeySource() {
         return this.innerModel().encryptionKeySource();
+    }
+
+    public String keyVaultPrivateEndpointResourceId() {
+        return this.innerModel().keyVaultPrivateEndpointResourceId();
     }
 
     public Boolean ldapEnabled() {
@@ -408,6 +413,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().breakReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void reestablishReplication(ReestablishReplicationRequest body) {
+        serviceManager.volumes().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public void reestablishReplication(ReestablishReplicationRequest body, Context context) {
+        serviceManager
+            .volumes()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
     public PagedIterable<Replication> listReplications() {
         return serviceManager.volumes().listReplications(resourceGroupName, accountName, poolName, volumeName);
     }
@@ -612,19 +627,34 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId) {
+        this.innerModel().withKeyVaultPrivateEndpointResourceId(keyVaultPrivateEndpointResourceId);
+        return this;
+    }
+
     public VolumeImpl withLdapEnabled(Boolean ldapEnabled) {
         this.innerModel().withLdapEnabled(ldapEnabled);
         return this;
     }
 
     public VolumeImpl withCoolAccess(Boolean coolAccess) {
-        this.innerModel().withCoolAccess(coolAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccess(coolAccess);
+            return this;
+        } else {
+            this.updateBody.withCoolAccess(coolAccess);
+            return this;
+        }
     }
 
     public VolumeImpl withCoolnessPeriod(Integer coolnessPeriod) {
-        this.innerModel().withCoolnessPeriod(coolnessPeriod);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolnessPeriod(coolnessPeriod);
+            return this;
+        } else {
+            this.updateBody.withCoolnessPeriod(coolnessPeriod);
+            return this;
+        }
     }
 
     public VolumeImpl withUnixPermissions(String unixPermissions) {

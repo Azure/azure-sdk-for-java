@@ -369,9 +369,14 @@ public final class HttpResponseBodyDecoder {
             return false;
         }
 
-        return isReturnTypeDecodable(returnType)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+
+        return isReturnTypeDecodable(returnType) || doesNotNeedResponseBody(returnType);
+    }
+
+    private static boolean doesNotNeedResponseBody(Type type) {
+        Type typeToInspect = unwrapReturnType(type);
+        return TypeUtil.isTypeOrSubTypeOf(typeToInspect, Void.TYPE)
+            || TypeUtil.isTypeOrSubTypeOf(typeToInspect, Void.class);
     }
 
     private static Type unwrapReturnType(Type returnType) {
