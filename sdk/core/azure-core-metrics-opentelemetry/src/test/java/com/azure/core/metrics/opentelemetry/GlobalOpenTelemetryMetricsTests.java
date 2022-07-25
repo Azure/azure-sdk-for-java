@@ -4,7 +4,7 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.LongHistogram;
+import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -59,10 +59,10 @@ public class GlobalOpenTelemetryMetricsTests {
         OpenTelemetry otel = OpenTelemetrySdk.builder().setMeterProvider(sdkMeterProvider).buildAndRegisterGlobal();
 
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, null);
-        LongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null);
-        assertTrue(longHistogram.isEnabled());
+        DoubleHistogram histogram = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
+        assertTrue(histogram.isEnabled());
 
-        longHistogram.record(1, null, Context.NONE);
+        histogram.record(1, null, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -73,9 +73,7 @@ public class GlobalOpenTelemetryMetricsTests {
                         .hasName("az.sdk.test-histogram")
                         .hasDescription("important metric")
                         .hasHistogramSatisfying(
-                            histogram ->
-                                histogram
-                                    .isCumulative()
+                            h -> h.isCumulative()
                                     .hasPointsSatisfying(
                                         point ->
                                             point

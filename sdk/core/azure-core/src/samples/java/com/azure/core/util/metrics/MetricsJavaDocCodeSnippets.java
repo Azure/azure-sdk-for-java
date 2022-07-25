@@ -69,19 +69,19 @@ public class MetricsJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link Meter#createLongHistogram(String, String, String)}}
+     * Code snippet for {@link Meter#createDoubleHistogram(String, String, String)}}
      */
     public void createHistogram() {
         Context currentContext = Context.NONE;
-        // BEGIN: com.azure.core.util.metrics.Meter.longHistogram
+        // BEGIN: com.azure.core.util.metrics.Meter.doubleHistogram
 
         // Meter and instruments should be created along with service client instance and retained for the client
         // lifetime for optimal performance
         Meter meter = meterProvider
             .createMeter("azure-core", "1.0.0", new MetricsOptions());
 
-        LongHistogram amqpLinkDuration = meter
-            .createLongHistogram("az.core.amqp.link.duration", "AMQP link response time.", "ms");
+        DoubleHistogram amqpLinkDuration = meter
+            .createDoubleHistogram("az.core.amqp.link.duration", "AMQP link response time.", "ms");
 
         TelemetryAttributes attributes = defaultMeter.createAttributes(
             Collections.singletonMap("endpoint", "http://service-endpoint.azure.com"));
@@ -95,7 +95,7 @@ public class MetricsJavaDocCodeSnippets {
         if (amqpLinkDuration.isEnabled()) {
             amqpLinkDuration.record(Instant.now().toEpochMilli() - start.toEpochMilli(), attributes, currentContext);
         }
-        // END: com.azure.core.util.metrics.Meter.longHistogram
+        // END: com.azure.core.util.metrics.Meter.doubleHistogram
     }
 
     /**

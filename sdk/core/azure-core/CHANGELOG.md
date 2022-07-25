@@ -29,7 +29,7 @@
   - Added ability to get and set `ProgressReporter` on `Context`.
 - Added `HttpPipelineCallContext.getContext()`.
 - Added `com.azure.core.util.metrics` package and metrics abstractions (intended for client libraries):
-  `MeterProvider`, `Meter`, `AzureLongCounter` and `AzureLongHistogram`.
+  `MeterProvider`, `Meter`, `LongCounter` and `DoubleHistogram`.
 
 ### Bugs Fixed
 

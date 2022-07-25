@@ -5,7 +5,7 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.metrics.LongHistogram;
+import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
@@ -55,18 +55,18 @@ public class OpenTelemetryMetricsBenchmark {
 
     private static final DynamicAttributeCache DYNAMIC_ATTRIBUTE_CACHE = new DynamicAttributeCache(AZURE_METER_PROVIDER, "fqdn", "entityName");
 
-    private static final LongHistogram HISTOGRAM = METER
-        .createLongHistogram("test", "description", "unit");
+    private static final DoubleHistogram HISTOGRAM = METER
+        .createDoubleHistogram("test", "description", "unit");
 
-    private static final LongHistogram NOOP_HISTOGRAM = AZURE_METER_PROVIDER
+    private static final DoubleHistogram NOOP_HISTOGRAM = AZURE_METER_PROVIDER
         .createMeter("bench", null, new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop()))
-        .createLongHistogram("test", "description", "unit");
+        .createDoubleHistogram("test", "description", "unit");
 
     private static final Meter DISABLED_METER = AZURE_METER_PROVIDER
         .createMeter("bench", null, new OpenTelemetryMetricsOptions().setProvider(SDK_METER_PROVIDER).setEnabled(false));
 
-    private static final LongHistogram DISABLED_METRICS_HISTOGRAM = DISABLED_METER
-        .createLongHistogram("test", "description", "unit");
+    private static final DoubleHistogram DISABLED_METRICS_HISTOGRAM = DISABLED_METER
+        .createDoubleHistogram("test", "description", "unit");
 
     private static final Context AZ_CONTEXT_WITH_OTEL_CONTEXT = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root());
 

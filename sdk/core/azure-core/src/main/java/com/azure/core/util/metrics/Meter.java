@@ -17,7 +17,7 @@ import java.util.Map;
  * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  *
- *  <!-- src_embed com.azure.core.util.metrics.Meter.longHistogram -->
+ *  <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
  * <pre>
  *
  * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
@@ -25,8 +25,8 @@ import java.util.Map;
  * Meter meter = meterProvider
  *     .createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, new MetricsOptions&#40;&#41;&#41;;
  *
- * LongHistogram amqpLinkDuration = meter
- *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
+ * DoubleHistogram amqpLinkDuration = meter
+ *     .createDoubleHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
  *
  * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;
  *     Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
@@ -41,7 +41,7 @@ import java.util.Map;
  *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
  * &#125;
  * </pre>
- *  <!-- end com.azure.core.util.metrics.Meter.longHistogram -->
+ *  <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
  */
 public interface Meter extends AutoCloseable {
     /**
@@ -50,7 +50,7 @@ public interface Meter extends AutoCloseable {
      *
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#histogram for more details.
      *
-     * <!-- src_embed com.azure.core.util.metrics.Meter.longHistogram -->
+     * <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
      * <pre>
      *
      * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
@@ -58,8 +58,8 @@ public interface Meter extends AutoCloseable {
      * Meter meter = meterProvider
      *     .createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, new MetricsOptions&#40;&#41;&#41;;
      *
-     * LongHistogram amqpLinkDuration = meter
-     *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
+     * DoubleHistogram amqpLinkDuration = meter
+     *     .createDoubleHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
      *
      * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;
      *     Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
@@ -74,15 +74,15 @@ public interface Meter extends AutoCloseable {
      *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.metrics.Meter.longHistogram -->
+     * <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
      *
      * @param name short histogram name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the instrument
      * @param unit optional unit of measurement.
-     * @return new instance of {@link LongCounter}
+     * @return new instance of {@link DoubleHistogram}
      * @throws NullPointerException if name or description is null.
      */
-    LongHistogram createLongHistogram(String name, String description, String unit);
+    DoubleHistogram createDoubleHistogram(String name, String description, String unit);
 
     /**
      * Creates Counter instrument that is used to record incrementing values, such as number of sent messages or created

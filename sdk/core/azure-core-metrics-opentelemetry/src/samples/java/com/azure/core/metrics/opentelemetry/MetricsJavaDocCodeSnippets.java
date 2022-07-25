@@ -7,7 +7,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.metrics.LongHistogram;
+import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -188,11 +188,11 @@ public class MetricsJavaDocCodeSnippets {
     private static final class AzureClient {
         private static final MeterProvider DEFAULT_PROVIDER = MeterProvider.getDefaultProvider();
         private final Meter meter;
-        private final LongHistogram callDuration;
+        private final DoubleHistogram callDuration;
         private final TelemetryAttributes attributes;
         AzureClient(String endpoint, ClientOptions options) {
             meter = DEFAULT_PROVIDER.createMeter("azure-core-samples", "1.0.0", options == null ? null : options.getMetricsOptions());
-            callDuration = meter.createLongHistogram("az.sample.method.duration", "Duration of sample method call", "ms");
+            callDuration = meter.createDoubleHistogram("az.sample.method.duration", "Duration of sample method call", "ms");
             attributes = meter.createAttributes(Collections.singletonMap("endpoint", endpoint));
         }
 

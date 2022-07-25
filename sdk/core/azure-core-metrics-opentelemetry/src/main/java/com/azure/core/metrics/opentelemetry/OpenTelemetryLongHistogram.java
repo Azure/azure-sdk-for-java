@@ -5,15 +5,15 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.metrics.LongHistogram;
+import com.azure.core.util.metrics.DoubleHistogram;
 
 /**
  * {@inheritDoc}
  */
-class OpenTelemetryLongHistogram implements LongHistogram {
-    static final LongHistogram NOOP = new LongHistogram() {
+class OpenTelemetryDoubleHistogram implements DoubleHistogram {
+    static final DoubleHistogram NOOP = new DoubleHistogram() {
         @Override
-        public void record(long value, TelemetryAttributes attributes, Context context) {
+        public void record(double value, TelemetryAttributes attributes, Context context) {
         }
 
         @Override
@@ -22,8 +22,8 @@ class OpenTelemetryLongHistogram implements LongHistogram {
         }
     };
 
-    private final io.opentelemetry.api.metrics.LongHistogram histogram;
-    OpenTelemetryLongHistogram(io.opentelemetry.api.metrics.LongHistogram histogram) {
+    private final io.opentelemetry.api.metrics.DoubleHistogram histogram;
+    OpenTelemetryDoubleHistogram(io.opentelemetry.api.metrics.DoubleHistogram histogram) {
         this.histogram = histogram;
     }
 
@@ -31,7 +31,7 @@ class OpenTelemetryLongHistogram implements LongHistogram {
      * {@inheritDoc}
      */
     @Override
-    public void record(long value, TelemetryAttributes attributes, Context context) {
+    public void record(double value, TelemetryAttributes attributes, Context context) {
         histogram.record(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 

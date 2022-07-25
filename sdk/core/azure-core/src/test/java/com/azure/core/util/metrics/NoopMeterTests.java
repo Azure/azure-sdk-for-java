@@ -23,7 +23,7 @@ public class NoopMeterTests {
     @Test
     public void noopMeterCreateInstrument() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
-        assertNotNull(noopMeter.createLongHistogram("name", "description", null));
+        assertNotNull(noopMeter.createDoubleHistogram("name", "description", null));
         assertNotNull(noopMeter.createLongCounter("name", "description", null));
         assertNotNull(noopMeter.createLongUpDownCounter("name", "description", null));
     }
@@ -32,7 +32,7 @@ public class NoopMeterTests {
     public void noopHistogramMeasurement() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
 
-        LongHistogram histogram = noopMeter.createLongHistogram("name", "description", null);
+        DoubleHistogram histogram = noopMeter.createDoubleHistogram("name", "description", null);
         assertFalse(histogram.isEnabled());
         TelemetryAttributes attributes = noopMeter.createAttributes(Collections.singletonMap("foo", 42L));
         assertNotNull(attributes);
@@ -73,8 +73,8 @@ public class NoopMeterTests {
     @Test
     public void noopMeterCreateInstrumentInvalidArgumentsThrow() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
-        assertThrows(NullPointerException.class, () -> noopMeter.createLongHistogram(null, "description", null));
-        assertThrows(NullPointerException.class, () -> noopMeter.createLongHistogram("name", null, null));
+        assertThrows(NullPointerException.class, () -> noopMeter.createDoubleHistogram(null, "description", null));
+        assertThrows(NullPointerException.class, () -> noopMeter.createDoubleHistogram("name", null, null));
         assertThrows(NullPointerException.class, () -> noopMeter.createLongCounter(null, "description", null));
         assertThrows(NullPointerException.class, () -> noopMeter.createLongCounter("name", null, null));
         assertThrows(NullPointerException.class, () -> noopMeter.createLongUpDownCounter(null, "description", null));

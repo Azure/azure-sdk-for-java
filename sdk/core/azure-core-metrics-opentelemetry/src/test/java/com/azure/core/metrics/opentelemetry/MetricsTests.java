@@ -6,8 +6,8 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
-import com.azure.core.util.metrics.LongHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -64,9 +64,9 @@ public class MetricsTests {
     @Test
     public void basicHistogram() {
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
-        LongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null);
-        assertTrue(longHistogram.isEnabled());
-        longHistogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
+        DoubleHistogram histogram = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
+        assertTrue(histogram.isEnabled());
+        histogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -77,9 +77,7 @@ public class MetricsTests {
                         .hasName("az.sdk.test-histogram")
                         .hasDescription("important metric")
                         .hasHistogramSatisfying(
-                            histogram ->
-                                histogram
-                                    .isCumulative()
+                            h -> h.isCumulative()
                                     .hasPointsSatisfying(
                                         point ->
                                             point
@@ -99,36 +97,36 @@ public class MetricsTests {
     public void disabledMetric() {
         MetricsOptions options = new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider).setEnabled(false);
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
-        LongHistogram longHistogram = meter
-            .createLongHistogram("az.sdk.test-histogram", "important metric", null);
+        DoubleHistogram histogram = meter
+            .createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
+        histogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
-        assertFalse(longHistogram.isEnabled());
+        assertFalse(histogram.isEnabled());
     }
 
     @Test
     public void noopOTelMeterProvider() {
         MetricsOptions options = new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop());
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
-        LongHistogram longHistogram = meter
-            .createLongHistogram("az.sdk.test-histogram", "important metric", null);
+        DoubleHistogram histogram = meter
+            .createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
+        histogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
-        assertFalse(longHistogram.isEnabled());
+        assertFalse(histogram.isEnabled());
     }
 
     @Test
     public void histogramWithAttributes() {
-        LongHistogram longHistogram = MeterProvider.getDefaultProvider()
+        DoubleHistogram histogram = MeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
-            .createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
+            .createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
 
-        longHistogram.record(42, METRIC_ATTRIBUTES, Context.NONE);
-        longHistogram.record(420, METRIC_ATTRIBUTES, Context.NONE);
+        histogram.record(42, METRIC_ATTRIBUTES, Context.NONE);
+        histogram.record(420, METRIC_ATTRIBUTES, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -140,9 +138,7 @@ public class MetricsTests {
                         .hasDescription("important metric")
                         .hasUnit("ms")
                         .hasHistogramSatisfying(
-                            histogram ->
-                                histogram
-                                    .isCumulative()
+                            h -> h.isCumulative()
                                     .hasPointsSatisfying(
                                         point ->
                                             point
@@ -160,15 +156,15 @@ public class MetricsTests {
 
     @Test
     public void histogramWithDifferentAttributes() {
-        LongHistogram longHistogram = MeterProvider.getDefaultProvider()
+        DoubleHistogram histogram = MeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
-            .createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
+            .createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
 
         TelemetryAttributes attributes1 = new OpenTelemetryAttributes(Collections.singletonMap("key1", "value1"));
         TelemetryAttributes attributes2 = new OpenTelemetryAttributes(Collections.singletonMap("key2", "value2"));
-        longHistogram.record(42, attributes1, Context.NONE);
-        longHistogram.record(1, attributes1, Context.NONE);
-        longHistogram.record(420, attributes2, Context.NONE);
+        histogram.record(42d, attributes1, Context.NONE);
+        histogram.record(0.1d, attributes1, Context.NONE);
+        histogram.record(420d, attributes2, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -180,9 +176,7 @@ public class MetricsTests {
                         .hasDescription("important metric")
                         .hasUnit("ms")
                         .hasHistogramSatisfying(
-                            histogram ->
-                                histogram
-                                    .isCumulative()
+                            h -> h.isCumulative()
                                     .hasPointsSatisfying(
                                         point ->
                                             point
@@ -190,7 +184,7 @@ public class MetricsTests {
                                                 .hasEpochNanos(testClock.now())
                                                 .hasAttributes(attributeEntry("key1", "value1"))
                                                 .hasCount(2)
-                                                .hasSum(43),
+                                                .hasSum(42.1d),
                                         point ->
                                             point
                                                 .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
@@ -315,11 +309,11 @@ public class MetricsTests {
         Meter meter = MeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
 
-        LongHistogram longHistogram1 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
-        LongHistogram longHistogram2 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
+        DoubleHistogram histogram1 = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
+        DoubleHistogram histogram2 = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", "ms");
 
-        longHistogram1.record(42, METRIC_ATTRIBUTES, Context.NONE);
-        longHistogram2.record(420, METRIC_ATTRIBUTES, Context.NONE);
+        histogram1.record(42, METRIC_ATTRIBUTES, Context.NONE);
+        histogram2.record(420, METRIC_ATTRIBUTES, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -358,8 +352,8 @@ public class MetricsTests {
     @Test
     public void noopMeterCreateInstrumentInvalidArgumentsThrow() {
         Meter meter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
-        assertThrows(NullPointerException.class, () -> meter.createLongHistogram(null, "description", null));
-        assertThrows(NullPointerException.class, () -> meter.createLongHistogram("name", null, null));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("name", null, null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter("name", null, null));
     }

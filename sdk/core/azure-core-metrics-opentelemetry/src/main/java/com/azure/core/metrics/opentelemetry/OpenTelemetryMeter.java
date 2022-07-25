@@ -7,12 +7,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
-import com.azure.core.util.metrics.LongHistogram;
 import com.azure.core.util.metrics.Meter;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.metrics.DoubleHistogramBuilder;
 import io.opentelemetry.api.metrics.LongCounterBuilder;
-import io.opentelemetry.api.metrics.LongHistogramBuilder;
 import io.opentelemetry.api.metrics.LongUpDownCounterBuilder;
 import io.opentelemetry.api.metrics.MeterProvider;
 
@@ -43,23 +43,22 @@ class OpenTelemetryMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public LongHistogram createLongHistogram(String name, String description, String unit) {
+    public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (!isEnabled) {
             // we might have per-instrument control later.
-            return OpenTelemetryLongHistogram.NOOP;
+            return OpenTelemetryDoubleHistogram.NOOP;
         }
 
-        LongHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name)
-            .setDescription(description)
-            .ofLongs();
+        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name)
+            .setDescription(description);
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
         }
 
-        return new OpenTelemetryLongHistogram(otelMetricBuilder.build());
+        return new OpenTelemetryDoubleHistogram(otelMetricBuilder.build());
     }
 
     /**

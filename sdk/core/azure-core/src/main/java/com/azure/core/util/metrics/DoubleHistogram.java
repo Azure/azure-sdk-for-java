@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 
 /** A histogram instrument that records {@code long} values. */
-public interface LongHistogram {
+public interface DoubleHistogram {
     /**
      * Records a value with a set of attributes.
      *
@@ -15,7 +15,7 @@ public interface LongHistogram {
      * @param attributes Collection of attributes representing metric dimensions.
      * @param context The explicit context to associate with this measurement.
      */
-    void record(long value, TelemetryAttributes attributes, Context context);
+    void record(double value, TelemetryAttributes attributes, Context context);
 
 
     /**

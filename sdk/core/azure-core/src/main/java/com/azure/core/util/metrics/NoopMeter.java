@@ -14,9 +14,9 @@ import java.util.Objects;
  */
 final class NoopMeter implements Meter {
     public static final Meter INSTANCE = new NoopMeter();
-    private static final LongHistogram NOOP_LONG_HISTOGRAM = new LongHistogram() {
+    private static final DoubleHistogram NOOP_LONG_HISTOGRAM = new DoubleHistogram() {
         @Override
-        public void record(long value, TelemetryAttributes attributes, Context context) {
+        public void record(double value, TelemetryAttributes attributes, Context context) {
         }
 
         @Override
@@ -46,7 +46,7 @@ final class NoopMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public LongHistogram createLongHistogram(String name, String description, String unit) {
+    public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
         return NOOP_LONG_HISTOGRAM;
