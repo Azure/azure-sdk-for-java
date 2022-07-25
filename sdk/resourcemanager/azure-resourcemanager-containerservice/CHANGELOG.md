@@ -5,7 +5,7 @@
 ### Breaking Changes
 
 - Replaced property `azureDefender` with `defender` of type `ManagedClusterSecurityProfileDefender` 
-  in `ManagedClusterSecurityProfileDefender`.
+  in `ManagedClusterSecurityProfile`.
 - Removed class `ManagedClusterSecurityProfileAzureDefender`.
 
 ### Other Changes
