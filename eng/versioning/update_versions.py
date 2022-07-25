@@ -247,8 +247,8 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
         print('external_dependency_file=' + dependency_file)
         load_version_map_from_file(dependency_file, ext_dep_map)
 
-    if version_overrides:
-        # and not version_overrides.startswith('$'):
+    if version_overrides and not version_overrides.startswith('$'):
+        # Azure DevOps passes '$(VersionOverrides)' when the variable value is not set
         load_version_overrides("eng/versioning/alternative_external_dependency_versions.json", ext_dep_map, version_overrides)
 
     display_version_info(version_map)
