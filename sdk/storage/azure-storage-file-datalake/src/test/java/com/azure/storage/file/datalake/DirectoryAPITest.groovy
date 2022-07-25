@@ -3551,7 +3551,7 @@ class DirectoryAPITest extends APISpec {
         def pathName = generatePathName()
         def client = dc.createSubdirectory(pathName)
         match = setupPathMatchCondition(client, match)
-        leaseID = setupPathLeaseCondition(client, leaseID)
+        leaseID = setupPathLeaseCondition(client, leaseID) // check if adding time makes it less flaky
         def drc = new DataLakeRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
