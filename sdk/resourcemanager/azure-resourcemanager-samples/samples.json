@@ -830,19 +830,19 @@
       "description": "Getting started on managing storage accounts with customer-managed key using Java"
     },
     {
-      "owner": "yungezz",
+      "owner": "ArthurMa1978",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/storage/samples/ManageDiskEncryptionSet.java",
       "githubPath": "Azure-Samples/storage-java-manage-disk-encryption-set",
       "description": "Getting started on managing disk encryption sets using Java"
     },
     {
-      "owner": "yungezz",
+      "owner": "ArthurMa1978",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/storage/samples/CreateVirtualMachineEncryptedUsingCustomerManagedKey.java",
       "githubPath": "Azure-Samples/compute-java-create-encrypted-vms-using-customer-managed-key",
       "description": "Getting started on creating encrypted virtual machines with customer managed key using Java"
     },
     {
-      "owner": "yungezz",
+      "owner": "ArthurMa1978",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/storage/samples/ManageKubernetesClusterWithCustomerManagedKey.java",
       "githubPath": "Azure-Samples/aks-java-manage-encrypted-kubernetes-cluster-with-customer-managed-key",
       "description": "Getting started on creating encrypted Kubernetes cluster with customer managed key using Java"
