@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
 
@@ -57,7 +58,8 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
         for (int i=0; i<parameters.length; i++) {
             Parameter queryParam = getQueryMethod().getParameters().getParameter(i);
             if (parameters[i] instanceof Collection) {
-                ArrayList<String> expandParam = (ArrayList<String>) parameters[i];
+                ArrayList<String> expandParam = (ArrayList<String>) ((Collection<?>) parameters[i]).stream()
+                    .map(Object::toString).collect(Collectors.toList());
                 List<String> expandedParamKeys = new ArrayList<>();
                 for (int j=0; j<expandParam.size(); j++) {
                     String paramName = "@" + queryParam.getName().orElse("") + j;
