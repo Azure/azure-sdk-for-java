@@ -14,7 +14,6 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -23,21 +22,16 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.secrets.implementation.SecretRequestAttributes;
-import com.azure.security.keyvault.secrets.implementation.SecretRequestParameters;
-import com.azure.security.keyvault.secrets.implementation.SecretRestoreRequestParameters;
-import com.azure.security.keyvault.secrets.implementation.SecretService;
+import com.azure.security.keyvault.secrets.implementation.*;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -66,7 +60,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
 public final class SecretAsyncClient {
-    private final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -76,10 +69,8 @@ public final class SecretAsyncClient {
 
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
-    private final String vaultUrl;
-    private final SecretService service;
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
-    private final HttpPipeline pipeline;
+    private final SecretClientImpl secretClient;
 
     /**
      * Creates a SecretAsyncClient that uses {@code pipeline} to service requests
@@ -89,12 +80,7 @@ public final class SecretAsyncClient {
      * @param version {@link SecretServiceVersion} of the service to be used when making requests.
      */
     SecretAsyncClient(URL vaultUrl, HttpPipeline pipeline, SecretServiceVersion version) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-        this.vaultUrl = vaultUrl.toString();
-        this.service = RestProxy.create(SecretService.class, pipeline);
-        this.pipeline = pipeline;
-        apiVersion = version.getVersion();
+        this.secretClient = new SecretClientImpl(vaultUrl, pipeline, version);
     }
 
     /**
@@ -102,7 +88,7 @@ public final class SecretAsyncClient {
      * @return the vault endpoint url.
      */
     public String getVaultUrl() {
-        return vaultUrl;
+        return secretClient.getVaultUrl();
     }
 
     /**
@@ -111,7 +97,7 @@ public final class SecretAsyncClient {
      * @return The pipeline.
      */
     HttpPipeline getHttpPipeline() {
-        return this.pipeline;
+        return secretClient.getHttpPipeline();
     }
 
     Duration getDefaultPollingInterval() {
@@ -198,26 +184,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret) {
         try {
-            return withContext(context -> setSecretWithResponse(secret, context));
+            return withContext(context -> secretClient.setSecretWithResponseAsync(secret, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret, Context context) {
-        Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .setValue(secret.getValue())
-            .setTags(secret.getProperties().getTags())
-            .setContentType(secret.getProperties().getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
-
-        return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", secret.getName()))
-            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
     /**
@@ -245,20 +215,11 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(String name, String value) {
         try {
-            return withContext(context -> setSecretWithResponse(name, value, context))
+            return withContext(context -> secretClient.setSecretWithResponseAsync(name, value, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultSecret>> setSecretWithResponse(String name, String value, Context context) {
-        SecretRequestParameters parameters = new SecretRequestParameters().setValue(value);
-        return service.setSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
     }
 
     /**
@@ -333,19 +294,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
         try {
-            return withContext(context -> getSecretWithResponse(name, version, context));
+            return withContext(context -> secretClient.getSecretWithResponseAsync(name, version, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getSecret(vaultUrl, name, version == null ? "" : version, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignoredValue -> logger.verbose("Retrieving secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Retrieved secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
     }
 
     /**
@@ -463,25 +415,11 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
-            return withContext(context -> updateSecretPropertiesWithResponse(secretProperties, context));
+            return withContext(context -> secretClient
+                .updateSecretPropertiesWithResponseAsync(secretProperties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
-        Objects.requireNonNull(secretProperties, "The secret properties input parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .setTags(secretProperties.getTags())
-            .setContentType(secretProperties.getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secretProperties));
-
-        return service.updateSecret(vaultUrl, secretProperties.getName(), secretProperties.getVersion(), apiVersion, ACCEPT_LANGUAGE,
-            parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Updating secret - {}", secretProperties.getName()))
-            .doOnSuccess(response -> logger.verbose("Updated secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update secret - {}", secretProperties.getName(), error));
     }
 
     /**
@@ -511,44 +449,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(name),
-            createPollOperation(name),
-            (pollingContext, firstResponse) -> Mono.empty(),
-            (pollingContext) -> Mono.empty());
-    }
-
-    private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> activationOperation(String name) {
-        return (pollingContext) -> withContext(context -> deleteSecretWithResponse(name, context)).flatMap(deletedSecretResponse -> Mono.just(deletedSecretResponse.getValue()));
-    }
-
-    /*
-    Polling operation to poll on create delete key operation status.
-    */
-    private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperation(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getDeletedSecretPoller(vaultUrl, keyName, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .flatMap(deletedSecretResponse -> {
-                    if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<DeletedSecret>(LongRunningOperationStatus.IN_PROGRESS,
-                                pollingContext.getLatestResponse().getValue())));
-                    }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                            deletedSecretResponse.getValue())));
-                })
-                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
-                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    pollingContext.getLatestResponse().getValue()));
-    }
-
-    Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name, Context context) {
-        return service.deleteSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Deleted secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
+        return secretClient.beginDeleteSecretAsync(name);
     }
 
     /**
@@ -607,19 +508,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name) {
         try {
-            return withContext(context -> getDeletedSecretWithResponse(name, context));
+            return withContext(context -> secretClient.getDeletedSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving deleted secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Retrieved deleted secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error));
     }
 
     /**
@@ -677,19 +569,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponse(String name) {
         try {
-            return withContext(context -> purgeDeletedSecretWithResponse(name, context));
+            return withContext(context -> secretClient.purgeDeletedSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> purgeDeletedSecretWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.purgeDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Purging deleted secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Purged deleted secret - {}", name))
-            .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error));
     }
 
     /**
@@ -718,43 +601,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            recoverActivationOperation(name),
-            createRecoverPollOperation(name),
-            (pollerContext, firstResponse) -> Mono.empty(),
-            (pollingContext) -> Mono.empty());
-    }
-
-    private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
-        return (pollingContext) -> withContext(context -> recoverDeletedSecretWithResponse(name,
-            context)).flatMap(keyResponse -> Mono.just(keyResponse.getValue()));
-    }
-
-    /*
-    Polling operation to poll on create delete key operation status.
-    */
-    private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperation(String secretName) {
-        return pollingContext ->
-            withContext(context -> service.getSecretPoller(vaultUrl, secretName, "", apiVersion,
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .flatMap(secretResponse -> {
-                    PollResponse<KeyVaultSecret> prePollResponse = pollingContext.getLatestResponse();
-                    if (secretResponse.getStatusCode() == 404) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, prePollResponse.getValue())));
-                    }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, secretResponse.getValue())));
-                })
-                // This means permission is not granted for the get deleted key operation.
-                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
-    }
-
-    Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponse(String name, Context context) {
-        return service.recoverDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Recovering deleted secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Recovered deleted secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error));
+        return secretClient.beginRecoverDeletedSecretAsync(name);
     }
 
     /**
@@ -813,21 +660,10 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupSecretWithResponse(String name) {
         try {
-            return withContext(context -> backupSecretWithResponse(name, context));
+            return withContext(context -> secretClient.backupSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<byte[]>> backupSecretWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.backupSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Backing up secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Backed up secret - {}", name))
-            .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
-            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
-                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().getValue())));
     }
 
     /**
@@ -887,21 +723,13 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponse(byte[] backup) {
         try {
-            return withContext(context -> restoreSecretBackupWithResponse(backup, context));
+            return withContext(context -> secretClient.restoreSecretBackupWithResponseAsync(backup, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponse(byte[] backup, Context context) {
-        context = context == null ? Context.NONE : context;
-        SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
-        return service.restoreSecret(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Attempting to restore secret"))
-            .doOnSuccess(response -> logger.verbose("Restored secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to restore secret", error));
-    }
+
 
     /**
      * Lists secrets in the key vault. Each {@link SecretProperties secret} returned only has its identifier and
@@ -931,56 +759,11 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listSecretsFirstPage(context)),
-                continuationToken -> withContext(context -> listSecretsNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return secretClient.listPropertiesOfSecretsAsync();
     }
 
     PagedFlux<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return new PagedFlux<>(
-            () -> listSecretsFirstPage(context),
-            continuationToken -> listSecretsNextPage(continuationToken, context));
-    }
-
-    /*
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecrets()}.
-     *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
-     * list operations.
-     * @return A {@link Mono} of {@link PagedResponse<SecretProperties>} from the next page of results.
-     */
-    private Mono<PagedResponse<SecretProperties>> listSecretsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next secrets page - Page {}", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets page - Page {}", continuationToken))
-                .doOnError(error -> logger.warning("Failed to retrieve the next secrets page - Page {}",
-                    continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code
-     * DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<SecretProperties>> listSecretsFirstPage(Context context) {
-        try {
-            return service.getSecrets(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing secrets"))
-                .doOnSuccess(response -> logger.verbose("Listed secrets"))
-                .doOnError(error -> logger.warning("Failed to list secrets", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return secretClient.listPropertiesOfSecretsAsync(context);
     }
 
     /**
@@ -1003,59 +786,11 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listDeletedSecretsFirstPage(context)),
-                continuationToken -> withContext(context -> listDeletedSecretsNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return secretClient.listDeletedSecretsAsync();
     }
 
     PagedFlux<DeletedSecret> listDeletedSecrets(Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedSecretsFirstPage(context),
-            continuationToken -> listDeletedSecretsNextPage(continuationToken, context));
-    }
-
-    /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listDeletedSecrets()}.
-     *
-     * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
-     *     list operations.
-     * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of
-     * results.
-     */
-    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getDeletedSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next deleted secrets page - Page {}",
-                    continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next deleted secrets page - Page {}",
-                    continuationToken))
-                .doOnError(error -> logger.warning("Failed to retrieve the next deleted secrets page - Page {}",
-                    continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code
-     * DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage(Context context) {
-        try {
-            return service.getDeletedSecrets(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing deleted secrets"))
-                .doOnSuccess(response -> logger.verbose("Listed deleted secrets"))
-                .doOnError(error -> logger.warning("Failed to list deleted secrets", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return secretClient.listDeletedSecretsAsync(context);
     }
 
     /**
@@ -1086,58 +821,10 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listSecretVersionsFirstPage(name, context)),
-                continuationToken -> withContext(context -> listSecretVersionsNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return secretClient.listPropertiesOfSecretVersionsAsync(name);
     }
 
     PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return new PagedFlux<>(
-            () -> listSecretVersionsFirstPage(name, context),
-            continuationToken -> listSecretVersionsNextPage(continuationToken, context));
-    }
-
-    /*
-     * Gets attributes of all the secrets versions given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecretVersions()}.
-     *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
-     * list operations.
-     *
-     * @return A {@link Mono} of {@link PagedResponse<SecretProperties>} from the next page of results.
-     */
-    private Mono<PagedResponse<SecretProperties>> listSecretVersionsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next secrets versions page - Page {}",
-                    continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets versions page - Page {}",
-                    continuationToken))
-                .doOnError(error -> logger.warning("Failed to retrieve the next secrets versions page - Page {}",
-                    continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code
-     * DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<SecretProperties>> listSecretVersionsFirstPage(String name, Context context) {
-        try {
-            return service.getSecretVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing secret versions - {}", name))
-                .doOnSuccess(response -> logger.verbose("Listed secret versions - {}", name))
-                .doOnError(error -> logger.warning("Failed to list secret versions - {}", name, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return secretClient.listPropertiesOfSecretVersionsAsync(name, context);
     }
 }

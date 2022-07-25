@@ -10,4 +10,5 @@ module com.azure.security.keyvault.secrets {
     opens com.azure.security.keyvault.secrets to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.secrets.implementation to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.secrets.models to com.azure.core, com.fasterxml.jackson.databind;
+    exports com.azure.security.keyvault.secrets.implementation;
 }

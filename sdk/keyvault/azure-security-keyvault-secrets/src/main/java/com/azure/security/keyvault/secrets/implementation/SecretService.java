@@ -44,7 +44,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultSecret>> setSecret(@HostParam("url") String url,
+    Mono<Response<KeyVaultSecret>> setSecretAsync(@HostParam("url") String url,
                                              @PathParam("secret-name") String secretName,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
@@ -57,7 +57,7 @@ public interface SecretService {
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultSecret>> getSecret(@HostParam("url") String url,
+    Mono<Response<KeyVaultSecret>> getSecretAsync(@HostParam("url") String url,
                                              @PathParam("secret-name") String secretName,
                                              @PathParam("secret-version") String secretVersion,
                                              @QueryParam("api-version") String apiVersion,
@@ -69,7 +69,7 @@ public interface SecretService {
     @ExpectedResponses({200, 404})
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultSecret>> getSecretPoller(@HostParam("url") String url,
+    Mono<Response<KeyVaultSecret>> getSecretPollerAsync(@HostParam("url") String url,
                                              @PathParam("secret-name") String secretName,
                                              @PathParam("secret-version") String secretVersion,
                                              @QueryParam("api-version") String apiVersion,
@@ -81,7 +81,7 @@ public interface SecretService {
     @Patch("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<SecretProperties>> updateSecret(@HostParam("url") String url,
+    Mono<Response<SecretProperties>> updateSecretAsync(@HostParam("url") String url,
                                                   @PathParam("secret-name") String secretName,
                                                   @PathParam("secret-version") String secretVersion,
                                                   @QueryParam("api-version") String apiVersion,
@@ -95,7 +95,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<DeletedSecret>> deleteSecret(@HostParam("url") String url,
+    Mono<Response<DeletedSecret>> deleteSecretAsync(@HostParam("url") String url,
                                                @PathParam("secret-name") String secretName,
                                                @QueryParam("api-version") String apiVersion,
                                                @HeaderParam("accept-language") String acceptLanguage,
@@ -107,7 +107,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<DeletedSecret>> getDeletedSecret(@HostParam("url") String url,
+    Mono<Response<DeletedSecret>> getDeletedSecretAsync(@HostParam("url") String url,
                                                        @PathParam("secret-name") String secretName,
                                                        @QueryParam("api-version") String apiVersion,
                                                        @HeaderParam("accept-language") String acceptLanguage,
@@ -117,7 +117,7 @@ public interface SecretService {
     @Get("deletedsecrets/{secret-name}")
     @ExpectedResponses({200, 404})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<DeletedSecret>> getDeletedSecretPoller(@HostParam("url") String url,
+    Mono<Response<DeletedSecret>> getDeletedSecretPollerAsync(@HostParam("url") String url,
                                                    @PathParam("secret-name") String secretName,
                                                    @QueryParam("api-version") String apiVersion,
                                                    @HeaderParam("accept-language") String acceptLanguage,
@@ -128,7 +128,7 @@ public interface SecretService {
     @ExpectedResponses({204})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Void>> purgeDeletedSecret(@HostParam("url") String url,
+    Mono<Response<Void>> purgeDeletedSecretAsync(@HostParam("url") String url,
                                           @PathParam("secret-name") String secretName,
                                           @QueryParam("api-version") String apiVersion,
                                           @HeaderParam("accept-language") String acceptLanguage,
@@ -140,7 +140,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultSecret>> recoverDeletedSecret(@HostParam("url") String url,
+    Mono<Response<KeyVaultSecret>> recoverDeletedSecretAsync(@HostParam("url") String url,
                                                         @PathParam("secret-name") String secretName,
                                                         @QueryParam("api-version") String apiVersion,
                                                         @HeaderParam("accept-language") String acceptLanguage,
@@ -152,7 +152,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<SecretBackup>> backupSecret(@HostParam("url") String url,
+    Mono<Response<SecretBackup>> backupSecretAsync(@HostParam("url") String url,
                                                   @PathParam("secret-name") String secretName,
                                                   @QueryParam("api-version") String apiVersion,
                                                   @HeaderParam("accept-language") String acceptLanguage,
@@ -165,7 +165,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<KeyVaultSecret>> restoreSecret(@HostParam("url") String url,
+    Mono<Response<KeyVaultSecret>> restoreSecretAsync(@HostParam("url") String url,
                                                  @QueryParam("api-version") String apiVersion,
                                                  @HeaderParam("accept-language") String acceptLanguage,
                                                  @BodyParam("application/json") SecretRestoreRequestParameters parameters,
@@ -177,7 +177,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretPropertiesPage.class)
-    Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
+    Mono<PagedResponse<SecretProperties>> getSecretsAsync(@HostParam("url") String url,
                                                      @QueryParam("maxresults") Integer maxresults,
                                                      @QueryParam("api-version") String apiVersion,
                                                      @HeaderParam("accept-language") String acceptLanguage,
@@ -189,7 +189,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretPropertiesPage.class)
-    Mono<PagedResponse<SecretProperties>> getSecretVersions(@HostParam("url") String url,
+    Mono<PagedResponse<SecretProperties>> getSecretVersionsAsync(@HostParam("url") String url,
                                                             @PathParam("secret-name") String secretName,
                                                             @QueryParam("maxresults") Integer maxresults,
                                                             @QueryParam("api-version") String apiVersion,
@@ -202,7 +202,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretPropertiesPage.class)
-    Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
+    Mono<PagedResponse<SecretProperties>> getSecretsAsync(@HostParam("url") String url,
                                                      @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                      @HeaderParam("accept-language") String acceptLanguage,
                                                      @HeaderParam("Content-Type") String type,
@@ -213,7 +213,7 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedSecretPage.class)
-    Mono<PagedResponse<DeletedSecret>> getDeletedSecrets(@HostParam("url") String url,
+    Mono<PagedResponse<DeletedSecret>> getDeletedSecretsAsync(@HostParam("url") String url,
                                                               @QueryParam("maxresults") Integer maxresults,
                                                               @QueryParam("api-version") String apiVersion,
                                                               @HeaderParam("accept-language") String acceptLanguage,
@@ -224,9 +224,199 @@ public interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedSecretPage.class)
-    Mono<PagedResponse<DeletedSecret>> getDeletedSecrets(@HostParam("url") String url,
+    Mono<PagedResponse<DeletedSecret>> getDeletedSecretsAsync(@HostParam("url") String url,
                                                      @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                      @HeaderParam("accept-language") String acceptLanguage,
                                                      @HeaderParam("Content-Type") String type,
                                                      Context context);
+
+    @Put("secrets/{secret-name}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVaultSecret> setSecret(@HostParam("url") String url,
+                                       @PathParam("secret-name") String secretName,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @BodyParam("application/json") SecretRequestParameters parameters,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
+
+    @Get("secrets/{secret-name}/{secret-version}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVaultSecret> getSecret(@HostParam("url") String url,
+                                       @PathParam("secret-name") String secretName,
+                                       @PathParam("secret-version") String secretVersion,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
+
+    @Get("secrets/{secret-name}/{secret-version}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVaultSecret> getSecretPoller(@HostParam("url") String url,
+                                             @PathParam("secret-name") String secretName,
+                                             @PathParam("secret-version") String secretVersion,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
+
+
+    @Patch("secrets/{secret-name}/{secret-version}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<SecretProperties> updateSecret(@HostParam("url") String url,
+                                            @PathParam("secret-name") String secretName,
+                                            @PathParam("secret-version") String secretVersion,
+                                            @QueryParam("api-version") String apiVersion,
+                                            @HeaderParam("accept-language") String acceptLanguage,
+                                            @BodyParam("application/json") SecretRequestParameters parameters,
+                                            @HeaderParam("Content-Type") String type,
+                                            Context context);
+
+
+    @Delete("secrets/{secret-name}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<DeletedSecret> deleteSecret(@HostParam("url") String url,
+                                         @PathParam("secret-name") String secretName,
+                                         @QueryParam("api-version") String apiVersion,
+                                         @HeaderParam("accept-language") String acceptLanguage,
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
+
+
+    @Get("deletedsecrets/{secret-name}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<DeletedSecret> getDeletedSecret(@HostParam("url") String url,
+                                             @PathParam("secret-name") String secretName,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
+
+    @Get("deletedsecrets/{secret-name}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<DeletedSecret> getDeletedSecretPoller(@HostParam("url") String url,
+                                                   @PathParam("secret-name") String secretName,
+                                                   @QueryParam("api-version") String apiVersion,
+                                                   @HeaderParam("accept-language") String acceptLanguage,
+                                                   @HeaderParam("Content-Type") String type,
+                                                   Context context);
+
+    @Delete("deletedsecrets/{secret-name}")
+    @ExpectedResponses({204})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<Void> purgeDeletedSecret(@HostParam("url") String url,
+                                      @PathParam("secret-name") String secretName,
+                                      @QueryParam("api-version") String apiVersion,
+                                      @HeaderParam("accept-language") String acceptLanguage,
+                                      @HeaderParam("Content-Type") String type,
+                                      Context context);
+
+
+    @Post("deletedsecrets/{secret-name}/recover")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVaultSecret> recoverDeletedSecret(@HostParam("url") String url,
+                                                  @PathParam("secret-name") String secretName,
+                                                  @QueryParam("api-version") String apiVersion,
+                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                  @HeaderParam("Content-Type") String type,
+                                                  Context context);
+
+
+    @Post("secrets/{secret-name}/backup")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<SecretBackup> backupSecret(@HostParam("url") String url,
+                                        @PathParam("secret-name") String secretName,
+                                        @QueryParam("api-version") String apiVersion,
+                                        @HeaderParam("accept-language") String acceptLanguage,
+                                        @HeaderParam("Content-Type") String type,
+                                        Context context);
+
+
+
+    @Post("secrets/restore")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<KeyVaultSecret> restoreSecret(@HostParam("url") String url,
+                                           @QueryParam("api-version") String apiVersion,
+                                           @HeaderParam("accept-language") String acceptLanguage,
+                                           @BodyParam("application/json") SecretRestoreRequestParameters parameters,
+                                           @HeaderParam("Content-Type") String type,
+                                           Context context);
+
+
+    @Get("secrets")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
+    PagedResponse<SecretProperties> getSecrets(@HostParam("url") String url,
+                                               @QueryParam("maxresults") Integer maxresults,
+                                               @QueryParam("api-version") String apiVersion,
+                                               @HeaderParam("accept-language") String acceptLanguage,
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
+
+
+    @Get("secrets/{secret-name}/versions")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
+    PagedResponse<SecretProperties> getSecretVersions(@HostParam("url") String url,
+                                                      @PathParam("secret-name") String secretName,
+                                                      @QueryParam("maxresults") Integer maxresults,
+                                                      @QueryParam("api-version") String apiVersion,
+                                                      @HeaderParam("accept-language") String acceptLanguage,
+                                                      @HeaderParam("Content-Type") String type,
+                                                      Context context);
+
+
+    @Get("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
+    PagedResponse<SecretProperties> getSecrets(@HostParam("url") String url,
+                                               @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                               @HeaderParam("accept-language") String acceptLanguage,
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
+
+
+    @Get("deletedsecrets")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(DeletedSecretPage.class)
+    PagedResponse<DeletedSecret> getDeletedSecrets(@HostParam("url") String url,
+                                                   @QueryParam("maxresults") Integer maxresults,
+                                                   @QueryParam("api-version") String apiVersion,
+                                                   @HeaderParam("accept-language") String acceptLanguage,
+                                                   @HeaderParam("Content-Type") String type,
+                                                   Context context);
+
+    @Get("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(DeletedSecretPage.class)
+    PagedResponse<DeletedSecret> getDeletedSecrets(@HostParam("url") String url,
+                                                   @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                   @HeaderParam("accept-language") String acceptLanguage,
+                                                   @HeaderParam("Content-Type") String type,
+                                                   Context context);
 }

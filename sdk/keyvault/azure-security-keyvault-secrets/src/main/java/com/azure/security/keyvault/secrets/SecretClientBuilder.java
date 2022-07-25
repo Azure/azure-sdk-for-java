@@ -30,6 +30,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.secrets.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
 import java.net.MalformedURLException;
@@ -155,7 +156,10 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildAsyncClient());
+        SecretAsyncClient secretAsyncClient = buildAsyncClient();
+        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
+        return new SecretClient(secretAsyncClient.getVaultUrl(), secretAsyncClient.getHttpPipeline(),
+            serviceVersion, secretAsyncClient);
     }
 
     /**
