@@ -139,6 +139,24 @@
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
 
+    <!-- Reserved for general Failsafe JVM arguments that affect all SDKs. -->
+    <defaultFailsafeArgLine>
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultFailsafeArgLine>
+
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in integration testing. -->
+    <!-- Defaults to the same value as Surefire. -->
+    <javaModulesFailsafeArgLine>
+      ${javaModulesSurefireArgLine}
+    </javaModulesFailsafeArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <!-- Defaults to the same value as Surefire. -->
+    <additionalFailsafeArgLine>
+      ${additionalSurefireArgLine}
+    </additionalFailsafeArgLine>
+
     <!-- This property configures whether PLAYBACK tests are ran in parallel. Default is true. -->
     <parallelizeTests>true</parallelizeTests>
 
@@ -765,6 +783,37 @@
           </dependencies>
         </plugin>
 
+        <!-- This plugin runs integration tests -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <configuration>
+            <runOrder>alphabetical</runOrder>
+            <useSystemClassLoader>false</useSystemClassLoader>
+            <systemPropertyVariables combine.children="append">
+              <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+              <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              <junit.jupiter.execution.parallel.enabled>${parallelizeTests}</junit.jupiter.execution.parallel.enabled>
+            </systemPropertyVariables>
+            <forkCount>1</forkCount>
+            <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultFailsafeArgLine}
+              ${additionalFailsafeArgLine}
+            </argLine>
+          </configuration>
+          <dependencies>
+            <!-- This dependency is required until maven-failsafe-plugin updates the version they use. -->
+            <!-- The current dependency version doesn't support Java 17. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.3</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+          </dependencies>
+        </plugin>
+
         <!-- Checks public surface area for breaking changes. -->
         <plugin>
           <groupId>org.revapi</groupId>
@@ -1091,6 +1140,22 @@
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
                 ${additionalSurefireArgLine}
+              </argLine>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                ${defaultFailsafeArgLine}
+                ${javaModulesFailsafeArgLine}
+                <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=com.azure.core
+                ${additionalFailsafeArgLine}
               </argLine>
             </configuration>
           </plugin>
