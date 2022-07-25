@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-recoveryservices</artifactId>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-recoveryservices;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-recoveryservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for RecoveryServices Management</name>
