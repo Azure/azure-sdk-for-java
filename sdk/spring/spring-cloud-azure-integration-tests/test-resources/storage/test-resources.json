@@ -13,13 +13,13 @@
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
     },
-    "storageAccounts_springcloudazurestorage_name": {
-      "defaultValue": "springcloudazurestorage",
-      "type": "String"
+    "storageNamePrefix": {
+      "defaultValue": "[substring(uniqueString(parameters('baseName')), 0, 11)]",
+      "type": "string"
     }
   },
   "variables": {
-    "storageAccountsName": "[concat(parameters('baseName'),'-test-storage')]",
+    "storageAccountsName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
     "azureStorageBlobDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe",
     "azureStorageQueueDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/974c5e8b-45b9-4653-ba55-5f855dd0fb88",
     "location": "[resourceGroup().location]"
