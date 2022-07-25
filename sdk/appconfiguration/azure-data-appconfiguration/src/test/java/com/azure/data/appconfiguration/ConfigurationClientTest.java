@@ -40,7 +40,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
 
     private ConfigurationClient client;
-
     @Override
     protected String getTestName() {
         return "";
@@ -70,7 +69,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient(true) : httpClient)
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
             if (getTestMode() != TestMode.PLAYBACK) {

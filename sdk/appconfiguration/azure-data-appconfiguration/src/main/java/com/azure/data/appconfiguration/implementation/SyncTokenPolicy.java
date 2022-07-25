@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -29,47 +30,29 @@ public final class SyncTokenPolicy implements HttpPipelinePolicy {
     private final Map<String, SyncToken> syncTokenMap = new ConcurrentHashMap<>(); // key is sync-token id
     private final ClientLogger logger = new ClientLogger(SyncTokenPolicy.class);
 
-    /**
-     * Add or update the sync token to a thread safe map.
-     *
-     * @param context request context
-     * @param next The next policy to invoke.
-     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
-     */
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
+        }
+
+        @Override
+        protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+            if (response != null) {
+                getUpdateSyncTokenHeaderValue(response);
+            }
+            return response;
+        }
+    };
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-
-        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/20355
-        // Add all of sync-tokens to HTTP request header
-        context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
-
-        return next.process().flatMap(httpResponse -> {
-            getUpdateSyncTokenHeaderValue(httpResponse);
-
-            return Mono.just(httpResponse);
-        });
+        return inner.process(context, next);
     }
 
-    /**
-     * Add or update the sync token to a thread safe map.
-     *
-     * @param context request context
-     * @param next The next policy to invoke.
-     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
-     */
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-
-        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/20355
-        // Add all of sync-tokens to HTTP request header
-        context.getHttpRequest().setHeader(SYNC_TOKEN, getSyncTokenHeader());
-
-        HttpResponse httpResponse = next.processSync();
-
-        // Get the sync-token from HTTP response header
-        getUpdateSyncTokenHeaderValue(httpResponse);
-
-        return httpResponse;
+        return inner.processSync(context, next);
     }
 
     /**

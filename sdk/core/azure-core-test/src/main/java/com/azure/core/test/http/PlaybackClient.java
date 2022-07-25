@@ -9,8 +9,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.Assertions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -40,14 +42,18 @@ public final class PlaybackClient implements HttpClient {
     private final Map<Pattern, String> textReplacementRules;
     private final RecordedData recordedData;
 
+    private final boolean originatedFromSyncClient;
+
     /**
      * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces {@link
      * NetworkCallRecord#getResponse() response text} for any rules specified in {@code textReplacementRules}.
      *
      * @param recordedData The data to playback.
      * @param textReplacementRules A set of rules to replace text in network call responses.
+     * @param originatedFromSyncClient boolean indicating if the request originated from a sync client.
      */
-    public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules) {
+    public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules,
+        boolean originatedFromSyncClient) {
         Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
 
         this.recordedData = recordedData;
@@ -59,14 +65,42 @@ public final class PlaybackClient implements HttpClient {
                 this.textReplacementRules.put(Pattern.compile(kvp.getKey()), kvp.getValue());
             }
         }
+        this.originatedFromSyncClient = originatedFromSyncClient;
+    }
+
+    /**
+     * Creates a PlaybackClient that replays network calls from {@code recordedData} and replaces {@link
+     * NetworkCallRecord#getResponse() response text} for any rules specified in {@code textReplacementRules}.
+     *
+     * @param recordedData The data to playback.
+     * @param textReplacementRules A set of rules to replace text in network call responses.
+     */
+    public PlaybackClient(RecordedData recordedData, Map<String, String> textReplacementRules) {
+        this(recordedData, textReplacementRules, false);
+    }
+
+        /**
+         * {@inheritDoc}
+         */
+    @Override
+    public Mono<HttpResponse> send(final HttpRequest request) {
+        // TODO (savaity): enable once all sync API's are onboarded to sync stack.
+        // if (originatedFromSyncClient) {
+        //     Assertions.fail("'send' incorrectly called from sync client");
+        // }
+        return Mono.fromCallable(() -> playbackHttpResponse(request));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<HttpResponse> send(final HttpRequest request) {
-        return Mono.fromCallable(() -> playbackHttpResponse(request));
+    public HttpResponse sendSync(final HttpRequest request, Context context) {
+        Assertions.assertNotNull(context.getData("com.azure.core.http.restproxy.syncproxy.enable").get());
+        if (!originatedFromSyncClient) {
+            Assertions.fail("'sendSync' incorrectly called from async client");
+        }
+        return playbackHttpResponse(request);
     }
 
     private HttpResponse playbackHttpResponse(final HttpRequest request) {

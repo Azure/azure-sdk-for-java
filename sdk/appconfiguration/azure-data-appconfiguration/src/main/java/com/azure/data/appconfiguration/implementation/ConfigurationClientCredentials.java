@@ -82,7 +82,7 @@ public class ConfigurationClientCredentials {
      */
     Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents
-            .collect(() -> getMessageDigest(), (messageDigest, byteBuffer) -> {
+            .collect(this::getMessageDigest, (messageDigest, byteBuffer) -> {
                 if (messageDigest != null) {
                     messageDigest.update(byteBuffer);
                 }
@@ -104,7 +104,6 @@ public class ConfigurationClientCredentials {
      */
     Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, ByteBuffer byteBuffer) {
         MessageDigest messageDigest = getMessageDigest();
-
         if (messageDigest != null) {
             messageDigest.update(byteBuffer);
         }
@@ -234,10 +233,12 @@ public class ConfigurationClientCredentials {
     }
 
     private MessageDigest getMessageDigest() {
+        MessageDigest messageDigest;
         try {
-            return MessageDigest.getInstance("SHA-256");
+            messageDigest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
+        return messageDigest;
     }
 }

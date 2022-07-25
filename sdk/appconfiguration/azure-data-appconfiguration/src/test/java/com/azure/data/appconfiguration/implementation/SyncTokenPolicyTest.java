@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -147,12 +146,6 @@ public class SyncTokenPolicyTest {
                 .httpClient(new NoOpHttpClient() {
 
                     @Override
-                    public HttpResponse sendSync(HttpRequest request, Context context) {
-                        return new MockHttpResponse(request, 200,
-                            new HttpHeaders().set(SYNC_TOKEN, SYNC_TOKEN_VALUE + ";sn=1"));
-                    }
-
-                    @Override
                     public Mono<HttpResponse> send(HttpRequest request) {
                         return Mono.just(new MockHttpResponse(request, 200,
                             new HttpHeaders().set(SYNC_TOKEN, SYNC_TOKEN_VALUE + ";sn=1")));
@@ -182,14 +175,7 @@ public class SyncTokenPolicyTest {
             return next.process();
         };
 
-        final HttpClient httpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(new MockHttpResponse(request, 200));
-            }
-        };
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(syncTokenPolicy, auditorPolicy)
             .build();
 
@@ -213,14 +199,7 @@ public class SyncTokenPolicyTest {
             return next.process();
         };
 
-        final HttpClient httpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(new MockHttpResponse(request, 200));
-            }
-        };
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
                                           .policies(syncTokenPolicy, auditorPolicy)
                                           .build();
 
