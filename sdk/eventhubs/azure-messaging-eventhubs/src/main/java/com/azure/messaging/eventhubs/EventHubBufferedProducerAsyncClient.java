@@ -346,12 +346,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         private int maxConcurrentSendsPerPartition = 1;
 
         private int maxEventBufferLengthPerPartition = 1500;
-        private Duration maxWaitTime;
+        private Duration maxWaitTime = Duration.ofSeconds(30);
         private Consumer<SendBatchFailedContext> sendFailedContext;
         private Consumer<SendBatchSucceededContext> sendSucceededContext;
-        private int maxConcurrentSends;
+        private int maxConcurrentSends = 1;
 
-        boolean isEnableIdempotentRetries() {
+        boolean enableIdempotentRetries() {
             return enableIdempotentRetries;
         }
 
