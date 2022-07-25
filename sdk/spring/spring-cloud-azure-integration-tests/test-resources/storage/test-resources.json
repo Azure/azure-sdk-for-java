@@ -73,7 +73,8 @@
           "[variables('azureStorageQueueDataContributorRoleId')]"
         ],
         "principalId": "[parameters('testApplicationOid')]"
-      },
+      }
+    },
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
       "apiVersion": "2019-06-01",
