@@ -40,19 +40,27 @@ Licensed under the MIT License.
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl=ALL-UNNAMED
-      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
+
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.batch=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.cpu=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.clienttelemetry=ALL-UNNAMED
-      --add-exports com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.rntbd=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.feedranges=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.patch=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Prevents Checkstyle validating implementation files. -->
