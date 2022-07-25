@@ -32,7 +32,6 @@ private object ThroughputControlHelper {
 
             // Customer can choose different database account for throughput control
             // Get the cosmos client for throughput control
-            // TODO: validate whether to use eventual consistency
             val throughputControlClientConfig =
                 CosmosClientConfiguration.apply(throughputControlConfig.cosmosAccountConfig, diagnosticConfig, false)
 

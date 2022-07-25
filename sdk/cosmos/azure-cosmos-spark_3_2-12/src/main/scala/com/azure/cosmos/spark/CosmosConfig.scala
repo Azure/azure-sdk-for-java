@@ -1267,25 +1267,7 @@ private object CosmosThroughputControlConfig {
             // we will allow the customer to provide a different database account for throughput control
             val throughputControlCosmosAccountConfig =
               CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
-                case Some(_) => {
-                  // use customized throughput control database account
-                  val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
-
-                  // If the customer provided throughput control account endpoint, then throughput control account key is required
-                  assert(throughputControlAccountKey.isDefined)
-
-                  var throughputControlAccountConfigMap = Map[String, String]()
-                  throughputControlAccountConfigMap += (
-                   CosmosConfigNames.AccountEndpoint -> cfg.getOrElse(CosmosConfigNames.ThroughputControlAccountEndpoint, Strings.Emtpy),
-                   CosmosConfigNames.AccountKey -> cfg.getOrElse(CosmosConfigNames.ThroughputControlAccountKey, Strings.Emtpy),
-                   CosmosConfigNames.ApplicationName -> cfg.getOrElse(CosmosConfigNames.ApplicationName, Strings.Emtpy),
-                   CosmosConfigNames.UseGatewayMode -> cfg.getOrElse(CosmosConfigNames.ThroughputControlUseGatewayMode, Strings.Emtpy),
-                   CosmosConfigNames.DisableTcpConnectionEndpointRediscovery -> cfg.getOrElse(CosmosConfigNames.ThroughputControlDisableTcpConnectionEndpointRediscovery, Strings.Emtpy),
-                   CosmosConfigNames.PreferredRegionsList -> cfg.getOrElse(CosmosConfigNames.ThroughputControlPreferredRegionsList, Strings.Emtpy)
-                  )
-
-                  CosmosAccountConfig.parseCosmosAccountConfig(throughputControlAccountConfigMap)
-                }
+                case Some(_) => parseThroughputControlAccountConfig(cfg)
                 case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
               }
 
@@ -1314,8 +1296,67 @@ private object CosmosThroughputControlConfig {
             None
         }
     }
-}
 
+  def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+    // use customized throughput control database account
+    val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
+    val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
+    assert(throughputControlAccountEndpoint.isDefined)
+    assert(throughputControlAccountKey.isDefined)
+
+    val throughputControlAccountConfigMap = mutable.Map[String, String]()
+    val loweredCaseConfiguration = cfg
+     .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }
+
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlAccountEndpoint,
+      CosmosConfigNames.AccountEndpoint)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlAccountKey,
+      CosmosConfigNames.AccountKey)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlUseGatewayMode,
+      CosmosConfigNames.UseGatewayMode)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlDisableTcpConnectionEndpointRediscovery,
+      CosmosConfigNames.DisableTcpConnectionEndpointRediscovery)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlPreferredRegionsList,
+      CosmosConfigNames.PreferredRegionsList)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ApplicationName,
+      CosmosConfigNames.ApplicationName)
+
+    CosmosAccountConfig.parseCosmosAccountConfig(throughputControlAccountConfigMap.toMap)
+  }
+
+  def addNonNullConfig(
+                       originalLowercaseCfg: Map[String, String],
+                       newCfg: mutable.Map[String, String],
+                       originalConfigName: String,
+                       newConfigName: String): Unit = {
+
+    // Convert all config name to lower case
+    val originalLowercaseCfgName = originalConfigName.toLowerCase(Locale.ROOT)
+    val newLowercaseCfgName = newConfigName.toLowerCase(Locale.ROOT)
+
+    if (originalLowercaseCfg.get(originalLowercaseCfgName).isDefined) {
+      newCfg += (newLowercaseCfgName -> originalLowercaseCfg.get(originalLowercaseCfgName).get)
+    }
+  }
+}
 
 private case class CosmosConfigEntry[T](key: String,
                                         keyAlias: Option[String] = Option.empty,
