@@ -80,7 +80,7 @@ stages:
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
             mavenPomFile: aggregate-pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Pjavadoc'
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)

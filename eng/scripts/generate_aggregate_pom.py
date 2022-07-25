@@ -209,9 +209,9 @@ def writeJavadocConfiguration(aggregatePom: TextIOWrapper):
             aggregatePom.write(indent_3 + '<title>')
             aggregatePom.write(name)
             aggregatePom.write('</title>\n')
-            aggregatePom.write(indent_3 + '<package>')
+            aggregatePom.write(indent_3 + '<packages>')
             aggregatePom.write(packages)
-            aggregatePom.write('</package>\n')
+            aggregatePom.write('</packages>\n')
             aggregatePom.write(indent_2 + '</group>\n')
         aggregatePom.write(indent_1 + '</groups>\n')
 
