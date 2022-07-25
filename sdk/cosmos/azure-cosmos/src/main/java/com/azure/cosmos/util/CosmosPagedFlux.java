@@ -96,11 +96,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
      */
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
         if (this.feedResponseConsumer != null) {
-            return new CosmosPagedFlux<T>(
+            return new CosmosPagedFlux<>(
                 this.optionsFluxFunction,
                 this.feedResponseConsumer.andThen(newFeedResponseConsumer));
         } else {
-            return new CosmosPagedFlux<T>(this.optionsFluxFunction, newFeedResponseConsumer);
+            return new CosmosPagedFlux<>(this.optionsFluxFunction, newFeedResponseConsumer);
         }
     }
 
@@ -151,7 +151,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
-        return new CosmosPagedFlux<T>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
+        return new CosmosPagedFlux<>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
     }
 
     private CosmosPagedFluxOptions createCosmosPagedFluxOptions() {
@@ -293,8 +293,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         CosmosDiagnostics diagnostics = feedResponse != null ?
                             feedResponse.getCosmosDiagnostics() : null;
 
-                        if (client != null &&
-                            (clientTelemetryEnabled || clientMetricsEnabled)) {
+                        if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (this.cosmosDiagnosticsAccessor
                                     .isDiagnosticsCapturedInPagedFlux(diagnostics)
                                     .compareAndSet(false, true)) {
@@ -337,7 +336,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                                 startTime.set(Instant.now());
                                 feedResponseConsumerLatencyInNanos.set(0);
-                            };
+                            }
                         }
                         break;
                     default:
