@@ -71,8 +71,8 @@ public final class SliceInner extends Resource {
     }
 
     /**
-     * Get the snssai property: The S-NSSAI (single network slice selection assistance information). Unique at the scope
-     * of a MobileNetwork.
+     * Get the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at the scope of
+     * a mobile network.
      *
      * @return the snssai value.
      */
@@ -81,8 +81,8 @@ public final class SliceInner extends Resource {
     }
 
     /**
-     * Set the snssai property: The S-NSSAI (single network slice selection assistance information). Unique at the scope
-     * of a MobileNetwork.
+     * Set the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at the scope of
+     * a mobile network.
      *
      * @param snssai the snssai value to set.
      * @return the SliceInner object itself.

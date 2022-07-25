@@ -11,11 +11,11 @@ import com.azure.core.util.Context;
 /** Resource collection API of Slices. */
 public interface Slices {
     /**
-     * Deletes the specified mobile network slice.
+     * Deletes the specified network slice.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the mobile network slice.
+     * @param sliceName The name of the network slice.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,11 +23,11 @@ public interface Slices {
     void delete(String resourceGroupName, String mobileNetworkName, String sliceName);
 
     /**
-     * Deletes the specified mobile network slice.
+     * Deletes the specified network slice.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the mobile network slice.
+     * @param sliceName The name of the network slice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,29 +36,29 @@ public interface Slices {
     void delete(String resourceGroupName, String mobileNetworkName, String sliceName, Context context);
 
     /**
-     * Gets information about the specified mobile network slice.
+     * Gets information about the specified network slice.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the mobile network slice.
+     * @param sliceName The name of the network slice.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network slice.
+     * @return information about the specified network slice.
      */
     Slice get(String resourceGroupName, String mobileNetworkName, String sliceName);
 
     /**
-     * Gets information about the specified mobile network slice.
+     * Gets information about the specified network slice.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the mobile network slice.
+     * @param sliceName The name of the network slice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network slice along with {@link Response}.
+     * @return information about the specified network slice along with {@link Response}.
      */
     Response<Slice> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String sliceName, Context context);
@@ -71,7 +71,7 @@ public interface Slices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for attached data network API service call as paginated response with {@link PagedIterable}.
+     * @return response for network slice API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Slice> listByMobileNetwork(String resourceGroupName, String mobileNetworkName);
 
@@ -84,35 +84,35 @@ public interface Slices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for attached data network API service call as paginated response with {@link PagedIterable}.
+     * @return response for network slice API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Slice> listByMobileNetwork(String resourceGroupName, String mobileNetworkName, Context context);
 
     /**
-     * Gets information about the specified mobile network slice.
+     * Gets information about the specified network slice.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network slice along with {@link Response}.
+     * @return information about the specified network slice along with {@link Response}.
      */
     Slice getById(String id);
 
     /**
-     * Gets information about the specified mobile network slice.
+     * Gets information about the specified network slice.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network slice along with {@link Response}.
+     * @return information about the specified network slice along with {@link Response}.
      */
     Response<Slice> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified mobile network slice.
+     * Deletes the specified network slice.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +122,7 @@ public interface Slices {
     void deleteById(String id);
 
     /**
-     * Deletes the specified mobile network slice.
+     * Deletes the specified network slice.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

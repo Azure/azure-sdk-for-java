@@ -31,7 +31,11 @@ public final class StorageCapabilityStorageAccountType
         return fromString(name, StorageCapabilityStorageAccountType.class);
     }
 
-    /** @return known StorageCapabilityStorageAccountType values. */
+    /**
+     * Gets known StorageCapabilityStorageAccountType values.
+     *
+     * @return known StorageCapabilityStorageAccountType values.
+     */
     public static Collection<StorageCapabilityStorageAccountType> values() {
         return values(StorageCapabilityStorageAccountType.class);
     }

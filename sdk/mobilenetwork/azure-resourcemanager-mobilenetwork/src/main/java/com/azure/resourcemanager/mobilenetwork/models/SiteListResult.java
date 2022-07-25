@@ -13,7 +13,7 @@ import java.util.List;
 @Fluent
 public final class SiteListResult {
     /*
-     * A list of sites in a resource group.
+     * A list of sites in a mobile network.
      */
     @JsonProperty(value = "value")
     private List<SiteInner> value;
@@ -25,7 +25,7 @@ public final class SiteListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of sites in a resource group.
+     * Get the value property: A list of sites in a mobile network.
      *
      * @return the value value.
      */
@@ -34,7 +34,7 @@ public final class SiteListResult {
     }
 
     /**
-     * Set the value property: A list of sites in a resource group.
+     * Set the value property: A list of sites in a mobile network.
      *
      * @param value the value value to set.
      * @return the SiteListResult object itself.

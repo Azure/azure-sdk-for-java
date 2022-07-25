@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CloudServiceRoleProperties model. */
+/** The cloud service role properties. */
 @Immutable
 public final class CloudServiceRoleProperties {
     /*

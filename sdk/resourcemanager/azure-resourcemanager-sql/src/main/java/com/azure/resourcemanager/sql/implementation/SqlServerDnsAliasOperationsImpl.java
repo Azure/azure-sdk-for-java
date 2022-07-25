@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.ServerDnsAliasAcquisition;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
@@ -169,7 +170,8 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             .sqlServerManager
             .serviceClient()
             .getServerDnsAliases()
-            .acquire(resourceGroupName, serverName, dnsAliasName, sqlServerId + DNS_ALIASES + dnsAliasName);
+            .acquire(resourceGroupName, serverName, dnsAliasName,
+                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(sqlServerId + DNS_ALIASES + dnsAliasName));
     }
 
     @Override
@@ -179,7 +181,8 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             .sqlServerManager
             .serviceClient()
             .getServerDnsAliases()
-            .acquireAsync(resourceGroupName, serverName, dnsAliasName, sqlServerId + DNS_ALIASES + dnsAliasName);
+            .acquireAsync(resourceGroupName, serverName, dnsAliasName,
+                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(sqlServerId + DNS_ALIASES + dnsAliasName));
     }
 
     @Override
@@ -194,7 +197,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                 resourceId.resourceGroupName(),
                 resourceId.name(),
                 dnsAliasName,
-                newSqlServerId + DNS_ALIASES + dnsAliasName);
+                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(newSqlServerId + DNS_ALIASES + dnsAliasName));
     }
 
     @Override
@@ -209,7 +212,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                 resourceId.resourceGroupName(),
                 resourceId.name(),
                 dnsAliasName,
-                newSqlServerId + DNS_ALIASES + dnsAliasName);
+                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(newSqlServerId + DNS_ALIASES + dnsAliasName));
     }
 
     @Override

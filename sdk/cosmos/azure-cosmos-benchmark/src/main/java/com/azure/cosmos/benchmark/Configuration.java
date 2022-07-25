@@ -186,6 +186,15 @@ public class Configuration {
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
 
+    @Parameter(names = "-clientTelemetryEnabled", description = "Switch to enable client telemetry")
+    private String clientTelemetryEnabled = String.valueOf(false);
+
+    @Parameter(names = "-clientTelemetrySchedulingInSeconds", description = "Client telemetry scheduling intervals in seconds")
+    private int clientTelemetrySchedulingInSeconds = 10 * 60;
+
+    @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
+    private String clientTelemetryEndpoint;
+
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
         Staging; // This is the CTL environment where the worload runs as a long running job
@@ -355,8 +364,8 @@ public class Configuration {
         return consistencyLevel;
     }
 
-    public String isContentResponseOnWriteEnabled() {
-        return contentResponseOnWriteEnabled;
+    public boolean isContentResponseOnWriteEnabled() {
+        return Boolean.parseBoolean(contentResponseOnWriteEnabled);
     }
 
     public String getDatabaseId() {
@@ -487,6 +496,18 @@ public class Configuration {
 
     public boolean isEncryptionEnabled() {
         return encryptionEnabled;
+    }
+
+    public boolean isClientTelemetryEnabled() {
+        return Boolean.parseBoolean(clientTelemetryEnabled);
+    }
+
+    public String getClientTelemetryEndpoint() {
+        return clientTelemetryEndpoint;
+    }
+
+    public int getClientTelemetrySchedulingInSeconds() {
+        return clientTelemetrySchedulingInSeconds;
     }
 
     public void tryGetValuesFromSystem() {

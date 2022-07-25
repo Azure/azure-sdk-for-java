@@ -197,7 +197,9 @@ public class AsynReadWithMultipleClients<T> {
                         .preferredRegions(this.configuration.getPreferredRegionsList())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionSharingAcrossClientsEnabled(true)
-                        .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));
+                        .contentResponseOnWriteEnabled(configuration.isContentResponseOnWriteEnabled())
+                        .clientTelemetryEnabled(configuration.isClientTelemetryEnabled());
+
                     if (this.configuration.getConnectionMode().equals(ConnectionMode.DIRECT)) {
                         cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
                     } else {

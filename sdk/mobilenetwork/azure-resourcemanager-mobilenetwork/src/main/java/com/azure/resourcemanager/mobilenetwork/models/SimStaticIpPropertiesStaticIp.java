@@ -7,20 +7,20 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The static IP configuration for the sim to use at the defined network scope. */
+/** The static IP configuration for the SIM to use at the defined network scope. */
 @Fluent
 public final class SimStaticIpPropertiesStaticIp {
     /*
-     * The IPv4 address assigned to the sim at this network scope. This address
+     * The IPv4 address assigned to the SIM at this network scope. This address
      * must be in the userEquipmentStaticAddressPoolPrefix defined in the
-     * attachedDataNetwork.
+     * attached data network.
      */
     @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
 
     /**
-     * Get the ipv4Address property: The IPv4 address assigned to the sim at this network scope. This address must be in
-     * the userEquipmentStaticAddressPoolPrefix defined in the attachedDataNetwork.
+     * Get the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be in
+     * the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
      *
      * @return the ipv4Address value.
      */
@@ -29,8 +29,8 @@ public final class SimStaticIpPropertiesStaticIp {
     }
 
     /**
-     * Set the ipv4Address property: The IPv4 address assigned to the sim at this network scope. This address must be in
-     * the userEquipmentStaticAddressPoolPrefix defined in the attachedDataNetwork.
+     * Set the ipv4Address property: The IPv4 address assigned to the SIM at this network scope. This address must be in
+     * the userEquipmentStaticAddressPoolPrefix defined in the attached data network.
      *
      * @param ipv4Address the ipv4Address value to set.
      * @return the SimStaticIpPropertiesStaticIp object itself.

@@ -82,6 +82,11 @@ public class SasImplUtils {
             return retVals;
         }
 
+        // trim leading ? if present.
+        if (queryParams.startsWith("?")) {
+            queryParams = queryParams.substring(1);
+        }
+
         // split name value pairs by splitting on the '&' character
         final String[] valuePairs = queryParams.split("&");
 

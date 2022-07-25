@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to represent shoebox properties in json client discovery. */
 @Fluent
 public final class ClientDiscoveryForProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryForProperties.class);
-
     /*
      * Operation properties.
      */
