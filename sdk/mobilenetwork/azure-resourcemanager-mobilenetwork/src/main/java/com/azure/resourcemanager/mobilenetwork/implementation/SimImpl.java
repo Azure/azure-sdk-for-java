@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
-import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
-import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.Sim;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     private SimInner innerObject;
@@ -34,23 +29,6 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public ProvisioningState provisioningState() {
@@ -77,10 +55,6 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         return this.innerModel().operatorKeyCode();
     }
 
-    public MobileNetworkResourceId mobileNetwork() {
-        return this.innerModel().mobileNetwork();
-    }
-
     public String deviceType() {
         return this.innerModel().deviceType();
     }
@@ -98,12 +72,8 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         }
     }
 
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SimInner innerModel() {
@@ -116,12 +86,13 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     private String resourceGroupName;
 
+    private String simGroupName;
+
     private String simName;
 
-    private TagsObject updateParameters;
-
-    public SimImpl withExistingResourceGroup(String resourceGroupName) {
+    public SimImpl withExistingSimGroup(String resourceGroupName, String simGroupName) {
         this.resourceGroupName = resourceGroupName;
+        this.simGroupName = simGroupName;
         return this;
     }
 
@@ -130,7 +101,7 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
             serviceManager
                 .serviceClient()
                 .getSims()
-                .createOrUpdate(resourceGroupName, simName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -139,7 +110,7 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
             serviceManager
                 .serviceClient()
                 .getSims()
-                .createOrUpdate(resourceGroupName, simName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
         return this;
     }
 
@@ -150,7 +121,6 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     }
 
     public SimImpl update() {
-        this.updateParameters = new TagsObject();
         return this;
     }
 
@@ -159,8 +129,7 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
             serviceManager
                 .serviceClient()
                 .getSims()
-                .updateTagsWithResponse(resourceGroupName, simName, updateParameters, Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -169,8 +138,7 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
             serviceManager
                 .serviceClient()
                 .getSims()
-                .updateTagsWithResponse(resourceGroupName, simName, updateParameters, context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
         return this;
     }
 
@@ -178,6 +146,7 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.simGroupName = Utils.getValueFromIdByName(innerObject.id(), "simGroups");
         this.simName = Utils.getValueFromIdByName(innerObject.id(), "sims");
     }
 
@@ -186,7 +155,7 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
             serviceManager
                 .serviceClient()
                 .getSims()
-                .getByResourceGroupWithResponse(resourceGroupName, simName, Context.NONE)
+                .getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -196,34 +165,14 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
             serviceManager
                 .serviceClient()
                 .getSims()
-                .getByResourceGroupWithResponse(resourceGroupName, simName, context)
+                .getWithResponse(resourceGroupName, simGroupName, simName, context)
                 .getValue();
-        return this;
-    }
-
-    public SimImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public SimImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
         return this;
     }
 
     public SimImpl withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         this.innerModel().withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
         return this;
-    }
-
-    public SimImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
     }
 
     public SimImpl withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
@@ -241,11 +190,6 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         return this;
     }
 
-    public SimImpl withMobileNetwork(MobileNetworkResourceId mobileNetwork) {
-        this.innerModel().withMobileNetwork(mobileNetwork);
-        return this;
-    }
-
     public SimImpl withDeviceType(String deviceType) {
         this.innerModel().withDeviceType(deviceType);
         return this;
@@ -259,9 +203,5 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     public SimImpl withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration) {
         this.innerModel().withStaticIpConfiguration(staticIpConfiguration);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }
