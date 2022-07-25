@@ -2,6 +2,12 @@
 
 ## 2.17.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Replaced property `azureDefender` with `defender` of type `ManagedClusterSecurityProfileDefender` 
+  in `ManagedClusterSecurityProfileDefender`.
+- Removed class `ManagedClusterSecurityProfileAzureDefender`.
+
 ### Other Changes
 
 #### Dependency Updates
