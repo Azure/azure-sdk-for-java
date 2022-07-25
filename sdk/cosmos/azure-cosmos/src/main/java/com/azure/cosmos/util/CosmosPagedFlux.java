@@ -186,15 +186,22 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             .doOnEach(signal -> {
 
                 CosmosAsyncClient client = pagedFluxOptions.getCosmosAsyncClient();
-                boolean clientTelemetryEnabled = BridgeInternal.isClientTelemetryEnabled(client);
-                boolean clientMetricsEnabled = ImplementationBridgeHelpers
+
+                boolean clientTelemetryEnabled = false;
+                boolean clientMetricsEnabled = false;
+                ConsistencyLevel consistencyLevel = ConsistencyLevel.EVENTUAL;
+
+                if (client != null) {
+                    clientTelemetryEnabled = BridgeInternal.isClientTelemetryEnabled(client);
+                    clientMetricsEnabled = ImplementationBridgeHelpers
                         .CosmosAsyncClientHelper
                         .getCosmosAsyncClientAccessor()
                         .isClientTelemetryMetricsEnabled(client);
-                ConsistencyLevel consistencyLevel =
-                    BridgeInternal
-                        .getContextClient(pagedFluxOptions.getCosmosAsyncClient())
-                        .getConsistencyLevel();
+                    consistencyLevel =
+                        BridgeInternal
+                            .getContextClient(pagedFluxOptions.getCosmosAsyncClient())
+                            .getConsistencyLevel();
+                }
 
                 switch (signal.getType()) {
                     case ON_COMPLETE:
