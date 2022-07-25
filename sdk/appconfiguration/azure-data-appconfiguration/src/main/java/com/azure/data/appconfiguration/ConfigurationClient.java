@@ -798,7 +798,8 @@ public final class ConfigurationClient {
                     .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         } else {
             return this.serviceClient.unlockKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                null, null, context);
+                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         }
     }
 

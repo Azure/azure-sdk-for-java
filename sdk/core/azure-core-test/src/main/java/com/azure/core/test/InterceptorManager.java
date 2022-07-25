@@ -61,8 +61,6 @@ public class InterceptorManager implements AutoCloseable {
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
 
-    private final boolean originatedFromSyncClient;
-
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
      *
@@ -112,8 +110,7 @@ public class InterceptorManager implements AutoCloseable {
             testContextManager.getTestMode(), testContextManager.doNotRecordTest());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord,
-        boolean originatedFromSyncClient) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
@@ -131,28 +128,23 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             this.recordedData = null;
         }
-        this.originatedFromSyncClient = originatedFromSyncClient;
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord) {
-        this(testName, playbackRecordName, testMode, doNotRecord, false);
-    }
-
-        /**
-         * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
-         * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
-         * NetworkCallRecord#getResponse()}.
-         *
-         * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
-         *
-         * @param testName Name of the test session record.
-         * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
-         * playing back network calls.
-         * @throws UncheckedIOException An existing test session record could not be located or the data could not be
-         * deserialized into an instance of {@link RecordedData}.
-         * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
-         * @deprecated Use {@link #InterceptorManager(String, Map, boolean)} instead.
-         */
+    /**
+     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
+     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * NetworkCallRecord#getResponse()}.
+     *
+     * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
+     *
+     * @param testName Name of the test session record.
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
+     * playing back network calls.
+     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
+     * deserialized into an instance of {@link RecordedData}.
+     * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
+     * @deprecated Use {@link #InterceptorManager(String, Map, boolean)} instead.
+     */
     @Deprecated
     public InterceptorManager(String testName, Map<String, String> textReplacementRules) {
         this(testName, textReplacementRules, false, testName);
@@ -208,9 +200,7 @@ public class InterceptorManager implements AutoCloseable {
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
-        this.originatedFromSyncClient = false;
     }
-
 
     /**
      * Gets whether this InterceptorManager is in playback mode.
@@ -268,17 +258,7 @@ public class InterceptorManager implements AutoCloseable {
      * @return An HTTP client that plays back network calls from its recorded data.
      */
     public HttpClient getPlaybackClient() {
-        return new PlaybackClient(recordedData, textReplacementRules, false);
-    }
-
-    /**
-     * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
-     *
-     * @param originatedFromSyncClient boolean indicating if the request originated from sync client.
-     * @return An HTTP client that plays back network calls from its recorded data.
-     */
-    public HttpClient getPlaybackClient(boolean originatedFromSyncClient) {
-        return new PlaybackClient(recordedData, textReplacementRules, originatedFromSyncClient);
+        return new PlaybackClient(recordedData, textReplacementRules);
     }
 
     /**
