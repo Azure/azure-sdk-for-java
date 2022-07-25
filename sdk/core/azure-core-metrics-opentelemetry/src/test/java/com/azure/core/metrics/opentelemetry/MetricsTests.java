@@ -95,7 +95,9 @@ public class MetricsTests {
 
     @Test
     public void disabledMetric() {
-        MetricsOptions options = new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider).setEnabled(false);
+        MetricsOptions options = new OpenTelemetryMetricsOptions()
+            .setEnabled(false)
+            .setProvider(sdkMeterProvider);
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
         DoubleHistogram histogram = meter
             .createDoubleHistogram("az.sdk.test-histogram", "important metric", null);

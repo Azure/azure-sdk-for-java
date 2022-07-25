@@ -33,4 +33,13 @@ public class OpenTelemetryMetricsOptions extends MetricsOptions {
         this.provider = provider;
         return this;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OpenTelemetryMetricsOptions setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        return this;
+    }
 }
