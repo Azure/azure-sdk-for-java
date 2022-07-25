@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cosmos.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.cosmos.fluent.CassandraClustersClient;
 import com.azure.resourcemanager.cosmos.fluent.CassandraDataCentersClient;
@@ -39,6 +38,7 @@ import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlContainersClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.RestorableSqlResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.ServicesClient;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -47,8 +47,6 @@ import java.time.Duration;
 /** Initializes a new instance of the CosmosDBManagementClientImpl type. */
 @ServiceClient(builder = CosmosDBManagementClientBuilder.class)
 public final class CosmosDBManagementClientImpl extends AzureServiceClient implements CosmosDBManagementClient {
-    private final ClientLogger logger = new ClientLogger(CosmosDBManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -349,6 +347,30 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.locations;
     }
 
+    /** The CassandraClustersClient object to access its operations. */
+    private final CassandraClustersClient cassandraClusters;
+
+    /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    public CassandraClustersClient getCassandraClusters() {
+        return this.cassandraClusters;
+    }
+
+    /** The CassandraDataCentersClient object to access its operations. */
+    private final CassandraDataCentersClient cassandraDataCenters;
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    public CassandraDataCentersClient getCassandraDataCenters() {
+        return this.cassandraDataCenters;
+    }
+
     /** The NotebookWorkspacesClient object to access its operations. */
     private final NotebookWorkspacesClient notebookWorkspaces;
 
@@ -469,28 +491,16 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         return this.restorableMongodbResources;
     }
 
-    /** The CassandraClustersClient object to access its operations. */
-    private final CassandraClustersClient cassandraClusters;
+    /** The ServicesClient object to access its operations. */
+    private final ServicesClient services;
 
     /**
-     * Gets the CassandraClustersClient object to access its operations.
+     * Gets the ServicesClient object to access its operations.
      *
-     * @return the CassandraClustersClient object.
+     * @return the ServicesClient object.
      */
-    public CassandraClustersClient getCassandraClusters() {
-        return this.cassandraClusters;
-    }
-
-    /** The CassandraDataCentersClient object to access its operations. */
-    private final CassandraDataCentersClient cassandraDataCenters;
-
-    /**
-     * Gets the CassandraDataCentersClient object to access its operations.
-     *
-     * @return the CassandraDataCentersClient object.
-     */
-    public CassandraDataCentersClient getCassandraDataCenters() {
-        return this.cassandraDataCenters;
+    public ServicesClient getServices() {
+        return this.services;
     }
 
     /**
@@ -516,7 +526,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-15";
+        this.apiVersion = "2022-05-15";
         this.databaseAccounts = new DatabaseAccountsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -536,6 +546,8 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.cassandraResources = new CassandraResourcesClientImpl(this);
         this.gremlinResources = new GremlinResourcesClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.cassandraClusters = new CassandraClustersClientImpl(this);
+        this.cassandraDataCenters = new CassandraDataCentersClientImpl(this);
         this.notebookWorkspaces = new NotebookWorkspacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
@@ -546,7 +558,6 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
         this.restorableMongodbDatabases = new RestorableMongodbDatabasesClientImpl(this);
         this.restorableMongodbCollections = new RestorableMongodbCollectionsClientImpl(this);
         this.restorableMongodbResources = new RestorableMongodbResourcesClientImpl(this);
-        this.cassandraClusters = new CassandraClustersClientImpl(this);
-        this.cassandraDataCenters = new CassandraDataCentersClientImpl(this);
+        this.services = new ServicesClientImpl(this);
     }
 }

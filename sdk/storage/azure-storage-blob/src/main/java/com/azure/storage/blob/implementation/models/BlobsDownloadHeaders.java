@@ -6,6 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobType;
@@ -16,6 +18,8 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The BlobsDownloadHeaders model. */
@@ -279,6 +283,117 @@ public final class BlobsDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-scope")
     private String xMsEncryptionScope;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of BlobsDownloadHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public BlobsDownloadHeaders(HttpHeaders rawHeaders) {
+        if (rawHeaders.getValue("x-ms-is-current-version") != null) {
+            this.xMsIsCurrentVersion = Boolean.parseBoolean(rawHeaders.getValue("x-ms-is-current-version"));
+        }
+        if (rawHeaders.getValue("x-ms-lease-status") != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        }
+        if (rawHeaders.getValue("x-ms-tag-count") != null) {
+            this.xMsTagCount = Long.parseLong(rawHeaders.getValue("x-ms-tag-count"));
+        }
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        if (rawHeaders.getValue("x-ms-lease-state") != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        }
+        if (rawHeaders.getValue("x-ms-blob-sealed") != null) {
+            this.xMsBlobSealed = Boolean.parseBoolean(rawHeaders.getValue("x-ms-blob-sealed"));
+        }
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        if (rawHeaders.getValue("x-ms-blob-type") != null) {
+            this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
+        }
+        this.xMsImmutabilityPolicyMode = rawHeaders.getValue("x-ms-immutability-policy-mode");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
+        if (rawHeaders.getValue("x-ms-lease-duration") != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+        }
+        if (rawHeaders.getValue("Content-Length") != null) {
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentType = rawHeaders.getValue("Content-Type");
+        if (rawHeaders.getValue("x-ms-last-access-time") != null) {
+            this.xMsLastAccessTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-last-access-time"));
+        }
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
+        this.xMsCopySource = rawHeaders.getValue("x-ms-copy-source");
+        if (rawHeaders.getValue("x-ms-immutability-policy-until-date") != null) {
+            this.xMsImmutabilityPolicyUntilDate =
+                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-immutability-policy-until-date"));
+        }
+        if (rawHeaders.getValue("x-ms-content-crc64") != null) {
+            this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+        }
+        if (rawHeaders.getValue("x-ms-blob-sequence-number") != null) {
+            this.xMsBlobSequenceNumber = Long.parseLong(rawHeaders.getValue("x-ms-blob-sequence-number"));
+        }
+        this.xMsCopyProgress = rawHeaders.getValue("x-ms-copy-progress");
+        if (rawHeaders.getValue("x-ms-blob-committed-block-count") != null) {
+            this.xMsBlobCommittedBlockCount = Integer.parseInt(rawHeaders.getValue("x-ms-blob-committed-block-count"));
+        }
+        if (rawHeaders.getValue("x-ms-blob-content-md5") != null) {
+            this.xMsBlobContentMd5 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-blob-content-md5"));
+        }
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            if (!header.getName().startsWith("x-ms-meta-")) {
+                continue;
+            }
+            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
+        }
+        this.xMsMeta = xMsMetaHeaderCollection;
+        if (rawHeaders.getValue("x-ms-legal-hold") != null) {
+            this.xMsLegalHold = Boolean.parseBoolean(rawHeaders.getValue("x-ms-legal-hold"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        if (rawHeaders.getValue("Content-MD5") != null) {
+            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+        }
+        if (rawHeaders.getValue("x-ms-copy-completion-time") != null) {
+            this.xMsCopyCompletionTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-copy-completion-time"));
+        }
+        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+        if (rawHeaders.getValue("x-ms-server-encrypted") != null) {
+            this.xMsServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-server-encrypted"));
+        }
+        this.xMsOrPolicyId = rawHeaders.getValue("x-ms-or-policy-id");
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        if (rawHeaders.getValue("x-ms-copy-status") != null) {
+            this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
+        }
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        Map<String, String> xMsOrHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            if (!header.getName().startsWith("x-ms-or-")) {
+                continue;
+            }
+            xMsOrHeaderCollection.put(header.getName().substring(8), header.getValue());
+        }
+        this.xMsOr = xMsOrHeaderCollection;
+        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+    }
 
     /**
      * Get the xMsIsCurrentVersion property: The x-ms-is-current-version property.

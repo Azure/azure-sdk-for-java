@@ -27,7 +27,11 @@ public final class ConflictResolutionMode extends ExpandableStringEnum<ConflictR
         return fromString(name, ConflictResolutionMode.class);
     }
 
-    /** @return known ConflictResolutionMode values. */
+    /**
+     * Gets known ConflictResolutionMode values.
+     *
+     * @return known ConflictResolutionMode values.
+     */
     public static Collection<ConflictResolutionMode> values() {
         return values(ConflictResolutionMode.class);
     }

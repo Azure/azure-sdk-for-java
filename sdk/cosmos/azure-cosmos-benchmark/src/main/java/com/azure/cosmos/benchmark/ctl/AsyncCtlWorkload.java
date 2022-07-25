@@ -96,8 +96,9 @@ public class AsyncCtlWorkload {
             .key(cfg.getMasterKey())
             .preferredRegions(cfg.getPreferredRegionsList())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .clientTelemetryEnabled(true)
-            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {

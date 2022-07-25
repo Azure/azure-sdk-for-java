@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbResourcesGetResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the restorable MongoDB resources. */
 @Immutable
 public final class RestorableMongodbResourcesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableMongodbResourcesListResult.class);
-
     /*
      * List of restorable MongoDB resources, including the database and
      * collection names.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DatabaseRestoreResourceInner> value;
+    private List<RestorableMongodbResourcesGetResultInner> value;
 
     /**
      * Get the value property: List of restorable MongoDB resources, including the database and collection names.
      *
      * @return the value value.
      */
-    public List<DatabaseRestoreResourceInner> value() {
+    public List<RestorableMongodbResourcesGetResultInner> value() {
         return this.value;
     }
 

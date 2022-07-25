@@ -31,7 +31,11 @@ public final class ContentKeyPolicyPlayReadyLicenseType
         return fromString(name, ContentKeyPolicyPlayReadyLicenseType.class);
     }
 
-    /** @return known ContentKeyPolicyPlayReadyLicenseType values. */
+    /**
+     * Gets known ContentKeyPolicyPlayReadyLicenseType values.
+     *
+     * @return known ContentKeyPolicyPlayReadyLicenseType values.
+     */
     public static Collection<ContentKeyPolicyPlayReadyLicenseType> values() {
         return values(ContentKeyPolicyPlayReadyLicenseType.class);
     }

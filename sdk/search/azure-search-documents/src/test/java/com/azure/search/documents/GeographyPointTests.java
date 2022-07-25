@@ -88,6 +88,8 @@ public class GeographyPointTests extends SearchTestBase {
 
     @Test
     public void canRoundTripGeographyPoints() {
+        assert searchClient != null;
+
         List<SimpleDocument> expectedDocuments = getDocuments();
         List<SimpleDocument> actualDocuments = new ArrayList<>();
 

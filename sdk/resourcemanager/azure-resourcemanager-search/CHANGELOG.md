@@ -1,14 +1,18 @@
 # Release History
 
-## 2.16.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.17.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed unused classes.
+
+## 2.16.0 (2022-06-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.15.0 (2022-05-25)
 

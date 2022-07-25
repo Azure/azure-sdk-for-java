@@ -5,60 +5,29 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.JobStepAction;
 import com.azure.resourcemanager.sql.models.JobStepExecutionOptions;
 import com.azure.resourcemanager.sql.models.JobStepOutput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A job step. */
-@JsonFlatten
 @Fluent
-public class JobStepInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepInner.class);
-
+public final class JobStepInner extends ProxyResource {
     /*
-     * The job step's index within the job. If not specified when creating the
-     * job step, it will be created as the last step. If not specified when
-     * updating the job step, the step id is not modified.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.stepId")
-    private Integer stepId;
+    @JsonProperty(value = "properties")
+    private JobStepProperties innerProperties;
 
-    /*
-     * The resource ID of the target group that the job step will be executed
-     * on.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.targetGroup")
-    private String targetGroup;
-
-    /*
-     * The resource ID of the job credential that will be used to connect to
-     * the targets.
-     */
-    @JsonProperty(value = "properties.credential")
-    private String credential;
-
-    /*
-     * The action payload of the job step.
-     */
-    @JsonProperty(value = "properties.action")
-    private JobStepAction action;
-
-    /*
-     * Output destination properties of the job step.
-     */
-    @JsonProperty(value = "properties.output")
-    private JobStepOutput output;
-
-    /*
-     * Execution options for the job step.
-     */
-    @JsonProperty(value = "properties.executionOptions")
-    private JobStepExecutionOptions executionOptions;
+    private JobStepProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the stepId property: The job step's index within the job. If not specified when creating the job step, it
@@ -67,7 +36,7 @@ public class JobStepInner extends ProxyResource {
      * @return the stepId value.
      */
     public Integer stepId() {
-        return this.stepId;
+        return this.innerProperties() == null ? null : this.innerProperties().stepId();
     }
 
     /**
@@ -78,7 +47,10 @@ public class JobStepInner extends ProxyResource {
      * @return the JobStepInner object itself.
      */
     public JobStepInner withStepId(Integer stepId) {
-        this.stepId = stepId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStepProperties();
+        }
+        this.innerProperties().withStepId(stepId);
         return this;
     }
 
@@ -88,7 +60,7 @@ public class JobStepInner extends ProxyResource {
      * @return the targetGroup value.
      */
     public String targetGroup() {
-        return this.targetGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().targetGroup();
     }
 
     /**
@@ -98,7 +70,10 @@ public class JobStepInner extends ProxyResource {
      * @return the JobStepInner object itself.
      */
     public JobStepInner withTargetGroup(String targetGroup) {
-        this.targetGroup = targetGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStepProperties();
+        }
+        this.innerProperties().withTargetGroup(targetGroup);
         return this;
     }
 
@@ -108,7 +83,7 @@ public class JobStepInner extends ProxyResource {
      * @return the credential value.
      */
     public String credential() {
-        return this.credential;
+        return this.innerProperties() == null ? null : this.innerProperties().credential();
     }
 
     /**
@@ -118,7 +93,10 @@ public class JobStepInner extends ProxyResource {
      * @return the JobStepInner object itself.
      */
     public JobStepInner withCredential(String credential) {
-        this.credential = credential;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStepProperties();
+        }
+        this.innerProperties().withCredential(credential);
         return this;
     }
 
@@ -128,7 +106,7 @@ public class JobStepInner extends ProxyResource {
      * @return the action value.
      */
     public JobStepAction action() {
-        return this.action;
+        return this.innerProperties() == null ? null : this.innerProperties().action();
     }
 
     /**
@@ -138,7 +116,10 @@ public class JobStepInner extends ProxyResource {
      * @return the JobStepInner object itself.
      */
     public JobStepInner withAction(JobStepAction action) {
-        this.action = action;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStepProperties();
+        }
+        this.innerProperties().withAction(action);
         return this;
     }
 
@@ -148,7 +129,7 @@ public class JobStepInner extends ProxyResource {
      * @return the output value.
      */
     public JobStepOutput output() {
-        return this.output;
+        return this.innerProperties() == null ? null : this.innerProperties().output();
     }
 
     /**
@@ -158,7 +139,10 @@ public class JobStepInner extends ProxyResource {
      * @return the JobStepInner object itself.
      */
     public JobStepInner withOutput(JobStepOutput output) {
-        this.output = output;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStepProperties();
+        }
+        this.innerProperties().withOutput(output);
         return this;
     }
 
@@ -168,7 +152,7 @@ public class JobStepInner extends ProxyResource {
      * @return the executionOptions value.
      */
     public JobStepExecutionOptions executionOptions() {
-        return this.executionOptions;
+        return this.innerProperties() == null ? null : this.innerProperties().executionOptions();
     }
 
     /**
@@ -178,7 +162,10 @@ public class JobStepInner extends ProxyResource {
      * @return the JobStepInner object itself.
      */
     public JobStepInner withExecutionOptions(JobStepExecutionOptions executionOptions) {
-        this.executionOptions = executionOptions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobStepProperties();
+        }
+        this.innerProperties().withExecutionOptions(executionOptions);
         return this;
     }
 
@@ -188,14 +175,8 @@ public class JobStepInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (action() != null) {
-            action().validate();
-        }
-        if (output() != null) {
-            output().validate();
-        }
-        if (executionOptions() != null) {
-            executionOptions().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

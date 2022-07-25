@@ -3,8 +3,18 @@
 **Azure Spring Data Cosmos** provides Spring Data support for Azure Cosmos DB using the [SQL API][sql_api_query], based on Spring Data framework.
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
-## Spring data version support
-This project supports both `spring-data-commons 2.2.x` and `spring-data-commons 2.3.x` versions. Maven users can inherit from the `spring-boot-starter-parent` project to obtain a dependency management section to let Spring manage the versions for dependencies.
+## Spring Boot Support Policy
+This project supports multiple [Spring Boot Versions][spring_version_mapping]. For complete list of currently supported versions, please visit our [Spring Version Mapping][spring_version_mapping].
+
+Spring Boot releases are marked as "End of Life" when they are no longer supported or released in any form. If you are running an EOL version, you should upgrade as soon as possible. 
+
+Please note that a version can be out of support before it is marked as "End of Life". During this time you should only expect releases for critical bugs or security issues.
+
+For more information on Spring Boot supported versions, please visit [Spring Boot Supported Versions][spring_boot_supported_versions].
+
+## Spring Boot Version Support
+Maven users can inherit from the `spring-boot-starter-parent` project to obtain a dependency management section to let Spring manage the versions for dependencies.
+
 ```xml
 <!-- Inherit defaults from Spring Boot -->
 <parent>
@@ -34,7 +44,11 @@ If you don’t want to use the `spring-boot-starter-parent`, you can still keep 
     </dependencies>
 </dependencyManagement>
 ```
-That setup does not allow you to override individual dependencies using a property as explained above. To achieve the same result, you’d need to add an entry in the dependencyManagement of your project before the `spring-boot-dependencies` entry. For instance, to upgrade to another Spring Data release train you’d add the following to your pom.xml.
+
+## Spring Data Version Support
+This project supports `spring-data-commons 2.6.x` versions.
+
+The above setup does not allow you to override individual dependencies using a property as explained above. To achieve the same result, you’d need to add an entry in the dependencyManagement of your project before the `spring-boot-dependencies` entry. For instance, to upgrade to another Spring Data release train you’d add the following to your pom.xml.
 ```xml
 <dependencyManagement>
     <dependencies>
@@ -68,7 +82,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.22.0</version>
+    <version>3.25.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +126,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
-    
+
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
@@ -973,5 +987,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/
 [maven_link]: https://maven.apache.org/
 [autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
+[spring_version_mapping]: https://aka.ms/spring/versions
+[spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

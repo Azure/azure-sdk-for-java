@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB resource throughput policy. */
 @Fluent
 public final class ThroughputPolicyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputPolicyResource.class);
-
     /*
      * Determines whether the ThroughputPolicy is active or not
      */

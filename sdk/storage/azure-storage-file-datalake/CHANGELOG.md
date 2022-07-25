@@ -1,16 +1,28 @@
 # Release History
 
-## 12.11.0-beta.1 (Unreleased)
+## 12.12.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added ability to set permission, umask, owner, group, ACL, lease, and expiry time to the following:
-  DataLakePathClient.createWithResponse, DataLakeDirectoryClient.createFileWithResponse,
-  DataLakeDirectoryClient.createSubdirectoryWithResponse DataLakeFile.createWithResponse,
-  DataLakeFileSystemClient.createFileWithResponse, and DataLakeFileSystemClient.createDirectoryWithResponse.
+
+### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.11.0 (2022-07-07)
+
+### Features Added
+- GA release for 2021-08-06 service version.
+
+## 12.11.0-beta.1 (2022-06-15)
+
+### Features Added
+- Added support for 2021-08-06 service version.
+- Added ability to set permission, umask, owner, group, ACL, lease, and expiry time to the following:
+  DataLakePathClient.createWithResponse, DataLakeDirectoryClient.createFileWithResponse,
+  DataLakeDirectoryClient.createSubdirectoryWithResponse DataLakeFile.createWithResponse,
+  DataLakeFileSystemClient.createFileWithResponse, and DataLakeFileSystemClient.createDirectoryWithResponse.
 
 ## 12.10.1 (2022-06-08)
 

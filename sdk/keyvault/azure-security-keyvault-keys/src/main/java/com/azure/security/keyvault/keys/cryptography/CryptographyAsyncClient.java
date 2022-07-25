@@ -430,7 +430,9 @@ public class CryptographyAsyncClient {
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      *
      * @return A {@link Mono} containing the decrypted blob.
      *
@@ -487,7 +489,9 @@ public class CryptographyAsyncClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters -->
      *
-     * @param decryptParameters The parameters to use in the decryption operation.
+     * @param decryptParameters The parameters to use in the decryption operation. Microsoft recommends you not use CBC
+     * without first ensuring the integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      *
      * @return A {@link Mono} containing the decrypted blob.
      *

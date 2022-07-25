@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.SearchMetadata;
 import com.azure.resourcemanager.loganalytics.models.SearchSchemaValue;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The get schema operation response. */
 @Fluent
 public final class SearchGetSchemaResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SearchGetSchemaResponseInner.class);
-
     /*
      * The metadata from search results.
      */

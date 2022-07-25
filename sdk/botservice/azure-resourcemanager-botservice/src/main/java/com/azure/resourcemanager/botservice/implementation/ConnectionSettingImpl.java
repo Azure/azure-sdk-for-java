@@ -80,6 +80,10 @@ public final class ConnectionSettingImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectionSettingInner innerModel() {
         return this.innerObject;
     }

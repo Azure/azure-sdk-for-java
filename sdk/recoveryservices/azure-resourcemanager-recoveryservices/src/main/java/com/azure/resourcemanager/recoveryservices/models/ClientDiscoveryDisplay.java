@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Localized display information of an operation. */
 @Fluent
 public final class ClientDiscoveryDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryDisplay.class);
-
     /*
      * Name of the provider for display purposes
      */

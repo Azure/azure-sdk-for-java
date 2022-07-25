@@ -47,7 +47,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,9 +89,12 @@ The `DefaultAzureCredential` will attempt to authenticate via the following mech
 1. **Environment** - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
 1. **Managed Identity** - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
 1. **IntelliJ** - If the developer has authenticated via Azure Toolkit for IntelliJ, the `DefaultAzureCredential` will authenticate with that account.
-1. **Visual Studio Code** - If the developer has authenticated via the Visual Studio Code [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account), the `DefaultAzureCredential` will authenticate with that account. It's a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364) that `VisualStudioCodeCredential` doesn't work with Azure Account extension versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider [authenticating via the Azure CLI](#authenticating-via-development-tools).
 1. **Azure CLI** - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
 1. **Azure PowerShell** - If the developer has authenticated an account via the Azure PowerShell `Connect-AzAccount` command, the `DefaultAzureCredential` will authenticate with that account.
+
+#### Note about `VisualStudioCodeCredential`
+
+Due to a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364), `VisualStudioCodeCredential` has been removed from the `DefaultAzureCredential` token chain. When the issue is resolved in a future release it will return.
 
 ## Examples
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples). 
@@ -453,7 +456,11 @@ Credentials can be chained together to be tried in turn until one succeeds using
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
-      <td>path to a PEM-encoded certificate file including private key (without password protection)</td>
+      <td>path to a PEM-encoded certificate file including private key</td>
+    </tr>
+    <tr>
+        <td><code>AZURE_CLIENT_CERTIFICATE_PASSWORD</code></td>
+        <td>(optional) password for certificate. If not specified, certificate cannot be password protected.</td>
     </tr>
   </tbody>
 </table>

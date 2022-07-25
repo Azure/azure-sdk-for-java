@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains GetByResourceGroup. */
 public final class DomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Domains_Get.json
      */
     /**
      * Sample code: Domains_Get.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites GetStaticSiteCustomDomain. */
 public final class StaticSitesGetStaticSiteCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSiteCustomDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetStaticSiteCustomDomain.json
      */
     /**
      * Sample code: Get custom domain for a static site.

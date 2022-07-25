@@ -117,6 +117,10 @@ public final class ApplicationGroupImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationGroupInner innerModel() {
         return this.innerObject;
     }

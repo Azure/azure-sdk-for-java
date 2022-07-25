@@ -30,7 +30,11 @@ public final class SimState extends ExpandableStringEnum<SimState> {
         return fromString(name, SimState.class);
     }
 
-    /** @return known SimState values. */
+    /**
+     * Gets known SimState values.
+     *
+     * @return known SimState values.
+     */
     public static Collection<SimState> values() {
         return values(SimState.class);
     }

@@ -30,7 +30,11 @@ public final class WebApplicationFirewallAction extends ExpandableStringEnum<Web
         return fromString(name, WebApplicationFirewallAction.class);
     }
 
-    /** @return known WebApplicationFirewallAction values. */
+    /**
+     * Gets known WebApplicationFirewallAction values.
+     *
+     * @return known WebApplicationFirewallAction values.
+     */
     public static Collection<WebApplicationFirewallAction> values() {
         return values(WebApplicationFirewallAction.class);
     }

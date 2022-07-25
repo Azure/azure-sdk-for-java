@@ -839,12 +839,12 @@ class FileAsyncAPITests extends APISpec {
             .setSmbProperties(smbProperties)
             .setFilePermission(setFilePermission ? filePermission : null)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setPermissionCopyModeType(permissionType)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
 
         def copyInfoVerifier = StepVerifier.create(poller)
 
@@ -867,11 +867,11 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
         def options = new ShareFileCopyOptions()
             .setIgnoreReadOnly(true)
-            .setSetArchiveAttribute(true)
+            .setArchiveAttribute(true)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
 
         def copyInfoVerifier = StepVerifier.create(poller)
 
@@ -900,8 +900,8 @@ class FileAsyncAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
 
         def copyInfoVerifier = StepVerifier.create(poller)
 
@@ -931,8 +931,8 @@ class FileAsyncAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -962,8 +962,8 @@ class FileAsyncAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -989,8 +989,8 @@ class FileAsyncAPITests extends APISpec {
             .setDestinationRequestConditions(conditions)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -1011,7 +1011,7 @@ class FileAsyncAPITests extends APISpec {
 
 
         when:
-        primaryFileAsyncClient.beginCopy(sourceURL, getPollingDuration(1000), options).blockFirst()
+        primaryFileAsyncClient.beginCopy(sourceURL, options, getPollingDuration(1000)).blockFirst()
 
         then:
         // exception: LeaseNotPresentWithFileOperation
@@ -1026,8 +1026,8 @@ class FileAsyncAPITests extends APISpec {
             .setMetadata(testMetadata)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -1060,8 +1060,8 @@ class FileAsyncAPITests extends APISpec {
             .setSmbPropertiesToCopy(list)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -1102,7 +1102,7 @@ class FileAsyncAPITests extends APISpec {
             .setSmbPropertiesToCopy(list)
 
         when:
-        primaryFileAsyncClient.beginCopy(sourceURL, getPollingDuration(1000), options)
+        primaryFileAsyncClient.beginCopy(sourceURL, options, getPollingDuration(1000))
 
         then:
         thrown(IllegalArgumentException)

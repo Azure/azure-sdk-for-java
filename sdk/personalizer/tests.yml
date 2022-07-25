@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: personalizer
+      timeoutInMinutes: 240 # how long to run the job before automatically cancelling
+      Artifacts:
+        - name: azure-ai-personalizer
+          groupId: com.azure
+          safeName: azureaipersonalizer

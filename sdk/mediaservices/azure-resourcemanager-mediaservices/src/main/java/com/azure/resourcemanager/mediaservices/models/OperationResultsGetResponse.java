@@ -29,7 +29,11 @@ public final class OperationResultsGetResponse extends ResponseBase<OperationRes
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public AssetTrackInner getValue() {
         return super.getValue();

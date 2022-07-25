@@ -29,7 +29,7 @@ public interface PercentileSourceTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PercentileMetricInner> listMetricsAsync(
@@ -51,7 +51,7 @@ public interface PercentileSourceTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PercentileMetricInner> listMetrics(
@@ -74,7 +74,7 @@ public interface PercentileSourceTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PercentileMetricInner> listMetrics(

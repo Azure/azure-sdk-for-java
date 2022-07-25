@@ -9,7 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.VolumeBackups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Backup policy information. */
 @Fluent
 public final class BackupPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicyInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -32,7 +29,8 @@ public final class BackupPolicyInner extends Resource {
     private BackupPolicyProperties innerProperties = new BackupPolicyProperties();
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -56,7 +54,7 @@ public final class BackupPolicyInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -213,7 +211,7 @@ public final class BackupPolicyInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model BackupPolicyInner"));
@@ -221,4 +219,6 @@ public final class BackupPolicyInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupPolicyInner.class);
 }

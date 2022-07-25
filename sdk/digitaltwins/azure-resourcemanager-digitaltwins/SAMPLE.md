@@ -49,7 +49,7 @@ import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 /** Samples for DigitalTwins CheckNameAvailability. */
 public final class DigitalTwinsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsCheckNameAvailability_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsCheckNameAvailability_example.json
      */
     /**
      * Sample code: Check name Availability.
@@ -75,7 +75,7 @@ import com.azure.resourcemanager.digitaltwins.models.PublicNetworkAccess;
 /** Samples for DigitalTwins CreateOrUpdate. */
 public final class DigitalTwinsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsPut_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPut_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsInstance resource.
@@ -93,7 +93,7 @@ public final class DigitalTwinsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsPut_WithPublicNetworkAccess.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPut_WithPublicNetworkAccess.json
      */
     /**
      * Sample code: Put a DigitalTwinsInstance resource with publicNetworkAccess property.
@@ -112,7 +112,7 @@ public final class DigitalTwinsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsPut_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPut_WithIdentity_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsInstance resource with identity.
@@ -140,7 +140,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins Delete. */
 public final class DigitalTwinsDeleteSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsDelete_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsDelete_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance resource.
@@ -153,7 +153,7 @@ public final class DigitalTwinsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsDelete_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsDelete_WithIdentity_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance resource with identity.
@@ -175,7 +175,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins GetByResourceGroup. */
 public final class DigitalTwinsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource with identity.
@@ -188,7 +188,7 @@ public final class DigitalTwinsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsGet_WithPrivateEndpointConnection_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsGet_WithPrivateEndpointConnection_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource with a private endpoint connection.
@@ -201,7 +201,7 @@ public final class DigitalTwinsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance resource.
@@ -223,7 +223,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins List. */
 public final class DigitalTwinsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsList_example.json
      */
     /**
      * Sample code: Get DigitalTwinsInstance resources by subscription.
@@ -245,7 +245,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins ListByResourceGroup. */
 public final class DigitalTwinsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsListByResourceGroup_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsListByResourceGroup_example.json
      */
     /**
      * Sample code: Get DigitalTwinsInstance resources by resource group.
@@ -274,7 +274,7 @@ import java.util.Map;
 /** Samples for DigitalTwins Update. */
 public final class DigitalTwinsUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsPatch_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPatch_example.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource.
@@ -292,7 +292,7 @@ public final class DigitalTwinsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsPatch_WithPublicNetworkAccess.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPatch_WithPublicNetworkAccess.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource with publicNetworkAccess property.
@@ -313,7 +313,7 @@ public final class DigitalTwinsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsPatch_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsPatch_WithIdentity_example.json
      */
     /**
      * Sample code: Patch a DigitalTwinsInstance resource with identity.
@@ -352,7 +352,7 @@ import com.azure.resourcemanager.digitaltwins.models.ServiceBus;
 /** Samples for DigitalTwinsEndpoint CreateOrUpdate. */
 public final class DigitalTwinsEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointPut_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointPut_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsEndpoint resource.
@@ -376,7 +376,7 @@ public final class DigitalTwinsEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointPut_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointPut_WithIdentity_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsEndpoint resource with identity.
@@ -407,7 +407,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwinsEndpoint Delete. */
 public final class DigitalTwinsEndpointDeleteSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointDelete_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointDelete_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance endpoint.
@@ -420,7 +420,7 @@ public final class DigitalTwinsEndpointDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointDelete_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointDelete_WithIdentity_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance endpoint with identity.
@@ -442,7 +442,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwinsEndpoint Get. */
 public final class DigitalTwinsEndpointGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoint.
@@ -455,7 +455,7 @@ public final class DigitalTwinsEndpointGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoint with identity.
@@ -477,7 +477,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwinsEndpoint List. */
 public final class DigitalTwinsEndpointListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointsGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointsGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoints.
@@ -490,7 +490,7 @@ public final class DigitalTwinsEndpointListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointsGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointsGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoints with identity.
@@ -512,7 +512,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsOperationsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsOperationsList_example.json
      */
     /**
      * Sample code: Get available operations.
@@ -537,7 +537,7 @@ import com.azure.resourcemanager.digitaltwins.models.PrivateLinkServiceConnectio
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateEndpointConnectionPut_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateEndpointConnectionPut_example.json
      */
     /**
      * Sample code: Update the status of a private endpoint connection with the given name.
@@ -572,7 +572,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateEndpointConnectionDelete_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateEndpointConnectionDelete_example.json
      */
     /**
      * Sample code: Delete private endpoint connection with the specified name.
@@ -596,7 +596,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateEndpointConnectionByConnectionName_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateEndpointConnectionByConnectionName_example.json
      */
     /**
      * Sample code: Get private endpoint connection properties for the given private endpoint.
@@ -620,7 +620,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateEndpointConnectionsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateEndpointConnectionsList_example.json
      */
     /**
      * Sample code: List private endpoint connection properties.
@@ -642,7 +642,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateLinkResourcesByGroupId_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateLinkResourcesByGroupId_example.json
      */
     /**
      * Sample code: Get the specified private link resource for the given Digital Twin.
@@ -664,7 +664,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateLinkResourcesList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateLinkResourcesList_example.json
      */
     /**
      * Sample code: List private link resources for given Digital Twin.
@@ -686,7 +686,7 @@ import com.azure.resourcemanager.digitaltwins.models.AzureDataExplorerConnection
 /** Samples for TimeSeriesDatabaseConnections CreateOrUpdate. */
 public final class TimeSeriesDatabaseConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsPut_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/TimeSeriesDatabaseConnectionsPut_example.json
      */
     /**
      * Sample code: Create or replace a time series database connection for a DigitalTwins instance.
@@ -723,7 +723,7 @@ import com.azure.core.util.Context;
 /** Samples for TimeSeriesDatabaseConnections Delete. */
 public final class TimeSeriesDatabaseConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsDelete_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/TimeSeriesDatabaseConnectionsDelete_example.json
      */
     /**
      * Sample code: Delete a time series database connection for a DigitalTwins instance.
@@ -745,7 +745,7 @@ import com.azure.core.util.Context;
 /** Samples for TimeSeriesDatabaseConnections Get. */
 public final class TimeSeriesDatabaseConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/TimeSeriesDatabaseConnectionsGet_example.json
      */
     /**
      * Sample code: Get time series database connection for a DigitalTwins instance.
@@ -769,7 +769,7 @@ import com.azure.core.util.Context;
 /** Samples for TimeSeriesDatabaseConnections List. */
 public final class TimeSeriesDatabaseConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/TimeSeriesDatabaseConnectionsList_example.json
      */
     /**
      * Sample code: List time series database connections for a DigitalTwins instance.

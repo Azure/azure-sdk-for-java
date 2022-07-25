@@ -103,6 +103,10 @@ public final class DigitalTwinsDescriptionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DigitalTwinsDescriptionInner innerModel() {
         return this.innerObject;
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualRouters Delete. */
 public final class VirtualRoutersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterDelete.json
      */
     /**
      * Sample code: Delete VirtualRouter.

@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 /** A database resource. */
-@JsonFlatten
 @Fluent
-public class DatabaseUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseUpdate.class);
-
+public final class DatabaseUpdate {
     /*
      * The name and tier of the SKU.
      */
@@ -26,246 +22,17 @@ public class DatabaseUpdate {
     private Sku sku;
 
     /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private DatabaseProperties innerProperties;
+
+    /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * Specifies the mode of database creation.
-     *
-     * Default: regular database creation.
-     *
-     * Copy: creates a database as a copy of an existing database.
-     * sourceDatabaseId must be specified as the resource ID of the source
-     * database.
-     *
-     * Secondary: creates a database as a secondary replica of an existing
-     * database. sourceDatabaseId must be specified as the resource ID of the
-     * existing primary database.
-     *
-     * PointInTimeRestore: Creates a database by restoring a point in time
-     * backup of an existing database. sourceDatabaseId must be specified as
-     * the resource ID of the existing database, and restorePointInTime must be
-     * specified.
-     *
-     * Recovery: Creates a database by restoring a geo-replicated backup.
-     * sourceDatabaseId must be specified as the recoverable database resource
-     * ID to restore.
-     *
-     * Restore: Creates a database by restoring a backup of a deleted database.
-     * sourceDatabaseId must be specified. If sourceDatabaseId is the
-     * database's original resource ID, then sourceDatabaseDeletionDate must be
-     * specified. Otherwise sourceDatabaseId must be the restorable dropped
-     * database resource ID and sourceDatabaseDeletionDate is ignored.
-     * restorePointInTime may also be specified to restore from an earlier
-     * point in time.
-     *
-     * RestoreLongTermRetentionBackup: Creates a database by restoring from a
-     * long term retention vault. recoveryServicesRecoveryPointResourceId must
-     * be specified as the recovery point resource ID.
-     *
-     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported
-     * for DataWarehouse edition.
-     */
-    @JsonProperty(value = "properties.createMode")
-    private CreateMode createMode;
-
-    /*
-     * The collation of the database.
-     */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
-
-    /*
-     * The max size of the database expressed in bytes.
-     */
-    @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
-
-    /*
-     * The name of the sample schema to apply when creating this database.
-     */
-    @JsonProperty(value = "properties.sampleName")
-    private SampleName sampleName;
-
-    /*
-     * The resource identifier of the elastic pool containing this database.
-     */
-    @JsonProperty(value = "properties.elasticPoolId")
-    private String elasticPoolId;
-
-    /*
-     * The resource identifier of the source database associated with create
-     * operation of this database.
-     */
-    @JsonProperty(value = "properties.sourceDatabaseId")
-    private String sourceDatabaseId;
-
-    /*
-     * The status of the database.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private DatabaseStatus status;
-
-    /*
-     * The ID of the database.
-     */
-    @JsonProperty(value = "properties.databaseId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID databaseId;
-
-    /*
-     * The creation date of the database (ISO8601 format).
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The current service level objective name of the database.
-     */
-    @JsonProperty(value = "properties.currentServiceObjectiveName", access = JsonProperty.Access.WRITE_ONLY)
-    private String currentServiceObjectiveName;
-
-    /*
-     * The requested service level objective name of the database.
-     */
-    @JsonProperty(value = "properties.requestedServiceObjectiveName", access = JsonProperty.Access.WRITE_ONLY)
-    private String requestedServiceObjectiveName;
-
-    /*
-     * The default secondary region for this database.
-     */
-    @JsonProperty(value = "properties.defaultSecondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultSecondaryLocation;
-
-    /*
-     * Failover Group resource identifier that this database belongs to.
-     */
-    @JsonProperty(value = "properties.failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String failoverGroupId;
-
-    /*
-     * Specifies the point in time (ISO8601 format) of the source database that
-     * will be restored to create the new database.
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * Specifies the time that the database was deleted.
-     */
-    @JsonProperty(value = "properties.sourceDatabaseDeletionDate")
-    private OffsetDateTime sourceDatabaseDeletionDate;
-
-    /*
-     * The resource identifier of the recovery point associated with create
-     * operation of this database.
-     */
-    @JsonProperty(value = "properties.recoveryServicesRecoveryPointId")
-    private String recoveryServicesRecoveryPointId;
-
-    /*
-     * The resource identifier of the long term retention backup associated
-     * with create operation of this database.
-     */
-    @JsonProperty(value = "properties.longTermRetentionBackupResourceId")
-    private String longTermRetentionBackupResourceId;
-
-    /*
-     * The resource identifier of the recoverable database associated with
-     * create operation of this database.
-     */
-    @JsonProperty(value = "properties.recoverableDatabaseId")
-    private String recoverableDatabaseId;
-
-    /*
-     * The resource identifier of the restorable dropped database associated
-     * with create operation of this database.
-     */
-    @JsonProperty(value = "properties.restorableDroppedDatabaseId")
-    private String restorableDroppedDatabaseId;
-
-    /*
-     * Collation of the metadata catalog.
-     */
-    @JsonProperty(value = "properties.catalogCollation")
-    private CatalogCollationType catalogCollation;
-
-    /*
-     * Whether or not this database is zone redundant, which means the replicas
-     * of this database will be spread across multiple availability zones.
-     */
-    @JsonProperty(value = "properties.zoneRedundant")
-    private Boolean zoneRedundant;
-
-    /*
-     * The license type to apply for this database.
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private DatabaseLicenseType licenseType;
-
-    /*
-     * The max log size for this database.
-     */
-    @JsonProperty(value = "properties.maxLogSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Long maxLogSizeBytes;
-
-    /*
-     * This records the earliest start date and time that restore is available
-     * for this database (ISO8601 format).
-     */
-    @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime earliestRestoreDate;
-
-    /*
-     * If enabled, connections that have application intent set to readonly in
-     * their connection string may be routed to a readonly secondary replica.
-     * This property is only settable for Premium and Business Critical
-     * databases.
-     */
-    @JsonProperty(value = "properties.readScale")
-    private DatabaseReadScale readScale;
-
-    /*
-     * The number of readonly secondary replicas associated with the database
-     * to which readonly application intent connections may be routed. This
-     * property is only settable for Hyperscale edition databases.
-     */
-    @JsonProperty(value = "properties.readReplicaCount")
-    private Integer readReplicaCount;
-
-    /*
-     * The name and tier of the SKU.
-     */
-    @JsonProperty(value = "properties.currentSku", access = JsonProperty.Access.WRITE_ONLY)
-    private Sku currentSku;
-
-    /*
-     * Time in minutes after which database is automatically paused. A value of
-     * -1 means that automatic pause is disabled
-     */
-    @JsonProperty(value = "properties.autoPauseDelay")
-    private Integer autoPauseDelay;
-
-    /*
-     * Minimal capacity that database will always have allocated, if not paused
-     */
-    @JsonProperty(value = "properties.minCapacity")
-    private Double minCapacity;
-
-    /*
-     * The date when database was paused by user configuration or action
-     * (ISO8601 format). Null if the database is ready.
-     */
-    @JsonProperty(value = "properties.pausedDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime pausedDate;
-
-    /*
-     * The date when database was resumed by user action or database login
-     * (ISO8601 format). Null if the database is paused.
-     */
-    @JsonProperty(value = "properties.resumedDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime resumedDate;
 
     /**
      * Get the sku property: The name and tier of the SKU.
@@ -285,6 +52,15 @@ public class DatabaseUpdate {
     public DatabaseUpdate withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DatabaseProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -338,7 +114,7 @@ public class DatabaseUpdate {
      * @return the createMode value.
      */
     public CreateMode createMode() {
-        return this.createMode;
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
     }
 
     /**
@@ -373,7 +149,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withCreateMode(CreateMode createMode) {
-        this.createMode = createMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
         return this;
     }
 
@@ -383,7 +162,7 @@ public class DatabaseUpdate {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -393,7 +172,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -403,7 +185,7 @@ public class DatabaseUpdate {
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
-        return this.maxSizeBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
     }
 
     /**
@@ -413,7 +195,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withMaxSizeBytes(Long maxSizeBytes) {
-        this.maxSizeBytes = maxSizeBytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withMaxSizeBytes(maxSizeBytes);
         return this;
     }
 
@@ -423,7 +208,7 @@ public class DatabaseUpdate {
      * @return the sampleName value.
      */
     public SampleName sampleName() {
-        return this.sampleName;
+        return this.innerProperties() == null ? null : this.innerProperties().sampleName();
     }
 
     /**
@@ -433,7 +218,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withSampleName(SampleName sampleName) {
-        this.sampleName = sampleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withSampleName(sampleName);
         return this;
     }
 
@@ -443,7 +231,7 @@ public class DatabaseUpdate {
      * @return the elasticPoolId value.
      */
     public String elasticPoolId() {
-        return this.elasticPoolId;
+        return this.innerProperties() == null ? null : this.innerProperties().elasticPoolId();
     }
 
     /**
@@ -453,7 +241,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withElasticPoolId(String elasticPoolId) {
-        this.elasticPoolId = elasticPoolId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withElasticPoolId(elasticPoolId);
         return this;
     }
 
@@ -464,7 +255,7 @@ public class DatabaseUpdate {
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
-        return this.sourceDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseId();
     }
 
     /**
@@ -475,7 +266,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withSourceDatabaseId(String sourceDatabaseId) {
-        this.sourceDatabaseId = sourceDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withSourceDatabaseId(sourceDatabaseId);
         return this;
     }
 
@@ -485,7 +279,7 @@ public class DatabaseUpdate {
      * @return the status value.
      */
     public DatabaseStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -494,7 +288,7 @@ public class DatabaseUpdate {
      * @return the databaseId value.
      */
     public UUID databaseId() {
-        return this.databaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseId();
     }
 
     /**
@@ -503,7 +297,7 @@ public class DatabaseUpdate {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -512,7 +306,7 @@ public class DatabaseUpdate {
      * @return the currentServiceObjectiveName value.
      */
     public String currentServiceObjectiveName() {
-        return this.currentServiceObjectiveName;
+        return this.innerProperties() == null ? null : this.innerProperties().currentServiceObjectiveName();
     }
 
     /**
@@ -521,7 +315,7 @@ public class DatabaseUpdate {
      * @return the requestedServiceObjectiveName value.
      */
     public String requestedServiceObjectiveName() {
-        return this.requestedServiceObjectiveName;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedServiceObjectiveName();
     }
 
     /**
@@ -530,7 +324,7 @@ public class DatabaseUpdate {
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
-        return this.defaultSecondaryLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultSecondaryLocation();
     }
 
     /**
@@ -539,7 +333,7 @@ public class DatabaseUpdate {
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
-        return this.failoverGroupId;
+        return this.innerProperties() == null ? null : this.innerProperties().failoverGroupId();
     }
 
     /**
@@ -549,7 +343,7 @@ public class DatabaseUpdate {
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
     }
 
     /**
@@ -560,7 +354,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
     }
 
@@ -570,7 +367,7 @@ public class DatabaseUpdate {
      * @return the sourceDatabaseDeletionDate value.
      */
     public OffsetDateTime sourceDatabaseDeletionDate() {
-        return this.sourceDatabaseDeletionDate;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseDeletionDate();
     }
 
     /**
@@ -580,7 +377,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
-        this.sourceDatabaseDeletionDate = sourceDatabaseDeletionDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
         return this;
     }
 
@@ -591,7 +391,7 @@ public class DatabaseUpdate {
      * @return the recoveryServicesRecoveryPointId value.
      */
     public String recoveryServicesRecoveryPointId() {
-        return this.recoveryServicesRecoveryPointId;
+        return this.innerProperties() == null ? null : this.innerProperties().recoveryServicesRecoveryPointId();
     }
 
     /**
@@ -602,7 +402,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withRecoveryServicesRecoveryPointId(String recoveryServicesRecoveryPointId) {
-        this.recoveryServicesRecoveryPointId = recoveryServicesRecoveryPointId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withRecoveryServicesRecoveryPointId(recoveryServicesRecoveryPointId);
         return this;
     }
 
@@ -613,7 +416,7 @@ public class DatabaseUpdate {
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
-        return this.longTermRetentionBackupResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().longTermRetentionBackupResourceId();
     }
 
     /**
@@ -624,7 +427,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
-        this.longTermRetentionBackupResourceId = longTermRetentionBackupResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
         return this;
     }
 
@@ -635,7 +441,7 @@ public class DatabaseUpdate {
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
-        return this.recoverableDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().recoverableDatabaseId();
     }
 
     /**
@@ -646,7 +452,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withRecoverableDatabaseId(String recoverableDatabaseId) {
-        this.recoverableDatabaseId = recoverableDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withRecoverableDatabaseId(recoverableDatabaseId);
         return this;
     }
 
@@ -657,7 +466,7 @@ public class DatabaseUpdate {
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
-        return this.restorableDroppedDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().restorableDroppedDatabaseId();
     }
 
     /**
@@ -668,7 +477,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
-        this.restorableDroppedDatabaseId = restorableDroppedDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withRestorableDroppedDatabaseId(restorableDroppedDatabaseId);
         return this;
     }
 
@@ -678,7 +490,7 @@ public class DatabaseUpdate {
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
-        return this.catalogCollation;
+        return this.innerProperties() == null ? null : this.innerProperties().catalogCollation();
     }
 
     /**
@@ -688,7 +500,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withCatalogCollation(CatalogCollationType catalogCollation) {
-        this.catalogCollation = catalogCollation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withCatalogCollation(catalogCollation);
         return this;
     }
 
@@ -699,7 +514,7 @@ public class DatabaseUpdate {
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
-        return this.zoneRedundant;
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
     }
 
     /**
@@ -710,7 +525,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withZoneRedundant(Boolean zoneRedundant) {
-        this.zoneRedundant = zoneRedundant;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 
@@ -720,7 +538,7 @@ public class DatabaseUpdate {
      * @return the licenseType value.
      */
     public DatabaseLicenseType licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -730,7 +548,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withLicenseType(DatabaseLicenseType licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -740,7 +561,7 @@ public class DatabaseUpdate {
      * @return the maxLogSizeBytes value.
      */
     public Long maxLogSizeBytes() {
-        return this.maxLogSizeBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxLogSizeBytes();
     }
 
     /**
@@ -750,7 +571,7 @@ public class DatabaseUpdate {
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
-        return this.earliestRestoreDate;
+        return this.innerProperties() == null ? null : this.innerProperties().earliestRestoreDate();
     }
 
     /**
@@ -761,7 +582,7 @@ public class DatabaseUpdate {
      * @return the readScale value.
      */
     public DatabaseReadScale readScale() {
-        return this.readScale;
+        return this.innerProperties() == null ? null : this.innerProperties().readScale();
     }
 
     /**
@@ -773,7 +594,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withReadScale(DatabaseReadScale readScale) {
-        this.readScale = readScale;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withReadScale(readScale);
         return this;
     }
 
@@ -785,7 +609,7 @@ public class DatabaseUpdate {
      * @return the readReplicaCount value.
      */
     public Integer readReplicaCount() {
-        return this.readReplicaCount;
+        return this.innerProperties() == null ? null : this.innerProperties().readReplicaCount();
     }
 
     /**
@@ -797,7 +621,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withReadReplicaCount(Integer readReplicaCount) {
-        this.readReplicaCount = readReplicaCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withReadReplicaCount(readReplicaCount);
         return this;
     }
 
@@ -807,7 +634,7 @@ public class DatabaseUpdate {
      * @return the currentSku value.
      */
     public Sku currentSku() {
-        return this.currentSku;
+        return this.innerProperties() == null ? null : this.innerProperties().currentSku();
     }
 
     /**
@@ -817,7 +644,7 @@ public class DatabaseUpdate {
      * @return the autoPauseDelay value.
      */
     public Integer autoPauseDelay() {
-        return this.autoPauseDelay;
+        return this.innerProperties() == null ? null : this.innerProperties().autoPauseDelay();
     }
 
     /**
@@ -828,7 +655,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withAutoPauseDelay(Integer autoPauseDelay) {
-        this.autoPauseDelay = autoPauseDelay;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withAutoPauseDelay(autoPauseDelay);
         return this;
     }
 
@@ -838,7 +668,7 @@ public class DatabaseUpdate {
      * @return the minCapacity value.
      */
     public Double minCapacity() {
-        return this.minCapacity;
+        return this.innerProperties() == null ? null : this.innerProperties().minCapacity();
     }
 
     /**
@@ -848,7 +678,10 @@ public class DatabaseUpdate {
      * @return the DatabaseUpdate object itself.
      */
     public DatabaseUpdate withMinCapacity(Double minCapacity) {
-        this.minCapacity = minCapacity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withMinCapacity(minCapacity);
         return this;
     }
 
@@ -859,7 +692,7 @@ public class DatabaseUpdate {
      * @return the pausedDate value.
      */
     public OffsetDateTime pausedDate() {
-        return this.pausedDate;
+        return this.innerProperties() == null ? null : this.innerProperties().pausedDate();
     }
 
     /**
@@ -869,7 +702,7 @@ public class DatabaseUpdate {
      * @return the resumedDate value.
      */
     public OffsetDateTime resumedDate() {
-        return this.resumedDate;
+        return this.innerProperties() == null ? null : this.innerProperties().resumedDate();
     }
 
     /**
@@ -881,8 +714,8 @@ public class DatabaseUpdate {
         if (sku() != null) {
             sku().validate();
         }
-        if (currentSku() != null) {
-            currentSku().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

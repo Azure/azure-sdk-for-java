@@ -13,15 +13,12 @@ import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithA
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Represents a ApplicationGroup definition. */
 @Fluent
 public final class ApplicationGroupInner extends ResourceModelWithAllowedPropertySet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGroupInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -252,7 +249,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ApplicationGroupInner"));
@@ -260,4 +257,6 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupInner.class);
 }

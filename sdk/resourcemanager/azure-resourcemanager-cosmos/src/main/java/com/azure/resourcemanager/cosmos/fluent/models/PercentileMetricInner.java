@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.MetricName;
 import com.azure.resourcemanager.cosmos.models.PercentileMetricValue;
 import com.azure.resourcemanager.cosmos.models.UnitType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Percentile Metric data. */
 @Immutable
 public final class PercentileMetricInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PercentileMetricInner.class);
-
     /*
      * The start time for the metric (ISO-8601 format).
      */

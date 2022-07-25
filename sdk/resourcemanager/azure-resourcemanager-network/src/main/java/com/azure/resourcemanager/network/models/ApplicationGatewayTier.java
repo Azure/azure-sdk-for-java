@@ -33,7 +33,11 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
         return fromString(name, ApplicationGatewayTier.class);
     }
 
-    /** @return known ApplicationGatewayTier values. */
+    /**
+     * Gets known ApplicationGatewayTier values.
+     *
+     * @return known ApplicationGatewayTier values.
+     */
     public static Collection<ApplicationGatewayTier> values() {
         return values(ApplicationGatewayTier.class);
     }

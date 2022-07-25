@@ -8,7 +8,7 @@ import com.azure.search.documents.indexes.SearchableField;
 /**
  * The data object model is to test exception case.
  */
-public class HotelSearchException {
+public class HotelSearchException extends RuntimeException {
     private int hotelId;
 
     /**

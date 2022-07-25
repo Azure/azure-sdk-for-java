@@ -9,43 +9,42 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultsClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
 import com.azure.resourcemanager.recoveryservices.models.Vaults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VaultsImpl implements Vaults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VaultsImpl.class);
 
     private final VaultsClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public VaultsImpl(VaultsClient innerClient, RecoveryServicesManager serviceManager) {
+    public VaultsImpl(
+        VaultsClient innerClient, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Vault> list() {
         PagedIterable<VaultInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Vault> list(Context context) {
         PagedIterable<VaultInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Vault> listByResourceGroup(String resourceGroupName) {
         PagedIterable<VaultInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Vault> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<VaultInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new VaultImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
     public Vault getByResourceGroup(String resourceGroupName, String vaultName) {
@@ -82,7 +81,7 @@ public final class VaultsImpl implements Vaults {
     public Vault getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,7 +89,7 @@ public final class VaultsImpl implements Vaults {
         }
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
@@ -101,7 +100,7 @@ public final class VaultsImpl implements Vaults {
     public Response<Vault> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class VaultsImpl implements Vaults {
         }
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
@@ -120,7 +119,7 @@ public final class VaultsImpl implements Vaults {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,18 +127,18 @@ public final class VaultsImpl implements Vaults {
         }
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, vaultName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class VaultsImpl implements Vaults {
         }
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
@@ -159,7 +158,7 @@ public final class VaultsImpl implements Vaults {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 

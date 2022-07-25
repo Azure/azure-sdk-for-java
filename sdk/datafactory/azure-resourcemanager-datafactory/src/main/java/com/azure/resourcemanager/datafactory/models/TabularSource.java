@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SapEccSource", value = SapEccSource.class),
     @JsonSubTypes.Type(name = "SapHanaSource", value = SapHanaSource.class),
     @JsonSubTypes.Type(name = "SapOpenHubSource", value = SapOpenHubSource.class),
+    @JsonSubTypes.Type(name = "SapOdpSource", value = SapOdpSource.class),
     @JsonSubTypes.Type(name = "SapTableSource", value = SapTableSource.class),
     @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
     @JsonSubTypes.Type(name = "SqlServerSource", value = SqlServerSource.class),

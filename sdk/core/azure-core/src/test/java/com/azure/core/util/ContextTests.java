@@ -64,6 +64,13 @@ public class ContextTests {
     }
 
     @Test
+    public void addDataValueCanBeNull() {
+        Context context = new Context("key",  null);
+
+        assertFalse(context.getData("key").isPresent());
+    }
+
+    @Test
     public void of() {
         Context context = Context.of(Collections.singletonMap("key", "value"));
 

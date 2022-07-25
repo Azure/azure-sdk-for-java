@@ -28,6 +28,11 @@ public abstract class OkHttpStreamableRequestBody<T extends BinaryDataContent> e
     }
 
     @Override
+    public boolean isOneShot() {
+        return true;
+    }
+
+    @Override
     public final MediaType contentType() {
         return mediaType;
     }

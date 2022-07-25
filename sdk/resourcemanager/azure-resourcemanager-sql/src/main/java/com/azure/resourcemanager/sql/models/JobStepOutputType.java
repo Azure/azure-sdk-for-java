@@ -24,7 +24,11 @@ public final class JobStepOutputType extends ExpandableStringEnum<JobStepOutputT
         return fromString(name, JobStepOutputType.class);
     }
 
-    /** @return known JobStepOutputType values. */
+    /**
+     * Gets known JobStepOutputType values.
+     *
+     * @return known JobStepOutputType values.
+     */
     public static Collection<JobStepOutputType> values() {
         return values(JobStepOutputType.class);
     }
