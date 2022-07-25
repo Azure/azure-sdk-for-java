@@ -18,9 +18,10 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
-import reactor.util.retry.Retry;
 
 import java.io.Closeable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -38,13 +39,6 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final Disposable publishSubscription;
     private final Sinks.Many<EventData> eventSink;
-    private final Retry retryWhenPolicy = Retry.from(signal -> {
-        if (isClosed.get()) {
-            return Mono.empty();
-        } else {
-            return Mono.just(true);
-        }
-    });
     private final CreateBatchOptions createBatchOptions;
     private final Queue<EventData> eventQueue;
 
@@ -188,23 +182,24 @@ class EventHubBufferedPartitionProducer implements Closeable {
     }
 
     private static class PublishResultSubscriber extends BaseSubscriber<PublishResult> {
-        private static final long REQUEST = 1L;
         private final String partitionId;
         private final Consumer<SendBatchSucceededContext> onSucceed;
         private final Consumer<SendBatchFailedContext> onFailed;
+        private final Queue<EventData> dataQueue;
         private final ClientLogger logger;
 
         PublishResultSubscriber(String partitionId, Consumer<SendBatchSucceededContext> onSucceed,
-            Consumer<SendBatchFailedContext> onFailed, ClientLogger logger) {
+            Consumer<SendBatchFailedContext> onFailed, Queue<EventData> dataQueue, ClientLogger logger) {
             this.partitionId = partitionId;
             this.onSucceed = onSucceed;
             this.onFailed = onFailed;
+            this.dataQueue = dataQueue;
             this.logger = logger;
         }
 
         @Override
         protected void hookOnSubscribe(Subscription subscription) {
-            upstream().request(REQUEST);
+            requestUnbounded();
         }
 
         @Override
@@ -214,9 +209,6 @@ class EventHubBufferedPartitionProducer implements Closeable {
             } else {
                 onFailed.accept(new SendBatchFailedContext(result.batch.getEvents(), partitionId, result.error));
             }
-
-            // Request one more PublishResult, which is equivalent to asking for another batch.
-            upstream().request(REQUEST);
         }
 
         @Override
@@ -227,7 +219,18 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
         @Override
         protected void hookOnComplete() {
-            logger.info("Publishing subscription completed.");
+            logger.info("Publishing subscription completed. Clearing rest of queue.");
+
+            final List<EventData> events = new ArrayList<>(this.dataQueue);
+            this.dataQueue.clear();
+
+            onFailed.accept(new SendBatchFailedContext(events, partitionId, null));
+        }
+    }
+
+    static class UncheckedInterruptedException extends RuntimeException {
+        UncheckedInterruptedException(Throwable error) {
+            super("Unable to fetch batch.", error);
         }
     }
 }
