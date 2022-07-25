@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The event request message sent to the service URI. */
 @Fluent
 public final class EventRequestMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventRequestMessage.class);
-
     /*
      * The content of the event request message.
      */
@@ -25,6 +22,7 @@ public final class EventRequestMessage {
      * The headers of the event request message.
      */
     @JsonProperty(value = "headers")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> headers;
 
     /*

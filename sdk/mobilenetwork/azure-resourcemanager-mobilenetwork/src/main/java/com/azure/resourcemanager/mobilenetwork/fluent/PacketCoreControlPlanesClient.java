@@ -98,7 +98,7 @@ public interface PacketCoreControlPlanesClient {
         String resourceGroupName, String packetCoreControlPlaneName, Context context);
 
     /**
-     * Creates or updates a PacketCoreControlPlane.
+     * Creates or updates a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -113,7 +113,7 @@ public interface PacketCoreControlPlanesClient {
         String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters);
 
     /**
-     * Creates or updates a PacketCoreControlPlane.
+     * Creates or updates a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -132,7 +132,7 @@ public interface PacketCoreControlPlanesClient {
         Context context);
 
     /**
-     * Creates or updates a PacketCoreControlPlane.
+     * Creates or updates a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -147,7 +147,7 @@ public interface PacketCoreControlPlanesClient {
         String resourceGroupName, String packetCoreControlPlaneName, PacketCoreControlPlaneInner parameters);
 
     /**
-     * Creates or updates a PacketCoreControlPlane.
+     * Creates or updates a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -166,11 +166,11 @@ public interface PacketCoreControlPlanesClient {
         Context context);
 
     /**
-     * Updates a PacketCoreControlPlane update tags.
+     * Updates packet core control planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update PacketCoreControlPlane tags.
+     * @param parameters Parameters supplied to update packet core control plane tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -181,11 +181,11 @@ public interface PacketCoreControlPlanesClient {
         String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters);
 
     /**
-     * Updates a PacketCoreControlPlane update tags.
+     * Updates packet core control planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update PacketCoreControlPlane tags.
+     * @param parameters Parameters supplied to update packet core control plane tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +197,7 @@ public interface PacketCoreControlPlanesClient {
         String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters, Context context);
 
     /**
-     * Lists all the packetCoreControlPlanes in a subscription.
+     * Lists all the packet core control planes in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,7 +208,7 @@ public interface PacketCoreControlPlanesClient {
     PagedIterable<PacketCoreControlPlaneInner> list();
 
     /**
-     * Lists all the packetCoreControlPlanes in a subscription.
+     * Lists all the packet core control planes in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +221,7 @@ public interface PacketCoreControlPlanesClient {
     PagedIterable<PacketCoreControlPlaneInner> list(Context context);
 
     /**
-     * Lists all the packetCoreControlPlanes in a resource group.
+     * Lists all the packet core control planes in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +234,7 @@ public interface PacketCoreControlPlanesClient {
     PagedIterable<PacketCoreControlPlaneInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all the packetCoreControlPlanes in a resource group.
+     * Lists all the packet core control planes in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.

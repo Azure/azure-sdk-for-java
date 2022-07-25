@@ -47,6 +47,6 @@ public class StorageFileOutputStream extends StorageOutputStream {
         long fileOffset = this.offsetPos;
         this.offsetPos = this.offsetPos + writeLength;
 
-        return this.uploadData(fbb.subscribeOn(Schedulers.elastic()), writeLength, fileOffset);
+        return this.uploadData(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength, fileOffset);
     }
 }

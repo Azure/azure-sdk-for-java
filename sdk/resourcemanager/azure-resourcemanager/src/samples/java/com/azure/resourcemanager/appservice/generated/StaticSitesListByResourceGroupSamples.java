@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites ListByResourceGroup. */
 public final class StaticSitesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetStaticSites.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetStaticSites.json
      */
     /**
      * Sample code: Get static sites for a resource group.

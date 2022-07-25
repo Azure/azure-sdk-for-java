@@ -30,7 +30,11 @@ public final class SampleName extends ExpandableStringEnum<SampleName> {
         return fromString(name, SampleName.class);
     }
 
-    /** @return known SampleName values. */
+    /**
+     * Gets known SampleName values.
+     *
+     * @return known SampleName values.
+     */
     public static Collection<SampleName> values() {
         return values(SampleName.class);
     }

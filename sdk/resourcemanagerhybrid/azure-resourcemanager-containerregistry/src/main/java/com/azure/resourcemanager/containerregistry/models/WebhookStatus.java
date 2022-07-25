@@ -27,7 +27,11 @@ public final class WebhookStatus extends ExpandableStringEnum<WebhookStatus> {
         return fromString(name, WebhookStatus.class);
     }
 
-    /** @return known WebhookStatus values. */
+    /**
+     * Gets known WebhookStatus values.
+     *
+     * @return known WebhookStatus values.
+     */
     public static Collection<WebhookStatus> values() {
         return values(WebhookStatus.class);
     }

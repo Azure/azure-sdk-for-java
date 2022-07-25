@@ -62,8 +62,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the site resource. **TODO**: Confirm if this is
-     * needed.
+     * Get the provisioningState property: The provisioning state of the site resource.
      *
      * @return the provisioningState value.
      */
@@ -72,7 +71,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the networkFunctions property: An array of ids of the network functions deployed on the site, maintained by
+     * Get the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
      * the user.
      *
      * @return the networkFunctions value.
@@ -82,7 +81,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the networkFunctions property: An array of ids of the network functions deployed on the site, maintained by
+     * Set the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
      * the user.
      *
      * @param networkFunctions the networkFunctions value to set.

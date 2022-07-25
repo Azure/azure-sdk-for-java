@@ -169,17 +169,17 @@ public final class ConfidentialLedgerClientBuilder
      * The Confidential Ledger URL, for example
      * https://contoso.confidentialledger.azure.com
      */
-    @Generated private String ledgerUri;
+    @Generated private String ledgerEndpoint;
 
     /**
      * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      *
-     * @param ledgerUri the ledgerUri value.
+     * @param ledgerEndpoint the ledgerEndpoint value.
      * @return the ConfidentialLedgerClientBuilder.
      */
     @Generated
-    public ConfidentialLedgerClientBuilder ledgerUri(String ledgerUri) {
-        this.ledgerUri = ledgerUri;
+    public ConfidentialLedgerClientBuilder ledgerEndpoint(String ledgerEndpoint) {
+        this.ledgerEndpoint = ledgerEndpoint;
         return this;
     }
 
@@ -233,7 +233,7 @@ public final class ConfidentialLedgerClientBuilder
         }
         ConfidentialLedgerClientImpl client =
                 new ConfidentialLedgerClientImpl(
-                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerUri, serviceVersion);
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerEndpoint, serviceVersion);
         return client;
     }
 

@@ -812,7 +812,10 @@ private object SerializationDateTimeConversionModes extends Enumeration {
   type SerializationDateTimeConversionMode = Value
 
   val Default: SerializationDateTimeConversionModes.Value = Value("Default")
-  val AlwaysEpochMilliseconds: SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMilliseconds")
+  val AlwaysEpochMillisecondsWithUtcTimezone:
+    SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMilliseconds")
+  val AlwaysEpochMillisecondsWithSystemDefaultTimezone:
+    SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMillisecondsWithSystemDefaultTimezone")
 }
 
 private case class CosmosSerializationConfig
@@ -836,12 +839,16 @@ private object CosmosSerializationConfig {
     mandatory = false,
     defaultValue = Some(SerializationDateTimeConversionModes.Default),
     parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SerializationDateTimeConversionModes),
-    helpMessage = "The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`). " +
+    helpMessage = "The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`, " +
+      "`AlwaysEpochMillisecondsWithSystemDefaultTimezone`). " +
       "With `Default` the standard Spark 3.* behavior is used (`java.sql.Date`/`java.time.LocalDate` are converted " +
       "to EpochDay, `java.sql.Timestamp`/`java.time.Instant` are converted to MicrosecondsFromEpoch). With " +
       "`AlwaysEpochMilliseconds` the same behavior the Cosmos DB connector for Spark 2.4 used is applied - " +
       "`java.sql.Date`, `java.time.LocalDate`, `java.sql.Timestamp` and `java.time.Instant` are converted " +
-      "to MillisecondsFromEpoch.")
+      "to MillisecondsFromEpoch. The behavior for `AlwaysEpochMillisecondsWithSystemDefaultTimezone` is identical " +
+      "with `AlwaysEpochMilliseconds` except that it will assume System default time zone / Spark session time zone " +
+      "(specified via `spark.sql.session.time zone`) instead of UTC when the date/time to be parsed has no explicit " +
+      "time zone.")
 
   def parseSerializationConfig(cfg: Map[String, String]): CosmosSerializationConfig = {
     val inclusionModeOpt = CosmosConfigEntry.parse(cfg, inclusionMode)

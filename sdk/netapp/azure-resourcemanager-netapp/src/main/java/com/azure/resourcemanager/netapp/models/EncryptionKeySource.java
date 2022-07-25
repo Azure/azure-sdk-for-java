@@ -13,6 +13,9 @@ public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKe
     /** Static value Microsoft.NetApp for EncryptionKeySource. */
     public static final EncryptionKeySource MICROSOFT_NET_APP = fromString("Microsoft.NetApp");
 
+    /** Static value Microsoft.KeyVault for EncryptionKeySource. */
+    public static final EncryptionKeySource MICROSOFT_KEY_VAULT = fromString("Microsoft.KeyVault");
+
     /**
      * Creates or finds a EncryptionKeySource from its string representation.
      *

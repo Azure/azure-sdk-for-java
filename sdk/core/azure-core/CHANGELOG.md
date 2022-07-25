@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`.
+
 ### Other Changes
 
 ## 1.30.0 (2022-06-30)

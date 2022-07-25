@@ -341,6 +341,77 @@ public final class SiteInner extends Resource {
     }
 
     /**
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
+     *
+     * @return the vnetRouteAllEnabled value.
+     */
+    public Boolean vnetRouteAllEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetRouteAllEnabled();
+    }
+
+    /**
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
+     *
+     * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetRouteAllEnabled(vnetRouteAllEnabled);
+        return this;
+    }
+
+    /**
+     * Get the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
+     *
+     * @return the vnetImagePullEnabled value.
+     */
+    public Boolean vnetImagePullEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetImagePullEnabled();
+    }
+
+    /**
+     * Set the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
+     *
+     * @param vnetImagePullEnabled the vnetImagePullEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetImagePullEnabled(Boolean vnetImagePullEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetImagePullEnabled(vnetImagePullEnabled);
+        return this;
+    }
+
+    /**
+     * Get the vnetContentShareEnabled property: To enable accessing content over virtual network.
+     *
+     * @return the vnetContentShareEnabled value.
+     */
+    public Boolean vnetContentShareEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetContentShareEnabled();
+    }
+
+    /**
+     * Set the vnetContentShareEnabled property: To enable accessing content over virtual network.
+     *
+     * @param vnetContentShareEnabled the vnetContentShareEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetContentShareEnabled(Boolean vnetContentShareEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetContentShareEnabled(vnetContentShareEnabled);
+        return this;
+    }
+
+    /**
      * Get the siteConfig property: Configuration of the app.
      *
      * @return the siteConfig value.
@@ -784,6 +855,31 @@ public final class SiteInner extends Resource {
      */
     public UUID inProgressOperationId() {
         return this.innerProperties() == null ? null : this.innerProperties().inProgressOperationId();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
     }
 
     /**
