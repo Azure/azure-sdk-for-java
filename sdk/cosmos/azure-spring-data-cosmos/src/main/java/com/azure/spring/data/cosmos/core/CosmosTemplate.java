@@ -783,6 +783,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         assert feedResponse != null;
         final Iterator<JsonNode> it = feedResponse.getResults().iterator();
 
+        /*
+         * We only use offset on the first page because of the use of continuation tokens.
+         * After we apply the offset to the first page, the continuation token will pick
+         * up the second and future pages at the correct index.
+         */
         int offset = 0;
         if (!pageable.hasPrevious()) {
             offset = (int) pageable.getOffset();
@@ -797,9 +802,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 continue;
             }
 
-            maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
-            final T entity = mappingCosmosConverter.read(returnType, jsonNode);
             if (index >= offset) {
+                maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
+                final T entity = mappingCosmosConverter.read(returnType, jsonNode);
                 result.add(entity);
             }
         }
@@ -820,7 +825,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             pageSize = pageable.getPageSize();
         }
 
-        final CosmosPageRequest pageRequest = CosmosPageRequest.of(pageable.getOffset(),
+        final CosmosPageRequest pageRequest = CosmosPageRequest.of(offset,
             pageable.getPageNumber(),
             pageSize,
             feedResponse.getContinuationToken(),
