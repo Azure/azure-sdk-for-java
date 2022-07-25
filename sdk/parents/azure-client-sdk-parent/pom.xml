@@ -1041,6 +1041,24 @@
                 </configuration>
               </execution>
 
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <testRelease>11</testRelease>
+                  <testIncludes>
+                    <testInclude>module-info.java</testInclude>
+                  </testIncludes>
+                </configuration>
+              </execution>
+
               <!-- then compile with Java 8 -->
               <execution>
                 <id>base-testCompile</id>

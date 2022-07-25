@@ -52,7 +52,6 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.clienttelemetry=ALL-UNNAMED
-
       --add-exports com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
