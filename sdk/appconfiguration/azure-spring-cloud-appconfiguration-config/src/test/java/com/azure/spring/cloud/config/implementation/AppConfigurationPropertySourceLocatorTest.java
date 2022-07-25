@@ -13,12 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.core.env.CompositePropertySource;
@@ -206,6 +209,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationPropertySourceLocator.STARTUP.set(true);
 
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(Duration.ofMinutes(10));
 
         state.setLoadState(TEST_STORE_NAME, false);
 
@@ -218,16 +222,21 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
-        PropertySource<?> source = locator.locate(emptyEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            PropertySource<?> source = locator.locate(emptyEnvironment);
 
-        String[] expectedSourceNames = new String[] {
-            KEY_FILTER + "store1/\0"
-        };
-        assertEquals(expectedSourceNames.length, sources.size());
-        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertTrue(source instanceof CompositePropertySource);
+
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+
+            String[] expectedSourceNames = new String[] {
+                KEY_FILTER + "store1/\0"
+            };
+            assertEquals(expectedSourceNames.length, sources.size());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        }
+        System.out.println(StateHolder.getNextForcedRefresh());
     }
 
     @Test
@@ -335,6 +344,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationPropertySourceLocator.STARTUP.set(false);
 
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(Duration.ofMinutes(10));
 
         state.setLoadState(TEST_STORE_NAME, true);
 

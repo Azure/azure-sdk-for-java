@@ -93,7 +93,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
             clientFactory.getAvailableClients(endpoint).get(0).updateSyncToken(syncToken);
         }
 
-        StateHolder.expireState(originEndpoint);
+        StateHolder.getCurrentState().expireState(originEndpoint);
     }
 
     /**
@@ -114,7 +114,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
                 }
             } catch (Exception e) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.updateNextRefreshTime(refreshInterval, appProperties);
+                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
                 throw e;
             } finally {
                 running.set(false);

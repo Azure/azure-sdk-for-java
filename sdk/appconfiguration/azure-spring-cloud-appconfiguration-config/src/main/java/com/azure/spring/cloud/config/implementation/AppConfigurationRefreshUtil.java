@@ -102,7 +102,7 @@ class AppConfigurationRefreshUtil {
             }
         } catch (Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
-            StateHolder.updateNextRefreshTime(refreshInterval, appProperties);
+            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
             throw e;
         }
     }
@@ -139,15 +139,11 @@ class AppConfigurationRefreshUtil {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
-        if (StateHolder.getLoadStateFeatureFlag(endpoint)) {
-
-            if (configStore.getFeatureFlags().getEnabled()) {
-                refreshWithoutTimeFeatureFlags(client, configStore,
-                    StateHolder.getStateFeatureFlag(endpoint).getWatchKeys(), eventData);
-
-            } else {
-                LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
-            }
+        if (configStore.getFeatureFlags().getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint)) {
+            refreshWithoutTimeFeatureFlags(client, configStore,
+                StateHolder.getStateFeatureFlag(endpoint).getWatchKeys(), eventData);
+        } else {
+            LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
         }
         return eventData.getDoRefresh();
     }
@@ -169,7 +165,7 @@ class AppConfigurationRefreshUtil {
             if (eventData.getDoRefresh()) {
                 // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new
                 // configurations.
-                StateHolder.updateStateRefresh(state, refreshInterval);
+                StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
             }
         }
     }
@@ -209,8 +205,7 @@ class AppConfigurationRefreshUtil {
 
             int watchedKeySize = 0;
 
-            keyCheck:
-            for (ConfigurationSetting currentKey : currentKeys) {
+            keyCheck: for (ConfigurationSetting currentKey : currentKeys) {
 
                 watchedKeySize += 1;
                 for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
@@ -242,7 +237,7 @@ class AppConfigurationRefreshUtil {
 
             // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new
             // configurations.
-            StateHolder.updateStateRefresh(state, refreshInterval);
+            StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
     }
 

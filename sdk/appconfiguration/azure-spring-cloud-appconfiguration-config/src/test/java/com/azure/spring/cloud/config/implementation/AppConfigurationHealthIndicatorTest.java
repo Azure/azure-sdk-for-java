@@ -103,12 +103,6 @@ public class AppConfigurationHealthIndicatorTest {
     public void unheathlyConfigurationStore() {
         String storeName = "singleUnhealthyStoreIndicatorTest";
 
-        StateHolder state = new StateHolder();
-
-        state.setLoadState(storeName, true);
-
-        StateHolder.updateState(state);
-
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
 
         Map<String, AppConfigurationStoreHealth> healthStatus = new HashMap<>();

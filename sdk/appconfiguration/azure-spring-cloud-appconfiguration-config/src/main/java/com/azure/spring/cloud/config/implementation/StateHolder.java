@@ -19,20 +19,25 @@ final class StateHolder {
 
     private static final String FEATURE_ENDPOINT = "_feature";
 
-    private static final Map<String, State> STATE = new ConcurrentHashMap<>();
+    private static StateHolder currentState;
 
-    private static final Map<String, Boolean> LOAD_STATE = new ConcurrentHashMap<>();
+    private final Map<String, State> STATE = new ConcurrentHashMap<>();
 
-    private static Integer clientRefreshAttempts = 1;
+    private final Map<String, Boolean> LOAD_STATE = new ConcurrentHashMap<>();
 
-    private static Instant nextForcedRefresh;
+    private Integer clientRefreshAttempts = 1;
+
+    private Instant nextForcedRefresh;
 
     StateHolder() {
     }
 
+    static StateHolder getCurrentState() {
+        return currentState;
+    }
+
     static void updateState(StateHolder newState) {
-        STATE.putAll(newState.getState());
-        LOAD_STATE.putAll(newState.getLoadState());
+        currentState = newState;
     }
 
     /**
@@ -40,11 +45,15 @@ final class StateHolder {
      * @return the state
      */
     static State getState(String originEndpoint) {
-        return STATE.get(originEndpoint);
+        return currentState.getFullState().get(originEndpoint);
     }
 
-    Map<String, State> getState() {
+    private Map<String, State> getFullState() {
         return STATE;
+    }
+
+    private Map<String, Boolean> getFullLoadState() {
+        return LOAD_STATE;
     }
 
     /**
@@ -52,7 +61,7 @@ final class StateHolder {
      * @return the state
      */
     static State getStateFeatureFlag(String originEndpoint) {
-        return STATE.get(originEndpoint + FEATURE_ENDPOINT);
+        return currentState.getFullState().get(originEndpoint + FEATURE_ENDPOINT);
     }
 
     /**
@@ -83,15 +92,15 @@ final class StateHolder {
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
-    static void updateStateRefresh(State state, Duration duration) {
+    void updateStateRefresh(State state, Duration duration) {
         STATE.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
-    static void expireState(String originEndpoint) {
+    void expireState(String originEndpoint) {
         State oldState = STATE.get(originEndpoint);
         long wait = (long) (new SecureRandom().nextDouble() * MAX_JITTER);
-        
+
         long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
         if (wait < timeLeft) {
             STATE.put(originEndpoint, new State(oldState, Instant.now().plusSeconds(wait)));
@@ -102,7 +111,7 @@ final class StateHolder {
      * @return the loadState
      */
     static boolean getLoadState(String originEndpoint) {
-        return LOAD_STATE.getOrDefault(originEndpoint, false);
+        return currentState.getFullLoadState().getOrDefault(originEndpoint, false);
     }
 
     /**
@@ -134,15 +143,17 @@ final class StateHolder {
      * @return the nextForcedRefresh
      */
     public static Instant getNextForcedRefresh() {
-        return nextForcedRefresh;
+        return currentState.nextForcedRefresh;
     }
 
     /**
      * Set after load or refresh is successful.
      * @param refreshPeriod the refreshPeriod to set
      */
-    public static void setNextForcedRefresh(Duration refreshPeriod) {
-        nextForcedRefresh = Instant.now().plusSeconds(refreshPeriod.getSeconds());
+    public void setNextForcedRefresh(Duration refreshPeriod) {
+        if (refreshPeriod != null) {
+            nextForcedRefresh = Instant.now().plusSeconds(refreshPeriod.getSeconds());
+        }
     }
 
     /**
@@ -151,7 +162,7 @@ final class StateHolder {
      * @param refreshInterval period between refresh checks.
      * @param properties Provider properties for min and max backoff periods.
      */
-    static void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
+    void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
         if (refreshInterval != null) {
             Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
                 clientRefreshAttempts, refreshInterval.getSeconds(), properties);
@@ -184,7 +195,7 @@ final class StateHolder {
      * @param properties App Configuration Provider Properties
      * @return new Refresh Date
      */
-    private static Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
+    private Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
         AppConfigurationProviderProperties properties) {
         // The refresh interval is only updated if it is expired.
         if (!Instant.now().isAfter(nextRefreshCheck)) {

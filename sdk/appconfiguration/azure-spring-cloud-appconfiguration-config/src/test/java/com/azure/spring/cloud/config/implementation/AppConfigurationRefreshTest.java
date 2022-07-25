@@ -27,8 +27,6 @@ import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -46,8 +44,6 @@ import net.jcip.annotations.NotThreadSafe;
 
 @NotThreadSafe
 public class AppConfigurationRefreshTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshTest.class);
 
     private static final String TEST_STORE_NAME = "store1Refresh";
 
@@ -132,6 +128,7 @@ public class AppConfigurationRefreshTest {
         configRefresh = new AppConfigurationPullRefresh(properties, libraryProperties, clientFactoryMock);
 
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
 
         state.setLoadState(TEST_STORE_NAME + testInfo.getDisplayName(), true);
         state.setLoadStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), true);
@@ -148,7 +145,9 @@ public class AppConfigurationRefreshTest {
     @AfterEach
     public void cleanupMethod(TestInfo testInfo) throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        StateHolder.updateState(new StateHolder());
+        StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
+        StateHolder.updateState(state);
     }
 
     @Test
@@ -157,6 +156,7 @@ public class AppConfigurationRefreshTest {
         watchKeys.add(initialResponse());
 
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
         state.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(state);
 
@@ -171,13 +171,11 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void updatedEtagShouldPublishEvent(TestInfo testInfo) throws Exception {
-        LOGGER.error("=====updatedEtagShouldPublishEvent=====\n"
-            + StateHolder.getLoadState(TEST_STORE_NAME + testInfo.getDisplayName()));
-
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
 
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
         state.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(state);
 
@@ -200,6 +198,7 @@ public class AppConfigurationRefreshTest {
         watchKeys.add(updatedResponse());
 
         state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
 
         state.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
@@ -222,15 +221,13 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void updatedFeatureFlagEtagShouldPublishEvent(TestInfo testInfo) throws Exception {
-        LOGGER
-            .error("=====updatedFeatureFlagEtagShouldPublishEvent=====\n"
-                + StateHolder.getLoadState(TEST_STORE_NAME + testInfo.getDisplayName()));
         monitoring.setEnabled(false);
         featureFlagStore.setEnabled(true);
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
 
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
 
         state.setStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys,
             monitoring.getRefreshInterval());
@@ -284,6 +281,7 @@ public class AppConfigurationRefreshTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
         state.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(state);
 
@@ -298,8 +296,6 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void watchKeyThrowError(TestInfo testInfo) throws Exception {
-        LOGGER.error(
-            "=====watchKeyThrowError=====\n" + StateHolder.getLoadState(TEST_STORE_NAME + testInfo.getDisplayName()));
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
         when(clientWrapperMock.getWatchKey(Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException(
             "This would be an IO Exception. An existing connection was forcibly closed by the remote host. Test"));
@@ -322,6 +318,7 @@ public class AppConfigurationRefreshTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
         state.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(state);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
@@ -360,6 +357,7 @@ public class AppConfigurationRefreshTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
         StateHolder state = new StateHolder();
+        state.setNextForcedRefresh(properties.getRefreshInterval());
         state.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(state);
 

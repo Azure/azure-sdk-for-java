@@ -110,6 +110,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         Collections.reverse(configStores); // Last store has the highest precedence
 
         StateHolder newState = new StateHolder();
+        newState.setNextForcedRefresh(properties.getRefreshInterval());
 
         Iterator<ConfigStore> configStoreIterator = configStores.iterator();
         // Feature Management needs to be set in the last config store.
@@ -226,11 +227,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             }
         }
 
-        // If this configuration is set, a forced refresh will happen on the refresh interval.
-        if (properties.getRefreshInterval() != null) {
-            StateHolder.setNextForcedRefresh(properties.getRefreshInterval());
-        }
-
         StateHolder.updateState(newState);
         STARTUP.set(false);
 
@@ -247,7 +243,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             if (properties.getRefreshInterval() != null) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
             }
             ReflectionUtils.rethrowRuntimeException(e);
         } else if (allFailed && configStore.isFailFast()) {
