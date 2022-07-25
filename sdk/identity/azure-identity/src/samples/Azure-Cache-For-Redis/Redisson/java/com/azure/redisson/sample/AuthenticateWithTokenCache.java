@@ -92,7 +92,7 @@ public class AuthenticateWithTokenCache {
     }
 
     /**
-     * The Token Cache to store and proactively refresh the Access Token.
+     * The token cache to store and proactively refresh the access token.
      */
     public static class TokenRefreshCache {
         private final TokenCredential tokenCredential;

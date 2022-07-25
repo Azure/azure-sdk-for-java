@@ -201,13 +201,13 @@ System.out.println(sync.get("Az:testKey").toString());
 
 ##### Supported Token Credentials for Azure AD Authentication
 **Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch Azure AD Access Token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
-* [Client Certificate Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
-* [Client Secret Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
-* [Managed Identity Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
-* [Username Password Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-user-auth#username-password-credential)
-* [Azure CLI Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
-* [Interactive Browser Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
-* [Device Code Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-user-auth#device-code-credential)
+* [Client Certificate Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
+* [Client Secret Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
+* [Managed Identity Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
+* [Username Password Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#username-password-credential)
+* [Azure CLI Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
+* [Interactive Browser Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
+* [Device Code Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
 
 ##### Authenticate with Azure AD: Handle Reauthentication
 This sample is intended to assist in authenticating with Azure AD via Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
@@ -415,11 +415,11 @@ private static AccessToken getAccessToken(TokenCredential tokenCredential, Token
 ```
 
 #### Authenticate with Azure AD: Using Token Cache
-This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a Token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios. The Token Cache stores and proactively refreshes the Azure AD Access Token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
+This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios. The token Cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
-Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library and store it in a Token Cache as shown below and replace it with the password configuring/retrieving logic in your application code.
+Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library. Store the token in a token cache, as shown below. Replace the token with the password configuring/retrieving logic in your application code.
 
 ##### Version 6.2.0.RELEASE or above
 ```xml
@@ -536,7 +536,7 @@ public static class AzureRedisCredentials implements RedisCredentials {
 }
 
 /**
- * The Token Cache to store and proactively refresh the Access Token.
+ * The token cache to store and proactively refresh the access token.
  */
 public static class TokenRefreshCache {
     private final TokenCredential tokenCredential;
@@ -560,7 +560,7 @@ public static class TokenRefreshCache {
 
     /**
      * Gets the cached access token.
-     * @return the {@link AccessToken}
+     * @return the AccessToken
      */
     public AccessToken getAccessToken() {
         if (accessToken != null) {
@@ -673,7 +673,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
 }
 
 /**
- * The Token Cache to store and proactively refresh the Access Token.
+ * The token cache to store and proactively refresh the access token.
  */
 public static class TokenRefreshCache {
     private final TokenCredential tokenCredential;
