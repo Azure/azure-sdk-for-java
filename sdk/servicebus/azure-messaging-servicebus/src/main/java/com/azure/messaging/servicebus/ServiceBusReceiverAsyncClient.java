@@ -854,6 +854,35 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Receives streams of {@link ServiceBusReceivedMessage messages} from rolling sessions.
+     * This method only support for session processor to receive message, so receive option must
+     * be the rolling session receiver.
+     *
+     * @return A stream of session which can receive session messages.
+     *
+     * @throws RuntimeException if receiver is not a rolling session receiver.
+     */
+    Flux<Flux<ServiceBusMessageContext>> receiveMessagesWithContextFromRollingSessions() {
+        if (receiverOptions.isRollingSessionReceiver()) {
+            return sessionManager.receiveFromRollingSessions()
+                .map(messageFlux -> {
+                    Flux<ServiceBusMessageContext> result;
+                    if (receiverOptions.isEnableAutoComplete()) {
+                        result = new FluxAutoComplete(messageFlux, completionLock,
+                            context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
+                            context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
+                    } else {
+                        result = messageFlux;
+                    }
+                    return result
+                        .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+                });
+        }
+        throw LOGGER.logExceptionAsError(new RuntimeException("receiver is not rolling session receiver"));
+    }
+
+
+    /**
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
      * sequence number.
      *

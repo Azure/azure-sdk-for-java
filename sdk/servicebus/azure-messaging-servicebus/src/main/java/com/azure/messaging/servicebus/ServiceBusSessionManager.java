@@ -167,6 +167,18 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     /**
+     * Gets a stream of stream messages from each session.
+     *
+     * @return A Flux of stream messages which is from each session.
+     */
+    Flux<Flux<ServiceBusMessageContext>> receiveFromRollingSessions() {
+        if (!isStarted.getAndSet(true)) {
+            this.sessionReceiveSink.onRequest(this::onSessionRequest);
+        }
+        return processor;
+    }
+
+    /**
      * Renews the session lock.
      *
      * @param sessionId Identifier of session to get.

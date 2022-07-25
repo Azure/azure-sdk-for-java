@@ -13,6 +13,7 @@ import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorC
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
 
@@ -310,75 +311,26 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         }
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
 
+        ReceiverOptions receiverOptions = receiverClient.getReceiverOptions();
+        // If it is session processor, we create subscribers for each session.
+        if (receiverOptions.isRollingSessionReceiver()) {
+            receiverClient.receiveMessagesWithContextFromRollingSessions()
+                .subscribe(this::subscribeReceiveFlux);
+        } else {
+            subscribeReceiveFlux(receiverClient.receiveMessagesWithContext());
+        }
+    }
+
+    private synchronized void subscribeReceiveFlux(Flux<ServiceBusMessageContext> receiveFlux) {
         @SuppressWarnings({"unchecked", "rawtypes"})
         CoreSubscriber<ServiceBusMessageContext>[] subscribers = new CoreSubscriber[processorOptions.getMaxConcurrentCalls()];
 
         for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
-            subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
-                private Subscription subscription = null;
-
-                @Override
-                public void onSubscribe(Subscription subscription) {
-                    this.subscription = subscription;
-                    receiverSubscriptions.put(subscription, subscription);
-                    subscription.request(1);
-                }
-
-                @Override
-                public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
-                    if (serviceBusMessageContext.hasError()) {
-                        handleError(serviceBusMessageContext.getThrowable());
-                    } else {
-                        Context processSpanContext = null;
-                        try {
-                            ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
-                                new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
-
-                            processSpanContext =
-                                startProcessTracingSpan(serviceBusMessageContext.getMessage(),
-                                    receiverClient.getEntityPath(), receiverClient.getFullyQualifiedNamespace());
-                            if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
-                                serviceBusMessageContext.getMessage().addContext(SPAN_CONTEXT_KEY, processSpanContext);
-                            }
-                            processMessage.accept(serviceBusReceivedMessageContext);
-                            endProcessTracingSpan(processSpanContext, Signal.complete());
-                        } catch (Exception ex) {
-                            handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
-                            endProcessTracingSpan(processSpanContext, Signal.error(ex));
-                            if (!processorOptions.isDisableAutoComplete()) {
-                                LOGGER.warning("Error when processing message. Abandoning message.", ex);
-                                abandonMessage(serviceBusMessageContext, receiverClient);
-                            }
-                        }
-                    }
-                    if (isRunning.get()) {
-                        LOGGER.verbose("Requesting 1 more message from upstream");
-                        subscription.request(1);
-                    }
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    LOGGER.info("Error receiving messages.", throwable);
-                    handleError(throwable);
-                    if (isRunning.get()) {
-                        restartMessageReceiver(subscription);
-                    }
-                }
-
-                @Override
-                public void onComplete() {
-                    LOGGER.info("Completed receiving messages.");
-                    if (isRunning.get()) {
-                        restartMessageReceiver(subscription);
-                    }
-                }
-            };
+            subscribers[i] = createMessageSubscriber();
         }
 
         if (processorOptions.getMaxConcurrentCalls() > 1) {
-            receiverClient.receiveMessagesWithContext()
-                .parallel(processorOptions.getMaxConcurrentCalls(), 1)
+            receiveFlux.parallel(processorOptions.getMaxConcurrentCalls(), 1)
                 .runOn(Schedulers.boundedElastic(), 1)
                 .subscribe(subscribers);
         } else {
@@ -386,9 +338,78 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             // the same Bounded-Elastic thread that the Low-Level Receiver obtained. This way, we can avoid
             // the unnecessary thread hopping and allocation that otherwise would have been introduced by the parallel
             // and runOn operators for this code path.
-            receiverClient.receiveMessagesWithContext()
-                .subscribe(subscribers[0]);
+            receiveFlux.subscribe(subscribers[0]);
         }
+    }
+
+    private synchronized CoreSubscriber<ServiceBusMessageContext> createMessageSubscriber() {
+        ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
+        ReceiverOptions receiverOptions = receiverClient.getReceiverOptions();
+
+        return new CoreSubscriber<ServiceBusMessageContext>() {
+            private Subscription subscription = null;
+
+            @Override
+            public void onSubscribe(Subscription subscription) {
+                this.subscription = subscription;
+                receiverSubscriptions.put(subscription, subscription);
+                subscription.request(1);
+            }
+
+            @Override
+            public void onNext(ServiceBusMessageContext serviceBusMessageContext) {
+                if (serviceBusMessageContext.hasError()) {
+                    handleError(serviceBusMessageContext.getThrowable());
+                } else {
+                    Context processSpanContext = null;
+                    try {
+                        ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
+                            new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
+
+                        processSpanContext =
+                            startProcessTracingSpan(serviceBusMessageContext.getMessage(),
+                                receiverClient.getEntityPath(), receiverClient.getFullyQualifiedNamespace());
+                        if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                            serviceBusMessageContext.getMessage().addContext(SPAN_CONTEXT_KEY, processSpanContext);
+                        }
+                        processMessage.accept(serviceBusReceivedMessageContext);
+                        endProcessTracingSpan(processSpanContext, Signal.complete());
+                    } catch (Exception ex) {
+                        handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
+                        endProcessTracingSpan(processSpanContext, Signal.error(ex));
+                        if (!processorOptions.isDisableAutoComplete()) {
+                            LOGGER.warning("Error when processing message. Abandoning message.", ex);
+                            abandonMessage(serviceBusMessageContext, receiverClient);
+                        }
+                    }
+                }
+                if (isRunning.get()) {
+                    LOGGER.verbose("Requesting 1 more message from upstream");
+                    subscription.request(1);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                LOGGER.info("Error receiving messages.", throwable);
+                handleError(throwable);
+                if (isRunning.get()) {
+                    restartMessageReceiver(subscription);
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                // For rolling session receiver, when one session is disposed by idle, it will emit complete signal,
+                // and we don't want to restart message receiver
+                if (!receiverOptions.isRollingSessionReceiver()) {
+                    LOGGER.info("Completed receiving messages.");
+                    if (isRunning.get()) {
+                        restartMessageReceiver(subscription);
+                    }
+                }
+            }
+        };
     }
 
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
