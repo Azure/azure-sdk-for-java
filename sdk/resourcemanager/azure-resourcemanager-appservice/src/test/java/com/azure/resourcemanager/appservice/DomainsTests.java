@@ -54,10 +54,9 @@ public class DomainsTests extends AppServiceTest {
     }
 
     @Test
-    @Disabled("Service didn't deploy topLevelDomains to 2022-03-01, need them to fix it.")
     public void canListTopLevelDomainsAgreements() {
         PagedIterable<TldLegalAgreementInner> iterable = appServiceManager.serviceClient().getTopLevelDomains()
-            .listAgreements("foo", new TopLevelDomainAgreementOption());
+            .listAgreements("com", new TopLevelDomainAgreementOption());
         Assertions.assertNotNull(iterable.stream().collect(Collectors.toList()));
     }
 }
