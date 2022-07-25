@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for MobileNetwork Management</name>
-  <description>This package contains Microsoft Azure SDK for MobileNetwork Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The resources in this swagger specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2022-03-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for MobileNetwork Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The resources in this swagger specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2022-04-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

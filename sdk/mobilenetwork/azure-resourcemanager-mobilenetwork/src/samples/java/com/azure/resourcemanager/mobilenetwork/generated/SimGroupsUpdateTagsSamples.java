@@ -5,22 +5,23 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mobilenetwork.models.Sim;
+import com.azure.resourcemanager.mobilenetwork.models.SimGroup;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Sims UpdateTags. */
-public final class SimsUpdateTagsSamples {
+/** Samples for SimGroups UpdateTags. */
+public final class SimGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupUpdateTags.json
      */
     /**
-     * Sample code: Update sim tags.
+     * Sample code: Update SIM group tags.
      *
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void updateSimTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        Sim resource = manager.sims().getByResourceGroupWithResponse("rg1", "testSim", Context.NONE).getValue();
+    public static void updateSIMGroupTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+        SimGroup resource =
+            manager.simGroups().getByResourceGroupWithResponse("rg1", "testSimGroup", Context.NONE).getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
