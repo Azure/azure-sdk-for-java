@@ -9,6 +9,16 @@
           "Version": "2.13.3"
         }
       }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "jackson-databind",
+          "GroupId": "com.fasterxml.jackson.core",
+          "Version": "2.13.0"
+        }
+      }
     }
   ],
   "Version": 1
