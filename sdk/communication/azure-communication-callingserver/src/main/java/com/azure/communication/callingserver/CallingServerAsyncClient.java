@@ -290,6 +290,16 @@ public final class CallingServerAsyncClient {
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
         return new CallConnectionAsync(callConnectionId, callConnectionInternal, contentsInternal);
     }
+
+    /***
+     * Returns the singleton object of EventHandler.
+     *
+     * @return the instance of EventHandler.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventHandler getEventHandler() {
+        return EventHandler.getEventHandler();
+    }
     //endregion
 
     //region Content management Actions

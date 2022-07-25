@@ -3,45 +3,70 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /** The ParticipantsUpdatedEvent model. */
-@Fluent
-public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
+@Immutable
+public final class ParticipantsUpdatedEvent implements CallingServerBaseEvent {
     /*
      * List of current participants in the call.
      */
     @JsonProperty(value = "participants")
-    private List<CommunicationIdentifier> participants;
+    private final List<CommunicationIdentifier> participants;
 
     /*
      * The type property.
      */
     @JsonProperty(value = "type")
-    private AcsEventType type;
+    private final AcsEventType type;
 
     /*
      * Call connection ID.
      */
     @JsonProperty(value = "callConnectionId")
-    private String callConnectionId;
+    private final String callConnectionId;
 
     /*
      * Server call ID.
      */
     @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    private final String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for
      * skype chain ID.
      */
     @JsonProperty(value = "correlationId")
-    private String correlationId;
+    private final String correlationId;
+
+    @JsonCreator
+    private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
+        this.serverCallId = null;
+        this.callConnectionId = null;
+        this.correlationId = null;
+        this.type = null;
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this.participants = participants
+            .stream()
+            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
+            .collect(Collectors.toList())
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
+    }
 
     /**
      * Get the participants property: List of current participants in the call.
@@ -50,17 +75,6 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      */
     public List<CommunicationIdentifier> getParticipants() {
         return this.participants;
-    }
-
-    /**
-     * Set the participants property: List of current participants in the call.
-     *
-     * @param participants the participants value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setParticipants(List<CommunicationIdentifier> participants) {
-        this.participants = participants;
-        return this;
     }
 
     /**
@@ -73,34 +87,12 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the type property: The type property.
-     *
-     * @param type the type value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setType(AcsEventType type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Get the callConnectionId property: Call connection ID.
      *
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
         return this.callConnectionId;
-    }
-
-    /**
-     * Set the callConnectionId property: Call connection ID.
-     *
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        return this;
     }
 
     /**
@@ -113,17 +105,6 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the serverCallId property: Server call ID.
-     *
-     * @param serverCallId the serverCallId value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
-        return this;
-    }
-
-    /**
      * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
      * ID.
      *
@@ -131,17 +112,5 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      */
     public String getCorrelationId() {
         return this.correlationId;
-    }
-
-    /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
-     * @param correlationId the correlationId value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
     }
 }

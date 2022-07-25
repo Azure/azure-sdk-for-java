@@ -4,57 +4,86 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /** The AddParticipantsFailedEvent model. */
-@Fluent
-public final class AddParticipantsFailedEvent extends CallingServerEventBase {
+@Immutable
+public final class AddParticipantsFailedEvent implements CallingServerBaseEvent {
     /*
      * Operation context
      */
     @JsonProperty(value = "operationContext")
-    private String operationContext;
+    private final String operationContext;
 
     /*
      * The resultInfo property.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInfo resultInfo;
+    private final ResultInfo resultInfo;
 
     /*
      * Participants failed to be added
      */
-    @JsonProperty(value = "participants")
-    private List<CommunicationIdentifier> participants;
+    @JsonIgnore
+    private final List<CommunicationIdentifier> participants;
 
     /*
-     * The type property.
+     * The event types.
      */
     @JsonProperty(value = "type")
-    private AcsEventType type;
+    private final AcsEventType type;
 
     /*
      * Call connection ID.
      */
     @JsonProperty(value = "callConnectionId")
-    private String callConnectionId;
+    private final String callConnectionId;
 
     /*
      * Server call ID.
      */
     @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    private final String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for
      * skype chain ID.
      */
     @JsonProperty(value = "correlationId")
-    private String correlationId;
+    private final String correlationId;
+
+
+    @JsonCreator
+    private AddParticipantsFailedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
+        this.serverCallId = null;
+        this.callConnectionId = null;
+        this.correlationId = null;
+        this.type = null;
+        this.operationContext = null;
+        this.resultInfo = null;
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this.participants = participants
+            .stream()
+            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
+            .collect(Collectors.toList())
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
+    }
 
     /**
      * Get the operationContext property: Operation context.
@@ -63,17 +92,6 @@ public final class AddParticipantsFailedEvent extends CallingServerEventBase {
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    /**
-     * Set the operationContext property: Operation context.
-     *
-     * @param operationContext the operationContext value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
     }
 
     /**
@@ -86,34 +104,12 @@ public final class AddParticipantsFailedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the resultInfo property: The resultInfo property.
-     *
-     * @param resultInfo the resultInfo value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setResultInfo(ResultInfo resultInfo) {
-        this.resultInfo = resultInfo;
-        return this;
-    }
-
-    /**
      * Get the participants property: Participants failed to be added.
      *
      * @return the participants value.
      */
     public List<CommunicationIdentifier> getParticipants() {
         return this.participants;
-    }
-
-    /**
-     * Set the participants property: Participants failed to be added.
-     *
-     * @param participants the participants value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setParticipants(List<CommunicationIdentifier> participants) {
-        this.participants = participants;
-        return this;
     }
 
     /**
@@ -126,34 +122,12 @@ public final class AddParticipantsFailedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the type property: The type property.
-     *
-     * @param type the type value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setType(AcsEventType type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Get the callConnectionId property: Call connection ID.
      *
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
         return this.callConnectionId;
-    }
-
-    /**
-     * Set the callConnectionId property: Call connection ID.
-     *
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        return this;
     }
 
     /**
@@ -166,17 +140,6 @@ public final class AddParticipantsFailedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the serverCallId property: Server call ID.
-     *
-     * @param serverCallId the serverCallId value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
-        return this;
-    }
-
-    /**
      * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
      * ID.
      *
@@ -184,17 +147,5 @@ public final class AddParticipantsFailedEvent extends CallingServerEventBase {
      */
     public String getCorrelationId() {
         return this.correlationId;
-    }
-
-    /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
-     * @param correlationId the correlationId value to set.
-     * @return the AddParticipantsFailedEvent object itself.
-     */
-    public AddParticipantsFailedEvent setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
     }
 }
