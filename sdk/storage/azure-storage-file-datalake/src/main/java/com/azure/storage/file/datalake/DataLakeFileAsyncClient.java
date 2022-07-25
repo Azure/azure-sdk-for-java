@@ -881,7 +881,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
             .setLeaseId(leaseId)
             .setContentHash(contentMd5)
-            .setFlush(false);
+            .setFlush(null);
         try {
             return withContext(context -> appendWithResponse(data, fileOffset, length, appendOptions, context));
         } catch (RuntimeException ex) {
