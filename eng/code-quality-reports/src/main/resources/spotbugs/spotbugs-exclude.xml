@@ -2430,6 +2430,7 @@
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
       <Method name="getCredentialFromKdbx"/>
+      <Method name="parseRefreshTokenFromJson"/>
       <Method name="getIntelliJCredentialsFromIdentityMsalCache"/>
     </Or>
     <Bug pattern="DM_DEFAULT_ENCODING,
