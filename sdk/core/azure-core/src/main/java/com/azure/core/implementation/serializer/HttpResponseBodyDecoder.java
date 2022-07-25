@@ -13,36 +13,25 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
-
-import static com.azure.core.implementation.TypeUtil.getRawClass;
-import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**
  * Decoder to decode body of HTTP response.
  */
 public final class HttpResponseBodyDecoder {
-    private static final Map<Type, Boolean> RETURN_TYPE_DECODEABLE_MAP = new ConcurrentHashMap<>();
-
     // HttpResponseBodyDecoder is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpResponseBodyDecoder.class);
 
@@ -77,7 +66,7 @@ public final class HttpResponseBodyDecoder {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
         } else {
-            if (!isReturnTypeDecodable(decodeData.getReturnType())) {
+            if (!decodeData.isReturnTypeDecodeable()) {
                 return null;
             }
 
@@ -108,9 +97,7 @@ public final class HttpResponseBodyDecoder {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
         } else {
-            return isReturnTypeDecodable(decodeData.getReturnType())
-                ? extractEntityTypeFromReturnType(decodeData)
-                : null;
+            return decodeData.isReturnTypeDecodeable() ? extractEntityTypeFromReturnType(decodeData) : null;
         }
     }
 
@@ -309,118 +296,6 @@ public final class HttpResponseBodyDecoder {
         }
 
         return token;
-    }
-
-    /**
-     * Checks if the {@code returnType} is a decode-able type.
-     * <p>
-     * Types that aren't decode-able are the following (including sub-types):
-     * <ul>
-     * <li>BinaryData</li>
-     * <li>byte[]</li>
-     * <li>ByteBuffer</li>
-     * <li>InputStream</li>
-     * <li>Void</li>
-     * <li>void</li>
-     * </ul>
-     *
-     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
-     * cracked open and their generic types are inspected for being one of the types above.
-     *
-     * @param returnType The return type of the method.
-     * @return Flag indicating if the return type is decode-able.
-     */
-    public static boolean isReturnTypeDecodable(Type returnType) {
-        if (returnType == null) {
-            return false;
-        }
-
-        return RETURN_TYPE_DECODEABLE_MAP.computeIfAbsent(returnType, type -> {
-            type = unwrapReturnType(type);
-
-            return !TypeUtil.isTypeOrSubTypeOf(type, BinaryData.class)
-                && !TypeUtil.isTypeOrSubTypeOf(type, byte[].class)
-                && !TypeUtil.isTypeOrSubTypeOf(type, ByteBuffer.class)
-                && !TypeUtil.isTypeOrSubTypeOf(type, InputStream.class)
-                && !TypeUtil.isTypeOrSubTypeOf(type, Void.TYPE)
-                && !TypeUtil.isTypeOrSubTypeOf(type, Void.class);
-        });
-    }
-
-    /**
-     * Checks if the network response body should be eagerly read based on its {@code returnType}.
-     * <p>
-     * The following types, including sub-types, aren't eagerly read from the network:
-     * <ul>
-     * <li>BinaryData</li>
-     * <li>byte[]</li>
-     * <li>ByteBuffer</li>
-     * <li>InputStream</li>
-     * </ul>
-     *
-     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
-     * cracked open and their generic types are inspected for being one of the types above.
-     *
-     * @param returnType The return type of the method.
-     * @return Flag indicating if the network response body should be eagerly read.
-     */
-    public static boolean shouldEagerlyReadResponse(Type returnType) {
-        if (returnType == null) {
-            return false;
-        }
-
-        return isReturnTypeDecodable(returnType)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
-    }
-
-    private static Type unwrapReturnType(Type returnType) {
-        // First check if the return type is assignable, is a sub-type, to ResponseBase.
-        // If it is begin walking up the super type hierarchy until ResponseBase is the raw type.
-        // Then unwrap the second generic type (body type).
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class)) {
-            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == ResponseBase.class);
-
-            return unwrapReturnType(TypeUtil.getTypeArguments(returnType)[1]);
-        }
-
-        // Then, like ResponseBase, check if the return type is assignable to Response.
-        // If it is begin walking up the super type hierarchy until the raw type implements Response.
-        // Then unwrap its only generic type.
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
-            // Handling for Response is slightly different as it is an interface unlike ResponseBase which is a class.
-            // The super class hierarchy needs be walked until the super class itself implements Response.
-            returnType = walkSuperTypesUntil(returnType, type -> typeImplementsInterface(type, Response.class));
-
-            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
-        }
-
-        // Then check if the return type is a Mono or Flux and unwrap its only generic type.
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
-            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == Mono.class);
-
-            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
-        }
-
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
-            returnType = walkSuperTypesUntil(returnType, type -> getRawClass(type) == Flux.class);
-
-            return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
-        }
-
-        // Finally, there is no more unwrapping to perform and return the type as-is.
-        return returnType;
-    }
-
-    /*
-     * Helper method that walks up the super types until the type is an instance of the Class.
-     */
-    private static Type walkSuperTypesUntil(Type type, Predicate<Type> untilChecker) {
-        while (!untilChecker.test(type)) {
-            type = TypeUtil.getSuperType(type);
-        }
-
-        return type;
     }
 
     /**

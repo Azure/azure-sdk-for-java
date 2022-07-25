@@ -7,10 +7,17 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.33.1 (2022-07-22)
+
+#### Bugs Fixed
 * Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
 * Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
 * Fixed `ForbiddenException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
 * Fixed a regression introduced in [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440) which causes an `IllegalArgumentException` for distinct queries when using POJO serialization. - See [PR 30025](https://github.com/Azure/azure-sdk-for-java/pull/30025)
+* Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
 
 #### Other Changes
 * Supported username and password to be used in `GatewayConnectionConfig.setProxy` . - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)

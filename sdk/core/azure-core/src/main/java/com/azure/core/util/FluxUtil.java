@@ -11,6 +11,7 @@ import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscriber;
@@ -63,6 +64,47 @@ public final class FluxUtil {
             return TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class);
         }
         return false;
+    }
+
+    /**
+     * Adds progress reporting to the provided {@link Flux} of {@link ByteBuffer}.
+     *
+     * <p>
+     *     Each {@link ByteBuffer} that's emitted from the {@link Flux} will report {@link ByteBuffer#remaining()}.
+     * </p>
+     * <p>
+     *     When {@link Flux} is resubscribed the progress is reset. If the flux is not replayable, resubscribing
+     *     can result in empty or partial data then progress reporting might not be accurate.
+     * </p>
+     * <p>
+     *     If {@link ProgressReporter} is not provided, i.e. is {@code null},
+     *     then this method returns unmodified {@link Flux}.
+     * </p>
+     *
+     * @param flux A {@link Flux} to report progress on.
+     * @param progressReporter Optional {@link ProgressReporter}.
+     * @return A {@link Flux} that reports progress, or original {@link Flux} if {@link ProgressReporter} is not
+     * provided.
+     */
+    public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> flux, ProgressReporter progressReporter) {
+        if (progressReporter == null) {
+            return flux;
+        }
+
+        return Mono.just(progressReporter).flatMapMany(reporter -> {
+            /*
+            Each time there is a new subscription, we will rewind the progress. This is desirable specifically
+            for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
+            reset will be a noop as there will have been no progress made. Subsequent rewinds will work as
+            expected.
+             */
+            reporter.reset();
+
+            /*
+            Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
+             */
+            return flux.doOnNext(buffer -> reporter.reportProgress(buffer.remaining()));
+        });
     }
 
     /**

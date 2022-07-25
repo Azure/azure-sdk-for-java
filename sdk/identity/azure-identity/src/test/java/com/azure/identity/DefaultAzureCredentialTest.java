@@ -123,8 +123,6 @@ public class DefaultAzureCredentialTest {
             when(azurePowerShellCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Azure PowerShell credential")));
         }); MockedConstruction<IntelliJCredential> intelliJCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
             when(intelliJCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
-        }); MockedConstruction<VisualStudioCodeCredential> vscodeCredentialMock = mockConstruction(VisualStudioCodeCredential.class, (vscodeCredential, context) -> {
-            when(vscodeCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
         })) {
 
             // test
@@ -135,7 +133,6 @@ public class DefaultAzureCredentialTest {
             Assert.assertNotNull(azureCliCredentialMock);
             Assert.assertNotNull(azurePowerShellCredentialMock);
             Assert.assertNotNull(intelliJCredentialMock);
-            Assert.assertNotNull(vscodeCredentialMock);
         }
     }
 
@@ -147,8 +144,6 @@ public class DefaultAzureCredentialTest {
             when(managedIdentityCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
         }); MockedConstruction<IntelliJCredential> intelliJCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
             when(intelliJCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
-        }); MockedConstruction<VisualStudioCodeCredential> vsCodeCredentialMock = mockConstruction(VisualStudioCodeCredential.class, (vscodeCredential, context) -> {
-            when(vscodeCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
         }); MockedConstruction<AzurePowerShellCredential> powerShellCredentialMock = mockConstruction(AzurePowerShellCredential.class, (powerShellCredential, context) -> {
             when(powerShellCredential.getToken(request)).thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Powershell credential")));
         }); MockedConstruction<AzureCliCredential> azureCliCredentialMock = mockConstruction(AzureCliCredential.class, (azureCliCredential, context) -> {
@@ -159,7 +154,6 @@ public class DefaultAzureCredentialTest {
             StepVerifier.create(credential.getToken(request)).expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. ")).verify();
             Assert.assertNotNull(managedIdentityCredentialMock);
             Assert.assertNotNull(intelliJCredentialMock);
-            Assert.assertNotNull(vsCodeCredentialMock);
             Assert.assertNotNull(powerShellCredentialMock);
             Assert.assertNotNull(azureCliCredentialMock);
         }

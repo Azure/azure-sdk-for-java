@@ -11,6 +11,7 @@ import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
@@ -27,12 +28,14 @@ import java.lang.reflect.Proxy;
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final boolean GLOBAL_SYNC_PROXY_ENABLE = Configuration.getGlobalConfiguration()
+        .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", false);
+
     private final SwaggerInterfaceParser interfaceParser;
     private final AsyncRestProxy asyncRestProxy;
     private final HttpPipeline httpPipeline;
     private final SyncRestProxy syncRestProxy;
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-
 
     /**
      * Create a RestProxy.
@@ -81,7 +84,8 @@ public final class RestProxy implements InvocationHandler {
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
         boolean isReactive = methodParser.isReactive();
-        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE).orElse(false);
+        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE)
+            .orElse(GLOBAL_SYNC_PROXY_ENABLE);
 
 
         if (isReactive || !syncRestProxyEnabled) {
