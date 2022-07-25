@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.appservice.models.BuildStatus;
+import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackend;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserProvidedFunctionApp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -61,6 +62,12 @@ public final class StaticSiteBuildArmResourceProperties {
      */
     @JsonProperty(value = "userProvidedFunctionApps", access = JsonProperty.Access.WRITE_ONLY)
     private List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps;
+
+    /*
+     * Backends linked to the static side build
+     */
+    @JsonProperty(value = "linkedBackends", access = JsonProperty.Access.WRITE_ONLY)
+    private List<StaticSiteLinkedBackend> linkedBackends;
 
     /**
      * Get the buildId property: An identifier for the static site build.
@@ -135,6 +142,15 @@ public final class StaticSiteBuildArmResourceProperties {
     }
 
     /**
+     * Get the linkedBackends property: Backends linked to the static side build.
+     *
+     * @return the linkedBackends value.
+     */
+    public List<StaticSiteLinkedBackend> linkedBackends() {
+        return this.linkedBackends;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -142,6 +158,9 @@ public final class StaticSiteBuildArmResourceProperties {
     public void validate() {
         if (userProvidedFunctionApps() != null) {
             userProvidedFunctionApps().forEach(e -> e.validate());
+        }
+        if (linkedBackends() != null) {
+            linkedBackends().forEach(e -> e.validate());
         }
     }
 }

@@ -48,6 +48,12 @@ public final class AppServicePlanProperties {
     private Integer maximumNumberOfWorkers;
 
     /*
+     * The number of instances that are assigned to this App Service plan.
+     */
+    @JsonProperty(value = "numberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfWorkers;
+
+    /*
      * Geographical location for the App Service plan.
      */
     @JsonProperty(value = "geoRegion", access = JsonProperty.Access.WRITE_ONLY)
@@ -230,6 +236,15 @@ public final class AppServicePlanProperties {
      */
     public Integer maximumNumberOfWorkers() {
         return this.maximumNumberOfWorkers;
+    }
+
+    /**
+     * Get the numberOfWorkers property: The number of instances that are assigned to this App Service plan.
+     *
+     * @return the numberOfWorkers value.
+     */
+    public Integer numberOfWorkers() {
+        return this.numberOfWorkers;
     }
 
     /**
