@@ -70,7 +70,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
       "apiVersion": "2021-09-01",
-      "name": "[concat([variables('storageAccountsName')], '/default')]",
+      "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', [variables('storageAccountsName')])]"
       ],
