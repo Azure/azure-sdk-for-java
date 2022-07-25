@@ -1091,14 +1091,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageTargetInner> getAsync(String resourceGroupName, String cacheName, String storageTargetName) {
         return getWithResponseAsync(resourceGroupName, cacheName, storageTargetName)
-            .flatMap(
-                (Response<StorageTargetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DatabaseAccounts ListByResourceGroup. */
 public final class DatabaseAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountListByResourceGroup.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListByResourceGroup.

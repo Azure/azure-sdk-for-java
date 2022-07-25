@@ -28,9 +28,9 @@ public final class ChannelUpdateParameters {
     }
 
     /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the event channel. If this timer expires
-     * while the corresponding partner topic or partner destination is never activated, the channel and corresponding
-     * partner topic or partner destination are deleted.
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
+     * topic or partner destination are deleted.
      *
      * @return the expirationTimeIfNotActivatedUtc value.
      */
@@ -39,9 +39,9 @@ public final class ChannelUpdateParameters {
     }
 
     /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the event channel. If this timer expires
-     * while the corresponding partner topic or partner destination is never activated, the channel and corresponding
-     * partner topic or partner destination are deleted.
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
+     * topic or partner destination are deleted.
      *
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the ChannelUpdateParameters object itself.
@@ -51,31 +51,6 @@ public final class ChannelUpdateParameters {
             this.innerProperties = new ChannelUpdateParametersProperties();
         }
         this.innerProperties().withExpirationTimeIfNotActivatedUtc(expirationTimeIfNotActivatedUtc);
-        return this;
-    }
-
-    /**
-     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
-     * type PartnerDestination.
-     *
-     * @return the partnerDestinationInfo value.
-     */
-    public PartnerUpdateDestinationInfo partnerDestinationInfo() {
-        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationInfo();
-    }
-
-    /**
-     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
-     * type PartnerDestination.
-     *
-     * @param partnerDestinationInfo the partnerDestinationInfo value to set.
-     * @return the ChannelUpdateParameters object itself.
-     */
-    public ChannelUpdateParameters withPartnerDestinationInfo(PartnerUpdateDestinationInfo partnerDestinationInfo) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ChannelUpdateParametersProperties();
-        }
-        this.innerProperties().withPartnerDestinationInfo(partnerDestinationInfo);
         return this;
     }
 

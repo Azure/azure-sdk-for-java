@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics List. */
 public final class TopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_ListBySubscription.json
      */
     /**
      * Sample code: Topics_ListBySubscription.

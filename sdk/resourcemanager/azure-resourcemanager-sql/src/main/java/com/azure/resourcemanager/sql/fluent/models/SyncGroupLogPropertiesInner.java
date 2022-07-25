@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SyncGroupLogType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -15,8 +13,6 @@ import java.util.UUID;
 /** Properties of an Azure SQL Database sync group log. */
 @Immutable
 public final class SyncGroupLogPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupLogPropertiesInner.class);
-
     /*
      * Timestamp of the sync group log.
      */

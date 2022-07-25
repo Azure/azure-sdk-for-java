@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The database usages. */
 @Immutable
 public final class DatabaseUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseUsageInner.class);
-
     /*
      * The name of the usage metric.
      */

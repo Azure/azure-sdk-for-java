@@ -169,6 +169,22 @@ public abstract class ThroughputControlGroupInternal {
                 && Objects.equals(this.targetThroughputThreshold, that.targetThroughputThreshold);
     }
 
+    public boolean hasSameIdentity(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+
+        ThroughputControlGroupInternal that = (ThroughputControlGroupInternal) other;
+
+        return Objects.equals(this.idPrefix, that.idPrefix)
+            && this.isDefault == that.isDefault
+            && this.continueOnInitError == that.continueOnInitError;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

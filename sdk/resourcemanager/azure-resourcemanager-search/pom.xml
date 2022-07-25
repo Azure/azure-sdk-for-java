@@ -43,6 +43,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.search/com.azure.resourcemanager.search=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

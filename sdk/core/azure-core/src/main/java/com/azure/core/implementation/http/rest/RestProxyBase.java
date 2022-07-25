@@ -10,12 +10,12 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.TooManyRedirectsException;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -50,8 +50,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 public abstract class RestProxyBase {
     static final String MUST_IMPLEMENT_PAGE_ERROR =
@@ -95,8 +93,9 @@ public abstract class RestProxyBase {
         return interfaceParser.getMethodParser(method);
     }
 
-    public final Object invoke(Object proxy, final Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, boolean isAsync, Object[] args) {
+    public final Object invoke(Object proxy, final Method method, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser,
+        boolean isAsync, Object[] args) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         try {
@@ -106,7 +105,7 @@ public abstract class RestProxyBase {
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
+                .addData("azure-eagerly-read-response", methodParser.isResponseEagerlyRead());
 
 
             return invoke(proxy, method, options, errorOptions != null ? errorOptions : null,

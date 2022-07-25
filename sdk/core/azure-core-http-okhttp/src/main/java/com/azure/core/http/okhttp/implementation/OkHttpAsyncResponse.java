@@ -4,6 +4,8 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.io.IOUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
@@ -14,6 +16,8 @@ import reactor.util.function.Tuples;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 /**
  * Default HTTP response for OkHttp.
@@ -34,6 +38,11 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromStream(this.responseBody.byteStream());
     }
 
     @Override
@@ -93,7 +102,23 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
             return Mono.empty();
         }
 
-        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close());
+        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close(), false);
+    }
+
+    @Override
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
+        if (responseBody != null) {
+            IOUtils.transfer(responseBody.source(), channel);
+        }
+    }
+
+    @Override
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+        if (responseBody != null) {
+            return IOUtils.transferAsync(responseBody.source(), channel);
+        } else {
+            return Mono.empty();
+        }
     }
 
     @Override

@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** An Azure SQL virtual cluster. */
-@JsonFlatten
 @Fluent
-public class VirtualClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualClusterInner.class);
-
+public final class VirtualClusterInner extends Resource {
     /*
-     * Subnet resource ID for the virtual cluster.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.subnetId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subnetId;
+    @JsonProperty(value = "properties")
+    private VirtualClusterProperties innerProperties;
 
-    /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.family")
-    private String family;
+    private VirtualClusterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * List of resources in this virtual cluster.
-     */
-    @JsonProperty(value = "properties.childResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> childResources;
+    /** {@inheritDoc} */
+    @Override
+    public VirtualClusterInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualClusterInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
@@ -43,7 +48,7 @@ public class VirtualClusterInner extends Resource {
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -53,7 +58,7 @@ public class VirtualClusterInner extends Resource {
      * @return the family value.
      */
     public String family() {
-        return this.family;
+        return this.innerProperties() == null ? null : this.innerProperties().family();
     }
 
     /**
@@ -64,7 +69,10 @@ public class VirtualClusterInner extends Resource {
      * @return the VirtualClusterInner object itself.
      */
     public VirtualClusterInner withFamily(String family) {
-        this.family = family;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualClusterProperties();
+        }
+        this.innerProperties().withFamily(family);
         return this;
     }
 
@@ -74,7 +82,7 @@ public class VirtualClusterInner extends Resource {
      * @return the childResources value.
      */
     public List<String> childResources() {
-        return this.childResources;
+        return this.innerProperties() == null ? null : this.innerProperties().childResources();
     }
 
     /**
@@ -83,5 +91,8 @@ public class VirtualClusterInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
