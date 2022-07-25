@@ -57,7 +57,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
         for (int i=0; i<parameters.length; i++) {
             Parameter queryParam = getQueryMethod().getParameters().getParameter(i);
             if (parameters[i] instanceof Collection) {
-                ArrayList expandParam = (ArrayList) parameters[i];
+                ArrayList<String> expandParam = (ArrayList<String>) parameters[i];
                 List<String> expandedParamKeys = new ArrayList<>();
                 for (int j=0; j<expandParam.size(); j++) {
                     String paramName = "@" + queryParam.getName().orElse("") + j;
