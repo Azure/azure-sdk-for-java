@@ -289,7 +289,7 @@
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>10.2.0.jre11</version>
+      <version>10.2.0.jre11</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -298,12 +298,6 @@
       <artifactId>postgresql</artifactId>
       <version>42.3.4</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.ben-manes.caffeine</groupId>
-      <artifactId>caffeine</artifactId>
-      <version>3.1.1</version>
     </dependency>
 
     <!-- TEST-->
@@ -378,10 +372,9 @@
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.7.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.7.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.3.21]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>mysql:mysql-connector-java:[8.0.29]</include>
-                <include>com.github.ben-manes.caffeine:caffeine:[3.1.1]</include>
-                <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.0.jre11]</include>
-                <include>org.postgresql:postgresql:[42.3.4]</include>
+                <include>mysql:mysql-connector-java:[8.0.29]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.0.jre11]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.4]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

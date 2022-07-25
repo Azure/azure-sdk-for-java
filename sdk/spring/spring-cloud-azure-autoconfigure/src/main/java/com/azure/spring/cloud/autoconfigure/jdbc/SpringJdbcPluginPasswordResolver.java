@@ -29,6 +29,5 @@ public class SpringJdbcPluginPasswordResolver implements PasswordResolver<String
     private AccessToken getAccessToken() {
         TokenCredential credential = tokenCredentialProvider.getTokenCredential();
         return new JdbcAccessTokenProvider(credential).getAccessToken();
-
     }
 }

@@ -14,9 +14,8 @@ public class JdbcTokenCredentialProvider implements TokenCredentialProvider{
     public JdbcTokenCredentialProvider(Map<String, String> map) {
         TokenCredential tokenCredential = new NativeJdbcTokenCredentialResolver().resolve(map);
         if (tokenCredential != null) {
-               // TODO TokenCredentialOptions
-              getChainedTokenCredentialBuilder().addFirst(new CachedTokenCredential(tokenCredential));
-            }
+            getChainedTokenCredentialBuilder().addFirst(new CachedTokenCredential(tokenCredential));
+        }
     }
 
     @Override
@@ -43,8 +42,5 @@ public class JdbcTokenCredentialProvider implements TokenCredentialProvider{
         }
         return chainedTokenCredentialBuilder;
     }
-    // customize chain
-    // ChainedTokenCredential -> chained
-    // TokenCredential specific
 
 }

@@ -8,6 +8,9 @@ import com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.provider.TokenCreden
 
 import java.util.Map;
 
+/**
+ * Provide password for Jdbc AuthenticationPlugin
+ */
 public class NativeJdbcPluginPasswordResolver implements PasswordResolver<String> {
 
     private TokenCredentialProvider tokenCredentialProvider;

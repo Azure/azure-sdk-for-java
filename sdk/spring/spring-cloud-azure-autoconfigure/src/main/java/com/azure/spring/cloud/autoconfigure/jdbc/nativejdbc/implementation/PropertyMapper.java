@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.implementation;
 
-import org.springframework.util.Assert;
-
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -43,7 +41,7 @@ final class PropertyMapper {
      * @return a {@link Source} that can be used to complete the mapping
      */
     public <T> Source<T> from(Supplier<T> supplier) {
-        Assert.notNull(supplier, "Supplier must not be null");
+        notNull(supplier, "Supplier must not be null");
         Source<T> source = new Source<>(supplier, (t) -> true);
         if (alwaysApplyNonNull) {
             source = source.whenNonNull();
@@ -73,7 +71,7 @@ final class PropertyMapper {
         private final Predicate<T> predicate;
 
         Source(Supplier<T> supplier, Predicate<T> predicate) {
-            Assert.notNull(predicate, MSG_PREDICATE_CANNOT_BE_NULL);
+            notNull(predicate, MSG_PREDICATE_CANNOT_BE_NULL);
             this.supplier = supplier;
             this.predicate = predicate;
         }
@@ -95,7 +93,7 @@ final class PropertyMapper {
          * @return a new filtered source instance.
          */
         public Source<T> when(Predicate<T> predicate) {
-            Assert.notNull(predicate, MSG_PREDICATE_CANNOT_BE_NULL);
+            notNull(predicate, MSG_PREDICATE_CANNOT_BE_NULL);
             return new Source<>(this.supplier, this.predicate.and(predicate));
         }
 
@@ -105,7 +103,7 @@ final class PropertyMapper {
          * @return a new filtered source instance.
          */
         public Source<T> whenNot(Predicate<T> predicate) {
-            Assert.notNull(predicate, MSG_PREDICATE_CANNOT_BE_NULL);
+            notNull(predicate, MSG_PREDICATE_CANNOT_BE_NULL);
             return when(predicate.negate());
         }
 
@@ -157,4 +155,9 @@ final class PropertyMapper {
         }
     }
 
+    private static void notNull(Object object, String message) {
+        if (object == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
 }

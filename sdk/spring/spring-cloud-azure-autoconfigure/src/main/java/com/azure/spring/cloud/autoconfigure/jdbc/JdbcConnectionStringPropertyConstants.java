@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 final class JdbcConnectionStringPropertyConstants {
 
-    static final String POSTGRES_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql.AzureIdentityPostgresqlAuthenticationPlugin";
-    static final String MYSQL_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql.AzureIdentityMysqlAuthenticationPlugin";
+    static final String POSTGRES_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.extension.postgresql.AzureIdentityPostgresqlAuthenticationPlugin";
+    static final String MYSQL_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.extension.mysql.AzureIdentityMysqlAuthenticationPlugin";
     static final String PROPERTY_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME = "authenticationPluginClassName";
     static final String PROPERTY_POSTGRESQL_SSL_MODE = "sslmode";
     static final String VALUE_POSTGRESQL_SSL_MODE = "require";

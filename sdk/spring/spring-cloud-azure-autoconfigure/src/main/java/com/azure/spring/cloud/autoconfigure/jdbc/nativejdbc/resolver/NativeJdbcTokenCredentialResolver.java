@@ -7,10 +7,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.jdbc.nativejdbc.implementation.JdbcPluginPropertiesUtils.Mapping;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
+/**
+ * Resolve TokenCredential
+ */
 public class NativeJdbcTokenCredentialResolver implements TokenCredentialResolver{
 
     @Override
@@ -23,11 +25,10 @@ public class NativeJdbcTokenCredentialResolver implements TokenCredentialResolve
         final String clientId = map.get(Mapping.clientId.propertyKey());
         final String clientSecret = map.get(Mapping.clientSecret.propertyKey());
 
-        // todo replace; Spring context
-        final boolean isClientIdSet = StringUtils.hasText(clientId);
-        if (StringUtils.hasText(tenantId)) {
+        final boolean isClientIdSet = hasText(clientId);
+        if (hasText(tenantId)) {
 
-            if (isClientIdSet && StringUtils.hasText(clientSecret)) {
+            if (isClientIdSet && hasText(clientSecret)) {
 
                 return new ClientSecretCredentialBuilder().clientId(clientId)
                     .clientSecret(clientSecret)
@@ -37,11 +38,11 @@ public class NativeJdbcTokenCredentialResolver implements TokenCredentialResolve
 
             final String clientCertificatePath = map.get(Mapping.clientCertificatePath.propertyKey());
             final String clientCertificatePassword = map.get(Mapping.clientCertificatePassword.propertyKey());
-            if (StringUtils.hasText(clientCertificatePath)) {
+            if (hasText(clientCertificatePath)) {
                 ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder().tenantId(tenantId)
                     .clientId(clientId);
 
-                if (StringUtils.hasText(clientCertificatePassword)) {
+                if (hasText(clientCertificatePassword)) {
                     builder.pfxCertificate(clientCertificatePath, clientCertificatePassword);
                 } else {
                     builder.pemCertificate(clientCertificatePath);
@@ -53,8 +54,8 @@ public class NativeJdbcTokenCredentialResolver implements TokenCredentialResolve
 
         final String username = map.get(Mapping.username.propertyKey());
         final String password = map.get(Mapping.password.propertyKey());
-        if (isClientIdSet && StringUtils.hasText(username)
-            && StringUtils.hasText(password)) {
+        if (isClientIdSet && hasText(username)
+            && hasText(password)) {
             return new UsernamePasswordCredentialBuilder().username(username)
                 .password(password)
                 .clientId(clientId)
@@ -71,5 +72,19 @@ public class NativeJdbcTokenCredentialResolver implements TokenCredentialResolve
             return builder.build();
         }
         return new DefaultAzureCredentialBuilder().build();
+    }
+
+    private boolean hasText(String str) {
+        return (str != null && !str.isEmpty() && containsText(str));
+    }
+
+    private boolean containsText(CharSequence str) {
+        int strLen = str.length();
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
