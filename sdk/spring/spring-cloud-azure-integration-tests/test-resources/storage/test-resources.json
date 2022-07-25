@@ -75,7 +75,7 @@
           "corsRules": []
         },
         "deleteRetentionPolicy": {
-          "enabled": true
+          "enabled": false
         }
       }
     },
