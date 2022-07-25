@@ -108,7 +108,14 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux);
+        int numberOfSessions = 10;
+        Flux<Flux<ServiceBusMessageContext>> sessionFlux = Flux.create(emitter -> {
+            for (int i = 0; i < numberOfSessions; i++) {
+                emitter.next(messageFlux);
+            }
+        });
+
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(sessionFlux);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
@@ -278,6 +285,9 @@ public class ServiceBusProcessorTest {
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
 
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(receiverOptions.isRollingSessionReceiver()).thenReturn(false);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
@@ -331,6 +341,9 @@ public class ServiceBusProcessorTest {
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(receiverOptions.isRollingSessionReceiver()).thenReturn(false);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
@@ -486,6 +499,9 @@ public class ServiceBusProcessorTest {
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(receiverOptions.isRollingSessionReceiver()).thenReturn(false);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.publishOn(Schedulers.boundedElastic()));
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
@@ -493,14 +509,17 @@ public class ServiceBusProcessorTest {
     }
 
     private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder getSessionBuilder(
-        Flux<ServiceBusMessageContext> messageFlux) {
+        Flux<Flux<ServiceBusMessageContext>> sessionFlux) {
 
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
+        when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(receiverOptions.isRollingSessionReceiver()).thenReturn(true);
+        when(asyncClient.receiveMessagesWithContextFromRollingSessions()).thenReturn(sessionFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
         return receiverBuilder;
