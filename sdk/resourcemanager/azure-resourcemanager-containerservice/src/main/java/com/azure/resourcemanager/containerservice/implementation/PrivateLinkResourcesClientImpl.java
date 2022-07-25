@@ -69,7 +69,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -100,7 +102,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -118,7 +120,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -150,7 +154,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -165,7 +169,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -180,7 +186,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -195,7 +203,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
