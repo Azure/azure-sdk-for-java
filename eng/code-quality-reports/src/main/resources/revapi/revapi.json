@@ -149,7 +149,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -341,6 +341,20 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
+          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
+          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
         }
       ]
     }

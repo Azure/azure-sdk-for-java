@@ -66,7 +66,7 @@ public interface PacketCoreDataPlanes {
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context);
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -79,7 +79,7 @@ public interface PacketCoreDataPlanes {
         String resourceGroupName, String packetCoreControlPlaneName);
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
