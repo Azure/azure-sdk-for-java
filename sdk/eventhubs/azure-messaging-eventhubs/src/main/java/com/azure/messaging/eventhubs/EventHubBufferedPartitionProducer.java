@@ -61,33 +61,40 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.eventQueue = queueSupplier.get();
         this.eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
 
-        final Flux<EventDataBatch> eventDataBatchFlux = Flux.defer(() -> {
-            return new EventDataAggregator(eventSink.asFlux(),
-                () -> {
-                    final Mono<EventDataBatch> batch = client.createBatch(createBatchOptions);
-                    try {
-                        return batch.toFuture().get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException("Unexpected exception when getting batch.", e);
-                    }
-                },
-                client.getFullyQualifiedNamespace(), options);
-        }).retryWhen(retryWhenPolicy);
+        final Flux<EventDataBatch> eventDataBatchFlux = new EventDataAggregator(eventSink.asFlux(),
+            this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
 
         final PublishResultSubscriber publishResultSubscriber = new PublishResultSubscriber(partitionId,
-            options.getSendSucceededContext(), options.getSendFailedContext(), logger);
+            options.getSendSucceededContext(), options.getSendFailedContext(), eventQueue, logger);
 
         this.publishSubscription = publishEvents(eventDataBatchFlux)
             .publishOn(Schedulers.boundedElastic(), 1)
             .subscribeWith(publishResultSubscriber);
     }
 
+    /**
+     * Enqueues an event into the queue.
+     *
+     * @param eventData Event to enqueue.
+     *
+     * @return A mono that completes when it is in the queue.
+     *
+     * @throws IllegalStateException if the partition processor is already closed when trying to enqueue another
+     *     event.
+     */
     Mono<Void> enqueueEvent(EventData eventData) {
         return Mono.create(sink -> {
             sink.onRequest(request -> {
+                if (isClosed.get()) {
+                    sink.error(new IllegalStateException(String.format(
+                        "Partition publisher id[%s] is already closed. Cannot enqueue more events.", partitionId)));
+                    return;
+                }
+
                 try {
                     eventSink.emitNext(eventData, (signalType, emitResult) -> {
                         // If the draining queue is slower than the publishing queue.
+                        System.err.printf("[%s] Could not push event downstream. %s.", partitionId, signalType);
                         return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
                     });
                     sink.success();
@@ -123,7 +130,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
      * @return A Mono that completes when all events are flushed.
      */
     Mono<Void> flush() {
-        return Mono.error(new IllegalStateException("not implemented yet."));
+        return Mono.empty();
     }
 
     @Override
@@ -142,15 +149,29 @@ class EventHubBufferedPartitionProducer implements Closeable {
      * @return A stream of published results.
      */
     private Flux<PublishResult> publishEvents(Flux<EventDataBatch> upstream) {
+        return upstream.flatMap(batch -> {
+            return client.send(batch).thenReturn(new PublishResult(batch, null))
+                // Resuming on error because an error is a terminal signal, so we want to wrap that with a result,
+                // so it doesn't stop publishing.
+                .onErrorResume(error -> Mono.just(new PublishResult(batch, error)));
+        }, 1, 1);
+    }
 
-        return Flux.defer(() -> {
-            return upstream.flatMap(batch -> {
-                return client.send(batch).thenReturn(new PublishResult(batch, null))
-                    // Resuming on error because an error is a terminal signal, so we want to wrap that with a result,
-                    // so it doesn't stop publishing.
-                    .onErrorResume(error -> Mono.just(new PublishResult(batch, error)));
-            }, 1, 1);
-        }).retryWhen(retryWhenPolicy);
+    /**
+     * Creates a new batch.
+     *
+     * @return A new EventDataBatch
+     *
+     * @throws UncheckedInterruptedException If an exception occurred when trying to create a new batch.  It is
+     *     possible when the thread is interrupted while creating the batch.
+     */
+    private EventDataBatch createNewBatch() {
+        final Mono<EventDataBatch> batch = client.createBatch(createBatchOptions);
+        try {
+            return batch.toFuture().get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw logger.logThrowableAsError(new UncheckedInterruptedException(e));
+        }
     }
 
     /**

@@ -17,7 +17,10 @@ import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
 
-import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
@@ -85,7 +88,9 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private static final AtomicLongFieldUpdater<EventDataAggregatorMain> REQUESTED =
             AtomicLongFieldUpdater.newUpdater(EventDataAggregatorMain.class, "requested");
 
-        private static final Duration MAX_TIME = Duration.ofMillis(Long.MAX_VALUE);
+        private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+            .withLocale(Locale.US)
+            .withZone(ZoneId.of("America/Los_Angeles"));
 
         private final Sinks.Many<Long> eventSink;
         private final Disposable disposable;
@@ -101,6 +106,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         private Subscription subscription;
         private EventDataBatch currentBatch;
+
+        private volatile Throwable lastError;
 
         EventDataAggregatorMain(CoreSubscriber<? super EventDataBatch> downstream, String namespace,
             BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, String partitionId,
@@ -142,6 +149,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         @Override
         public void cancel() {
             // Do not keep requesting more events upstream
+            System.err.printf("[%s] %s Disposing of aggregator.%n", partitionId, formatter.format(Instant.now()));
             subscription.cancel();
 
             updateOrPublishBatch(null, true);
@@ -269,6 +277,22 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                         this.currentBatch = null;
                     }
                 }
+            } catch (EventHubBufferedPartitionProducer.UncheckedInterruptedException exception) {
+                logger.info("An exception occurred while trying to get a new batch.", exception);
+
+                if (this.lastError != null) {
+                    logger.info("Exception has been set already, terminating EventDataAggregator.");
+
+                    final Throwable error = Operators.onNextError(previous, exception, downstream.currentContext(),
+                        subscription);
+
+                    if (error != null) {
+                        onError(error);
+                    }
+                } else{
+                    this.lastError = exception;
+                }
+
             } catch (Throwable e) {
                 final Throwable error = Operators.onNextError(previous, e, downstream.currentContext(), subscription);
 
