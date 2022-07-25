@@ -43,9 +43,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Tag(TestUtils.INTEGRATION)
 public class EventHubBufferedProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-        .localizedBy(Locale.US)
         .withLocale(Locale.US)
-        .withZone(ZoneId.systemDefault());
+        .withZone(ZoneId.of("America/Los_Angeles"));
     private EventHubBufferedProducerAsyncClient producer;
     private EventHubClient hubClient;
     private String[] partitionIds;
