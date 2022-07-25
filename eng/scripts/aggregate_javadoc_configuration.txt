@@ -8,6 +8,8 @@ Group;Azure Core - AMQP Experimental;com.azure.core.amqp.experimental*
 Group;Azure Core - Experimental;com.azure.core.experimental*
 Group;Azure Core - HTTP - Netty;com.azure.core.http.netty*
 Group;Azure Core - HTTP - OkHttp;com.azure.core.http.okhttp*
+Group;Azure Core - JSON;com.azure.json*
+Group;Azure Core - JSON - GSON;com.azure.json.gson*
 Group;Azure Core - Management;com.azure.core.management*
 Group;Azure Core - Serializer - Avro - Apache;com.azure.core.serializer.avro.apache*
 Group;Azure Core - Serializer - Avro - Jackson;com.azure.core.serializer.avro.jackson*
