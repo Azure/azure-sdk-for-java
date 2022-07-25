@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -10,17 +10,16 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory}
 import org.apache.spark.sql.types.StructType
 
-import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.time.Duration
-import java.util.{Base64, UUID}
+import java.util.UUID
 
 private class ChangeFeedBatch
 (
   session: SparkSession,
   schema: StructType,
   config: Map[String, String],
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
   diagnosticsConfig: DiagnosticsConfig
 ) extends Batch {
 
@@ -43,10 +42,15 @@ private class ChangeFeedBatch
     Loan(
       CosmosClientCache.apply(
         clientConfiguration,
-        Some(cosmosClientStateHandle),
+        Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
         s"ChangeFeedBatch.planInputPartitions(batchId $batchId)"
       )).to(cacheItem => {
-      val container = ThroughputControlHelper.getContainer(config, containerConfig, cacheItem.client)
+      val container =
+        ThroughputControlHelper.getContainer(
+          config,
+          containerConfig,
+          cacheItem,
+          Some(cosmosClientStateHandles))._1
 
       val hasBatchCheckpointLocation = changeFeedConfig.batchCheckpointLocation.isDefined &&
         !Strings.isNullOrWhiteSpace(changeFeedConfig.batchCheckpointLocation.get)
@@ -78,7 +82,7 @@ private class ChangeFeedBatch
         // ok to use from cache because endLsn is ignored in batch mode
         Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
         clientConfiguration,
-        this.cosmosClientStateHandle,
+        this.cosmosClientStateHandles,
         containerConfig,
         partitioningConfig,
         this.defaultParallelism,
@@ -115,7 +119,7 @@ private class ChangeFeedBatch
       config,
       schema,
       DiagnosticsContext(correlationActivityId, "Batch"),
-      cosmosClientStateHandle,
+      cosmosClientStateHandles,
       diagnosticsConfig)
   }
 }

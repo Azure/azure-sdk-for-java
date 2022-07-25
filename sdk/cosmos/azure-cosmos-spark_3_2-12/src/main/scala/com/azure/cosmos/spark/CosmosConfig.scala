@@ -80,6 +80,11 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
+  val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
+  val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
+  val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
+  val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
+  val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
@@ -138,6 +143,11 @@ private[spark] object CosmosConfigNames {
     ChangeFeedItemCountPerTriggerHint,
     ChangeFeedBatchCheckpointLocation,
     ThroughputControlEnabled,
+    ThroughputControlAccountEndpoint,
+    ThroughputControlAccountKey,
+    ThroughputControlPreferredRegionsList,
+    ThroughputControlDisableTcpConnectionEndpointRediscovery,
+    ThroughputControlUseGatewayMode,
     ThroughputControlName,
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
@@ -1169,7 +1179,8 @@ private object CosmosChangeFeedConfig {
   }
 }
 
-private case class CosmosThroughputControlConfig(groupName: String,
+private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAccountConfig,
+                                                 groupName: String,
                                                  targetThroughput: Option[Int],
                                                  targetThroughputThreshold: Option[Double],
                                                  globalControlDatabase: String,
@@ -1184,6 +1195,23 @@ private object CosmosThroughputControlConfig {
         defaultValue = Some(false),
         parseFromStringFunction = enableThroughputControl => enableThroughputControl.toBoolean,
         helpMessage = "A flag to indicate whether throughput control is enabled.")
+
+    private val throughputControlAccountEndpointUriSupplier = CosmosConfigEntry[String](
+      key = CosmosConfigNames.ThroughputControlAccountEndpoint,
+      mandatory = false,
+      defaultValue = None,
+      parseFromStringFunction = throughputControlAccountUriString => {
+        new URL(throughputControlAccountUriString)
+        throughputControlAccountUriString
+      },
+      helpMessage = "Cosmos DB Throughput Control Account Endpoint Uri.")
+
+    private val throughputControlAccountKeySupplier = CosmosConfigEntry[String](
+      key = CosmosConfigNames.ThroughputControlAccountKey,
+      mandatory = false,
+      defaultValue = None,
+      parseFromStringFunction = throughputControlAccountKey => throughputControlAccountKey,
+      helpMessage = "Cosmos DB Throughput Control Account Key.")
 
     private val groupNameSupplier = CosmosConfigEntry[String](
         key = CosmosConfigNames.ThroughputControlName,
@@ -1236,6 +1264,31 @@ private object CosmosThroughputControlConfig {
         val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
         if (throughputControlEnabled) {
+            // we will allow the customer to provide a different database account for throughput control
+            val throughputControlCosmosAccountConfig =
+              CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
+                case Some(_) => {
+                  // use customized throughput control database account
+                  val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
+
+                  // If the customer provided throughput control account endpoint, then throughput control account key is required
+                  assert(throughputControlAccountKey.isDefined)
+
+                  var throughputControlAccountConfigMap = Map[String, String]()
+                  throughputControlAccountConfigMap += (
+                   CosmosConfigNames.AccountEndpoint -> cfg.getOrElse(CosmosConfigNames.ThroughputControlAccountEndpoint, Strings.Emtpy),
+                   CosmosConfigNames.AccountKey -> cfg.getOrElse(CosmosConfigNames.ThroughputControlAccountKey, Strings.Emtpy),
+                   CosmosConfigNames.ApplicationName -> cfg.getOrElse(CosmosConfigNames.ApplicationName, Strings.Emtpy),
+                   CosmosConfigNames.UseGatewayMode -> cfg.getOrElse(CosmosConfigNames.ThroughputControlUseGatewayMode, Strings.Emtpy),
+                   CosmosConfigNames.DisableTcpConnectionEndpointRediscovery -> cfg.getOrElse(CosmosConfigNames.ThroughputControlDisableTcpConnectionEndpointRediscovery, Strings.Emtpy),
+                   CosmosConfigNames.PreferredRegionsList -> cfg.getOrElse(CosmosConfigNames.ThroughputControlPreferredRegionsList, Strings.Emtpy)
+                  )
+
+                  CosmosAccountConfig.parseCosmosAccountConfig(throughputControlAccountConfigMap)
+                }
+                case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
+              }
+
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
             val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
@@ -1249,6 +1302,7 @@ private object CosmosThroughputControlConfig {
             assert(globalControlContainer.isDefined)
 
             Some(CosmosThroughputControlConfig(
+                throughputControlCosmosAccountConfig,
                 groupName.get,
                 targetThroughput,
                 targetThroughputThreshold,

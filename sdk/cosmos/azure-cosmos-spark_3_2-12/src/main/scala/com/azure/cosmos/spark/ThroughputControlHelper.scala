@@ -3,19 +3,22 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
+import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
+import org.apache.spark.broadcast.Broadcast
 
 private object ThroughputControlHelper {
     def getContainer(userConfig: Map[String, String],
                      cosmosContainerConfig: CosmosContainerConfig,
-                     client: CosmosAsyncClient): CosmosAsyncContainer = {
+                     cacheItem: CosmosClientCacheItem,
+                     cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]]): (CosmosAsyncContainer,Option[CosmosClientCacheItem]) = {
 
-        val container = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
-        val cosmosThroughputControlConfig = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+        val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+        val diagnosticConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig)
 
-        if (cosmosThroughputControlConfig.isDefined) {
-            val throughputControlConfig = cosmosThroughputControlConfig.get
+        val container = cacheItem.client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
 
+        if (throughputControlConfigOpt.isDefined) {
+            val throughputControlConfig = throughputControlConfigOpt.get
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
                 .groupName(throughputControlConfig.groupName)
                 .defaultControlGroup(true)
@@ -27,20 +30,43 @@ private object ThroughputControlHelper {
                 groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
-            val globalThroughputControlConfigBuilder = client.createGlobalThroughputControlConfigBuilder(
-                throughputControlConfig.globalControlDatabase,
-                throughputControlConfig.globalControlContainer)
+            // Customer can choose different database account for throughput control
+            // Get the cosmos client for throughput control
+            // TODO: validate whether to use eventual consistency
+            val throughputControlClientConfig =
+                CosmosClientConfiguration.apply(throughputControlConfig.cosmosAccountConfig, diagnosticConfig, false)
 
-            if (throughputControlConfig.globalControlRenewInterval.isDefined) {
-                globalThroughputControlConfigBuilder.setControlItemRenewInterval(throughputControlConfig.globalControlRenewInterval.get)
-            }
-            if (throughputControlConfig.globalControlExpireInterval.isDefined) {
-                globalThroughputControlConfigBuilder.setControlItemExpireInterval(throughputControlConfig.globalControlExpireInterval.get)
-            }
+            val throughputControlClientMetadataCache =
+                cosmosClientStateHandles match {
+                    case None => None
+                    case Some(_) => cosmosClientStateHandles.get.value.throughputControlClientMetadataCaches
+                }
 
-            container.enableGlobalThroughputControlGroup(groupConfigBuilder.build(), globalThroughputControlConfigBuilder.build())
+            Loan(
+                CosmosClientCache
+                 .apply(
+                    throughputControlClientConfig,
+                     throughputControlClientMetadataCache,
+                    s"ThroughputControlHelp.getContainer: ${cacheItem.context}"
+                ))
+                .to(throughputControlCachedItem => {
+                    val globalThroughputControlConfigBuilder = throughputControlCachedItem.client.createGlobalThroughputControlConfigBuilder(
+                        throughputControlConfig.globalControlDatabase,
+                        throughputControlConfig.globalControlContainer)
+
+                    if (throughputControlConfig.globalControlRenewInterval.isDefined) {
+                        globalThroughputControlConfigBuilder.setControlItemRenewInterval(throughputControlConfig.globalControlRenewInterval.get)
+                    }
+                    if (throughputControlConfig.globalControlExpireInterval.isDefined) {
+                        globalThroughputControlConfigBuilder.setControlItemExpireInterval(throughputControlConfig.globalControlExpireInterval.get)
+                    }
+
+                    container.enableGlobalThroughputControlGroup(groupConfigBuilder.build(), globalThroughputControlConfigBuilder.build())
+
+                    (container, Some(throughputControlCachedItem))
+                })
+        } else {
+            (container, None)
         }
-
-        container
     }
 }

@@ -154,10 +154,9 @@ class CosmosClientCacheITest
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
 
-    val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
-    Loan(CosmosClientCache(userConfig, Option(broadcast), "CosmosClientCacheITest-05"))
+    val cosmosClientCacheSnapshot = mock(classOf[CosmosClientMetadataCachesSnapshot])
+    Loan(CosmosClientCache(userConfig, Option(cosmosClientCacheSnapshot), "CosmosClientCacheITest-05"))
       .to(client1 => {
-        verify(broadcast).value
         client1 shouldBe a[CosmosClientCacheItem]
         client1.client shouldBe a[CosmosAsyncClient]
         CosmosClientCache.purge(userConfig)
