@@ -27,10 +27,10 @@ public class HandleReauthentication {
         int i = 0;
         while (i < maxTries) {
             // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-            RedisStringCommands sync = connection.sync();
+            RedisStringCommands<String, String> sync = connection.sync();
             try {
                 sync.set("Az:testKey", "testVal");
-                System.out.println(sync.get("Az:testKey").toString());
+                System.out.println(sync.get("Az:testKey"));
             } catch (RedisException e) {
                 // TODO: Handle the Exception as required in your application.
                 e.printStackTrace();

@@ -35,10 +35,10 @@ public class HelloWorld {
 
         // perform operations
         RBuckets rBuckets =  redisson.getBuckets();
-        RBucket bucket = redisson.getBucket("Az:key");
+        RBucket<String> bucket = redisson.getBucket("Az:key");
         bucket.set("This is object value");
 
-        String objectValue = bucket.get().toString();
+        String objectValue = bucket.get();
         System.out.println("stored object value: " + objectValue);
 
         redisson.shutdown();

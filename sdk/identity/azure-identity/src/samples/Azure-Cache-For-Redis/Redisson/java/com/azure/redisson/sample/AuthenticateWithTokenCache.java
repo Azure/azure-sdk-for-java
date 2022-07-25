@@ -51,7 +51,7 @@ public class AuthenticateWithTokenCache {
             try {
                 // perform operations
                 RBuckets rBuckets = redisson.getBuckets();
-                RBucket bucket = redisson.getBucket("Az:key");
+                RBucket<String> bucket = redisson.getBucket("Az:key");
                 bucket.set("This is object value");
 
                 String objectValue = bucket.get().toString();
