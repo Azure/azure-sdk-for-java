@@ -117,6 +117,9 @@ directive:
 - rename-model:
     from: FileSource
     to: FileSourceInternal
+- rename-model:
+    from: PlayOptions
+    to: PlayOptionsInternal
     
 # Remove models
 - remove-model: AcsEventType

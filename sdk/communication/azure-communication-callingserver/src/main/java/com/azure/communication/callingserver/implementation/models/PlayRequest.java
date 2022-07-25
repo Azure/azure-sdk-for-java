@@ -28,7 +28,7 @@ public final class PlayRequest {
      * Defines options for playing the audio.
      */
     @JsonProperty(value = "playOptions")
-    private PlayOptions playOptions;
+    private PlayOptionsInternal playOptions;
 
     /*
      * The value to identify context of the operation.
@@ -83,7 +83,7 @@ public final class PlayRequest {
      *
      * @return the playOptions value.
      */
-    public PlayOptions getPlayOptions() {
+    public PlayOptionsInternal getPlayOptions() {
         return this.playOptions;
     }
 
@@ -93,7 +93,7 @@ public final class PlayRequest {
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlayOptions(PlayOptions playOptions) {
+    public PlayRequest setPlayOptions(PlayOptionsInternal playOptions) {
         this.playOptions = playOptions;
         return this;
     }

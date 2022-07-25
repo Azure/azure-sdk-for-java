@@ -7,11 +7,13 @@ import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.FileSourceInternal;
+import com.azure.communication.callingserver.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
 import com.azure.communication.callingserver.implementation.models.PlaySourceInternal;
 import com.azure.communication.callingserver.implementation.models.PlaySourceTypeInternal;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.FileSource;
+import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.callingserver.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -55,7 +57,7 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return playWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
+        return playWithResponse(playSource, playTo, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -68,7 +70,7 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playAll(PlaySource playSource) {
-        return playAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
+        return playAllWithResponse(playSource, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -76,6 +78,7 @@ public class CallMediaAsync {
      *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to
+     * @param options play options.
      * @param context A {@link Context} representing the request context.
      * @return Response for successful play request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -83,10 +86,10 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                 Context context) {
+                                                 PlayOptions options, Context context) {
         return withContext(contextValue -> {
             contextValue = context == null ? contextValue : context;
-            return playWithResponseInternal(playSource, playTo, contextValue);
+            return playWithResponseInternal(playSource, playTo, options, contextValue);
         });
     }
 
@@ -94,16 +97,17 @@ public class CallMediaAsync {
      * Play to all participants
      *
      * @param playSource A {@link PlaySource} representing the source to play.
+     * @param options play options.
      * @param context A {@link Context} representing the request context.
      * @return Response for successful playAll request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource, Context context) {
+    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
         return withContext(contextValue -> {
             contextValue = context == null ? contextValue : context;
-            return playWithResponseInternal(playSource, Collections.emptyList(), contextValue);
+            return playWithResponseInternal(playSource, Collections.emptyList(), options, contextValue);
         });
     }
 
@@ -134,10 +138,10 @@ public class CallMediaAsync {
     }
 
     Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                  Context context) {
+                                                  PlayOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            PlayRequest request = getPlayRequest(playSource, playTo);
+            PlayRequest request = getPlayRequest(playSource, playTo, options);
 
             return contentsInternal.playWithResponseAsync(callConnectionId, request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
@@ -146,7 +150,7 @@ public class CallMediaAsync {
         }
     }
 
-    PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+    PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo, PlayOptions options) {
         if (playSource instanceof FileSource) {
             FileSource fileSource = (FileSource) playSource;
             PlayRequest request = new PlayRequest();
@@ -162,6 +166,11 @@ public class CallMediaAsync {
                     .stream()
                     .map(CommunicationIdentifierConverter::convert)
                     .collect(Collectors.toList()));
+
+            if (options != null) {
+                request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+                request.setOperationContext(options.getOperationContext());
+            }
 
             return request;
         }
