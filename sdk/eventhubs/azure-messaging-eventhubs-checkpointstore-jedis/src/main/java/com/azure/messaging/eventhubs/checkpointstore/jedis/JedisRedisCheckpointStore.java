@@ -34,7 +34,11 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     static final byte[] PARTITION_OWNERSHIP = "partitionOwnership".getBytes(StandardCharsets.UTF_8);
     private final JedisPool jedisPool;
 
-    JedisRedisCheckpointStore(JedisPool jedisPool) {
+    /**
+     * This is the constructor for the JedisRedisCheckpointStore class
+     * @param jedisPool is a JedisPool object that will be used to initialize connection with Azure Redis Cache
+     */
+    public JedisRedisCheckpointStore(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
 
