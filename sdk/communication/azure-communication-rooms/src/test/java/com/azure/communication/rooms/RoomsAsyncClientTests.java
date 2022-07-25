@@ -7,10 +7,12 @@ import java.util.ArrayList;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.communication.rooms.models.*;
 import com.azure.core.http.HttpClient;
@@ -42,12 +44,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         roomsAsyncClient = setupAsyncClient(httpClient, "createRoomFullCycleWithResponse");
         assertNotNull(roomsAsyncClient);
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(VALID_FROM, VALID_UNTIL, roomJoinPolicy, participants1);
-        
+
         List<String> roomParticipantsMri = new ArrayList<String>();
         roomParticipantsMri.add(participants1.get(0).getCommunicationIdentifier().getRawId());
         roomParticipantsMri.add(participants1.get(1).getCommunicationIdentifier().getRawId());
         roomParticipantsMri.add(participants1.get(2).getCommunicationIdentifier().getRawId());
-        
+
         StepVerifier.create(response1)
             .assertNext(roomResult -> {
                 assertHappyPath(roomResult, 201);
@@ -63,7 +65,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         Mono<Response<CommunicationRoom>> response3 =  roomsAsyncClient.updateRoomWithResponse(roomId, VALID_FROM, VALID_FROM.plusMonths(3), null, null);
 
         System.out.println(VALID_FROM.plusMonths(3).getDayOfYear());
-        
+
         StepVerifier.create(response3)
             .assertNext(roomResult -> {
                 assertHappyPath(roomResult, 200);
@@ -92,9 +94,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(VALID_FROM, VALID_UNTIL, roomJoinPolicy, participants1);
 
         StepVerifier.create(response1)
-          .assertNext(roomResult -> {
-              assertEquals(roomResult.getParticipants().size(), 3);
-          }).verifyComplete();
+            .assertNext(roomResult -> {
+                List<RoomParticipant> returnedParticipants = roomResult.getParticipants();
+                assertEquals(participants1.size(), returnedParticipants.size());
+                IntStream.range(0, returnedParticipants.size())
+                    .forEach(x -> assertTrue(areParticipantsEqual(participants1.get(x), returnedParticipants.get(x))));
+            }).verifyComplete();
 
         String roomId = response1.block().getRoomId();
 
@@ -172,7 +177,10 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response2)
             .assertNext(result2 -> {
                 assertEquals(result2.getStatusCode(), 200);
-                assertEquals(result2.getValue().getParticipants().size(), 3);
+                List<RoomParticipant> returnedParticipants = result2.getValue().getParticipants();
+                assertEquals(participants5.size(), returnedParticipants.size());
+                IntStream.range(0, returnedParticipants.size())
+                    .forEach(x -> assertTrue(areParticipantsEqual(participants5.get(x), returnedParticipants.get(x))));
             }).verifyComplete();
     }
 
@@ -195,7 +203,10 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         StepVerifier.create(response2)
             .assertNext(roomResult -> {
-                assertEquals(roomResult.getParticipants().size(), 3);
+                List<RoomParticipant> returnedParticipants = roomResult.getParticipants();
+                assertEquals(participants5.size(), returnedParticipants.size());
+                IntStream.range(0, returnedParticipants.size())
+                    .forEach(x -> assertTrue(areParticipantsEqual(participants5.get(x), returnedParticipants.get(x))));
             }).verifyComplete();
 
         StepVerifier.create(roomsAsyncClient.getRoom(roomId)).assertNext(response4 -> {
@@ -224,7 +235,10 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response2)
             .assertNext(result2 -> {
                 assertEquals(result2.getStatusCode(), 200);
-                assertEquals(result2.getValue().getParticipants().size(), 2);
+                List<RoomParticipant> returnedParticipants = result2.getValue().getParticipants();
+                assertEquals(2, returnedParticipants.size());
+                assertTrue(areParticipantsEqual(firstChangeParticipant, returnedParticipants.get(0)));
+                assertTrue(areParticipantsEqual(secondParticipant, returnedParticipants.get(1)));
             }).verifyComplete();
     }
 
@@ -246,6 +260,9 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         StepVerifier.create(response2)
             .assertNext(roomResult -> {
                 assertEquals(roomResult.getParticipants().size(), 2);
+                List<RoomParticipant> returnedParticipants = roomResult.getParticipants();
+                assertTrue(areParticipantsEqual(firstChangeParticipant, returnedParticipants.get(0)));
+                assertTrue(areParticipantsEqual(secondParticipant, returnedParticipants.get(1)));
             }).verifyComplete();
     }
 

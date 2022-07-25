@@ -14,8 +14,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class RoomsClientTest extends RoomsTestBase {
     private RoomsClient roomsClient;
@@ -499,9 +502,12 @@ public class RoomsClientTest extends RoomsTestBase {
         roomsClient = setupSyncClient(httpClient, "createRoomSyncWithReponseOnlyParticipants");
         assertNotNull(roomsClient);
 
-        Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(null, null, null, participants4, Context.NONE);
+        Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(null, null, null, participants6, Context.NONE);
         assertHappyPath(createCommunicationRoom, 201);
-        assertEquals(createCommunicationRoom.getValue().getParticipants().size(), 2);
+        List<RoomParticipant> returnedParticipants = createCommunicationRoom.getValue().getParticipants();
+        assertEquals(participants6.size(), returnedParticipants.size());
+        IntStream.range(0, returnedParticipants.size())
+            .forEach(x -> assertTrue(areParticipantsEqual(participants6.get(x), returnedParticipants.get(x))));
         String roomId = createCommunicationRoom.getValue().getRoomId();
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);

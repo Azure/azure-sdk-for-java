@@ -21,13 +21,13 @@ public final class RoleTypeConverter {
         RoleType role = RoleType.ATTENDEE;
 
         switch (roleType.toString()) {
-            case "ATTENDEE":
+            case "Attendee":
                 role = RoleType.ATTENDEE;
                 break;
-            case "CONSUMER":
+            case "Consumer":
                 role = RoleType.CONSUMER;
                 break;
-            case "PRESENTER":
+            case "Presenter":
                 role = RoleType.PRESENTER;
                 break;
             default:
@@ -48,13 +48,13 @@ public final class RoleTypeConverter {
         com.azure.communication.rooms.implementation.models.RoleType role = com.azure.communication.rooms.implementation.models.RoleType.ATTENDEE;
 
         switch (roleType.toString()) {
-            case "ATTENDEE":
+            case "Attendee":
                 role = com.azure.communication.rooms.implementation.models.RoleType.ATTENDEE;
                 break;
-            case "CONSUMER":
+            case "Consumer":
                 role = com.azure.communication.rooms.implementation.models.RoleType.CONSUMER;
                 break;
-            case "PRESENTER":
+            case "Presenter":
                 role = com.azure.communication.rooms.implementation.models.RoleType.PRESENTER;
                 break;
             default:

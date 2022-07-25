@@ -238,4 +238,9 @@ public class RoomsTestBase extends TestBase {
         }
         return content;
     }
+
+    protected boolean areParticipantsEqual(RoomParticipant participant1, RoomParticipant participant2) {
+        return participant1.getCommunicationIdentifier().getRawId().equals(participant1.getCommunicationIdentifier().getRawId())
+            && participant1.getRole().toString().equals(participant2.getRole().toString());
+    }
 }
