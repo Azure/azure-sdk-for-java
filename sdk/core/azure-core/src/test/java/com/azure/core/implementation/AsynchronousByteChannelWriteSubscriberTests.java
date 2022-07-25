@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificates List. */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListCertificates.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListCertificates.json
      */
     /**
      * Sample code: List Certificates for subscription.

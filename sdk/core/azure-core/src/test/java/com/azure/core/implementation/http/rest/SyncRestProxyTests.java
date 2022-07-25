@@ -62,6 +62,25 @@ public class SyncRestProxyTests {
         @Get("my/url/path")
         @ExpectedResponses({200})
         StreamResponse testDownload(Context context);
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        void testVoidMethod(Context context);
+    }
+
+    @Test
+    public void voidReturningApiClosesResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+
+        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        testInterface.testVoidMethod(context);
+
+        Mockito.verify(client.lastResponseSpy).close();
     }
 
     @Test

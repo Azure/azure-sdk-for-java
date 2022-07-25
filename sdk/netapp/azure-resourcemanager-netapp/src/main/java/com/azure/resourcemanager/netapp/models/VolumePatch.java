@@ -268,6 +268,54 @@ public final class VolumePatch extends Resource {
     }
 
     /**
+     * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccess();
+    }
+
+    /**
+     * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withCoolAccess(Boolean coolAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withCoolAccess(coolAccess);
+        return this;
+    }
+
+    /**
+     * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @return the coolnessPeriod value.
+     */
+    public Integer coolnessPeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolnessPeriod();
+    }
+
+    /**
+     * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @param coolnessPeriod the coolnessPeriod value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withCoolnessPeriod(Integer coolnessPeriod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withCoolnessPeriod(coolnessPeriod);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

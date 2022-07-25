@@ -6,14 +6,16 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
-import com.azure.resourcemanager.mobilenetwork.models.CustomLocationResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
+import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PacketCoreControlPlane properties. */
+/** Packet core control plane properties. */
 @Fluent
 public final class PacketCoreControlPlanePropertiesFormat {
     /*
@@ -23,19 +25,19 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Mobile network that this packet core control plane belongs to
+     * Mobile network in which this packet core control plane is deployed.
      */
     @JsonProperty(value = "mobileNetwork", required = true)
     private MobileNetworkResourceId mobileNetwork;
 
     /*
-     * Azure ARC custom location where the packet core is deployed.
+     * The platform where the packet core is deployed.
      */
-    @JsonProperty(value = "customLocation")
-    private CustomLocationResourceId customLocation;
+    @JsonProperty(value = "platform")
+    private PlatformConfiguration platform;
 
     /*
-     * The core network technology generation.
+     * The core network technology generation (5G core or EPC / 4G core).
      */
     @JsonProperty(value = "coreNetworkTechnology")
     private CoreNetworkType coreNetworkTechnology;
@@ -47,12 +49,32 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private String version;
 
     /*
-     * The control plane interface on the access network. In 5G networks this
-     * is called as N2 interface whereas in 4G networks this is called as
-     * S1-MME interface.
+     * The control plane interface on the access network. For 5G networks, this
+     * is the N2 interface. For 4G networks, this is the S1-MME interface.
      */
     @JsonProperty(value = "controlPlaneAccessInterface", required = true)
     private InterfaceProperties controlPlaneAccessInterface;
+
+    /*
+     * The SKU defining the throughput and SIM allowances for this packet core
+     * control plane deployment.
+     */
+    @JsonProperty(value = "sku", required = true)
+    private BillingSku sku;
+
+    /*
+     * The kubernetes ingress configuration to control access to packet core
+     * diagnostics over local APIs.
+     */
+    @JsonProperty(value = "localDiagnosticsAccess")
+    private LocalDiagnosticsAccessConfiguration localDiagnosticsAccess;
+
+    /*
+     * Settings to allow interoperability with third party components e.g. RANs
+     * and UEs.
+     */
+    @JsonProperty(value = "interopSettings")
+    private Object interopSettings;
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core control plane resource.
@@ -64,7 +86,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network that this packet core control plane belongs to.
+     * Get the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
      *
      * @return the mobileNetwork value.
      */
@@ -73,7 +95,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network that this packet core control plane belongs to.
+     * Set the mobileNetwork property: Mobile network in which this packet core control plane is deployed.
      *
      * @param mobileNetwork the mobileNetwork value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
@@ -84,27 +106,27 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the customLocation property: Azure ARC custom location where the packet core is deployed.
+     * Get the platform property: The platform where the packet core is deployed.
      *
-     * @return the customLocation value.
+     * @return the platform value.
      */
-    public CustomLocationResourceId customLocation() {
-        return this.customLocation;
+    public PlatformConfiguration platform() {
+        return this.platform;
     }
 
     /**
-     * Set the customLocation property: Azure ARC custom location where the packet core is deployed.
+     * Set the platform property: The platform where the packet core is deployed.
      *
-     * @param customLocation the customLocation value to set.
+     * @param platform the platform value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
      */
-    public PacketCoreControlPlanePropertiesFormat withCustomLocation(CustomLocationResourceId customLocation) {
-        this.customLocation = customLocation;
+    public PacketCoreControlPlanePropertiesFormat withPlatform(PlatformConfiguration platform) {
+        this.platform = platform;
         return this;
     }
 
     /**
-     * Get the coreNetworkTechnology property: The core network technology generation.
+     * Get the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G core).
      *
      * @return the coreNetworkTechnology value.
      */
@@ -113,7 +135,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Set the coreNetworkTechnology property: The core network technology generation.
+     * Set the coreNetworkTechnology property: The core network technology generation (5G core or EPC / 4G core).
      *
      * @param coreNetworkTechnology the coreNetworkTechnology value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
@@ -144,8 +166,8 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. In 5G networks
-     * this is called as N2 interface whereas in 4G networks this is called as S1-MME interface.
+     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
      * @return the controlPlaneAccessInterface value.
      */
@@ -154,8 +176,8 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. In 5G networks
-     * this is called as N2 interface whereas in 4G networks this is called as S1-MME interface.
+     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      *
      * @param controlPlaneAccessInterface the controlPlaneAccessInterface value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
@@ -163,6 +185,73 @@ public final class PacketCoreControlPlanePropertiesFormat {
     public PacketCoreControlPlanePropertiesFormat withControlPlaneAccessInterface(
         InterfaceProperties controlPlaneAccessInterface) {
         this.controlPlaneAccessInterface = controlPlaneAccessInterface;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
+     * deployment.
+     *
+     * @return the sku value.
+     */
+    public BillingSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
+     * deployment.
+     *
+     * @param sku the sku value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withSku(BillingSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to packet core
+     * diagnostics over local APIs.
+     *
+     * @return the localDiagnosticsAccess value.
+     */
+    public LocalDiagnosticsAccessConfiguration localDiagnosticsAccess() {
+        return this.localDiagnosticsAccess;
+    }
+
+    /**
+     * Set the localDiagnosticsAccess property: The kubernetes ingress configuration to control access to packet core
+     * diagnostics over local APIs.
+     *
+     * @param localDiagnosticsAccess the localDiagnosticsAccess value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withLocalDiagnosticsAccess(
+        LocalDiagnosticsAccessConfiguration localDiagnosticsAccess) {
+        this.localDiagnosticsAccess = localDiagnosticsAccess;
+        return this;
+    }
+
+    /**
+     * Get the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
+     * UEs.
+     *
+     * @return the interopSettings value.
+     */
+    public Object interopSettings() {
+        return this.interopSettings;
+    }
+
+    /**
+     * Set the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
+     * UEs.
+     *
+     * @param interopSettings the interopSettings value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withInteropSettings(Object interopSettings) {
+        this.interopSettings = interopSettings;
         return this;
     }
 
@@ -180,8 +269,8 @@ public final class PacketCoreControlPlanePropertiesFormat {
         } else {
             mobileNetwork().validate();
         }
-        if (customLocation() != null) {
-            customLocation().validate();
+        if (platform() != null) {
+            platform().validate();
         }
         if (controlPlaneAccessInterface() == null) {
             throw LOGGER
@@ -191,6 +280,15 @@ public final class PacketCoreControlPlanePropertiesFormat {
                             + " PacketCoreControlPlanePropertiesFormat"));
         } else {
             controlPlaneAccessInterface().validate();
+        }
+        if (sku() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sku in model PacketCoreControlPlanePropertiesFormat"));
+        }
+        if (localDiagnosticsAccess() != null) {
+            localDiagnosticsAccess().validate();
         }
     }
 
