@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 - Fixed incorrect message ordering after session processor abandon message and when `maxConcurrentSessions` is 1. ([#24064](https://github.com/Azure/azure-sdk-for-java/issues/24064), [#30027](https://github.com/Azure/azure-sdk-for-java/issues/30027))
+- Supported for processing session message in parallel and fixed incorrect message ordering when `maxConcurrentSessions` > 1. ([#27336](https://github.com/Azure/azure-sdk-for-java/issues/27336)) 
 ### Other Changes
 
 ## 7.10.0 (2022-07-12)
