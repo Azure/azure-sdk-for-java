@@ -105,6 +105,7 @@ public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuild
      * @param connectionString valid token credential as a string
      * @return the updated RouterClientBuilder object
      */
+    @Override
     public RouterClientBuilder connectionString(String connectionString) {
         this.connectionString = new CommunicationConnectionString(connectionString);
         this.credential(new AzureKeyCredential(this.connectionString.getAccessKey()));

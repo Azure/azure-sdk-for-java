@@ -61,7 +61,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-
 /**
  * Async Client that supports job router operations.
  *
