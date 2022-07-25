@@ -3,7 +3,6 @@
 
 package com.azure.communication.jobrouter.models.options;
 
-import com.azure.communication.jobrouter.implementation.models.DistributionMode;
 import com.azure.communication.jobrouter.models.DistributionMode;
 
 /**

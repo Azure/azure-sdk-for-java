@@ -3,7 +3,9 @@
 
 package com.azure.communication.jobrouter.models.options;
 
+import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.RouterRule;
+import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
