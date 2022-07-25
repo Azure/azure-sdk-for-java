@@ -33,6 +33,7 @@ import java.util.function.Supplier;
  */
 class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregator.class);
+
     private final AtomicReference<EventDataAggregatorMain> downstreamSubscription = new AtomicReference<>();
     private final Supplier<EventDataBatch> batchSupplier;
     private final String namespace;
@@ -112,16 +113,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.currentBatch = batchSupplier.get();
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
-            this.disposable = eventSink.asFlux()
-                .switchMap(value -> {
-                    if (value == 0) {
-                        return Flux.interval(MAX_TIME, MAX_TIME);
-                    } else {
-                        return Flux.interval(options.getMaxWaitTime(), options.getMaxWaitTime());
-                    }
-                })
-                .subscribe(next -> {
-                    logger.verbose("Time elapsed. Publishing batch.");
+            this.disposable = Flux.switchOnNext(eventSink.asFlux().map(e -> Flux.interval(options.getMaxWaitTime())))
+                .subscribe(index -> {
+                    System.err.printf("[%s] %s %s. Time elapsed. Index: %d%n", partitionId, formatter.format(Instant.now()), this,
+                        index);
                     updateOrPublishBatch(null, true);
                 });
         }
