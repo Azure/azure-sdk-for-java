@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue with @Query annotation using IN queries in `azure-spring-data-cosmos` which were not working - See [PR 30123](https://github.com/Azure/azure-sdk-for-java/pull/30123)
 
 #### Other Changes
 
