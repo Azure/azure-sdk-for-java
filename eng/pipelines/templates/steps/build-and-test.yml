@@ -35,6 +35,9 @@ parameters:
   - name: IsLiveTest
     type: boolean
     default: false
+  - name: ExcludeProjectList
+    type: string
+    default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
 steps:
   - task: Maven@3
@@ -70,15 +73,15 @@ steps:
     displayName: 'Generate pom for aggregate code coverage report'
     condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
-      scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
-      arguments: '--project-list $(ProjectList)'
+      scriptPath: 'eng/scripts/generate_aggregate_pom.py'
+      arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
     condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
-      mavenPomFile: aggregate-coverage-pom.xml
+      mavenPomFile: aggregate-pom.xml
       options: '$(DefaultOptions)'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'

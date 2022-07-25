@@ -63,7 +63,7 @@ public interface MobileNetwork {
 
     /**
      * Gets the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the Mobile Country Code and Mobile Network Code, as defined in
+     * network. This is made up of the mobile country code and mobile network code, as defined in
      * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
      * and 999-999 can be used on internal private networks.
      *
@@ -91,6 +91,13 @@ public interface MobileNetwork {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner object.
@@ -144,12 +151,12 @@ public interface MobileNetwork {
         interface WithPublicLandMobileNetworkIdentifier {
             /**
              * Specifies the publicLandMobileNetworkIdentifier property: The unique public land mobile network
-             * identifier for the network. This is made up of the Mobile Country Code and Mobile Network Code, as
+             * identifier for the network. This is made up of the mobile country code and mobile network code, as
              * defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and
              * the values 999-99 and 999-999 can be used on internal private networks..
              *
              * @param publicLandMobileNetworkIdentifier The unique public land mobile network identifier for the
-             *     network. This is made up of the Mobile Country Code and Mobile Network Code, as defined in
+             *     network. This is made up of the mobile country code and mobile network code, as defined in
              *     https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the
              *     values 999-99 and 999-999 can be used on internal private networks.
              * @return the next definition stage.
@@ -240,22 +247,22 @@ public interface MobileNetwork {
     MobileNetwork refresh(Context context);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list sim ids API service call.
+     * @return response for list SIM IDs API service call.
      */
     SimIdListResult listSimIds();
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list sim ids API service call.
+     * @return response for list SIM IDs API service call.
      */
     SimIdListResult listSimIds(Context context);
 }

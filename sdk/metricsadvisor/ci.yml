@@ -35,6 +35,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: metricsadvisor
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-metricsadvisor
         groupId: com.azure

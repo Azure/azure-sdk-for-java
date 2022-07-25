@@ -33,7 +33,11 @@ public final class DatabaseType extends ExpandableStringEnum<DatabaseType> {
         return fromString(name, DatabaseType.class);
     }
 
-    /** @return known DatabaseType values. */
+    /**
+     * Gets known DatabaseType values.
+     *
+     * @return known DatabaseType values.
+     */
     public static Collection<DatabaseType> values() {
         return values(DatabaseType.class);
     }

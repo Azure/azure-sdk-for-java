@@ -27,7 +27,11 @@ public final class PduSessionType extends ExpandableStringEnum<PduSessionType> {
         return fromString(name, PduSessionType.class);
     }
 
-    /** @return known PduSessionType values. */
+    /**
+     * Gets known PduSessionType values.
+     *
+     * @return known PduSessionType values.
+     */
     public static Collection<PduSessionType> values() {
         return values(PduSessionType.class);
     }

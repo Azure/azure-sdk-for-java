@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SessionHost properties that can be patched. */
 @Fluent
 public final class SessionHostPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostPatchProperties.class);
-
     /*
      * Allow a new session.
      */

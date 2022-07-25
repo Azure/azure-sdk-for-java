@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("Docker")
 @Fluent
 public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DockerBuildStepUpdateParameters.class);
-
     /*
      * The fully qualified image names including the repository and tag.
      */
@@ -177,6 +173,20 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
      */
     public DockerBuildStepUpdateParameters withTarget(String target) {
         this.target = target;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildStepUpdateParameters withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildStepUpdateParameters withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
         return this;
     }
 

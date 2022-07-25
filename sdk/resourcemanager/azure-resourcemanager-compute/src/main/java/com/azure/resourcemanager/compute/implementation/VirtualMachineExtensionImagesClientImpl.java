@@ -238,7 +238,14 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     public Mono<VirtualMachineExtensionImageInner> getAsync(
         String location, String publisherName, String type, String version) {
         return getWithResponseAsync(location, publisherName, type, version)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineExtensionImageInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -385,7 +392,15 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineExtensionImageInner>> listTypesAsync(String location, String publisherName) {
-        return listTypesWithResponseAsync(location, publisherName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return listTypesWithResponseAsync(location, publisherName)
+            .flatMap(
+                (Response<List<VirtualMachineExtensionImageInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -562,7 +577,14 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     public Mono<List<VirtualMachineExtensionImageInner>> listVersionsAsync(
         String location, String publisherName, String type, String filter, Integer top, String orderby) {
         return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<List<VirtualMachineExtensionImageInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -583,7 +605,14 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         final Integer top = null;
         final String orderby = null;
         return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<List<VirtualMachineExtensionImageInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

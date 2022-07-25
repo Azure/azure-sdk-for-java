@@ -25,6 +25,7 @@ module com.azure.core {
     exports com.azure.core.models;
     exports com.azure.core.util;
     exports com.azure.core.util.builder;
+    exports com.azure.core.util.io;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.paging;
     exports com.azure.core.util.polling;
@@ -51,6 +52,7 @@ module com.azure.core {
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.jackson to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.util to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.http.rest to com.fasterxml.jackson.databind;
     opens com.azure.core.http.rest to com.fasterxml.jackson.databind;
 
     // Service Provider Interfaces

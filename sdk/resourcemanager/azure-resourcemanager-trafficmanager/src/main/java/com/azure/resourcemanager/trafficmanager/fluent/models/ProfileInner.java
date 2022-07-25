@@ -16,6 +16,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStat
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Class representing a Traffic Manager profile. */
 @JsonFlatten
@@ -208,6 +209,20 @@ public class ProfileInner extends Resource {
      */
     public ProfileInner withMaxReturn(Long maxReturn) {
         this.maxReturn = maxReturn;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProfileInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProfileInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

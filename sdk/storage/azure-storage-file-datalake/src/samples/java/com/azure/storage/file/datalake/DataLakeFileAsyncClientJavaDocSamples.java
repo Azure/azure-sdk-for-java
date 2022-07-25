@@ -198,7 +198,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         ParallelTransferOptions pto = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+            .setProgressListener(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(data, pto, httpHeaders, metadataMap, conditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
@@ -241,7 +241,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         ParallelTransferOptions pto = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+            .setProgressListener(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(new FileParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers)

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworkGateways GetVpnProfilePackageUrl. */
 public final class VirtualNetworkGatewaysGetVpnProfilePackageUrlSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayVPNProfilePackageURL.

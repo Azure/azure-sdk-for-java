@@ -4,6 +4,8 @@
 package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientResponse;
 import reactor.core.publisher.Flux;
@@ -18,6 +20,11 @@ public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
     public BufferedVertxHttpResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse, Buffer body) {
         super(azureHttpRequest, vertxHttpResponse);
         this.body = body;
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromBytes(body.getBytes());
     }
 
     @Override
@@ -38,5 +45,10 @@ public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
             }
             return Mono.just(this.body.getBytes());
         });
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return this;
     }
 }

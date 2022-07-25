@@ -30,7 +30,11 @@ public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupSt
         return fromString(name, BackupStorageRedundancy.class);
     }
 
-    /** @return known BackupStorageRedundancy values. */
+    /**
+     * Gets known BackupStorageRedundancy values.
+     *
+     * @return known BackupStorageRedundancy values.
+     */
     public static Collection<BackupStorageRedundancy> values() {
         return values(BackupStorageRedundancy.class);
     }

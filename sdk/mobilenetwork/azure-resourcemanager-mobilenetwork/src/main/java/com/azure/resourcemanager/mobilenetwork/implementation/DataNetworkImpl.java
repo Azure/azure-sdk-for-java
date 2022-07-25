@@ -64,6 +64,10 @@ public final class DataNetworkImpl implements DataNetwork, DataNetwork.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DataNetworkInner innerModel() {
         return this.innerObject;
     }

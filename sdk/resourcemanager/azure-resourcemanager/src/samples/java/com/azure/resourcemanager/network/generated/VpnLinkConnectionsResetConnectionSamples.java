@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnLinkConnections ResetConnection. */
 public final class VpnLinkConnectionsResetConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnSiteLinkConnectionReset.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnSiteLinkConnectionReset.json
      */
     /**
      * Sample code: ResetVpnLinkConnection.

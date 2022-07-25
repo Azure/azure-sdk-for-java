@@ -5,17 +5,25 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.loganalytics.fluent.models.ClusterPatchProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The top level Log Analytics cluster resource container. */
-@JsonFlatten
 @Fluent
-public class ClusterPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPatch.class);
+public final class ClusterPatch {
+    /*
+     * Log Analytics cluster properties.
+     */
+    @JsonProperty(value = "properties")
+    private ClusterPatchProperties innerProperties;
+
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
      * The sku properties.
@@ -27,13 +35,37 @@ public class ClusterPatch {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The associated key properties.
+    /**
+     * Get the innerProperties property: Log Analytics cluster properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.keyVaultProperties")
-    private KeyVaultProperties keyVaultProperties;
+    private ClusterPatchProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ClusterPatch object itself.
+     */
+    public ClusterPatch withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the sku property: The sku properties.
@@ -81,7 +113,7 @@ public class ClusterPatch {
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
-        return this.keyVaultProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultProperties();
     }
 
     /**
@@ -91,7 +123,33 @@ public class ClusterPatch {
      * @return the ClusterPatch object itself.
      */
     public ClusterPatch withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
-        this.keyVaultProperties = keyVaultProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPatchProperties();
+        }
+        this.innerProperties().withKeyVaultProperties(keyVaultProperties);
+        return this;
+    }
+
+    /**
+     * Get the billingType property: The cluster's billing type.
+     *
+     * @return the billingType value.
+     */
+    public BillingType billingType() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingType();
+    }
+
+    /**
+     * Set the billingType property: The cluster's billing type.
+     *
+     * @param billingType the billingType value to set.
+     * @return the ClusterPatch object itself.
+     */
+    public ClusterPatch withBillingType(BillingType billingType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPatchProperties();
+        }
+        this.innerProperties().withBillingType(billingType);
         return this;
     }
 
@@ -101,11 +159,14 @@ public class ClusterPatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (keyVaultProperties() != null) {
-            keyVaultProperties().validate();
         }
     }
 }

@@ -39,7 +39,11 @@ public final class Rotation extends ExpandableStringEnum<Rotation> {
         return fromString(name, Rotation.class);
     }
 
-    /** @return known Rotation values. */
+    /**
+     * Gets known Rotation values.
+     *
+     * @return known Rotation values.
+     */
     public static Collection<Rotation> values() {
         return values(Rotation.class);
     }

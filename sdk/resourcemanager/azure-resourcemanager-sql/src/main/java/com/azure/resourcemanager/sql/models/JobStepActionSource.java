@@ -24,7 +24,11 @@ public final class JobStepActionSource extends ExpandableStringEnum<JobStepActio
         return fromString(name, JobStepActionSource.class);
     }
 
-    /** @return known JobStepActionSource values. */
+    /**
+     * Gets known JobStepActionSource values.
+     *
+     * @return known JobStepActionSource values.
+     */
     public static Collection<JobStepActionSource> values() {
         return values(JobStepActionSource.class);
     }

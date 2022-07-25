@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for CassandraResources UpdateCassandraKeyspaceThroughput. */
 public final class CassandraResourcesUpdateCassandraKeyspaceThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCassandraKeyspaceThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraKeyspaceThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceThroughputUpdate.

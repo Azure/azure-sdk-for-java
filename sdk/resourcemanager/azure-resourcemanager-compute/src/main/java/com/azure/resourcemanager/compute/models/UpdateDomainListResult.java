@@ -10,23 +10,25 @@ import com.azure.resourcemanager.compute.fluent.models.UpdateDomainInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The UpdateDomainListResult model. */
+/** The list operation result. */
 @Fluent
 public final class UpdateDomainListResult {
     /*
-     * The value property.
+     * The list of resources.
      */
     @JsonProperty(value = "value", required = true)
     private List<UpdateDomainInner> value;
 
     /*
-     * The nextLink property.
+     * The URI to fetch the next page of resources. Use this to get the next
+     * page of resources. Do this till nextLink is null to fetch all the
+     * resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The list of resources.
      *
      * @return the value value.
      */
@@ -35,7 +37,7 @@ public final class UpdateDomainListResult {
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The list of resources.
      *
      * @param value the value value to set.
      * @return the UpdateDomainListResult object itself.
@@ -46,7 +48,8 @@ public final class UpdateDomainListResult {
     }
 
     /**
-     * Get the nextLink property: The nextLink property.
+     * Get the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
+     * resources. Do this till nextLink is null to fetch all the resources.
      *
      * @return the nextLink value.
      */
@@ -55,7 +58,8 @@ public final class UpdateDomainListResult {
     }
 
     /**
-     * Set the nextLink property: The nextLink property.
+     * Set the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
+     * resources. Do this till nextLink is null to fetch all the resources.
      *
      * @param nextLink the nextLink value to set.
      * @return the UpdateDomainListResult object itself.

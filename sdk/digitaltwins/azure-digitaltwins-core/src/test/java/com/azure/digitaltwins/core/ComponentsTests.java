@@ -219,7 +219,7 @@ public class ComponentsTests extends ComponentsTestBase {
                     client.deleteModel(wifiModelId);
                 }
             } catch (Exception ex) {
-                throw new AssertionFailedError("Test celanup failed", ex);
+                throw new AssertionFailedError("Test cleanup failed", ex);
             }
         }
     }

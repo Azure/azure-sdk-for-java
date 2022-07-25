@@ -37,6 +37,10 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
         return new ChangeFeedStartFromPointInTimeImpl(pointInTime);
     }
 
+    public static ChangeFeedStartFromInternal createFromLegacyContinuation() {
+        return new ChangeFeedStartFromLegacyContinuationImpl();
+    }
+
     @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();

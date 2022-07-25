@@ -193,6 +193,9 @@
     <skipTestCompile>false</skipTestCompile>
 
     <compiler.proc>none</compiler.proc>
+
+    <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
+    <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
   </properties>
 
   <build>
@@ -528,7 +531,7 @@
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
-              <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+              <arg>-Xlint:${compiler.failondeprecatedstatus}deprecation</arg>
               <arg>-Xlint:dep-ann</arg>
               <arg>-Xlint:divzero</arg>
               <arg>-Xlint:empty</arg>
@@ -970,12 +973,13 @@
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:removal</arg>
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
-              <!-- this will generate module-info with major class version 61 or higher (i.e Java 17 or higher) -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
               <execution>
                 <id>default-compile</id>
                 <goals>
@@ -985,6 +989,7 @@
                   <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
+
               <!-- then compile with Java 11 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
               when the Azure SDK policy is changed -->
@@ -996,8 +1001,12 @@
                 </goals>
                 <configuration>
                   <release>11</release>
+                  <includes>
+                    <include>module-info.java</include>
+                  </includes>
                 </configuration>
               </execution>
+
               <!-- then compile without module-info for Java 8 -->
               <execution>
                 <id>base-compile</id>
@@ -1020,17 +1029,6 @@
                 </goals>
                 <configuration>
                   <testRelease>${java.vm.specification.version}</testRelease>
-                </configuration>
-              </execution>
-
-              <!-- compile tests with Java 11 -->
-              <execution>
-                <id>base-modules-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <testRelease>11</testRelease>
                 </configuration>
               </execution>
 

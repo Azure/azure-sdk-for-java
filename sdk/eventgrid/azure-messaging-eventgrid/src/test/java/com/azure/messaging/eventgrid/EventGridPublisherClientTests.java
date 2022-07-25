@@ -6,6 +6,8 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEventDataFormat;
@@ -23,12 +25,14 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,9 +64,16 @@ public class EventGridPublisherClientTests extends TestBase {
     // Event Grid access key for a topic accepting custom schema events
     private static final String CUSTOM_KEY = "AZURE_EVENTGRID_CUSTOM_KEY";
 
+    // Endpoint, key and channel name for publishing to partner topic
+    private static final String EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT = "EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT";
+    private static final String EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY = "EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY";
+    private static final String EVENTGRID_PARTNER_CHANNEL_NAME = "EVENTGRID_PARTNER_CHANNEL_NAME";
+
     private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
 
     private static final String DUMMY_KEY = "dummyKey";
+
+    private static final String DUMMY_CHANNEL_NAME = "dummy-channel";
 
     @Override
     protected void beforeTest() {
@@ -232,6 +243,71 @@ public class EventGridPublisherClientTests extends TestBase {
 
         StepVerifier.create(egClient.sendEvent(event))
             .verifyComplete();
+    }
+
+    @Test
+    public void publishCloudEventsToPartnerTopic() {
+        EventGridPublisherAsyncClient<CloudEvent> egClient = builder
+                .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
+                .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
+                .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
+                    HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
+                    assertNotNull(httpHeader);
+                    return httpPipelineNextPolicy.process();
+                })
+                .buildCloudEventPublisherAsyncClient();
+
+        CloudEvent event = new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
+                BinaryData.fromObject(new HashMap<String, String>() {
+                    {
+                        put("Field1", "Value1");
+                        put("Field2", "Value2");
+                        put("Field3", "Value3");
+                    }
+                }), CloudEventDataFormat.JSON, "application/json")
+                .setSubject("Test")
+                .setTime(OffsetDateTime.now());
+
+        Mono<Response<Void>> responseMono = egClient.sendEventsWithResponse(Arrays.asList(event),
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
+        StepVerifier.create(responseMono)
+                .assertNext(response -> assertEquals(200, response.getStatusCode()))
+                .verifyComplete();
+    }
+
+    @Test
+    public void publishEventGridEventToPartnerTopic() {
+        EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
+                .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
+                .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
+                .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
+                    HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
+                    assertNotNull(httpHeader);
+                    return httpPipelineNextPolicy.process();
+                })
+                .buildEventGridEventPublisherAsyncClient();
+
+        EventGridEvent event = new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+                BinaryData.fromObject(new HashMap<String, String>() {
+                    {
+                        put("Field1", "Value1");
+                        put("Field2", "Value2");
+                        put("Field3", "Value3");
+                    }
+                }),
+                "1.0")
+                .setEventTime(OffsetDateTime.now());
+
+        Mono<Response<Void>> responseMono = egClient.sendEventsWithResponse(Arrays.asList(event),
+            getChannelName(EVENTGRID_PARTNER_CHANNEL_NAME));
+        StepVerifier.create(responseMono)
+                .expectErrorSatisfies(exception -> {
+                    assertEquals(HttpResponseException.class.getName(), exception.getClass().getName());
+                    if (exception instanceof HttpResponseException) {
+                        assertEquals(400,
+                                ((HttpResponseException) exception).getResponse().getStatusCode());
+                    }
+                }).verify();
     }
 
     public static class TestData {
@@ -488,7 +564,7 @@ public class EventGridPublisherClientTests extends TestBase {
             return DUMMY_ENDPOINT;
         }
         String endpoint = System.getenv(liveEnvName);
-        assertNotNull(endpoint, "System environment variable " + liveEnvName + "is null");
+        assertNotNull(endpoint, "System environment variable " + liveEnvName + " is null");
         return endpoint;
     }
 
@@ -497,7 +573,16 @@ public class EventGridPublisherClientTests extends TestBase {
             return new AzureKeyCredential(DUMMY_KEY);
         }
         AzureKeyCredential key = new AzureKeyCredential(System.getenv(liveEnvName));
-        assertNotNull(key.getKey(), "System environment variable " + liveEnvName + "is null");
+        assertNotNull(key.getKey(), "System environment variable " + liveEnvName + " is null");
         return key;
+    }
+
+    private String getChannelName(String liveEnvName) {
+        if (interceptorManager.isPlaybackMode()) {
+            return DUMMY_CHANNEL_NAME;
+        }
+        String channelName = System.getenv(liveEnvName);
+        assertNotNull(channelName, "System environment variable " + liveEnvName + " is null");
+        return channelName;
     }
 }

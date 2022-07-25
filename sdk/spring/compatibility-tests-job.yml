@@ -21,19 +21,22 @@ jobs:
             - 'sdk/boms/spring-cloud-azure-dependencies'
       - script: |
           pip install termcolor
-        displayName: 'python module install'
+        displayName: 'Python module install'
       - bash: |
           echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
-        displayName: 'set env'
+        displayName: 'Set env'
+      - bash: |
+          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION):"
+          echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION).pom"
+          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION):"
+          echo "https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)/spring-cloud-dependencies-$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION).pom"
+        displayName: 'Print version maven pom'
       - script: |
           python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
-        displayName: 'insert dependency management'
+        displayName: 'Insert dependency management'
       - script: |
           python ./sdk/spring/scripts/compatibility_delete_version.py
-        displayName: 'remove unused version'
-      - bash: |
-          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
-        displayName: 'print spring cloud version'
+        displayName: 'Remove unused version'
       - task: Maven@3
         displayName: 'Run tests'
         inputs:

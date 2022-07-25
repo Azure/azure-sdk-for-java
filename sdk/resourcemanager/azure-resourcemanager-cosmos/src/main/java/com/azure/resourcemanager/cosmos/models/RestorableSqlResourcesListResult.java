@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlResourcesGetResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the restorable SQL resources. */
 @Immutable
 public final class RestorableSqlResourcesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableSqlResourcesListResult.class);
-
     /*
      * List of restorable SQL resources, including the database and collection
      * names.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DatabaseRestoreResourceInner> value;
+    private List<RestorableSqlResourcesGetResultInner> value;
 
     /**
      * Get the value property: List of restorable SQL resources, including the database and collection names.
      *
      * @return the value value.
      */
-    public List<DatabaseRestoreResourceInner> value() {
+    public List<RestorableSqlResourcesGetResultInner> value() {
         return this.value;
     }
 

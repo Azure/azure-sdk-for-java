@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VolumeGroups Create. */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeGroups_Create.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/VolumeGroups_Create.json
      */
     /**
      * Sample code: VolumeGroups_Create.

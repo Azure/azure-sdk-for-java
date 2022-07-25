@@ -11,7 +11,6 @@ import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import org.apache.spark.TaskContext
-import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow

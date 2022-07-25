@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.LocationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB location get result. */
 @Fluent
 public final class LocationGetResultInner extends ArmProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationGetResultInner.class);
-
     /*
      * Cosmos DB location metadata
      */

@@ -11,6 +11,7 @@ import com.azure.spring.cloud.service.implementation.AzureHttpClientBuilderFacto
 import com.azure.spring.cloud.service.implementation.core.http.TestHttpClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ class AzureBlobClientBuilderFactoryTests
     AzureBlobClientBuilderFactoryTests.BlobServiceClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.blob.core.windows.net/";
+    private static final String CUSTOMER_PROVIDED_KEY = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
     private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
         + "QueueEndpoint=https://test.queue.core.windows.net/;FileEndpoint=https://test.file.core.windows.net/;"
         + "TableEndpoint=https://test.table.core.windows.net/;SharedAccessSignature=sv=2020-08-04"
@@ -84,6 +86,23 @@ class AzureBlobClientBuilderFactoryTests
     @Override
     protected void buildClient(BlobServiceClientBuilder builder) {
         builder.buildClient();
+    }
+
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureStorageBlobTestProperties properties = new AzureStorageBlobTestProperties();
+        properties.setEndpoint(ENDPOINT);
+        properties.setCustomerProvidedKey(CUSTOMER_PROVIDED_KEY);
+        properties.setEncryptionScope("test-scope");
+        properties.setServiceVersion(BlobServiceVersion.V2019_07_07);
+
+        final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
+        final BlobServiceClient client = builder.buildClient();
+
+        verify(builder, times(1)).endpoint(ENDPOINT);
+        verify(builder, times(1)).customerProvidedKey(any());
+        verify(builder, times(1)).encryptionScope("test-scope");
+        verify(builder, times(1)).serviceVersion(BlobServiceVersion.V2019_07_07);
     }
 
     @Override

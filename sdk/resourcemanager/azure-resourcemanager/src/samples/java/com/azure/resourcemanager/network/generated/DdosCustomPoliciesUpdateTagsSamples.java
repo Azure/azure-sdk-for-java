@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DdosCustomPolicies UpdateTags. */
 public final class DdosCustomPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DdosCustomPolicyUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/DdosCustomPolicyUpdateTags.json
      */
     /**
      * Sample code: DDoS Custom policy Update tags.

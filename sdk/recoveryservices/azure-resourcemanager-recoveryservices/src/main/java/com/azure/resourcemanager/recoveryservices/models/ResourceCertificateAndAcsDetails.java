@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("AccessControlService")
 @Fluent
 public final class ResourceCertificateAndAcsDetails extends ResourceCertificateDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceCertificateAndAcsDetails.class);
-
     /*
      * ACS namespace name - tenant for our service.
      */
@@ -162,22 +159,24 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
     public void validate() {
         super.validate();
         if (globalAcsNamespace() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property globalAcsNamespace in model ResourceCertificateAndAcsDetails"));
         }
         if (globalAcsHostname() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property globalAcsHostname in model ResourceCertificateAndAcsDetails"));
         }
         if (globalAcsRPRealm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property globalAcsRPRealm in model ResourceCertificateAndAcsDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceCertificateAndAcsDetails.class);
 }
