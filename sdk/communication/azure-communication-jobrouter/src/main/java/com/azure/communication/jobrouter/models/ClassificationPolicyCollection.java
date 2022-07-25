@@ -15,7 +15,7 @@ public final class ClassificationPolicyCollection {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<PagedClassificationPolicy> value;
+    private List<ClassificationPolicyItem> value;
 
     /*
      * The nextLink property.
@@ -28,7 +28,7 @@ public final class ClassificationPolicyCollection {
      *
      * @return the value value.
      */
-    public List<PagedClassificationPolicy> getValue() {
+    public List<ClassificationPolicyItem> getValue() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class ClassificationPolicyCollection {
      * @param value the value value to set.
      * @return the ClassificationPolicyCollection object itself.
      */
-    public ClassificationPolicyCollection setValue(List<PagedClassificationPolicy> value) {
+    public ClassificationPolicyCollection setValue(List<ClassificationPolicyItem> value) {
         this.value = value;
         return this;
     }

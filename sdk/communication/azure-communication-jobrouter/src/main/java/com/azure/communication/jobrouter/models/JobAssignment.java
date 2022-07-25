@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Assigns a job to a worker. */
+/** Assignment details of a job to a worker. */
 @Fluent
 public final class JobAssignment {
     /*

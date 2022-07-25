@@ -3,12 +3,12 @@
 
 package com.azure.communication.jobrouter.implementation.convertors;
 
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.UpdateJobOptions;
-import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
+import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
+import com.azure.communication.jobrouter.models.options.UpdateWorkerOptions;
 
 import java.util.Map;
 import java.util.stream.Collectors;

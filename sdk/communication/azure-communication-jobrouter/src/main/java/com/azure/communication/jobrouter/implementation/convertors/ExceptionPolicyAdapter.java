@@ -4,8 +4,8 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.UpdateExceptionPolicyOptions;
 
 /**
  * Converts request options for create and update Exception Policy to {@link ExceptionPolicy}.

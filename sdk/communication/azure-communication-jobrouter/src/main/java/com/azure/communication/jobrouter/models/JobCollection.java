@@ -15,7 +15,7 @@ public final class JobCollection {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<PagedJob> value;
+    private List<RouterJobItem> value;
 
     /*
      * The nextLink property.
@@ -28,7 +28,7 @@ public final class JobCollection {
      *
      * @return the value value.
      */
-    public List<PagedJob> getValue() {
+    public List<RouterJobItem> getValue() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class JobCollection {
      * @param value the value value to set.
      * @return the JobCollection object itself.
      */
-    public JobCollection setValue(List<PagedJob> value) {
+    public JobCollection setValue(List<RouterJobItem> value) {
         this.value = value;
         return this;
     }

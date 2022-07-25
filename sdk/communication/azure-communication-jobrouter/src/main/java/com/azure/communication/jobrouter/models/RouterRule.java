@@ -23,12 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = RouterRule.class)
 @JsonTypeName("RouterRule")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "azure-function-rule", value = AzureFunctionRule.class),
     @JsonSubTypes.Type(name = "direct-map-rule", value = DirectMapRule.class),
     @JsonSubTypes.Type(name = "expression-rule", value = ExpressionRule.class),
+    @JsonSubTypes.Type(name = "azure-function-rule", value = FunctionRule.class),
     @JsonSubTypes.Type(name = "static-rule", value = StaticRule.class)
 })
 @Immutable
-public abstract class RouterRule {
-
-}
+public abstract class RouterRule {}

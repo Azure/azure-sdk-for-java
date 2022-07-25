@@ -4,8 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
-import com.azure.communication.jobrouter.implementation.models.WaitTimeExceptionTrigger;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,6 +21,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTrigger.class)
 })
 @Immutable
-public class JobExceptionTrigger {
-
-}
+public class JobExceptionTrigger {}

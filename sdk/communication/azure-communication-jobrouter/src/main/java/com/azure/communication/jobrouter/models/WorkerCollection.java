@@ -15,7 +15,7 @@ public final class WorkerCollection {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<PagedWorker> value;
+    private List<RouterWorkerItem> value;
 
     /*
      * The nextLink property.
@@ -28,7 +28,7 @@ public final class WorkerCollection {
      *
      * @return the value value.
      */
-    public List<PagedWorker> getValue() {
+    public List<RouterWorkerItem> getValue() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class WorkerCollection {
      * @param value the value value to set.
      * @return the WorkerCollection object itself.
      */
-    public WorkerCollection setValue(List<PagedWorker> value) {
+    public WorkerCollection setValue(List<RouterWorkerItem> value) {
         this.value = value;
         return this;
     }

@@ -5,8 +5,8 @@ package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.UpdateJobOptions;
+import com.azure.communication.jobrouter.models.options.CreateJobOptions;
+import com.azure.communication.jobrouter.models.options.UpdateJobOptions;
 
 import java.util.Map;
 import java.util.stream.Collectors;

@@ -29,7 +29,7 @@ public final class RouterJob {
      * The state of the Job.
      */
     @JsonProperty(value = "jobStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private JobStatus jobStatus;
+    private RouterJobStatus jobStatus;
 
     /*
      * The time a job was queued.
@@ -141,7 +141,7 @@ public final class RouterJob {
      *
      * @return the jobStatus value.
      */
-    public JobStatus getJobStatus() {
+    public RouterJobStatus getJobStatus() {
         return this.jobStatus;
     }
 

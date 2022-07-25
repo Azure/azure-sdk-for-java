@@ -27,7 +27,7 @@ public final class JobQueue {
      * The ID of the distribution policy that will determine how a job is
      * distributed to workers.
      */
-    @JsonProperty(value = "distributionPolicyId", required = true)
+    @JsonProperty(value = "distributionPolicyId")
     private String distributionPolicyId;
 
     /*

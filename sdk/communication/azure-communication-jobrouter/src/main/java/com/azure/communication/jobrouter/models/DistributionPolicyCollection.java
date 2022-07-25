@@ -15,7 +15,7 @@ public final class DistributionPolicyCollection {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<PagedDistributionPolicy> value;
+    private List<DistributionPolicyItem> value;
 
     /*
      * The nextLink property.
@@ -28,7 +28,7 @@ public final class DistributionPolicyCollection {
      *
      * @return the value value.
      */
-    public List<PagedDistributionPolicy> getValue() {
+    public List<DistributionPolicyItem> getValue() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class DistributionPolicyCollection {
      * @param value the value value to set.
      * @return the DistributionPolicyCollection object itself.
      */
-    public DistributionPolicyCollection setValue(List<PagedDistributionPolicy> value) {
+    public DistributionPolicyCollection setValue(List<DistributionPolicyItem> value) {
         this.value = value;
         return this;
     }

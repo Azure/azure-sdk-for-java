@@ -4,19 +4,19 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyCollection;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyItem;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyCollection;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyItem;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollection;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyItem;
-import com.azure.communication.jobrouter.implementation.models.JobQueue;
-import com.azure.communication.jobrouter.implementation.models.JobQueueItem;
-import com.azure.communication.jobrouter.implementation.models.QueueCollection;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.ClassificationPolicyCollection;
+import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicyCollection;
+import com.azure.communication.jobrouter.models.DistributionPolicyItem;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicyCollection;
+import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
+import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.models.JobQueueItem;
+import com.azure.communication.jobrouter.models.QueueCollection;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

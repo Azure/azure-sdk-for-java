@@ -6,35 +6,35 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.models.AzureFunctionRule;
 import com.azure.communication.jobrouter.models.AzureFunctionRuleCredential;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
-import com.azure.communication.jobrouter.implementation.models.CancelExceptionAction;
+import com.azure.communication.jobrouter.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;
+import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
-import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
-import com.azure.communication.jobrouter.implementation.models.QueueSelector;
+import com.azure.communication.jobrouter.models.QueueAssignment;
+import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
+import com.azure.communication.jobrouter.models.QueueSelector;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
-import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.implementation.models.StaticQueueSelector;
+import com.azure.communication.jobrouter.models.StaticQueueSelector;
 import com.azure.communication.jobrouter.models.StaticRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateJobOptions;
+import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -50,9 +50,16 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     private RouterClient routerClient;
 
+    private RouterAdministrationClient routerAdminClient;
+
     @Override
     protected void beforeTest() {
         routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient());
+
+        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
             .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient());
@@ -75,13 +82,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+        DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
 
         // Cleanup
-        routerClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
+        routerAdminClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
     }
 
     @ParameterizedTest
@@ -108,13 +115,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+        DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
 
         // Cleanup
-        routerClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
+        routerAdminClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
     }
 
     @ParameterizedTest
@@ -134,13 +141,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setName(longestIdleModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+        DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(longestIdleModeDistributionPolicyId, result.getId());
 
         // Cleanup
-        routerClient.deleteDistributionPolicy(longestIdleModeDistributionPolicyId);
+        routerAdminClient.deleteDistributionPolicy(longestIdleModeDistributionPolicyId);
     }
 
     @ParameterizedTest
@@ -160,13 +167,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setName(roundRobinModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+        DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(roundRobinModeDistributionPolicyId, result.getId());
 
         // Cleanup
-        routerClient.deleteDistributionPolicy(roundRobinModeDistributionPolicyId);
+        routerAdminClient.deleteDistributionPolicy(roundRobinModeDistributionPolicyId);
     }
 
     @ParameterizedTest
@@ -226,15 +233,15 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         );
 
         // Action
-        ClassificationPolicy result = routerClient.createClassificationPolicy(createClassificationPolicyOptions);
+        ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());
 
         // Cleanup
-        routerClient.deleteClassificationPolicy(classificationPolicyId);
-        routerClient.deleteQueue(queueId);
-        routerClient.deleteDistributionPolicy(distributionPolicyId);
+        routerAdminClient.deleteClassificationPolicy(classificationPolicyId);
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
     @ParameterizedTest
@@ -270,13 +277,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setName(exceptionPolicyName);
 
         // Action
-        ExceptionPolicy result = routerClient.createExceptionPolicy(createExceptionPolicyOptions);
+        ExceptionPolicy result = routerAdminClient.createExceptionPolicy(createExceptionPolicyOptions);
 
         // Verify
         assertEquals(exceptionPolicyId, result.getId());
 
         // Cleanup
-        routerClient.deleteExceptionPolicy(exceptionPolicyId);
+        routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
     }
 
     @ParameterizedTest
@@ -338,8 +345,8 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         // Cleanup
         routerClient.deleteWorker(workerId);
-        routerClient.deleteQueue(queueId);
-        routerClient.deleteDistributionPolicy(distributionPolicyId);
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
     private DistributionPolicy createDistributionPolicy(String id) {
@@ -354,7 +361,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         )
             .setName(distributionPolicyName);
 
-        return routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+        return routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
     }
 
     private JobQueue createQueue(String queueId, String distributionPolicyId) {
@@ -369,7 +376,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setLabels(queueLabels)
             .setName(queueName);
 
-        return routerClient.createQueue(createQueueOptions);
+        return routerAdminClient.createQueue(createQueueOptions);
     }
 
     private RouterJob createJob(String queueId) {

@@ -6,21 +6,21 @@ import com.azure.communication.jobrouter.implementation.convertors.ExceptionPoli
 import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicyItem;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.models.PagedClassificationPolicy;
-import com.azure.communication.jobrouter.models.PagedDistributionPolicy;
-import com.azure.communication.jobrouter.models.PagedExceptionPolicy;
-import com.azure.communication.jobrouter.models.PagedQueue;
-import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateQueueOptions;
+import com.azure.communication.jobrouter.models.JobQueueItem;
+import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.options.UpdateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.options.UpdateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.UpdateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.UpdateQueueOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -163,7 +163,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedClassificationPolicy> listClassificationPolicies(Integer maxPageSize) {
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
         return new PagedIterable<>(this.client.listClassificationPolicies(maxPageSize));
     }
 
@@ -175,7 +175,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedClassificationPolicy> listClassificationPolicies() {
+    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies() {
         return new PagedIterable<>(this.client.listClassificationPolicies());
     }
 
@@ -306,7 +306,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedDistributionPolicy> listDistributionPolicies(Integer maxPageSize) {
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
         return new PagedIterable<>(this.client.listDistributionPolicies(maxPageSize));
     }
 
@@ -318,7 +318,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedDistributionPolicy> listDistributionPolicies() {
+    public PagedIterable<DistributionPolicyItem> listDistributionPolicies() {
         return new PagedIterable<>(this.client.listDistributionPolicies());
     }
 
@@ -447,7 +447,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedExceptionPolicy> listExceptionPolicies() {
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies() {
         return new PagedIterable<>(this.client.listExceptionPolicies());
     }
 
@@ -461,7 +461,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedExceptionPolicy> listExceptionPolicies(Integer maxPageSize) {
+    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
         return new PagedIterable<>(this.client.listExceptionPolicies(maxPageSize));
     }
 
@@ -590,7 +590,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedQueue> listQueues() {
+    public PagedIterable<JobQueueItem> listQueues() {
         return new PagedIterable<>(this.client.listQueues());
     }
 
@@ -604,7 +604,7 @@ public class RouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PagedQueue> listQueues(Integer maxPageSize) {
+    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize) {
         return new PagedIterable<>(this.client.listQueues(maxPageSize));
     }
 }

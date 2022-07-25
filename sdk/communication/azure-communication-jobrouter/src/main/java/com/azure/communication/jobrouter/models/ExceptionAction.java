@@ -4,9 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.CancelExceptionAction;
-import com.azure.communication.jobrouter.implementation.models.ManualReclassifyExceptionAction;
-import com.azure.communication.jobrouter.implementation.models.ReclassifyExceptionAction;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +22,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionAction.class)
 })
 @Immutable
-public abstract class ExceptionAction {
-
-}
+public abstract class ExceptionAction {}

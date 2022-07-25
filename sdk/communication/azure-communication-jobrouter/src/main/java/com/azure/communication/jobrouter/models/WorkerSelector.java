@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** Describes a condition that must be met against a set of labels for worker selection. */
 @Fluent
@@ -42,6 +43,18 @@ public final class WorkerSelector {
      */
     @JsonProperty(value = "expedite")
     private Boolean expedite;
+
+    /*
+     * The state of the worker selector.
+     */
+    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
+    private WorkerSelectorState state;
+
+    /*
+     * The time at which this worker selector expires in UTC
+     */
+    @JsonProperty(value = "expireTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime expireTime;
 
     /**
      * Get the key property: The label key to query against.
@@ -143,5 +156,23 @@ public final class WorkerSelector {
     public WorkerSelector setExpedite(Boolean expedite) {
         this.expedite = expedite;
         return this;
+    }
+
+    /**
+     * Get the state property: The state of the worker selector.
+     *
+     * @return the state value.
+     */
+    public WorkerSelectorState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the expireTime property: The time at which this worker selector expires in UTC.
+     *
+     * @return the expireTime value.
+     */
+    public OffsetDateTime getExpireTime() {
+        return this.expireTime;
     }
 }

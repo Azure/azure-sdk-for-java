@@ -4,8 +4,8 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.options.UpdateClassificationPolicyOptions;
 
 /**
  * Converts request options for create and update Classification Policy to {@link ClassificationPolicy}.

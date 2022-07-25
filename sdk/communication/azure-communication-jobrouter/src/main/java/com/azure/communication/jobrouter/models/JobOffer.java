@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An offer of an assignment of work to a worker. */
+/** An offer of a job to a worker. */
 @Fluent
 public final class JobOffer {
     /*

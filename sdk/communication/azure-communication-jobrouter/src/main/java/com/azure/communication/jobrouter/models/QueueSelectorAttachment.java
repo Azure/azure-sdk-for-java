@@ -4,11 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.ConditionalQueueSelector;
-import com.azure.communication.jobrouter.implementation.models.PassThroughQueueSelector;
-import com.azure.communication.jobrouter.implementation.models.RuleEngineQueueSelector;
-import com.azure.communication.jobrouter.implementation.models.StaticQueueSelector;
-import com.azure.communication.jobrouter.implementation.models.WeightedAllocationQueueSelector;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = QueueSelectorAttachment.class)
 @JsonTypeName("QueueSelectorAttachment")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "conditional", value = ConditionalQueueSelector.class),
-    @JsonSubTypes.Type(name = "pass-through", value = PassThroughQueueSelector.class),
-    @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineQueueSelector.class),
-    @JsonSubTypes.Type(name = "static", value = StaticQueueSelector.class),
-    @JsonSubTypes.Type(name = "weighted-allocation-queue-selector", value = WeightedAllocationQueueSelector.class)
+    @JsonSubTypes.Type(name = "conditional", value = ConditionalQueueSelectorAttachment.class),
+    @JsonSubTypes.Type(name = "pass-through", value = PassThroughQueueSelectorAttachment.class),
+    @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineQueueSelectorAttachment.class),
+    @JsonSubTypes.Type(name = "static", value = StaticQueueSelectorAttachment.class),
+    @JsonSubTypes.Type(
+            name = "weighted-allocation-queue-selector",
+            value = WeightedAllocationQueueSelectorAttachment.class)
 })
 @Immutable
-public abstract class QueueSelectorAttachment {
-
-}
+public abstract class QueueSelectorAttachment {}

@@ -4,10 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.ConditionalWorkerSelector;
-import com.azure.communication.jobrouter.implementation.models.PassThroughWorkerSelector;
-import com.azure.communication.jobrouter.implementation.models.RuleEngineWorkerSelector;
-import com.azure.communication.jobrouter.implementation.models.WeightedAllocationWorkerSelector;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = WorkerSelectorAttachment.class)
 @JsonTypeName("WorkerSelectorAttachment")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "conditional", value = ConditionalWorkerSelector.class),
-    @JsonSubTypes.Type(name = "pass-through", value = PassThroughWorkerSelector.class),
-    @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineWorkerSelector.class),
-    @JsonSubTypes.Type(name = "static", value = StaticWorkerSelector.class),
-    @JsonSubTypes.Type(name = "weighted-allocation-worker-selector", value = WeightedAllocationWorkerSelector.class)
+    @JsonSubTypes.Type(name = "conditional", value = ConditionalWorkerSelectorAttachment.class),
+    @JsonSubTypes.Type(name = "pass-through", value = PassThroughWorkerSelectorAttachment.class),
+    @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineWorkerSelectorAttachment.class),
+    @JsonSubTypes.Type(name = "static", value = StaticWorkerSelectorAttachment.class),
+    @JsonSubTypes.Type(
+            name = "weighted-allocation-worker-selector",
+            value = WeightedAllocationWorkerSelectorAttachment.class)
 })
 @Immutable
-public abstract class WorkerSelectorAttachment {
-
-}
+public abstract class WorkerSelectorAttachment {}

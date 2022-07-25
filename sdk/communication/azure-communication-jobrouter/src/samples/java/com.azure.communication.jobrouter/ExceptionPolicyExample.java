@@ -19,8 +19,8 @@ import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.PagedExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.implementation.models.WaitTimeExceptionTrigger;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.options.UpdateExceptionPolicyOptions;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.util.Collections;

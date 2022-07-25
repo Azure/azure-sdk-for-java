@@ -4,22 +4,22 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
-import com.azure.communication.jobrouter.implementation.models.JobCollection;
-import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
-import com.azure.communication.jobrouter.implementation.models.JobStateSelector;
-import com.azure.communication.jobrouter.implementation.models.QueueStatistics;
-import com.azure.communication.jobrouter.implementation.models.RouterJob;
-import com.azure.communication.jobrouter.implementation.models.RouterJobItem;
-import com.azure.communication.jobrouter.implementation.models.RouterWorker;
-import com.azure.communication.jobrouter.implementation.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.implementation.models.UnassignJobResult;
-import com.azure.communication.jobrouter.implementation.models.WorkerCollection;
-import com.azure.communication.jobrouter.implementation.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.JobCollection;
+import com.azure.communication.jobrouter.models.JobPositionDetails;
+import com.azure.communication.jobrouter.models.JobStateSelector;
+import com.azure.communication.jobrouter.models.QueueStatistics;
+import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJobItem;
+import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.RouterWorkerItem;
+import com.azure.communication.jobrouter.models.UnassignJobResult;
+import com.azure.communication.jobrouter.models.WorkerCollection;
+import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -43,8 +43,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /** An instance of this class provides access to all the operations defined in JobRouters. */
 public final class JobRoutersImpl {
