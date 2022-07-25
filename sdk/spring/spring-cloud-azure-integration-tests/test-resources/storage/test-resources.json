@@ -72,7 +72,7 @@
       "apiVersion": "2021-09-01",
       "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', [variables('storageAccountsName')])]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "sku": {
         "name": "Standard_RAGRS",
@@ -103,9 +103,9 @@
     {
       "type": "Microsoft.Storage/storageAccounts/fileServices",
       "apiVersion": "2021-09-01",
-      "name": "[concat([variables('storageAccountsName')], '/default')]",
+      "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', [variables('storageAccountsName')])]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "sku": {
         "name": "Standard_RAGRS",
@@ -127,9 +127,9 @@
     {
       "type": "Microsoft.Storage/storageAccounts/queueServices",
       "apiVersion": "2021-09-01",
-      "name": "[concat([variables('storageAccountsName')], '/default')]",
+      "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', [variables('storageAccountsName')])]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "properties": {
         "cors": {
@@ -140,9 +140,9 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices",
       "apiVersion": "2021-09-01",
-      "name": "[concat([variables('storageAccountsName')], '/default')]",
+      "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', [variables('storageAccountsName')])]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "properties": {
         "cors": {
@@ -153,10 +153,10 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2021-09-01",
-      "name": "[concat([variables('storageAccountsName')], '/default/processorcontainer')]",
+      "name": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', [variables('storageAccountsName')], 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', [variables('storageAccountsName')])]"
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "properties": {
         "immutableStorageWithVersioning": {
