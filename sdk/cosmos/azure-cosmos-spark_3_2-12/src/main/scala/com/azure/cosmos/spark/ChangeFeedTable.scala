@@ -167,7 +167,7 @@ private class ChangeFeedTable(val session: SparkSession,
         var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
         if (clientCacheItems(1).isDefined) {
           throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-          throughputControlState.get.serialize(clientCacheItems(2).get.client)
+          throughputControlState.get.serialize(clientCacheItems(1).get.client)
         }
 
         val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
