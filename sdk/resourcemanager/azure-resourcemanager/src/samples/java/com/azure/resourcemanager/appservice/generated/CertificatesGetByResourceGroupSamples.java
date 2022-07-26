@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificates GetByResourceGroup. */
 public final class CertificatesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetCertificate.json
      */
     /**
      * Sample code: Get Certificate.

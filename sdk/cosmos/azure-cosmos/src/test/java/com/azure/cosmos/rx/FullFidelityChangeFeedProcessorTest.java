@@ -923,17 +923,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .subscribe();
 
             // Wait for the feed processor to start.
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-            log.info("Start creating documents");
             List<InternalObjectNode> docDefList = new ArrayList<>();
             for (int i = 0; i < FEED_COUNT; i++) {
                 docDefList.add(getDocumentDefinition());
             }
 
-            logger.info("Inserting documents");
             bulkInsert(createdFeedCollection, docDefList, FEED_COUNT).blockLast();
-            logger.info("Finished inserting documents");
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -953,6 +950,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to shut down.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
+            logger.info("DONE");
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
@@ -962,7 +960,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT) // Failed to receive all feed documents
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void ownerNullAcquiring() throws InterruptedException {
         final String ownerFirst = "Owner_First";
         final String leasePrefix = "TEST";
@@ -1005,22 +1003,20 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     docDefList.add(getDocumentDefinition());
                 }
 
+                log.info("Start first Change feed processor");
+                changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
+                                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                                        .subscribe();
+
+                // Wait for the feed processor to start.
+                Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
                 bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
                     .last()
-                    .flatMap(cosmosItemResponse -> {
-                        log.info("Start first Change feed processor");
-                        return changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
-                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
-                    })
                     .then(
                         Mono.just(changeFeedProcessorFirst)
                             .flatMap( value -> {
                                 log.info("Update leases for Change feed processor in thread {} using host {}", Thread.currentThread().getId(), "Owner_first");
-                                try {
-                                    Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
-                                } catch (InterruptedException ignored) {
-                                }
-
                                 log.info("QueryItems before Change feed processor processing");
 
                                 SqlParameter param1 = new SqlParameter();
@@ -1072,11 +1068,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 remainingWork -= 100;
                 Thread.sleep(100);
             }
+            assertThat(changeFeedProcessorFirst.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
             // Wait for the feed processor to receive and process the documents.
             waitToReceiveDocuments(receivedDocuments, 30 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
-
-            assertThat(changeFeedProcessorFirst.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 

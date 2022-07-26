@@ -9,14 +9,15 @@ import com.azure.core.util.Context;
 /** Samples for AppServiceEnvironments GetOutboundNetworkDependenciesEndpoints. */
 public final class AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetOutboundNetworkDependenciesEndpoints.json
      */
     /**
-     * Sample code: Get Outbound Network Dependencies Endpoints.
+     * Sample code: Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getOutboundNetworkDependenciesEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getTheNetworkEndpointsOfAllOutboundDependenciesOfAnAppServiceEnvironment(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .webApps()
             .manager()

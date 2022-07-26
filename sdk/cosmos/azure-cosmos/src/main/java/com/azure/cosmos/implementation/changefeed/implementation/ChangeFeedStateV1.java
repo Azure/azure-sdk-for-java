@@ -178,7 +178,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
                     HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
-                request.UseGatewayMode = true;
+                request.useGatewayMode = true;
                 // Above, defaulting to Gateway is necessary for Full-Fidelity Change Feed since the Split-handling logic resides within Compute Gateway.
                 // TODO: If and when, this changes, it will be necessary to remove this.
                 break;
@@ -187,7 +187,6 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         }
 
         this.populateEffectiveRangeAndStartFromSettingsToRequest(request);
-        logger.info("Request is being sent with headers : {}", request.getHeaders());
     }
 
     @Override

@@ -261,16 +261,11 @@ public final class CosmosChangeFeedRequestOptions {
         FeedRangeContinuation continuation = changeFeedState.getContinuation();
         ChangeFeedMode mode = changeFeedState.getMode();
 
-        logger.info("Change feed state : {}", mode);
-
-        logger.info("Continuation is : {}", continuation);
         if (continuation != null) {
             CompositeContinuationToken continuationToken =
                 continuation.getCurrentContinuationToken();
-            logger.info("Continuation token is : {}", continuationToken);
             if (continuationToken != null) {
                 String etag = continuationToken.getToken();
-                logger.info("Starting from etag: {} and feed range : {}", etag, feedRange);
                 return new CosmosChangeFeedRequestOptions(
                     feedRange,
                     ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag, feedRange),
@@ -278,7 +273,6 @@ public final class CosmosChangeFeedRequestOptions {
                     changeFeedState);
             }
 
-            logger.info("Starting from beginning");
             return new CosmosChangeFeedRequestOptions(
                 feedRange,
                 ChangeFeedStartFromInternal.createFromBeginning(),
@@ -286,9 +280,6 @@ public final class CosmosChangeFeedRequestOptions {
                 changeFeedState);
         }
 
-        logger.info("Starting from something, supports full fidelity : {}", changeFeedState.getStartFromSettings().supportsFullFidelityRetention());
-        logger.info("Starting from something, class information : {}", changeFeedState.getStartFromSettings().getClass());
-        logger.info("Starting from something, object information : {}", changeFeedState.getStartFromSettings());
         return new CosmosChangeFeedRequestOptions(
             feedRange,
             changeFeedState.getStartFromSettings(),

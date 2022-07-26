@@ -1,14 +1,18 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.17.0 (2022-07-25)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Replaced property `azureDefender` with `defender` of type `ManagedClusterSecurityProfileDefender` 
+  in `ManagedClusterSecurityProfile`.
+- Removed class `ManagedClusterSecurityProfileAzureDefender`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-06-01`.
 
 ## 2.16.0 (2022-06-24)
 
