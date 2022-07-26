@@ -83,6 +83,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1287,7 +1288,10 @@ public class BlobAsyncClientBase {
                 // The resume function takes throwable and offset at the destination.
                 // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
-                    if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                    Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+                    Throwable cause = unwrappedThrowable.getCause();
+                    if (!(unwrappedThrowable instanceof IOException || unwrappedThrowable instanceof TimeoutException
+                        || cause instanceof IOException || cause instanceof TimeoutException)) {
                         return Mono.error(throwable);
                     }
 

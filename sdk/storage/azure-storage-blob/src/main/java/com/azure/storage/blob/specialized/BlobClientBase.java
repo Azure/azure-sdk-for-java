@@ -57,13 +57,17 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -884,8 +888,15 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new BlobDownloadResponse(response)));
+            .publishOn(Schedulers.boundedElastic())
+            .map(response -> {
+                try {
+                    response.writeValueTo(Channels.newChannel(stream), null);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+                }
+                return new BlobDownloadResponse(response);
+            });
 
         return blockWithOptionalTimeout(download, timeout);
     }

@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -114,6 +115,25 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
                 channel);
         } else {
             return Mono.empty();
+        }
+    }
+
+    /**
+     * Transfers content bytes to the {@link WritableByteChannel}.
+     * @param channel The destination {@link WritableByteChannel}.
+     * @param progressReporter Optional {@link ProgressReporter}.
+     * @throws IOException When I/O operation fails.
+     */
+    public void writeValueTo(WritableByteChannel channel, ProgressReporter progressReporter) throws IOException {
+        Objects.requireNonNull(channel, "'channel' must not be null");
+        if (sourceResponse != null) {
+            IOUtils.transferStreamResponseToWritableByteChannel(channel, sourceResponse,
+                (error, offset) -> onErrorResume.apply(error, offset).block(),
+                progressReporter, retryOptions.getMaxRetryRequests());
+        } else if (super.getValue() != null) {
+            FluxUtil.writeToWritableByteChannel(
+                FluxUtil.addProgressReporting(super.getValue(), progressReporter),
+                channel).block();
         }
     }
 
