@@ -9,7 +9,6 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_2;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -335,7 +334,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertEquals("Failed to generate property sources for " + TEST_STORE_NAME, e.getMessage());
-        verify(configStoreMock, times(2)).isFailFast();
+        verify(configStoreMock, times(1)).isFailFast();
     }
 
     @Test
@@ -357,7 +356,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         when(clientWrapperMock.listSettings(any())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
-        assertNull(e.getMessage());
+        assertEquals("Failed to generate property sources for store1", e.getMessage());
     }
 
     @Test
@@ -373,7 +372,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         assertTrue(source instanceof CompositePropertySource);
 
         // Once a store fails it should stop attempting to load
-        verify(configStoreMock, times(1)).isFailFast();
+        verify(configStoreMock, times(2)).isFailFast();
     }
 
     @Test

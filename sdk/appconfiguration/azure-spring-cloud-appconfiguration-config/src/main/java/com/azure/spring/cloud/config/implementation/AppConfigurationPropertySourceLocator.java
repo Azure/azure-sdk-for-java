@@ -19,7 +19,6 @@ import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
-import org.springframework.util.ReflectionUtils;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -200,10 +199,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     } catch (AppConfigurationStatusException e) {
                         reloadFailed = true;
                     } catch (Exception e) {
-                        newState = failedToGeneratePropertySource(configStore, newState, e, false);
+                        newState = failedToGeneratePropertySource(configStore, newState, e);
 
-                        // If anything breaks we skip out on loading the rest of the store.
-                        generatedPropertySources = false;
+                        // Not a retiable error
+                        break;
                     }
                     if (generatedPropertySources) {
                         break;
@@ -217,7 +216,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     String message = "Failed to generate property sources for " + configStore.getEndpoint();
 
                     // Refresh failed for a config store ending attempt
-                    failedToGeneratePropertySource(configStore, newState, new RuntimeException(message), true);
+                    failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
 
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
@@ -233,8 +232,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return composite;
     }
 
-    private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e,
-        Boolean allFailed) {
+    private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e) {
+        String message = "Failed to generate property sources for " + configStore.getEndpoint();
         if (!STARTUP.get()) {
             // Need to check for refresh first, or reset will never happen if fail fast is true.
             LOGGER.error(
@@ -245,14 +244,14 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 // The next refresh will happen sooner if refresh interval is expired.
                 newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
             }
-            ReflectionUtils.rethrowRuntimeException(e);
-        } else if (allFailed && configStore.isFailFast()) {
+            throw new RuntimeException(message, e);
+        } else if (configStore.isFailFast()) {
             LOGGER.error(
                 "Fail fast is set and there was an error reading configuration from Azure App "
                     + "Configuration store " + configStore.getEndpoint() + ".");
             delayException();
-            ReflectionUtils.rethrowRuntimeException(e);
-        } else if (allFailed) {
+            throw new RuntimeException(message, e);
+        } else {
             LOGGER.warn(
                 "Unable to load configuration from Azure AppConfiguration store "
                     + configStore.getEndpoint() + ".",

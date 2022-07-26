@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -94,7 +93,7 @@ public class StateHolderTest {
         state.updateNextRefreshTime(null, providerProperties);
         StateHolder.updateState(state);
         State newState = StateHolder.getState(endpoint);
-        assertTrue(originalState.getNextRefreshCheck().compareTo(newState.getNextRefreshCheck()) < 0);
+        assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
 
     }
 
