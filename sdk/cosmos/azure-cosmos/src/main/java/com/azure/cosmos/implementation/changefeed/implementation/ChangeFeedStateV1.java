@@ -118,7 +118,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 new FeedRangeEpkImpl(continuationToken.getRange()));
         }
 
-        effectiveStartFrom.populateRequest(request);
+        effectiveStartFrom.populateRequest(request, this.mode);
     }
 
     @Override

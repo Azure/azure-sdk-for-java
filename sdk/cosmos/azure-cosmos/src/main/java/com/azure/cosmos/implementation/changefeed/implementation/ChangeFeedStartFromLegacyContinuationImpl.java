@@ -29,8 +29,7 @@ class ChangeFeedStartFromLegacyContinuationImpl extends ChangeFeedStartFromInter
     }
 
     @Override
-    public void populateRequest(RxDocumentServiceRequest request) {
-        //  logger.info("Populate request called in file with req headers {}", request.getHeaders());
+    public void populateRequest(RxDocumentServiceRequest request, ChangeFeedMode changeFeedMode) {
         // We don't need to set any headers to start from the beginning
     }
 

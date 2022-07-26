@@ -65,39 +65,11 @@ class FullFidelityPartitionProcessorFactoryImpl implements PartitionProcessorFac
         FeedRangeInternal feedRange,
         ChangeFeedProcessorOptions processorOptions) {
 
-        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation()))
-        {
+        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
             return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
                 processorOptions.getStartContinuation(),
                 feedRange);
         }
-        //  TODO: (kuthapar)
-        //  FullFidelityChangeFeedProcessor doesn't support starting from beginning or point in time.
-        //  So removing these 2 cases for now.
-        //  Ideally we should throw error for these 2 cases.
-        //  Or we can introduce FullFidelityChangeFeedProcessorOptions,
-        //  which will only have startFromContinuation and startFromNow.
-
-        //  TODO: (kuthapar) - there is an open bug here.
-        //  Even when we throw Exception from below in certain cases, CFP continues to run.
-        //  We should fix this.
-
-//        if (processorOptions.getStartTime() != null) {
-//            throw new IllegalStateException(
-//                "Full fidelity retention is not supported for the chosen change feed start from " +
-//                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-//                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-//            );
-//        }
-//
-//        if (processorOptions.isStartFromBeginning()) {
-//            throw new IllegalStateException(
-//                "Full fidelity retention is not supported for the chosen change feed start from " +
-//                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-//                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-//            );
-//        }
-
         return ChangeFeedStartFromInternal.createFromNow();
     }
 

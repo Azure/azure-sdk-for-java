@@ -151,22 +151,15 @@ public class FullFidelityChangeFeedProcessorBuilder {
                 throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
             }
 
+            //  TODO:(kuthapar) - point in time in multi-master check. where do we do that?
+            //  TODO:(kuthapar) - validate these 2 exceptions being thrown here.
             if (this.changeFeedProcessorOptions.getStartTime() != null) {
-                throw new IllegalStateException(
-                    "Full fidelity retention is not supported for the chosen change feed start from " +
-                        "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                        "CosmosChangeFeedRequestOptions.createForProcessingFromContinuation instead."
-                );
+                throw new IllegalStateException("Full fidelity change feed is not supported for the chosen change feed start from option.");
             }
 
             if (this.changeFeedProcessorOptions.isStartFromBeginning()) {
-                throw new IllegalStateException(
-                    "Full fidelity retention is not supported for the chosen change feed start from " +
-                        "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                        "CosmosChangeFeedRequestOptions.createForProcessingFromContinuation instead."
-                );
+                throw new IllegalStateException("Full fidelity change feed is not supported for the chosen change feed start from beginning option.");
             }
-            //  TODO:(kuthapar) - point in time in multi-master check. where do we do that?
 
             builder.options(this.changeFeedProcessorOptions);
         }

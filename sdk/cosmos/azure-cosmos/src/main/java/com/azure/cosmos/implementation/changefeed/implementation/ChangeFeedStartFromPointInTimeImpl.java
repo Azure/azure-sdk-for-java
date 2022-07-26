@@ -67,8 +67,7 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    public void populateRequest(RxDocumentServiceRequest request) {
-        //logger.info("Populate request called in file with req headers {}", request.getHeaders());
+    public void populateRequest(RxDocumentServiceRequest request, ChangeFeedMode changeFeedMode) {
 
         checkNotNull(request, "Argument 'request' must not be null.");
 
