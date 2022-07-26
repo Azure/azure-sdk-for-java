@@ -154,6 +154,10 @@ public final class DefaultXmlWriter extends XmlWriter {
 
     @Override
     public XmlWriter writeStringAttribute(String localName, String value) {
+        if (value == null) {
+            return this;
+        }
+
         try {
             writer.writeAttribute(localName, value);
             return this;
@@ -180,6 +184,10 @@ public final class DefaultXmlWriter extends XmlWriter {
 
     @Override
     public XmlWriter writeString(String value) {
+        if (value == null) {
+            return this;
+        }
+
         try {
             writer.writeCharacters(value);
             return this;
@@ -190,6 +198,10 @@ public final class DefaultXmlWriter extends XmlWriter {
 
     @Override
     public XmlWriter writeCDataString(String value) {
+        if (value == null) {
+            return this;
+        }
+
         try {
             writer.writeCData(value);
             return this;

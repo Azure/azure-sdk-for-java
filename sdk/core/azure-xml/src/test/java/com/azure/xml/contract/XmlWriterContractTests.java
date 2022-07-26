@@ -61,7 +61,7 @@ public abstract class XmlWriterContractTests {
             Arguments.of(createXmlConsumer(xmlWriter -> xmlWriter.writeBinaryElement("test", new byte[0])),
                 "<test></test>"),
             Arguments.of(createXmlConsumer(
-                xmlWriter -> xmlWriter.writeBinaryElement("test", "Hello".getBytes(StandardCharsets.UTF_8))),
+                    xmlWriter -> xmlWriter.writeBinaryElement("test", "Hello".getBytes(StandardCharsets.UTF_8))),
                 "<test>" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "</test>"),
 
             // Boolean
@@ -112,7 +112,7 @@ public abstract class XmlWriterContractTests {
             Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBinary(new byte[0])),
                 "<test></test>"),
             Arguments.of(createXmlElementConsumer("test",
-                xmlWriter -> xmlWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
+                    xmlWriter -> xmlWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
                 "<test>" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "</test>"),
 
             // Boolean
@@ -157,10 +157,81 @@ public abstract class XmlWriterContractTests {
                 "<test>hello</test>"),
 
             // CData
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeCDataString(null)),
+                "<test></test>"),
             Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeCDataString("")),
                 "<test><![CDATA[]]></test>"),
             Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeCDataString("hello")),
                 "<test><![CDATA[hello]]></test>")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("basicAttributeOperationsSupplier")
+    public void basicAttributeOperations(Consumer<XmlWriter> operation, String expectedXml) {
+        operation.accept(getXmlWriter());
+
+        assertEquals(expectedXml, getXmlWriterContents());
+    }
+
+    private static Stream<Arguments> basicAttributeOperationsSupplier() {
+        return Stream.of(
+            // Binary
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBinaryAttribute("test", null)),
+                "<test></test>"),
+            Arguments.of(createXmlElementConsumer("test",
+                xmlWriter -> xmlWriter.writeBinaryAttribute("test", new byte[0])), "<test test=\"\"></test>"),
+            Arguments.of(createXmlElementConsumer("test",
+                    xmlWriter -> xmlWriter.writeBinaryAttribute("test", "Hello".getBytes(StandardCharsets.UTF_8))),
+                "<test test=\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"></test>"),
+
+            // Boolean
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBooleanAttribute("test", null)),
+                "<test></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBooleanAttribute("test", false)),
+                "<test test=\"false\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeBooleanAttribute("test", true)),
+                "<test test=\"true\"></test>"),
+
+            // Double
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", -42D)),
+                "<test test=\"-42.0\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", -42.0D)),
+                "<test test=\"-42.0\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", 42D)),
+                "<test test=\"42.0\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeDoubleAttribute("test", 42.0D)),
+                "<test test=\"42.0\"></test>"),
+
+            // Float
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", -42F)),
+                "<test test=\"-42.0\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", -42.0F)),
+                "<test test=\"-42.0\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", 42F)),
+                "<test test=\"42.0\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeFloatAttribute("test", 42.0F)),
+                "<test test=\"42.0\"></test>"),
+
+            // Integer
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeIntAttribute("test", -42)),
+                "<test test=\"-42\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeIntAttribute("test", 42)),
+                "<test test=\"42\"></test>"),
+
+            // Long
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeLongAttribute("test", -42)),
+                "<test test=\"-42\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeLongAttribute("test", 42)),
+                "<test test=\"42\"></test>"),
+
+            // String
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeStringAttribute("test", null)),
+                "<test></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeStringAttribute("test", "")),
+                "<test test=\"\"></test>"),
+            Arguments.of(createXmlElementConsumer("test", xmlWriter -> xmlWriter.writeStringAttribute("test", "hello")),
+                "<test test=\"hello\"></test>")
         );
     }
 

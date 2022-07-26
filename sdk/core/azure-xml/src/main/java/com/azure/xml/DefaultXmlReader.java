@@ -144,35 +144,13 @@ public final class DefaultXmlReader extends XmlReader {
                 return XmlToken.START_ELEMENT;
             case 2:
                 return XmlToken.END_ELEMENT;
-            case 3:
-                return XmlToken.PROCESSING_INSTRUCTION;
-            case 4:
-                return XmlToken.CHARACTERS;
-            case 5:
-                return XmlToken.COMMENT;
-            case 6:
-                return XmlToken.SPACE;
             case 7:
                 return XmlToken.START_DOCUMENT;
             case 8:
                 return XmlToken.END_DOCUMENT;
-            case 9:
-                return XmlToken.ENTITY_REFERENCE;
-            case 10:
-                return XmlToken.ATTRIBUTE;
-            case 11:
-                return XmlToken.DTD;
-            case 12:
-                return XmlToken.CDATA;
-            case 13:
-                return XmlToken.NAMESPACE;
-            case 14:
-                return XmlToken.NOTATION_DECLARATION;
-            case 15:
-                return XmlToken.ENTITY_DECLARATION;
 
             default:
-                throw new IllegalStateException("Unknown XmlToken: " + event);
+                throw new IllegalStateException("Unknown/unsupported XMLStreamConstants: " + event);
         }
     }
 }

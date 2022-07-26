@@ -49,8 +49,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The string value for the attribute in the XML element, or null if the attribute doesn't exist.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public abstract String getAttributeStringValue(String namespaceUri, String localName);
 
@@ -60,8 +59,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The binary value for the attribute in the XML element.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final byte[] getAttributeBinaryValue(String namespaceUri, String localName) {
         String value = getAttributeStringValue(namespaceUri, localName);
@@ -74,8 +72,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The boolean value for the attribute in the XML element.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final boolean getAttributeBooleanValue(String namespaceUri, String localName) {
         return Boolean.parseBoolean(getAttributeStringValue(namespaceUri, localName));
@@ -87,8 +84,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The double value for the attribute in the XML element.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final double getAttributeDoubleValue(String namespaceUri, String localName) {
         return Double.parseDouble(getAttributeStringValue(namespaceUri, localName));
@@ -100,8 +96,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The float value for the attribute in the XML element.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final float getAttributeFloatValue(String namespaceUri, String localName) {
         return Float.parseFloat(getAttributeStringValue(namespaceUri, localName));
@@ -113,8 +108,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The int value for the attribute in the XML element.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final int getAttributeIntValue(String namespaceUri, String localName) {
         return Integer.parseInt(getAttributeStringValue(namespaceUri, localName));
@@ -126,8 +120,7 @@ public abstract class XmlReader implements Closeable {
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
      * @return The long value for the attribute in the XML element.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final long getAttributeLongValue(String namespaceUri, String localName) {
         return Long.parseLong(getAttributeStringValue(namespaceUri, localName));
@@ -144,8 +137,7 @@ public abstract class XmlReader implements Closeable {
      * @param converter Function that converts the attribute text value to the nullable type.
      * @param <T> Type of the attribute.
      * @return The converted text value, or null if the attribute didn't have a value.
-     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT} or
-     * {@link XmlToken#ATTRIBUTE}.
+     * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
     public final <T> T getAttributeNullableValue(String namespaceUri, String localName, Function<String, T> converter) {
         String textValue = getAttributeStringValue(namespaceUri, localName);
