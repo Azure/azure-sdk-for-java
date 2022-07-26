@@ -119,12 +119,12 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
   }
 
   private def inferSchema(clientCacheItem: CosmosClientCacheItem,
-                          throughputControlClientCacheItem: Option[CosmosClientCacheItem],
+                          throughputControlClientCacheItemOpt: Option[CosmosClientCacheItem],
                           userConfig: Map[String, String]): StructType = {
 
     CosmosTableSchemaInferrer.inferSchema(
       clientCacheItem,
-      throughputControlClientCacheItem,
+      throughputControlClientCacheItemOpt,
       userConfig,
       ItemsTable.defaultSchemaForInferenceDisabled)
   }

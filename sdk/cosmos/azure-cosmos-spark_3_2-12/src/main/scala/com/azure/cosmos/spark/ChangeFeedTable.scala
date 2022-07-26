@@ -75,7 +75,7 @@ private class ChangeFeedTable(val session: SparkSession,
     useEventualConsistency = readConfig.forceEventualConsistency)
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots] =
-    initializeAndBroadcastCosmosClientStateForContainer()
+    initializeAndBroadcastCosmosClientStatesForContainer()
 
   override def name(): String = tableName
 
@@ -129,7 +129,7 @@ private class ChangeFeedTable(val session: SparkSession,
   }
 
   // This can be used only when databaseName and ContainerName are specified.
-  private[spark] def initializeAndBroadcastCosmosClientStateForContainer()
+  private[spark] def initializeAndBroadcastCosmosClientStatesForContainer()
   : Broadcast[CosmosClientMetadataCachesSnapshots] = {
 
     val calledFrom = s"ChangeFeedTable(name ${tableName}).initializeAndBroadcastCosmosClientStateForContainer"

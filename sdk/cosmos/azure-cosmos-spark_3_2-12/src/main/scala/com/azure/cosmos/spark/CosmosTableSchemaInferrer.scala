@@ -87,16 +87,16 @@ private object CosmosTableSchemaInferrer
   }
 
   private[spark] def inferSchema(clientCacheItem: CosmosClientCacheItem,
-                                 throughputControlClientCacheItem: Option[CosmosClientCacheItem],
+                                 throughputControlClientCacheItemOpt: Option[CosmosClientCacheItem],
                                  userConfig: Map[String, String],
                                  defaultSchema: StructType): StructType = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() =>
-      inferSchemaImpl(clientCacheItem, throughputControlClientCacheItem, userConfig, defaultSchema))
+      inferSchemaImpl(clientCacheItem, throughputControlClientCacheItemOpt, userConfig, defaultSchema))
   }
 
   private[this] def inferSchemaImpl(clientCacheItem: CosmosClientCacheItem,
-                                    throughputControlClientCacheItem: Option[CosmosClientCacheItem],
+                                    throughputControlClientCacheItemOpt: Option[CosmosClientCacheItem],
                                     userConfig: Map[String, String],
                                     defaultSchema: StructType): StructType = {
     val cosmosInferenceConfig = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
@@ -108,7 +108,7 @@ private object CosmosTableSchemaInferrer
           userConfig,
           cosmosContainerConfig,
           clientCacheItem,
-          throughputControlClientCacheItem)
+          throughputControlClientCacheItemOpt)
       SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
