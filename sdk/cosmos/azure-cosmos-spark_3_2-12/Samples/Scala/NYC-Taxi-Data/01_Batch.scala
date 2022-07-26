@@ -14,12 +14,20 @@
 val cosmosEndpoint = spark.conf.get("spark.cosmos.accountEndpoint")
 val cosmosMasterKey = spark.conf.get("spark.cosmos.accountKey")
 
+// It is allowed to use different account for throughput control. So please choose the accountEndpoint and accountKey accordingly.
+// val throughputControlEndpoint = spark.conf.get("spark.cosmos.throughputControlAccountEndpoint")
+// val throughputControlMasterKey = spark.conf.get("spark.cosmos.throughputControlAccountKey")
+
 // COMMAND ----------
 
 // MAGIC %md
 // MAGIC **Preparation - creating the Cosmos DB container to ingest the data into**
+
+// COMMAND ----------
+
+// MAGIC %md
 // MAGIC 
-// MAGIC Configure the Catalog API to be used
+// MAGIC Configure the Catalog API to be used for main workload
 
 // COMMAND ----------
 
@@ -27,6 +35,19 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.Cosmos
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
 spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPath", "/viewDefinitions")
+
+// COMMAND ----------
+
+// MAGIC %md
+// MAGIC 
+// MAGIC Configure the Catalog API to be used for throughput control. This will only be needed if different account is used for throughput control
+
+// COMMAND ----------
+
+spark.conf.set("spark.sql.catalog.throughputControlCatalog", "com.azure.cosmos.spark.CosmosCatalog")
+spark.conf.set("spark.sql.catalog.throughputControlCatalog.spark.cosmos.accountEndpoint", throughputControlEndpoint)
+spark.conf.set("spark.sql.catalog.throughputControlCatalog.spark.cosmos.accountKey", throughputControlMasterKey)
+spark.conf.set("spark.sql.catalog.throughputControlCatalog.spark.cosmos.views.repositoryPath", "/viewDefinitions")
 
 // COMMAND ----------
 
@@ -47,10 +68,19 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.views.repositoryPat
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/id', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
 // MAGIC 
 // MAGIC /* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
+// MAGIC /* If you are using a different account for throughput control, then please reference following commented examples */
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.ThroughputControl
 // MAGIC USING cosmos.oltp
 // MAGIC OPTIONS(spark.cosmos.database = 'SampleDatabase')
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
+// MAGIC 
+// MAGIC -- /* If you are using a different account for throughput control, then please use throughput control catalog account for initializing containers */
+// MAGIC -- CREATE DATABASE IF NOT EXISTS throughputControlCatalog.SampleDatabase;
+// MAGIC 
+// MAGIC -- CREATE TABLE IF NOT EXISTS throughputControlCatalog.SampleDatabase.ThroughputControl
+// MAGIC -- USING cosmos.oltp
+// MAGIC -- OPTIONS(spark.cosmos.database = 'SampleDatabase')
+// MAGIC -- TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
 
 // COMMAND ----------
 
