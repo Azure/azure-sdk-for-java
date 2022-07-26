@@ -45,11 +45,11 @@
             "type": "string",
             "value": "[parameters('ledgerName')]"
         },
-		"LEDGERURI": {
+		"LEDGER_URI": {
 			"type": "string",
 			"value": "[resources[0]('ledgerUri')]"
 		},
-		"USERAAD": {
+		"USER_AAD": {
 			"type": "string",
 			"value": "[parameters('principalId')]"
 		}

@@ -60,10 +60,10 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder
                     .buildClient();
             
-            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
+            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "emily-java-sdk-tests");
 
             confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-                    .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
+                    .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
                 confidentialLedgerClientBuilder
@@ -80,7 +80,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             System.out.println("Error thrown from ConfidentialLedgerClientTestBase:" + ex);
         }
 
-        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
+        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "emily-java-sdk-tests");
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
