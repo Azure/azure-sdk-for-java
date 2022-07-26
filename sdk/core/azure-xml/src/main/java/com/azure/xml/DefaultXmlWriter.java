@@ -29,7 +29,7 @@ public final class DefaultXmlWriter extends XmlWriter {
      * @return A new instance of {@link XmlWriter}.
      * @throws RuntimeException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter fromOutputStream(OutputStream outputStream) {
+    public static XmlWriter toOutputStream(OutputStream outputStream) {
         try {
             return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
                 new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)));

@@ -63,7 +63,7 @@ public class PlaygroundTests {
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(Collections.singletonList(signedIdentifier));
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (XmlWriter xmlWriter = DefaultXmlWriter.fromOutputStream(byteArrayOutputStream)) {
+        try (XmlWriter xmlWriter = DefaultXmlWriter.toOutputStream(byteArrayOutputStream)) {
             xmlWriter.writeStartDocument();
             wrapper.toXml(xmlWriter);
         }
@@ -137,7 +137,7 @@ public class PlaygroundTests {
             .setContent(namespacePropertiesEntryContent);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (XmlWriter xmlWriter = DefaultXmlWriter.fromOutputStream(byteArrayOutputStream)) {
+        try (XmlWriter xmlWriter = DefaultXmlWriter.toOutputStream(byteArrayOutputStream)) {
             xmlWriter.writeStartDocument();
             namespacePropertiesEntry.toXml(xmlWriter);
         }

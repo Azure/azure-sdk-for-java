@@ -112,7 +112,10 @@ public final class DefaultXmlReader extends XmlReader {
     @Override
     public String getElementStringValue() {
         try {
-            return reader.getElementText();
+            String text = reader.getElementText();
+
+            // Treat empty string as null.
+            return "".equals(text) ? null : text;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
@@ -120,7 +123,10 @@ public final class DefaultXmlReader extends XmlReader {
 
     @Override
     public String getAttributeStringValue(String namespaceUri, String localName) {
-        return reader.getAttributeValue(namespaceUri, localName);
+        String value = reader.getAttributeValue(namespaceUri, localName);
+
+        // Treat empty string as null.
+        return "".equals(value) ? null : value;
     }
 
     @Override
