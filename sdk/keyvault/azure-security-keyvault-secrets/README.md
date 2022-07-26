@@ -55,39 +55,13 @@ If you want to take dependency on a particular version of the library that is no
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - An [Azure Subscription][azure_subscription].
-- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-key-vault-name>` and `<your-resource-group-name>` with your own, unique names:
-
-```bash
-az keyvault create --name "<your-key-vault-name>" --resource-group "<your-resource-group-name>"
-```
+- An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the steps in [this document][azure_keyvault_cli].
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you'll need to create an instance of the [`SecretClient`](#create-secret-client) class. You would need a **vault url** and **[a managed identity][managed_identity]** to instantiate a client object using the `DefaultAzureCredential` examples shown in this document.
-
-The `DefaultAzureCredential` way of authentication with a system-assigned managed identity is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
-
-#### Give a managed identity access to your key vault
-To give a managed identity access to your key vault you can use the [Azure Portal][azure_portal_managed_identity], [Azure CLI][azure_cli_managed_identity] or [Azure Cloud Shell][azure_cloud_shell].
-
-Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to do just that:
-
-```bash
-az keyvault set-policy --name "<your-key-vault-name>" --object-id "<your-managed-identity-principal-id>" --key-permissions backup delete get list create update encrypt decrypt
-```
-
-> --secret-permissions:
-> Accepted values: backup, delete, get, list, purge, recover, restore, set
-
-If you have enabled Role-Based Access Control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
-
-Use the aforementioned key vault name to retrieve details of your key vault, which also contain your key vault URL:
-
-```bash
-az keyvault show --name "<your-key-vault-name>" --query properties.vaultUri --output tsv
-```
+In order to interact with the Azure Key Vault service, you will need to create an instance of the [`CertificateClient`](#create-certificate-client) class. You need a **vault url** and a credential object. The examples shown in this document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. You can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create secret client
-Once you have given a system-assigned managed identity access to your key vault and replaced **your-key-vault-url** with the URL returned above, you can create the `SecretClient`:
+Once you perform [the `DefaultAzureCredential` set up that suits you best][default_azure_credential] and replaced **your-key-vault-url** with the URL for your key vault, you can create the `SecretClient`:
 
 ```java readme-sample-createSecretClient
 SecretClient secretClient = new SecretClientBuilder()
@@ -269,7 +243,7 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Azure Key Vault.
 
 ## Next steps samples
-Samples are explained in detail [here][samples].
+Samples are explained in detail [here][samples_readme].
 
 ### Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
@@ -284,24 +258,19 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[maven]: https://maven.apache.org/
+[azure_identity]: https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/
-[azure_keyvault]: https://docs.microsoft.com/azure/key-vault/secrets/quick-create-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[rest_api]: https://docs.microsoft.com/rest/api/keyvault/
+[azure_keyvault]: https://docs.microsoft.com/azure/key-vault/general/overview
+[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/general/quick-create-cli
+[azure_keyvault_portal]: https://docs.microsoft.com/azure/key-vault/general/quick-create-portal
+[default_azure_credential]: https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
-[azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
 [secrets_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[azure_cloud_shell]: https://shell.azure.com/bash
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)
