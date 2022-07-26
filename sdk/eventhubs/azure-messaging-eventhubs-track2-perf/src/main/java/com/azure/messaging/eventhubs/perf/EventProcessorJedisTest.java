@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.checkpointstore.jedis.JedisRedisCheckpointS
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.publisher.Mono;
 import redis.clients.jedis.JedisPool;
 import com.azure.perf.test.core.EventPerfTest;

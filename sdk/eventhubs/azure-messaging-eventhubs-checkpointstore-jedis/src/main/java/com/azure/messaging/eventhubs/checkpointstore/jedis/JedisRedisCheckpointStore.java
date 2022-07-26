@@ -34,6 +34,10 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     static final byte[] PARTITION_OWNERSHIP = "partitionOwnership".getBytes(StandardCharsets.UTF_8);
     private final JedisPool jedisPool;
 
+    /**
+     * Constructor for JedisRedisCheckpointStore
+     * @param jedisPool a JedisPool object that creates a pool connected to the Azure Redis Cache
+     */
     public JedisRedisCheckpointStore(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
@@ -48,7 +52,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
 
         return Flux.fromIterable(requestedPartitionOwnerships).handle(((partitionOwnership, sink) -> {
-
             String partitionId = partitionOwnership.getPartitionId();
             byte[] key = keyBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId);
 
@@ -58,11 +61,15 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
 
                 if (currentPartitionOwnership == null) {
                     // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
+                    Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0));
+                    partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
                     jedis.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
                 } else {
                     // otherwise we have to change the ownership and "watch" the transaction
                     jedis.watch(key);
-
+                    Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0)) - jedis.objectIdletime(key);
+                    partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
+                    partitionOwnership.setETag("default eTag");
                     Transaction transaction = jedis.multi();
                     transaction.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
                     List<Object> executionResponse = transaction.exec();
@@ -70,11 +77,14 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     if (executionResponse == null) {
                         //This means that the transaction did not execute, which implies that another client has changed the ownership during this transaction
                         sink.error(new RuntimeException("Ownership records were changed by another client"));
+                        jedisPool.returnResource(jedis);
+                        return;
                     }
                 }
                 jedisPool.returnResource(jedis);
             }
             sink.next(partitionOwnership);
+            sink.complete();
         }));
     }
 
