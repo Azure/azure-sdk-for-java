@@ -6,8 +6,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 
@@ -15,7 +13,6 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedStartFromLegacyContinuationImpl.class);
 
     private final Instant pointInTime;
 
