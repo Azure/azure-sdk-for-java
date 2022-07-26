@@ -52,15 +52,14 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final Flux<ByteBuffer> contents = context.getHttpRequest().getBody() == null
-            ? Flux.just(getEmptyBuffer())
-            : context.getHttpRequest().getBody();
+        final ByteBuffer contents = context.getHttpRequest().getBodyAsBinaryData()
+            == null ? getEmptyBuffer() : context.getHttpRequest().getBodyAsBinaryData().toByteBuffer();
 
-        return credentials
-            .getAuthorizationHeadersAsync(
-                context.getHttpRequest().getUrl(),
-                context.getHttpRequest().getHttpMethod().toString(),
-                contents.defaultIfEmpty(getEmptyBuffer()))
+        return Mono.just(credentials
+                .getAuthorizationHeaders(
+                    context.getHttpRequest().getUrl(),
+                    context.getHttpRequest().getHttpMethod().toString(),
+                    contents))
             .flatMapMany(headers -> Flux.fromIterable(headers.entrySet()))
             .map(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()))
             .last()

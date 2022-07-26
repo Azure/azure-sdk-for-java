@@ -6,8 +6,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -74,27 +72,6 @@ public class ConfigurationClientCredentials {
 
     /**
      * Gets a list of headers to add to a request to authenticate it to the Azure APp Configuration service.
-     * @param url the request url
-     * @param httpMethod the request HTTP method
-     * @param contents the body content of the request
-     * @return a flux of headers to add for authorization
-     * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
-     */
-    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod, Flux<ByteBuffer> contents) {
-        return contents
-            .collect(this::getMessageDigest, (messageDigest, byteBuffer) -> {
-                if (messageDigest != null) {
-                    messageDigest.update(byteBuffer);
-                }
-            })
-            .flatMap(messageDigest -> Mono.just(headerProvider.getAuthenticationHeaders(
-                url,
-                httpMethod,
-                messageDigest)));
-    }
-
-    /**
-     * Gets a list of headers to add to a request to authenticate it to the Azure APp Configuration service.
      *
      * @param url the request url
      * @param httpMethod the request HTTP method
@@ -104,9 +81,7 @@ public class ConfigurationClientCredentials {
      */
     Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, ByteBuffer byteBuffer) {
         MessageDigest messageDigest = getMessageDigest();
-        if (messageDigest != null) {
-            messageDigest.update(byteBuffer);
-        }
+        messageDigest.update(byteBuffer);
         return headerProvider.getAuthenticationHeaders(
             url,
             httpMethod,
@@ -233,12 +208,10 @@ public class ConfigurationClientCredentials {
     }
 
     private MessageDigest getMessageDigest() {
-        MessageDigest messageDigest;
         try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
+            return MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
-        return messageDigest;
     }
 }
