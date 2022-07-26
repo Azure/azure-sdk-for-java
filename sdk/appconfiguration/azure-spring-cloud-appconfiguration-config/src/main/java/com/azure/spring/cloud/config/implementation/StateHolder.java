@@ -21,9 +21,9 @@ final class StateHolder {
 
     private static StateHolder currentState;
 
-    private final Map<String, State> STATE = new ConcurrentHashMap<>();
+    private final Map<String, State> state = new ConcurrentHashMap<>();
 
-    private final Map<String, Boolean> LOAD_STATE = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
     private Integer clientRefreshAttempts = 1;
 
@@ -49,11 +49,11 @@ final class StateHolder {
     }
 
     private Map<String, State> getFullState() {
-        return STATE;
+        return state;
     }
 
     private Map<String, Boolean> getFullLoadState() {
-        return LOAD_STATE;
+        return loadState;
     }
 
     /**
@@ -70,7 +70,7 @@ final class StateHolder {
      * @param duration refresh duration.
      */
     void setState(String originEndpoint, List<ConfigurationSetting> watchKeys, Duration duration) {
-        STATE.put(originEndpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
+        state.put(originEndpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
@@ -88,22 +88,22 @@ final class StateHolder {
      * @param duration nextRefreshPeriod
      */
     void setState(State state, Duration duration) {
-        STATE.put(state.getOriginEndpoint(),
+        this.state.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
     void updateStateRefresh(State state, Duration duration) {
-        STATE.put(state.getOriginEndpoint(),
+        this.state.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
 
     void expireState(String originEndpoint) {
-        State oldState = STATE.get(originEndpoint);
+        State oldState = state.get(originEndpoint);
         long wait = (long) (new SecureRandom().nextDouble() * MAX_JITTER);
 
         long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
         if (wait < timeLeft) {
-            STATE.put(originEndpoint, new State(oldState, Instant.now().plusSeconds(wait)));
+            state.put(originEndpoint, new State(oldState, Instant.now().plusSeconds(wait)));
         }
     }
 
@@ -122,14 +122,14 @@ final class StateHolder {
     }
 
     Map<String, Boolean> getLoadState() {
-        return LOAD_STATE;
+        return loadState;
     }
 
     /**
      * @param name the loadState name to set
      */
     void setLoadState(String originEndpoint, Boolean loaded) {
-        LOAD_STATE.put(originEndpoint, loaded);
+        loadState.put(originEndpoint, loaded);
     }
 
     /**
@@ -173,7 +173,7 @@ final class StateHolder {
             nextForcedRefresh = newForcedRefresh;
         }
 
-        for (Entry<String, State> entry : STATE.entrySet()) {
+        for (Entry<String, State> entry : state.entrySet()) {
             State state = entry.getValue();
             Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
                 state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties);
@@ -182,7 +182,7 @@ final class StateHolder {
                 state.incrementRefreshAttempt();
             }
             State updatedState = new State(state, newRefresh);
-            STATE.put(entry.getKey(), updatedState);
+            this.state.put(entry.getKey(), updatedState);
         }
     }
 

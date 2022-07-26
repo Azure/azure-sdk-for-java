@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -224,6 +223,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             tokenCredentialProvider, null, null);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            System.out.println(stateHolderMock);
             PropertySource<?> source = locator.locate(emptyEnvironment);
 
             assertTrue(source instanceof CompositePropertySource);
