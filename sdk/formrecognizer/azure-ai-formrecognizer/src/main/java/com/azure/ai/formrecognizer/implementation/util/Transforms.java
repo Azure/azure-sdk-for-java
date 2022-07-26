@@ -3,19 +3,25 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
-import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.implementation.models.GetInfoResponse;
+import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
+import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
+import com.azure.ai.formrecognizer.implementation.models.ModelSummary;
+import com.azure.ai.formrecognizer.implementation.models.OperationInfo;
 import com.azure.ai.formrecognizer.models.AddressValue;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -251,7 +257,7 @@ public class Transforms {
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            Error error = null;
+            com.azure.ai.formrecognizer.implementation.models.Error error = null;
             if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
                 error = (errorResponseException.getValue().getError());
             }
@@ -600,13 +606,13 @@ public class Transforms {
         return documentOperationResult;
     }
 
-    public static DocumentModelOperationException toDocumentModelOperationException(Error error) {
+    public static DocumentModelOperationException toDocumentModelOperationException(com.azure.ai.formrecognizer.implementation.models.Error error) {
         DocumentModelOperationError documentModelOperationError = toDocumentModelOperationError(error);
         DocumentModelOperationException documentModelOperationException
             = new DocumentModelOperationException(documentModelOperationError);
         return documentModelOperationException;
     }
-    private static ResponseError toResponseError(Error error) {
+    private static ResponseError toResponseError(com.azure.ai.formrecognizer.implementation.models.Error error) {
         if (error == null) {
             return null;
         }
@@ -622,7 +628,7 @@ public class Transforms {
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
     }
 
-    private static DocumentModelOperationError toDocumentModelOperationError(Error error) {
+    private static DocumentModelOperationError toDocumentModelOperationError(com.azure.ai.formrecognizer.implementation.models.Error error) {
         if (error != null) {
             DocumentModelOperationError documentModelOperationError = new DocumentModelOperationError();
             DocumentModelOperationErrorHelper.setCode(documentModelOperationError, error.getCode());
@@ -646,7 +652,7 @@ public class Transforms {
         InnerErrorHelper.setInnerError(innerError, toInnerError(serviceInnerError.getInnererror()));
         return innerError;
     }
-    private static List<DocumentModelOperationError> toErrorDetails(List<Error> details) {
+    private static List<DocumentModelOperationError> toErrorDetails(List<com.azure.ai.formrecognizer.implementation.models.Error> details) {
         return !CoreUtils.isNullOrEmpty(details) ? details
             .stream()
             .map(error -> toDocumentModelOperationError(error))

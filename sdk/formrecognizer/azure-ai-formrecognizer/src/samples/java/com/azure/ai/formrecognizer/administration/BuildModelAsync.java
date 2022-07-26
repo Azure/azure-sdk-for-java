@@ -43,7 +43,7 @@ public class BuildModelAsync {
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
-            client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl),
+            client.beginBuildModel(trainingFilesUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
