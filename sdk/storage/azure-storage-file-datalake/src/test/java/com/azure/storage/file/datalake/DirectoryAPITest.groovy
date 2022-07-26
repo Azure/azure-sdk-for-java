@@ -331,9 +331,10 @@ class DirectoryAPITest extends APISpec {
             .setWritePermission(true)
         def expiryTime = namer.getUtcNow().plusDays(1)
 
-        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType).setEncryptionScope(encryptionScopeString)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
 
         def sas = getServiceClientBuilder(environment.primaryAccount.credential, environment.primaryAccount.dataLakeEndpoint)
+            .encryptionScope(encryptionScopeString)
             .buildClient()
             .generateAccountSas(sasValues)
 

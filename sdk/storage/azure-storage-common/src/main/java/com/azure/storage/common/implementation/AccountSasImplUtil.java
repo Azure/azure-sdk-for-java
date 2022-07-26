@@ -57,7 +57,7 @@ public class AccountSasImplUtil {
         this.sasIpRange = sasValues.getSasIpRange();
         this.services = sasValues.getServices();
         this.resourceTypes = sasValues.getResourceTypes();
-        this.encryptionScope = encryptionScope == null ? sasValues.getEncryptionScope() : encryptionScope;
+        this.encryptionScope = encryptionScope;
     }
 
     /**

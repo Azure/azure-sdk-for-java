@@ -230,13 +230,10 @@ class ServiceAPITest extends APISpec {
             .setEncryptionScopeOverridePrevented(true)
 
         def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
-            primaryDataLakeServiceClient.getAccountUrl()).buildClient()
-        def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
-
-        def fsClientBuilder = getFileSystemClientBuilder(fsClient.getFileSystemUrl())
+            primaryDataLakeServiceClient.getAccountUrl())
             .fileSystemEncryptionScope(encryptionScope)
-            .credential(environment.dataLakeAccount.credential)
-        fsClient = fsClientBuilder.buildClient()
+            .buildClient()
+        def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
 
         when:
         fsClient.create()
@@ -408,13 +405,11 @@ class ServiceAPITest extends APISpec {
             .setEncryptionScopeOverridePrevented(true)
 
         def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
-            primaryDataLakeServiceClient.getAccountUrl()).buildClient()
+            primaryDataLakeServiceClient.getAccountUrl())
+            .fileSystemEncryptionScope(encryptionScope)
+            .buildClient()
         def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
 
-        def fsClientBuilder = getFileSystemClientBuilder(fsClient.getFileSystemUrl())
-            .fileSystemEncryptionScope(encryptionScope)
-            .credential(environment.dataLakeAccount.credential)
-        fsClient = fsClientBuilder.buildClient()
         fsClient.create()
 
         when:

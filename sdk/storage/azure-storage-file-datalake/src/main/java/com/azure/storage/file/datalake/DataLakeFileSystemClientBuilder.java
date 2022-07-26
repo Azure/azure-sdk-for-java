@@ -76,7 +76,6 @@ public class DataLakeFileSystemClientBuilder implements
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
-    private FileSystemEncryptionScope fileSystemEncryptionScope;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -157,8 +156,7 @@ public class DataLakeFileSystemClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
-            blobContainerClientBuilder.blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScope))
-                .buildAsyncClient(), azureSasCredential);
+            blobContainerClientBuilder.buildAsyncClient(), azureSasCredential);
     }
 
     /**
@@ -296,7 +294,8 @@ public class DataLakeFileSystemClientBuilder implements
      */
     public DataLakeFileSystemClientBuilder fileSystemEncryptionScope(
         FileSystemEncryptionScope fileSystemEncryptionScope) {
-        this.fileSystemEncryptionScope = fileSystemEncryptionScope;
+        blobContainerClientBuilder
+            .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScope));
         return this;
     }
 
