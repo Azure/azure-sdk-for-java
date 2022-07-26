@@ -62,6 +62,12 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+- name: LiveTestStages
+  type: stageList
+  default: []
+- name: ReleaseDependsOnLiveTests
+  type: string
+  default: not-specified
 
 stages:
   - stage: Build
@@ -103,6 +109,9 @@ stages:
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 
+  - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+    - ${{ parameters.LiveTestStages }}
+
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
@@ -110,6 +119,9 @@ stages:
         parameters:
           DependsOn:
             - Build
+            - ${{ if eq(parameters.ReleaseDependsOnLiveTests, 'true') }}:
+              - ${{ each liveTestStage in parameters.LiveTestStages }}:
+                - ${{ liveTestStage.stage }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
@@ -125,6 +137,9 @@ stages:
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
           UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+          # JRS This is where we'd change the approval environment to the new uber group
+          ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
+            Environment: 'maven'
     - ${{ else }}:
       - template: archetype-java-release.yml
         parameters:
