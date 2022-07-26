@@ -57,9 +57,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -886,19 +884,14 @@ public class BlobClientBase {
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .publishOn(Schedulers.boundedElastic())
-            .map(response -> {
-                try {
-                    response.writeValueTo(Channels.newChannel(stream), null);
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                }
-                return new BlobDownloadResponse(response);
-            });
-
-        return blockWithOptionalTimeout(download, timeout);
+        BlobDownloadAsyncResponse response = blockWithOptionalTimeout(client
+            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context), timeout);
+        try {
+            response.writeValueTo(Channels.newChannel(stream), null);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+        return new BlobDownloadResponse(response);
     }
 
     /**
