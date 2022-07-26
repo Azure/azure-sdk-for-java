@@ -5,14 +5,11 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedStartFromNowImpl.class);
 
     public ChangeFeedStartFromNowImpl() {
         super();
@@ -20,7 +17,6 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
 
     @Override
     public void populatePropertyBag() {
-
             super.populatePropertyBag();
 
         synchronized(this) {
@@ -44,6 +40,5 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
         request.getHeaders().put(
             HttpConstants.HttpHeaders.IF_NONE_MATCH,
             HttpConstants.HeaderValues.IF_NONE_MATCH_ALL);
-
     }
 }

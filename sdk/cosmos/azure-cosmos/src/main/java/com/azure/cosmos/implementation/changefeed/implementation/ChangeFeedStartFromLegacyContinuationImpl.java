@@ -4,13 +4,10 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
 class ChangeFeedStartFromLegacyContinuationImpl extends ChangeFeedStartFromInternal {
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedStartFromLegacyContinuationImpl.class);
 
     public ChangeFeedStartFromLegacyContinuationImpl() {
         super();
