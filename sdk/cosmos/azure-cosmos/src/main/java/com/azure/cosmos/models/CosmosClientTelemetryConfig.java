@@ -1,20 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation;
+package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Stream;
 
-public class ClientTelemetryConfig {
-    private static Logger logger = LoggerFactory.getLogger(ClientTelemetryConfig.class);
+/**
+ * Class with config options for Cosmos Client telemetry
+ */
+@Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public class CosmosClientTelemetryConfig {
+    private static Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
     private static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
@@ -25,8 +43,11 @@ public class ClientTelemetryConfig {
     private final int maxConnectionPoolSize;
     private final Duration idleHttpConnectionTimeout;
     private final ProxyOptions proxy;
+    private String clientCorrelationId = null;
+    private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
+    private MeterRegistry clientMetricRegistry = null;
 
-    public ClientTelemetryConfig() {
+    private CosmosClientTelemetryConfig() {
         this.clientTelemetryEnabled = DEFAULT_CLIENT_TELEMETRY_ENABLED;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
@@ -34,31 +55,135 @@ public class ClientTelemetryConfig {
         this.proxy = this.getProxyOptions();
     }
 
-    public static ClientTelemetryConfig getDefaultConfig() {
-        return new ClientTelemetryConfig();
+    /**
+     * Creates a new instance of the CosmosClientTelemetryConfig class with default values.
+     * @return new CosmosClientTelemetryConfig instance with defautl values
+     */
+    static CosmosClientTelemetryConfig getDefaultConfig() {
+        return new CosmosClientTelemetryConfig();
     }
 
-    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
+    /**
+     * Enables or disables sending Cosmos DB client telemetry to the Azure Cosmos DB Service
+     * @param clientTelemetryEnabled
+     * @return current CosmosClientTelemetryConfig
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientTelemetryConfig sendClientTelemetryToServiceEnabled(boolean clientTelemetryEnabled) {
         this.clientTelemetryEnabled = clientTelemetryEnabled;
+
+        return this;
     }
 
-    public boolean isClientTelemetryEnabled() {
+    boolean isSendClientTelemetryToServiceEnabled() {
         return this.clientTelemetryEnabled;
     }
 
-    public Duration getHttpNetworkRequestTimeout() {
+    MeterRegistry getClientMetricRegistry() {
+        return this.clientMetricRegistry;
+    }
+
+    /**
+     * Sets the client correlationId used for tags in metrics. While we strongly encourage usage of singleton
+     * instances of CosmosClient there are cases when it is necessary to instantiate multiple CosmosClient instances -
+     * for example when an application connects to multiple Cosmos accounts. The client correlationId is used to
+     * distinguish client instances in metrics. By default an auto-incrementing number is used but with this method
+     * you can define your own correlationId (for example an identifier for the account)
+     *
+     * @param clientCorrelationId the client correlationId to be used to identify this client instance in metrics
+     * @return current CosmosClientTelemetryConfig
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientTelemetryConfig clientCorrelationId(String clientCorrelationId) {
+        this.clientCorrelationId = clientCorrelationId;
+        return this;
+    }
+
+    String getClientCorrelationId() {
+        return this.clientCorrelationId;
+    }
+
+    /**
+     * Sets the tags that should be considered for metrics. By default all supported tags are used - and for most
+     * use-cases that should be sufficient. But each tag/dimension adds some overhead when collecting the metrics -
+     * especially for percentile calculations - so, when it is clear that a certain dimension is not needed, it can
+     * be prevented from even considering it when collecting metrics.
+     *
+     * @param tagNames - a comma-separated list of tag names that should be considered
+     * @return current CosmosClientTelemetryConfig
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientTelemetryConfig metricTagNames(String tagNames) {
+        if (Strings.isNullOrWhiteSpace(tagNames)) {
+            this.metricTagNames = EnumSet.allOf(TagName.class);
+        }
+
+        Map<String, TagName> tagNameMap = new HashMap<>();
+        for (TagName tagName : TagName.values()) {
+            tagNameMap.put(tagName.toLowerCase(), tagName);
+        }
+
+        Stream<TagName> tagNameStream =
+            Arrays.stream(tagNames.toLowerCase(Locale.ROOT).split(","))
+                  .filter(tagName -> !Strings.isNullOrWhiteSpace(tagName))
+                  .map(tagName -> {
+                      String trimmedTagName = tagName.trim();
+
+                      if (!tagNameMap.containsKey(trimmedTagName)) {
+
+                          String validTagNames = String.join(
+                              ", ",
+                              (String[]) Arrays.stream(TagName.values()).map(tag -> tag.toString()).toArray());
+
+                          throw new IllegalArgumentException(
+                              String.format(
+                                  "TagName '%s' is invalid. Valid tag names are:"
+                                      + " %s",
+                                  tagName,
+                                  validTagNames));
+                      }
+
+                      return tagNameMap.get(trimmedTagName);
+                  });
+
+        EnumSet<TagName> newTagNames = EnumSet.noneOf(TagName.class);
+        tagNameStream.forEach(tagName -> newTagNames.add(tagName));
+
+        this.metricTagNames = newTagNames;
+
+        return this;
+    }
+
+    EnumSet<TagName> getMetricTagNames() {
+        return this.metricTagNames;
+    }
+
+    /**
+     * Sets MetricRegistry to be used to emit client metrics
+     *
+     * @param clientMetricRegistry - the MetricRegistry to be used to emit client metrics
+     * @return current CosmosClientTelemetryConfig
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientTelemetryConfig clientMetrics(MeterRegistry clientMetricRegistry) {
+        this.clientMetricRegistry = clientMetricRegistry;
+
+        return this;
+    }
+
+    Duration getHttpNetworkRequestTimeout() {
         return this.httpNetworkRequestTimeout;
     }
 
-    public int getMaxConnectionPoolSize() {
+    int getMaxConnectionPoolSize() {
         return this.maxConnectionPoolSize;
     }
 
-    public Duration getIdleHttpConnectionTimeout() {
+    Duration getIdleHttpConnectionTimeout() {
         return this.idleHttpConnectionTimeout;
     }
 
-    public ProxyOptions getProxy() {
+    ProxyOptions getProxy() {
         return this.proxy;
     }
 
@@ -127,4 +252,60 @@ public class ClientTelemetryConfig {
             this.password = password;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.setCosmosClientTelemetryConfigAccessor(
+            new ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor() {
+
+                @Override
+                public Duration getHttpNetworkRequestTimeout(CosmosClientTelemetryConfig config) {
+                    return config.getHttpNetworkRequestTimeout();
+                }
+
+                @Override
+                public int getMaxConnectionPoolSize(CosmosClientTelemetryConfig config) {
+                    return config.getMaxConnectionPoolSize();
+                }
+
+                @Override
+                public Duration getIdleHttpConnectionTimeout(CosmosClientTelemetryConfig config) {
+                    return config.getIdleHttpConnectionTimeout();
+                }
+
+                @Override
+                public ProxyOptions getProxy(CosmosClientTelemetryConfig config) {
+                    return config.getProxy();
+                }
+
+                @Override
+                public EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config) {
+                    return config.getMetricTagNames();
+                }
+
+                @Override
+                public String getClientCorrelationId(CosmosClientTelemetryConfig config) {
+                    return config.getClientCorrelationId();
+                }
+
+                @Override
+                public MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config) {
+                    return config.getClientMetricRegistry();
+                }
+
+                @Override
+                public boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
+                    return config.isSendClientTelemetryToServiceEnabled();
+                }
+
+                @Override
+                public CosmosClientTelemetryConfig getDefaultConfig() {
+                    return CosmosClientTelemetryConfig.getDefaultConfig();
+                }
+            });
+    }
+
+    static { initialize(); }
 }

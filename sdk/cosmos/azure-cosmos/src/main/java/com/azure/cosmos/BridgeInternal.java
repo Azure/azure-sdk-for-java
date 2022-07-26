@@ -96,11 +96,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean isClientTelemetryEnabled(CosmosAsyncClient cosmosAsyncClient) {
-        return cosmosAsyncClient.getClientTelemetryConfig().isClientTelemetryEnabled();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.fromObject(document, mapper);
     }
@@ -568,7 +563,8 @@ public final class BridgeInternal {
                                       RxDocumentServiceRequest request,
                                       StoreResult storeResult,
                                       GlobalEndpointManager globalEndpointManager) {
-        StoreResultDiagnostics storeResultDiagnostics = StoreResultDiagnostics.createStoreResultDiagnostics(storeResult);
+        StoreResultDiagnostics storeResultDiagnostics = StoreResultDiagnostics
+            .createStoreResultDiagnostics(storeResult, request);
         cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResultDiagnostics, globalEndpointManager);
     }
 
@@ -600,7 +596,8 @@ public final class BridgeInternal {
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              StoreResponse storeResponse,
                                              GlobalEndpointManager globalEndpointManager) {
-        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(storeResponse);
+        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics
+            .createStoreResponseDiagnostics(storeResponse, rxDocumentServiceRequest);
         cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
     }
 
@@ -609,7 +606,8 @@ public final class BridgeInternal {
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              CosmosException cosmosException,
                                              GlobalEndpointManager globalEndpointManager) {
-        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(cosmosException);
+        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics
+            .createStoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest);
         cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
         cosmosException.setDiagnostics(cosmosDiagnostics);
     }

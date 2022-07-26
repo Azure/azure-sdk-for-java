@@ -9,7 +9,8 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
@@ -125,11 +126,8 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
-    private final ClientTelemetryConfig clientTelemetryConfig;
+    private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
-    private String clientCorrelationId = null;
-    private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
-    private MeterRegistry clientMetricRegistry = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -140,7 +138,10 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.clientTelemetryConfig = ClientTelemetryConfig.getDefaultConfig();
+        this.clientTelemetryConfig = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getDefaultConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -653,7 +654,7 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryConfig.setClientTelemetryEnabled(clientTelemetryEnabled);
+        this.clientTelemetryConfig.sendClientTelemetryToServiceEnabled(clientTelemetryEnabled);
         return this;
     }
 
@@ -673,86 +674,6 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder readRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
-        return this;
-    }
-
-    /**
-     * Sets the client correlationId used for tags in metrics. While we strongly encourage usage of singleton
-     * instances of CosmosClient there are cases when it is necessary to instantiate multiple CosmosClient instances -
-     * for example when an application connects to multiple Cosmos accounts. The client correlationId is used to
-     * distinguish client instances in metrics. By default an auto-incrementing number is used but with this method
-     * you can define your own correlationId (for example an identifier for the account)
-     *
-     * @param clientCorrelationId the client correlationId to be used to identify this client instance in metrics
-     * @return current cosmosClientBuilder
-     */
-    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientBuilder clientCorrelationId(String clientCorrelationId) {
-        this.clientCorrelationId = clientCorrelationId;
-        return this;
-    }
-
-    /**
-     * Sets the tags that should be considered for metrics. By default all supported tags are used - and for most
-     * use-cases that should be sufficient. But each tag/dimension adds some overhead when collecting the metrics -
-     * especially for percentile calculations - so, when it is clear that a certain dimension is not needed, it can
-     * be prevented from even considering it when collecting metrics.
-     *
-     * @param tagNames - a comma-separated list of tag names that should be considered
-     * @return current cosmosClientBuilder
-     */
-    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientBuilder metricTagNames(String tagNames) {
-        if (Strings.isNullOrWhiteSpace(tagNames)) {
-            this.metricTagNames = EnumSet.allOf(TagName.class);
-        }
-
-        Map<String, TagName> tagNameMap = new HashMap<>();
-        for (TagName tagName : TagName.values()) {
-            tagNameMap.put(tagName.toLowerCase(), tagName);
-        }
-
-        Stream<TagName> tagNameStream =
-            Arrays.stream(tagNames.toLowerCase(Locale.ROOT).split(","))
-                  .filter(tagName -> !Strings.isNullOrWhiteSpace(tagName))
-                  .map(tagName -> {
-                      String trimmedTagName = tagName.trim();
-
-                      if (!tagNameMap.containsKey(trimmedTagName)) {
-
-                          String validTagNames = String.join(
-                              ", ",
-                              (String[]) Arrays.stream(TagName.values()).map(tag -> tag.toString()).toArray());
-
-                          throw new IllegalArgumentException(
-                              String.format(
-                                  "TagName '%s' is invalid. Valid tag names are:"
-                                      + " %s",
-                                  tagName,
-                                  validTagNames));
-                      }
-
-                      return tagNameMap.get(trimmedTagName);
-                  });
-
-        EnumSet<TagName> newTagNames = EnumSet.noneOf(TagName.class);
-        tagNameStream.forEach(tagName -> newTagNames.add(tagName));
-
-        this.metricTagNames = newTagNames;
-
-        return this;
-    }
-
-    /**
-     * Sets MetricRegistry to be used to emit client metrics
-     *
-     * @param clientMetricRegistry - the MetricRegistry to be used to emit client metrics
-     * @return current cosmosClientBuilder
-     */
-    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientBuilder clientMetrics(MeterRegistry clientMetricRegistry) {
-        this.clientMetricRegistry = clientMetricRegistry;
-
         return this;
     }
 
@@ -835,7 +756,10 @@ public class CosmosClientBuilder implements
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return this.clientTelemetryConfig.isClientTelemetryEnabled();
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
     }
 
     /**
@@ -854,15 +778,30 @@ public class CosmosClientBuilder implements
         return readRequestsFallbackEnabled;
     }
 
-    ClientTelemetryConfig getClientTelemetryConfig() {
+    public CosmosClientTelemetryConfig clientTelemetryConfig() {
         return this.clientTelemetryConfig;
     }
 
-    String getClientCorrelationId() { return this.clientCorrelationId; }
+    String getClientCorrelationId() {
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getClientCorrelationId(this.clientTelemetryConfig);
+    }
 
-    EnumSet<TagName> getMetricTagNames() { return this.metricTagNames; }
+    EnumSet<TagName> getMetricTagNames() {
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getMetricTagNames(this.clientTelemetryConfig);
+    }
 
-    MeterRegistry getClientMetricRegistry() { return this.clientMetricRegistry; }
+    MeterRegistry getClientMetricRegistry() {
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getClientMetricRegistry(this.clientTelemetryConfig);
+    }
 
     /**
      * Builds a cosmos async client with the provided properties

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
@@ -73,7 +73,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final TokenCredential tokenCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
-    private final ClientTelemetryConfig clientTelemetryConfig;
+    private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
@@ -83,6 +83,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final String accountTagValue;
     private final EnumSet<TagName> metricTagNames;
     private final boolean clientMetricsEnabled;
+    private final boolean clientTelemetryConfigEnabled;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -106,7 +107,11 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
-        this.clientTelemetryConfig = builder.getClientTelemetryConfig();
+        this.clientTelemetryConfig = builder.clientTelemetryConfig();
+        this.clientTelemetryConfigEnabled = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
         this.apiType = builder.apiType();
@@ -266,9 +271,9 @@ public final class CosmosAsyncClient implements Closeable {
     /***
      * Get the client telemetry config.
      *
-     * @return the {@link ClientTelemetryConfig}.
+     * @return the {@link CosmosClientTelemetryConfig}.
      */
-    ClientTelemetryConfig getClientTelemetryConfig() {
+    CosmosClientTelemetryConfig getClientTelemetryConfig() {
         return this.clientTelemetryConfig;
     }
 

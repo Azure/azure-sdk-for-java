@@ -156,6 +156,19 @@ class ChangeFeedQueryImpl<T> {
 
                              final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(
                                  rsp, this.factoryMethod, klass);
+
+                             Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
+                             String requestPkRangeId = null;
+                             if (!rspHeaders.containsKey(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID) &&
+                                 (requestPkRangeId = request
+                                     .getHeaders()
+                                     .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
+
+                                 rsp.getResponseHeaders().put(
+                                     HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
+                                     requestPkRangeId
+                                 );
+                             }
                              listener.feedResponseReceivedListener(operationContext, feedResponse);
 
                              return feedResponse;

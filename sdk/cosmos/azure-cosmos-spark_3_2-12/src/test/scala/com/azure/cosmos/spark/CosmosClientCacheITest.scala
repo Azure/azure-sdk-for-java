@@ -43,6 +43,7 @@ class CosmosClientCacheITest
         CosmosClientConfiguration(
         cosmosEndpoint,
         cosmosMasterKey,
+        Some("SampleApplicationName"),
         "SampleApplicationName",
         useGatewayMode = true,
         useEventualConsistency = true,
@@ -56,6 +57,7 @@ class CosmosClientCacheITest
         CosmosClientConfiguration(
           cosmosEndpoint,
           cosmosMasterKey,
+          Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
           useEventualConsistency = true,
@@ -69,6 +71,7 @@ class CosmosClientCacheITest
         CosmosClientConfiguration(
         cosmosEndpoint,
         cosmosMasterKey,
+        None,
         "SampleApplicationName",
         useGatewayMode = true,
         useEventualConsistency = true,
@@ -82,6 +85,7 @@ class CosmosClientCacheITest
         CosmosClientConfiguration(
           cosmosEndpoint,
           cosmosMasterKey,
+          None,
           "SampleApplicationName",
           useGatewayMode = true,
           useEventualConsistency = true,
@@ -99,6 +103,7 @@ class CosmosClientCacheITest
       val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
         userConfig.key,
+        userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
         userConfig.useEventualConsistency,

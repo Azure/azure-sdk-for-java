@@ -324,14 +324,17 @@ public class TracerProvider {
         Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc, thresholdForDiagnosticsOnTracer);
         return tracerMono
             .doOnSuccess(response -> {
-                if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosItemResponse) {
+                boolean clientTelemetryEnabled = clientAccessor.isSendClientTelemetryToServiceEnabled(client);
+
+                if (clientTelemetryEnabled && response instanceof CosmosItemResponse) {
+
                     @SuppressWarnings("unchecked")
                     CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
-                } else if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosBatchResponse) {
+                } else if (clientTelemetryEnabled && response instanceof CosmosBatchResponse) {
                     @SuppressWarnings("unchecked")
                     CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
                     fillClientTelemetry(client, cosmosBatchResponse.getDiagnostics(), cosmosBatchResponse.getStatusCode(),
@@ -384,7 +387,9 @@ public class TracerProvider {
                 }
 
             }).doOnError(throwable -> {
-                if (BridgeInternal.isClientTelemetryEnabled(client) && throwable instanceof CosmosException) {
+                if (clientAccessor.isSendClientTelemetryToServiceEnabled(client) &&
+                    throwable instanceof CosmosException) {
+
                     CosmosException cosmosException = (CosmosException) throwable;
                     fillClientTelemetry(client, cosmosException.getDiagnostics(), cosmosException.getStatusCode(),
                         null, containerId,

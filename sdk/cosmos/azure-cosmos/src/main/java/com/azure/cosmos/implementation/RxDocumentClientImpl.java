@@ -52,6 +52,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -180,7 +181,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final AtomicBoolean throughputControlEnabled;
     private ThroughputControlStore throughputControlStore;
-    private final ClientTelemetryConfig clientTelemetryConfig;
+    private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
     private final EnumSet<TagName> metricTagNames;
 
@@ -197,7 +198,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
-                                ClientTelemetryConfig clientTelemetryConfig,
+                                CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 EnumSet<TagName> tagNames) {
         this(
@@ -234,7 +235,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
-                                ClientTelemetryConfig clientTelemetryConfig,
+                                CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 EnumSet<TagName> tagNames) {
         this(
@@ -270,7 +271,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
-                                ClientTelemetryConfig clientTelemetryConfig,
+                                CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 EnumSet<TagName> tagNames) {
         this(
@@ -344,7 +345,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean contentResponseOnWriteEnabled,
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                          ApiType apiType,
-                         ClientTelemetryConfig clientTelemetryConfig,
+                         CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
                          EnumSet<TagName> tagNames) {
 

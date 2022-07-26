@@ -86,6 +86,8 @@ public class CosmosQueryRequestOptions {
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
         this.itemFactoryMethod = options.itemFactoryMethod;
         this.queryName = options.queryName;
+        this.feedRange = options.feedRange;
+        this.thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {

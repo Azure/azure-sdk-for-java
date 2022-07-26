@@ -7,6 +7,7 @@ import java.lang.management.ManagementFactory
 private[spark] case class CosmosClientConfiguration (
                                                       endpoint: String,
                                                       key: String,
+                                                      customApplicationNameSuffix: Option[String],
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
                                                       useEventualConsistency: Boolean,
@@ -21,13 +22,14 @@ private[spark] object CosmosClientConfiguration {
              useEventualConsistency: Boolean): CosmosClientConfiguration = {
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
     var applicationName = CosmosConstants.userAgentSuffix
+    val customApplicationNameSuffix = cosmosAccountConfig.applicationName
     val runtimeInfo = runtimeInformation()
     if (runtimeInfo.isDefined) {
       applicationName = s"$applicationName ${runtimeInfo.get}"
     }
 
     if (cosmosAccountConfig.applicationName.isDefined){
-      applicationName = s"$applicationName ${cosmosAccountConfig.applicationName.get}"
+      applicationName = s"$applicationName $customApplicationNameSuffix"
     }
 
     val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
@@ -35,6 +37,7 @@ private[spark] object CosmosClientConfiguration {
     CosmosClientConfiguration(
       cosmosAccountConfig.endpoint,
       cosmosAccountConfig.key,
+      customApplicationNameSuffix,
       applicationName,
       cosmosAccountConfig.useGatewayMode,
       useEventualConsistency,

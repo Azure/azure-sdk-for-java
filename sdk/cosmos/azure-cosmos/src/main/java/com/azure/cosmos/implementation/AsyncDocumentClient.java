@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -94,7 +95,7 @@ public interface AsyncDocumentClient {
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
         private ApiType apiType;
-        ClientTelemetryConfig clientTelemetryConfig;
+        CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
         private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
 
@@ -230,11 +231,11 @@ public interface AsyncDocumentClient {
         /***
          * Set the client telemetry config.
          *
-         * @param clientTelemetryConfig the {@link ClientTelemetryConfig}.
+         * @param clientTelemetryConfig the {@link CosmosClientTelemetryConfig}.
          *
          * @return the current builder.
          */
-        public Builder withClientTelemetryConfig(ClientTelemetryConfig clientTelemetryConfig) {
+        public Builder withClientTelemetryConfig(CosmosClientTelemetryConfig clientTelemetryConfig) {
             this.clientTelemetryConfig = clientTelemetryConfig;
             return this;
         }

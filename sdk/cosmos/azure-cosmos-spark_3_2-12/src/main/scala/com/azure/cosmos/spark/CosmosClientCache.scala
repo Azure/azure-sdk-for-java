@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.clienttelemetry.{ClientTelemetryMetrics, TagName}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -122,6 +123,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
                                ownerInfo: OwnerInfo)
   : CosmosClientCacheItem = synchronized {
+
     val clientConfigWrapper = ClientConfigurationWrapper(cosmosClientConfiguration)
     cache.get(clientConfigWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
@@ -134,6 +136,31 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             new ThrottlingRetryOptions()
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
               .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
+
+        if (!CosmosClientMetrics.meterRegistry.getRegistries.isEmpty) {
+          val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
+            .getOrElse("")
+
+          val clientCorrelationId = SparkSession.getActiveSession match {
+            case Some(session) =>
+              val ctx = session.sparkContext
+
+              if (customApplicationNameSuffix.isBlank) {
+                s"${CosmosClientMetrics.hostName}-${ctx.appName}"
+              } else {
+                s"${customApplicationNameSuffix}-${CosmosClientMetrics.hostName}-${ctx.appName}"
+              }
+            case None => customApplicationNameSuffix
+          }
+
+          builder.clientMetrics(CosmosClientMetrics.meterRegistry)
+          builder.clientCorrelationId(clientCorrelationId)
+          builder.metricTagNames(
+            s"${TagName.Container}, ${TagName.ClientCorrelationId}, ${TagName.Operation}, " +
+              s"${TagName.OperationStatusCode}, ${TagName.PartitionKeyRangeId}, ${TagName.ServiceEndpoint}, " +
+              s"${TagName.ServiceAddress}"
+          )
+        }
 
         if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
           builder.endpointDiscoveryEnabled(false)

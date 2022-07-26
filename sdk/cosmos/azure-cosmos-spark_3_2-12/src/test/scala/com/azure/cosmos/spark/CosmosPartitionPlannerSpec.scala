@@ -16,6 +16,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -78,6 +79,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -140,6 +142,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -202,6 +205,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -262,6 +266,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -338,6 +343,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,

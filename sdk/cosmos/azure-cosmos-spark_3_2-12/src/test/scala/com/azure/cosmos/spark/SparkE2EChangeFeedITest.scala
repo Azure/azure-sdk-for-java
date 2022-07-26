@@ -17,7 +17,7 @@ import java.nio.file.Paths
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
-    with Spark
+    with SparkWithDropwizardAndSlf4jMetrics
     with CosmosClient
     with CosmosContainerWithRetention
     with BasicLoggingTrait {

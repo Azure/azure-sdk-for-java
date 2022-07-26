@@ -192,11 +192,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 ConsistencyLevel consistencyLevel = ConsistencyLevel.EVENTUAL;
 
                 if (client != null) {
-                    clientTelemetryEnabled = BridgeInternal.isClientTelemetryEnabled(client);
-                    clientMetricsEnabled = ImplementationBridgeHelpers
+                    ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+                        ImplementationBridgeHelpers
                         .CosmosAsyncClientHelper
-                        .getCosmosAsyncClientAccessor()
-                        .isClientTelemetryMetricsEnabled(client);
+                        .getCosmosAsyncClientAccessor();
+                    clientTelemetryEnabled = clientAccessor.isSendClientTelemetryToServiceEnabled(client);
+                    clientMetricsEnabled = clientAccessor.isClientTelemetryMetricsEnabled(client);
                     consistencyLevel =
                         BridgeInternal
                             .getContextClient(pagedFluxOptions.getCosmosAsyncClient())

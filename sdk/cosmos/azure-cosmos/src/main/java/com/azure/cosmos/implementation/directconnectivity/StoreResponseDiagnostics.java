@@ -7,6 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
@@ -36,16 +38,24 @@ public class StoreResponseDiagnostics {
     private final String exceptionMessage;
     private final String exceptionResponseHeaders;
 
-    public static StoreResponseDiagnostics createStoreResponseDiagnostics(StoreResponse storeResponse) {
-        return new StoreResponseDiagnostics(storeResponse);
+    public static StoreResponseDiagnostics createStoreResponseDiagnostics(
+        StoreResponse storeResponse,
+        RxDocumentServiceRequest rxDocumentServiceRequest) {
+
+        return new StoreResponseDiagnostics(storeResponse, rxDocumentServiceRequest);
     }
 
-    public static StoreResponseDiagnostics createStoreResponseDiagnostics(CosmosException cosmosException) {
-        return new StoreResponseDiagnostics(cosmosException);
+    public static StoreResponseDiagnostics createStoreResponseDiagnostics(
+        CosmosException cosmosException,
+        RxDocumentServiceRequest rxDocumentServiceRequest) {
+
+        return new StoreResponseDiagnostics(cosmosException, rxDocumentServiceRequest);
     }
 
-    private StoreResponseDiagnostics(StoreResponse storeResponse) {
-        this.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
+    private StoreResponseDiagnostics(StoreResponse storeResponse, RxDocumentServiceRequest rxDocumentServiceRequest) {
+        String rspPkRangeId = storeResponse.getPartitionKeyRangeId();
+        this.partitionKeyRangeId = !Strings.isNullOrWhiteSpace(rspPkRangeId) ? rspPkRangeId :
+            rxDocumentServiceRequest.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
         this.activityId = storeResponse.getActivityId();
         this.correlatedActivityId = storeResponse.getCorrelatedActivityId();
         this.requestCharge = storeResponse.getRequestCharge();
@@ -65,8 +75,10 @@ public class StoreResponseDiagnostics {
         this.exceptionResponseHeaders = null;
     }
 
-    private StoreResponseDiagnostics(CosmosException e) {
-        this.partitionKeyRangeId = BridgeInternal.getPartitionKeyRangeId(e);
+    private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
+        String rspPkRangeId = BridgeInternal.getPartitionKeyRangeId(e);
+        this.partitionKeyRangeId = !Strings.isNullOrWhiteSpace(rspPkRangeId) ? rspPkRangeId :
+            rxDocumentServiceRequest.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
         this.activityId = e.getActivityId();
         this.correlatedActivityId = e.getResponseHeaders().get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);;
         this.requestCharge = e.getRequestCharge();

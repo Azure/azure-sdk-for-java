@@ -57,6 +57,37 @@ trait Spark extends BeforeAndAfterAll {
   }
 }
 
+trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
+  this: Suite =>
+  //scalastyle:off
+
+  override def resetSpark: SparkSession = {
+    spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .getOrCreate()
+
+    spark
+  }
+}
+
+trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
+  this: Suite =>
+  //scalastyle:off
+
+  override def resetSpark: SparkSession = {
+    spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .config("spark.cosmos.metrics.slf4j.enabled", "false")
+      .getOrCreate()
+
+    spark
+  }
+}
+
 // extending class will have a pre-created instance of CosmosClient
 trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>

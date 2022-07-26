@@ -75,8 +75,8 @@ public final class ClientTelemetryMetrics {
             .baseUnit("%")
             .description("Avg. System CPU load")
             .maximumExpectedValue(100d)
-            .minimumExpectedValue(0d)
-            .publishPercentileHistogram()
+            .publishPercentiles(0.95, 0.99)
+            .publishPercentileHistogram(true)
             .register(compositeRegistry);
         averageSystemCpuUsageMeter.record(averageSystemCpuUsage);
 
@@ -84,7 +84,8 @@ public final class ClientTelemetryMetrics {
             .builder(nameOf("system.freeMemoryAvailable"))
             .baseUnit("MB")
             .description("Free memory available")
-            .publishPercentileHistogram()
+            .publishPercentiles()
+            .publishPercentileHistogram(false)
             .register(compositeRegistry);
         freeMemoryAvailableInMBMeter.record(freeMemoryAvailableInMB);
     }
@@ -110,7 +111,7 @@ public final class ClientTelemetryMetrics {
             return;
         }
 
-        boolean isPointOperation = maxItemCount < 0;
+        boolean isPointOperation = maxItemCount == null || maxItemCount < 0;
 
         int requestPayloadSizeInBytes = 0;
         if (cosmosDiagnostics != null) {
@@ -138,7 +139,7 @@ public final class ClientTelemetryMetrics {
         metricProducer.recordOperation(
             requestCharge,
             latency,
-            maxItemCount,
+            maxItemCount == null ? -1 : maxItemCount,
             actualItemCount,
             cosmosDiagnostics
         );
@@ -153,7 +154,7 @@ public final class ClientTelemetryMetrics {
     }
 
     private static String nameOf(final String member) {
-        return "com.azure.cosmos.telemetry.client." + member;
+        return "com.azure.cosmos.client." + member;
     }
 
     private static Tags createOperationTags(
@@ -242,9 +243,8 @@ public final class ClientTelemetryMetrics {
                 .baseUnit("bytes")
                 .description("Request payload size in bytes")
                 .maximumExpectedValue(16d * 1024)
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(operationTags)
                 .register(compositeRegistry);
             requestPayloadSizeMeter.record(requestPayloadSizeInBytes);
@@ -254,9 +254,8 @@ public final class ClientTelemetryMetrics {
                 .baseUnit("bytes")
                 .description("Response payload size in bytes")
                 .maximumExpectedValue(16d * 1024)
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(operationTags)
                 .register(compositeRegistry);
             responsePayloadSizeMeter.record(responsePayloadSizeInBytes);
@@ -266,29 +265,29 @@ public final class ClientTelemetryMetrics {
             int maxItemCount,
             int actualItemCount
         ) {
-            DistributionSummary maxItemCountMeter = DistributionSummary
-                .builder(nameOf("operation.maxItemCount"))
-                .baseUnit("item count")
-                .description("Request max. item count")
-                .maximumExpectedValue(1_000_000d)
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
-                .tags(operationTags)
-                .register(compositeRegistry);
-            maxItemCountMeter.record(Math.max(0, Math.min(maxItemCount, 1_000_000d)));
+            if (maxItemCount > 0) {
+                DistributionSummary maxItemCountMeter = DistributionSummary
+                    .builder(nameOf("operation.maxItemCount"))
+                    .baseUnit("item count")
+                    .description("Request max. item count")
+                    .maximumExpectedValue(1_000_000d)
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
+                    .tags(operationTags)
+                    .register(compositeRegistry);
+                maxItemCountMeter.record(Math.max(0, Math.min(maxItemCount, 1_000_000d)));
 
-            DistributionSummary actualItemCountMeter = DistributionSummary
-                .builder(nameOf("operation.actualItemCount"))
-                .baseUnit("item count")
-                .description("Response actual item count")
-                .maximumExpectedValue(1_000_000d)
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
-                .tags(operationTags)
-                .register(compositeRegistry);
-            actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 1_000_000d)));
+                DistributionSummary actualItemCountMeter = DistributionSummary
+                    .builder(nameOf("operation.actualItemCount"))
+                    .baseUnit("item count")
+                    .description("Response actual item count")
+                    .maximumExpectedValue(1_000_000d)
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
+                    .tags(operationTags)
+                    .register(compositeRegistry);
+                actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 1_000_000d)));
+            }
         }
 
         private Tags createRequestTags(
@@ -306,7 +305,7 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.PartitionKeyRangeId)) {
                 effectiveTags.add(Tag.of(
                     TagName.PartitionKeyRangeId.toString(),
-                    pkRangeId != null ? escape(pkRangeId) : "NONE"));
+                    Strings.isNullOrWhiteSpace(pkRangeId) ? "NONE": escape(pkRangeId)));
             }
 
             if (metricTagNames.contains(TagName.RequestStatusCode)) {
@@ -351,9 +350,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("request.statistics.channel.pendingRequestQueueSize"))
                 .baseUnit("#")
                 .description("Channel statistics(Pending request queue size)")
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
                 .tags(requestTags)
                 .register(compositeRegistry);
             pendingRequestQueueSizeMeter.record(pendingRequestQueueSize);
@@ -362,9 +360,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("request.statistics.channel.channelTaskQueueSize"))
                 .baseUnit("#")
                 .description("Channel statistics(Channel task queue size)")
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
                 .tags(requestTags)
                 .register(compositeRegistry);
             channelTaskQueueSizeMeter.record(channelTaskQueueSize);
@@ -379,9 +376,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("request.statistics.endpoint.acquiredChannels"))
                 .baseUnit("#")
                 .description("Endpoint statistics(acquired channels)")
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
                 .tags(requestTags)
                 .register(compositeRegistry);
             acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
@@ -390,9 +386,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("request.statistics.endpoint.availableChannels"))
                 .baseUnit("#")
                 .description("Endpoint statistics(available channels)")
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
             availableChannelsMeter.record(endpointStatistics.getAvailableChannels());
@@ -401,10 +396,9 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("request.statistics.endpoint.inflightRequests"))
                 .baseUnit("#")
                 .description("Endpoint statistics(inflight requests)")
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
                 .tags(requestTags)
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
                 .register(compositeRegistry);
             inflightRequestsMeter.record(endpointStatistics.getInflightRequests());
 
@@ -412,9 +406,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("request.statistics.endpoint.executorTaskQueueSize"))
                 .baseUnit("#")
                 .description("Endpoint statistics(executor task queue size)")
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
             executorTaskQueueSizeMeter.record(endpointStatistics.getExecutorTaskQueueSize());
@@ -440,8 +433,8 @@ public final class ClientTelemetryMetrics {
                 Timer acquisitionEventMeter = Timer
                     .builder(name)
                     .description(String.format("Channel acquisition timeline (%s)", name))
-                    .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                    .publishPercentileHistogram()
+                    .publishPercentiles()
+                    .publishPercentileHistogram(false)
                     .tags(requestTags)
                     .register(compositeRegistry);
                 acquisitionEventMeter.record(duration);
@@ -462,8 +455,8 @@ public final class ClientTelemetryMetrics {
                 Timer eventMeter = Timer
                     .builder(nameOf("request.timeline." + escape(event.getName())))
                     .description(String.format("Request timeline (%s)", event.getName()))
-                    .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                    .publishPercentileHistogram()
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
                     .tags(requestTags)
                     .register(compositeRegistry);
                 eventMeter.record(duration);
@@ -482,9 +475,8 @@ public final class ClientTelemetryMetrics {
                 .baseUnit("RU (request unit)")
                 .description("RU charge")
                 .maximumExpectedValue(10_000_000d)
-                .minimumExpectedValue(0d)
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(operationTags)
                 .register(compositeRegistry);
             requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
@@ -492,8 +484,8 @@ public final class ClientTelemetryMetrics {
             Timer latencyMeter = Timer
                 .builder(nameOf("operation.latency"))
                 .description("Operation latency")
-                .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                .publishPercentileHistogram()
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
                 .tags(operationTags)
                 .register(compositeRegistry);
             latencyMeter.record(latency);
@@ -529,8 +521,8 @@ public final class ClientTelemetryMetrics {
                         Timer backendRequestLatencyMeter = Timer
                             .builder(nameOf("request.backend.latency"))
                             .description("Backend Request latency")
-                            .publishPercentiles(0.5, 0.9, 0.95, 0.99)
-                            .publishPercentileHistogram()
+                            .publishPercentiles(0.95, 0.99)
+                            .publishPercentileHistogram(true)
                             .tags(requestTags)
                             .register(compositeRegistry);
                         backendRequestLatencyMeter.record(latency);

@@ -9,6 +9,7 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -125,7 +126,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.STRONG)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
 
         this.readClient =
@@ -135,7 +139,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.STRONG)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
 
         Document documentDefinition = getDocumentDefinition();
@@ -175,7 +182,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
 
         try {
@@ -386,7 +396,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         RxDocumentClientImpl client2 =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -395,7 +408,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
 
         String collectionId = UUID.randomUUID().toString();
@@ -525,7 +541,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         RxDocumentClientImpl validationClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -534,7 +553,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         try {
             // write a document, and upsert to it to update etag.
@@ -574,7 +596,11 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            ImplementationBridgeHelpers
+                                .CosmosClientTelemetryConfigHelper
+                                .getCosmosClientTelemetryConfigAccessor()
+                                .getDefaultConfig())
                         .build();
         RxDocumentClientImpl validationClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -583,7 +609,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         try {
             DocumentCollection collectionDefinition = getCollectionDefinition();
@@ -618,7 +647,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         try {
             ResourceResponse<Document> documentResponse =
@@ -655,7 +687,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         RxDocumentClientImpl validationClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -664,7 +699,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         try {
             Document documentDefinition = getDocumentDefinition();
@@ -696,7 +734,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         try {
 
@@ -779,7 +820,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
         RxDocumentClientImpl client2 = null;
         try {
@@ -795,7 +839,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withContentResponseOnWriteEnabled(true)
-                    .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                    .withClientTelemetryConfig(ImplementationBridgeHelpers
+                        .CosmosClientTelemetryConfigHelper
+                        .getCosmosClientTelemetryConfigAccessor()
+                        .getDefaultConfig())
                     .build();
             client2.replaceCollection(createdCollection, null).block();
             String token2 = ((SessionContainer) client2.getSession()).getSessionToken(createdCollection.getSelfLink());

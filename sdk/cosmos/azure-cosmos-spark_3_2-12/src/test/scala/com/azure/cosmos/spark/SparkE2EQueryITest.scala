@@ -16,7 +16,7 @@ import scala.collection.mutable
 
 class SparkE2EQueryITest
   extends IntegrationSpec
-    with Spark
+    with SparkWithJustDropwizardAndNoSlf4jMetrics
     with CosmosClient
     with AutoCleanableCosmosContainer
     with BasicLoggingTrait {

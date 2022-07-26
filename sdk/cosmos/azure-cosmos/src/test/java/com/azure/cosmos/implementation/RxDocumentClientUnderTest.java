@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
@@ -41,7 +42,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      AzureKeyCredential credential,
                                      boolean contentResponseOnWriteEnabled,
                                      ApiType apiType,
-                                     ClientTelemetryConfig clientTelemetryConfig) {
+                                     CosmosClientTelemetryConfig clientTelemetryConfig) {
         super(
                 serviceEndpoint,
                 masterKey,
