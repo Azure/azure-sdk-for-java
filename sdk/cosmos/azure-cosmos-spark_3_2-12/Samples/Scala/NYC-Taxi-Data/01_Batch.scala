@@ -157,6 +157,8 @@ val writeCfg = Map(
   "spark.cosmos.write.strategy" -> "ItemOverwrite",
   "spark.cosmos.write.bulk.enabled" -> "true",
   "spark.cosmos.throughputControl.enabled" -> "true",
+//   "spark.cosmos.throughputControl.accountEndpoint" -> throughputControlEndpoint, // Only need if throughput control is configured with different database account
+//   "spark.cosmos.throughputControl.accountKey" -> throughputControlMasterKey, // Only need if throughput control is configured with different database account
   "spark.cosmos.throughputControl.name" -> "NYCGreenTaxiDataIngestion",
   "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.95",
   "spark.cosmos.throughputControl.globalControl.database" -> "SampleDatabase",
