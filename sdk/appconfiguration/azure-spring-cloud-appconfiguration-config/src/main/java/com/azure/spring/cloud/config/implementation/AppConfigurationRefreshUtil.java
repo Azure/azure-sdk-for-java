@@ -28,9 +28,9 @@ class AppConfigurationRefreshUtil {
      *
      * @return If a refresh event is called.
      */
-    static void refreshStoresCheck(AppConfigurationProviderProperties appProperties,
-        ClientFactory clientFactory, List<ConfigStore> configStores,
-        Duration refreshInterval, RefreshEventData eventData) {
+    static RefreshEventData refreshStoresCheck(AppConfigurationProviderProperties appProperties,
+        ClientFactory clientFactory, List<ConfigStore> configStores, Duration refreshInterval) {
+        RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
         try {
@@ -61,7 +61,7 @@ class AppConfigurationRefreshUtil {
                                 if (eventData.getDoRefresh()) {
                                     clientFactory.setCurrentConfigStoreClient(configStore.getEndpoint(),
                                         client.getEndpoint());
-                                    return;
+                                    return eventData;
                                 }
                                 // If check didn't throw an error other clients don't need to be checked.
                                 break;
@@ -86,7 +86,7 @@ class AppConfigurationRefreshUtil {
                                 if (eventData.getDoRefresh()) {
                                     clientFactory.setCurrentConfigStoreClient(configStore.getEndpoint(),
                                         client.getEndpoint());
-                                    return;
+                                    return eventData;
                                 }
                                 // If check didn't throw an error other clients don't need to be checked.
                                 break;
@@ -105,6 +105,7 @@ class AppConfigurationRefreshUtil {
             StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
             throw e;
         }
+        return eventData;
     }
 
     static boolean checkStoreAfterRefreshFailed(ConfigStore configStore, ConfigurationClientWrapper client,

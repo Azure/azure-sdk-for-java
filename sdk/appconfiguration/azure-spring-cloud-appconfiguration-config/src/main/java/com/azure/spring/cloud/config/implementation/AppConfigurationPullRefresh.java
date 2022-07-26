@@ -103,14 +103,15 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * @return If a refresh event is called.
      */
     private boolean refreshStores() {
-        RefreshEventData eventData = new RefreshEventData();
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
-                AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactory, configStores,
-                    refreshInterval, eventData);
+
+                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties,
+                    clientFactory, configStores, refreshInterval);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
+                    return true;
                 }
             } catch (Exception e) {
                 // The next refresh will happen sooner if refresh interval is expired.
@@ -120,7 +121,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
                 running.set(false);
             }
         }
-        return eventData.getDoRefresh();
+        return false;
     }
 
     @Override

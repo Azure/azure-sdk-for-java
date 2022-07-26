@@ -283,8 +283,7 @@ public class AppConfigurationRefreshUtilTest {
 
             // Monitor is disabled
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -310,8 +309,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -338,8 +336,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -366,8 +363,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -396,8 +392,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -429,8 +424,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -459,8 +453,7 @@ public class AppConfigurationRefreshUtilTest {
 
             // Monitor is disabled
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -489,8 +482,7 @@ public class AppConfigurationRefreshUtilTest {
 
             // Monitor is disabled
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -524,8 +516,7 @@ public class AppConfigurationRefreshUtilTest {
 
             // Monitor is disabled
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -563,8 +554,7 @@ public class AppConfigurationRefreshUtilTest {
 
             // Monitor is disabled
             AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10),
-                eventData);
+                Duration.ofMinutes(10));
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
