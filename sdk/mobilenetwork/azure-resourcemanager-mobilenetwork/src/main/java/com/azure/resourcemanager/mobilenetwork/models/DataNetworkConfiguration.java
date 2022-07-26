@@ -9,11 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Settings controlling Data Network use. */
+/** Settings controlling data network use. */
 @Fluent
 public final class DataNetworkConfiguration {
     /*
-     * A reference to the Data Network that these settings apply to
+     * A reference to the data network that these settings apply to
      */
     @JsonProperty(value = "dataNetwork", required = true)
     private DataNetworkResourceId dataNetwork;
@@ -27,13 +27,13 @@ public final class DataNetworkConfiguration {
     private Ambr sessionAmbr;
 
     /*
-     * Default QoS Flow 5G QoS Indicator value.  The 5QI identifies a specific
+     * Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific
      * QoS forwarding treatment to be provided to a flow. This must not be a
-     * standardized 5QI value selecting a GBR (Guaranteed Bit Rate) QoS.  The
-     * illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75,
-     * 76, 82, 83, 84, and 85. See 3GPP TS23.501 section 5.7.2.1 for a full
-     * description of the 5Qi parameter, and table 5.7.4-1 for the definition
-     * of which are the GBR 5QI values.
+     * standardized 5QI value corresponding to a GBR (guaranteed bit rate) QoS
+     * Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72,
+     * 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP TS23.501 section 5.7.2.1
+     * for a full description of the 5QI parameter, and table 5.7.4-1 for the
+     * definition of which are the GBR 5QI values.
      */
     @JsonProperty(value = "5qi")
     private Integer fiveQi;
@@ -50,7 +50,7 @@ public final class DataNetworkConfiguration {
     private Integer allocationAndRetentionPriorityLevel;
 
     /*
-     * Default QoS Flow preemption capability.  The Preemption Capability of a
+     * Default QoS Flow preemption capability. The preemption capability of a
      * QoS Flow controls whether it can preempt another QoS Flow with a lower
      * priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
      * of the ARP parameters.
@@ -59,8 +59,8 @@ public final class DataNetworkConfiguration {
     private PreemptionCapability preemptionCapability;
 
     /*
-     * Default QoS Flow preemption vulnerability.  The Preemption Vulnerability
-     * of a QoS Flow controls whether it can be preempted by QoS Flow with a
+     * Default QoS Flow preemption vulnerability. The preemption vulnerability
+     * of a QoS Flow controls whether it can be preempted by a QoS Flow with a
      * higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
      * description of the ARP parameters.
      */
@@ -75,21 +75,21 @@ public final class DataNetworkConfiguration {
     private PduSessionType defaultSessionType;
 
     /*
-     * Allowed session types in addition to the default session type.  Must not
+     * Allowed session types in addition to the default session type. Must not
      * duplicate the default session type.
      */
     @JsonProperty(value = "additionalAllowedSessionTypes")
     private List<PduSessionType> additionalAllowedSessionTypes;
 
     /*
-     * List of Services that can be used as part of this Sim Policy. The list
+     * List of services that can be used as part of this SIM policy. The list
      * must not contain duplicate items and must contain at least one item.
      */
     @JsonProperty(value = "allowedServices", required = true)
     private List<ServiceResourceId> allowedServices;
 
     /**
-     * Get the dataNetwork property: A reference to the Data Network that these settings apply to.
+     * Get the dataNetwork property: A reference to the data network that these settings apply to.
      *
      * @return the dataNetwork value.
      */
@@ -98,7 +98,7 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the dataNetwork property: A reference to the Data Network that these settings apply to.
+     * Set the dataNetwork property: A reference to the data network that these settings apply to.
      *
      * @param dataNetwork the dataNetwork value to set.
      * @return the DataNetworkConfiguration object itself.
@@ -132,9 +132,9 @@ public final class DataNetworkConfiguration {
 
     /**
      * Get the fiveQi property: Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding
-     * treatment to be provided to a flow. This must not be a standardized 5QI value selecting a GBR (Guaranteed Bit
-     * Rate) QoS. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85.
-     * See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5Qi parameter, and table 5.7.4-1 for the
+     * treatment to be provided to a flow. This must not be a standardized 5QI value corresponding to a GBR (guaranteed
+     * bit rate) QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84,
+     * and 85. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the
      * definition of which are the GBR 5QI values.
      *
      * @return the fiveQi value.
@@ -145,9 +145,9 @@ public final class DataNetworkConfiguration {
 
     /**
      * Set the fiveQi property: Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding
-     * treatment to be provided to a flow. This must not be a standardized 5QI value selecting a GBR (Guaranteed Bit
-     * Rate) QoS. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85.
-     * See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5Qi parameter, and table 5.7.4-1 for the
+     * treatment to be provided to a flow. This must not be a standardized 5QI value corresponding to a GBR (guaranteed
+     * bit rate) QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84,
+     * and 85. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the
      * definition of which are the GBR 5QI values.
      *
      * @param fiveQi the fiveQi value to set.
@@ -188,7 +188,7 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the preemptionCapability property: Default QoS Flow preemption capability. The Preemption Capability of a QoS
+     * Get the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a QoS
      * Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
      * 5.7.2.2 for a full description of the ARP parameters.
      *
@@ -199,7 +199,7 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the preemptionCapability property: Default QoS Flow preemption capability. The Preemption Capability of a QoS
+     * Set the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a QoS
      * Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
      * 5.7.2.2 for a full description of the ARP parameters.
      *
@@ -212,8 +212,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The Preemption Vulnerability
-     * of a QoS Flow controls whether it can be preempted by QoS Flow with a higher priority level. See 3GPP TS23.501
+     * Get the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption vulnerability
+     * of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501
      * section 5.7.2.2 for a full description of the ARP parameters.
      *
      * @return the preemptionVulnerability value.
@@ -223,8 +223,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The Preemption Vulnerability
-     * of a QoS Flow controls whether it can be preempted by QoS Flow with a higher priority level. See 3GPP TS23.501
+     * Set the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption vulnerability
+     * of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501
      * section 5.7.2.2 for a full description of the ARP parameters.
      *
      * @param preemptionVulnerability the preemptionVulnerability value to set.
@@ -281,7 +281,7 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Get the allowedServices property: List of Services that can be used as part of this Sim Policy. The list must not
+     * Get the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
      * contain duplicate items and must contain at least one item.
      *
      * @return the allowedServices value.
@@ -291,7 +291,7 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the allowedServices property: List of Services that can be used as part of this Sim Policy. The list must not
+     * Set the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
      * contain duplicate items and must contain at least one item.
      *
      * @param allowedServices the allowedServices value to set.

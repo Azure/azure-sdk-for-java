@@ -208,7 +208,7 @@ public class AsyncRestProxy extends RestProxyBase {
                 // ProxyMethod ReturnType: Mono<Void>
                 result = asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).then();
             } else {
-                // ProxyMethod ReturnType: Mono<? extends RestResponseBase<?, ?>>
+                // ProxyMethod ReturnType: Mono<? extends ResponseBase<?, ?>>
                 result = asyncExpectedResponse.flatMap(response ->
                     handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }

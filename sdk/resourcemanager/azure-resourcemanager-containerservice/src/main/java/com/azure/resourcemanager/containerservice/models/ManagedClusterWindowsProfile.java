@@ -46,8 +46,10 @@ public final class ManagedClusterWindowsProfile {
     private LicenseType licenseType;
 
     /*
-     * Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI
-     * proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Whether to enable CSI proxy.
+     *
+     * For more details on CSI proxy, see the [CSI proxy GitHub
+     * repo](https://github.com/kubernetes-csi/csi-proxy).
      */
     @JsonProperty(value = "enableCSIProxy")
     private Boolean enableCsiProxy;
@@ -141,8 +143,9 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
-     * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Get the enableCsiProxy property: Whether to enable CSI proxy.
+     *
+     * <p>For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      *
      * @return the enableCsiProxy value.
      */
@@ -151,8 +154,9 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
-     * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Set the enableCsiProxy property: Whether to enable CSI proxy.
+     *
+     * <p>For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      *
      * @param enableCsiProxy the enableCsiProxy value to set.
      * @return the ManagedClusterWindowsProfile object itself.

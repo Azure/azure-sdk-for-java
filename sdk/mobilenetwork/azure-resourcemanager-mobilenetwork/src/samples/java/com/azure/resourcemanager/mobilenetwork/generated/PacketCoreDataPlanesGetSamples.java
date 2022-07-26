@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PacketCoreDataPlanes Get. */
 public final class PacketCoreDataPlanesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreDataPlaneGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreDataPlaneGet.json
      */
     /**
      * Sample code: Get packet core data plane.

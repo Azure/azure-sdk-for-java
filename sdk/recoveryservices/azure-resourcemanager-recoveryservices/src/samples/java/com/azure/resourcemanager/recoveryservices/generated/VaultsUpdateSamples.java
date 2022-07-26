@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.recoveryservices.models.AlertsState;
+import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettings;
+import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
+import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
@@ -20,7 +24,33 @@ import java.util.Map;
 /** Samples for Vaults Update. */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithMonitoringSettings.json
+     */
+    /**
+     * Sample code: Update Vault With Monitoring Setting.
+     *
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void updateVaultWithMonitoringSetting(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource =
+            manager.vaults().getByResourceGroupWithResponse("HelloWorld", "swaggerExample", Context.NONE).getValue();
+        resource
+            .update()
+            .withTags(mapOf("PatchKey", "PatchKeyUpdated"))
+            .withProperties(
+                new VaultProperties()
+                    .withMonitoringSettings(
+                        new MonitoringSettings()
+                            .withAzureMonitorAlertSettings(
+                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
+                            .withClassicAlertSettings(
+                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
@@ -58,7 +88,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PatchVault_WithCMK2.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
@@ -82,7 +112,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault_WithCMK3.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
@@ -115,7 +145,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
@@ -129,7 +159,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.

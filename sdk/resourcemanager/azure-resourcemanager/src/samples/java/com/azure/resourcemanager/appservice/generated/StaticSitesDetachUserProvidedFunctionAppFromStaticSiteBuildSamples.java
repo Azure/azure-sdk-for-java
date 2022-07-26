@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites DetachUserProvidedFunctionAppFromStaticSiteBuild. */
 public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DetachUserProvidedFunctionAppFromStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DetachUserProvidedFunctionAppFromStaticSiteBuild.json
      */
     /**
      * Sample code: Detach the user provided function app from the static site build.

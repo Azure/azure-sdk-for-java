@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps GetAppSettingsKeyVaultReferences. */
 public final class WebAppsGetAppSettingsKeyVaultReferencesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetKeyVaultReferencesForAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetKeyVaultReferencesForAppSettings.json
      */
     /**
      * Sample code: Get Azure Key Vault references for app settings.
