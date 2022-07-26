@@ -3,6 +3,7 @@
 ### 4.34.0-beta.1 (Unreleased)
 
 #### Features Added
+* GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
 
 #### Breaking Changes
 
