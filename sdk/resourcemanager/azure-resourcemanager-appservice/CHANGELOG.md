@@ -4,13 +4,25 @@
 
 ### Features Added
 
+- Supported `getDeploymentStatus` in `SupportsOneDeploy`.
 - Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
 
 ### Breaking Changes
 
+- Merged multiple classes `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem`,
+  `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem`, 
+  `DomainPatchResourcePropertiesDomainNotRenewableReasonsItem` and `DomainPropertiesDomainNotRenewableReasonsItem` 
+  into one class `ResourceNotRenewableReason`.
+- `AppServiceEnvironmentPatchResource` was removed.
+- `ValidateRequest` was removed.
+
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
 
 ## 2.16.0 (2022-06-24)
 

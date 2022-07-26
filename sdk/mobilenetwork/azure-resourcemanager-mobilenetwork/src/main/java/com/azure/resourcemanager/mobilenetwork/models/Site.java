@@ -57,15 +57,14 @@ public interface Site {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: The provisioning state of the site resource. **TODO**: Confirm if this is
-     * needed.
+     * Gets the provisioningState property: The provisioning state of the site resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
-     * Gets the networkFunctions property: An array of ids of the network functions deployed on the site, maintained by
+     * Gets the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
      * the user.
      *
      * @return the networkFunctions value.
@@ -85,6 +84,13 @@ public interface Site {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner object.
@@ -167,10 +173,10 @@ public interface Site {
         /** The stage of the Site definition allowing to specify networkFunctions. */
         interface WithNetworkFunctions {
             /**
-             * Specifies the networkFunctions property: An array of ids of the network functions deployed on the site,
+             * Specifies the networkFunctions property: An array of IDs of the network functions deployed on the site,
              * maintained by the user..
              *
-             * @param networkFunctions An array of ids of the network functions deployed on the site, maintained by the
+             * @param networkFunctions An array of IDs of the network functions deployed on the site, maintained by the
              *     user.
              * @return the next definition stage.
              */

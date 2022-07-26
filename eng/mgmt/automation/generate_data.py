@@ -95,7 +95,7 @@ def find_sdk_readme(spec_readme: str, candidate_sdk_readmes: List[str]) -> Optio
     if 'data-plane' in segments:
         index = segments.index('data-plane')
         # include service name, exclude readme.md
-        search_target = '/' + '/'.join(segments[index-1:-1]) + '/'
+        search_target = '/' + '/'.join(segments[index-1:])
 
         for sdk_readme_path in candidate_sdk_readmes:
             spec_reference = find_sdk_spec_reference(sdk_readme_path)
@@ -267,7 +267,7 @@ def generate(
 
 
 def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:

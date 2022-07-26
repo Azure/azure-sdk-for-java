@@ -230,7 +230,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -249,7 +251,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, String roleName);
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -268,7 +272,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, String roleName);
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -286,7 +292,9 @@ public interface ManagedClustersClient
     ManagedClusterAccessProfileInner getAccessProfile(String resourceGroupName, String resourceName, String roleName);
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -889,7 +897,9 @@ public interface ManagedClustersClient
     void delete(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -904,7 +914,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -919,7 +931,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -934,7 +948,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -953,7 +969,9 @@ public interface ManagedClustersClient
         Context context);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -968,7 +986,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -982,7 +1002,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1103,7 +1125,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1118,7 +1142,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1133,7 +1159,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1147,7 +1175,9 @@ public interface ManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(String resourceGroupName, String resourceName);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1163,7 +1193,9 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1177,7 +1209,9 @@ public interface ManagedClustersClient
     Mono<Void> rotateClusterCertificatesAsync(String resourceGroupName, String resourceName);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1190,7 +1224,9 @@ public interface ManagedClustersClient
     void rotateClusterCertificates(String resourceGroupName, String resourceName);
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1204,7 +1240,9 @@ public interface ManagedClustersClient
     void rotateClusterCertificates(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1220,7 +1258,9 @@ public interface ManagedClustersClient
     Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String resourceName);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1236,7 +1276,9 @@ public interface ManagedClustersClient
     PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String resourceName);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1252,7 +1294,9 @@ public interface ManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1269,7 +1313,9 @@ public interface ManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1285,7 +1331,9 @@ public interface ManagedClustersClient
     Mono<Void> stopAsync(String resourceGroupName, String resourceName);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1300,7 +1348,9 @@ public interface ManagedClustersClient
     void stop(String resourceGroupName, String resourceName);
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -1316,8 +1366,10 @@ public interface ManagedClustersClient
     void stop(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1330,8 +1382,10 @@ public interface ManagedClustersClient
     Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String resourceName);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1344,8 +1398,10 @@ public interface ManagedClustersClient
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String resourceName);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1358,8 +1414,10 @@ public interface ManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1373,8 +1431,10 @@ public interface ManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1387,8 +1447,10 @@ public interface ManagedClustersClient
     Mono<Void> startAsync(String resourceGroupName, String resourceName);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1400,8 +1462,10 @@ public interface ManagedClustersClient
     void start(String resourceGroupName, String resourceName);
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1414,8 +1478,10 @@ public interface ManagedClustersClient
     void start(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1430,8 +1496,10 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1446,8 +1514,10 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1462,8 +1532,10 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1479,8 +1551,10 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1495,8 +1569,10 @@ public interface ManagedClustersClient
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1510,8 +1586,10 @@ public interface ManagedClustersClient
     RunCommandResultInner runCommand(String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1589,6 +1667,9 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1605,6 +1686,9 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1621,6 +1705,9 @@ public interface ManagedClustersClient
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

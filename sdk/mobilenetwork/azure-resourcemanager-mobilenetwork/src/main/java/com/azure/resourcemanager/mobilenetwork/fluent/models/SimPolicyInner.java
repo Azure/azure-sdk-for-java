@@ -16,11 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Sim policy resource. */
+/** SIM policy resource. */
 @Fluent
 public final class SimPolicyInner extends Resource {
     /*
-     * Sim policy Properties.
+     * SIM policy Properties.
      */
     @JsonProperty(value = "properties", required = true)
     private SimPolicyPropertiesFormat innerProperties = new SimPolicyPropertiesFormat();
@@ -33,7 +33,7 @@ public final class SimPolicyInner extends Resource {
     private SystemData systemData;
 
     /**
-     * Get the innerProperties property: Sim policy Properties.
+     * Get the innerProperties property: SIM policy Properties.
      *
      * @return the innerProperties value.
      */
@@ -65,7 +65,7 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the sim policy resource.
+     * Get the provisioningState property: The provisioning state of the SIM policy resource.
      *
      * @return the provisioningState value.
      */
