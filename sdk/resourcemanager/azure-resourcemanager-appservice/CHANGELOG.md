@@ -15,8 +15,6 @@
 - `AppServiceEnvironmentPatchResource` was removed.
 - `ValidateRequest` was removed.
 
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
