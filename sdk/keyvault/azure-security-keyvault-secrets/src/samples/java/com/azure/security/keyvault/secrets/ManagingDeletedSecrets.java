@@ -30,8 +30,8 @@ public class ManagingDeletedSecrets {
         recovered and if a secret needs to be permanently deleted then it needs to be purged. */
 
         /* Instantiate a SecretClient that will be used to call the service. Notice that the client is using default
-        Azure credentials. To make default credentials work, ensure that the environment variable 'AZURE_CLIENT_ID' is
-        set with the principal ID of a managed identity that has been given access to your vault.
+        Azure credentials. For more information on this and other types of credentials, see this document:
+        https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
         To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
         for links and instructions. */
