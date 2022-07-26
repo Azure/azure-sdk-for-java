@@ -406,7 +406,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Mono<Response<String>> responseMono = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        Mono<Response<String>> responseMono = client.attestTpmWithResponse(attestInitialPayload);
         // END: com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse
         responseMono.subscribe();
     }

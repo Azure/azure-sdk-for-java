@@ -149,6 +149,14 @@
         <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
         <Method name="getX509Thumbprint"/>
       </And>
+      <And>
+        <Class name="com.azure.json.DefaultJsonReader"/>
+        <Method name="getBinaryValue"/>
+      </And>
+      <And>
+        <Class name="com.azure.json.gson.GsonJsonReader"/>
+        <Method name="getBinaryValue"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -2453,6 +2461,8 @@
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
       <Method name="getCredentialFromKdbx"/>
+      <Method name="parseRefreshTokenFromJson"/>
+      <Method name="getIntelliJCredentialsFromIdentityMsalCache"/>
     </Or>
     <Bug pattern="DM_DEFAULT_ENCODING,
     REC_CATCH_EXCEPTION"/>
@@ -2772,9 +2782,14 @@
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
- <Match>
+  <Match>
     <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
     <Method name="locateExceptionConstructor"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Shaded code shouldn't run Spotbugs -->
+  <Match>
+    <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
   </Match>
 </FindBugsFilter>

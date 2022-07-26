@@ -5,75 +5,30 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** An Azure SQL Database sync member. */
-@JsonFlatten
 @Fluent
-public class SyncMemberInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncMemberInner.class);
-
+public final class SyncMemberInner extends ProxyResource {
     /*
-     * Database type of the sync member.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.databaseType")
-    private SyncMemberDbType databaseType;
+    @JsonProperty(value = "properties")
+    private SyncMemberProperties innerProperties;
 
-    /*
-     * ARM resource id of the sync agent in the sync member.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.syncAgentId")
-    private String syncAgentId;
-
-    /*
-     * SQL Server database id of the sync member.
-     */
-    @JsonProperty(value = "properties.sqlServerDatabaseId")
-    private UUID sqlServerDatabaseId;
-
-    /*
-     * Server name of the member database in the sync member
-     */
-    @JsonProperty(value = "properties.serverName")
-    private String serverName;
-
-    /*
-     * Database name of the member database in the sync member.
-     */
-    @JsonProperty(value = "properties.databaseName")
-    private String databaseName;
-
-    /*
-     * User name of the member database in the sync member.
-     */
-    @JsonProperty(value = "properties.userName")
-    private String username;
-
-    /*
-     * Password of the member database in the sync member.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * Sync direction of the sync member.
-     */
-    @JsonProperty(value = "properties.syncDirection")
-    private SyncDirection syncDirection;
-
-    /*
-     * Sync state of the sync member.
-     */
-    @JsonProperty(value = "properties.syncState", access = JsonProperty.Access.WRITE_ONLY)
-    private SyncMemberState syncState;
+    private SyncMemberProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the databaseType property: Database type of the sync member.
@@ -81,7 +36,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
-        return this.databaseType;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseType();
     }
 
     /**
@@ -91,7 +46,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withDatabaseType(SyncMemberDbType databaseType) {
-        this.databaseType = databaseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withDatabaseType(databaseType);
         return this;
     }
 
@@ -101,7 +59,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the syncAgentId value.
      */
     public String syncAgentId() {
-        return this.syncAgentId;
+        return this.innerProperties() == null ? null : this.innerProperties().syncAgentId();
     }
 
     /**
@@ -111,7 +69,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withSyncAgentId(String syncAgentId) {
-        this.syncAgentId = syncAgentId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withSyncAgentId(syncAgentId);
         return this;
     }
 
@@ -121,7 +82,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the sqlServerDatabaseId value.
      */
     public UUID sqlServerDatabaseId() {
-        return this.sqlServerDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().sqlServerDatabaseId();
     }
 
     /**
@@ -131,7 +92,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withSqlServerDatabaseId(UUID sqlServerDatabaseId) {
-        this.sqlServerDatabaseId = sqlServerDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withSqlServerDatabaseId(sqlServerDatabaseId);
         return this;
     }
 
@@ -141,7 +105,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the serverName value.
      */
     public String serverName() {
-        return this.serverName;
+        return this.innerProperties() == null ? null : this.innerProperties().serverName();
     }
 
     /**
@@ -151,7 +115,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withServerName(String serverName) {
-        this.serverName = serverName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withServerName(serverName);
         return this;
     }
 
@@ -161,7 +128,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -171,7 +138,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withDatabaseName(databaseName);
         return this;
     }
 
@@ -181,7 +151,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -191,7 +161,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
@@ -201,7 +174,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -211,7 +184,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -221,7 +197,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the syncDirection value.
      */
     public SyncDirection syncDirection() {
-        return this.syncDirection;
+        return this.innerProperties() == null ? null : this.innerProperties().syncDirection();
     }
 
     /**
@@ -231,7 +207,10 @@ public class SyncMemberInner extends ProxyResource {
      * @return the SyncMemberInner object itself.
      */
     public SyncMemberInner withSyncDirection(SyncDirection syncDirection) {
-        this.syncDirection = syncDirection;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncMemberProperties();
+        }
+        this.innerProperties().withSyncDirection(syncDirection);
         return this;
     }
 
@@ -241,7 +220,7 @@ public class SyncMemberInner extends ProxyResource {
      * @return the syncState value.
      */
     public SyncMemberState syncState() {
-        return this.syncState;
+        return this.innerProperties() == null ? null : this.innerProperties().syncState();
     }
 
     /**
@@ -250,5 +229,8 @@ public class SyncMemberInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

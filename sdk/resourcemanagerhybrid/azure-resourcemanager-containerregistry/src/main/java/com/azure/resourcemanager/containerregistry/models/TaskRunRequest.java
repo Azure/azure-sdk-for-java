@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("TaskRunRequest")
 @Fluent
 public final class TaskRunRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskRunRequest.class);
-
     /*
      * The name of task against which run has to be queued.
      */
@@ -72,6 +69,13 @@ public final class TaskRunRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public TaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -81,7 +85,7 @@ public final class TaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (taskName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property taskName in model TaskRunRequest"));
         }
@@ -89,4 +93,6 @@ public final class TaskRunRequest extends RunRequest {
             values().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TaskRunRequest.class);
 }

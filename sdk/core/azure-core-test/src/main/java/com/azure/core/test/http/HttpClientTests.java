@@ -13,7 +13,7 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -575,7 +575,7 @@ public abstract class HttpClientTests {
 
     private byte[] getResponseBytesViaWritableChannel(HttpResponse response) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        response.transferBodyTo(Channels.newChannel(byteArrayOutputStream));
+        response.writeBodyTo(Channels.newChannel(byteArrayOutputStream));
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -584,7 +584,7 @@ public abstract class HttpClientTests {
             Path tempFile = Files.createTempFile("httpclienttestsasyncchannel", null);
             try (AsynchronousByteChannel channel = IOUtils.toAsynchronousByteChannel(
                 AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
-                response.transferBodyToAsync(channel).block();
+                response.writeBodyToAsync(channel).block();
             }
             return Files.readAllBytes(tempFile);
         } catch (IOException e) {

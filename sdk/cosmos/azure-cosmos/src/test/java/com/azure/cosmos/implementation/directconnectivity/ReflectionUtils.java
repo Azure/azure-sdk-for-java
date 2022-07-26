@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -363,7 +364,23 @@ public class ReflectionUtils {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
     }
 
+    public static HttpClient getClientTelemetryHttpClint(ClientTelemetry clientTelemetry) {
+        return get(HttpClient.class, clientTelemetry, "httpClient");
+    }
+
+    public static HttpClient getClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry) {
+        return get(HttpClient.class, clientTelemetry, "metadataHttpClient");
+    }
+
     @SuppressWarnings("unchecked")
+    public static AtomicReference<AzureVMMetadata> getAzureVMMetadata(ClientTelemetry clientTelemetry) {
+        return get(AtomicReference.class, clientTelemetry, "azureVmMetaDataSingleton");
+    }
+
+    public static void setClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry, HttpClient HttpClient) {
+        set(clientTelemetry, HttpClient, "metadataHttpClient");
+    }
+
     public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
         return get(AtomicReference.class, uri, "healthStatus");
     }

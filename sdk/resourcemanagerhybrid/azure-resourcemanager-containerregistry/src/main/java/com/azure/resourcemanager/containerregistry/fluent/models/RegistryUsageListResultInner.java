@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to get container registry quota usages. */
 @Fluent
 public final class RegistryUsageListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUsageListResultInner.class);
-
     /*
      * The list of container registry quota usages.
      */

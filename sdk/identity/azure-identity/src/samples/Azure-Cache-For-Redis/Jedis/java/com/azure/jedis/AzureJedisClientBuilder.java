@@ -119,8 +119,8 @@ public class AzureJedisClientBuilder {
             throw this.clientLogger.logExceptionAsError(new IllegalArgumentException("Both Token Credential and Password are provided in AzureJedisClientBuilder. Only one of them should be provided."));
         } else {
             return tokenCredential != null ?
-                    new AzureJedisClient(cacheHostName, port, username, tokenCredential, retryOptions) :
-                    new AzureJedisClient(cacheHostName, port, username, password, retryOptions);
+                new AzureJedisClient(cacheHostName, port, username, tokenCredential, retryOptions) :
+                new AzureJedisClient(cacheHostName, port, username, password, retryOptions);
         }
     }
 
@@ -134,7 +134,7 @@ public class AzureJedisClientBuilder {
         }
         if (missing.size() > 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
-                    + String.join(", ", missing) + " properties in " + className));
+                + String.join(", ", missing) + " properties in " + className));
         }
     }
 }

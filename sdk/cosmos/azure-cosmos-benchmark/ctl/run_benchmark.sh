@@ -63,6 +63,18 @@ else
     number_of_precreated_documents=$ctl_number_of_precreated_documents
 fi
 
+if [ -z "$ctl_client_telemetry_enabled" ]; then
+    client_telemetry_enabled=true
+else
+    client_telemetry_enabled=$ctl_client_telemetry_enabled
+fi
+
+if [ -z "$ctl_client_telemetry_endpoint" ]; then
+    client_telemetry_endpoint=https://tools.cosmos.azure.com/api/clienttelemetry/trace
+else
+    client_telemetry_enabled=$ctl_client_telemetry_endpoint
+fi
+
 connection_mode=Direct
 gateway_connection_poolsize=5
 
@@ -95,9 +107,9 @@ additional_benchmark_options="-documentDataFieldSize 10 -documentDataFieldCount 
 additional_benchmark_options="$additional_benchmark_options -maxConnectionPoolSize $gateway_connection_poolsize"
 
 if [ -z "$ctl_graphite_endpoint" ]; then
-    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.ENVIRONMENT_NAME=$ctl_env -DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$ctl_client_telemetry_endpoint -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryReadManyPct "$read_write_query_readmany_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -preferredRegionsList "$ctl_preferred_regions" $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.ENVIRONMENT_NAME=$ctl_env -jar "$jar_file" -clientTelemetryEnabled="$client_telemetry_enabled" -clientTelemetryEndpoint="$client_telemetry_endpoint" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryReadManyPct "$read_write_query_readmany_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents -preferredRegionsList "$ctl_preferred_regions" $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 else
-    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.ENVIRONMENT_NAME=$ctl_env -DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$ctl_client_telemetry_endpoint -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryReadManyPct "$read_write_query_readmany_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -preferredRegionsList "$ctl_preferred_regions" $ctl_accountNameInGraphiteReporter $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+    java -Xmx8g -Xms8g $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -DCOSMOS.ENVIRONMENT_NAME=$ctl_env -jar "$jar_file" -clientTelemetryEnabled="$client_telemetry_enabled" -clientTelemetryEndpoint="$client_telemetry_endpoint" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name" -collectionId "$col_name" -readWriteQueryReadManyPct "$read_write_query_readmany_pct" -diagnosticsThresholdDuration "$diagnostics_threshold_duration" -numberOfCollectionForCtl "$number_Of_collection" -throughput $throughput -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents -preferredRegionsList "$ctl_preferred_regions" $ctl_accountNameInGraphiteReporter $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 fi
 
 end=$(date +%s)

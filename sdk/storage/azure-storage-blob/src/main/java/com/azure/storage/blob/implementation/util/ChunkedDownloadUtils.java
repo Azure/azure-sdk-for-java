@@ -88,7 +88,7 @@ public class ChunkedDownloadUtils {
                             (200 is for full blob; 206 is partial).
                              */
                             if (response.getStatusCode() != 200) {
-                                Mono.error(new IllegalStateException("Blob was modified mid download. It was "
+                                return Mono.error(new IllegalStateException("Blob was modified mid download. It was "
                                     + "originally 0 bytes and is now larger."));
                             }
                             return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
