@@ -23,7 +23,6 @@
     "azureStorageBlobDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe",
     "azureStorageBlobDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
     "azureStorageQueueDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/974c5e8b-45b9-4653-ba55-5f855dd0fb88",
-    "blobContainerName": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -153,7 +152,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[variables('blobContainerName')]",
+      "name": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
@@ -167,10 +166,6 @@
     "AZURE_EVENTHUBS_ACCOUNT_NAME": {
       "type": "string",
       "value": "[variables('storageAccountsName')]"
-    },
-    "AZURE_EVENTHUBS_CONTAINER_NAME": {
-      "type": "string",
-      "value": "[variables('blobContainerName')]"
     },
     "AZURE_STORAGE_ACCOUNT_NAME": {
       "type": "string",

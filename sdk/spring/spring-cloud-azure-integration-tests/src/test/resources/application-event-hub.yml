@@ -5,7 +5,7 @@ spring:
         processor:
           consumer-group: $Default
           checkpoint-store:
-            container-name: ${AZURE_EVENTHUBS_CONTAINER_NAME}
+            container-name: processorcontainer
             account-name: ${AZURE_EVENTHUBS_ACCOUNT_NAME}
         namespace: ${AZURE_EVENTHUBS_NAMESPACE}
         event-hub-name: processoreventhub
