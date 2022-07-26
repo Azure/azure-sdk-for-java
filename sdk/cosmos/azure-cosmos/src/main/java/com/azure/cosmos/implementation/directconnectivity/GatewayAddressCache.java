@@ -347,8 +347,8 @@ public class GatewayAddressCache implements IAddressCache {
                         return Mono.error(unwrappedException);
                     } else {
                         logger.debug("tryGetAddresses dce", dce);
-                        if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
-                            Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
+                        if (Exceptions.isNotFound(dce) ||
+                            Exceptions.isGone(dce) ||
                             Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
                             //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
                             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);

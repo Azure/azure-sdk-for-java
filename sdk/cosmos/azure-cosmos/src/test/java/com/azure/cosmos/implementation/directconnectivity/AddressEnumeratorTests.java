@@ -26,11 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("unchecked")
 public class AddressEnumeratorTests {
-    private final AddressEnumerator addressEnumerator;
-
-    public AddressEnumeratorTests() {
-        this.addressEnumerator = new AddressEnumerator();
-    }
 
     @Test(groups = "unit")
     public void replicaAddressValidationEnabledComparatorTests() throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
@@ -72,18 +67,18 @@ public class AddressEnumeratorTests {
                 this.setTimestamp(uri, Instant.now());
             }
             List<Uri> sortedAddresses =
-                    (List<Uri>) sortAddressesMethod.invoke(this.addressEnumerator, testScenario.getAddresses(), requestMock);
+                    (List<Uri>) sortAddressesMethod.invoke(null, testScenario.getAddresses(), requestMock);
             assertThat(sortedAddresses).containsExactlyElementsOf(testScenario.expectedAddresses);
         }
 
         System.out.println("Test scenario: comparing when unhealthyPending roll into healthy status after 1 min");
         setTimestamp(testUri3, Instant.now().minusMillis(Duration.ofMinutes(2).toMillis()));
-        List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(this.addressEnumerator, Arrays.asList(testUri3, testUri2), requestMock);
+        List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri3, testUri2), requestMock);
         assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri3, testUri2));
 
         System.out.println("Test scenario: comparing when there is failedEndpoints marked in request context");
         requestMock.requestContext.addToFailedEndpoints(new GoneException("Test"), testUri2);
-        sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(this.addressEnumerator, Arrays.asList(testUri4, testUri2), requestMock);
+        sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri4, testUri2), requestMock);
         assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri4, testUri2));
     }
 
@@ -126,13 +121,13 @@ public class AddressEnumeratorTests {
                 this.setTimestamp(uri, Instant.now());
             }
             List<Uri> sortedAddresses =
-                    (List<Uri>) sortAddressesMethod.invoke(this.addressEnumerator, testScenario.getAddresses(), requestMock);
+                    (List<Uri>) sortAddressesMethod.invoke(null, testScenario.getAddresses(), requestMock);
             assertThat(sortedAddresses).containsExactlyElementsOf(testScenario.expectedAddresses);
         }
 
         System.out.println("Test scenario: comparing when there is failedEndpoints marked in request context");
         requestMock.requestContext.addToFailedEndpoints(new GoneException("Test"), testUri2);
-        List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(this.addressEnumerator, Arrays.asList(testUri4, testUri2), requestMock);
+        List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(null, Arrays.asList(testUri4, testUri2), requestMock);
         assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri4, testUri2));
     }
 

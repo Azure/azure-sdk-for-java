@@ -16,16 +16,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class AddressEnumerator {
 
-    public List<Uri> getTransportAddresses(RxDocumentServiceRequest request, List<Uri> addresses) {
+    public static List<Uri> getTransportAddresses(RxDocumentServiceRequest request, List<Uri> addresses) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
         checkNotNull(request, "Argument 'request' should not be null");
 
-        List<Uri> randomPermutation = this.getAddressesPermutationInternal(addresses);
+        List<Uri> randomPermutation = getAddressesPermutationInternal(addresses);
 
-        return this.sortAddresses(randomPermutation, request);
+        return sortAddresses(randomPermutation, request);
     }
 
-    private List<Uri> sortAddresses(List<Uri> addressesPermutation, RxDocumentServiceRequest request) {
+    private static List<Uri> sortAddresses(List<Uri> addressesPermutation, RxDocumentServiceRequest request) {
         if (!request.requestContext.replicaAddressValidationEnabled) {
             // When replica address validation is disabled, we will rely on RxDocumentServiceRequest to transition away unknown/unhealthyPending
             // so we prefer connected/unknown/unhealthyPending to unhealthy
@@ -74,7 +74,7 @@ public class AddressEnumerator {
         return addressesPermutation;
     }
 
-    private List<Uri> getAddressesPermutationInternal(List<Uri> addresses) {
+    private static List<Uri> getAddressesPermutationInternal(List<Uri> addresses) {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 
         // Permutation is faster and has less over head compared to Fisher-Yates shuffle
@@ -86,7 +86,7 @@ public class AddressEnumerator {
         return AddressEnumeratorFisherYateShuffle.getTransportAddressUris(addresses);
     }
 
-    private Uri.HealthStatus getEffectiveStatus(Uri addressUri, Set<Uri> failedEndpoints) {
+    private static Uri.HealthStatus getEffectiveStatus(Uri addressUri, Set<Uri> failedEndpoints) {
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
 
         if (failedEndpoints != null && failedEndpoints.contains(addressUri)) {

@@ -49,7 +49,6 @@ public class StoreReader {
     private final AddressSelector addressSelector;
     private final ISessionContainer sessionContainer;
     private String lastReadAddress;
-    private final AddressEnumerator addressEnumerator;
 
     public StoreReader(
             TransportClient transportClient,
@@ -58,7 +57,6 @@ public class StoreReader {
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
         this.sessionContainer = sessionContainer;
-        this.addressEnumerator = new AddressEnumerator();
     }
 
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
@@ -218,7 +216,7 @@ public class StoreReader {
         }
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
 
-        List<Uri> addressRandomPermutation = this.addressEnumerator.getTransportAddresses(entity, resolveApiResults);
+        List<Uri> addressRandomPermutation = AddressEnumerator.getTransportAddresses(entity, resolveApiResults);
 
         // The health status of the Uri will change as the time goes by
         // what we really want to track is the health status snapshot at this moment
