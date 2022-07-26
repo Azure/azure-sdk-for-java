@@ -159,7 +159,7 @@ public final class SecretClientBuilder implements
         SecretAsyncClient secretAsyncClient = buildAsyncClient();
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
         return new SecretClient(secretAsyncClient.getVaultUrl(), secretAsyncClient.getHttpPipeline(),
-            serviceVersion, secretAsyncClient);
+            serviceVersion);
     }
 
     /**
@@ -183,6 +183,7 @@ public final class SecretClientBuilder implements
     public SecretAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {

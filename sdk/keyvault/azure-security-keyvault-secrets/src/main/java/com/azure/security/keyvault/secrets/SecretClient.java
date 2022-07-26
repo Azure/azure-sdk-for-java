@@ -12,20 +12,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.secrets.implementation.*;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
-import java.time.Duration;
-import java.util.Objects;
-
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * The SecretClient provides synchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The client
@@ -47,32 +40,16 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see SecretClientBuilder
  * @see PagedIterable
  */
-@ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretService.class)
+@ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretClientImpl.SecretService.class)
 public final class SecretClient {
-//    private final SecretAsyncClient client;
-
-    private final String apiVersion;
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-
-    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
-
-    private final String vaultUrl;
-    private final SecretSyncService service;
-    private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
-    private final HttpPipeline pipeline;
-    private SecretAsyncClient client;
+    private final SecretClientImpl secretClient;
 
     /**
      * Gets the vault endpoint url to which service requests are sent to.
      * @return the vault endpoint url.
      */
     public String getVaultUrl() {
-        return this.vaultUrl;
+        return secretClient.getVaultUrl();
     }
 
     /**
@@ -82,24 +59,9 @@ public final class SecretClient {
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link SecretServiceVersion} of the service to be used when making requests.
      */
-    SecretClient(String vaultUrl, HttpPipeline pipeline, SecretServiceVersion version, SecretAsyncClient secretAsyncClient) {
-//        Objects.requireNonNull(vaultUrl,
-//            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-        this.vaultUrl = vaultUrl;
-        this.service = RestProxy.create(SecretSyncService.class, pipeline);
-        this.pipeline = pipeline;
-        apiVersion = version.getVersion();
-        client = secretAsyncClient;
+    SecretClient(String vaultUrl, HttpPipeline pipeline, SecretServiceVersion version) {
+        this.secretClient = new SecretClientImpl(vaultUrl, pipeline, version);
     }
-
-//    /**
-//     * Creates a SecretClient that uses {@code pipeline} to service requests
-//     *
-//     * @param client The {@link SecretAsyncClient} that the client routes its request through.
-//     */
-//    SecretClient(SecretAsyncClient client) {
-//        this.client = client;
-//    }
 
     /**
      * Adds a secret to the key vault if it does not exist. If the named secret exists, a new version of the secret is
@@ -186,16 +148,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, Context context) {
-        Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .setValue(secret.getValue())
-            .setTags(secret.getProperties().getTags())
-            .setContentType(secret.getProperties().getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
-
-        return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        return secretClient.setSecretWithResponse(secret, context);
     }
 
     /**
@@ -277,9 +230,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getSecret(vaultUrl, name, version == null ? "" : version, apiVersion, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        return secretClient.getSecretWithResponse(name, version, context);
     }
 
     /**
@@ -316,14 +267,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
-        Objects.requireNonNull(secretProperties, "The secret properties input parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .setTags(secretProperties.getTags())
-            .setContentType(secretProperties.getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secretProperties));
-        return service.updateSecret(vaultUrl, secretProperties.getName(), secretProperties.getVersion(), apiVersion, ACCEPT_LANGUAGE,
-            parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        return secretClient.updateSecretPropertiesWithResponse(secretProperties, context);
     }
 
     /**
@@ -395,7 +339,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return client.beginDeleteSecret(name).getSyncPoller();
+        return secretClient.beginDeleteSecretAsync(name).getSyncPoller();
     }
 
     /**
@@ -446,9 +390,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        return secretClient.getDeletedSecretWithResponse(name, context);
     }
 
     /**
@@ -497,9 +439,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedSecretWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.purgeDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        return secretClient.purgeDeletedSecretWithResponse(name, context);
     }
 
     /**
@@ -531,7 +471,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return client.beginRecoverDeletedSecret(name).getSyncPoller();
+        return secretClient.beginRecoverDeletedSecretAsync(name).getSyncPoller();
     }
 
     /**
@@ -582,12 +522,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        Response<SecretBackup> secretBackupResponse = service.backupSecret(vaultUrl, name, apiVersion,
-            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                KEYVAULT_TRACING_NAMESPACE_VALUE));
-        return new SimpleResponse<>(secretBackupResponse.getRequest(), secretBackupResponse.getStatusCode(),
-            secretBackupResponse.getHeaders(), secretBackupResponse.getValue().getValue());
+        return secretClient.backupSecretWithResponse(name, context);
     }
 
     /**
@@ -643,10 +578,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, Context context) {
-        context = context == null ? Context.NONE : context;
-        SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
-        return service.restoreSecret(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        return secretClient.restoreSecretBackupWithResponse(backup, context);
     }
 
     /**
@@ -721,7 +653,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return new PagedIterable<>(client.listPropertiesOfSecrets(context));
+        return new PagedIterable<>(secretClient.listPropertiesOfSecretsAsync(context));
     }
 
     /**
@@ -743,7 +675,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
-        return new PagedIterable<>(client.listDeletedSecrets(context));
+        return new PagedIterable<>(secretClient.listDeletedSecretsAsync(context));
     }
 
     /**
@@ -859,6 +791,6 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return new PagedIterable<>(client.listPropertiesOfSecretVersions(name, context));
+        return new PagedIterable<>(secretClient.listPropertiesOfSecretVersionsAsync(name, context));
     }
 }

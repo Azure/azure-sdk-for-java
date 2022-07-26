@@ -51,7 +51,7 @@ public class SecretClientTest extends SecretClientTestBase {
         }
 
         secretClient = new SecretClient(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(),
-            serviceVersion, asyncClient);
+            serviceVersion);
     }
 
     /**

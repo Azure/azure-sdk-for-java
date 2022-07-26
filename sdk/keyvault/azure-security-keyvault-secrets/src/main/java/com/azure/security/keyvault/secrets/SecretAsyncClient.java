@@ -10,19 +10,12 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.secrets.implementation.*;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -32,11 +25,9 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The
@@ -58,17 +49,9 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see SecretClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
+@ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretClientImpl.SecretService.class)
 public final class SecretAsyncClient {
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
-
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
     private final SecretClientImpl secretClient;
 
@@ -80,7 +63,7 @@ public final class SecretAsyncClient {
      * @param version {@link SecretServiceVersion} of the service to be used when making requests.
      */
     SecretAsyncClient(URL vaultUrl, HttpPipeline pipeline, SecretServiceVersion version) {
-        this.secretClient = new SecretClientImpl(vaultUrl, pipeline, version);
+        this.secretClient = new SecretClientImpl(vaultUrl.toString(), pipeline, version);
     }
 
     /**
@@ -729,8 +712,6 @@ public final class SecretAsyncClient {
         }
     }
 
-
-
     /**
      * Lists secrets in the key vault. Each {@link SecretProperties secret} returned only has its identifier and
      * attributes populated. The secret values and their versions are not listed in the response.
@@ -762,10 +743,6 @@ public final class SecretAsyncClient {
         return secretClient.listPropertiesOfSecretsAsync();
     }
 
-    PagedFlux<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return secretClient.listPropertiesOfSecretsAsync(context);
-    }
-
     /**
      * Lists {@link DeletedSecret deleted secrets} of the key vault if it has enabled soft-delete. This operation
      * requires the {@code secrets/list} permission.
@@ -787,10 +764,6 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
         return secretClient.listDeletedSecretsAsync();
-    }
-
-    PagedFlux<DeletedSecret> listDeletedSecrets(Context context) {
-        return secretClient.listDeletedSecretsAsync(context);
     }
 
     /**
@@ -822,9 +795,5 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
         return secretClient.listPropertiesOfSecretVersionsAsync(name);
-    }
-
-    PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return secretClient.listPropertiesOfSecretVersionsAsync(name, context);
     }
 }
