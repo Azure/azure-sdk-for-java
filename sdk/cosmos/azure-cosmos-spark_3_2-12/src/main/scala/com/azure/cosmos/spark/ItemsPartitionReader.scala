@@ -55,12 +55,18 @@ private case class ItemsPartitionReader
     s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
   )
 
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config,
+      clientCacheItem.context,
+      Some(cosmosClientStateHandles))
+
   private val cosmosAsyncContainer =
     ThroughputControlHelper.getContainer(
       config,
       containerTargetConfig,
       clientCacheItem,
-      Some(cosmosClientStateHandles))._1
+      throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
@@ -158,5 +164,8 @@ private case class ItemsPartitionReader
     this.iterator.close()
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
     clientCacheItem.close()
+    if (throughputControlClientCacheItemOpt.isDefined) {
+      throughputControlClientCacheItemOpt.get.close()
+    }
   }
 }

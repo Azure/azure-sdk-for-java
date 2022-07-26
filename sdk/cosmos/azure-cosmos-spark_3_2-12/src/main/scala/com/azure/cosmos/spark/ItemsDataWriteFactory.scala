@@ -81,12 +81,18 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       s"CosmosWriter($partitionId, $taskId, $epochId)"
     )
 
+    private val throughputControlClientCacheItemOpt =
+      ThroughputControlHelper.getThroughputControlClientCacheItem(
+        userConfig,
+        clientCacheItem.context,
+        Some(cosmosClientStateHandles))
+
     private val container =
       ThroughputControlHelper.getContainer(
         userConfig,
         cosmosTargetContainerConfig,
         clientCacheItem,
-        Some(cosmosClientStateHandles))._1
+        throughputControlClientCacheItemOpt)
     SparkUtils.safeOpenConnectionInitCaches(container, log)
 
     private val containerDefinition = container.read().block().getProperties
@@ -140,6 +146,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       writer.flushAndClose()
       if (cacheItemReleasedCount.incrementAndGet() == 1) {
         clientCacheItem.close()
+        if (throughputControlClientCacheItemOpt.isDefined) {
+          throughputControlClientCacheItemOpt.get.close()
+        }
       }
     }
   }

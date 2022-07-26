@@ -1298,12 +1298,12 @@ private object CosmosThroughputControlConfig {
     }
 
   def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
-    // use customized throughput control database account
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
     val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
     assert(throughputControlAccountEndpoint.isDefined)
     assert(throughputControlAccountKey.isDefined)
 
+    // use customized throughput control database account
     val throughputControlAccountConfigMap = mutable.Map[String, String]()
     val loweredCaseConfiguration = cfg
      .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }

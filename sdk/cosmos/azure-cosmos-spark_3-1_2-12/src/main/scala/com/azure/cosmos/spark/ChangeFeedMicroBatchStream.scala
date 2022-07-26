@@ -43,12 +43,19 @@ private class ChangeFeedMicroBatchStream
     clientConfiguration,
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedMicroBatchStream(streamId $streamId)")
+
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config,
+      clientCacheItem.context,
+      Some(cosmosClientStateHandles))
+
   private val container =
     ThroughputControlHelper.getContainer(
       config,
       containerConfig,
       clientCacheItem,
-      Some(cosmosClientStateHandles))._1
+      throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
@@ -230,6 +237,9 @@ private class ChangeFeedMicroBatchStream
    */
   override def stop(): Unit = {
     clientCacheItem.close()
+    if (throughputControlClientCacheItemOpt.isDefined) {
+      throughputControlClientCacheItemOpt.get.close()
+    }
     log.logDebug(s"MicroBatch stream $streamId: stopped.")
   }
 }

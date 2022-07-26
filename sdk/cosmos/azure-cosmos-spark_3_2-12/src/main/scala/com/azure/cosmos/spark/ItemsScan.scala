@@ -72,18 +72,24 @@ private case class ItemsScan(session: SparkSession,
       false
     )
 
-    Loan(CosmosClientCache.apply(
-      clientConfiguration,
-      Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
-      s"ItemsScan($description()).planInputPartitions"
-    ))
-      .to(clientCacheItem => {
+    val calledFrom = s"ItemsScan($description()).planInputPartitions"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache.apply(
+          clientConfiguration,
+          Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+          calledFrom
+        )),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          config, calledFrom, Some(cosmosClientStateHandles))
+      ))
+      .to(clientCacheItems => {
         val container =
           ThroughputControlHelper.getContainer(
             config,
             containerConfig,
-            clientCacheItem,
-            Some(cosmosClientStateHandles))._1
+            clientCacheItems(0).get,
+            clientCacheItems(1))
         SparkUtils.safeOpenConnectionInitCaches(container, log)
 
         CosmosPartitionPlanner

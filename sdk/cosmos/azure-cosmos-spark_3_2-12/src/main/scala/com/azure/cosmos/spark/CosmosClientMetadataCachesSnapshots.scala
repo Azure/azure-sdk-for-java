@@ -5,11 +5,11 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 
-@SerialVersionUID(100l)
+@SerialVersionUID(100L)
 private[cosmos] case class CosmosClientMetadataCachesSnapshots(
                                           cosmosClientMetadataCaches: CosmosClientMetadataCachesSnapshot,
                                           throughputControlClientMetadataCaches: Option[CosmosClientMetadataCachesSnapshot]) extends Serializable {
  override def toString =
-  s"cosmosclientMetadata is ${cosmosClientMetadataCaches.toString}, throughputControlClientMetadata is ${throughputControlClientMetadataCaches.toString}"
+  s"cosmosClientMetadata is ${cosmosClientMetadataCaches.toString}, throughputControlClientMetadata is ${throughputControlClientMetadataCaches.toString}"
 
 }

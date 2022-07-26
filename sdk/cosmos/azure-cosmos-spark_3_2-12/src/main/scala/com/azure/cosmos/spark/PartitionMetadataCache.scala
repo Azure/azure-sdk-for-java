@@ -242,19 +242,24 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
         case Some(_) => Some(cosmosClientStateHandles.get.value.cosmosClientMetadataCaches)
       }
 
-    Loan(CosmosClientCache(
-      cosmosClientConfiguration,
-      cosmosClientMetadataCache,
-      "PartitionMetadataCache.readPartitionMetadata(" +
-        s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
-    ))
-      .to(clientCacheItem => {
+    val calledFrom = s"PartitionMetadataCache.readPartitionMetadata(${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(
+          CosmosClientCache(
+            cosmosClientConfiguration,
+            cosmosClientMetadataCache,
+            calledFrom)),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          userConfig, calledFrom, cosmosClientStateHandles)
+      ))
+      .to(clientCacheItems => {
         val container =
           ThroughputControlHelper.getContainer(
             userConfig,
             cosmosContainerConfig,
-            clientCacheItem,
-            cosmosClientStateHandles)._1
+            clientCacheItems(0).get,
+            clientCacheItems(1))
 
         val optionsFromNow = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
           SparkBridgeImplementationInternal.toFeedRange(feedRange))

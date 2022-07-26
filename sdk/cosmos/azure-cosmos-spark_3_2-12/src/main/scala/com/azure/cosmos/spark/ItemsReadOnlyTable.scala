@@ -102,59 +102,76 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
   }
 
   override def schema(): StructType = {
+    val calledFrom = s"ItemReadOnlyTable($tableName).schema"
     Loan(
-      CosmosClientCache(
-        CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
-        None,
-        s"ItemReadOnlyTable($tableName).schema"
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache(
+          CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+          None,
+          calledFrom
+        )),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          effectiveUserConfig,
+          calledFrom,
+          None)
       ))
-      .to(clientCacheItem => userProvidedSchema.getOrElse(this.inferSchema(clientCacheItem, effectiveUserConfig)))
+      .to(clientCacheItems => userProvidedSchema.getOrElse(this.inferSchema(clientCacheItems(0).get, clientCacheItems(1), effectiveUserConfig)))
   }
 
   private def inferSchema(clientCacheItem: CosmosClientCacheItem,
+                          throughputControlClientCacheItem: Option[CosmosClientCacheItem],
                           userConfig: Map[String, String]): StructType = {
 
     CosmosTableSchemaInferrer.inferSchema(
       clientCacheItem,
+      throughputControlClientCacheItem,
       userConfig,
       ItemsTable.defaultSchemaForInferenceDisabled)
   }
 
   // This can be used only when databaseName and ContainerName are specified.
   private[spark] def initializeAndBroadcastCosmosClientStatesForContainer(): Broadcast[CosmosClientMetadataCachesSnapshots] = {
+    val calledFrom = s"ItemReadOnlyTable($tableName).initializeAndBroadcastCosmosClientStateForContainer"
     Loan(
-      CosmosClientCache(
-        CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
-        None,
-        s"ItemReadOnlyTable($tableName).initializeAndBroadcastCosmosClientStateForContainer"))
-        .to(clientCacheItem => {
-          val containerPair =
-            ThroughputControlHelper.getContainer(
-              effectiveUserConfig,
-              cosmosContainerConfig,
-              clientCacheItem,
-              None)
-          try {
-            containerPair._1.readItem(
-              UUID.randomUUID().toString,
-              new PartitionKey(UUID.randomUUID().toString),
-              classOf[ObjectNode])
-             .block()
-          } catch {
-            case _: CosmosException => None
-          }
+      List[Option[CosmosClientCacheItem]](
+        Some(
+          CosmosClientCache(
+            CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+            None,
+            calledFrom)),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          effectiveUserConfig,
+          calledFrom,
+          None)
+      ))
+      .to(clientCacheItems => {
+        val container =
+          ThroughputControlHelper.getContainer(
+            effectiveUserConfig,
+            cosmosContainerConfig,
+            clientCacheItems(0).get,
+            clientCacheItems(1))
+        try {
+          container.readItem(
+            UUID.randomUUID().toString,
+            new PartitionKey(UUID.randomUUID().toString),
+            classOf[ObjectNode])
+           .block()
+        } catch {
+          case _: CosmosException => None
+        }
 
-          val state = new CosmosClientMetadataCachesSnapshot()
-          state.serialize(clientCacheItem.client)
+        val state = new CosmosClientMetadataCachesSnapshot()
+        state.serialize(clientCacheItems(0).get.client)
 
-          var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
-          if (containerPair._2.isDefined) {
-            throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
-            throughputControlState.get.serialize(containerPair._2.get.client)
-          }
+        var throughputControlState: Option[CosmosClientMetadataCachesSnapshot] = None
+        if (clientCacheItems(1).isDefined) {
+          throughputControlState = Some(new CosmosClientMetadataCachesSnapshot())
+          throughputControlState.get.serialize(clientCacheItems(1).get.client)
+        }
 
-          val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
-          sparkSession.sparkContext.broadcast(metadataSnapshots)
-        })
+        val metadataSnapshots = CosmosClientMetadataCachesSnapshots(state, throughputControlState)
+        sparkSession.sparkContext.broadcast(metadataSnapshots)
+      })
   }
 }

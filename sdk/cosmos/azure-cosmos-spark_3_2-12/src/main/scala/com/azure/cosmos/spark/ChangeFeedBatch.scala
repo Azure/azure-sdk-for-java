@@ -39,18 +39,25 @@ private class ChangeFeedBatch
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
+    val calledFrom = s"ChangeFeedBatch.planInputPartitions(batchId $batchId)"
     Loan(
-      CosmosClientCache.apply(
-        clientConfiguration,
-        Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
-        s"ChangeFeedBatch.planInputPartitions(batchId $batchId)"
-      )).to(cacheItem => {
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache.apply(
+          clientConfiguration,
+          Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+          calledFrom
+        )),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          config,
+          calledFrom,
+          Some(cosmosClientStateHandles)))
+    ).to(cacheItems => {
       val container =
         ThroughputControlHelper.getContainer(
           config,
           containerConfig,
-          cacheItem,
-          Some(cosmosClientStateHandles))._1
+          cacheItems(0).get,
+          cacheItems(1))
 
       val hasBatchCheckpointLocation = changeFeedConfig.batchCheckpointLocation.isDefined &&
         !Strings.isNullOrWhiteSpace(changeFeedConfig.batchCheckpointLocation.get)

@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added support to allow config different account for throughput control - See [PR 30124](https://github.com/Azure/azure-sdk-for-java/pull/30124)
 
 ### 4.12.1 (2022-07-22)
 

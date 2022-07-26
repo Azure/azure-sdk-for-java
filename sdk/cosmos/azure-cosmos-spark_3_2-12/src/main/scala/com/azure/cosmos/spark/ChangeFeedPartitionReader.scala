@@ -49,13 +49,18 @@ private case class ChangeFeedPartitionReader
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedPartitionReader(partition $partition)")
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config,
+      clientCacheItem.context,
+      Some(cosmosClientStateHandles))
 
   private val cosmosAsyncContainer =
     ThroughputControlHelper.getContainer(
       config,
       containerTargetConfig,
       clientCacheItem,
-      Some(cosmosClientStateHandles))._1
+      throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
@@ -165,5 +170,8 @@ private case class ChangeFeedPartitionReader
     this.iterator.close()
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
     clientCacheItem.close()
+    if (throughputControlClientCacheItemOpt.isDefined) {
+      throughputControlClientCacheItemOpt.get.close()
+    }
   }
 }
