@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * AADProfile specifies attributes for Azure Active Directory integration. For more details see [managed AAD on
- * AKS](https://docs.microsoft.com/azure/aks/managed-aad).
+ * AADProfile specifies attributes for Azure Active Directory integration.
+ *
+ * <p>For more details see [managed AAD on AKS](https://docs.microsoft.com/azure/aks/managed-aad).
  */
 @Fluent
 public final class ManagedClusterAadProfile {

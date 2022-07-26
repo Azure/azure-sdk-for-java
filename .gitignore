@@ -84,7 +84,7 @@ ClientAggregatePom.xml
 ClientFromSourcePom.xml
 
 # Generated aggregate coverage reports pom file
-aggregate-coverage-pom.xml
+aggregate-pom.xml
 
 # Anaconda virtual env
 venv

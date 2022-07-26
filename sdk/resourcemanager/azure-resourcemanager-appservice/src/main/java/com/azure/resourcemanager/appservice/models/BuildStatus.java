@@ -42,7 +42,11 @@ public final class BuildStatus extends ExpandableStringEnum<BuildStatus> {
         return fromString(name, BuildStatus.class);
     }
 
-    /** @return known BuildStatus values. */
+    /**
+     * Gets known BuildStatus values.
+     *
+     * @return known BuildStatus values.
+     */
     public static Collection<BuildStatus> values() {
         return values(BuildStatus.class);
     }

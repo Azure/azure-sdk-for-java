@@ -1,14 +1,10 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.17.0 (2022-07-25)
 
 ### Bugs Fixed
 
-### Other Changes
+- Supported delayed retry on 404 for eventual consistency, after creating AAD application.
 
 ## 2.16.0 (2022-06-24)
 

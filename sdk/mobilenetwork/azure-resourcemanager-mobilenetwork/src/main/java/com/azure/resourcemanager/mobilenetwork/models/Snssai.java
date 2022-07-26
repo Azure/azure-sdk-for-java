@@ -7,23 +7,23 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Single-Network Slice Selection Assistance Information (S-NSSAI). */
+/** Single-network slice selection assistance information (S-NSSAI). */
 @Fluent
 public final class Snssai {
     /*
-     * Slice/Service Type (SST).
+     * Slice/service type (SST).
      */
     @JsonProperty(value = "sst", required = true)
     private int sst;
 
     /*
-     * Slice Differentiator (SD).
+     * Slice differentiator (SD).
      */
     @JsonProperty(value = "sd")
     private String sd;
 
     /**
-     * Get the sst property: Slice/Service Type (SST).
+     * Get the sst property: Slice/service type (SST).
      *
      * @return the sst value.
      */
@@ -32,7 +32,7 @@ public final class Snssai {
     }
 
     /**
-     * Set the sst property: Slice/Service Type (SST).
+     * Set the sst property: Slice/service type (SST).
      *
      * @param sst the sst value to set.
      * @return the Snssai object itself.
@@ -43,7 +43,7 @@ public final class Snssai {
     }
 
     /**
-     * Get the sd property: Slice Differentiator (SD).
+     * Get the sd property: Slice differentiator (SD).
      *
      * @return the sd value.
      */
@@ -52,7 +52,7 @@ public final class Snssai {
     }
 
     /**
-     * Set the sd property: Slice Differentiator (SD).
+     * Set the sd property: Slice differentiator (SD).
      *
      * @param sd the sd value to set.
      * @return the Snssai object itself.
