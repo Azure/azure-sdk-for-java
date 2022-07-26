@@ -23,6 +23,7 @@
     "azureStorageBlobDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe",
     "azureStorageBlobDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
     "azureStorageQueueDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/974c5e8b-45b9-4653-ba55-5f855dd0fb88",
+    "blobContainerName": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -58,32 +59,6 @@
           "keySource": "Microsoft.Storage"
         },
         "accessTier": "Hot"
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureStorageBlobDataContributorRoleId'), variables('storageAccountsName')))]",
-      "scope": "[concat('Microsoft.Storage/storageAccounts', '/', variables('storageAccountsName'))]",
-      "dependsOn": [
-        "[variables('storageAccountsName')]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('azureStorageBlobDataContributorRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureStorageBlobDataOwnerRoleId'), variables('storageAccountsName')))]",
-      "scope": "[concat('Microsoft.Storage/storageAccounts', '/', variables('storageAccountsName'))]",
-      "dependsOn": [
-        "[variables('storageAccountsName')]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('azureStorageBlobDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
       }
     },
     {
@@ -163,9 +138,22 @@
       }
     },
     {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureStorageBlobDataOwnerRoleId'), variables('storageAccountsName')))]",
+      "scope": "[concat('Microsoft.Storage/storageAccounts', '/', variables('storageAccountsName'))]",
+      "dependsOn": [
+        "[variables('storageAccountsName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('azureStorageBlobDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]",
+      "name": "[variables('blobContainerName')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
@@ -182,7 +170,7 @@
     },
     "AZURE_EVENTHUBS_CONTAINER_NAME": {
       "type": "string",
-      "value": "[concat(variables('storageAccountsName'), '/default/processorcontainer')]"
+      "value": "[variables('blobContainerName')]"
     },
     "AZURE_STORAGE_ACCOUNT_NAME": {
       "type": "string",

@@ -16,6 +16,8 @@
     "eventHubsNamespaceName": "[concat(parameters('baseName'),'-test-eventhub')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
     "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
+    "azureEventHubsDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec",
+    "azureStorageBlobDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -34,6 +36,15 @@
         "isAutoInflateEnabled": false,
         "maximumThroughputUnits": 0,
         "kafkaEnabled": true
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureEventHubsDataOwnerRoleId'), parameters('baseName')))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureEventHubsDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
       }
     },
     {
@@ -248,6 +259,19 @@
           "keySource": "Microsoft.Storage"
         },
         "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureStorageBlobDataOwnerRoleId'), variables('storageAccountName')))]",
+      "scope": "[concat('Microsoft.Storage/storageAccounts', '/', variables('storageAccountName'))]",
+      "dependsOn": [
+        "[variables('storageAccountName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('azureStorageBlobDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
       }
     },
     {
