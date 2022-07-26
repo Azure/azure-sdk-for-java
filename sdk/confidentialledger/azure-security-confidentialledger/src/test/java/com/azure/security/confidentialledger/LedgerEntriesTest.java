@@ -31,13 +31,7 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseBodyJson = null;
 
-        try {
-            
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
+        responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
 
         Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
 

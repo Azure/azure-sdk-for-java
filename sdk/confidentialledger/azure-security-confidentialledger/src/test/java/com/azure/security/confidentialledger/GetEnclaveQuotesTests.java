@@ -9,8 +9,6 @@ import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,12 +23,7 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseBodyJson = null;
 
-        try {
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
+        responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
         
         JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
         String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
