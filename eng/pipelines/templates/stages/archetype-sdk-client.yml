@@ -137,9 +137,9 @@ stages:
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
           UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
-          # JRS This is where we'd change the approval environment to the new uber group
+          # This where the MavenBreakGlassApprovers is set for the release tasks.
           ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
-            Environment: 'maven'
+            Environment: 'MavenBreakGlassApprovers'
     - ${{ else }}:
       - template: archetype-java-release.yml
         parameters:
