@@ -9,6 +9,13 @@
     "storageNamePrefix": {
       "defaultValue": "[substring(uniqueString(parameters('baseName')), 0, 11)]",
       "type": "string"
+    },
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "subscriptionId": {
+      "defaultValue": "[subscription().subscriptionId]",
+      "type": "string"
     }
   },
   "functions": [],
