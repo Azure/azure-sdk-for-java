@@ -28,6 +28,10 @@ pr:
       - eng/pipelines/
 
 parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
 - name: release_azurecore
   displayName: 'azure-core'
   type: boolean
@@ -154,6 +158,4 @@ extends:
         groupId: com.azure
         safeName: azurejsongson
         releaseInBatch: ${{ parameters.release_azurejsongson }}
-    MatrixReplace:
-      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-    ReleaseDependsOnLiveTests: false
+    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests  }}
