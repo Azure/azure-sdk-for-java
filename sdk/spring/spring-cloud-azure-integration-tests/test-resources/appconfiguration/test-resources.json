@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "subscriptionId": {
+      "defaultValue": "[subscription().subscriptionId]",
+      "type": "string"
+    },
+    "baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    }
+  },
+  "variables": {
+    "configurationStoresName": "[concat(parameters('baseName'),'-test-appconfiguration')]",
+    "azureManagedApplicationContributorRoleRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/641177b8-a67a-45b9-a033-47bc880bb21e",
+    "location": "[resourceGroup().location]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.AppConfiguration/configurationStores",
+      "apiVersion": "2022-05-01",
+      "name": "[variables('configurationStoresName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "standard"
+      },
+      "properties": {
+        "encryption": {},
+        "disableLocalAuth": false,
+        "enablePurgeProtection": false
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureManagedApplicationContributorRoleRoleId'), parameters('baseName')))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureManagedApplicationContributorRoleRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_APPCONFIGURATION_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(variables('configurationStoresName')).endpoint]"
+    }
+  }
+}
