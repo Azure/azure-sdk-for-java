@@ -134,23 +134,6 @@
       }
     },
     {
-      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings",
-      "apiVersion": "2022-02-15-preview",
-      "name": "[concat(variables('databaseAccountsName'), '/TestDB/default')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('databaseAccountsName'), 'TestDB')]",
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccountsName'))]"
-      ],
-      "properties": {
-        "resource": {
-          "throughput": 400,
-          "autoscaleSettings": {
-            "maxThroughput": 4000
-          }
-        }
-      }
-    },
-    {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
       "apiVersion": "2021-05-15",
       "name": "[concat(variables('databaseAccountsName'), '/',guid(parameters('baseName')))]",
@@ -164,7 +147,7 @@
   "outputs": {
     "AZURE_COSMOS_ENDPOINT": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccountsName')), '2022-02-15-preview').documentEndpoint]"
+      "value": "[reference(variables('databaseAccountsName')).documentEndpoint]"
     }
   }
 }
