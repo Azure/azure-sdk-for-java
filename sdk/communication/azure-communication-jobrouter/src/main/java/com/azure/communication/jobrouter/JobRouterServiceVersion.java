@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum JobRouterServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2021-10-20-preview2}.
+     * Service version {@code 2022-07-18-preview}.
      */
-    V2021_10_20("2021-10-20-preview2");
+    V2022_07_18("2022-07-18-preview");
 
     private final String version;
 
@@ -36,6 +36,6 @@ public enum JobRouterServiceVersion implements ServiceVersion {
      */
     public static JobRouterServiceVersion getLatest() {
 
-        return V2021_10_20;
+        return V2022_07_18;
     }
 }
