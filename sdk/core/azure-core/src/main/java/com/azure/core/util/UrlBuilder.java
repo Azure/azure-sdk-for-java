@@ -278,18 +278,48 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    String queryString = emptyToNull(tokenText);
-                    if (queryString != null) {
-                        if (queryString.startsWith("?")) {
-                            queryString = queryString.substring(1);
+                    if (!CoreUtils.isNullOrEmpty(tokenText)) {
+                        int keyStart = 0;
+                        int keyEnd = -1;
+                        int valueStart = -1;
+                        int valueEnd = -1;
+                        boolean inValue = false;
+
+                        // If the URL query begins with '?' the first possible start of a query parameter key is the
+                        // second character in the query.
+                        if (tokenText.startsWith("?")) {
+                            keyStart = 1;
                         }
 
-                        for (String entry : queryString.split("&")) {
-                            String[] nameValue = entry.split("=");
-                            if (nameValue.length == 2) {
-                                addQueryParameter(nameValue[0], nameValue[1]);
+                        String key = null;
+                        while (true) {
+                            if (inValue) {
+                                valueEnd = indexOf(tokenText, '&', valueStart);
+
+                                if (valueEnd == -1) {
+                                    // Value goes until the end of the query parameter.
+                                    addQueryParameter(key, tokenText.substring(valueStart));
+                                    break;
+                                } else {
+                                    inValue = false;
+                                    keyStart = valueEnd + 1;
+
+                                    String value = (valueStart == valueEnd)
+                                        ? "" : tokenText.substring(valueStart, valueEnd);
+                                    addQueryParameter(key, value);
+                                }
                             } else {
-                                addQueryParameter(nameValue[0], "");
+                                keyEnd = indexOf(tokenText, '=', keyStart);
+
+                                if (keyEnd == -1) {
+                                    // Key doesn't have a value, add a query parameters with an empty string value.
+                                    addQueryParameter(tokenText.substring(keyStart), "");
+                                    break;
+                                } else {
+                                    inValue = true;
+                                    key = (keyStart == keyEnd) ? "" : tokenText.substring(keyStart, keyEnd);
+                                    valueStart = keyEnd + 1;
+                                }
                             }
                         }
                     }
@@ -301,6 +331,16 @@ public final class UrlBuilder {
             }
         }
         return this;
+    }
+
+    private static int indexOf(String str, char c, int start) {
+        for (int index = start; index < str.length(); index++) {
+            if (str.charAt(index) == c) {
+                return index;
+            }
+        }
+
+        return -1;
     }
 
     /**
