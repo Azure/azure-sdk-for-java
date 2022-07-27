@@ -446,6 +446,7 @@ class APISpec extends StorageSpec {
                 responseLeaseId = createLeaseClient((DataLakeDirectoryClient) pc).acquireLease(-1)
             }
         }
+        sleepIfRecord(500)
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
         } else {
