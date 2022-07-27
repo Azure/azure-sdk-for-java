@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -134,6 +135,25 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
             FluxUtil.writeToWritableByteChannel(
                 FluxUtil.addProgressReporting(super.getValue(), progressReporter),
                 channel).block();
+        }
+    }
+
+    /**
+     * Transfers content bytes to the {@link OutputStream}.
+     * @param outputStream The destination {@link WritableByteChannel}.
+     * @param progressReporter Optional {@link ProgressReporter}.
+     * @throws IOException When I/O operation fails.
+     */
+    public void writeValueTo(OutputStream outputStream, ProgressReporter progressReporter) throws IOException {
+        Objects.requireNonNull(outputStream, "'channel' must not be null");
+        if (sourceResponse != null) {
+            IOUtils.transferStreamResponseToOutputStream(outputStream, sourceResponse,
+                (error, offset) -> onErrorResume.apply(error, offset).block(),
+                progressReporter, retryOptions.getMaxRetryRequests());
+        } else if (super.getValue() != null) {
+            FluxUtil.writeToOutputStream(
+                FluxUtil.addProgressReporting(super.getValue(), progressReporter),
+                outputStream).block();
         }
     }
 

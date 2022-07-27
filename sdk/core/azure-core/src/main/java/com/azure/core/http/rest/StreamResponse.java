@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -90,6 +91,20 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
             FluxUtil.writeToWritableByteChannel(getValue(), channel).block();
         } else {
             response.writeBodyTo(channel);
+        }
+    }
+
+    /**
+     * Transfers content bytes to the {@link OutputStream}.
+     * @param outputStream The destination {@link OutputStream}.
+     * @throws IOException When I/O operation fails.
+     */
+    public void writeValueTo(OutputStream outputStream) throws IOException {
+        Objects.requireNonNull(outputStream, "'outputStream' must not be null");
+        if (response == null) {
+            FluxUtil.writeToOutputStream(getValue(), outputStream).block();
+        } else {
+            response.writeBodyTo(outputStream);
         }
     }
 

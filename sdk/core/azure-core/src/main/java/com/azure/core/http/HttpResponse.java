@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -164,6 +165,19 @@ public abstract class HttpResponse implements Closeable {
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
             FluxUtil.writeToWritableByteChannel(body, channel).block();
+        }
+    }
+
+    /**
+     * Transfers body bytes to the {@link OutputStream}.
+     * @param outputStream The destination {@link OutputStream}.
+     * @throws IOException When I/O operation fails.
+     * @throws NullPointerException When {@code channel} is null.
+     */
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            FluxUtil.writeToOutputStream(body, outputStream).block();
         }
     }
 

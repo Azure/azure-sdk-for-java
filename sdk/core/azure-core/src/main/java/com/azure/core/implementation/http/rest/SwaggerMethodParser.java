@@ -110,7 +110,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
-     *
+     *g
      * @param swaggerMethod the Swagger method to parse.
      * @param rawHost the raw host value from the @Host annotation. Before this can be used as the host value in an HTTP
      * request, it must be processed through the possible host substitutions.

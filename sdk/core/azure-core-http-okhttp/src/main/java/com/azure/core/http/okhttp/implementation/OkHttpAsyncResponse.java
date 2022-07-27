@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.io.IOUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.Okio;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -15,6 +16,7 @@ import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -110,6 +112,11 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         if (responseBody != null) {
             IOUtils.transfer(responseBody.source(), channel);
         }
+    }
+
+    @Override
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
+        responseBody.source().readAll(Okio.sink(outputStream));
     }
 
     @Override

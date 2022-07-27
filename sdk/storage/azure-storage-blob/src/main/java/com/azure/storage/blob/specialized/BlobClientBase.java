@@ -65,7 +65,6 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -887,7 +886,7 @@ public class BlobClientBase {
         BlobDownloadAsyncResponse response = blockWithOptionalTimeout(client
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context), timeout);
         try {
-            response.writeValueTo(Channels.newChannel(stream), null);
+            response.writeValueTo(stream, null);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }

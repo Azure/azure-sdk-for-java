@@ -6,6 +6,7 @@ package com.azure.core.util.io;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
 import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
+import com.azure.core.implementation.ByteCountingOutputStream;
 import com.azure.core.implementation.ByteCountingWritableByteChannel;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.ProgressReporter;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
@@ -223,6 +225,57 @@ public final class IOUtils {
             StreamResponse newResponse = onErrorResume.apply(e, targetChannel.getBytesWritten());
             transferStreamResponseToWritableByteChannelHelper(
                 targetChannel, newResponse, onErrorResume, maxRetries, updatedRetryCount);
+        } finally {
+            response.close();
+        }
+    }
+
+    /**
+     * Transfers the {@link StreamResponse} content to {@link OutputStream}.
+     * Resumes the transfer in case of errors.
+     *
+     * @param outputStream The destination {@link OutputStream}.
+     * @param sourceResponse The initial {@link StreamResponse}.
+     * @param onErrorResume A {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs. The function accepts a {@link Throwable} and offset at the destination
+     * from beginning of writing at which the error occurred.
+     * @param progressReporter The {@link ProgressReporter}.
+     * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
+     * @throws IOException When I/O operation fails.
+     */
+    public static void transferStreamResponseToOutputStream(
+        OutputStream outputStream,
+        StreamResponse sourceResponse,
+        BiFunction<Throwable, Long, StreamResponse> onErrorResume,
+        ProgressReporter progressReporter, int maxRetries) throws IOException {
+
+        transferStreamResponseToOutputStreamHelper(
+            new ByteCountingOutputStream(outputStream, progressReporter),
+            sourceResponse, onErrorResume, maxRetries, 0);
+    }
+
+    private static void transferStreamResponseToOutputStreamHelper(
+        ByteCountingOutputStream outputStream,
+        StreamResponse response,
+        BiFunction<Throwable, Long, StreamResponse> onErrorResume,
+        int maxRetries, int retryCount) throws IOException {
+
+        try {
+            response.writeValueTo(outputStream);
+        } catch (RuntimeException | IOException e) {
+
+            int updatedRetryCount = retryCount + 1;
+
+            if (updatedRetryCount > maxRetries) {
+                LOGGER.atError()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                    .log(() -> "Retry attempts have been exhausted.", e);
+                throw e;
+            }
+
+            StreamResponse newResponse = onErrorResume.apply(e, outputStream.getBytesWritten());
+            transferStreamResponseToOutputStreamHelper(
+                outputStream, newResponse, onErrorResume, maxRetries, updatedRetryCount);
         } finally {
             response.close();
         }

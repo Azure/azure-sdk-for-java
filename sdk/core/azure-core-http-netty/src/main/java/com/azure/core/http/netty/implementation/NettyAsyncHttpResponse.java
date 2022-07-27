@@ -16,6 +16,7 @@ import reactor.netty.http.client.HttpClientResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -82,6 +83,27 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
                     ByteBuffer nioBuffer = nettyBuffer.nioBuffer();
                     while (nioBuffer.hasRemaining()) {
                         channel.write(nioBuffer);
+                    }
+                    return nettyBuffer;
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
+                } finally {
+                    nettyBuffer.release();
+                }
+            }).then().block();
+    }
+
+    @Override
+    public void writeBodyTo(OutputStream outputStream) {
+        byte[] buffer = new byte[8 * 1024];
+        bodyIntern().retain()
+            .publishOn(Schedulers.boundedElastic())
+            .map(nettyBuffer -> {
+                try {
+                    while (nettyBuffer.isReadable()) {
+                        int size = Math.min(buffer.length, nettyBuffer.readableBytes());
+                        nettyBuffer.readBytes(buffer, 0, size);
+                        outputStream.write(buffer, 0, size);
                     }
                     return nettyBuffer;
                 } catch (IOException e) {
