@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Client builder for sync and async job router administration clients.
+ */
 @ServiceClientBuilder(serviceClients = {RouterAdministrationAsyncClient.class, RouterAdministrationClient.class})
 public class RouterAdministrationClientBuilder implements ConfigurationTrait<RouterAdministrationClientBuilder>,
     EndpointTrait<RouterAdministrationClientBuilder>,
@@ -168,7 +171,6 @@ public class RouterAdministrationClientBuilder implements ConfigurationTrait<Rou
      * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
-     * <p>
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return The updated RouterAdministrationClientBuilder object.
