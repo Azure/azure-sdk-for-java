@@ -19,6 +19,9 @@ public final class FileSystemProperties {
     private final PublicAccessType dataLakePublicAccess;
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
+    private final String encryptionScope;
+    private final Boolean encryptionScopeOverridePrevented;
+
 
     /**
      * Constructs a {@link FileSystemProperties}.
@@ -37,6 +40,28 @@ public final class FileSystemProperties {
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType dataLakePublicAccess,
         final boolean hasImmutabilityPolicy, final boolean hasLegalHold) {
+        this(metadata, eTag, lastModified, leaseDuration, leaseState, leaseStatus, dataLakePublicAccess, hasImmutabilityPolicy, hasLegalHold, null, null);
+    }
+
+    /**
+     * Constructs a {@link FileSystemProperties}.
+     *
+     * @param metadata Metadata associated with the file system.
+     * @param eTag ETag of the file system.
+     * @param lastModified Datetime when the file system was last modified.
+     * @param leaseDuration Type of the lease on the file system.
+     * @param leaseState State of the lease on the file system.
+     * @param leaseStatus Status of the lease on the file system.
+     * @param dataLakePublicAccess Public access status for the file system.
+     * @param hasImmutabilityPolicy Flag indicating if the file system has an immutability policy set on it.
+     * @param hasLegalHold Flag indicating if the file system has a legal hold.
+     * @param encryptionScope The file system's default encryption scope to encrypt data with.
+     * @param encryptionScopeOverridePrevented Whether or not a file system's default encryption scope can be overridden.
+     */
+    public FileSystemProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified,
+        final LeaseDurationType leaseDuration, final LeaseStateType leaseState, final LeaseStatusType leaseStatus,
+        final PublicAccessType dataLakePublicAccess, final boolean hasImmutabilityPolicy, final boolean hasLegalHold,
+        final String encryptionScope, final Boolean encryptionScopeOverridePrevented) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -46,6 +71,8 @@ public final class FileSystemProperties {
         this.dataLakePublicAccess = dataLakePublicAccess;
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         this.hasLegalHold = hasLegalHold;
+        this.encryptionScope = encryptionScope;
+        this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
     }
 
     /**
@@ -110,4 +137,19 @@ public final class FileSystemProperties {
     public boolean hasLegalHold() {
         return hasLegalHold;
     }
+
+    /**
+     * @return the file system's encryption scope
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
+     * @return the file system's deny encryption scope override property.
+     */
+    public Boolean isEncryptionScopeOverridePrevented() {
+        return encryptionScopeOverridePrevented;
+    }
+
 }

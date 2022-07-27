@@ -13,11 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScope
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -261,6 +266,118 @@ class DirectoryAPITest extends APISpec {
 
         expect:
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Create encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScope()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def dirName = generatePathName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScope(encryptionScope)
+            .buildClient()
+
+        client.create()
+
+        def directoryClient = client.getDirectoryClient(dirName)
+
+        when:
+        directoryClient.create()
+        def properties = directoryClient.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope sas"() {
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setEncryptionScope(encryptionScopeString)
+        def sas = fsc.generateSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope account sas"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+
+        def sas = getServiceClientBuilder(environment.primaryAccount.credential, environment.primaryAccount.dataLakeEndpoint)
+            .encryptionScope(encryptionScopeString)
+            .buildClient()
+            .generateAccountSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope identity sas"() {
+        def key = getOAuthServiceClient().getUserDelegationKey(null, namer.getUtcNow().plusHours(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setEncryptionScope(encryptionScopeString)
+
+        def sas = fsc.generateUserDelegationSas(sasValues.setAgentObjectId(owner), key)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")

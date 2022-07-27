@@ -25,6 +25,7 @@ import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.UserDelegationKey
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScope
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -221,6 +222,28 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+
+    def "Create file system encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScope()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
+            primaryDataLakeServiceClient.getAccountUrl())
+            .fileSystemEncryptionScope(encryptionScope)
+            .buildClient()
+        def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
+
+        when:
+        fsClient.create()
+        def properties = fsClient.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+    }
+
     def "List file systems"() {
         when:
         def response =
@@ -372,6 +395,38 @@ class ServiceAPITest extends APISpec {
 
         then:
         fileSystems.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }
+    }
+
+
+    def "List file systems encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScope()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
+            primaryDataLakeServiceClient.getAccountUrl())
+            .fileSystemEncryptionScope(encryptionScope)
+            .buildClient()
+        def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
+
+        fsClient.create()
+
+        when:
+        def response = serviceClient.listFileSystems()
+
+        def list = new ArrayList<FileSystemItem>()
+        for (FileSystemItem c : response) {
+            list.add(c)
+        }
+
+        // grab the second FileSystemItemProperties since that container is the one associated with the file
+        // system client
+        def properties = list.get(1).getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
     }
 
     def "Get UserDelegationKey"() {
