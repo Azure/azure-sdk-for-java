@@ -11,6 +11,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
+import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Options;
 import com.azure.core.annotation.Patch;
@@ -19,6 +20,7 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnValueWireType;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -70,6 +72,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SwaggerMethodParserTests {
+    @Host("{test}")
+    @ServiceInterface(name = "OperationMethods")
     interface OperationMethods {
         void noMethod();
 
@@ -140,6 +144,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "WireTypesMethods")
     interface WireTypesMethods {
         @Get("test")
         void noWireType();
@@ -185,6 +191,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "HeaderMethods")
     interface HeaderMethods {
         @Get("test")
         void noHeaders();
@@ -226,6 +234,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "HostSubstitutionMethods")
     interface HostSubstitutionMethods {
         @Get("test")
         void noSubstitutions(String sub1);
@@ -307,6 +317,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "PathSubstitutionMethods")
     interface PathSubstitutionMethods {
         @Get("{sub1}")
         void noSubstitutions(String sub1);
@@ -342,6 +354,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "QuerySubstitutionMethods")
     interface QuerySubstitutionMethods {
         @Get("test")
         void substitutions(@QueryParam("sub1") String sub1, @QueryParam("sub2") boolean sub2);
@@ -382,6 +396,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "HeaderSubstitutionMethods")
     interface HeaderSubstitutionMethods {
         @Get("test")
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
@@ -434,6 +450,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "BodySubstitutionMethods")
     interface BodySubstitutionMethods {
         @Get("test")
         void applicationJsonBody(@BodyParam(ContentType.APPLICATION_JSON) String jsonBody);
@@ -556,6 +574,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "ExpectedStatusCodeMethods")
     interface ExpectedStatusCodeMethods {
         @Get("test")
         void noExpectedStatusCodes();
@@ -601,6 +621,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("{test}")
+    @ServiceInterface(name = "UnexpectedStatusCodeMethods")
     interface UnexpectedStatusCodeMethods {
         @Get("test")
         void noUnexpectedStatusCodes();

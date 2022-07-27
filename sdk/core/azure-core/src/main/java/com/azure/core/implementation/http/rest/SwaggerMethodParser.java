@@ -104,6 +104,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
+    private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -116,10 +117,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * request, it must be processed through the possible host substitutions.
      */
     public SwaggerMethodParser(Method swaggerMethod, String rawHost) {
-        this(swaggerMethod, rawHost, JacksonAdapter.createDefaultSerializerAdapter());
+        this(RestProxyUtils.getOrCreateSwaggerInterfaceParser(swaggerMethod.getDeclaringClass(),
+            JacksonAdapter.createDefaultSerializerAdapter()), swaggerMethod, rawHost,
+            JacksonAdapter.createDefaultSerializerAdapter());
     }
 
-    public SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
+    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod, String rawHost,
+        SerializerAdapter serializer) {
         this.serializer = serializer;
         this.rawHost = rawHost;
 
@@ -280,6 +284,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
+        this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
     /**
@@ -673,6 +678,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isResponseEagerlyRead() {
         return responseEagerlyRead;
+    }
+
+    /**
+     * Gets the name of the span that will be used when this {@link SwaggerMethodParser} is called.
+     *
+     * @return The span name of this {@link SwaggerMethodParser}.
+     */
+    public String getSpanName() {
+        return spanName;
     }
 
     static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {

@@ -107,9 +107,7 @@ public abstract class RestProxyBase {
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", methodParser.isResponseEagerlyRead());
 
-
-            return invoke(proxy, method, options, errorOptions != null ? errorOptions : null,
-                requestCallback != null ? requestCallback : null, methodParser, request, context);
+            return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
         } catch (IOException e) {
             if (isAsync) {
@@ -176,7 +174,7 @@ public abstract class RestProxyBase {
      * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
-    Context startTracingSpan(Method method, Context context) {
+    static Context startTracingSpan(SwaggerMethodParser method, Context context) {
         // First check if tracing is enabled. This is an optimized operation, so it is done first.
         if (!TracerProxy.isTracingEnabled()) {
             return context;
@@ -187,7 +185,7 @@ public abstract class RestProxyBase {
             return context;
         }
 
-        String spanName = interfaceParser.getServiceName() + "." + method.getName();
+        String spanName = method.getSpanName();
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
     }
