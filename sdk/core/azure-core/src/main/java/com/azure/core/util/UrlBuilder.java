@@ -280,9 +280,9 @@ public final class UrlBuilder {
                 case QUERY:
                     if (!CoreUtils.isNullOrEmpty(tokenText)) {
                         int keyStart = 0;
-                        int keyEnd = -1;
+                        int keyEnd;
                         int valueStart = -1;
-                        int valueEnd = -1;
+                        int valueEnd;
                         boolean inValue = false;
 
                         // If the URL query begins with '?' the first possible start of a query parameter key is the
@@ -294,7 +294,7 @@ public final class UrlBuilder {
                         String key = null;
                         while (true) {
                             if (inValue) {
-                                valueEnd = indexOf(tokenText, '&', valueStart);
+                                valueEnd = tokenText.indexOf('&', valueStart);
 
                                 if (valueEnd == -1) {
                                     // Value goes until the end of the query parameter.
@@ -309,7 +309,7 @@ public final class UrlBuilder {
                                     addQueryParameter(key, value);
                                 }
                             } else {
-                                keyEnd = indexOf(tokenText, '=', keyStart);
+                                keyEnd = tokenText.indexOf('=', keyStart);
 
                                 if (keyEnd == -1) {
                                     // Key doesn't have a value, add a query parameters with an empty string value.
@@ -331,16 +331,6 @@ public final class UrlBuilder {
             }
         }
         return this;
-    }
-
-    private static int indexOf(String str, char c, int start) {
-        for (int index = start; index < str.length(); index++) {
-            if (str.charAt(index) == c) {
-                return index;
-            }
-        }
-
-        return -1;
     }
 
     /**
