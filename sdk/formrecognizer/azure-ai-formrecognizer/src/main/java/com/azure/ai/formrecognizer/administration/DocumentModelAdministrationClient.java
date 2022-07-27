@@ -15,6 +15,7 @@ import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
