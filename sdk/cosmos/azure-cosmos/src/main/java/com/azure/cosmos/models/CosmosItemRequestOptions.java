@@ -267,7 +267,6 @@ public class CosmosItemRequestOptions {
      * Gets the Dedicated Gateway Request Options
      * @return the Dedicated Gateway Request Options
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return this.dedicatedGatewayRequestOptions;
     }
@@ -277,7 +276,6 @@ public class CosmosItemRequestOptions {
      * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
      * @return the CosmosItemRequestOptions
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
         return this;

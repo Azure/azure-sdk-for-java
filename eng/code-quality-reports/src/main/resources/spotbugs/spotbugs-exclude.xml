@@ -1252,7 +1252,13 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.implementation.AutoCheckpointer"/>
+    <Class name="com.azure.cosmos.implementation.changefeed.incremental.AutoCheckpointer"/>
+    <Field name="processedDocCount"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.fullfidelity.AutoCheckpointer"/>
     <Field name="processedDocCount"/>
     <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>

@@ -37,7 +37,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
 
     protected final List<DocumentProducer<T>> documentProducers;
     protected final SqlQuerySpec querySpec;
-    protected int pageSize;
     protected int top = -1;
     private final Function<JsonNode, T> factoryMethod;
 
@@ -58,10 +57,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
         }
     }
 
-    protected void initialize(String collectionRid,
-            Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap, int initialPageSize,
+    protected void initialize(
+            String collectionRid,
+            Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap,
+            int initialPageSize,
             SqlQuerySpec querySpecForInit) {
-        this.pageSize = initialPageSize;
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
         for (Map.Entry<FeedRangeEpkImpl, String> entry : feedRangeToContinuationTokenMap.entrySet()) {
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc = (feedRange,
@@ -96,14 +96,16 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
         }
     }
 
-    abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
-                                                                  String initialContinuationToken, int initialPageSize,
+    abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid,
+                                                                  PartitionKeyRange targetRange,
+                                                                  String initialContinuationToken,
+                                                                  int initialPageSize,
                                                                   CosmosQueryRequestOptions cosmosQueryRequestOptions,
                                                                   SqlQuerySpec querySpecForInit,
                                                                   Map<String, String> commonRequestHeaders,
-                                                                  TriFunction<FeedRangeEpkImpl, String, Integer,
-                                                                      RxDocumentServiceRequest> createRequestFunc,
-                                                                  Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+                                                                  TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+                                                                  Function<RxDocumentServiceRequest,
+                                                                  Mono<FeedResponse<T>>> executeFunc,
                                                                   Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
                                                                   FeedRangeEpkImpl feedRange);
 

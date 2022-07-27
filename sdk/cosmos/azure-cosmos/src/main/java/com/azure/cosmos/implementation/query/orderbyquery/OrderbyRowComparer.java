@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query.orderbyquery;
 
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.ItemComparator;
 import com.azure.cosmos.implementation.query.ItemType;
 import com.azure.cosmos.implementation.query.ItemTypeHelper;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+
 import static java.lang.Integer.signum;
 
 public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<T>>, Serializable {
@@ -77,7 +77,7 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             // rxjava-extras lib provided a quick fix on the bugreport:
             // https://github.com/davidmoten/rxjava-extras/issues/30 (0.8.0.16)
             // we are also capturing the exception stacktrace here
-            logger.error("Orderby Row comparision failed {}, {}", r1.toJson(), r2.toJson(), e);
+            logger.error("Orderby Row comparison failed {}, {}", r1.toJson(), r2.toJson(), e);
             throw e;
         }
     }

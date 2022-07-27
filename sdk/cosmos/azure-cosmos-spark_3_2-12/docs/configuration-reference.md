@@ -84,12 +84,17 @@ Used to influence the json serialization/deserialization behavior
 
 ### Throughput Control Config
 | Config Property Name      | Default | Description |
-| :---        |    :----   |         :--- | 
-| `spark.cosmos.throughputControl.enabled`      | `false`    | Whether throughput control is enabled  |
+| :---        |    :----   |         :--- |
+| `spark.cosmos.throughputControl.enabled`      | `false` | Whether throughput control is enabled |
+| `spark.cosmos.throughputControl.accountEndpoint`      | None    | Cosmos DB Account Endpoint Uri for throughput control. If not defined, then `spark.cosmos.accountEndpoint` will be used. |
+| `spark.cosmos.throughputControl.accountKey`      | None    | Cosmos DB Account Key for throughput control. |
+| `spark.cosmos.throughputControl.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true). |
+| `spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery`      | `false` | Can be used to disable TCP connection endpoint rediscovery. TCP connection endpoint rediscovery should only be disabled when using custom domain names with private endpoints when using a custom Spark environment. When using Azure Databricks or Azure Synapse as Spark runtime it should never be required to disable endpoint rediscovery. |
+| `spark.cosmos.throughputControl.useGatewayMode`      | `false`        | Use gateway mode for the client operations |
 | `spark.cosmos.throughputControl.name`      | None    | Throughput control group name   |
-| `spark.cosmos.throughputControl.targetThroughput`      | None   | Throughput control group target throughput  |
-| `spark.cosmos.throughputControl.targetThroughputThreshold`      | None    | Throughput control group target throughput threshold  |
+| `spark.cosmos.throughputControl.targetThroughput`      | None    | Throughput control group target throughput   |
+| `spark.cosmos.throughputControl.targetThroughputThreshold`      | None    | Throughput control group target throughput threshold |
 | `spark.cosmos.throughputControl.globalControl.database`      | None    | Database which will be used for throughput global control  |
-| `spark.cosmos.throughputControl.globalControl.container`      | None   | Container which will be used for throughput global control  |
+| `spark.cosmos.throughputControl.globalControl.container`      | None    | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
-| `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected |
+| `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected   |
