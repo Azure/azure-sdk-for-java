@@ -579,8 +579,4 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
     public void close() {
         this.stop().subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
-
-    private String getMetadataLsn(FeedResponse<JsonNode> feedResponse, String defaultValue) {
-        return feedResponse.getResults().get(0).get(PROPERTY_NAME_METADATA).get(PROPERTY_NAME_METADATA_LSN).asText(defaultValue);
-    }
 }
