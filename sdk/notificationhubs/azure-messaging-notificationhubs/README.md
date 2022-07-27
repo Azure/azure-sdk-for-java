@@ -1,4 +1,4 @@
-# Azure Notification Hubs SDK for JavaScript
+# Azure Notification Hubs SDK for Java
 
 Azure Notification Hubs provide a scaled-out push engine that enables you to send notifications to any platform (Apple, Amazon Kindle, Android, Baidu, Web, Windows, etc.) from any back-end (cloud or on-premises). Notification Hubs works great for both enterprise and consumer scenarios. Here are a few example scenarios:
 
