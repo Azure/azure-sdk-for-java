@@ -343,7 +343,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" })
+    @Test(groups = { "simple" })
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
