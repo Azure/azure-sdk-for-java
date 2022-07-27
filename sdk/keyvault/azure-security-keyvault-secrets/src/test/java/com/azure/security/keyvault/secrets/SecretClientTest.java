@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -53,8 +54,8 @@ public class SecretClientTest extends SecretClientTestBase {
             when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        secretClient = new SecretClient(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(),
-            serviceVersion);
+        secretClient = new SecretClient(new SecretClientImpl(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(),
+            serviceVersion));
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
