@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
@@ -56,8 +59,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see RouterAdministrationClientBuilder
  */
 @ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = true)
-public class RouterAdministrationAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RouterAsyncClient.class);
+public final class RouterAdministrationAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RouterAdministrationAsyncClient.class);
 
     private final JobRouterAdministrationsImpl jobRouterAdmin;
 

@@ -14,4 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("round-robin")
 @Fluent
-public final class RoundRobinMode extends DistributionMode {}
+public final class RoundRobinMode extends DistributionMode {
+
+}

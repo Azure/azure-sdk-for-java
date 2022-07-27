@@ -26,4 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = WeightedAllocationWorkerSelectorAttachment.class)
 })
 @Immutable
-public abstract class WorkerSelectorAttachment {}
+public abstract class WorkerSelectorAttachment {
+
+}

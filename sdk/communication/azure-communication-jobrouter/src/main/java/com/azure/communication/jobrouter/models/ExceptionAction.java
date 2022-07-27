@@ -22,4 +22,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionAction.class)
 })
 @Immutable
-public abstract class ExceptionAction {}
+public abstract class ExceptionAction {
+
+}

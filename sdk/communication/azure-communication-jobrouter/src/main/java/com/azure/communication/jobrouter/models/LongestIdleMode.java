@@ -12,4 +12,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("longest-idle")
 @Fluent
-public final class LongestIdleMode extends DistributionMode {}
+public final class LongestIdleMode extends DistributionMode {
+
+}

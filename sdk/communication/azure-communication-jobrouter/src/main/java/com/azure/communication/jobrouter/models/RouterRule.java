@@ -29,4 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "static-rule", value = StaticRule.class)
 })
 @Immutable
-public abstract class RouterRule {}
+public abstract class RouterRule {
+
+}

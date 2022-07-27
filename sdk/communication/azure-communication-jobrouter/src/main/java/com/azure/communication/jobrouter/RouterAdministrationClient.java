@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.convertors.ClassificationPolicyAdapter;
@@ -48,9 +51,10 @@ import com.azure.core.util.Context;
  * @see RouterAdministrationClientBuilder
  */
 @ServiceClient(builder = RouterAdministrationClientBuilder.class, isAsync = false)
-public class RouterAdministrationClient {
+public final class RouterAdministrationClient {
 
-    private RouterAdministrationAsyncClient client;
+    private final RouterAdministrationAsyncClient client;
+
     RouterAdministrationClient(RouterAdministrationAsyncClient client) {
         this.client = client;
     }

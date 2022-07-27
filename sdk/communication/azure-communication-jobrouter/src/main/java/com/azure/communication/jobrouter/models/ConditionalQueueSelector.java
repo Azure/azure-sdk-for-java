@@ -4,12 +4,11 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
-import com.azure.communication.jobrouter.models.RouterRule;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /** Describes a set of label selectors that will be attached if the given condition resolves to true. */
