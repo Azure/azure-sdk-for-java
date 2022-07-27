@@ -45,6 +45,7 @@ import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
@@ -195,14 +196,16 @@ class Transforms {
         if (blobContainerProperties == null) {
             return null;
         }
-        return new FileSystemProperties(blobContainerProperties.getMetadata(), blobContainerProperties.getETag(),
+        FileSystemProperties fileSystemProperties = new FileSystemProperties(blobContainerProperties.getMetadata(), blobContainerProperties.getETag(),
             blobContainerProperties.getLastModified(),
             Transforms.toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()),
             Transforms.toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()),
             Transforms.toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()),
             Transforms.toDataLakePublicAccessType(blobContainerProperties.getBlobPublicAccess()),
-            blobContainerProperties.hasImmutabilityPolicy(), blobContainerProperties.hasLegalHold(),
-            blobContainerProperties.getDefaultEncryptionScope(), blobContainerProperties.isEncryptionScopeOverridePrevented());
+            blobContainerProperties.hasImmutabilityPolicy(), blobContainerProperties.hasLegalHold());
+        return AccessorUtility.getFileSystemPropertiesAccessor()
+            .setFileSystemProperties(fileSystemProperties, blobContainerProperties.getDefaultEncryptionScope(),
+                blobContainerProperties.isEncryptionScopeOverridePrevented());
     }
 
     private static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
@@ -299,7 +302,7 @@ class Transforms {
         if (properties == null) {
             return null;
         } else {
-            return new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
+            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
                 properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
                 properties.getContentEncoding(), properties.getContentDisposition(), properties.getContentLanguage(),
                 properties.getCacheControl(), Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
@@ -310,8 +313,9 @@ class Transforms {
                 properties.isServerEncrypted(), properties.isIncrementalCopy(),
                 Transforms.toDataLakeAccessTier(properties.getAccessTier()),
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
-                properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn(),
-                properties.getEncryptionScope());
+                properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
+
+            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope());
         }
     }
 

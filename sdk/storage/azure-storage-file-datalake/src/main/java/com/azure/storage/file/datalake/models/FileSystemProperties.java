@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScope;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -19,9 +22,20 @@ public final class FileSystemProperties {
     private final PublicAccessType dataLakePublicAccess;
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
-    private final String encryptionScope;
-    private final Boolean encryptionScopeOverridePrevented;
+    private String encryptionScope;
+    private Boolean encryptionScopeOverridePrevented;
 
+
+    static {
+        AccessorUtility.setFileSystemPropertiesAccessor(new AccessorUtility.FileSystemPropertiesAccessor() {
+            @Override
+            public FileSystemProperties setFileSystemProperties(FileSystemProperties properties, String encryptionScope, Boolean encryptionScopeOverridePrevented) {
+                properties.encryptionScope = encryptionScope;
+                properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
+                return properties;
+            }
+        });
+    }
 
     /**
      * Constructs a {@link FileSystemProperties}.
@@ -40,7 +54,15 @@ public final class FileSystemProperties {
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType dataLakePublicAccess,
         final boolean hasImmutabilityPolicy, final boolean hasLegalHold) {
-        this(metadata, eTag, lastModified, leaseDuration, leaseState, leaseStatus, dataLakePublicAccess, hasImmutabilityPolicy, hasLegalHold, null, null);
+        this.metadata = metadata;
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.leaseDuration = leaseDuration;
+        this.leaseState = leaseState;
+        this.leaseStatus = leaseStatus;
+        this.dataLakePublicAccess = dataLakePublicAccess;
+        this.hasImmutabilityPolicy = hasImmutabilityPolicy;
+        this.hasLegalHold = hasLegalHold;
     }
 
     /**
@@ -150,6 +172,11 @@ public final class FileSystemProperties {
      */
     public Boolean isEncryptionScopeOverridePrevented() {
         return encryptionScopeOverridePrevented;
+    }
+
+    private FileSystemProperties setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
     }
 
 }
