@@ -98,7 +98,7 @@ stages:
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 
-            # Do all the verifications for all the artifacts after the sparce-checkout
+            # Do all the verifications for all the artifacts after the sparse-checkout
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
@@ -317,7 +317,6 @@ stages:
                 steps:
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
-                      SkipDefaultCheckout: true
                       Paths:
                         - sdk
                         - common/perf-test-core
@@ -459,7 +458,6 @@ stages:
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
-              SkipDefaultCheckout: true
               Paths:
                 - sdk/**/*.md
                 - .github/CODEOWNERS
