@@ -41,7 +41,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -80,7 +79,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // so these values can be determined once and used for optimizations.
     // For example substitutions should be able to track which location in the raw value they replace without needing
     // to search the raw value on each call.
-    private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
     private final HttpMethod httpMethod;
@@ -117,14 +115,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * request, it must be processed through the possible host substitutions.
      */
     public SwaggerMethodParser(Method swaggerMethod, String rawHost) {
-        this(RestProxyUtils.getOrCreateSwaggerInterfaceParser(swaggerMethod.getDeclaringClass(),
-            JacksonAdapter.createDefaultSerializerAdapter()), swaggerMethod, rawHost,
-            JacksonAdapter.createDefaultSerializerAdapter());
+        this(RestProxyUtils.getSwaggerInterfaceParser(swaggerMethod.getDeclaringClass()), swaggerMethod,
+            rawHost);
     }
 
-    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod, String rawHost,
-        SerializerAdapter serializer) {
-        this.serializer = serializer;
+    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod, String rawHost) {
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -310,9 +305,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments to use for scheme and host substitutions.
      * @param urlBuilder The {@link UrlBuilder} that will have its scheme and host set.
+     * @param serializer {@link SerializerAdapter} that is used to encode host substitutions.
      */
-    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
-        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder, SerializerAdapter serializer) {
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
+            serializer);
         final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
 
         if (substitutedHostParts.length >= 2) {
@@ -330,10 +327,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the path that will be used to complete the Swagger method's request.
      *
      * @param methodArguments the method arguments to use with the path substitutions
+     * @param serializer {@link SerializerAdapter} that is used to encode path substitutions
      * @return the path value with its placeholders replaced by the matching substitutions
      */
-    public String setPath(Object[] methodArguments) {
-        return applySubstitutions(relativePath, pathSubstitutions, methodArguments);
+    public String setPath(Object[] methodArguments, SerializerAdapter serializer) {
+        return applySubstitutions(relativePath, pathSubstitutions, methodArguments, serializer);
     }
 
     /**
@@ -342,9 +340,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
      * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
+     * @param serializer {@link SerializerAdapter} that is used to encode the query parameters.
      */
     @SuppressWarnings("unchecked")
-    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
+    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder,
+        SerializerAdapter serializer) {
         if (swaggerMethodArguments == null) {
             return;
         }
@@ -374,8 +374,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
      * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
+     * @param serializer {@link SerializerAdapter} that is used to serialize the header values.
      */
-    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders) {
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders, SerializerAdapter serializer) {
         for (HttpHeader header : headers) {
             httpHeaders.set(header.getName(), header.getValuesList());
         }
@@ -475,9 +476,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the object to be used as the value of the HTTP request.
      *
      * @param swaggerMethodArguments the method arguments to get the value object from
+     * @param serializer {@link SerializerAdapter} used to encode the request body if it's an
+     * {@code application/x-www-form-urlencoded} request.
      * @return the object that will be used as the body of the HTTP request
      */
-    public Object setBody(Object[] swaggerMethodArguments) {
+    public Object setBody(Object[] swaggerMethodArguments, SerializerAdapter serializer) {
         Object result = null;
 
         if (bodyContentMethodParameterIndex != null
@@ -592,7 +595,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
-                                      Object[] methodArguments) {
+                                      Object[] methodArguments, SerializerAdapter serializer) {
         String result = originalValue;
 
         if (methodArguments == null) {

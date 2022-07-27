@@ -5,7 +5,6 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -17,18 +16,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
-    private final SerializerAdapter serializer;
     private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface name.
      *
      * @param swaggerInterface The interface that will be parsed.
-     * @param serializer The serializer that will be used to serialize non-String header values and query values.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
-        this.serializer = serializer;
-
+    public SwaggerInterfaceParser(Class<?> swaggerInterface) {
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
         if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
             this.host = hostAnnotation.value();
@@ -52,8 +47,7 @@ public class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm ->
-            new SwaggerMethodParser(this, sm, getHost(), serializer));
+        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(this, sm, getHost()));
     }
 
     /**

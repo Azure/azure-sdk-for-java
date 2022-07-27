@@ -43,6 +43,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -72,6 +74,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SwaggerMethodParserTests {
+    private static final SerializerAdapter DEFAULT_SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+
     @Host("{test}")
     @ServiceInterface(name = "OperationMethods")
     interface OperationMethods {
@@ -118,7 +122,7 @@ public class SwaggerMethodParserTests {
         String expectedFullyQualifiedName) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
         assertEquals(expectedMethod, swaggerMethodParser.getHttpMethod());
-        assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null));
+        assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null, DEFAULT_SERIALIZER));
         assertEquals(expectedFullyQualifiedName, swaggerMethodParser.getFullyQualifiedMethodName());
     }
 
@@ -216,7 +220,7 @@ public class SwaggerMethodParserTests {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
         HttpHeaders actual = new HttpHeaders();
-        swaggerMethodParser.setHeaders(null, actual);
+        swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
         for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
@@ -252,7 +256,7 @@ public class SwaggerMethodParserTests {
     public void hostSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
         UrlBuilder urlBuilder = new UrlBuilder();
-        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder);
+        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -287,7 +291,7 @@ public class SwaggerMethodParserTests {
     public void schemeSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
         UrlBuilder urlBuilder = new UrlBuilder();
-        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder);
+        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -334,7 +338,7 @@ public class SwaggerMethodParserTests {
     @MethodSource("pathSubstitutionSupplier")
     public void pathSubstitution(Method method, Object[] arguments, String expectedPath) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
-        assertEquals(expectedPath, swaggerMethodParser.setPath(arguments));
+        assertEquals(expectedPath, swaggerMethodParser.setPath(arguments, DEFAULT_SERIALIZER));
     }
 
     private static Stream<Arguments> pathSubstitutionSupplier() throws NoSuchMethodException {
@@ -372,7 +376,7 @@ public class SwaggerMethodParserTests {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
         UrlBuilder urlBuilder = UrlBuilder.parse("https://raw.host.com");
-        swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder);
+        swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -416,7 +420,7 @@ public class SwaggerMethodParserTests {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
         HttpHeaders actual = new HttpHeaders();
-        swaggerMethodParser.setHeaders(arguments, actual);
+        swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
 
         for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.get(header.getName()), header.getValue());
@@ -480,7 +484,7 @@ public class SwaggerMethodParserTests {
         assertEquals(void.class, swaggerMethodParser.getReturnType());
         assertEquals(String.class, swaggerMethodParser.getBodyJavaType());
         assertEquals(expectedBodyContentType, swaggerMethodParser.getBodyContentType());
-        assertEquals(expectedBody, swaggerMethodParser.setBody(arguments));
+        assertEquals(expectedBody, swaggerMethodParser.setBody(arguments, DEFAULT_SERIALIZER));
     }
 
     private static Stream<Arguments> bodySubstitutionSupplier() throws NoSuchMethodException {
