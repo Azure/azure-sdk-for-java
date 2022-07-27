@@ -73,8 +73,6 @@ public class DataLakeServiceAsyncClient {
 
     private final AzureSasCredential sasToken;
 
-    private final FileSystemEncryptionScope fileSystemEncryptionScope;
-
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      *
@@ -83,11 +81,9 @@ public class DataLakeServiceAsyncClient {
      * @param serviceVersion The version of the service to receive requests.
      * @param accountName The storage account name.
      * @param blobServiceAsyncClient The underlying {@link BlobServiceAsyncClient}
-     * @param fileSystemEncryptionScope {@link FileSystemEncryptionScope} set on the file system.
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken,
-        FileSystemEncryptionScope fileSystemEncryptionScope) {
+        String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -100,8 +96,6 @@ public class DataLakeServiceAsyncClient {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
 
         this.sasToken = sasToken;
-
-        this.fileSystemEncryptionScope = fileSystemEncryptionScope;
     }
 
     /**
