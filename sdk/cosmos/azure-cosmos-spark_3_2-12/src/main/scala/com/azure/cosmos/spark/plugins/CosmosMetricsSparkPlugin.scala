@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark.plugins
 
-import com.azure.cosmos.spark.{CosmosClientMetrics, CosmosConfig, CosmosConfigNames}
+import com.azure.cosmos.spark.{CosmosClientMetrics, CosmosConfigNames}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.SparkContext
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
@@ -31,7 +31,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
       slf4jReporterEnabled = sc
         .getConf
-        .getBoolean(CosmosConfigNames.MetricsEnabledForSlf4j, true)
+        .getBoolean(CosmosConfigNames.MetricsEnabledForSlf4j, defaultValue = true)
 
       logInfo(s"CosmosSparkMetricsDriverPlugin initialized - Console enabled $slf4jReporterEnabled")
 
@@ -75,7 +75,8 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
         CosmosClientMetrics
           .registerDropwizardRegistry(ctx.executorID(), ctx.hostname(), dropWizardRegistry, slf4jReporterEnabled)
 
-        logInfo("CosmosSparkMetricsExecutorPlugin metrics registered")
+        logInfo(
+          s"CosmosSparkMetricsExecutorPlugin metrics registered - Slf4jReporterEnable: $slf4jReporterEnabled")
       }
 
       logInfo("CosmosSparkMetricsExecutorPlugin initialized")

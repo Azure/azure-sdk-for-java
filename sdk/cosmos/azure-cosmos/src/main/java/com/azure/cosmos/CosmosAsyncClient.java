@@ -83,7 +83,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final String accountTagValue;
     private final EnumSet<TagName> metricTagNames;
     private final boolean clientMetricsEnabled;
-    private final boolean clientTelemetryConfigEnabled;
+    private final boolean isSendClientTelemetryToServiceEnabled;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -108,7 +108,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.clientTelemetryConfig = builder.clientTelemetryConfig();
-        this.clientTelemetryConfigEnabled = ImplementationBridgeHelpers
+        this.isSendClientTelemetryToServiceEnabled = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
@@ -642,6 +642,11 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client) {
                     return client.clientMetricsEnabled;
+                }
+
+                @Override
+                public boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client) {
+                    return client.isSendClientTelemetryToServiceEnabled;
                 }
             }
         );

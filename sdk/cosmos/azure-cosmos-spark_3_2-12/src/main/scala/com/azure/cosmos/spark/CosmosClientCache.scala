@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.clienttelemetry.{ClientTelemetryMetrics, TagName}
+import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -137,7 +137,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
               .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
 
-        if (!CosmosClientMetrics.meterRegistry.getRegistries.isEmpty) {
+        if (CosmosClientMetrics.meterRegistry.isDefined) {
           val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
             .getOrElse("")
 
@@ -148,14 +148,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               if (customApplicationNameSuffix.isBlank) {
                 s"${CosmosClientMetrics.hostName}-${ctx.appName}"
               } else {
-                s"${customApplicationNameSuffix}-${CosmosClientMetrics.hostName}-${ctx.appName}"
+                s"$customApplicationNameSuffix-${CosmosClientMetrics.hostName}-${ctx.appName}"
               }
             case None => customApplicationNameSuffix
           }
 
-          builder.clientMetrics(CosmosClientMetrics.meterRegistry)
-          builder.clientCorrelationId(clientCorrelationId)
-          builder.metricTagNames(
+          builder.clientTelemetryConfig().clientMetrics(CosmosClientMetrics.meterRegistry.get)
+          builder.clientTelemetryConfig().clientCorrelationId(clientCorrelationId)
+          builder.clientTelemetryConfig().metricTagNames(
             s"${TagName.Container}, ${TagName.ClientCorrelationId}, ${TagName.Operation}, " +
               s"${TagName.OperationStatusCode}, ${TagName.PartitionKeyRangeId}, ${TagName.ServiceEndpoint}, " +
               s"${TagName.ServiceAddress}"
