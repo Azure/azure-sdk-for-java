@@ -114,7 +114,7 @@ public class AzureSdkMojo extends AbstractMojo {
             tracer.spanBuilder("azsdk-maven-build-tool")
                 .startSpan()
                 .end();
-
+            LOGGER.info(" !!!!!!!!!!!!!! " + version);
 
             CompletableResultCode completionCode = processor.forceFlush().join(30, TimeUnit.SECONDS);
             if (completionCode.isSuccess()) {
