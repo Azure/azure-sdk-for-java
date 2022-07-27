@@ -38,9 +38,9 @@ public class ServiceItemLease implements Lease {
 
     private String id;
     private String _etag;
-    private String LeaseToken;
-    private String Owner;
-    private String ContinuationToken;
+    private String leaseToken;
+    private String owner;
+    private String continuationToken;
 
     private Map<String, String> properties;
     private String timestamp;  // ExplicitTimestamp
@@ -57,9 +57,9 @@ public class ServiceItemLease implements Lease {
     {
         this.id = other.id;
         this._etag = other._etag;
-        this.LeaseToken = other.LeaseToken;
-        this.Owner = other.Owner;
-        this.ContinuationToken = other.ContinuationToken;
+        this.leaseToken = other.leaseToken;
+        this.owner = other.owner;
+        this.continuationToken = other.continuationToken;
         this.properties = other.properties;
         this.timestamp = other.timestamp;
         this._ts = other._ts;
@@ -85,27 +85,27 @@ public class ServiceItemLease implements Lease {
     }
 
     public String getLeaseToken() {
-        return this.LeaseToken;
+        return this.leaseToken;
     }
 
     public ServiceItemLease withLeaseToken(String leaseToken) {
-        this.LeaseToken = leaseToken;
+        this.leaseToken = leaseToken;
         return this;
     }
 
     @Override
     public String getOwner() {
-        return this.Owner;
+        return this.owner;
     }
 
     public ServiceItemLease withOwner(String owner) {
-        this.Owner = owner;
+        this.owner = owner;
         return this;
     }
 
     @Override
     public String getContinuationToken() {
-        return this.ContinuationToken;
+        return this.continuationToken;
     }
 
     public ChangeFeedState getContinuationState(
@@ -119,7 +119,7 @@ public class ServiceItemLease implements Lease {
             containerRid,
             feedRange,
             ChangeFeedMode.INCREMENTAL,
-            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.continuationToken, feedRange),
             null);
     }
 
@@ -129,7 +129,7 @@ public class ServiceItemLease implements Lease {
     }
 
     public ServiceItemLease withContinuationToken(String continuationToken) {
-        this.ContinuationToken = continuationToken;
+        this.continuationToken = continuationToken;
         return this;
     }
 
