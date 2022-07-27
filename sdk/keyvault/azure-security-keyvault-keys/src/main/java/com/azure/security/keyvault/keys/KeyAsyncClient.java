@@ -11,28 +11,13 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
-import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
-import com.azure.security.keyvault.keys.implementation.KeyImportRequestParameters;
-import com.azure.security.keyvault.keys.implementation.KeyReleaseParameters;
-import com.azure.security.keyvault.keys.implementation.KeyRequestAttributes;
-import com.azure.security.keyvault.keys.implementation.KeyRequestParameters;
-import com.azure.security.keyvault.keys.implementation.KeyRestoreRequestParameters;
-import com.azure.security.keyvault.keys.implementation.KeyService;
-import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -51,16 +36,12 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * The {@link KeyAsyncClient} provides asynchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault.
@@ -81,22 +62,11 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see KeyClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
+@ServiceClient(builder = KeyClientBuilder.class, isAsync = true)
 public final class KeyAsyncClient {
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
-
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
-
-    private final String vaultUrl;
-    private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
-    private final HttpPipeline pipeline;
-    private final KeyServiceVersion keyServiceVersion;
+    private final KeyClientImpl keyClient;
 
     /**
      * Creates a {@link KeyAsyncClient} that uses an {@link HttpPipeline} to service requests.
@@ -106,13 +76,7 @@ public final class KeyAsyncClient {
      * @param version {@link KeyServiceVersion} of the service to be used when making requests.
      */
     KeyAsyncClient(URL vaultUrl, HttpPipeline pipeline, KeyServiceVersion version) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-
-        this.vaultUrl = vaultUrl.toString();
-        this.service = RestProxy.create(KeyService.class, pipeline);
-        this.pipeline = pipeline;
-        this.keyServiceVersion = version;
+        this.keyClient = new KeyClientImpl(vaultUrl.toString(), pipeline, version);
     }
 
     /**
@@ -121,7 +85,7 @@ public final class KeyAsyncClient {
      * @return The vault endpoint url
      */
     public String getVaultUrl() {
-        return vaultUrl;
+        return keyClient.getVaultUrl();
     }
 
     /**
@@ -130,7 +94,7 @@ public final class KeyAsyncClient {
      * @return The {@link HttpPipeline pipeline}.
      */
     HttpPipeline getHttpPipeline() {
-        return this.pipeline;
+        return keyClient.getHttpPipeline();
     }
 
     /**
@@ -171,7 +135,7 @@ public final class KeyAsyncClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyAsyncClient getCryptographyAsyncClient(String keyName) {
-        return getCryptographyClientBuilder(keyName, null).buildAsyncClient();
+        return keyClient.getCryptographyClientBuilder(keyName, null).buildAsyncClient();
     }
 
     /**
@@ -186,34 +150,7 @@ public final class KeyAsyncClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyAsyncClient getCryptographyAsyncClient(String keyName, String keyVersion) {
-        return getCryptographyClientBuilder(keyName, keyVersion).buildAsyncClient();
-    }
-
-    CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion) {
-        if (CoreUtils.isNullOrEmpty(keyName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
-        }
-
-        return new CryptographyClientBuilder()
-            .keyIdentifier(generateKeyId(keyName, keyVersion))
-            .pipeline(pipeline)
-            .serviceVersion(CryptographyServiceVersion.valueOf(keyServiceVersion.name()));
-    }
-
-    String generateKeyId(String keyName, String keyVersion) {
-        StringBuilder stringBuilder = new StringBuilder(vaultUrl);
-
-        if (!vaultUrl.endsWith("/")) {
-            stringBuilder.append("/");
-        }
-
-        stringBuilder.append("keys/").append(keyName);
-
-        if (!CoreUtils.isNullOrEmpty(keyVersion)) {
-            stringBuilder.append("/").append(keyVersion);
-        }
-
-        return stringBuilder.toString();
+        return keyClient.getCryptographyClientBuilder(keyName, keyVersion).buildAsyncClient();
     }
 
     /**
@@ -250,7 +187,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> createKey(String name, KeyType keyType) {
         try {
-            return withContext(context -> createKeyWithResponse(name, keyType, context))
+            return withContext(context -> keyClient.createKeyWithResponseAsync(name, keyType, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -298,20 +235,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> createKeyWithResponse(CreateKeyOptions createKeyOptions) {
         try {
-            return withContext(context -> createKeyWithResponse(createKeyOptions, context));
+            return withContext(context -> keyClient.createKeyWithResponseAsync(createKeyOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> createKeyWithResponse(String name, KeyType keyType, Context context) {
-        KeyRequestParameters parameters = new KeyRequestParameters().setKty(keyType);
-        return service.createKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Created key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create key - {}", name, error));
     }
 
     /**
@@ -363,24 +290,6 @@ public final class KeyAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
-        Objects.requireNonNull(createKeyOptions, "The key create options parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(createKeyOptions.getKeyType())
-            .setKeyOps(createKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
-            .setTags(createKeyOptions.getTags())
-            .setReleasePolicy(createKeyOptions.getReleasePolicy());
-
-        return service.createKey(vaultUrl, createKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating key - {}", createKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Created key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create key - {}", createKeyOptions.getName(), error));
     }
 
     /**
@@ -483,30 +392,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions) {
         try {
-            return withContext(context -> createRsaKeyWithResponse(createRsaKeyOptions, context));
+            return withContext(context -> keyClient.createRsaKeyWithResponseAsync(createRsaKeyOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
-        Objects.requireNonNull(createRsaKeyOptions, "The Rsa key options parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(createRsaKeyOptions.getKeyType())
-            .setKeySize(createRsaKeyOptions.getKeySize())
-            .setKeyOps(createRsaKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions))
-            .setPublicExponent(createRsaKeyOptions.getPublicExponent())
-            .setTags(createRsaKeyOptions.getTags())
-            .setReleasePolicy(createRsaKeyOptions.getReleasePolicy());
-
-        return service.createKey(vaultUrl, createRsaKeyOptions.getName(), keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating Rsa key - {}", createRsaKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Created Rsa key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create Rsa key - {}", createRsaKeyOptions.getName(), error));
     }
 
     /**
@@ -611,29 +500,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions) {
         try {
-            return withContext(context -> createEcKeyWithResponse(createEcKeyOptions, context));
+            return withContext(context -> keyClient.createKeyWithResponseAsync(createEcKeyOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        Objects.requireNonNull(createEcKeyOptions, "The Ec key options cannot be null.");
-        context = context == null ? Context.NONE : context;
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(createEcKeyOptions.getKeyType())
-            .setCurve(createEcKeyOptions.getCurveName())
-            .setKeyOps(createEcKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions))
-            .setTags(createEcKeyOptions.getTags())
-            .setReleasePolicy(createEcKeyOptions.getReleasePolicy());
-
-        return service.createKey(vaultUrl, createEcKeyOptions.getName(), keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating Ec key - {}", createEcKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Created Ec key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create Ec key - {}", createEcKeyOptions.getName(), error));
     }
 
     /**
@@ -729,32 +599,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions) {
         try {
-            return withContext(context -> createOctKeyWithResponse(createOctKeyOptions, context));
+            return withContext(context -> keyClient.createOctKeyWithResponseAsync(createOctKeyOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
-        Objects.requireNonNull(createOctKeyOptions, "The create key options cannot be null.");
-
-        context = context == null ? Context.NONE : context;
-
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(createOctKeyOptions.getKeyType())
-            .setKeySize(createOctKeyOptions.getKeySize())
-            .setKeyOps(createOctKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createOctKeyOptions))
-            .setTags(createOctKeyOptions.getTags())
-            .setReleasePolicy(createOctKeyOptions.getReleasePolicy());
-
-        return service.createKey(vaultUrl, createOctKeyOptions.getName(), keyServiceVersion.getVersion(),
-                 ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating symmetric key - {}", createOctKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Created symmetric key - {}", response.getValue().getName()))
-            .doOnError(error ->
-                logger.warning("Failed to create symmetric key - {}", createOctKeyOptions.getName(), error));
     }
 
     /**
@@ -786,20 +634,13 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> importKey(String name, JsonWebKey keyMaterial) {
         try {
-            return withContext(context -> importKeyWithResponse(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> keyClient.importKeyWithResponseAsync(name, keyMaterial, context))
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultKey>> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
-        KeyImportRequestParameters parameters = new KeyImportRequestParameters().setKey(keyMaterial);
-        return service.importKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
-                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Importing key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Imported key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to import key - {}", name, error));
-    }
 
     /**
      * Imports an externally created {@link JsonWebKey key} and stores it in the key vault. The import key operation
@@ -885,29 +726,12 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> importKeyWithResponse(ImportKeyOptions importKeyOptions) {
         try {
-            return withContext(context -> importKeyWithResponse(importKeyOptions, context));
+            return withContext(context -> keyClient.importKeyWithResponseAsync(importKeyOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<KeyVaultKey>> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
-        Objects.requireNonNull(importKeyOptions, "The key import configuration parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        KeyImportRequestParameters parameters = new KeyImportRequestParameters()
-            .setKey(importKeyOptions.getKey())
-            .setHsm(importKeyOptions.isHardwareProtected())
-            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
-            .setTags(importKeyOptions.getTags())
-            .setReleasePolicy(importKeyOptions.getReleasePolicy());
-
-        return service.importKey(vaultUrl, importKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Importing key - {}", importKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Imported key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to import key - {}", importKeyOptions.getName(), error));
-    }
 
     /**
      * Gets the public part of the specified {@link KeyVaultKey key} and key version. The get key operation is
@@ -982,19 +806,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version) {
         try {
-            return withContext(context -> getKeyWithResponse(name, version == null ? "" : version, context));
+            return withContext(context -> keyClient.getKeyWithResponseAsync(name, version == null ? "" : version, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getKey(vaultUrl, name, version, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Retrieved key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
     /**
@@ -1076,7 +891,8 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, KeyOperation... keyOperations) {
         try {
-            return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context, keyOperations));
+            return withContext(context -> keyClient
+                .updateKeyPropertiesWithResponseAsync(keyProperties, context, keyOperations));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1131,27 +947,6 @@ public final class KeyAsyncClient {
         }
     }
 
-    Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context,
-                                                                KeyOperation... keyOperations) {
-        Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
-        context = context == null ? Context.NONE : context;
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties))
-            .setReleasePolicy(keyProperties.getReleasePolicy());
-
-        if (keyOperations.length > 0) {
-            parameters.setKeyOps(Arrays.asList(keyOperations));
-        }
-
-        return service.updateKey(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
-                keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Updating key - {}", keyProperties.getName()))
-            .doOnSuccess(response -> logger.verbose("Updated key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update key - {}", keyProperties.getName(), error));
-    }
-
     /**
      * Deletes a {@link KeyVaultKey key} of any type from the key vault. If soft-delete is enabled on the key vault then
      * the {@link KeyVaultKey key} is placed in the deleted state and requires to be purged for permanent deletion
@@ -1185,48 +980,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(name),
-            createPollOperation(name),
-            (context, firstResponse) -> Mono.empty(),
-            (context) -> Mono.empty());
-    }
-
-    private Function<PollingContext<DeletedKey>, Mono<DeletedKey>> activationOperation(String name) {
-        return (pollingContext) -> withContext(context -> deleteKeyWithResponse(name, context))
-            .flatMap(deletedKeyResponse -> Mono.just(deletedKeyResponse.getValue()));
-    }
-
-    /*
-     * Polling operation to poll on create delete key operation status.
-     */
-    private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getDeletedKeyPoller(vaultUrl, keyName, keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .flatMap(deletedKeyResponse -> {
-                    if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                            pollingContext.getLatestResponse().getValue())));
-                    }
-                    return Mono.defer(() ->
-                        Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                            deletedKeyResponse.getValue())));
-                })
-                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
-                // operation. In both cases deletion operation was successful when activation operation succeeded before
-                // reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    pollingContext.getLatestResponse().getValue()));
-    }
-
-    Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
-        return service.deleteKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Deleted key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete key - {}", name, error));
+        return keyClient.beginDeleteKeyAsync(name);
     }
 
     /**
@@ -1288,19 +1042,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
         try {
-            return withContext(context -> getDeletedKeyWithResponse(name, context));
+            return withContext(context -> keyClient.getDeletedKeyWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getDeletedKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving deleted key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Retrieved deleted key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
     /**
@@ -1362,19 +1107,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
         try {
-            return withContext(context -> purgeDeletedKeyWithResponse(name, context));
+            return withContext(context -> keyClient.purgeDeletedKeyWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> purgeDeletedKeyWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.purgeDeletedKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Purging deleted key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Purged deleted key - {}", name))
-            .doOnError(error -> logger.warning("Failed to purge deleted key - {}", name, error));
     }
 
     /**
@@ -1406,46 +1142,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new PollerFlux<>(getDefaultPollingInterval(),
-            recoverActivationOperation(name),
-            createRecoverPollOperation(name),
-            (context, firstResponse) -> Mono.empty(),
-            context -> Mono.empty());
-    }
-
-    private Function<PollingContext<KeyVaultKey>, Mono<KeyVaultKey>> recoverActivationOperation(String name) {
-        return (pollingContext) -> withContext(context -> recoverDeletedKeyWithResponse(name, context))
-            .flatMap(keyResponse -> Mono.just(keyResponse.getValue()));
-    }
-
-    /*
-     * Polling operation to poll on create delete key operation status.
-     */
-    private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
-        return pollingContext ->
-            withContext(context -> service.getKeyPoller(vaultUrl, keyName, "", keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                .flatMap(keyResponse -> {
-                    if (keyResponse.getStatusCode() == 404) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                            pollingContext.getLatestResponse().getValue())));
-                    }
-                    return Mono.defer(() -> Mono.just(
-                        new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, keyResponse.getValue())));
-                })
-                // This means permission is not granted for the get deleted key operation. In both cases deletion
-                // operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    pollingContext.getLatestResponse().getValue()));
-    }
-
-    Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponse(String name, Context context) {
-        return service.recoverDeletedKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Recovering deleted key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Recovered deleted key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to recover deleted key - {}", name, error));
+        return keyClient.beginRecoverDeletedKeyAsync(name);
     }
 
     /**
@@ -1525,22 +1222,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
         try {
-            return withContext(context -> backupKeyWithResponse(name, context));
+            return withContext(context -> keyClient.backupKeyWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<byte[]>> backupKeyWithResponse(String name, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.backupKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Backing up key - {}", name))
-            .doOnSuccess(response -> logger.verbose("Backed up key - {}", name))
-            .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
-            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<>(base64URLResponse.getRequest(),
-                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(),
-                base64URLResponse.getValue().getValue())));
     }
 
     /**
@@ -1622,20 +1307,10 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponse(byte[] backup) {
         try {
-            return withContext(context -> restoreKeyBackupWithResponse(backup, context));
+            return withContext(context -> keyClient.restoreKeyBackupWithResponseAsync(backup, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponse(byte[] backup, Context context) {
-        context = context == null ? Context.NONE : context;
-        KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
-        return service.restoreKey(vaultUrl, keyServiceVersion.getVersion(), parameters, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Attempting to restore key"))
-            .doOnSuccess(response -> logger.verbose("Restored Key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to restore key - {}", error));
     }
 
     /**
@@ -1666,59 +1341,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeys() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(this::listKeysFirstPage),
-                continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<KeyProperties> listPropertiesOfKeys(Context context) {
-        return new PagedFlux<>(
-            () -> listKeysFirstPage(context),
-            continuationToken -> listKeysNextPage(continuationToken, context));
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listPropertiesOfKeys()}.
-     *
-     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
-     * of the list operations.
-     *
-     * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
-     * results.
-     */
-    private Mono<PagedResponse<KeyProperties>> listKeysNextPage(String continuationToken, Context context) {
-        try {
-            return service.getKeys(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next keys page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next keys page - Page {} ", continuationToken))
-                .doOnError(error ->
-                    logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Calls the service and retrieve first page result. It makes one call and retrieve
-     * {@link KeyAsyncClient#DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
-        try {
-            return service.getKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing keys"))
-                .doOnSuccess(response -> logger.verbose("Listed keys"))
-                .doOnError(error -> logger.warning("Failed to list keys", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return keyClient.listPropertiesOfKeys();
     }
 
     /**
@@ -1743,59 +1366,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(this::listDeletedKeysFirstPage),
-                continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<DeletedKey> listDeletedKeys(Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedKeysFirstPage(context),
-            continuationToken -> listDeletedKeysNextPage(continuationToken, context));
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listDeletedKeys()}.
-     *
-     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to
-     * one of the list operations.
-     *
-     * @return A {@link Mono} of {@link PagedResponse} containing {@link DeletedKey} instances from the next page of
-     * results.
-     */
-    private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPage(String continuationToken, Context context) {
-        try {
-            return service.getDeletedKeys(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next deleted keys page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next deleted keys page - Page {} ", continuationToken))
-                .doOnError(error ->
-                    logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Calls the service and retrieve first page result. It makes one call and retrieve
-     * {@link KeyAsyncClient#DEFAULT_MAX_PAGE_RESULTS} values.
-     */
-    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
-        try {
-            return service.getDeletedKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
-                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing deleted keys"))
-                .doOnSuccess(response -> logger.verbose("Listed deleted keys"))
-                .doOnError(error -> logger.warning("Failed to list deleted keys", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return keyClient.listDeletedKeys();
     }
 
     /**
@@ -1830,55 +1401,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listKeyVersionsFirstPage(name, context)),
-                continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return new PagedFlux<>(
-            () -> listKeyVersionsFirstPage(name, context),
-            continuationToken -> listKeyVersionsNextPage(continuationToken, context));
-    }
-
-    private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPage(String name, Context context) {
-        try {
-            return service.getKeyVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
-                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing key versions - {}", name))
-                .doOnSuccess(response -> logger.verbose("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning("Failed to list key versions - {}", name, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listPropertiesOfKeyVersions(String)}.
-     *
-     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
-     * of the list operations.
-     *
-     * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
-     * results.
-     */
-    private Mono<PagedResponse<KeyProperties>> listKeyVersionsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getKeys(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next key versions page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next key versions page - Page {} ", continuationToken))
-                .doOnError(error ->
-                    logger.warning("Failed to list next key versions page - Page {} ", continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return keyClient.listPropertiesOfKeyVersions(name);
     }
 
     /**
@@ -1903,7 +1426,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> getRandomBytes(int count) {
         try {
-            return withContext(context -> getRandomBytesWithResponse(count, context)
+            return withContext(context -> keyClient.getRandomBytesWithResponseAsync(count, context)
                 .flatMap(FluxUtil::toMono));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -1933,21 +1456,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> getRandomBytesWithResponse(int count) {
         try {
-            return withContext(context -> getRandomBytesWithResponse(count, context));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    Mono<Response<byte[]>> getRandomBytesWithResponse(int count, Context context) {
-        try {
-            return service.getRandomBytes(vaultUrl, keyServiceVersion.getVersion(),
-                    new GetRandomBytesRequest().setCount(count), "application/json",
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
-                .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
-                .doOnError(error -> logger.warning("Failed to get random bytes - {}", error))
-                .map(response -> new SimpleResponse<>(response, response.getValue().getBytes()));
+            return withContext(context -> keyClient.getRandomBytesWithResponseAsync(count, context));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -2072,36 +1581,7 @@ public final class KeyAsyncClient {
                                                                    ReleaseKeyOptions releaseKeyOptions) {
         try {
             return withContext(context ->
-                releaseKeyWithResponse(name, version, targetAttestationToken, releaseKeyOptions, context));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    Mono<Response<ReleaseKeyResult>> releaseKeyWithResponse(String name, String version, String targetAttestationToken,
-                                                            ReleaseKeyOptions releaseKeyOptions, Context context) {
-        try {
-            if (CoreUtils.isNullOrEmpty(name)) {
-                return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
-            }
-
-            if (CoreUtils.isNullOrEmpty(targetAttestationToken)) {
-                return monoError(logger,
-                    new IllegalArgumentException("'targetAttestationToken' cannot be null or empty"));
-            }
-
-            releaseKeyOptions = releaseKeyOptions == null ? new ReleaseKeyOptions() : releaseKeyOptions;
-
-            KeyReleaseParameters keyReleaseParameters = new KeyReleaseParameters()
-                .setTargetAttestationToken(targetAttestationToken)
-                .setAlgorithm(releaseKeyOptions.getAlgorithm())
-                .setNonce(releaseKeyOptions.getNonce());
-
-            return service.release(vaultUrl, name, version, keyServiceVersion.getVersion(), keyReleaseParameters,
-                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Releasing key with name %s and version %s.", name, version))
-                .doOnSuccess(response -> logger.verbose("Released key with name %s and version %s.", name, version))
-                .doOnError(error -> logger.warning("Failed to release key - {}", error));
+                keyClient.releaseKeyWithResponseAsync(name, version, targetAttestationToken, releaseKeyOptions, context));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -2168,23 +1648,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> rotateKeyWithResponse(String name) {
         try {
-            return withContext(context -> rotateKeyWithResponse(name, context));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    Mono<Response<KeyVaultKey>> rotateKeyWithResponse(String name, Context context) {
-        try {
-            if (CoreUtils.isNullOrEmpty(name)) {
-                return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
-            }
-
-            return service.rotateKey(vaultUrl, name, keyServiceVersion.getVersion(), "application/json",
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Rotating key with name %s.", name))
-                .doOnSuccess(response -> logger.verbose("Rotated key with name %s.", name))
-                .doOnError(error -> logger.warning("Failed to rotate key - {}", error));
+            return withContext(context -> keyClient.rotateKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -2251,23 +1715,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyWithResponse(String keyName) {
         try {
-            return withContext(context -> getKeyRotationPolicyWithResponse(keyName, context));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyWithResponse(String keyName, Context context) {
-        try {
-            if (CoreUtils.isNullOrEmpty(keyName)) {
-                return monoError(logger, new IllegalArgumentException("'keyName' cannot be null or empty"));
-            }
-
-            return service.getKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(), "application/json",
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Retrieving key rotation policy for key with name.", keyName))
-                .doOnSuccess(response -> logger.verbose("Retrieved key rotation policy for key with name.", keyName))
-                .doOnError(error -> logger.warning("Failed to retrieve key rotation policy - {}", error));
+            return withContext(context -> keyClient.getKeyRotationPolicyWithResponseAsync(keyName, context));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -2364,25 +1812,7 @@ public final class KeyAsyncClient {
                                                                                  KeyRotationPolicy keyRotationPolicy) {
         try {
             return withContext(context ->
-                updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, context));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponse(String keyName,
-                                                                          KeyRotationPolicy keyRotationPolicy,
-                                                                          Context context) {
-        try {
-            if (CoreUtils.isNullOrEmpty(keyName)) {
-                return monoError(logger, new IllegalArgumentException("'keyName' cannot be null or empty"));
-            }
-
-            return service.updateKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(), keyRotationPolicy,
-                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Updating key rotation policy for key with name.", keyName))
-                .doOnSuccess(response -> logger.verbose("Updated key rotation policy for key with name.", keyName))
-                .doOnError(error -> logger.warning("Failed to retrieve key rotation policy - {}", error));
+                keyClient.updateKeyRotationPolicyWithResponseAsync(keyName, keyRotationPolicy, context));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

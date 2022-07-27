@@ -30,6 +30,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.keys.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.keys.models.KeyVaultKeyIdentifier;
 
 import java.net.MalformedURLException;
@@ -155,7 +156,9 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildAsyncClient());
+        KeyAsyncClient asyncClient = buildAsyncClient();
+        KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
+        return new KeyClient(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(), serviceVersion);
     }
 
     /**

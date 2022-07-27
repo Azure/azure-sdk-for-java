@@ -16,7 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
-import com.azure.security.keyvault.keys.implementation.KeyService;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -52,17 +52,19 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * @see KeyClientBuilder
  * @see PagedIterable
  */
-@ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
+@ServiceClient(builder = KeyClientBuilder.class)
 public final class KeyClient {
-    private final KeyAsyncClient client;
+    private final KeyClientImpl keyClient;
 
     /**
-     * Creates a {@link KeyClient} that uses a {@link KeyAsyncClient} to service requests.
+     * Creates a {@link KeyClient} that uses an {@link HttpPipeline} to service requests.
      *
-     * @param client The {@link KeyAsyncClient} that the client routes its request through.
+     * @param vaultUrl URL for the Azure Key Vault service.
+     * @param pipeline {@link HttpPipeline} that the HTTP requests and responses will flow through.
+     * @param version {@link KeyServiceVersion} of the service to be used when making requests.
      */
-    KeyClient(KeyAsyncClient client) {
-        this.client = client;
+    KeyClient(String  vaultUrl, HttpPipeline pipeline, KeyServiceVersion version) {
+        this.keyClient = new KeyClientImpl(vaultUrl, pipeline, version);
     }
 
     /**
@@ -71,7 +73,7 @@ public final class KeyClient {
      * @return The vault endpoint url.
      */
     public String getVaultUrl() {
-        return client.getVaultUrl();
+        return keyClient.getVaultUrl();
     }
 
     /**
@@ -94,7 +96,7 @@ public final class KeyClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyClient getCryptographyClient(String keyName) {
-        return client.getCryptographyClientBuilder(keyName, null).buildClient();
+        return keyClient.getCryptographyClientBuilder(keyName, null).buildClient();
     }
 
     /**
@@ -109,7 +111,7 @@ public final class KeyClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
-        return client.getCryptographyClientBuilder(keyName, keyVersion).buildClient();
+        return keyClient.getCryptographyClientBuilder(keyName, keyVersion).buildClient();
     }
 
     /**
@@ -232,7 +234,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
-        return client.createKeyWithResponse(createKeyOptions, context).block();
+        return keyClient.createKeyWithResponse(createKeyOptions, context);
     }
 
     /**
@@ -324,7 +326,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
-        return client.createRsaKeyWithResponse(createRsaKeyOptions, context).block();
+        return keyClient.createRsaKeyWithResponse(createRsaKeyOptions, context);
     }
 
     /**
@@ -419,7 +421,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        return client.createEcKeyWithResponse(createEcKeyOptions, context).block();
+        return keyClient.createEcKeyWithResponse(createEcKeyOptions, context);
     }
 
     /**
@@ -505,7 +507,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
-        return client.createOctKeyWithResponse(createOctKeyOptions, context).block();
+        return keyClient.createOctKeyWithResponse(createOctKeyOptions, context);
     }
 
     /**
@@ -619,7 +621,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
-        return client.importKeyWithResponse(importKeyOptions, context).block();
+        return keyClient.importKeyWithResponse(importKeyOptions, context);
     }
 
     /**
@@ -691,7 +693,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
-        return client.getKeyWithResponse(name, version, context).block();
+        return keyClient.getKeyWithResponse(name, version, context);
     }
 
     /**
@@ -807,7 +809,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context,
                                                                  KeyOperation... keyOperations) {
-        return client.updateKeyPropertiesWithResponse(keyProperties, context, keyOperations).block();
+        return keyClient.updateKeyPropertiesWithResponse(keyProperties, context, keyOperations);
     }
 
     /**
@@ -849,7 +851,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
-        return client.beginDeleteKey(name).getSyncPoller();
+        return keyClient.beginDeleteKeyAsync(name).getSyncPoller();
     }
 
     /**
@@ -906,7 +908,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
-        return client.getDeletedKeyWithResponse(name, context).block();
+        return keyClient.getDeletedKeyWithResponse(name, context);
     }
 
     /**
@@ -959,7 +961,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedKeyWithResponse(String name, Context context) {
-        return client.purgeDeletedKeyWithResponse(name, context).block();
+        return keyClient.purgeDeletedKeyWithResponse(name, context);
     }
 
     /**
@@ -995,7 +997,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return client.beginRecoverDeletedKey(name).getSyncPoller();
+        return keyClient.beginRecoverDeletedKeyAsync(name).getSyncPoller();
     }
 
     /**
@@ -1068,7 +1070,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
-        return client.backupKeyWithResponse(name, context).block();
+        return keyClient.backupKeyWithResponse(name, context);
     }
 
     /**
@@ -1143,7 +1145,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, Context context) {
-        return client.restoreKeyBackupWithResponse(backup, context).block();
+        return keyClient.restoreKeyBackupWithResponse(backup, context);
     }
 
     /**
@@ -1243,7 +1245,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
-        return new PagedIterable<>(client.listPropertiesOfKeys(context));
+        return new PagedIterable<>(keyClient.listPropertiesOfKeys(context));
     }
 
     /**
@@ -1322,7 +1324,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
-        return new PagedIterable<>(client.listDeletedKeys(context));
+        return new PagedIterable<>(keyClient.listDeletedKeys(context));
     }
 
     /**
@@ -1421,7 +1423,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));
+        return new PagedIterable<>(keyClient.listPropertiesOfKeyVersions(name, context));
     }
 
     /**
@@ -1445,7 +1447,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getRandomBytes(int count) {
-        return client.getRandomBytes(count).block();
+        return getRandomBytesWithResponse(count, Context.NONE).getValue();
     }
 
     /**
@@ -1474,7 +1476,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> getRandomBytesWithResponse(int count, Context context) {
-        return client.getRandomBytesWithResponse(count, context).block();
+        return keyClient.getRandomBytesWithResponse(count, context);
     }
 
     /**
@@ -1504,7 +1506,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String targetAttestationToken) {
-        return client.releaseKey(name, targetAttestationToken).block();
+        return releaseKeyWithResponse(name, "", targetAttestationToken, new ReleaseKeyOptions(), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1538,7 +1541,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult releaseKey(String name, String version, String targetAttestationToken) {
-        return client.releaseKey(name, version, targetAttestationToken).block();
+        return releaseKeyWithResponse(name, version, targetAttestationToken, new ReleaseKeyOptions(), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1585,7 +1589,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String targetAttestationToken,
                                                              ReleaseKeyOptions releaseKeyOptions, Context context) {
-        return client.releaseKeyWithResponse(name, version, targetAttestationToken, releaseKeyOptions, context).block();
+        return keyClient.releaseKeyWithResponse(name, version, targetAttestationToken, releaseKeyOptions, context);
     }
 
     /**
@@ -1613,7 +1617,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey rotateKey(String name) {
-        return client.rotateKey(name).block();
+        return rotateKeyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -1646,7 +1650,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> rotateKeyWithResponse(String name, Context context) {
-        return client.rotateKeyWithResponse(name, context).block();
+        return keyClient.rotateKeyWithResponse(name, context);
     }
 
     /**
@@ -1673,7 +1677,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyRotationPolicy getKeyRotationPolicy(String keyName) {
-        return client.getKeyRotationPolicy(keyName).block();
+        return getKeyRotationPolicyWithResponse(keyName, Context.NONE).getValue();
     }
 
     /**
@@ -1705,7 +1709,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, Context context) {
-        return client.getKeyRotationPolicyWithResponse(keyName, context).block();
+        return keyClient.getKeyRotationPolicyWithResponse(keyName, context);
     }
 
     /**
@@ -1747,7 +1751,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyRotationPolicy updateKeyRotationPolicy(String keyName, KeyRotationPolicy keyRotationPolicy) {
-        return client.updateKeyRotationPolicy(keyName, keyRotationPolicy).block();
+        return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, Context.NONE).getValue();
     }
 
     /**
@@ -1795,6 +1799,6 @@ public final class KeyClient {
     public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String keyName,
                                                                            KeyRotationPolicy keyRotationPolicy,
                                                                            Context context) {
-        return client.updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, context).block();
+        return keyClient.updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, context);
     }
 }
