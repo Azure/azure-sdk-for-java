@@ -76,7 +76,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SwaggerMethodParserTests {
     private static final SerializerAdapter DEFAULT_SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "OperationMethods")
     interface OperationMethods {
         void noMethod();
@@ -112,15 +112,14 @@ public class SwaggerMethodParserTests {
     @Test
     public void noHttpMethodAnnotation() throws NoSuchMethodException {
         Method noHttpMethodAnnotation = OperationMethods.class.getDeclaredMethod("noMethod");
-        assertThrows(MissingRequiredAnnotationException.class, () ->
-            new SwaggerMethodParser(noHttpMethodAnnotation, "s://raw.host.com"));
+        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerMethodParser(noHttpMethodAnnotation));
     }
 
     @ParameterizedTest
     @MethodSource("httpMethodSupplier")
     public void httpMethod(Method method, HttpMethod expectedMethod, String expectedRelativePath,
         String expectedFullyQualifiedName) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         assertEquals(expectedMethod, swaggerMethodParser.getHttpMethod());
         assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null, DEFAULT_SERIALIZER));
         assertEquals(expectedFullyQualifiedName, swaggerMethodParser.getFullyQualifiedMethodName());
@@ -148,7 +147,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "WireTypesMethods")
     interface WireTypesMethods {
         @Get("test")
@@ -178,7 +177,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("wireTypesSupplier")
     public void wireTypes(Method method, Class<?> expectedWireType) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         assertEquals(expectedWireType, swaggerMethodParser.getReturnValueWireType());
     }
 
@@ -195,7 +194,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "HeaderMethods")
     interface HeaderMethods {
         @Get("test")
@@ -217,7 +216,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("headersSupplier")
     public void headers(Method method, HttpHeaders expectedHeaders) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
@@ -238,7 +237,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "HostSubstitutionMethods")
     interface HostSubstitutionMethods {
         @Get("test")
@@ -254,9 +253,10 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("hostSubstitutionSupplier")
     public void hostSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder, DEFAULT_SERIALIZER);
+        SwaggerMethodParser.setSchemeAndHost(rawHost, swaggerMethodParser.hostSubstitutions, arguments, urlBuilder,
+            DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -289,9 +289,10 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("schemeSubstitutionSupplier")
     public void schemeSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder, DEFAULT_SERIALIZER);
+        SwaggerMethodParser.setSchemeAndHost(rawHost, swaggerMethodParser.hostSubstitutions, arguments, urlBuilder,
+            DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -321,7 +322,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "PathSubstitutionMethods")
     interface PathSubstitutionMethods {
         @Get("{sub1}")
@@ -337,7 +338,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("pathSubstitutionSupplier")
     public void pathSubstitution(Method method, Object[] arguments, String expectedPath) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         assertEquals(expectedPath, swaggerMethodParser.setPath(arguments, DEFAULT_SERIALIZER));
     }
 
@@ -358,7 +359,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "QuerySubstitutionMethods")
     interface QuerySubstitutionMethods {
         @Get("test")
@@ -373,7 +374,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("querySubstitutionSupplier")
     public void querySubstitution(Method method, Object[] arguments, String expectedUrl) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         UrlBuilder urlBuilder = UrlBuilder.parse("https://raw.host.com");
         swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder, DEFAULT_SERIALIZER);
@@ -400,7 +401,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "HeaderSubstitutionMethods")
     interface HeaderSubstitutionMethods {
         @Get("test")
@@ -417,7 +418,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("headerSubstitutionSupplier")
     public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
@@ -454,7 +455,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "BodySubstitutionMethods")
     interface BodySubstitutionMethods {
         @Get("test")
@@ -479,7 +480,7 @@ public class SwaggerMethodParserTests {
     @MethodSource("bodySubstitutionSupplier")
     public void bodySubstitution(Method method, Object[] arguments, String expectedBodyContentType,
         Object expectedBody) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         assertEquals(void.class, swaggerMethodParser.getReturnType());
         assertEquals(String.class, swaggerMethodParser.getBodyJavaType());
@@ -534,7 +535,7 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithContext", Context.class);
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         Context context = new Context("key", "value");
 
@@ -554,7 +555,7 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         RequestOptions bodyOptions = new RequestOptions()
             .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
@@ -578,7 +579,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "ExpectedStatusCodeMethods")
     interface ExpectedStatusCodeMethods {
         @Get("test")
@@ -597,7 +598,7 @@ public class SwaggerMethodParserTests {
     @MethodSource("expectedStatusCodeSupplier")
     public void expectedStatusCodeSupplier(Method method, int statusCode, int[] expectedStatusCodes,
         boolean matchesExpected) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         if (expectedStatusCodes != null) {
             for (int expectedCode : expectedStatusCodes) {
@@ -625,7 +626,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{test}")
+    @Host("https://raw.host.com")
     @ServiceInterface(name = "UnexpectedStatusCodeMethods")
     interface UnexpectedStatusCodeMethods {
         @Get("test")
@@ -644,7 +645,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("unexpectedStatusCodeSupplier")
     public void unexpectedStatusCode(Method method, int statusCode, Class<?> expectedExceptionType) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         assertEquals(expectedExceptionType, swaggerMethodParser.getUnexpectedException(statusCode).getExceptionType());
     }

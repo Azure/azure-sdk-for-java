@@ -83,7 +83,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final String fullyQualifiedMethodName;
     private final HttpMethod httpMethod;
     private final String relativePath;
-    private final List<Substitution> hostSubstitutions = new ArrayList<>();
+    final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
@@ -111,16 +111,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
      *
      * @param swaggerMethod the Swagger method to parse.
-     * @param rawHost the raw host value from the @Host annotation. Before this can be used as the host value in an HTTP
-     * request, it must be processed through the possible host substitutions.
      */
-    public SwaggerMethodParser(Method swaggerMethod, String rawHost) {
-        this(RestProxyUtils.getSwaggerInterfaceParser(swaggerMethod.getDeclaringClass()), swaggerMethod,
-            rawHost);
+    public SwaggerMethodParser(Method swaggerMethod) {
+        this(RestProxyUtils.getSwaggerInterfaceParser(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
-    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod, String rawHost) {
-        this.rawHost = rawHost;
+    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
+        this.rawHost = interfaceParser.getHost();
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
 
@@ -308,6 +305,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param serializer {@link SerializerAdapter} that is used to encode host substitutions.
      */
     public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder, SerializerAdapter serializer) {
+        setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, urlBuilder, serializer);
+    }
+
+    static void setSchemeAndHost(String rawHost, List<Substitution> hostSubstitutions, Object[] swaggerMethodArguments,
+        UrlBuilder urlBuilder, SerializerAdapter serializer) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
             serializer);
         final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
@@ -594,7 +596,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
-    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
+    private static String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
                                       Object[] methodArguments, SerializerAdapter serializer) {
         String result = originalValue;
 

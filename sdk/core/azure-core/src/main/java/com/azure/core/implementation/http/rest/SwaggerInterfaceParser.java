@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
-    private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
+    private final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface name.
@@ -47,7 +47,7 @@ public class SwaggerInterfaceParser {
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(this, sm, getHost()));
+        return methodParsers.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(this, sm));
     }
 
     /**
