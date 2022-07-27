@@ -152,8 +152,8 @@
     },
     {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
-      "apiVersion": "2021-10-15",
-      "name": "[guid(parameters('baseName'))]",
+      "apiVersion": "2021-05-15",
+      "name": "[concat(variables('databaseAccountsName'), '/',guid(parameters('baseName')))]",
       "properties": {
         "principalId": "[parameters('testApplicationOid')]",
         "roleDefinitionId": "[variables('azureCosmosRoleId']"
