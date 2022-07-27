@@ -56,6 +56,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             byte[] key = keyBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId);
 
             try (Jedis jedis = jedisPool.getResource()) {
+
                 List<byte[]> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
                 byte[] currentPartitionOwnership = keyInformation.get(0);
 
@@ -64,6 +65,8 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     Long lastModifiedTimeSeconds = Long.parseLong(jedis.time().get(0));
                     partitionOwnership.setLastModifiedTime(lastModifiedTimeSeconds);
                     jedis.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
+                    sink.next(partitionOwnership);
+                    sink.complete();
                 } else {
                     // otherwise we have to change the ownership and "watch" the transaction
                     jedis.watch(key);
@@ -76,15 +79,13 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
 
                     if (executionResponse == null) {
                         //This means that the transaction did not execute, which implies that another client has changed the ownership during this transaction
-                        sink.error(new RuntimeException("Ownership records were changed by another client"));
-                        jedisPool.returnResource(jedis);
-                        return;
+                        LOGGER.verbose("UNABLE TO CLAIM PARTITION");
+                    } else {
+                        sink.next(partitionOwnership);
+                        sink.complete();
                     }
                 }
-                jedisPool.returnResource(jedis);
             }
-            sink.next(partitionOwnership);
-            sink.complete();
         }));
     }
 
@@ -106,7 +107,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             Set<byte[]> members = jedis.smembers(prefix);
 
             if (members.isEmpty()) {
-                jedisPool.returnResource(jedis);
                 return Flux.fromIterable(listStoredCheckpoints);
             }
             for (byte[] member : members) {
@@ -126,7 +126,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     LOGGER.verbose("No checkpoint persists yet.");
                 }
             }
-            jedisPool.returnResource(jedis);
             return Flux.fromIterable(listStoredCheckpoints);
         }
     }
@@ -148,7 +147,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             ArrayList<PartitionOwnership> listStoredOwnerships = new ArrayList<>();
 
             if (members.isEmpty()) {
-                jedisPool.returnResource(jedis);
                 return Flux.fromIterable(listStoredOwnerships);
             }
             for (byte[] member : members) {
@@ -167,7 +165,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     listStoredOwnerships.add(partitionOwnership);
                 }
             }
-            jedisPool.returnResource(jedis);
             return Flux.fromIterable(listStoredOwnerships);
         }
     }
@@ -198,8 +195,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     //Case 2: checkpoint already exists in Redis cache
                     jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
                 }
-
-                jedisPool.returnResource(jedis);
             }
         });
     }

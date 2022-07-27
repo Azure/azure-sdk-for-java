@@ -69,9 +69,10 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return Mono.defer(() -> {
+        return super.cleanupAsync().then( Mono.defer(() ->{
             eventProcessorClient.stop();
+            System.out.println("Began cleanup");
             return Mono.empty();
-        }).then(super.cleanupAsync());
+        }));
     }
 }
