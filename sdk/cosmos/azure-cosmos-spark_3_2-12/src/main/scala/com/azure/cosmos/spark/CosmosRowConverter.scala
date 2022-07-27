@@ -3,14 +3,12 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{Constants, Utils}
-import com.azure.cosmos.spark.CosmosConfigNames.SerializationDateTimeConversionMode
-import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+import com.azure.cosmos.spark.CosmosTableSchemaInferrer._
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 
-import java.sql.{Date, Timestamp}
-import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
+import com.fasterxml.jackson.databind.node._
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
@@ -19,8 +17,9 @@ import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMa
 import org.apache.spark.sql.catalyst.util.ArrayData
 
 import java.io.IOException
-import java.time.{Instant, LocalDate, OffsetDateTime, ZoneOffset}
+import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDate, OffsetDateTime, ZoneOffset}
 import java.util.concurrent.TimeUnit
 import scala.collection.concurrent.TrieMap
 
@@ -113,6 +112,13 @@ private[cosmos] class CosmosRowConverter(
         new GenericRowWithSchema(values.toArray, schema)
     }
 
+    def fromObjectNodeToRowV1(schema: StructType,
+                              objectNode: ObjectNode,
+                              schemaConversionMode: SchemaConversionMode): Row = {
+        val values: Seq[Any] = convertStructToSparkDataTypeV1(schema, objectNode, schemaConversionMode)
+        new GenericRowWithSchema(values.toArray, schema)
+    }
+
     def fromRowToObjectNode(row: Row): ObjectNode = {
 
       val rawBodyFieldName = if (row.schema.names.contains(CosmosTableSchemaInferrer.RawJsonBodyAttributeName) &&
@@ -146,6 +152,17 @@ private[cosmos] class CosmosRowConverter(
 
         objectNode
       }
+    }
+
+    def getChangeFeedLsn(objectNode: ObjectNode): String = {
+        getAttributeNode(objectNode, MetadataJsonBodyAttributeName) match {
+            case metadataNode: JsonNode =>
+                metadataNode.get(MetadataLsnAttributeName) match {
+                    case lsnNode: JsonNode => lsnNode.asText()
+                    case _ => null
+                }
+            case _ => null
+        }
     }
 
     private def convertRawBodyJsonToObjectNode(json: String, rawBodyFieldName: String): ObjectNode = {
@@ -659,16 +676,12 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
-    private def getFullFidelityMetadata(objectNode: ObjectNode): Option[ObjectNode] = {
-      if (objectNode == null) {
-        None
-      } else {
-        val metadata = objectNode.get(FullFidelityChangeFeedMetadataPropertyName)
-        if (metadata != null && metadata.isObject) {
-          Some(metadata.asInstanceOf[ObjectNode])
-        } else {
-          None
-        }
+    //  Some of these APIs can be clubbed together to avoid code duplication.
+    //  However, I don't think it is worth losing code readability and code simplicity.
+    private def getAttributeNode(objectNode: ObjectNode, attributeName: String): JsonNode = {
+        objectNode.get(attributeName) match {
+            case jsonNode: JsonNode => jsonNode
+            case _ => null
       }
     }
 

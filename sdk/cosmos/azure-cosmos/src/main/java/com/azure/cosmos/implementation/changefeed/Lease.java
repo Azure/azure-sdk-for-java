@@ -42,7 +42,11 @@ public interface Lease {
      */
     String getTimestamp();
 
-    ChangeFeedState getContinuationState(
+    ChangeFeedState getIncrementalContinuationState(
+        String containerRid,
+        FeedRangeInternal feedRange);
+
+    ChangeFeedState getFullFidelityContinuationState(
         String containerRid,
         FeedRangeInternal feedRange);
 

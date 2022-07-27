@@ -16,7 +16,7 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
 
     @Override
     public void populatePropertyBag() {
-        
+
             super.populatePropertyBag();
 
         synchronized(this) {
@@ -33,7 +33,7 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    public void populateRequest(RxDocumentServiceRequest request) {
+    public void populateRequest(RxDocumentServiceRequest request, ChangeFeedMode changeFeedMode) {
         checkNotNull(request, "Argument 'request' must not be null.");
 
         request.getHeaders().put(

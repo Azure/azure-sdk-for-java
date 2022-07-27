@@ -114,7 +114,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 new FeedRangeEpkImpl(continuationToken.getRange()));
         }
 
-        effectiveStartFrom.populateRequest(request);
+        effectiveStartFrom.populateRequest(request, this.mode);
     }
 
     @Override
@@ -159,6 +159,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         request.getHeaders().put(
             HttpConstants.HttpHeaders.PAGE_SIZE,
             String.valueOf(maxItemCount));
+        request.getHeaders().put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(true));
         switch (this.mode) {
             case INCREMENTAL:
                 request.getHeaders().put(
@@ -169,6 +170,13 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
                     HttpConstants.A_IMHeaderValues.FullFidelityFeed);
+                //  This is the new wire format, which only gets passed for Full Fidelity Change Feed
+                request.getHeaders().put(
+                    HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
+                    HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+                request.useGatewayMode = true;
+                // Above, defaulting to Gateway is necessary for Full-Fidelity Change Feed since the Split-handling logic resides within Compute Gateway.
+                // TODO: If and when, this changes, it will be necessary to remove this.
                 break;
             default:
                 throw new IllegalStateException("Unsupported change feed mode");
