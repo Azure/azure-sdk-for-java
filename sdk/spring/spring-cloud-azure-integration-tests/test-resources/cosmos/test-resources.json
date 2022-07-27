@@ -16,6 +16,7 @@
   },
   "variables": {
     "databaseAccountsName": "[concat(parameters('baseName'),'-test-cosmos')]",
+    "azureCosmosRoleId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', variables('databaseAccountsName'), '00000000-0000-0000-0000-000000000002')]",
     "azureCosmosRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/00000000-0000-0000-0000-000000000002",
     "location": "[resourceGroup().location]"
   },
