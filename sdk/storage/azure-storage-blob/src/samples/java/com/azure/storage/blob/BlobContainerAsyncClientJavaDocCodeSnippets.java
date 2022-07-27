@@ -74,16 +74,6 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#existsWithResponse(Context)}
-     */
-    public void existsWithResponse2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.existsWithResponse-Context
-        Context context = new Context("key", "value");
-        client.existsWithResponse(context).subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.existsWithResponse-Context
-    }
-
-    /**
      * Code snippet for {@link BlobContainerAsyncClient#create()}
      */
     public void setCreate() {
