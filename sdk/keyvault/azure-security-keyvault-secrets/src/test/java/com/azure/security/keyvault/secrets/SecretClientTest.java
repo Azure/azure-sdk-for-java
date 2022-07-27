@@ -6,6 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
@@ -40,8 +41,10 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
+            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         SecretAsyncClient asyncClient = spy(new SecretClientBuilder()
-            .pipeline(getHttpPipeline(httpClient, testTenantId))
+            .pipeline(httpPipeline)
             .vaultUrl(getEndpoint())
             .serviceVersion(serviceVersion)
             .buildAsyncClient());
@@ -52,6 +55,12 @@ public class SecretClientTest extends SecretClientTestBase {
 
         secretClient = new SecretClient(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(),
             serviceVersion);
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertSync()
+            .build();
     }
 
     /**

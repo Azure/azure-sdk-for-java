@@ -49,7 +49,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see SecretClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretClientImpl.SecretService.class)
+@ServiceClient(builder = SecretClientBuilder.class, isAsync = true)
 public final class SecretAsyncClient {
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);

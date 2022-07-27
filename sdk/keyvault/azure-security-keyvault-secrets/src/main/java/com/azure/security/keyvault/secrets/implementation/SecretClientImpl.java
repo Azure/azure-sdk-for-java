@@ -521,7 +521,7 @@ public class SecretClientImpl {
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, Context context) {
         SecretRequestParameters parameters = validateAndCreateSetSecretParameters(secret);
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
@@ -561,7 +561,7 @@ public class SecretClientImpl {
      */
     public Response<KeyVaultSecret> setSecretWithResponse(String name, String value, Context context) {
         SecretRequestParameters parameters = new SecretRequestParameters().setValue(value);
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         return service.setSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
@@ -577,7 +577,7 @@ public class SecretClientImpl {
 
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         return service.getSecret(vaultUrl, name, version == null ? "" : version, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
@@ -596,7 +596,7 @@ public class SecretClientImpl {
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
         SecretRequestParameters parameters = validateAndCreateUpdateSecretRequestParameters(secretProperties);
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         return service.updateSecret(vaultUrl, secretProperties.getName(), secretProperties.getVersion(), apiVersion, ACCEPT_LANGUAGE,
                 parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
@@ -661,7 +661,7 @@ public class SecretClientImpl {
 
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, Context context) {
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         return service.getDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
@@ -677,7 +677,7 @@ public class SecretClientImpl {
 
     public Response<Void> purgeDeletedSecretWithResponse(String name, Context context) {
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         return service.purgeDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
@@ -735,7 +735,7 @@ public class SecretClientImpl {
 
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         Response<SecretBackup> secretBackupResponse =  service.
             backupSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
@@ -757,7 +757,7 @@ public class SecretClientImpl {
 
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, Context context) {
         context = context == null ? Context.NONE : context;
-        enableSyncRestProxy(context);
+        context = enableSyncRestProxy(context);
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
         return service.restoreSecret(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));

@@ -40,7 +40,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * @see SecretClientBuilder
  * @see PagedIterable
  */
-@ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretClientImpl.SecretService.class)
+@ServiceClient(builder = SecretClientBuilder.class)
 public final class SecretClient {
     private final SecretClientImpl secretClient;
 

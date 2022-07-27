@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -44,8 +45,10 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
     private void createSecretAsyncClient(HttpClient httpClient, SecretServiceVersion serviceVersion,
                                          String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
+            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         secretAsyncClient = spy(new SecretClientBuilder()
-            .pipeline(getHttpPipeline(httpClient, testTenantId))
+            .pipeline(httpPipeline)
             .vaultUrl(getEndpoint())
             .serviceVersion(serviceVersion)
             .buildAsyncClient());
@@ -53,6 +56,12 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             when(secretAsyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
+    }
+
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .build();
     }
 
     /**
