@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
@@ -31,7 +31,7 @@ private case class ChangeFeedPartitionReader
   config: Map[String, String],
   readSchema: StructType,
   diagnosticsContext: DiagnosticsContext,
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
   diagnosticsConfig: DiagnosticsConfig
 ) extends PartitionReader[InternalRow] {
 
@@ -47,12 +47,20 @@ private case class ChangeFeedPartitionReader
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-    Some(cosmosClientStateHandle),
+    Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedPartitionReader(partition $partition)")
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config,
+      clientCacheItem.context,
+      Some(cosmosClientStateHandles))
 
   private val cosmosAsyncContainer =
-    ThroughputControlHelper
-      .getContainer(config, containerTargetConfig, clientCacheItem.client)
+    ThroughputControlHelper.getContainer(
+      config,
+      containerTargetConfig,
+      clientCacheItem,
+      throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
@@ -162,5 +170,8 @@ private case class ChangeFeedPartitionReader
     this.iterator.close()
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
     clientCacheItem.close()
+    if (throughputControlClientCacheItemOpt.isDefined) {
+      throughputControlClientCacheItemOpt.get.close()
+    }
   }
 }

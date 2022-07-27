@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Managed identity for the resource. */
 @Fluent
 public final class IdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProperties.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -41,6 +38,7 @@ public final class IdentityProperties {
      * providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserIdentityProperties> userAssignedIdentities;
 
     /**

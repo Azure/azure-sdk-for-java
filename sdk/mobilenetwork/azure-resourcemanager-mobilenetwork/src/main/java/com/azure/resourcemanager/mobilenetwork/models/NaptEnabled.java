@@ -27,7 +27,11 @@ public final class NaptEnabled extends ExpandableStringEnum<NaptEnabled> {
         return fromString(name, NaptEnabled.class);
     }
 
-    /** @return known NaptEnabled values. */
+    /**
+     * Gets known NaptEnabled values.
+     *
+     * @return known NaptEnabled values.
+     */
     public static Collection<NaptEnabled> values() {
         return values(NaptEnabled.class);
     }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Immutable
 public final class ShareablePrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareablePrivateLinkResourceProperties.class);
-
     /*
      * The resource provider type for the resource that has been onboarded to
      * private link service, supported by Azure Cognitive Search.

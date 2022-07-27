@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -30,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.DatabasesClient;
@@ -54,8 +54,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabasesClient. */
 public final class DatabasesClientImpl implements DatabasesClient {
-    private final ClientLogger logger = new ClientLogger(DatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabasesService service;
 
@@ -80,7 +78,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
     private interface DatabasesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/import")
@@ -93,9 +91,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @BodyParam("application/json") ImportRequest parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/extensions/{extensionName}")
@@ -110,9 +109,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("databaseName") String databaseName,
             @PathParam("extensionName") ExtensionName extensionName,
             @BodyParam("application/json") ImportExtensionRequest parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/export")
@@ -126,9 +126,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @BodyParam("application/json") ExportRequest parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/metrics")
@@ -142,9 +143,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/metricDefinitions")
@@ -157,9 +159,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases")
@@ -171,9 +174,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("serverName") String serverName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}")
@@ -186,9 +190,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}")
@@ -202,6 +207,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -219,7 +225,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}")
@@ -233,9 +239,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseUpdate parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/elasticPools/{elasticPoolName}/databases")
@@ -248,9 +255,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("elasticPoolName") String elasticPoolName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/pause")
@@ -263,9 +271,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/resume")
@@ -278,6 +287,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -327,19 +337,25 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseListResult>> listByElasticPoolNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -348,11 +364,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
@@ -382,6 +399,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -393,8 +411,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             serverName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -403,12 +422,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
@@ -438,6 +458,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .importMethod(
@@ -447,6 +468,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 serverName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -456,13 +478,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethodAsync(
         String resourceGroupName, String serverName, ImportRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -483,14 +505,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethodAsync(
         String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -512,13 +534,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethod(
         String resourceGroupName, String serverName, ImportRequest parameters) {
         return beginImportMethodAsync(resourceGroupName, serverName, parameters).getSyncPoller();
@@ -530,14 +552,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethod(
         String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
         return beginImportMethodAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
@@ -549,11 +571,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportExportResponseInner> importMethodAsync(
@@ -569,12 +591,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImportExportResponseInner> importMethodAsync(
@@ -590,7 +612,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -608,7 +630,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -629,11 +651,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createImportOperationWithResponseAsync(
@@ -673,6 +696,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -686,8 +710,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             databaseName,
                             extensionName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -698,12 +723,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createImportOperationWithResponseAsync(
@@ -744,6 +770,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createImportOperation(
@@ -755,6 +782,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 databaseName,
                 extensionName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -766,13 +794,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperationAsync(
         String resourceGroupName,
         String serverName,
@@ -800,14 +828,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner>
         beginCreateImportOperationAsync(
             String resourceGroupName,
@@ -838,13 +866,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperation(
         String resourceGroupName,
         String serverName,
@@ -863,14 +891,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperation(
         String resourceGroupName,
         String serverName,
@@ -891,11 +919,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportExportResponseInner> createImportOperationAsync(
@@ -917,12 +945,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImportExportResponseInner> createImportOperationAsync(
@@ -946,7 +974,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -971,7 +999,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database to import into.
      * @param extensionName The name of the operation to perform.
-     * @param parameters Import database parameters.
+     * @param parameters The required parameters for importing a Bacpac into a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -998,11 +1026,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
@@ -1035,6 +1064,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1047,8 +1077,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1058,12 +1089,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
@@ -1096,6 +1128,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .export(
@@ -1106,6 +1139,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -1116,13 +1150,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExportAsync(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1144,14 +1178,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExportAsync(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1174,13 +1208,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExport(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
         return beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
@@ -1193,14 +1227,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExport(
         String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
         return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
@@ -1213,11 +1247,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportExportResponseInner> exportAsync(
@@ -1234,12 +1268,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
+     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImportExportResponseInner> exportAsync(
@@ -1256,7 +1290,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1275,7 +1309,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be exported.
-     * @param parameters Export database parameters.
+     * @param parameters The required parameters for exporting a database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1299,7 +1333,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
@@ -1330,6 +1365,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1342,12 +1378,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<MetricInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1362,7 +1399,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
@@ -1393,6 +1431,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetrics(
@@ -1403,6 +1442,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -1421,7 +1461,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricInner> listMetricsAsync(
@@ -1441,7 +1481,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MetricInner> listMetricsAsync(
@@ -1461,7 +1501,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricInner> listMetrics(
@@ -1481,7 +1521,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request.
+     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricInner> listMetrics(
@@ -1499,7 +1539,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
@@ -1527,6 +1568,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1538,12 +1580,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            accept,
                             context))
             .<PagedResponse<MetricDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1557,7 +1600,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
@@ -1585,6 +1629,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetricDefinitions(
@@ -1594,6 +1639,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 resourceGroupName,
                 serverName,
                 databaseName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1611,7 +1657,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
@@ -1630,7 +1676,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
@@ -1649,7 +1695,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
@@ -1668,7 +1715,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request.
+     * @return the response to a list database metric definitions request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
@@ -1685,7 +1733,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(
@@ -1710,6 +1758,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1720,6 +1769,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<DatabaseInner>>map(
                 res ->
@@ -1730,7 +1780,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1743,7 +1793,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(
@@ -1768,6 +1818,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -1776,6 +1827,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1797,7 +1849,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -1816,7 +1868,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
@@ -1834,7 +1886,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
@@ -1851,7 +1903,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Context context) {
@@ -1868,7 +1920,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseInner>> getWithResponseAsync(
@@ -1896,6 +1948,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1907,8 +1960,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1922,7 +1976,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseInner>> getWithResponseAsync(
@@ -1950,6 +2004,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1959,6 +2014,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1972,19 +2028,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap(
-                (Response<DatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2015,7 +2064,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
+     * @return a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseInner> getWithResponse(
@@ -2030,11 +2079,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -2067,6 +2116,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2079,8 +2129,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2090,12 +2141,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -2128,6 +2179,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -2138,6 +2190,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -2148,13 +2201,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2176,14 +2229,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2202,13 +2255,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
@@ -2221,14 +2274,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context)
@@ -2242,11 +2295,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> createOrUpdateAsync(
@@ -2263,12 +2316,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> createOrUpdateAsync(
@@ -2285,7 +2338,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2304,7 +2357,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2327,7 +2380,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2367,7 +2420,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2381,7 +2434,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2431,9 +2484,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, databaseName);
@@ -2454,9 +2507,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
@@ -2477,9 +2530,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
@@ -2496,9 +2549,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
@@ -2514,7 +2567,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -2534,7 +2587,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, Context context) {
@@ -2583,11 +2636,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2620,6 +2673,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2632,8 +2686,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2643,12 +2698,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2681,6 +2736,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -2691,6 +2747,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -2701,13 +2758,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2729,14 +2786,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2755,13 +2812,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
@@ -2774,14 +2831,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
         String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
@@ -2794,11 +2851,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> updateAsync(
@@ -2815,12 +2872,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> updateAsync(
@@ -2837,7 +2894,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2856,7 +2913,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param parameters A database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2879,7 +2936,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByElasticPoolSinglePageAsync(
@@ -2908,6 +2966,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2919,6 +2978,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             elasticPoolName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<DatabaseInner>>map(
                 res ->
@@ -2929,7 +2989,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2943,7 +3003,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByElasticPoolSinglePageAsync(
@@ -2972,6 +3033,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByElasticPool(
@@ -2981,6 +3043,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 elasticPoolName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -3003,7 +3066,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseInner> listByElasticPoolAsync(
@@ -3024,7 +3087,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByElasticPoolAsync(
@@ -3044,7 +3107,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByElasticPool(
@@ -3063,7 +3126,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByElasticPool(
@@ -3081,7 +3144,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
@@ -3109,6 +3172,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3120,8 +3184,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3135,7 +3200,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
@@ -3163,6 +3228,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .pause(
@@ -3172,6 +3238,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -3185,9 +3252,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginPauseAsync(
         String resourceGroupName, String serverName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = pauseWithResponseAsync(resourceGroupName, serverName, databaseName);
@@ -3212,9 +3279,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginPauseAsync(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
@@ -3236,9 +3303,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName) {
         return beginPauseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
@@ -3255,9 +3322,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return beginPauseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
@@ -3273,7 +3340,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> pauseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -3293,7 +3360,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> pauseAsync(
@@ -3348,7 +3415,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -3376,6 +3443,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3387,8 +3455,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3402,7 +3471,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
@@ -3430,6 +3499,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resume(
@@ -3439,6 +3509,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -3452,9 +3523,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginResumeAsync(
         String resourceGroupName, String serverName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, serverName, databaseName);
@@ -3479,9 +3550,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link PollerFlux} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginResumeAsync(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
@@ -3503,9 +3574,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName) {
         return beginResumeAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
@@ -3522,9 +3593,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return the {@link SyncPoller} for polling of a database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return beginResumeAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
@@ -3540,7 +3611,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseInner> resumeAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -3560,7 +3631,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database resource.
+     * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> resumeAsync(
@@ -3615,7 +3686,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouseWithResponseAsync(
@@ -3655,7 +3726,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3669,7 +3740,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouseWithResponseAsync(
@@ -3719,9 +3790,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(
         String resourceGroupName, String serverName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3743,9 +3814,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
@@ -3766,9 +3837,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName) {
         return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
@@ -3785,9 +3856,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return beginUpgradeDataWarehouseAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();
@@ -3803,7 +3874,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> upgradeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -3823,7 +3894,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> upgradeDataWarehouseAsync(
@@ -3874,15 +3945,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String id) {
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3905,12 +3976,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
-        ResourceMoveDefinition parameters = new ResourceMoveDefinition();
-        parameters.withId(id);
         return FluxUtil
             .withContext(
                 context ->
@@ -3924,7 +3995,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             apiVersion,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3934,16 +4005,20 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String id, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ResourceMoveDefinition parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3966,12 +4041,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (id == null) {
-            return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
-        ResourceMoveDefinition parameters = new ResourceMoveDefinition();
-        parameters.withId(id);
         context = this.client.mergeContext(context);
         return service
             .rename(
@@ -3992,16 +4067,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, String id) {
-        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, id)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> renameAsync(
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
+        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4011,14 +4087,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rename(String resourceGroupName, String serverName, String databaseName, String id) {
-        renameAsync(resourceGroupName, serverName, databaseName, id).block();
+    public void rename(
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
+        renameAsync(resourceGroupName, serverName, databaseName, parameters).block();
     }
 
     /**
@@ -4028,17 +4105,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
-     * @param id The target ID for the resource.
+     * @param parameters The resource move definition for renaming this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameWithResponse(
-        String resourceGroupName, String serverName, String databaseName, String id, Context context) {
-        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, id, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ResourceMoveDefinition parameters,
+        Context context) {
+        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
     }
 
     /**
@@ -4052,7 +4133,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -4093,7 +4174,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4108,7 +4189,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -4160,9 +4241,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4185,9 +4266,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
         context = this.client.mergeContext(context);
@@ -4209,9 +4290,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
@@ -4229,9 +4310,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).getSyncPoller();
@@ -4248,11 +4329,31 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName) {
+        final ReplicaType replicaType = null;
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4270,32 +4371,12 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> failoverAsync(
         String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName) {
-        final ReplicaType replicaType = null;
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4324,6 +4405,23 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failover(String resourceGroupName, String serverName, String databaseName) {
+        final ReplicaType replicaType = null;
+        failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4337,38 +4435,28 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void failover(String resourceGroupName, String serverName, String databaseName) {
-        final ReplicaType replicaType = null;
-        failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, context))
+            .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DatabaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -4378,7 +4466,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4389,16 +4477,23 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServerNext(nextLink, context)
+            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -4417,15 +4512,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByElasticPoolNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByElasticPoolNext(nextLink, context))
+            .withContext(context -> service.listByElasticPoolNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DatabaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -4435,7 +4537,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4446,16 +4548,23 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByElasticPoolNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByElasticPoolNext(nextLink, context)
+            .listByElasticPoolNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

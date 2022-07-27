@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseInner;
+import com.azure.resourcemanager.sql.models.CompleteDatabaseRestoreDefinition;
 import com.azure.resourcemanager.sql.models.ManagedDatabaseUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -30,7 +31,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases.
+     * @return a list of managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedDatabaseInner> listByInstanceAsync(String resourceGroupName, String managedInstanceName);
@@ -44,7 +45,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases.
+     * @return a list of managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedDatabaseInner> listByInstance(String resourceGroupName, String managedInstanceName);
@@ -59,7 +60,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed databases.
+     * @return a list of managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedDatabaseInner> listByInstance(
@@ -75,7 +76,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database.
+     * @return a managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedDatabaseInner>> getWithResponseAsync(
@@ -91,7 +92,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database.
+     * @return a managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName, String databaseName);
@@ -122,7 +123,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database.
+     * @return a managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedDatabaseInner> getWithResponse(
@@ -135,11 +136,11 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -152,13 +153,13 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return the {@link PollerFlux} for polling of a managed database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
 
@@ -169,13 +170,13 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return the {@link SyncPoller} for polling of a managed database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
 
@@ -186,14 +187,14 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return the {@link SyncPoller} for polling of a managed database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
         String resourceGroupName,
         String managedInstanceName,
@@ -208,11 +209,11 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return a managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseInner> createOrUpdateAsync(
@@ -225,7 +226,7 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -242,7 +243,7 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters A managed database resource.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -267,7 +268,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -283,9 +284,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String managedInstanceName, String databaseName);
 
@@ -299,9 +300,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String databaseName);
 
@@ -316,9 +317,9 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String databaseName, Context context);
 
@@ -332,7 +333,7 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String databaseName);
@@ -373,11 +374,11 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -390,13 +391,13 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return the {@link PollerFlux} for polling of a managed database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdateAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
 
@@ -407,13 +408,13 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return the {@link SyncPoller} for polling of a managed database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(
         String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
 
@@ -424,14 +425,14 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return the {@link SyncPoller} for polling of a managed database resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(
         String resourceGroupName,
         String managedInstanceName,
@@ -446,11 +447,11 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database resource.
+     * @return a managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseInner> updateAsync(
@@ -463,7 +464,7 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -480,7 +481,7 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param parameters An managed database update.
+     * @param parameters The requested database resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -504,7 +505,8 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
@@ -519,7 +521,8 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
@@ -535,7 +538,8 @@ public interface ManagedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
@@ -548,15 +552,18 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
+     * @param parameters The definition for completing the restore of this managed database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> completeRestoreWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName);
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
@@ -565,15 +572,18 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
+     * @param parameters The definition for completing the restore of this managed database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName);
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
@@ -582,36 +592,39 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
+     * @param parameters The definition for completing the restore of this managed database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(
-        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName);
-
-    /**
-     * Completes the restore operation on a managed database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCompleteRestore(
         String resourceGroupName,
         String managedInstanceName,
         String databaseName,
-        String lastBackupName,
+        CompleteDatabaseRestoreDefinition parameters);
+
+    /**
+     * Completes the restore operation on a managed database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param parameters The definition for completing the restore of this managed database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        CompleteDatabaseRestoreDefinition parameters,
         Context context);
 
     /**
@@ -621,15 +634,18 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
+     * @param parameters The definition for completing the restore of this managed database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> completeRestoreAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName);
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
@@ -638,14 +654,17 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
+     * @param parameters The definition for completing the restore of this managed database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void completeRestore(
-        String resourceGroupName, String managedInstanceName, String databaseName, String lastBackupName);
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
@@ -654,7 +673,7 @@ public interface ManagedDatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
-     * @param lastBackupName The last backup name to apply.
+     * @param parameters The definition for completing the restore of this managed database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -665,6 +684,6 @@ public interface ManagedDatabasesClient {
         String resourceGroupName,
         String managedInstanceName,
         String databaseName,
-        String lastBackupName,
+        CompleteDatabaseRestoreDefinition parameters,
         Context context);
 }

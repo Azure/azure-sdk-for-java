@@ -323,7 +323,14 @@ public final class CapacityReservationGroupsClientImpl
     public Mono<CapacityReservationGroupInner> createOrUpdateAsync(
         String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CapacityReservationGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -509,7 +516,14 @@ public final class CapacityReservationGroupsClientImpl
     public Mono<CapacityReservationGroupInner> updateAsync(
         String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CapacityReservationGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -674,7 +688,7 @@ public final class CapacityReservationGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName) {
         return deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName)
-            .flatMap(ignored -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -852,7 +866,14 @@ public final class CapacityReservationGroupsClientImpl
         String capacityReservationGroupName,
         CapacityReservationGroupInstanceViewTypes expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CapacityReservationGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -871,7 +892,14 @@ public final class CapacityReservationGroupsClientImpl
         String resourceGroupName, String capacityReservationGroupName) {
         final CapacityReservationGroupInstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CapacityReservationGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

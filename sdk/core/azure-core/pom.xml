@@ -78,6 +78,9 @@
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
     <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
   </properties>
 
   <developers>
@@ -132,12 +135,12 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -233,7 +236,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-core:[3.4.19]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.4.21]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
@@ -259,17 +262,6 @@
               <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
             </plugin>
           </plugins>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:deprecation</arg>
-          </compilerArgs>
         </configuration>
       </plugin>
 

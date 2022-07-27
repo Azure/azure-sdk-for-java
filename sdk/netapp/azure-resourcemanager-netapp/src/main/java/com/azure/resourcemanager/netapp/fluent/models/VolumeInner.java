@@ -579,7 +579,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
@@ -589,7 +589,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Set the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
@@ -604,8 +604,9 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
-     * (case-insensitive) are: 'Microsoft.NetApp'.
+     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
+     * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
+     * Microsoft.KeyVault'.
      *
      * @return the encryptionKeySource value.
      */
@@ -614,8 +615,9 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
-     * (case-insensitive) are: 'Microsoft.NetApp'.
+     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
+     * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
+     * Microsoft.KeyVault'.
      *
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeInner object itself.
@@ -625,6 +627,31 @@ public final class VolumeInner extends Resource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withEncryptionKeySource(encryptionKeySource);
+        return this;
+    }
+
+    /**
+     * Get the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
+     * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
+     *
+     * @return the keyVaultPrivateEndpointResourceId value.
+     */
+    public String keyVaultPrivateEndpointResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultPrivateEndpointResourceId();
+    }
+
+    /**
+     * Set the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
+     * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
+     *
+     * @param keyVaultPrivateEndpointResourceId the keyVaultPrivateEndpointResourceId value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withKeyVaultPrivateEndpointResourceId(keyVaultPrivateEndpointResourceId);
         return this;
     }
 

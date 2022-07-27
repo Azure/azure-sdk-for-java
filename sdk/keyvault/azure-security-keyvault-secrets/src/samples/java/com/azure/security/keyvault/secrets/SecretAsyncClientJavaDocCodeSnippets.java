@@ -88,7 +88,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.getSecret("secretName", secretVersion)
             // Passing a Context is optional and useful if you want a set of data to flow through the request.
             // Otherwise, the line below can be removed.
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(secretWithVersion ->
                 System.out.printf("Secret is returned with name %s and value %s %n",
                     secretWithVersion.getName(), secretWithVersion.getValue()));
@@ -113,7 +113,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.getSecretWithResponse("secretName", secretVersion)
             // Passing a Context is optional and useful if you want a set of data to flow through the request.
             // Otherwise, the line below can be removed.
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(secretWithVersion ->
                 System.out.printf("Secret is returned with name %s and value %s %n",
                     secretWithVersion.getValue().getName(), secretWithVersion.getValue().getValue()));

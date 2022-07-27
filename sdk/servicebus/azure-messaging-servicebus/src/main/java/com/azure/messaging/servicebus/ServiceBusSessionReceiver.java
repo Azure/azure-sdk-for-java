@@ -94,6 +94,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                     receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits())).subscribe();
                 }
             })
+            .limitRate(1)
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> {
                 final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,

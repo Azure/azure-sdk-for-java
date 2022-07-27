@@ -12,28 +12,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class PinholeTimeouts {
     /*
      * Pinhole timeout for TCP pinholes in seconds. Default for TCP is 2 hours
-     * 4 minutes per RFC 5382 section 5.
+     * 4 minutes, as per RFC 5382 section 5.
      */
     @JsonProperty(value = "tcp")
     private Integer tcp;
 
     /*
      * Pinhole timeout for UDP pinholes in seconds. Default for UDP is 5
-     * minutes per RFC 4787 section 4.3.
+     * minutes, as per RFC 4787 section 4.3.
      */
     @JsonProperty(value = "udp")
     private Integer udp;
 
     /*
      * Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is
-     * 60 seconds per RFC 5508 section 3.2.
+     * 60 seconds, as per RFC 5508 section 3.2.
      */
     @JsonProperty(value = "icmp")
     private Integer icmp;
 
     /**
-     * Get the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 2 hours 4 minutes per RFC
-     * 5382 section 5.
+     * Get the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 2 hours 4 minutes, as per
+     * RFC 5382 section 5.
      *
      * @return the tcp value.
      */
@@ -42,8 +42,8 @@ public final class PinholeTimeouts {
     }
 
     /**
-     * Set the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 2 hours 4 minutes per RFC
-     * 5382 section 5.
+     * Set the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 2 hours 4 minutes, as per
+     * RFC 5382 section 5.
      *
      * @param tcp the tcp value to set.
      * @return the PinholeTimeouts object itself.
@@ -54,7 +54,7 @@ public final class PinholeTimeouts {
     }
 
     /**
-     * Get the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 5 minutes per RFC 4787
+     * Get the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 5 minutes, as per RFC 4787
      * section 4.3.
      *
      * @return the udp value.
@@ -64,7 +64,7 @@ public final class PinholeTimeouts {
     }
 
     /**
-     * Set the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 5 minutes per RFC 4787
+     * Set the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 5 minutes, as per RFC 4787
      * section 4.3.
      *
      * @param udp the udp value to set.
@@ -76,8 +76,8 @@ public final class PinholeTimeouts {
     }
 
     /**
-     * Get the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 60 seconds per RFC
-     * 5508 section 3.2.
+     * Get the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 60 seconds, as per
+     * RFC 5508 section 3.2.
      *
      * @return the icmp value.
      */
@@ -86,8 +86,8 @@ public final class PinholeTimeouts {
     }
 
     /**
-     * Set the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 60 seconds per RFC
-     * 5508 section 3.2.
+     * Set the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 60 seconds, as per
+     * RFC 5508 section 3.2.
      *
      * @param icmp the icmp value to set.
      * @return the PinholeTimeouts object itself.

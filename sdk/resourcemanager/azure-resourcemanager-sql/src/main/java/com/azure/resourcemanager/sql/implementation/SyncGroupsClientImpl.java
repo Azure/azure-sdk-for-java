@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -30,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.SyncGroupsClient;
@@ -49,8 +49,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SyncGroupsClient. */
 public final class SyncGroupsClientImpl implements SyncGroupsClient {
-    private final ClientLogger logger = new ClientLogger(SyncGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SyncGroupsService service;
 
@@ -75,7 +73,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     private interface SyncGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/syncDatabaseIds")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -84,6 +82,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @PathParam("locationName") String locationName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -102,7 +101,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/hubSchemas")
@@ -116,9 +115,10 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @PathParam("syncGroupName") String syncGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}/logs")
@@ -136,6 +136,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @QueryParam("continuationToken") String continuationToken,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -170,7 +171,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
@@ -184,9 +185,10 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @PathParam("syncGroupName") String syncGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
@@ -201,6 +203,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SyncGroupInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -219,7 +222,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/syncGroups/{syncGroupName}")
@@ -234,9 +237,10 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SyncGroupInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/syncGroups")
@@ -249,35 +253,48 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncDatabaseIdListResult>> listSyncDatabaseIdsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncFullSchemaPropertiesListResult>> listHubSchemasNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncGroupLogListResult>> listLogsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SyncGroupListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -287,7 +304,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
+     * @return a collection of sync database ids along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsSinglePageAsync(String locationName) {
@@ -307,6 +325,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -316,6 +335,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             locationName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<SyncDatabaseIdPropertiesInner>>map(
                 res ->
@@ -326,7 +346,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -337,7 +357,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
+     * @return a collection of sync database ids along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsSinglePageAsync(
@@ -358,10 +379,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSyncDatabaseIds(
-                this.client.getEndpoint(), locationName, this.client.getSubscriptionId(), apiVersion, context)
+                this.client.getEndpoint(), locationName, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -380,7 +402,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
+     * @return a collection of sync database ids as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncDatabaseIdPropertiesInner> listSyncDatabaseIdsAsync(String locationName) {
@@ -397,7 +419,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
+     * @return a collection of sync database ids as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SyncDatabaseIdPropertiesInner> listSyncDatabaseIdsAsync(String locationName, Context context) {
@@ -413,7 +435,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
+     * @return a collection of sync database ids as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncDatabaseIdPropertiesInner> listSyncDatabaseIds(String locationName) {
@@ -428,7 +450,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync database ids.
+     * @return a collection of sync database ids as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncDatabaseIdPropertiesInner> listSyncDatabaseIds(String locationName, Context context) {
@@ -446,7 +468,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshHubSchemaWithResponseAsync(
@@ -490,7 +512,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -505,7 +527,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshHubSchemaWithResponseAsync(
@@ -560,9 +582,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -585,9 +607,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRefreshHubSchemaAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -609,9 +631,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
@@ -629,9 +651,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshHubSchema(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
         return beginRefreshHubSchemaAsync(resourceGroupName, serverName, databaseName, syncGroupName, context)
@@ -649,7 +671,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> refreshHubSchemaAsync(
@@ -671,7 +693,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshHubSchemaAsync(
@@ -729,7 +751,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
+     * @return a collection of hub database schemas along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasSinglePageAsync(
@@ -760,6 +783,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -772,6 +796,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             syncGroupName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<SyncFullSchemaPropertiesInner>>map(
                 res ->
@@ -782,7 +807,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -797,7 +822,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
+     * @return a collection of hub database schemas along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasSinglePageAsync(
@@ -828,6 +854,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listHubSchemas(
@@ -838,6 +865,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                 syncGroupName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -861,7 +889,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
+     * @return a collection of hub database schemas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncFullSchemaPropertiesInner> listHubSchemasAsync(
@@ -883,7 +911,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
+     * @return a collection of hub database schemas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SyncFullSchemaPropertiesInner> listHubSchemasAsync(
@@ -904,7 +932,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
+     * @return a collection of hub database schemas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncFullSchemaPropertiesInner> listHubSchemas(
@@ -924,7 +952,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of hub database schemas.
+     * @return a collection of hub database schemas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncFullSchemaPropertiesInner> listHubSchemas(
@@ -948,7 +976,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
+     * @return a collection of sync group logs along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsSinglePageAsync(
@@ -995,6 +1024,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1011,6 +1041,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             continuationToken,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<SyncGroupLogPropertiesInner>>map(
                 res ->
@@ -1021,7 +1052,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1040,7 +1071,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
+     * @return a collection of sync group logs along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsSinglePageAsync(
@@ -1088,6 +1120,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listLogs(
@@ -1102,6 +1135,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                 continuationToken,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1129,7 +1163,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
+     * @return a collection of sync group logs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
@@ -1169,7 +1203,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
+     * @return a collection of sync group logs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
@@ -1211,7 +1245,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
+     * @return a collection of sync group logs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SyncGroupLogPropertiesInner> listLogsAsync(
@@ -1250,12 +1284,50 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param startTime Get logs generated after this time.
      * @param endTime Get logs generated before this time.
      * @param type The types of logs to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of sync group logs as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SyncGroupLogPropertiesInner> listLogs(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        String syncGroupName,
+        String startTime,
+        String endTime,
+        SyncGroupsType type) {
+        final String continuationToken = null;
+        return new PagedIterable<>(
+            listLogsAsync(
+                resourceGroupName,
+                serverName,
+                databaseName,
+                syncGroupName,
+                startTime,
+                endTime,
+                type,
+                continuationToken));
+    }
+
+    /**
+     * Gets a collection of sync group logs.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param startTime Get logs generated after this time.
+     * @param endTime Get logs generated before this time.
+     * @param type The types of logs to retrieve.
      * @param continuationToken The continuation token for this operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
+     * @return a collection of sync group logs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncGroupLogPropertiesInner> listLogs(
@@ -1282,44 +1354,6 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
     }
 
     /**
-     * Gets a collection of sync group logs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
-     * @param startTime Get logs generated after this time.
-     * @param endTime Get logs generated before this time.
-     * @param type The types of logs to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of sync group logs.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SyncGroupLogPropertiesInner> listLogs(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String startTime,
-        String endTime,
-        SyncGroupsType type) {
-        final String continuationToken = null;
-        return new PagedIterable<>(
-            listLogsAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                syncGroupName,
-                startTime,
-                endTime,
-                type,
-                continuationToken));
-    }
-
-    /**
      * Cancels a sync group synchronization.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -1330,7 +1364,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelSyncWithResponseAsync(
@@ -1374,7 +1408,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1389,7 +1423,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelSyncWithResponseAsync(
@@ -1444,13 +1478,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelSyncAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         return cancelSyncWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1482,7 +1516,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelSyncWithResponse(
@@ -1501,7 +1535,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> triggerSyncWithResponseAsync(
@@ -1545,7 +1579,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1560,7 +1594,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> triggerSyncWithResponseAsync(
@@ -1615,13 +1649,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> triggerSyncAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         return triggerSyncWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1653,7 +1687,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> triggerSyncWithResponse(
@@ -1673,7 +1707,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
+     * @return a sync group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SyncGroupInner>> getWithResponseAsync(
@@ -1704,6 +1738,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1716,8 +1751,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             syncGroupName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1732,7 +1768,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
+     * @return a sync group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SyncGroupInner>> getWithResponseAsync(
@@ -1763,6 +1799,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1773,6 +1810,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                 syncGroupName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1787,20 +1825,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
+     * @return a sync group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SyncGroupInner> getAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName)
-            .flatMap(
-                (Response<SyncGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1833,7 +1864,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync group.
+     * @return a sync group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SyncGroupInner> getWithResponse(
@@ -1849,11 +1880,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1893,6 +1924,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1906,8 +1938,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1918,12 +1951,12 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1964,6 +1997,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -1975,6 +2009,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -1986,13 +2021,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -2019,14 +2054,14 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -2052,13 +2087,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -2077,14 +2112,14 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -2104,11 +2139,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SyncGroupInner> createOrUpdateAsync(
@@ -2130,12 +2165,12 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SyncGroupInner> createOrUpdateAsync(
@@ -2158,7 +2193,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2182,7 +2217,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2212,7 +2247,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2256,7 +2291,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2271,7 +2306,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -2326,9 +2361,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2351,9 +2386,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -2375,9 +2410,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName).getSyncPoller();
@@ -2395,9 +2430,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName, syncGroupName, context).getSyncPoller();
@@ -2414,7 +2449,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -2436,7 +2471,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -2490,11 +2525,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2534,6 +2569,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2547,8 +2583,9 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2559,12 +2596,12 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2605,6 +2642,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -2616,6 +2654,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -2627,13 +2666,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -2660,14 +2699,14 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -2692,13 +2731,13 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdate(
         String resourceGroupName,
         String serverName,
@@ -2716,14 +2755,14 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database sync group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SyncGroupInner>, SyncGroupInner> beginUpdate(
         String resourceGroupName,
         String serverName,
@@ -2743,11 +2782,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SyncGroupInner> updateAsync(
@@ -2769,12 +2808,12 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database sync group.
+     * @return an Azure SQL Database sync group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SyncGroupInner> updateAsync(
@@ -2797,7 +2836,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2821,7 +2860,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group.
-     * @param parameters An Azure SQL Database sync group.
+     * @param parameters The requested sync group resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2849,7 +2888,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupInner>> listByDatabaseSinglePageAsync(
@@ -2877,6 +2916,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2888,6 +2928,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<SyncGroupInner>>map(
                 res ->
@@ -2898,7 +2939,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2912,7 +2953,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupInner>> listByDatabaseSinglePageAsync(
@@ -2940,6 +2981,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -2949,6 +2991,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -2971,7 +3014,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SyncGroupInner> listByDatabaseAsync(
@@ -2992,7 +3035,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SyncGroupInner> listByDatabaseAsync(
@@ -3012,7 +3055,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncGroupInner> listByDatabase(
@@ -3031,7 +3074,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SyncGroupInner> listByDatabase(
@@ -3046,15 +3089,24 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync database ID properties.
+     * @return a list of sync database ID properties along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSyncDatabaseIdsNext(nextLink, context))
+            .withContext(
+                context -> service.listSyncDatabaseIdsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SyncDatabaseIdPropertiesInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3064,7 +3116,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3075,7 +3127,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync database ID properties.
+     * @return a list of sync database ID properties along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncDatabaseIdPropertiesInner>> listSyncDatabaseIdsNextSinglePageAsync(
@@ -3083,9 +3136,16 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSyncDatabaseIdsNext(nextLink, context)
+            .listSyncDatabaseIdsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3104,15 +3164,23 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync schema properties.
+     * @return a list of sync schema properties along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listHubSchemasNext(nextLink, context))
+            .withContext(context -> service.listHubSchemasNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SyncFullSchemaPropertiesInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3122,7 +3190,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3133,7 +3201,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync schema properties.
+     * @return a list of sync schema properties along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncFullSchemaPropertiesInner>> listHubSchemasNextSinglePageAsync(
@@ -3141,9 +3210,16 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listHubSchemasNext(nextLink, context)
+            .listHubSchemasNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3162,15 +3238,23 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync group log properties.
+     * @return a list of sync group log properties along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLogsNext(nextLink, context))
+            .withContext(context -> service.listLogsNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SyncGroupLogPropertiesInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3180,7 +3264,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3191,7 +3275,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync group log properties.
+     * @return a list of sync group log properties along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupLogPropertiesInner>> listLogsNextSinglePageAsync(
@@ -3199,9 +3284,16 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listLogsNext(nextLink, context)
+            .listLogsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3220,15 +3312,22 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByDatabaseNext(nextLink, context))
+            .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SyncGroupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3238,7 +3337,7 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3249,16 +3348,23 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sync groups.
+     * @return a list of sync groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SyncGroupInner>> listByDatabaseNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDatabaseNext(nextLink, context)
+            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

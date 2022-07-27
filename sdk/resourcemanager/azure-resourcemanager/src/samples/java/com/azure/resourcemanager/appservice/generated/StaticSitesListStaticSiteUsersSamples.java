@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites ListStaticSiteUsers. */
 public final class StaticSitesListStaticSiteUsersSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteUsers.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListStaticSiteUsers.json
      */
     /**
      * Sample code: List users for a static site.

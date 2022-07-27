@@ -105,7 +105,11 @@
           {
             "matcher": "java-package",
             "match": "/com\\.google\\.gson(\\..*)?/"
-          }
+          },
+          "class com\\.azure\\.cosmos\\.BridgeInternal",
+          "class com\\.azure\\.cosmos\\.CosmosBridgeInternal",
+          "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
+          "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
         ]
       }
     }
@@ -149,7 +153,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -218,6 +222,12 @@
           "code": "java\\.annotation\\.added",
           "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
           "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
+          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
         },
         {
           "code": "java.method.added",
@@ -341,6 +351,19 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
+          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
+          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
         },
         {
           "regex": true,
