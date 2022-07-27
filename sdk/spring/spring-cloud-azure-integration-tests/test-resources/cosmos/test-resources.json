@@ -156,7 +156,8 @@
       "name": "[concat(variables('databaseAccountsName'), '/',guid(parameters('baseName')))]",
       "properties": {
         "principalId": "[parameters('testApplicationOid')]",
-        "roleDefinitionId": "[variables('azureCosmosRoleId')]"
+        "roleDefinitionId": "[variables('azureCosmosRoleId')]",
+        "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccountsName'))]"
       }
     }
   ],
