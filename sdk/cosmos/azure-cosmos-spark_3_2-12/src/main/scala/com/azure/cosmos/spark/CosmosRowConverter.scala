@@ -709,15 +709,6 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def parseLsn(objectNode: ObjectNode): Long = {
-      objectNode.get(LsnAttributeName)
-      match {
-        case lsnNode: JsonNode =>
-          Option(lsnNode).fold(-1L)(v => v.asLong(-1))
-          case _ => -1L
-      }
-    }
-
     private def parseId(objectNode: ObjectNode): String = {
         var currentNode = getAttributeNode(objectNode, CurrentAttributeName)
         if (currentNode == null || currentNode.isEmpty) {
