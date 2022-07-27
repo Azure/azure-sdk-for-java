@@ -78,6 +78,7 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

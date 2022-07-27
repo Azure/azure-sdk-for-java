@@ -341,6 +341,12 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
+          "justification": "To support JedisRedisCheckpointStore constructor"
         }
       ]
     }
