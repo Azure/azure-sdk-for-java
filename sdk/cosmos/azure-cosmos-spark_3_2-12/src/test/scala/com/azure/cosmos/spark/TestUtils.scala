@@ -66,6 +66,7 @@ trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
       .appName("spark connector sample")
       .master("local")
       .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .config("spark.cosmos.metrics.intervalInSeconds", "1")
       .getOrCreate()
 
     spark

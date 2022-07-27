@@ -28,7 +28,8 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
     executorId: String,
     hostname: String,
     dropwizardMetricRegistry: MetricRegistry,
-    slf4jReporterEnabled: Boolean
+    slf4jReporterEnabled: Boolean,
+    metricsCollectionIntervalInSeconds: Integer
   ) : Unit = {
 
     if (Option(dropwizardMetricRegistry).isDefined) {
@@ -59,7 +60,7 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
           .convertDurationsTo(TimeUnit.MILLISECONDS)
           .build
         slf4JReporter = Some(reporter)
-        reporter.start(1, TimeUnit.SECONDS)
+        reporter.start(metricsCollectionIntervalInSeconds.toLong, TimeUnit.SECONDS)
       }
 
       this.meterRegistry match {
@@ -68,6 +69,7 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
           this.meterRegistry = Some(new CompositeMeterRegistry(
             Clock.SYSTEM,
             Iterable.apply(dropWizardMeterRegistry.asInstanceOf[MeterRegistry]).asJava))
+
       }
     }
   }
