@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
 import java.time.Instant;
