@@ -31,6 +31,7 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
 import java.net.MalformedURLException;
@@ -156,10 +157,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        SecretAsyncClient secretAsyncClient = buildAsyncClient();
-        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
-        return new SecretClient(secretAsyncClient.getVaultUrl(), secretAsyncClient.getHttpPipeline(),
-            serviceVersion);
+        return new SecretClient(buildInnerClient());
     }
 
     /**
@@ -181,6 +179,11 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
+        return new SecretAsyncClient(buildInnerClient());
+    }
+
+
+    private SecretClientImpl buildInnerClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
@@ -195,7 +198,7 @@ public final class SecretClientBuilder implements
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretAsyncClient(vaultUrl, pipeline, serviceVersion);
+            return new SecretClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -242,7 +245,7 @@ public final class SecretClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new SecretAsyncClient(vaultUrl, pipeline, serviceVersion);
+        return new SecretClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
     }
 
     /**

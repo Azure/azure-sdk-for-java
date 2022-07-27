@@ -58,12 +58,10 @@ public final class SecretAsyncClient {
     /**
      * Creates a SecretAsyncClient that uses {@code pipeline} to service requests
      *
-     * @param vaultUrl URL for the Azure KeyVault service.
-     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
-     * @param version {@link SecretServiceVersion} of the service to be used when making requests.
+     * @param secretClient the implementation client.
      */
-    SecretAsyncClient(URL vaultUrl, HttpPipeline pipeline, SecretServiceVersion version) {
-        this.secretClient = new SecretClientImpl(vaultUrl.toString(), pipeline, version);
+    SecretAsyncClient(SecretClientImpl secretClient) {
+        this.secretClient = secretClient;
     }
 
     /**
