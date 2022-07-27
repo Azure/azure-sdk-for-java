@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Constants;

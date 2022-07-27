@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
@@ -102,8 +103,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
-                final ChangeFeedState continuationState =
-                    ChangeFeedState.fromString(continuationToken);
+                final ChangeFeedState continuationState = ChangeFeedState.fromString(continuationToken);
                 checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
                 checkArgument(
                     continuationState

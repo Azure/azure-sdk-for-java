@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

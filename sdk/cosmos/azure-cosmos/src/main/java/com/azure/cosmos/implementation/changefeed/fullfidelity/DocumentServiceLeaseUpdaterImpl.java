@@ -21,9 +21,9 @@ import reactor.util.retry.Retry;
 import java.time.Instant;
 import java.util.function.Function;
 
-import static com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT;
-import static com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND;
-import static com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedHelper.HTTP_STATUS_CODE_PRECONDITION_FAILED;
+import static com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT;
+import static com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND;
+import static com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper.HTTP_STATUS_CODE_PRECONDITION_FAILED;
 
 /**
  * Implementation for service lease updater interface.

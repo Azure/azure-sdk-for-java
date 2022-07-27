@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.incremental;
 
 
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;

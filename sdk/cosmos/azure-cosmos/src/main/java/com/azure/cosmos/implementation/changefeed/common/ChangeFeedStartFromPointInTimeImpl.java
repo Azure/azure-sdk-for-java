@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.fullfidelity;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -52,7 +52,7 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
         synchronized(this) {
             setProperty(
                 this,
-                Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+                com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
                 ChangeFeedStartFromTypes.POINT_IN_TIME);
 
             setProperty(

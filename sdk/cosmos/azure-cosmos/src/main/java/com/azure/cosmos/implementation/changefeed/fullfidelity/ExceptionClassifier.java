@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.fullfidelity;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 
 /**
  * Classifies exceptions based on the status codes.

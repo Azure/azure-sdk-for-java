@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 
 /**
  * Classifies exceptions based on the status codes.

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.incremental;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -8,14 +8,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Map;
 
-import static com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedHelper.Paths.COLLECTIONS_PATH_SEGMENT;
-import static com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedHelper.Paths.DATABASES_ROOT;
-import static com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedHelper.Paths.DOCUMENTS_PATH_SEGMENT;
+import static com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper.Paths.COLLECTIONS_PATH_SEGMENT;
+import static com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper.Paths.DATABASES_ROOT;
+import static com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper.Paths.DOCUMENTS_PATH_SEGMENT;
 
 /**
  * Implement static methods used for various simple transformations and tasks.
  */
-class ChangeFeedHelper {
+public class ChangeFeedHelper {
     private static final String DEFAULT_USER_AGENT_SUFFIX = "changefeed-2.2.6";
 
     public static final int HTTP_STATUS_CODE_NOT_FOUND = 404;

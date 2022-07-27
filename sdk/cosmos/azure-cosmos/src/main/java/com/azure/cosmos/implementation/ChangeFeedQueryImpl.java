@@ -3,8 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.Paginator;

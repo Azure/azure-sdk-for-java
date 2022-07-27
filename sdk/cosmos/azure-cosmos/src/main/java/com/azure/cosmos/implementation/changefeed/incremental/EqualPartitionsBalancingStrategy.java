@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
