@@ -71,9 +71,7 @@ stages:
           displayName: 'Generate pom for aggregate JavaDoc report'
           inputs:
             scriptPath: 'eng/scripts/generate_aggregate_pom.py'
-            # Management and Spring track 2 groups will be added after
-            # https://github.com/Azure/azure-sdk-for-java/issues/29273 is resolved
-            arguments: '--groups com.azure --type javadoc'
+            arguments: '--groups com.azure --type javadoc --exclude-project-list com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-dotnet-benchmark'
             workingDirectory: '$(System.DefaultWorkingDirectory)'    
 
         - task: Maven@3
