@@ -157,9 +157,7 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        KeyAsyncClient asyncClient = buildAsyncClient();
-        KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
-        return new KeyClient(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(), serviceVersion);
+        return new KeyClient(buildInnerClient());
     }
 
     /**

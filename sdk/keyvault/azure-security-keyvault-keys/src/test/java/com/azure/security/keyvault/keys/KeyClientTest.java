@@ -12,6 +12,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
@@ -70,7 +71,8 @@ public class KeyClientTest extends KeyClientTestBase {
             when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        keyClient = new KeyClient(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(), serviceVersion);
+        keyClient = new KeyClient(new KeyClientImpl(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(),
+            serviceVersion));
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
