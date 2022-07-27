@@ -38,7 +38,7 @@ import com.azure.core.util.Context;
  * final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the router administration client
- * RouterAdministrationClient routerAdminClient = builder.buildClient&#40;&#41;;
+ * RouterAdministrationClient routerAdministrationClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routeradministrationclient.instantiation -->

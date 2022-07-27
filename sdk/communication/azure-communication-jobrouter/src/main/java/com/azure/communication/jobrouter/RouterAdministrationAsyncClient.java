@@ -46,7 +46,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder&#40;&#41;
  *     .connectionString&#40;connectionString&#41;;
  * &#47;&#47; Build the router administration client
- * RouterAdministrationAsyncClient routerAdminAsyncClient = builder.buildAsyncClient&#40;&#41;;
+ * RouterAdministrationAsyncClient routerAdministrationClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation -->
