@@ -105,7 +105,11 @@
           {
             "matcher": "java-package",
             "match": "/com\\.google\\.gson(\\..*)?/"
-          }
+          },
+          "class com\\.azure\\.cosmos\\.BridgeInternal",
+          "class com\\.azure\\.cosmos\\.CosmosBridgeInternal",
+          "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
+          "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
         ]
       }
     }
@@ -218,6 +222,12 @@
           "code": "java\\.annotation\\.added",
           "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
           "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
+          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
         },
         {
           "code": "java.method.added",

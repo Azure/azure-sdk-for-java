@@ -59,10 +59,6 @@ Licensed under the MIT License.
 
     <!-- Prevents Checkstyle validating test source files. -->
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
-
-    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-    <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
-    <revapi.skip>true</revapi.skip>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
   </properties>
