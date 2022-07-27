@@ -15,6 +15,7 @@ public abstract class AbstractDownloadTest <TOptions extends BlobPerfStressOptio
     }
 
     // Upload one blob for the whole test run. All tests can download the same blob
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
