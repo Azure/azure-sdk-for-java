@@ -315,10 +315,49 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         // If it is session processor, we create subscribers for each session.
         if (receiverOptions.isRollingSessionReceiver()) {
             receiverClient.receiveMessagesWithContextFromRollingSessions()
-                .subscribe(this::subscribeReceiveFlux);
+                .limitRate(receiverOptions.getMaxConcurrentSessions())
+                .subscribe(createSessionSubscriber());
         } else {
             subscribeReceiveFlux(receiverClient.receiveMessagesWithContext());
         }
+    }
+
+    private synchronized CoreSubscriber<Flux<ServiceBusMessageContext>> createSessionSubscriber() {
+        return new CoreSubscriber<Flux<ServiceBusMessageContext>>() {
+            private Subscription subscription = null;
+
+            @Override
+            public void onSubscribe(Subscription subscription) {
+                this.subscription = subscription;
+                receiverSubscriptions.put(subscription, subscription);
+                subscription.request(1);
+            }
+
+            @Override
+            public void onNext(Flux<ServiceBusMessageContext> receiveFlux) {
+                subscribeReceiveFlux(receiveFlux);
+                if (isRunning.get()) {
+                    LOGGER.verbose("Requesting 1 more session message flux from upstream");
+                    subscription.request(1);
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                LOGGER.info("Error receiving session message flux.", throwable);
+                if (isRunning.get()) {
+                    restartMessageReceiver(subscription);
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                LOGGER.info("Completed receiving session message flux.");
+                if (isRunning.get()) {
+                    restartMessageReceiver(subscription);
+                }
+            }
+        };
     }
 
     private synchronized void subscribeReceiveFlux(Flux<ServiceBusMessageContext> receiveFlux) {
@@ -393,7 +432,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             public void onError(Throwable throwable) {
                 LOGGER.info("Error receiving messages.", throwable);
                 handleError(throwable);
-                if (isRunning.get()) {
+                if (isRunning.get() && !receiverOptions.isRollingSessionReceiver()) {
                     restartMessageReceiver(subscription);
                 }
             }

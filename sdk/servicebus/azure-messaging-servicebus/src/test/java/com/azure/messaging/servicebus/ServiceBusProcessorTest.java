@@ -115,7 +115,7 @@ public class ServiceBusProcessorTest {
             }
         });
 
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(sessionFlux);
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(sessionFlux, 5);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
@@ -509,7 +509,7 @@ public class ServiceBusProcessorTest {
     }
 
     private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder getSessionBuilder(
-        Flux<Flux<ServiceBusMessageContext>> sessionFlux) {
+        Flux<Flux<ServiceBusMessageContext>> sessionFlux, int maxConcurrentSessions) {
 
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
@@ -518,6 +518,7 @@ public class ServiceBusProcessorTest {
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         ReceiverOptions receiverOptions = mock(ReceiverOptions.class);
         when(asyncClient.getReceiverOptions()).thenReturn(receiverOptions);
+        when(receiverOptions.getMaxConcurrentSessions()).thenReturn(maxConcurrentSessions);
         when(receiverOptions.isRollingSessionReceiver()).thenReturn(true);
         when(asyncClient.receiveMessagesWithContextFromRollingSessions()).thenReturn(sessionFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
