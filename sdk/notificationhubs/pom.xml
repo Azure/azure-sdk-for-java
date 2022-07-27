@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
 
   <modules>
+      <module>azure-messaging-notificationhubs</module>
       <module>azure-resourcemanager-notificationhubs</module>
   </modules>
 </project>
