@@ -36,7 +36,6 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.function.Function;
 
@@ -71,12 +70,10 @@ public final class KeyAsyncClient {
     /**
      * Creates a {@link KeyAsyncClient} that uses an {@link HttpPipeline} to service requests.
      *
-     * @param vaultUrl URL for the Azure Key Vault service.
-     * @param pipeline {@link HttpPipeline} that the HTTP requests and responses will flow through.
-     * @param version {@link KeyServiceVersion} of the service to be used when making requests.
+     * @param keyClient the impl client.
      */
-    KeyAsyncClient(URL vaultUrl, HttpPipeline pipeline, KeyServiceVersion version) {
-        this.keyClient = new KeyClientImpl(vaultUrl.toString(), pipeline, version);
+    KeyAsyncClient(KeyClientImpl keyClient) {
+        this.keyClient = keyClient;
     }
 
     /**

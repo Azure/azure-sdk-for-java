@@ -29,6 +29,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.keys.models.KeyVaultKeyIdentifier;
@@ -179,6 +180,10 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
+        return new KeyAsyncClient(buildInnerClient());
+    }
+
+    private KeyClientImpl buildInnerClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -192,7 +197,7 @@ public final class KeyClientBuilder implements
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new KeyAsyncClient(vaultUrl, pipeline, serviceVersion);
+            return new KeyClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -238,7 +243,7 @@ public final class KeyClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new KeyAsyncClient(vaultUrl, pipeline, serviceVersion);
+        return new KeyClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
     }
 
     /**

@@ -59,12 +59,10 @@ public final class KeyClient {
     /**
      * Creates a {@link KeyClient} that uses an {@link HttpPipeline} to service requests.
      *
-     * @param vaultUrl URL for the Azure Key Vault service.
-     * @param pipeline {@link HttpPipeline} that the HTTP requests and responses will flow through.
-     * @param version {@link KeyServiceVersion} of the service to be used when making requests.
+     * @param keyClient the impl client.
      */
-    KeyClient(String  vaultUrl, HttpPipeline pipeline, KeyServiceVersion version) {
-        this.keyClient = new KeyClientImpl(vaultUrl, pipeline, version);
+    KeyClient(KeyClientImpl keyClient) {
+        this.keyClient = keyClient;
     }
 
     /**
