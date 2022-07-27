@@ -3,7 +3,6 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.util.Configuration;
-import com.azure.storage.file.share.options.ShareCreateOptions;
 
 import java.util.UUID;
 
