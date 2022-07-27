@@ -33,17 +33,20 @@ public class SwaggerInterfaceParserTests {
 
     @Test
     public void hostWithNoHostAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerInterfaceParser(TestInterface1.class));
+        assertThrows(MissingRequiredAnnotationException.class,
+            () -> SwaggerInterfaceParser.getOrCreateInterfaceParser(TestInterface1.class));
     }
 
     @Test
     public void hostWithNoServiceNameAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerInterfaceParser(TestInterface2.class));
+        assertThrows(MissingRequiredAnnotationException.class,
+            () -> SwaggerInterfaceParser.getOrCreateInterfaceParser(TestInterface2.class));
     }
 
     @Test
     public void hostWithHostAnnotation() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface3.class);
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser
+            .getOrCreateInterfaceParser(TestInterface3.class);
         assertEquals("https://management.azure.com", interfaceParser.getHost());
         assertEquals("myService", interfaceParser.getServiceName());
     }
@@ -58,7 +61,8 @@ public class SwaggerInterfaceParserTests {
 
     @Test
     public void methodParser() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface4.class);
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser
+            .getOrCreateInterfaceParser(TestInterface4.class);
         final Method testMethod3 = TestInterface4.class.getDeclaredMethods()[0];
         assertEquals("testMethod4", testMethod3.getName());
 

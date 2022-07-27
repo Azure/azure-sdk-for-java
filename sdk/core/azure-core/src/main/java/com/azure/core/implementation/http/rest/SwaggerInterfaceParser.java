@@ -10,10 +10,14 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
+
 /**
  * The type responsible for creating individual Swagger interface method parsers from a Swagger interface.
  */
-public class SwaggerInterfaceParser {
+public final class SwaggerInterfaceParser {
+    private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new ConcurrentHashMap<>();
+
     private final String host;
     private final String serviceName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
@@ -22,8 +26,17 @@ public class SwaggerInterfaceParser {
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface name.
      *
      * @param swaggerInterface The interface that will be parsed.
+     * @return The {@link SwaggerInterfaceParser} for the passed interface.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface) {
+    public static SwaggerInterfaceParser getOrCreateInterfaceParser(Class<?> swaggerInterface) {
+        if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
+            INTERFACE_PARSERS.clear();
+        }
+
+        return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
+    }
+
+    private SwaggerInterfaceParser(Class<?> swaggerInterface) {
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
         if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
             this.host = hostAnnotation.value();

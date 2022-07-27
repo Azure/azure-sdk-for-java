@@ -30,15 +30,12 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility methods that aid processing in RestProxy.
  */
 public final class RestProxyUtils {
 
-    private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new ConcurrentHashMap<>();
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
     public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
@@ -220,9 +217,5 @@ public final class RestProxyUtils {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
-    }
-
-    public static SwaggerInterfaceParser getSwaggerInterfaceParser(Class<?> swaggerInterface) {
-        return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
     }
 }

@@ -11,14 +11,13 @@ import java.util.stream.Collectors;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
+
 /**
  * A builder class that is used to create URLs.
  */
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
-
-    // future improvement - make this configurable
-    private static final int MAX_CACHE_SIZE = 10000;
 
     private String scheme;
     private String host;

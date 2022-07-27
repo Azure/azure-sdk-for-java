@@ -132,7 +132,8 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
-        final SwaggerInterfaceParser interfaceParser = RestProxyUtils.getSwaggerInterfaceParser(swaggerInterface);
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser
+            .getOrCreateInterfaceParser(swaggerInterface);
         final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
             restProxy);
