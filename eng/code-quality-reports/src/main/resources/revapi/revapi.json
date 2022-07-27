@@ -370,7 +370,13 @@
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
-          "justification": "To support JedisRedisCheckpointStore constructor"
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
         }
       ]
     }
