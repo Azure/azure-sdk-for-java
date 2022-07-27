@@ -377,7 +377,7 @@ More details on setting up a container and required file structure can be found 
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-    documentModelAdminClient.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl),
+    documentModelAdminClient.beginBuildModel(trainingFilesUrl,
         DocumentModelBuildMode.TEMPLATE,
         new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
