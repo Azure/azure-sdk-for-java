@@ -1,14 +1,17 @@
 package com.azure.sdk.build.tool.mojo;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter;
 import com.azure.sdk.build.tool.ReportGenerator;
 import com.azure.sdk.build.tool.Tools;
 import com.azure.sdk.build.tool.models.BuildReport;
-import com.azure.sdk.build.tool.models.PingSpanData;
 import com.azure.sdk.build.tool.util.logging.Logger;
-import edu.emory.mathcs.backport.java.util.Collections;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.SpanProcessor;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -99,9 +102,20 @@ public class AzureSdkMojo extends AbstractMojo {
                     .connectionString(APP_INSIGHTS_CONNECTION_STRING)
                     .buildTraceExporter();
 
-            PingSpanData pingSpanData = new PingSpanData();
-            CompletableResultCode completionCode =
-                    azureMonitorExporter.export(Collections.singletonList(pingSpanData)).join(30, TimeUnit.SECONDS);
+            SpanProcessor processor = SimpleSpanProcessor.create(azureMonitorExporter);
+            SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+                .addSpanProcessor(processor)
+                .build();
+
+            String version = CoreUtils
+                .getProperties("azure-sdk-build-tool.properties")
+                .get("version");
+            Tracer tracer = tracerProvider.get("AzureSDKMavenBuildTool", version);
+            tracer.spanBuilder("azsdk-maven-build-tool")
+                .startSpan()
+                .end();
+
+            CompletableResultCode completionCode = processor.forceFlush().join(30, TimeUnit.SECONDS);
             if (completionCode.isSuccess()) {
                 LOGGER.info("Successfully sent ping message to Application Insights");
             } else {
@@ -109,6 +123,7 @@ public class AzureSdkMojo extends AbstractMojo {
                     LOGGER.warn("Failed to send ping message to Application Insights");
                 }
             }
+            processor.shutdown();
         } catch (Exception ex) {
             if (LOGGER.isWarnEnabled()) {
                 LOGGER.warn("Unable to send ping message to Application Insights. " + ex.getMessage());
