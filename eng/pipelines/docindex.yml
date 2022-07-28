@@ -46,10 +46,11 @@ jobs:
           pwsh: true
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
           arguments: >-
-            -DocRepoLocation $(DailyDocRepoLocation)
+            -DocRepoLocation $(DocRepoLocation)
             -TenantId '$(opensource-aad-tenant-id)' 
             -ClientId '$(opensource-aad-app-id)' 
             -ClientSecret '$(opensource-aad-secret)'
+        displayName: Generate Service Level Readme
 
       - task: Powershell@2
         inputs:
