@@ -149,8 +149,6 @@ final class ObjectMapperFactory {
             .addModule(DateTimeRfc1123Serializer.getModule())
             .addModule(DurationSerializer.getModule())
             .addModule(HttpHeadersSerializer.getModule())
-            .addModule(UnixTimeSerializer.getModule())
-            .addModule(UnixTimeDeserializer.getModule())
             .addModule(GeoJsonSerializer.getModule())
             .addModule(GeoJsonDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)

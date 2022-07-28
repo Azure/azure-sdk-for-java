@@ -36,7 +36,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
@@ -158,10 +157,6 @@ public class SwaggerMethodParserTests {
         void base64Url();
 
         @Get("test")
-        @ReturnValueWireType(UnixTime.class)
-        void unixTime();
-
-        @Get("test")
         @ReturnValueWireType(DateTimeRfc1123.class)
         void dateTimeRfc1123();
 
@@ -187,7 +182,6 @@ public class SwaggerMethodParserTests {
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
             Arguments.of(clazz.getDeclaredMethod("base64Url"), Base64Url.class),
-            Arguments.of(clazz.getDeclaredMethod("unixTime"), UnixTime.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("page"), Page.class),
             Arguments.of(clazz.getDeclaredMethod("unknownType"), null)
