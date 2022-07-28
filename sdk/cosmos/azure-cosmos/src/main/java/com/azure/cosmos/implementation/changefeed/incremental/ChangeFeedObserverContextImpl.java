@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 
 
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -66,5 +67,10 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     @Override
     public FeedResponse<JsonNode> getFeedResponse() {
         return this.feedResponse;
+    }
+
+    @Override
+    public FeedResponse<ChangeFeedProcessorResponse> getFeedResponseV1() {
+        throw new UnsupportedOperationException("getFeedResponse() should be called instead for Incremental");
     }
 }

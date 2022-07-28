@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -131,6 +132,11 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                         });
                 });
         return feedResponseFlux.publishOn(this.scheduler);
+    }
+
+    @Override
+    public Flux<FeedResponse<ChangeFeedProcessorResponse>> createDocumentChangeFeedQueryV1(CosmosAsyncContainer collectionLink, CosmosChangeFeedRequestOptions requestOptions) {
+        throw new UnsupportedOperationException("createDocumentChangeFeedQuery() should be called instead for Incremental");
     }
 
     @Override

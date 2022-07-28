@@ -23,9 +23,9 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -165,7 +165,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                                .fullFidelity();
 
                            return this.feedContextClient
-                               .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                               .createDocumentChangeFeedQueryV1(this.feedContextClient.getContainerClient(), options)
                                .take(1)
                                .map(feedResponse -> {
                                    ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
@@ -270,7 +270,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         return this;
     }
 
-    public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
+    public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<ChangeFeedProcessorResponse>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
 

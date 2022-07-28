@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +52,14 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
 
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs) {
-        return this.changeFeedObserver.processChanges(context, docs)
-            .doOnError(throwable -> {
-                this.logger.warn("Exception thrown during ChangeFeedObserver.processChanges from thread {}", Thread.currentThread().getId(), throwable);
-            });
+        throw new UnsupportedOperationException("processChangesV1() should be called instead for Full Fidelity");
+    }
+
+    @Override
+    public Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs) {
+        return this.changeFeedObserver.processChangesV1(context, docs)
+                                      .doOnError(throwable -> {
+                                          this.logger.warn("Exception thrown during ChangeFeedObserver.processChanges from thread {}", Thread.currentThread().getId(), throwable);
+                                      });
     }
 }

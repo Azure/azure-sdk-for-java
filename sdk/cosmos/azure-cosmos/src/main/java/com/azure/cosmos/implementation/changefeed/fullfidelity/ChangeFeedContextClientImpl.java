@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -93,7 +94,12 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
         CosmosAsyncContainer collectionLink,
         CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+        throw new UnsupportedOperationException("createDocumentChangeFeedQueryV1() should be called instead for Full Fidelity");
+    }
 
+    @Override
+    public Flux<FeedResponse<ChangeFeedProcessorResponse>> createDocumentChangeFeedQueryV1(
+        CosmosAsyncContainer collectionLink, CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
         // ChangeFeed processor relies on getting GoneException signals
         // to handle split of leases - so we need to suppress the split-proofing
         // in the underlying fetcher/pipeline for the change feed processor.
@@ -102,7 +108,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
-        Flux<FeedResponse<JsonNode>> feedResponseFlux =
+        Flux<FeedResponse<ChangeFeedProcessorResponse>> feedResponseFlux =
             clientWrapper
                 .getCollectionCache()
                 .resolveByNameAsync(
@@ -117,12 +123,12 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     return clientWrapper
                         .queryDocumentChangeFeed(collection, effectiveRequestOptions, Document.class)
                         .map(response -> {
-                            List<JsonNode> results = response.getResults()
+                            List<ChangeFeedProcessorResponse> results = response.getResults()
                                                              .stream()
                                                              .map(document ->
                                                                  ModelBridgeInternal.toObjectFromJsonSerializable(
                                                                      document,
-                                                                     JsonNode.class))
+                                                                     ChangeFeedProcessorResponse.class))
                                                              .collect(Collectors.toList());
                             return BridgeInternal.toFeedResponsePage(
                                 results,

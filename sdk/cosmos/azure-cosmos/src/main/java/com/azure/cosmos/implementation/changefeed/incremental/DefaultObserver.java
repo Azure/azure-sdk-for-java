@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,5 +47,8 @@ class DefaultObserver implements ChangeFeedObserver {
         return Mono.empty();
     }
 
-
+    @Override
+    public Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs) {
+        throw new UnsupportedOperationException("processChanges() should be called instead for Incremental");
+    }
 }

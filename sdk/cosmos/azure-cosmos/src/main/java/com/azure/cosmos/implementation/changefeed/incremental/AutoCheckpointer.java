@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,11 @@ class AutoCheckpointer implements ChangeFeedObserver {
                 logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
             })
             .then(this.afterProcessChanges(context));
+    }
+
+    @Override
+    public Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs) {
+        throw new UnsupportedOperationException("processChanges() should be called instead for Incremental");
     }
 
     private Mono<Void> afterProcessChanges(ChangeFeedObserverContext context) {

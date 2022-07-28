@@ -19,10 +19,10 @@ import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitExcep
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -95,7 +95,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     }).last();
 
             })
-            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
+            .flatMap(value -> this.documentClient.createDocumentChangeFeedQueryV1(this.settings.getCollectionSelfLink(),
                                                                                 this.options)
                 .limitRequest(1)
             )
@@ -261,7 +261,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     }
 
     private Mono<Void> dispatchChanges(
-        FeedResponse<JsonNode> response,
+        FeedResponse<ChangeFeedProcessorResponse> response,
         ChangeFeedState continuationState) {
 
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
@@ -270,6 +270,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
             continuationState,
             this.checkpointer);
 
-        return this.observer.processChanges(context, response.getResults());
+        return this.observer.processChangesV1(context, response.getResults());
     }
 }

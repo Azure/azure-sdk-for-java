@@ -9,10 +9,11 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.ChangeFeedOperationType;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static CosmosAsyncContainer feedContainer;
     private static CosmosAsyncContainer leaseContainer;
 
-    private static Map<String, List<JsonNode>> changeFeedMap = new ConcurrentHashMap<>();
+    private static Map<ChangeFeedOperationType, List<ChangeFeedProcessorResponse>> changeFeedMap = new ConcurrentHashMap<>();
 
 
     public static void main(String[] args) {
@@ -144,11 +145,11 @@ public class ChangeFeedProcessorFullFidelityTest {
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
-            .handleChanges(jsonNodes -> {
-                for (JsonNode item : jsonNodes) {
+            .handleChanges(changeFeedProcessorResponses -> {
+                for (ChangeFeedProcessorResponse item : changeFeedProcessorResponses) {
                     try {
-                        logger.info("Item is : {}", item.toPrettyString());
-                        String operationType = item.get("metadata").get("operationType").asText();
+                        logger.info("Item is : {}", item.toString());
+                        ChangeFeedOperationType operationType = item.getChangeFeedMetaData().getOperationType();
                         if (!changeFeedMap.containsKey(operationType)) {
                             changeFeedMap.put(operationType, new ArrayList<>());
                         }
@@ -158,7 +159,7 @@ public class ChangeFeedProcessorFullFidelityTest {
                         if (item == null)  {
                             logger.error("Received null item ", e);
                         } else {
-                            logger.error("Error occurred for item : {}", item.toPrettyString(), e);
+                            logger.error("Error occurred for item : {}", item, e);
                         }
                     }
                 }

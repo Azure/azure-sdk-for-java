@@ -4,15 +4,16 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedProcessorBuilderImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.util.Beta;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * Helper class to build a {@link ChangeFeedProcessor} instance.
- * <p>
- * <!-- src_embed com.azure.cosmos.changeFeedProcessor.builder -->
+ *
+ * <!-- src_embed com.azure.cosmos.fullFidelityChangeFeedProcessor.builder -->
  * <pre>
  * ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder&#40;&#41;
  *     .hostName&#40;hostName&#41;
@@ -25,14 +26,15 @@ import java.util.function.Consumer;
  *     &#125;&#41;
  *     .buildChangeFeedProcessor&#40;&#41;;
  * </pre>
- * <!-- end com.azure.cosmos.changeFeedProcessor.builder -->
+ * <!-- end com.azure.cosmos.fullFidelityChangeFeedProcessor.builder -->
  */
+@Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class FullFidelityChangeFeedProcessorBuilder {
     private String hostName;
     private CosmosAsyncContainer feedContainer;
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private Consumer<List<JsonNode>> consumer;
+    private Consumer<List<ChangeFeedProcessorResponse>> consumer;
 
     /**
      * Instantiates a new Cosmos a new ChangeFeedProcessor builder.
@@ -77,8 +79,8 @@ public class FullFidelityChangeFeedProcessorBuilder {
 
     /**
      * Sets a consumer function which will be called to process changes.
-     * <p>
-     * <!-- src_embed com.azure.cosmos.changeFeedProcessor.handleChanges -->
+     *
+     * <!-- src_embed com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges -->
      * <pre>
      * .handleChanges&#40;docs -&gt; &#123;
      *     for &#40;JsonNode item : docs&#41; &#123;
@@ -86,12 +88,12 @@ public class FullFidelityChangeFeedProcessorBuilder {
      *     &#125;
      * &#125;&#41;
      * </pre>
-     * <!-- end com.azure.cosmos.changeFeedProcessor.handleChanges -->
+     * <!-- end com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges -->
      *
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
-    public FullFidelityChangeFeedProcessorBuilder handleChanges(Consumer<List<JsonNode>> consumer) {
+    public FullFidelityChangeFeedProcessorBuilder handleChanges(Consumer<List<ChangeFeedProcessorResponse>> consumer) {
         this.consumer = consumer;
 
         return this;
@@ -152,7 +154,6 @@ public class FullFidelityChangeFeedProcessorBuilder {
             }
 
             //  TODO:(kuthapar) - point in time in multi-master check. where do we do that?
-            //  TODO:(kuthapar) - validate these 2 exceptions being thrown here.
             if (this.changeFeedProcessorOptions.getStartTime() != null) {
                 throw new IllegalStateException("Full fidelity change feed is not supported for the chosen change "
                     + "feed start from option.");

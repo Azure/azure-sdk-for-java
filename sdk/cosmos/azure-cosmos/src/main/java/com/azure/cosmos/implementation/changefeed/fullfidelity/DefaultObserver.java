@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.fullfidelity;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +16,9 @@ import java.util.function.Consumer;
 
 class DefaultObserver implements ChangeFeedObserver {
     private static final Logger log = LoggerFactory.getLogger(DefaultObserver.class);
-    private final Consumer<List<JsonNode>> consumer;
+    private final Consumer<List<ChangeFeedProcessorResponse>> consumer;
 
-    public DefaultObserver(Consumer<List<JsonNode>> consumer) {
+    public DefaultObserver(Consumer<List<ChangeFeedProcessorResponse>> consumer) {
         this.consumer = consumer;
     }
 
@@ -33,6 +34,11 @@ class DefaultObserver implements ChangeFeedObserver {
 
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs) {
+        throw new UnsupportedOperationException("processChangesV1() should be called instead for Full Fidelity");
+    }
+
+    @Override
+    public Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs) {
         log.info("Start processing from thread {}", Thread.currentThread().getId());
         try {
             //TODO for later: convert to user T here unless T is JsonNode when we want to add additional support to
@@ -45,6 +51,4 @@ class DefaultObserver implements ChangeFeedObserver {
         }
         return Mono.empty();
     }
-
-
 }

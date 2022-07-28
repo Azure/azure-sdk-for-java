@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,5 +56,10 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
             .doOnError(throwable -> {
                 this.logger.warn("Exception thrown during ChangeFeedObserver.processChanges from thread {}", Thread.currentThread().getId(), throwable);
             });
+    }
+
+    @Override
+    public Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs) {
+        throw new UnsupportedOperationException("processChanges() should be called instead for Incremental");
     }
 }

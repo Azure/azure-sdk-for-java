@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,13 @@ class AutoCheckpointer implements ChangeFeedObserver {
 
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs) {
-        return this.observer.processChanges(context, docs)
+        throw new UnsupportedOperationException("processChangesV1() should be called instead for Full Fidelity");
+    }
+
+    @Override
+    public Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs) {
+        return this.observer
+            .processChangesV1(context, docs)
             .doOnError(throwable -> {
                 logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
             })

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
@@ -17,7 +18,7 @@ import reactor.core.publisher.Mono;
 class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     private final PartitionCheckpointer checkpointer;
     private final String partitionKeyRangeId;
-    private final FeedResponse<JsonNode> feedResponse;
+    private final FeedResponse<ChangeFeedProcessorResponse> feedResponse;
     private final ChangeFeedState continuationState;
 
 
@@ -29,7 +30,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     }
 
     public ChangeFeedObserverContextImpl(String leaseToken,
-                                         FeedResponse<JsonNode> feedResponse,
+                                         FeedResponse<ChangeFeedProcessorResponse> feedResponse,
                                          ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
         this.partitionKeyRangeId = leaseToken;
@@ -65,6 +66,11 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      */
     @Override
     public FeedResponse<JsonNode> getFeedResponse() {
+        throw new UnsupportedOperationException("getFeedResponseV1() should be called instead for Full Fidelity");
+    }
+
+    @Override
+    public FeedResponse<ChangeFeedProcessorResponse> getFeedResponseV1() {
         return this.feedResponse;
     }
 }

@@ -2,24 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -49,6 +47,9 @@ public interface ChangeFeedContextClient {
      */
     Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
                                                                CosmosChangeFeedRequestOptions requestOptions);
+
+    Flux<FeedResponse<ChangeFeedProcessorResponse>> createDocumentChangeFeedQueryV1(CosmosAsyncContainer collectionLink,
+                                                                                  CosmosChangeFeedRequestOptions requestOptions);
 
     /**
      * Reads a database.
