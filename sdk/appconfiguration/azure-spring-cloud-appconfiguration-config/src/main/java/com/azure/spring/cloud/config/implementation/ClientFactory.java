@@ -5,6 +5,7 @@ package com.azure.spring.cloud.config.implementation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
@@ -18,7 +19,9 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
  */
 public class ClientFactory {
 
-    private static final HashMap<String, ConnectionManager> CONNECTIONS = new HashMap<>();;
+    private static final HashMap<String, ConnectionManager> CONNECTIONS = new HashMap<>();
+
+    private final List<ConfigStore> configStores;
 
     /**
      * Sets up Connections to all configuration stores.
@@ -33,6 +36,7 @@ public class ClientFactory {
     public ClientFactory(AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured) {
+        this.configStores = properties.getStores();
         if (CONNECTIONS.size() == 0) {
             for (ConfigStore store : properties.getStores()) {
                 String clientId = "";
@@ -85,10 +89,10 @@ public class ClientFactory {
      * @return String Endpoint
      */
     String findOriginForEndpoint(String endpoint) {
-        for (ConnectionManager connection : CONNECTIONS.values()) {
-            for (String replica : connection.getAllEndpoints()) {
+        for (ConfigStore store : configStores) {
+            for (String replica : store.getEndpoints()) {
                 if (replica.equals(endpoint)) {
-                    return connection.getOriginEndpoint();
+                    return store.getEndpoint();
                 }
             }
         }
@@ -101,10 +105,11 @@ public class ClientFactory {
      * @return true if at least one other unique endpoint connects to the same configuration store
      */
     boolean hasReplicas(String endpoint) {
-        for (ConnectionManager connection : CONNECTIONS.values()) {
-            for (String replica : connection.getAllEndpoints()) {
-                if (replica.equals(endpoint)) {
-                    return connection.getAllEndpoints().size() > 1;
+        String originEndpoint = findOriginForEndpoint(endpoint);
+        for (ConfigStore store : configStores) {
+            if (store.getEndpoint().equals(originEndpoint)) {
+                if (store.getConnectionStrings().size() > 0 || store.getEndpoints().size() > 0) {
+                    return true;
                 }
             }
         }

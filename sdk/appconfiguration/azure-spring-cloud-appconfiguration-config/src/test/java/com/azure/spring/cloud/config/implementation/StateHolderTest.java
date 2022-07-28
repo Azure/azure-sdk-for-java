@@ -4,15 +4,19 @@ package com.azure.spring.cloud.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -20,9 +24,6 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 
 public class StateHolderTest {
-
-    @Mock
-    private StateHolder stateHolderMock;
 
     private AppConfigurationProviderProperties providerProperties;
 
@@ -76,9 +77,9 @@ public class StateHolderTest {
     }
 
     @Test
-    public void updateNextRefreshTimeNotExpired(TestInfo testInfo) {
+    public void updateNextRefreshTimeTest(TestInfo testInfo) {
         String endpoint = testInfo.getDisplayName() + ".azconfig.io";
-        StateHolder state = new StateHolder();
+        StateHolder stateHolder = new StateHolder();
         List<ConfigurationSetting> watchKeys = new ArrayList<>();
         Duration duration = Duration.ofMinutes((long) 10);
 
@@ -86,15 +87,73 @@ public class StateHolderTest {
 
         watchKeys.add(watchKey);
 
-        State originalState = new State(watchKeys, Math.toIntExact(duration.getSeconds()), endpoint);
+        stateHolder.setState(endpoint, watchKeys, duration);
 
-        state.setState(originalState, duration);
+        StateHolder.updateState(stateHolder);
 
-        state.updateNextRefreshTime(null, providerProperties);
-        StateHolder.updateState(state);
+        State originalState = StateHolder.getState(endpoint);
+
+        stateHolder.updateNextRefreshTime(null, providerProperties);
+        StateHolder.updateState(stateHolder);
         State newState = StateHolder.getState(endpoint);
         assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
 
+        // Test 2
+        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -1));
+        StateHolder.updateState(stateHolder);
+        originalState = StateHolder.getState(endpoint);
+
+        // Duration is less than the minBackOff
+        stateHolder.updateNextRefreshTime(null, providerProperties);
+        newState = StateHolder.getState(endpoint);
+        assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
+
+        // Test 3
+        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -1));
+        StateHolder.updateState(stateHolder);
+        originalState = StateHolder.getState(endpoint);
+        providerProperties.setDefaultMinBackoff((long) -120);
+
+        // Duration is less than the minBackOff
+        try (MockedStatic<BackoffTimeCalculator> backoffTimeCalculatorMock = Mockito
+            .mockStatic(BackoffTimeCalculator.class)) {
+            Long ns = Long.valueOf("300000000000");
+            backoffTimeCalculatorMock
+                .when(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(), Mockito.any(), Mockito.any()))
+                .thenReturn(ns);
+
+            stateHolder.updateNextRefreshTime(null, providerProperties);
+            newState = StateHolder.getState(endpoint);
+
+            assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
+            backoffTimeCalculatorMock.verify(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(),
+                Mockito.any(), Mockito.any()), times(1));
+        }
+    }
+
+    @Test
+    public void updateNextRefreshForcedRefresh(TestInfo testInfo) {
+        String endpoint = testInfo.getDisplayName() + ".azconfig.io";
+        StateHolder stateHolder = new StateHolder();
+        Duration duration = Duration.ofMinutes((long) -1);
+        List<ConfigurationSetting> watchKeys = new ArrayList<>();
+        stateHolder.setNextForcedRefresh(duration);
+
+        ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
+
+        watchKeys.add(watchKey);
+
+        stateHolder.setState(endpoint, watchKeys, duration);
+
+        StateHolder.updateState(stateHolder);
+
+        Instant originalForcedRefresh = StateHolder.getNextForcedRefresh();
+
+        stateHolder.updateNextRefreshTime(Duration.ofMinutes((long) 11), providerProperties);
+
+        Instant newForcedRefresh = StateHolder.getNextForcedRefresh();
+
+        assertNotEquals(originalForcedRefresh, newForcedRefresh);
     }
 
 }

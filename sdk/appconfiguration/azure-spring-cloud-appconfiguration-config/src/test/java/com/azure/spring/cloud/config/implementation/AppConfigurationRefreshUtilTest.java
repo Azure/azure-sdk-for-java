@@ -96,8 +96,13 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
-        assertFalse(
-            AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock));
+        when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(watchKeys.get(0));
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(false);
+
+            assertFalse(
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock));
+        }
     }
 
     @Test
@@ -134,7 +139,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            assertTrue(
+            assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock));
         }
     }
