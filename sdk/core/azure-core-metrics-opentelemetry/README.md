@@ -35,7 +35,7 @@ The following sections provide several code snippets covering some of the most c
 - [Default configuration: Opentelemtery SDK](#default-configuration-agent)
 - [Custom configuration](#custom-configuration)
 
-You can find more samples [here](https://github.com/Azure/azure-sdk-for-java/blob/cb37bdb3067cc800f4b1429fc3d265d66c50f8e7/sdk/core/azure-core-metrics-opentelemetry/src/samples/).
+You can find more samples [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/samples/).
 
 ### Default configuration: agent
 
@@ -126,6 +126,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [context]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/Context.java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/cb37bdb3067cc800f4b1429fc3d265d66c50f8e7/sdk/core/azure-core-metrics-opentelemetry/src/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-metrics-opentelemetry%2FREADME.png)

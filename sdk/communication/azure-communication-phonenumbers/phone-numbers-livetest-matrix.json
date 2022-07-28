@@ -11,8 +11,8 @@
                 "AZURE_TEST_HTTP_CLIENTS": "okhttp",
                 "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA8"
             },
-            "macOS-10.15": {
-                "OSVmImage": "macOS-10.15",
+            "macos-11": {
+                "OSVmImage": "macos-11",
                 "Pool": "Azure Pipelines",
                 "JavaTestVersion": "1.11",
                 "AZURE_TEST_HTTP_CLIENTS": "netty",

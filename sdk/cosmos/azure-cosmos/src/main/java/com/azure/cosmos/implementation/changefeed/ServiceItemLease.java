@@ -4,10 +4,10 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;

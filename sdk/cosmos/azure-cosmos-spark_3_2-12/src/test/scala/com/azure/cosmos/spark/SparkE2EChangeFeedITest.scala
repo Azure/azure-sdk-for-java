@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
