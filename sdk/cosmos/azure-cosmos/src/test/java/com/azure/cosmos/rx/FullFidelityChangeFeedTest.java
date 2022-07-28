@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -30,7 +31,7 @@ import org.testng.annotations.Test;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.time.Instant;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +39,7 @@ import java.util.UUID;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
@@ -109,12 +111,9 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
         Thread.sleep(5 * 1000);
 
-        while (results1.hasNext()) {
+        if (results1.hasNext()) {
             FeedResponse<JsonNode> response = results1.next();
             List<JsonNode> itemChanges = response.getResults();
-            if (itemChanges.size() == 0) {
-                break;
-            }
             assertGatewayMode(response);
             assertThat(itemChanges.size()).isEqualTo(5);
             // Assert initial creation of items
@@ -146,6 +145,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
             // Assert item2 deleted with TTL
             // TODO: Missing TTL logic
+        } else {
+            fail("change feed missing results");
         }
 
         CosmosChangeFeedRequestOptions options2 = CosmosChangeFeedRequestOptions
@@ -178,12 +179,9 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        while (results2.hasNext()) {
+        if (results2.hasNext()) {
             FeedResponse<JsonNode> response = results2.next();
             List<JsonNode> itemChanges = response.getResults();
-            if (itemChanges.size() == 0) {
-                break;
-            }
             assertGatewayMode(response);
             assertThat(itemChanges.size()).isEqualTo(3);
             // Assert initial creation of item3
@@ -203,6 +201,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("delete");
             assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
             ).isEqualTo(itemChanges.get(1).get("metadata").get("lsn").asText());
+        } else {
+            fail("change feed missing results");
         }
     }
 
@@ -251,14 +251,9 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        while (results.hasNext()) {
+        if (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
             List<JsonNode> itemChanges = response.getResults();
-            if (itemChanges.isEmpty()) {
-                //  There are no more change feed items
-                //  breaking now;
-                break;
-            }
             assertGatewayMode(response);
             assertThat(itemChanges.size()).isEqualTo(4);
             // Assert initial creation of items
@@ -283,6 +278,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
             // Assert item2 deleted with TTL
             // TODO: Missing TTL logic showing up
+        } else {
+            fail("change feed missing results");
         }
     }
 
@@ -322,14 +319,9 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        while (results.hasNext()) {
+        if (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
             List<JsonNode> itemChanges = response.getResults();
-            if (itemChanges.isEmpty()) {
-                //  There are no more change feed items
-                //  breaking now;
-                break;
-            }
             assertGatewayMode(response);
             assertThat(itemChanges.size()).isEqualTo(150);
             // Verify that operations order shows properly
@@ -338,6 +330,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.get(index+1).get("metadata").get("operationType").asText()).isEqualTo("replace");
                 assertThat(itemChanges.get(index+2).get("metadata").get("operationType").asText()).isEqualTo("delete");
             }
+        } else {
+            fail("change feed missing results");
         }
     }
 
@@ -383,14 +377,9 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        while (results.hasNext()) {
+        if (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
             List<JsonNode> itemChanges = response.getResults();
-            if (itemChanges.isEmpty()) {
-                //  There are no more change feed items
-                //  breaking now;
-                break;
-            }
             assertGatewayMode(response);
             assertThat(itemChanges.size()).isEqualTo(5);
             // Assert initial creation of item1
@@ -418,11 +407,13 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
             ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
             assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(2).get("current"));
+        } else {
+            fail("change feed missing results");
         }
     }
 
     public CosmosContainer initializeFFCFContainer(int ttl) {
-        CosmosClient FFCF_client = new CosmosClientBuilder()
+        CosmosClient ffcfCosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .consistencyLevel(ConsistencyLevel.SESSION)
@@ -440,9 +431,10 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         if (ttl != 0) {
             containerProperties.setDefaultTimeToLiveInSeconds(ttl);
         }
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
 
-        CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabaseIfNotExists(createdDatabase.getId());
-        CosmosDatabase database = FFCF_client.getDatabase(databaseResponse.getProperties().getId());
+        CosmosDatabaseResponse databaseResponse = ffcfCosmosClient.createDatabaseIfNotExists(createdDatabase.getId());
+        CosmosDatabase database = ffcfCosmosClient.getDatabase(databaseResponse.getProperties().getId());
         CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerProperties);
 
         return database.getContainer(containerResponse.getProperties().getId());
