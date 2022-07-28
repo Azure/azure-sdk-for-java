@@ -135,7 +135,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * This class handles intercepting the response returned from the server when proxying.
      */
-    private class ProxyAuthenticationInfoInterceptor implements Interceptor {
+    private static class ProxyAuthenticationInfoInterceptor implements Interceptor {
         private final AuthorizationChallengeHandler challengeHandler;
 
         /**
