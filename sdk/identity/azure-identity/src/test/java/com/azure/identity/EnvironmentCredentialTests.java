@@ -42,6 +42,7 @@ public class EnvironmentCredentialTests {
         Configuration.getGlobalConfiguration()
             .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
             .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "bar")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "password")
             .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
 
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();

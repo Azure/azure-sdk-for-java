@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Diagnostics ExecuteSiteDetectorSlot. */
 public final class DiagnosticsExecuteSiteDetectorSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ExecuteSiteDetector.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ExecuteSiteDetector.json
      */
     /**
      * Sample code: Execute site detector.
@@ -35,7 +35,7 @@ public final class DiagnosticsExecuteSiteDetectorSlotSamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
      */
     /**
      * Sample code: Execute site slot detector.

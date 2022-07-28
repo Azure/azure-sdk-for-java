@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
@@ -284,6 +285,30 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
             this.innerProperties = new VpnSiteLinkConnectionProperties();
         }
         this.innerProperties().withEnableBgp(enableBgp);
+        return this;
+    }
+
+    /**
+     * Get the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
+     *
+     * @return the vpnGatewayCustomBgpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().vpnGatewayCustomBgpAddresses();
+    }
+
+    /**
+     * Set the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
+     *
+     * @param vpnGatewayCustomBgpAddresses the vpnGatewayCustomBgpAddresses value to set.
+     * @return the VpnSiteLinkConnectionInner object itself.
+     */
+    public VpnSiteLinkConnectionInner withVpnGatewayCustomBgpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteLinkConnectionProperties();
+        }
+        this.innerProperties().withVpnGatewayCustomBgpAddresses(vpnGatewayCustomBgpAddresses);
         return this;
     }
 

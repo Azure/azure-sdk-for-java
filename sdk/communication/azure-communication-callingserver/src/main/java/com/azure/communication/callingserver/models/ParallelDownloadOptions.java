@@ -5,6 +5,7 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.Constants.ContentDownloader;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ProgressListener;
 
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public final class ParallelDownloadOptions {
 
     private Long blockSize;
     private Integer maxConcurrency;
-    private ProgressReceiver progressReceiver;
+    private ProgressListener progressListener;
 
     /**
      * Creates a new {@link ParallelDownloadOptions} with default parameters applied.
@@ -56,21 +57,21 @@ public final class ParallelDownloadOptions {
     }
 
     /**
-     * Gets the Progress receiver for parallel reporting
-     * @return The progress reporter
+     * Gets the Progress listener for parallel reporting
+     * @return The progress listener
      */
-    public ProgressReceiver getProgressReceiver() {
-        return progressReceiver;
+    public ProgressListener getProgressListener() {
+        return progressListener;
     }
 
     /**
-     * Sets the {@link ProgressReceiver}.
+     * Sets the {@link ProgressListener}.
      *
-     * @param progressReceiver The {@link ProgressReceiver}.
+     * @param progressListener The {@link ProgressListener}.
      * @return The ParallelDownloadOptions object itself.
      */
-    public ParallelDownloadOptions setProgressReceiver(ProgressReceiver progressReceiver) {
-        this.progressReceiver = progressReceiver;
+    public ParallelDownloadOptions setProgressListener(ProgressListener progressListener) {
+        this.progressListener = progressListener;
         return this;
     }
 

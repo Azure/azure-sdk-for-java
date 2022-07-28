@@ -125,6 +125,13 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePowerQueryActivityTypeProperties withSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        super.withSourceStagingConcurrency(sourceStagingConcurrency);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

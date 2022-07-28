@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Diagnostics GetHostingEnvironmentDetectorResponse. */
 public final class DiagnosticsGetHostingEnvironmentDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
      */
     /**
      * Sample code: Get App Service Environment Detector Responses.

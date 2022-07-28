@@ -36,7 +36,11 @@ public final class PrivateEndpointProvisioningState extends ExpandableStringEnum
         return fromString(name, PrivateEndpointProvisioningState.class);
     }
 
-    /** @return known PrivateEndpointProvisioningState values. */
+    /**
+     * Gets known PrivateEndpointProvisioningState values.
+     *
+     * @return known PrivateEndpointProvisioningState values.
+     */
     public static Collection<PrivateEndpointProvisioningState> values() {
         return values(PrivateEndpointProvisioningState.class);
     }

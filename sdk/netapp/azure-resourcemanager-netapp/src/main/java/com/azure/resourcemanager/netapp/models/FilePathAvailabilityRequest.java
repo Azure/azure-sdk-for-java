@@ -6,14 +6,11 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** File path availability request content - availability is based on the name and the subnetId. */
 @Fluent
 public final class FilePathAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FilePathAvailabilityRequest.class);
-
     /*
      * File path to verify.
      */
@@ -76,16 +73,18 @@ public final class FilePathAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model FilePathAvailabilityRequest"));
         }
         if (subnetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subnetId in model FilePathAvailabilityRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FilePathAvailabilityRequest.class);
 }

@@ -33,7 +33,11 @@ public final class VideoSyncMode extends ExpandableStringEnum<VideoSyncMode> {
         return fromString(name, VideoSyncMode.class);
     }
 
-    /** @return known VideoSyncMode values. */
+    /**
+     * Gets known VideoSyncMode values.
+     *
+     * @return known VideoSyncMode values.
+     */
     public static Collection<VideoSyncMode> values() {
         return values(VideoSyncMode.class);
     }

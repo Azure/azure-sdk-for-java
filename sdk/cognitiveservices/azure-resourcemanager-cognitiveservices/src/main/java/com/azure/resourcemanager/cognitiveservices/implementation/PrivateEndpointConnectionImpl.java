@@ -53,6 +53,10 @@ public final class PrivateEndpointConnectionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointConnectionInner innerModel() {
         return this.innerObject;
     }

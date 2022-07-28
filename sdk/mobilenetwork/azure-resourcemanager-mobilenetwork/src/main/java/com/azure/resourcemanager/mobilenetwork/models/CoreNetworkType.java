@@ -27,7 +27,11 @@ public final class CoreNetworkType extends ExpandableStringEnum<CoreNetworkType>
         return fromString(name, CoreNetworkType.class);
     }
 
-    /** @return known CoreNetworkType values. */
+    /**
+     * Gets known CoreNetworkType values.
+     *
+     * @return known CoreNetworkType values.
+     */
     public static Collection<CoreNetworkType> values() {
         return values(CoreNetworkType.class);
     }

@@ -28,7 +28,11 @@ public final class VirtualNetworkPrivateLinkServiceNetworkPolicies
         return fromString(name, VirtualNetworkPrivateLinkServiceNetworkPolicies.class);
     }
 
-    /** @return known VirtualNetworkPrivateLinkServiceNetworkPolicies values. */
+    /**
+     * Gets known VirtualNetworkPrivateLinkServiceNetworkPolicies values.
+     *
+     * @return known VirtualNetworkPrivateLinkServiceNetworkPolicies values.
+     */
     public static Collection<VirtualNetworkPrivateLinkServiceNetworkPolicies> values() {
         return values(VirtualNetworkPrivateLinkServiceNetworkPolicies.class);
     }

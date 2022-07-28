@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerAppsRevisions DeactivateRevision. */
 public final class ContainerAppsRevisionsDeactivateRevisionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeactivateRevision.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeactivateRevision.json
      */
     /**
      * Sample code: Deactivate Container App's revision.

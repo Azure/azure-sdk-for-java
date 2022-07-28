@@ -133,7 +133,7 @@ public interface ReactiveCosmosOperations {
      * @param partitionKey the partition key
      * @return Mono of result
      */
-    <T> Mono<T> insert(String containerName, Object objectToSave, PartitionKey partitionKey);
+    <T> Mono<T> insert(String containerName, T objectToSave, PartitionKey partitionKey);
 
     /**
      * Insert

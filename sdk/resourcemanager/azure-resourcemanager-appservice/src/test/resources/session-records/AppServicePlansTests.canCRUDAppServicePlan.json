@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:3093/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.DomainRegistration/domains/jsdk79877.com?api-version=2015-04-01",
+    "Uri" : "http://localhost:3093/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.DomainRegistration/domains/jsdk79877.com?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (WebSiteManagementClient)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -24,7 +24,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:3093/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.CertificateRegistration/certificateOrders/wild2crt8b42374211?api-version=2015-08-01",
+    "Uri" : "http://localhost:3093/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.CertificateRegistration/certificateOrders/wild2crt8b42374211?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:7165181785fd1c86b850c844cdeb424224b70c6f0bc8828955c61905a22b93d3 (WebSiteManagementClient)",
       "Content-Type" : "application/json; charset=utf-8"

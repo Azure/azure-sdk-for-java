@@ -475,14 +475,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> configureFactoryRepoAsync(String locationId, FactoryRepoUpdate factoryRepoUpdate) {
         return configureFactoryRepoWithResponseAsync(locationId, factoryRepoUpdate)
-            .flatMap(
-                (Response<FactoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -811,14 +804,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<FactoryInner> createOrUpdateAsync(
         String resourceGroupName, String factoryName, FactoryInner factory, String ifMatch) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, factory, ifMatch)
-            .flatMap(
-                (Response<FactoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -836,14 +822,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<FactoryInner> createOrUpdateAsync(String resourceGroupName, String factoryName, FactoryInner factory) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, factory, ifMatch)
-            .flatMap(
-                (Response<FactoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1013,14 +992,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<FactoryInner> updateAsync(
         String resourceGroupName, String factoryName, FactoryUpdateParameters factoryUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, factoryName, factoryUpdateParameters)
-            .flatMap(
-                (Response<FactoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1177,14 +1149,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<FactoryInner> getByResourceGroupAsync(
         String resourceGroupName, String factoryName, String ifNoneMatch) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, factoryName, ifNoneMatch)
-            .flatMap(
-                (Response<FactoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1201,14 +1166,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<FactoryInner> getByResourceGroupAsync(String resourceGroupName, String factoryName) {
         final String ifNoneMatch = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, factoryName, ifNoneMatch)
-            .flatMap(
-                (Response<FactoryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1351,7 +1309,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, factoryName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1514,14 +1472,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<GitHubAccessTokenResponseInner> getGitHubAccessTokenAsync(
         String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         return getGitHubAccessTokenWithResponseAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest)
-            .flatMap(
-                (Response<GitHubAccessTokenResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1686,14 +1637,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
     private Mono<AccessPolicyResponseInner> getDataPlaneAccessAsync(
         String resourceGroupName, String factoryName, UserAccessPolicy policy) {
         return getDataPlaneAccessWithResponseAsync(resourceGroupName, factoryName, policy)
-            .flatMap(
-                (Response<AccessPolicyResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

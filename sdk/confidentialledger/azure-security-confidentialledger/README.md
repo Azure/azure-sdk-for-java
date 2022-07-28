@@ -21,7 +21,7 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,7 +36,7 @@ The simplest way of providing a bearer token is to use the `DefaultAzureCredenti
 
 #### Using a client certificate
 
-As an alternative to Azure Active Directory, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose.
+As an alternative to Azure Active Directory, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose. This is not the recommended approach for anyone new to the service. 
 
 #### Create LedgerBaseClient with Azure Active Directory Credential
 
@@ -49,40 +49,11 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.5</version>
+    <version>1.5.3</version>
 </dependency>
 ```
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
-
-##### Example
-```java readme-sample-createClient
-ConfidentialLedgerIdentityServiceBaseClient identityServiceClient = new ConfidentialLedgerClientBuilder()
-    .ledgerUri(new URL("<confidential-ledger-url>"))
-    .identityServiceUri(new URL("<confidential-ledger-identity-service-url>"))
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildConfidentialLedgerIdentityServiceBaseClient();
-
-String ledgerId = "<confidential-ledger-url>"
-    .replaceAll("\\w+://", "")
-    .replaceAll("\\..*", "");
-DynamicResponse response = identityServiceClient.getLedgerIdentity(ledgerId).send();
-JsonReader jsonReader = Json.createReader(new StringReader(response.getBody().toString()));
-JsonObject result = jsonReader.readObject();
-String tlsCert = result.getString("ledgerTlsCertificate");
-reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
-    .secure(sslContextSpec -> sslContextSpec.sslContext(SslContextBuilder.forClient()
-        .trustManager(new ByteArrayInputStream(tlsCert.getBytes(StandardCharsets.UTF_8)))));
-HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
-
-System.out.println("Creating Confidential Ledger client with the certificate...");
-
-ConfidentialLedgerBaseClient confidentialLedgerClient = new ConfidentialLedgerClientBuilder()
-    .ledgerUri(new URL("<confidential-ledger-url"))
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .httpClient(httpClient)
-    .buildConfidentialLedgerBaseClient();
-```
 
 ## Key concepts
 
@@ -113,7 +84,7 @@ Users are managed directly with the Confidential Ledger instead of through Azure
 Azure Confidential Ledger is built on Microsoft Research's open-source [Confidential Consortium Framework (CCF)][ccf]. Under CCF, applications are managed by a consortium of members with the ability to submit proposals to modify and govern application operation. In Azure Confidential Ledger, Microsoft Azure owns a member identity, allowing it to perform governance actions like replacing unhealthy nodes in the Confidential Ledger, or upgrading the enclave code.
 
 ## Examples
-More examples can be found in [samples][samples_code].
+Examples can be found in [samples][samples_code] and the [samples README][samples_readme].
 
 ## Troubleshooting
 
@@ -137,7 +108,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [ccf]: https://github.com/Microsoft/CCF
 [azure_confidential_computing]: https://azure.microsoft.com/solutions/confidential-compute
 [confidential_ledger_docs]: https://aka.ms/confidentialledger-servicedocs
-[samples]: src/samples/java/com/azure/security/confidentialledger
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/

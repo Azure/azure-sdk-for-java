@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("EncodedTaskRunRequest")
 @Fluent
 public final class EncodedTaskRunRequest extends RunRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncodedTaskRunRequest.class);
-
     /*
      * Base64 encoded value of the template/definition file content.
      */
@@ -238,6 +235,13 @@ public final class EncodedTaskRunRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -247,7 +251,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
@@ -256,7 +260,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
         } else {
@@ -269,4 +273,6 @@ public final class EncodedTaskRunRequest extends RunRequest {
             credentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncodedTaskRunRequest.class);
 }

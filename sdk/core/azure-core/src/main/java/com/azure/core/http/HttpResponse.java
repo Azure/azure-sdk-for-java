@@ -4,14 +4,22 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -60,6 +68,22 @@ public abstract class HttpResponse implements Closeable {
      * @return The response's content as a stream of {@link ByteBuffer}.
      */
     public abstract Flux<ByteBuffer> getBody();
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * Subclasses should override this method.
+     *
+     * @return The {@link BinaryData} response body.
+     */
+    public BinaryData getBodyAsBinaryData() {
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Gets the response content as a {@code byte[]}.
@@ -112,6 +136,35 @@ public abstract class HttpResponse implements Closeable {
      */
     public HttpResponse buffer() {
         return new BufferedHttpResponse(this);
+    }
+
+    /**
+     * Transfers body bytes to the {@link AsynchronousByteChannel}.
+     * @param channel The destination {@link AsynchronousByteChannel}.
+     * @return A {@link Mono} that completes when transfer is completed.
+     * @throws NullPointerException When {@code channel} is null.
+     */
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+        Objects.requireNonNull(channel, "'channel' must not be null");
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            return FluxUtil.writeToAsynchronousByteChannel(body, channel);
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    /**
+     * Transfers body bytes to the {@link WritableByteChannel}.
+     * @param channel The destination {@link WritableByteChannel}.
+     * @throws IOException When I/O operation fails.
+     * @throws NullPointerException When {@code channel} is null.
+     */
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            FluxUtil.writeToWritableByteChannel(body, channel).block();
+        }
     }
 
     /**

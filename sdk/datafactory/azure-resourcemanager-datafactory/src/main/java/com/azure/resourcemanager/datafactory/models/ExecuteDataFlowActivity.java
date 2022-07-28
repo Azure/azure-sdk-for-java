@@ -242,6 +242,31 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object sourceStagingConcurrency() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sourceStagingConcurrency();
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSourceStagingConcurrency(sourceStagingConcurrency);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

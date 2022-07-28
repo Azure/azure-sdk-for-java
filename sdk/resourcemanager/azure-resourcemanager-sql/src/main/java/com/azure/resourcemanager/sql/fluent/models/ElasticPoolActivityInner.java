@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** Represents the activity on an elastic pool. */
-@JsonFlatten
 @Fluent
-public class ElasticPoolActivityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolActivityInner.class);
-
+public final class ElasticPoolActivityInner extends ProxyResource {
     /*
      * The geo-location where the resource lives
      */
@@ -26,124 +20,10 @@ public class ElasticPoolActivityInner extends ProxyResource {
     private String location;
 
     /*
-     * The time the operation finished (ISO8601 format).
+     * The properties representing the resource.
      */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * The error code if available.
-     */
-    @JsonProperty(value = "properties.errorCode", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer errorCode;
-
-    /*
-     * The error message if available.
-     */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
-
-    /*
-     * The error severity if available.
-     */
-    @JsonProperty(value = "properties.errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer errorSeverity;
-
-    /*
-     * The operation name.
-     */
-    @JsonProperty(value = "properties.operation", access = JsonProperty.Access.WRITE_ONLY)
-    private String operation;
-
-    /*
-     * The unique operation ID.
-     */
-    @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID operationId;
-
-    /*
-     * The percentage complete if available.
-     */
-    @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer percentComplete;
-
-    /*
-     * The requested max DTU per database if available.
-     */
-    @JsonProperty(value = "properties.requestedDatabaseDtuMax", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedDatabaseDtuMax;
-
-    /*
-     * The requested min DTU per database if available.
-     */
-    @JsonProperty(value = "properties.requestedDatabaseDtuMin", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedDatabaseDtuMin;
-
-    /*
-     * The requested DTU for the pool if available.
-     */
-    @JsonProperty(value = "properties.requestedDtu", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedDtu;
-
-    /*
-     * The requested name for the elastic pool if available.
-     */
-    @JsonProperty(value = "properties.requestedElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
-    private String requestedElasticPoolName;
-
-    /*
-     * The requested storage limit for the pool in GB if available.
-     */
-    @JsonProperty(value = "properties.requestedStorageLimitInGB", access = JsonProperty.Access.WRITE_ONLY)
-    private Long requestedStorageLimitInGB;
-
-    /*
-     * The name of the elastic pool.
-     */
-    @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
-    private String elasticPoolName;
-
-    /*
-     * The name of the server the elastic pool is in.
-     */
-    @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
-    private String serverName;
-
-    /*
-     * The time the operation started (ISO8601 format).
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The current state of the operation.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
-
-    /*
-     * The requested storage limit in MB.
-     */
-    @JsonProperty(value = "properties.requestedStorageLimitInMB", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedStorageLimitInMB;
-
-    /*
-     * The requested per database DTU guarantee.
-     */
-    @JsonProperty(value = "properties.requestedDatabaseDtuGuarantee", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedDatabaseDtuGuarantee;
-
-    /*
-     * The requested per database DTU cap.
-     */
-    @JsonProperty(value = "properties.requestedDatabaseDtuCap", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedDatabaseDtuCap;
-
-    /*
-     * The requested DTU guarantee.
-     */
-    @JsonProperty(value = "properties.requestedDtuGuarantee", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer requestedDtuGuarantee;
+    @JsonProperty(value = "properties")
+    private ElasticPoolActivityProperties innerProperties;
 
     /**
      * Get the location property: The geo-location where the resource lives.
@@ -166,12 +46,21 @@ public class ElasticPoolActivityInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties representing the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private ElasticPoolActivityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the endTime property: The time the operation finished (ISO8601 format).
      *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -180,7 +69,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the errorCode value.
      */
     public Integer errorCode() {
-        return this.errorCode;
+        return this.innerProperties() == null ? null : this.innerProperties().errorCode();
     }
 
     /**
@@ -189,7 +78,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the errorMessage value.
      */
     public String errorMessage() {
-        return this.errorMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
     }
 
     /**
@@ -198,7 +87,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
-        return this.errorSeverity;
+        return this.innerProperties() == null ? null : this.innerProperties().errorSeverity();
     }
 
     /**
@@ -207,7 +96,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the operation value.
      */
     public String operation() {
-        return this.operation;
+        return this.innerProperties() == null ? null : this.innerProperties().operation();
     }
 
     /**
@@ -216,7 +105,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the operationId value.
      */
     public UUID operationId() {
-        return this.operationId;
+        return this.innerProperties() == null ? null : this.innerProperties().operationId();
     }
 
     /**
@@ -225,7 +114,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
-        return this.percentComplete;
+        return this.innerProperties() == null ? null : this.innerProperties().percentComplete();
     }
 
     /**
@@ -234,7 +123,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedDatabaseDtuMax value.
      */
     public Integer requestedDatabaseDtuMax() {
-        return this.requestedDatabaseDtuMax;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedDatabaseDtuMax();
     }
 
     /**
@@ -243,7 +132,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedDatabaseDtuMin value.
      */
     public Integer requestedDatabaseDtuMin() {
-        return this.requestedDatabaseDtuMin;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedDatabaseDtuMin();
     }
 
     /**
@@ -252,7 +141,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedDtu value.
      */
     public Integer requestedDtu() {
-        return this.requestedDtu;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedDtu();
     }
 
     /**
@@ -261,7 +150,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedElasticPoolName value.
      */
     public String requestedElasticPoolName() {
-        return this.requestedElasticPoolName;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedElasticPoolName();
     }
 
     /**
@@ -270,7 +159,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedStorageLimitInGB value.
      */
     public Long requestedStorageLimitInGB() {
-        return this.requestedStorageLimitInGB;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedStorageLimitInGB();
     }
 
     /**
@@ -279,7 +168,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
-        return this.elasticPoolName;
+        return this.innerProperties() == null ? null : this.innerProperties().elasticPoolName();
     }
 
     /**
@@ -288,7 +177,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the serverName value.
      */
     public String serverName() {
-        return this.serverName;
+        return this.innerProperties() == null ? null : this.innerProperties().serverName();
     }
 
     /**
@@ -297,7 +186,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -306,7 +195,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -315,7 +204,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedStorageLimitInMB value.
      */
     public Integer requestedStorageLimitInMB() {
-        return this.requestedStorageLimitInMB;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedStorageLimitInMB();
     }
 
     /**
@@ -324,7 +213,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedDatabaseDtuGuarantee value.
      */
     public Integer requestedDatabaseDtuGuarantee() {
-        return this.requestedDatabaseDtuGuarantee;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedDatabaseDtuGuarantee();
     }
 
     /**
@@ -333,7 +222,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedDatabaseDtuCap value.
      */
     public Integer requestedDatabaseDtuCap() {
-        return this.requestedDatabaseDtuCap;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedDatabaseDtuCap();
     }
 
     /**
@@ -342,7 +231,7 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @return the requestedDtuGuarantee value.
      */
     public Integer requestedDtuGuarantee() {
-        return this.requestedDtuGuarantee;
+        return this.innerProperties() == null ? null : this.innerProperties().requestedDtuGuarantee();
     }
 
     /**
@@ -351,5 +240,8 @@ public class ElasticPoolActivityInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -111,11 +111,15 @@ extends:
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark31
         uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark31 }}
       - name: azure-cosmos-spark_3-2_2-12
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark32
         uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark32 }}
     AdditionalModules:
       - name: azure-cosmos-benchmark

@@ -27,6 +27,8 @@ import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDe
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.reactivestreams.Publisher;
@@ -142,6 +144,9 @@ public final class ConfigurationAsyncClient {
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
@@ -173,6 +178,9 @@ public final class ConfigurationAsyncClient {
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -278,6 +286,9 @@ public final class ConfigurationAsyncClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection", "westUS" and value "db_connection"</p>
@@ -314,6 +325,9 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * If {@link ConfigurationSetting#getETag() ETag} is specified, the configuration value is updated if the current
      * setting's ETag matches. If the ETag's value is equal to the wildcard character ({@code "*"}), the setting will
@@ -461,6 +475,8 @@ public final class ConfigurationAsyncClient {
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -492,6 +508,8 @@ public final class ConfigurationAsyncClient {
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -501,7 +519,7 @@ public final class ConfigurationAsyncClient {
      * <pre>
      * client.getConfigurationSettingWithResponse&#40;
      *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, null, false&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;response -&gt; &#123;
      *         final ConfigurationSetting result = response.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
@@ -598,6 +616,8 @@ public final class ConfigurationAsyncClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination from the service.
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
@@ -636,6 +656,9 @@ public final class ConfigurationAsyncClient {
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination from the service.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
@@ -648,7 +671,7 @@ public final class ConfigurationAsyncClient {
      * <pre>
      * client.deleteConfigurationSettingWithResponse&#40;
      *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;response -&gt; &#123;
      *         final ConfigurationSetting responseSetting = response.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
@@ -716,7 +739,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly -->
      * <pre>
      * client.setReadOnly&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, false&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, response.getKey&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly -->
@@ -743,6 +766,9 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -783,6 +809,9 @@ public final class ConfigurationAsyncClient {
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
@@ -803,7 +832,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly -->
      * <pre>
      * client.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;response -&gt; &#123;
      *         ConfigurationSetting result = response.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
@@ -865,7 +894,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listsettings -->
      * <pre>
      * client.listConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;setting -&gt;
      *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -874,6 +903,7 @@ public final class ConfigurationAsyncClient {
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all of the current settings in the service.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
@@ -951,7 +981,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions -->
      * <pre>
      * client.listRevisions&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;setting -&gt;
      *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -959,6 +989,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector) {

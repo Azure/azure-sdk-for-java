@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -13,9 +14,12 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
+import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
+import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.Volume;
@@ -62,6 +66,15 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public List<String> zones() {
+        List<String> inner = this.innerModel().zones();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public SystemData systemData() {
@@ -174,8 +187,12 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().throughputMibps();
     }
 
-    public String encryptionKeySource() {
+    public EncryptionKeySource encryptionKeySource() {
         return this.innerModel().encryptionKeySource();
+    }
+
+    public String keyVaultPrivateEndpointResourceId() {
+        return this.innerModel().keyVaultPrivateEndpointResourceId();
     }
 
     public Boolean ldapEnabled() {
@@ -238,6 +255,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().volumeSpecName();
     }
 
+    public Boolean encrypted() {
+        return this.innerModel().encrypted();
+    }
+
     public List<PlacementKeyValuePairs> placementRules() {
         List<PlacementKeyValuePairs> inner = this.innerModel().placementRules();
         if (inner != null) {
@@ -257,6 +278,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public VolumeInner innerModel() {
@@ -368,6 +393,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().revert(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void resetCifsPassword() {
+        serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void resetCifsPassword(Context context) {
+        serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
     public void breakReplication(BreakReplicationRequest body) {
         serviceManager.volumes().breakReplication(resourceGroupName, accountName, poolName, volumeName, body);
     }
@@ -378,6 +411,24 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void breakReplication(BreakReplicationRequest body, Context context) {
         serviceManager.volumes().breakReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public void reestablishReplication(ReestablishReplicationRequest body) {
+        serviceManager.volumes().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public void reestablishReplication(ReestablishReplicationRequest body, Context context) {
+        serviceManager
+            .volumes()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public PagedIterable<Replication> listReplications() {
+        return serviceManager.volumes().listReplications(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public PagedIterable<Replication> listReplications(Context context) {
+        return serviceManager.volumes().listReplications(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void resyncReplication() {
@@ -422,6 +473,30 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().poolChange(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
+    public void relocate() {
+        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void relocate(Context context) {
+        serviceManager.volumes().relocate(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void finalizeRelocation() {
+        serviceManager.volumes().finalizeRelocation(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void finalizeRelocation(Context context) {
+        serviceManager.volumes().finalizeRelocation(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void revertRelocation() {
+        serviceManager.volumes().revertRelocation(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void revertRelocation(Context context) {
+        serviceManager.volumes().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
     public VolumeImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -455,6 +530,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
             this.updateBody.withTags(tags);
             return this;
         }
+    }
+
+    public VolumeImpl withZones(List<String> zones) {
+        this.innerModel().withZones(zones);
+        return this;
     }
 
     public VolumeImpl withServiceLevel(ServiceLevel serviceLevel) {
@@ -542,8 +622,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
-    public VolumeImpl withEncryptionKeySource(String encryptionKeySource) {
+    public VolumeImpl withEncryptionKeySource(EncryptionKeySource encryptionKeySource) {
         this.innerModel().withEncryptionKeySource(encryptionKeySource);
+        return this;
+    }
+
+    public VolumeImpl withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId) {
+        this.innerModel().withKeyVaultPrivateEndpointResourceId(keyVaultPrivateEndpointResourceId);
         return this;
     }
 
@@ -553,13 +638,23 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withCoolAccess(Boolean coolAccess) {
-        this.innerModel().withCoolAccess(coolAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccess(coolAccess);
+            return this;
+        } else {
+            this.updateBody.withCoolAccess(coolAccess);
+            return this;
+        }
     }
 
     public VolumeImpl withCoolnessPeriod(Integer coolnessPeriod) {
-        this.innerModel().withCoolnessPeriod(coolnessPeriod);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolnessPeriod(coolnessPeriod);
+            return this;
+        } else {
+            this.updateBody.withCoolnessPeriod(coolnessPeriod);
+            return this;
+        }
     }
 
     public VolumeImpl withUnixPermissions(String unixPermissions) {

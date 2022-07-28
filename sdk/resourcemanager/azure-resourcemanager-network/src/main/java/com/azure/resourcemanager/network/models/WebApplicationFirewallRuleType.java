@@ -27,7 +27,11 @@ public final class WebApplicationFirewallRuleType extends ExpandableStringEnum<W
         return fromString(name, WebApplicationFirewallRuleType.class);
     }
 
-    /** @return known WebApplicationFirewallRuleType values. */
+    /**
+     * Gets known WebApplicationFirewallRuleType values.
+     *
+     * @return known WebApplicationFirewallRuleType values.
+     */
     public static Collection<WebApplicationFirewallRuleType> values() {
         return values(WebApplicationFirewallRuleType.class);
     }

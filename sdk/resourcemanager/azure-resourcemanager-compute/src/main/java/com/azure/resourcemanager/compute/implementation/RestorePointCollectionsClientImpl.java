@@ -323,7 +323,14 @@ public final class RestorePointCollectionsClientImpl
     public Mono<RestorePointCollectionInner> createOrUpdateAsync(
         String resourceGroupName, String restorePointCollectionName, RestorePointCollectionInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, restorePointCollectionName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RestorePointCollectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -503,7 +510,14 @@ public final class RestorePointCollectionsClientImpl
     public Mono<RestorePointCollectionInner> updateAsync(
         String resourceGroupName, String restorePointCollectionName, RestorePointCollectionUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, restorePointCollectionName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RestorePointCollectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -923,7 +937,14 @@ public final class RestorePointCollectionsClientImpl
     public Mono<RestorePointCollectionInner> getByResourceGroupAsync(
         String resourceGroupName, String restorePointCollectionName, RestorePointCollectionExpandOptions expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RestorePointCollectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -941,7 +962,14 @@ public final class RestorePointCollectionsClientImpl
         String resourceGroupName, String restorePointCollectionName) {
         final RestorePointCollectionExpandOptions expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RestorePointCollectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

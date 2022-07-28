@@ -278,6 +278,13 @@ public interface HostPool {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolInner object.
      *
      * @return the inner object.
@@ -898,7 +905,7 @@ public interface HostPool {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a RegistrationInfo definition.
+     * @return represents a RegistrationInfo definition along with {@link Response}.
      */
     Response<RegistrationInfo> retrieveRegistrationTokenWithResponse(Context context);
 }

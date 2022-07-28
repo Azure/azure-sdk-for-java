@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
@@ -51,19 +51,19 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.2.2</version>   <!-- NOTE: This should be updated manually. -->
+        <version>1.2.3</version>   <!-- NOTE: This should be updated manually. -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.22.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+        <version>3.25.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       </dependency>
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager</artifactId>
-        <version>2.15.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+        <version>2.16.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       </dependency>
 
       <!-- Spring Cloud Azure -->
@@ -154,6 +154,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -170,6 +175,11 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-storage</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

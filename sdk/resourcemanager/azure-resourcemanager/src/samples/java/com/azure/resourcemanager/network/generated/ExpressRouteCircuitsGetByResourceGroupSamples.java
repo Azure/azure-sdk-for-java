@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRouteCircuits GetByResourceGroup. */
 public final class ExpressRouteCircuitsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit.

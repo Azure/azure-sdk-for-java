@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,9 @@ public final class BasicDigitalTwin {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
     private String etag;
+
+    @JsonIgnore
+    private OffsetDateTime lastUpdatedOn;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private BasicDigitalTwinMetadata metadata;
@@ -80,6 +86,14 @@ public final class BasicDigitalTwin {
     }
 
     /**
+     * Gets the date and time when the twin was last updated.
+     * @return The date and time the twin was last updated.
+     */
+    public OffsetDateTime getLastUpdatedOn() {
+        return lastUpdatedOn;
+    }
+
+    /**
      * Gets the information about the model a digital twin conforms to. This field is present on every digital twin.
      * @return The information about the model a digital twin conforms to. This field is present on every digital twin.
      */
@@ -117,5 +131,20 @@ public final class BasicDigitalTwin {
     public BasicDigitalTwin addToContents(String key, Object value) {
         this.contents.put(key, value);
         return this;
+    }
+    
+    // Unwraps the raw metadata received from the service and extracts the "$lastUpdateTime" property.
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA)
+    private void unwrapMetadata(Map<String, Object> metadata) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        
+        String lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        if (lastUpdatedOnString != null) {
+            this.lastUpdatedOn = OffsetDateTime.parse(lastUpdatedOnString);
+            metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        }
+        
+        this.metadata = mapper.convertValue(metadata, BasicDigitalTwinMetadata.class);
     }
 }

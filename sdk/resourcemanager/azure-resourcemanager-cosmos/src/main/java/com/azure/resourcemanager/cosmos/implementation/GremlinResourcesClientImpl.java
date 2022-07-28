@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.GremlinResourcesClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GremlinResourcesClient. */
 public final class GremlinResourcesClientImpl implements GremlinResourcesClient {
-    private final ClientLogger logger = new ClientLogger(GremlinResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GremlinResourcesService service;
 
@@ -353,7 +350,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Gremlin databases and their properties.
+     * @return the List operation response, that contains the Gremlin databases and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GremlinDatabaseGetResultsInner>> listGremlinDatabasesSinglePageAsync(
@@ -406,7 +404,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Gremlin databases and their properties.
+     * @return the List operation response, that contains the Gremlin databases and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GremlinDatabaseGetResultsInner>> listGremlinDatabasesSinglePageAsync(
@@ -455,7 +454,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Gremlin databases and their properties.
+     * @return the List operation response, that contains the Gremlin databases and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GremlinDatabaseGetResultsInner> listGremlinDatabasesAsync(
@@ -472,7 +472,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Gremlin databases and their properties.
+     * @return the List operation response, that contains the Gremlin databases and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GremlinDatabaseGetResultsInner> listGremlinDatabasesAsync(
@@ -488,7 +489,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Gremlin databases and their properties.
+     * @return the List operation response, that contains the Gremlin databases and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GremlinDatabaseGetResultsInner> listGremlinDatabases(
@@ -505,7 +507,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Gremlin databases and their properties.
+     * @return the List operation response, that contains the Gremlin databases and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GremlinDatabaseGetResultsInner> listGremlinDatabases(
@@ -522,7 +525,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GremlinDatabaseGetResultsInner>> getGremlinDatabaseWithResponseAsync(
@@ -576,7 +580,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GremlinDatabaseGetResultsInner>> getGremlinDatabaseWithResponseAsync(
@@ -626,20 +631,14 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GremlinDatabaseGetResultsInner> getGremlinDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName) {
         return getGremlinDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName)
-            .flatMap(
-                (Response<GremlinDatabaseGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -669,7 +668,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GremlinDatabaseGetResultsInner> getGremlinDatabaseWithResponse(
@@ -687,7 +687,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return an Azure Cosmos DB Gremlin database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinDatabaseWithResponseAsync(
@@ -754,7 +754,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return an Azure Cosmos DB Gremlin database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinDatabaseWithResponseAsync(
@@ -818,7 +818,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Gremlin database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
@@ -851,7 +851,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Gremlin database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
@@ -885,7 +885,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Gremlin database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
@@ -910,7 +910,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Gremlin database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
@@ -935,7 +935,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return an Azure Cosmos DB Gremlin database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GremlinDatabaseGetResultsInner> createUpdateGremlinDatabaseAsync(
@@ -960,7 +960,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin database.
+     * @return an Azure Cosmos DB Gremlin database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GremlinDatabaseGetResultsInner> createUpdateGremlinDatabaseAsync(
@@ -1032,7 +1032,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteGremlinDatabaseWithResponseAsync(
@@ -1084,7 +1084,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteGremlinDatabaseWithResponseAsync(
@@ -1132,7 +1132,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteGremlinDatabaseAsync(
@@ -1155,7 +1155,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteGremlinDatabaseAsync(
@@ -1177,7 +1177,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
@@ -1195,7 +1195,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
@@ -1212,7 +1212,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
@@ -1231,7 +1231,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteGremlinDatabaseAsync(
@@ -1284,7 +1284,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputSettingsGetResultsInner>> getGremlinDatabaseThroughputWithResponseAsync(
@@ -1340,7 +1340,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ThroughputSettingsGetResultsInner>> getGremlinDatabaseThroughputWithResponseAsync(
@@ -1392,20 +1392,13 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> getGremlinDatabaseThroughputAsync(
         String resourceGroupName, String accountName, String databaseName) {
         return getGremlinDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1439,7 +1432,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputSettingsGetResultsInner> getGremlinDatabaseThroughputWithResponse(
@@ -1459,7 +1452,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateGremlinDatabaseThroughputWithResponseAsync(
@@ -1527,7 +1521,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateGremlinDatabaseThroughputWithResponseAsync(
@@ -1592,7 +1587,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1626,7 +1621,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1661,7 +1656,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1687,7 +1682,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1713,7 +1708,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> updateGremlinDatabaseThroughputAsync(
@@ -1739,7 +1734,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> updateGremlinDatabaseThroughputAsync(
@@ -1813,7 +1808,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToAutoscaleWithResponseAsync(
@@ -1867,7 +1863,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToAutoscaleWithResponseAsync(
@@ -1917,7 +1914,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1944,7 +1941,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1972,7 +1969,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1991,7 +1988,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2010,7 +2007,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToAutoscaleAsync(
@@ -2030,7 +2027,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToAutoscaleAsync(
@@ -2084,7 +2081,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToManualThroughputWithResponseAsync(
@@ -2138,7 +2136,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToManualThroughputWithResponseAsync(
@@ -2188,7 +2187,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2216,7 +2215,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2245,7 +2244,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2265,7 +2264,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2284,7 +2283,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToManualThroughputAsync(
@@ -2304,7 +2303,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToManualThroughputAsync(
@@ -2359,7 +2358,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the graphs and their properties.
+     * @return the List operation response, that contains the graphs and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GremlinGraphGetResultsInner>> listGremlinGraphsSinglePageAsync(
@@ -2417,7 +2417,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the graphs and their properties.
+     * @return the List operation response, that contains the graphs and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GremlinGraphGetResultsInner>> listGremlinGraphsSinglePageAsync(
@@ -2471,7 +2472,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the graphs and their properties.
+     * @return the List operation response, that contains the graphs and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GremlinGraphGetResultsInner> listGremlinGraphsAsync(
@@ -2489,7 +2491,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the graphs and their properties.
+     * @return the List operation response, that contains the graphs and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GremlinGraphGetResultsInner> listGremlinGraphsAsync(
@@ -2507,7 +2510,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the graphs and their properties.
+     * @return the List operation response, that contains the graphs and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GremlinGraphGetResultsInner> listGremlinGraphs(
@@ -2525,7 +2529,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the graphs and their properties.
+     * @return the List operation response, that contains the graphs and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GremlinGraphGetResultsInner> listGremlinGraphs(
@@ -2543,7 +2548,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GremlinGraphGetResultsInner>> getGremlinGraphWithResponseAsync(
@@ -2602,7 +2608,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GremlinGraphGetResultsInner>> getGremlinGraphWithResponseAsync(
@@ -2657,20 +2664,14 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GremlinGraphGetResultsInner> getGremlinGraphAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
         return getGremlinGraphWithResponseAsync(resourceGroupName, accountName, databaseName, graphName)
-            .flatMap(
-                (Response<GremlinGraphGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2702,7 +2703,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GremlinGraphGetResultsInner> getGremlinGraphWithResponse(
@@ -2722,7 +2723,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return an Azure Cosmos DB Gremlin graph along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinGraphWithResponseAsync(
@@ -2795,7 +2796,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return an Azure Cosmos DB Gremlin graph along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinGraphWithResponseAsync(
@@ -2865,7 +2866,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Gremlin graph.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner>
@@ -2900,7 +2901,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Gremlin graph.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner>
@@ -2936,7 +2937,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Gremlin graph.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner>
@@ -2963,7 +2964,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Gremlin graph.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner>
@@ -2990,7 +2991,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return an Azure Cosmos DB Gremlin graph on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GremlinGraphGetResultsInner> createUpdateGremlinGraphAsync(
@@ -3017,7 +3018,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Gremlin graph.
+     * @return an Azure Cosmos DB Gremlin graph on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GremlinGraphGetResultsInner> createUpdateGremlinGraphAsync(
@@ -3095,7 +3096,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteGremlinGraphWithResponseAsync(
@@ -3152,7 +3153,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteGremlinGraphWithResponseAsync(
@@ -3205,7 +3206,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteGremlinGraphAsync(
@@ -3229,7 +3230,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteGremlinGraphAsync(
@@ -3252,7 +3253,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
@@ -3271,7 +3272,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
@@ -3290,7 +3291,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGremlinGraphAsync(
@@ -3311,7 +3312,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteGremlinGraphAsync(
@@ -3366,7 +3367,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputSettingsGetResultsInner>> getGremlinGraphThroughputWithResponseAsync(
@@ -3425,7 +3427,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ThroughputSettingsGetResultsInner>> getGremlinGraphThroughputWithResponseAsync(
@@ -3480,20 +3483,14 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> getGremlinGraphThroughputAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName) {
         return getGremlinGraphThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, graphName)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3525,7 +3522,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputSettingsGetResultsInner> getGremlinGraphThroughputWithResponse(
@@ -3546,7 +3544,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateGremlinGraphThroughputWithResponseAsync(
@@ -3619,7 +3618,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateGremlinGraphThroughputWithResponseAsync(
@@ -3689,7 +3689,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -3724,7 +3724,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -3760,7 +3760,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -3787,7 +3787,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -3814,7 +3814,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> updateGremlinGraphThroughputAsync(
@@ -3841,7 +3841,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> updateGremlinGraphThroughputAsync(
@@ -3919,7 +3919,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToAutoscaleWithResponseAsync(
@@ -3978,7 +3979,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToAutoscaleWithResponseAsync(
@@ -4033,7 +4035,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4062,7 +4064,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4092,7 +4094,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4113,7 +4115,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4134,7 +4136,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToAutoscaleAsync(
@@ -4155,7 +4157,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToAutoscaleAsync(
@@ -4214,7 +4216,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToManualThroughputWithResponseAsync(
@@ -4273,7 +4276,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToManualThroughputWithResponseAsync(
@@ -4328,7 +4332,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4358,7 +4362,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4388,7 +4392,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4409,7 +4413,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -4430,7 +4434,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToManualThroughputAsync(
@@ -4451,7 +4455,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToManualThroughputAsync(

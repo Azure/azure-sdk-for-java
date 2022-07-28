@@ -7,24 +7,19 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERATION_TIMEOUT;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sample to demonstrate using {@link JaegerGrpcSpanExporter} to export telemetry events when publishing multiple events
@@ -67,7 +62,7 @@ public class PublishEventsJaegerExporterSample {
 
     /**
      * Send an iterable of events to specific event hub using the
-     * {@link EventHubProducerAsyncClient} with distributed tracing enabled and using the Jaeger exporter to export
+     * {@link EventHubProducerClient} with distributed tracing enabled and using the Jaeger exporter to export
      * telemetry events.
      */
     private static void doClientWork() {
@@ -75,77 +70,34 @@ public class PublishEventsJaegerExporterSample {
             .connectionString(CONNECTION_STRING, "<eventHub Name>")
             .buildAsyncProducerClient();
 
-        Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-        try {
-            String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+        // BEGIN: readme-sample-context-manual-propagation-amqp
+        Flux<EventData> events = Flux.just(
+            new EventData("EventData Sample 1"),
+            new EventData("EventData Sample 2"));
 
-            final byte[] body = "EventData Sample 1".getBytes(UTF_8);
-            final byte[] body2 = "EventData Sample 2".getBytes(UTF_8);
+        // Create a batch to send the events.
+        final AtomicReference<EventDataBatch> batchRef = new AtomicReference<>(
+            producer.createBatch().block());
 
-            // We will publish three events based on simple sentences.
-            Flux<EventData> data = Flux.just(
-                // only attach trace context if not using auto-instrumentation or if you didn't make userParentSpan current
-                new EventData(body).addContext(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)),
-                new EventData(body2).addContext(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)));
+        final AtomicReference<io.opentelemetry.context.Context> traceContextRef = new AtomicReference<>(io.opentelemetry.context.Context.current());
 
-            // Create a batch to send the events.
-            final CreateBatchOptions options = new CreateBatchOptions()
-                .setPartitionId(firstPartition)
-                .setMaximumSizeInBytes(256);
+        // when using async clients and instrumenting without ApplicationInsights or OpenTelemetry agent, context needs to be propagated manually
+        // you would also want to propagate it manually when not making spans current.
+        // we'll propagate context to events (to propagate it over to consumer)
+        events.collect(batchRef::get, (b, e) ->
+                b.tryAdd(e.addContext(PARENT_TRACE_CONTEXT_KEY, traceContextRef.get())))
+            .flatMap(b -> producer.send(b))
+            .doFinally(i -> Span.fromContext(traceContextRef.get()).end())
+            .contextWrite(ctx -> {
+                // this block is executed first, we'll create an outer span, which usually represents incoming request
+                // or some logical operation
+                Span span = TRACER.spanBuilder("my-span").startSpan();
 
-            final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-                producer.createBatch(options).block(OPERATION_TIMEOUT));
-
-            data.flatMap(event -> {
-                final EventDataBatch batch = currentBatch.get();
-                if (batch.tryAdd(event)) {
-                    return Mono.empty();
-                }
-
-                // The batch is full, so we create a new batch and send the batch. Mono.when completes when both
-                // operations
-                // have completed.
-                return Mono.when(
-                    producer.send(batch),
-                    producer.createBatch(options).map(newBatch -> {
-                        currentBatch.set(newBatch);
-
-                        // Add that event that we couldn't before.
-                        if (!newBatch.tryAdd(event)) {
-                            throw Exceptions.propagate(new IllegalArgumentException(String.format(
-                                "Event is too large for an empty batch. Max size: %s. Event: %s",
-                                newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
-                        }
-
-                        return newBatch;
-                    }));
-            }).then()
-                .doFinally(signal -> {
-                    final EventDataBatch batch = currentBatch.getAndSet(null);
-                    if (batch != null) {
-                        producer.send(batch).block(OPERATION_TIMEOUT);
-                    }
-                })
-                .subscribe(unused -> System.out.println("Complete"),
-                    error -> System.out.println("Error sending events: " + error),
-                    () -> {
-                        System.out.println("Completed sending events.");
-                        userParentSpan.end();
-                    });
-
-
-            // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
-            // the thread so the program does not end before the send operation is complete. Using .block() instead of
-            // .subscribe() will turn this into a synchronous call.
-            try {
-                TimeUnit.SECONDS.sleep(5);
-            } catch (InterruptedException ignored) {
-            } finally {
-                // Disposing of our producer.
-                producer.close();
-            }
-        } finally {
-            userParentSpan.end();
-        }
+                // and pass the new context with span to reactor for EventHubs producer client to pick it up.
+                return ctx.put(PARENT_TRACE_CONTEXT_KEY, traceContextRef.updateAndGet(traceContext -> traceContext.with(span)));
+            })
+            .block();
+        // END: readme-sample-context-manual-propagation-amqp
+        producer.close();
     }
 }

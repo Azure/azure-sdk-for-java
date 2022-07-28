@@ -1,6 +1,6 @@
 # To avoid dependency conflicts between SDK and Spring, when modifying or adding dependencies,
-# make sure the version is same to sdk/spring/scripts/spring_boot_2.6.7_managed_external_dependencies.txt
-# If your version is different from sdk/spring/scripts/spring_boot_2.6.7_managed_external_dependencies.txt,
+# make sure the version is same to sdk/spring/scripts/spring_boot_2.7.1_managed_external_dependencies.txt
+# If your version is different from sdk/spring/scripts/spring_boot_2.7.1_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
 # @chenrujun (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
 # Thanks.
@@ -8,19 +8,19 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.2.11
-com.fasterxml.jackson.core:jackson-annotations;2.13.2
-com.fasterxml.jackson.core:jackson-core;2.13.2
-com.fasterxml.jackson.core:jackson-databind;2.13.2.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.2
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.2
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.2
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.2
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.2
+com.fasterxml.jackson.core:jackson-annotations;2.13.3
+com.fasterxml.jackson.core:jackson-core;2.13.3
+com.fasterxml.jackson.core:jackson-databind;2.13.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.3
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.3
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.3
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.3
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.3
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
-com.google.code.gson:gson;2.8.9
+com.google.code.gson:gson;2.9.0
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
@@ -37,9 +37,9 @@ com.microsoft.azure:qpid-proton-j-extensions;1.2.4
 com.microsoft.azure.sdk.iot:iot-service-client;1.30.0
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
-com.microsoft.sqlserver:mssql-jdbc;9.4.1.jre8
+com.microsoft.sqlserver:mssql-jdbc;10.2.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
-com.squareup.okhttp3:okhttp;4.9.2
+com.squareup.okhttp3:okhttp;4.10.0
 com.zaxxer:HikariCP;4.0.3
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
@@ -47,24 +47,24 @@ io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;5.10.2
 io.github.bonigarcia:webdrivermanager;4.3.1
-io.micrometer:micrometer-core;1.8.5
-io.micrometer:micrometer-registry-azure-monitor;1.8.5
-io.micrometer:micrometer-registry-graphite;1.8.5
-io.netty:netty-buffer;4.1.76.Final
-io.netty:netty-common;4.1.76.Final
-io.netty:netty-codec-http;4.1.76.Final
-io.netty:netty-codec-http2;4.1.76.Final
-io.netty:netty-transport;4.1.76.Final
-io.netty:netty-handler;4.1.76.Final
-io.netty:netty-handler-proxy;4.1.76.Final
-io.netty:netty-tcnative;2.0.51.Final
-io.netty:netty-tcnative-boringssl-static;2.0.51.Final
-io.netty:netty-transport-native-epoll;4.1.76.Final
-io.netty:netty-transport-native-unix-common;4.1.76.Final
-io.netty:netty-transport-native-kqueue;4.1.76.Final
-io.projectreactor.netty:reactor-netty;1.0.18
-io.projectreactor.netty:reactor-netty-http;1.0.18
-io.projectreactor:reactor-core;3.4.17
+io.micrometer:micrometer-core;1.9.1
+io.micrometer:micrometer-registry-azure-monitor;1.9.1
+io.micrometer:micrometer-registry-graphite;1.9.1
+io.netty:netty-buffer;4.1.78.Final
+io.netty:netty-common;4.1.78.Final
+io.netty:netty-codec-http;4.1.78.Final
+io.netty:netty-codec-http2;4.1.78.Final
+io.netty:netty-transport;4.1.78.Final
+io.netty:netty-handler;4.1.78.Final
+io.netty:netty-handler-proxy;4.1.78.Final
+io.netty:netty-tcnative;2.0.53.Final
+io.netty:netty-tcnative-boringssl-static;2.0.53.Final
+io.netty:netty-transport-native-epoll;4.1.78.Final
+io.netty:netty-transport-native-unix-common;4.1.78.Final
+io.netty:netty-transport-native-kqueue;4.1.78.Final
+io.projectreactor.netty:reactor-netty;1.0.20
+io.projectreactor.netty:reactor-netty-http;1.0.20
+io.projectreactor:reactor-core;3.4.19
 io.reactivex:rxjava;1.3.8
 io.vertx:vertx-codegen;4.2.7
 io.vertx:vertx-core;4.2.7
@@ -75,13 +75,14 @@ javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 javax.websocket:javax.websocket-api;1.1
-mysql:mysql-connector-java;8.0.28
+mysql:mysql-connector-java;8.0.29
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.11.0
 org.apache.avro:avro-maven-plugin;1.11.0
 org.apache.commons:commons-compress;1.21
 org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.13
+org.apache.kafka:kafka-clients;3.1.1
 org.apache.logging.log4j:log4j-api;2.17.2
 org.apache.logging.log4j:log4j-core;2.17.2
 org.apache.logging.log4j:log4j-slf4j-impl;2.17.2
@@ -95,8 +96,8 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;1.13.0
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
-org.codehaus.groovy:groovy-jsr223;3.0.10
-org.codehaus.janino:janino;3.1.6
+org.codehaus.groovy:groovy-jsr223;3.0.11
+org.codehaus.janino:janino;3.1.7
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-container-grizzly;1.2.1
 org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
@@ -110,7 +111,7 @@ org.graalvm.nativeimage:svm;22.0.0.2
 org.messaginghub:pooled-jms;1.2.4
 org.powermock:powermock-api-mockito2;2.0.9
 org.powermock:powermock-module-junit4;2.0.9
-org.postgresql:postgresql;42.3.4
+org.postgresql:postgresql;42.3.6
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
@@ -119,63 +120,63 @@ io.lettuce:lettuce-core;6.2.0.RELEASE
 org.redisson:redisson;3.17.0
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-dependencies;2.6.7
-org.springframework.boot:spring-boot-actuator;2.6.7
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.6.7
-org.springframework.boot:spring-boot-autoconfigure-processor;2.6.7
-org.springframework.boot:spring-boot-autoconfigure;2.6.7
-org.springframework.boot:spring-boot-configuration-metadata;2.6.7
-org.springframework.boot:spring-boot-configuration-processor;2.6.7
-org.springframework.boot:spring-boot-starter-actuator;2.6.7
-org.springframework.boot:spring-boot-starter-aop;2.6.7
-org.springframework.boot:spring-boot-starter-cache;2.6.7
-org.springframework.boot:spring-boot-starter-data-redis;2.6.7
-org.springframework.boot:spring-boot-starter-integration;2.6.7
-org.springframework.boot:spring-boot-starter-logging;2.6.7
-org.springframework.boot:spring-boot-starter-test;2.6.7
-org.springframework.boot:spring-boot-starter-validation;2.6.7
-org.springframework.boot:spring-boot-starter-web;2.6.7
-org.springframework.boot:spring-boot-starter;2.6.7
-org.springframework.boot:spring-boot-test;2.6.7
-org.springframework.boot:spring-boot;2.6.7
-org.springframework.data:spring-data-commons;2.6.4
-org.springframework.data:spring-data-mongodb;3.3.4
-org.springframework.data:spring-data-redis;2.6.4
+org.springframework.boot:spring-boot-dependencies;2.7.1
+org.springframework.boot:spring-boot-actuator;2.7.1
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.7.1
+org.springframework.boot:spring-boot-autoconfigure-processor;2.7.1
+org.springframework.boot:spring-boot-autoconfigure;2.7.1
+org.springframework.boot:spring-boot-configuration-metadata;2.7.1
+org.springframework.boot:spring-boot-configuration-processor;2.7.1
+org.springframework.boot:spring-boot-starter-actuator;2.7.1
+org.springframework.boot:spring-boot-starter-aop;2.7.1
+org.springframework.boot:spring-boot-starter-cache;2.7.1
+org.springframework.boot:spring-boot-starter-data-redis;2.7.1
+org.springframework.boot:spring-boot-starter-integration;2.7.1
+org.springframework.boot:spring-boot-starter-logging;2.7.1
+org.springframework.boot:spring-boot-starter-test;2.7.1
+org.springframework.boot:spring-boot-starter-validation;2.7.1
+org.springframework.boot:spring-boot-starter-web;2.7.1
+org.springframework.boot:spring-boot-starter;2.7.1
+org.springframework.boot:spring-boot-test;2.7.1
+org.springframework.boot:spring-boot;2.7.1
+org.springframework.data:spring-data-commons;2.7.1
+org.springframework.data:spring-data-mongodb;3.4.1
+org.springframework.data:spring-data-redis;2.7.1
 org.springframework.experimental:spring-aot;0.11.4
-org.springframework.integration:spring-integration-core;5.5.11
-org.springframework.kafka:spring-kafka;2.8.5
-org.springframework.security:spring-security-config;5.6.4
-org.springframework.security:spring-security-core;5.6.4
-org.springframework.security:spring-security-oauth2-client;5.6.4
-org.springframework.security:spring-security-oauth2-resource-server;5.6.4
-org.springframework.security:spring-security-oauth2-core;5.6.4
-org.springframework.security:spring-security-oauth2-jose;5.6.4
-org.springframework.security:spring-security-web;5.6.4
-org.springframework:spring-beans;5.3.20
-org.springframework:spring-context-support;5.3.20
-org.springframework:spring-context;5.3.20
-org.springframework:spring-core;5.3.20
-org.springframework:spring-expression;5.3.20
-org.springframework:spring-jdbc;5.3.20
-org.springframework:spring-jms;5.3.20
-org.springframework:spring-messaging;5.3.20
-org.springframework:spring-tx;5.3.20
-org.springframework:spring-web;5.3.20
-org.springframework:spring-webmvc;5.3.20
-org.springframework:spring-test;5.3.20
+org.springframework.integration:spring-integration-core;5.5.13
+org.springframework.kafka:spring-kafka;2.8.7
+org.springframework.security:spring-security-config;5.7.2
+org.springframework.security:spring-security-core;5.7.2
+org.springframework.security:spring-security-oauth2-client;5.7.2
+org.springframework.security:spring-security-oauth2-resource-server;5.7.2
+org.springframework.security:spring-security-oauth2-core;5.7.2
+org.springframework.security:spring-security-oauth2-jose;5.7.2
+org.springframework.security:spring-security-web;5.7.2
+org.springframework:spring-beans;5.3.21
+org.springframework:spring-context-support;5.3.21
+org.springframework:spring-context;5.3.21
+org.springframework:spring-core;5.3.21
+org.springframework:spring-expression;5.3.21
+org.springframework:spring-jdbc;5.3.21
+org.springframework:spring-jms;5.3.21
+org.springframework:spring-messaging;5.3.21
+org.springframework:spring-tx;5.3.21
+org.springframework:spring-web;5.3.21
+org.springframework:spring-webmvc;5.3.21
+org.springframework:spring-test;5.3.21
 org.springframework.retry:spring-retry;1.3.3
-org.springframework.boot:spring-boot-starter-parent;2.6.7
+org.springframework.boot:spring-boot-starter-parent;2.7.1
 
 ## Spring cloud dependency versions
-org.springframework.cloud:spring-cloud-dependencies;2021.0.2
-org.springframework.cloud:spring-cloud-starter-bootstrap;3.1.2
-org.springframework.cloud:spring-cloud-bus;3.1.0
-org.springframework.cloud:spring-cloud-context;3.1.2
-org.springframework.cloud:spring-cloud-sleuth-api;3.1.2
-org.springframework.cloud:spring-cloud-starter-sleuth;3.1.2
-org.springframework.cloud:spring-cloud-starter-stream-kafka;3.2.3
-org.springframework.cloud:spring-cloud-stream-binder-test;3.2.3
-org.springframework.cloud:spring-cloud-stream;3.2.3
+org.springframework.cloud:spring-cloud-dependencies;2021.0.3
+org.springframework.cloud:spring-cloud-starter-bootstrap;3.1.3
+org.springframework.cloud:spring-cloud-bus;3.1.2
+org.springframework.cloud:spring-cloud-context;3.1.3
+org.springframework.cloud:spring-cloud-sleuth-api;3.1.3
+org.springframework.cloud:spring-cloud-starter-sleuth;3.1.3
+org.springframework.cloud:spring-cloud-starter-stream-kafka;3.2.4
+org.springframework.cloud:spring-cloud-stream-binder-test;3.2.4
+org.springframework.cloud:spring-cloud-stream;3.2.4
 
 pl.pragmatists:JUnitParams;1.1.1
 
@@ -205,19 +206,20 @@ io.opentelemetry:opentelemetry-sdk;1.11.0
 io.opentelemetry:opentelemetry-exporter-logging;1.11.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.11.0
 io.opentelemetry:opentelemetry-sdk-testing;1.11.0
-io.projectreactor:reactor-test;3.4.17
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.11.0-alpha
+io.projectreactor:reactor-test;3.4.19
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
 org.apache.maven:maven-embedder;3.6.2
 org.apache.maven.wagon:wagon-http;3.3.4
 org.apache.maven.wagon:wagon-provider-api;3.3.4
-org.assertj:assertj-core;3.21.0
+org.assertj:assertj-core;3.22.0
 org.bouncycastle:bcprov-jdk15on;1.68
 org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
-org.eclipse.jetty:jetty-http;9.4.46.v20220331
-org.eclipse.jetty:jetty-server;9.4.46.v20220331
+org.eclipse.jetty:jetty-http;9.4.48.v20220622
+org.eclipse.jetty:jetty-server;9.4.48.v20220622
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
 org.glassfish:javax.json;1.1.4
 org.glassfish:jakarta.el;3.0.4
@@ -257,9 +259,9 @@ com.nimbusds:nimbus-jose-jwt;9.22
 com.puppycrawl.tools:checkstyle;9.2
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
-io.dropwizard.metrics:metrics-core;4.2.9
-io.dropwizard.metrics:metrics-graphite;4.2.9
-io.dropwizard.metrics:metrics-jvm;4.2.9
+io.dropwizard.metrics:metrics-core;4.2.10
+io.dropwizard.metrics:metrics-graphite;4.2.10
+io.dropwizard.metrics:metrics-jvm;4.2.10
 io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.6.0
 net.oneandone.reflections8:reflections8;0.11.7
@@ -302,8 +304,8 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.8
 org.jacoco:org.jacoco.agent;0.8.8
-org.mockito:mockito-core;4.0.0
-org.mockito:mockito-inline;4.0.0
+org.mockito:mockito-core;4.5.1
+org.mockito:mockito-inline;4.5.1
 org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
 org.revapi:revapi-reporter-json;0.4.5
@@ -328,7 +330,7 @@ org.ow2.asm:asm;9.1
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.2
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.3
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview

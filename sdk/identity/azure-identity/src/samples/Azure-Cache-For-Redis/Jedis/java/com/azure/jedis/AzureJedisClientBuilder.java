@@ -146,7 +146,7 @@ public class AzureJedisClientBuilder {
         }
         if (missing.size() > 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
-                    + String.join(", ", missing) + " properties in " + className));
+                + String.join(", ", missing) + " properties in " + className));
         }
     }
 }
