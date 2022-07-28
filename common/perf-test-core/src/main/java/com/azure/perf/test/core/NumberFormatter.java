@@ -8,11 +8,18 @@ import java.lang.Math;
 public final class NumberFormatter {
     private NumberFormatter() { }
 
+    // Formats a double with the specified minimum number of significant digits.
+    // Digits to the left of the decimal point are never dropped.
+    // Examples:
+    // - Format(12345, 4) -> "12,345"
+    // - Format(1.2345, 4) -> "1.235"
+    // - Format(0.00012345, 4) -> "0.0001234"
     public static String Format(double value, int minSignificantDigits) {
         if (minSignificantDigits < 0) {
             throw new IllegalArgumentException("minSignificantDigits must be greater than zero");
         }
 
+        // Signficant digits are undefined for the number zero, so hardcode to string "0".
         if (value == 0) {
             return "0";
         }
