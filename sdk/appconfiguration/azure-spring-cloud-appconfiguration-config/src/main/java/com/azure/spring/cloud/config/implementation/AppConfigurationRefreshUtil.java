@@ -123,8 +123,9 @@ class AppConfigurationRefreshUtil {
     private static boolean refreshStoreCheck(ConfigurationClientWrapper client, ClientFactory clientFactory) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
-        if (StateHolder.getLoadState(endpoint)) {
-            refreshWithoutTime(client, StateHolder.getState(endpoint).getWatchKeys(), eventData);
+        String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
+        if (StateHolder.getLoadState(originEndpoint)) {
+            refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData);
         }
         return eventData.getDoRefresh();
     }

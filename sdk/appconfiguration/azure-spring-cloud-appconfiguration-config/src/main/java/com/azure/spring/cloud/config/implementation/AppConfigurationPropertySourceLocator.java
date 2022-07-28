@@ -148,7 +148,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 for (ConfigurationClientWrapper client : clientsToUse) {
                     sourceList = new ArrayList<>();
 
-                    if (reloadFailed && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
+                    if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
                         clientFactory)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
