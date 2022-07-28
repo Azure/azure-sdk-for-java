@@ -33,7 +33,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -85,7 +85,7 @@ public class DataLakeServiceClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
-    private FileSystemEncryptionScope fileSystemEncryptionScope;
+    private FileSystemEncryptionScopeOptions fileSystemEncryptionScope;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -459,13 +459,13 @@ public class DataLakeServiceClientBuilder implements
     }
 
     /**
-     * Sets the {@link FileSystemEncryptionScope encryption scope} that is used to determine how path contents are
+     * Sets the {@link FileSystemEncryptionScopeOptions encryption scope} that is used to determine how path contents are
      * encrypted on the server.
      *
      * @param fileSystemEncryptionScope Encryption scope containing the encryption key information.
      * @return the updated DataLakeServiceClientBuilder object
      */
-    public DataLakeServiceClientBuilder fileSystemEncryptionScope(FileSystemEncryptionScope fileSystemEncryptionScope) {
+    public DataLakeServiceClientBuilder fileSystemEncryptionScope(FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
         this.fileSystemEncryptionScope = fileSystemEncryptionScope;
         blobServiceClientBuilder.blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScope));
         return this;

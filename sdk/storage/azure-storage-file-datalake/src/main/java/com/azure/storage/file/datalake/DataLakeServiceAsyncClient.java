@@ -31,7 +31,7 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -73,7 +73,7 @@ public class DataLakeServiceAsyncClient {
 
     private final AzureSasCredential sasToken;
 
-    private final FileSystemEncryptionScope fileSystemEncryptionScope;
+    private final FileSystemEncryptionScopeOptions fileSystemEncryptionScope;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
@@ -83,11 +83,11 @@ public class DataLakeServiceAsyncClient {
      * @param serviceVersion The version of the service to receive requests.
      * @param accountName The storage account name.
      * @param blobServiceAsyncClient The underlying {@link BlobServiceAsyncClient}
-     * @param fileSystemEncryptionScope {@link FileSystemEncryptionScope} set on the file system.
+     * @param fileSystemEncryptionScope {@link FileSystemEncryptionScopeOptions} set on the file system.
      */
     DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, BlobServiceAsyncClient blobServiceAsyncClient, AzureSasCredential sasToken,
-        FileSystemEncryptionScope fileSystemEncryptionScope) {
+        FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)

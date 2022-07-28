@@ -91,7 +91,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
@@ -354,13 +354,14 @@ class Transforms {
         if (path == null) {
             return null;
         }
-        return new PathItem(path.getETag(),
+        PathItem pathItem = new PathItem(path.getETag(),
             parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() != null && path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions(),
             path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
-            path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())),
-            path.getEncryptionScope());
+            path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
+
+        return AccessorUtility.getPathItemAccessor().setPathItem(pathItem, path.getEncryptionScope());
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
@@ -858,7 +859,7 @@ class Transforms {
             .setEncryptionKeySha256(info.getEncryptionKeySha256());
     }
 
-    static BlobContainerEncryptionScope toBlobContainerEncryptionScope(FileSystemEncryptionScope fileSystemEncryptionScope) {
+    static BlobContainerEncryptionScope toBlobContainerEncryptionScope(FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
         if (fileSystemEncryptionScope == null) {
             return null;
         }

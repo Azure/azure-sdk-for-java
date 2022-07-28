@@ -69,7 +69,7 @@ public class DataLakeFileAppendOptions {
      *
      * @return the boolean flag for flush.
      */
-    public Boolean getFlush() {
+    public Boolean isFlush() {
         return flush;
     }
 

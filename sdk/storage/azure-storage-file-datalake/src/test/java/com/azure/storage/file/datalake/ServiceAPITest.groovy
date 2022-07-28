@@ -25,7 +25,7 @@ import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.UserDelegationKey
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -225,7 +225,7 @@ class ServiceAPITest extends APISpec {
 
     def "Create file system encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 
@@ -400,7 +400,7 @@ class ServiceAPITest extends APISpec {
 
     def "List file systems encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 

@@ -934,7 +934,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(
-            data, fileOffset, null, length, null, null, appendOptions.getFlush(), headers, leaseAccessConditions, getCpkInfo(), context)
+            data, fileOffset, null, length, null, null, appendOptions.isFlush(), headers, leaseAccessConditions, getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

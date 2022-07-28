@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Encryption scope options to be used when creating a file system.
  */
-public class FileSystemEncryptionScope {
+public class FileSystemEncryptionScopeOptions {
 
     /*
      * Optional.  Version 2021-06-08 and later. Specifies the default
@@ -40,9 +40,9 @@ public class FileSystemEncryptionScope {
      * scope to set on the file system and use for all future writes.
      *
      * @param encryptionScope the defaultEncryptionScope value to set.
-     * @return the updated {@link FileSystemEncryptionScope}.
+     * @return the updated {@link FileSystemEncryptionScopeOptions}.
      */
-    public FileSystemEncryptionScope setDefaultEncryptionScope(String encryptionScope) {
+    public FileSystemEncryptionScopeOptions setDefaultEncryptionScope(String encryptionScope) {
         this.defaultEncryptionScope = encryptionScope;
         return this;
     }
@@ -62,9 +62,9 @@ public class FileSystemEncryptionScope {
      * request from specifying a different encryption scope than the scope set on the container.
      *
      * @param encryptionScopeOverridePrevented the encryptionScopeOverridePrevented value to set.
-     * @return the updated {@link FileSystemEncryptionScope}.
+     * @return the updated {@link FileSystemEncryptionScopeOptions}.
      */
-    public FileSystemEncryptionScope setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+    public FileSystemEncryptionScopeOptions setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
