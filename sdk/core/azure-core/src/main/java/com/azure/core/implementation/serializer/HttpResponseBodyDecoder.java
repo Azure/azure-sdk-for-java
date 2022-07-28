@@ -11,7 +11,6 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
@@ -162,8 +161,6 @@ public final class HttpResponseBodyDecoder {
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 return DateTimeRfc1123.class;
-            } else if (wireType == UnixTime.class) {
-                return UnixTime.class;
             }
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
             final Type resultElementType = TypeUtil.getTypeArgument(resultType);
@@ -227,8 +224,6 @@ public final class HttpResponseBodyDecoder {
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 return ((DateTimeRfc1123) wireResponse).getDateTime();
-            } else if (wireType == UnixTime.class) {
-                return ((UnixTime) wireResponse).getDateTime();
             }
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
             final Type resultElementType = TypeUtil.getTypeArgument(resultType);

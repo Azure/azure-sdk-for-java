@@ -5,53 +5,43 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.CoreUtils;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
+
 /**
- * The type responsible for creating individual Swagger interface method parsers from a Swagger
- * interface.
+ * The type responsible for creating individual Swagger interface method parsers from a Swagger interface.
  */
-public class SwaggerInterfaceParser {
+public final class SwaggerInterfaceParser {
+    private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new ConcurrentHashMap<>();
+
     private final String host;
     private final String serviceName;
-    private final SerializerAdapter serializer;
-    private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
+    private final Map<Method, SwaggerMethodParser> methodParsers = new ConcurrentHashMap<>();
 
     /**
-     * Create a SwaggerInterfaceParser object with the provided fully qualified interface
-     * name.
+     * Create a SwaggerInterfaceParser object with the provided fully qualified interface name.
+     *
      * @param swaggerInterface The interface that will be parsed.
-     * @param serializer The serializer that will be used to serialize non-String header values and query values.
+     * @return The {@link SwaggerInterfaceParser} for the passed interface.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
-        this(swaggerInterface, serializer, null);
+    public static SwaggerInterfaceParser getInstance(Class<?> swaggerInterface) {
+        if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
+            INTERFACE_PARSERS.clear();
+        }
+
+        return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
     }
 
-    /**
-     * Create a SwaggerInterfaceParser object with the provided fully qualified interface
-     * name.
-     * @param swaggerInterface The interface that will be parsed.
-     * @param serializer The serializer that will be used to serialize non-String header values and query values.
-     * @param host The host of URLs that this Swagger interface targets.
-     * @throws MissingRequiredAnnotationException When an expected annotation on the interface is not provided.
-     */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
-        this.serializer = serializer;
-
-        if (!CoreUtils.isNullOrEmpty(host)) {
-            this.host = host;
+    private SwaggerInterfaceParser(Class<?> swaggerInterface) {
+        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
+        if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
+            this.host = hostAnnotation.value();
         } else {
-            final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
-            if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
-                this.host = hostAnnotation.value();
-            } else {
-                throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
-            }
+            throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
         }
 
         ServiceInterface serviceAnnotation = swaggerInterface.getAnnotation(ServiceInterface.class);
@@ -63,20 +53,20 @@ public class SwaggerInterfaceParser {
     }
 
     /**
-     * Get the method parser that is associated with the provided swaggerMethod. The method parser
-     * can be used to get details about the Swagger REST API call.
+     * Get the method parser that is associated with the provided swaggerMethod. The method parser can be used to get
+     * details about the Swagger REST API call.
      *
      * @param swaggerMethod the method to generate a parser for
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
-        return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm ->
-             new SwaggerMethodParser(sm, getHost(), serializer));
+        return methodParsers.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(this, sm));
     }
 
     /**
-     * Get the desired host that the provided Swagger interface will target with its REST API
-     * calls. This value is retrieved from the @Host annotation placed on the Swagger interface.
+     * Get the desired host that the provided Swagger interface will target with its REST API calls. This value is
+     * retrieved from the @Host annotation placed on the Swagger interface.
+     *
      * @return The value of the @Host annotation.
      */
     public String getHost() {

@@ -158,7 +158,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-          <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+          <version>2.2-M3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -167,7 +167,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-testCompile</id>
@@ -208,7 +208,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-          <version>2.0-groovy-3.0</version> <!-- {x-version-update;groovy3_org.spockframework:spock-core;external_dependency} -->
+          <version>2.2-M3-groovy-4.0</version> <!-- {x-version-update;groovy4_org.spockframework:spock-core;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -217,7 +217,7 @@
           <plugin>
             <groupId>org.codehaus.gmavenplus</groupId>
             <artifactId>gmavenplus-plugin</artifactId>
-            <version>1.13.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
+            <version>1.13.1</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
             <executions>
               <execution>
                 <goals>
@@ -226,6 +226,7 @@
                   <goal>compileTests</goal>
                   <goal>removeTestStubs</goal>
                 </goals>
+                <phase>test-compile</phase>
               </execution>
             </executions>
             <configuration>
@@ -243,7 +244,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-testCompile</id>
