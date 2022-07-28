@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.ImplUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
@@ -82,8 +84,12 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setPort(String port) {
-        this.port = CoreUtils.isNullOrEmpty(port) ? null : Integer.parseInt(port);
-        return this;
+        if (CoreUtils.isNullOrEmpty(port)) {
+            this.port = null;
+            return this;
+        }
+
+        return with(port, UrlTokenizerState.PORT);
     }
 
     /**
@@ -223,16 +229,22 @@ public final class UrlBuilder {
     }
 
     private void appendQueryString(StringBuilder stringBuilder) {
+        if (query.isEmpty()) {
+            return;
+        }
+
         stringBuilder.append("?");
 
+        boolean first = true;
         for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
             for (String queryValue : entry.getValue().getValuesList()) {
-                if (stringBuilder.length() > 1) {
+                if (!first) {
                     stringBuilder.append("&");
                 }
                 stringBuilder.append(entry.getKey());
                 stringBuilder.append("=");
                 stringBuilder.append(queryValue);
+                first = false;
             }
         }
     }
@@ -264,53 +276,8 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    if (tokenText == null) {
-                        break;
-                    }
-                    int keyStart = 0;
-                    int keyEnd;
-                    int valueStart = -1;
-                    int valueEnd;
-                    boolean inValue = false;
-
-                    // If the URL query begins with '?' the first possible start of a query parameter key is the
-                    // second character in the query.
-                    if (tokenText.startsWith("?")) {
-                        keyStart = 1;
-                    }
-
-                    String key = null;
-                    while (true) {
-                        if (inValue) {
-                            valueEnd = tokenText.indexOf('&', valueStart);
-
-                            if (valueEnd == -1) {
-                                // Value goes until the end of the query parameter.
-                                addQueryParameter(key, tokenText.substring(valueStart));
-                                break;
-                            } else {
-                                inValue = false;
-                                keyStart = valueEnd + 1;
-
-                                String value = (valueStart == valueEnd)
-                                    ? "" : tokenText.substring(valueStart, valueEnd);
-                                addQueryParameter(key, value);
-                            }
-                        } else {
-                            keyEnd = tokenText.indexOf('=', keyStart);
-
-                            if (keyEnd == -1) {
-                                // Key doesn't have a value, add a query parameters with an empty string value.
-                                addQueryParameter(tokenText.substring(keyStart), "");
-                                break;
-                            } else {
-                                inValue = true;
-                                key = (keyStart == keyEnd) ? "" : tokenText.substring(keyStart, keyEnd);
-                                valueStart = keyEnd + 1;
-                            }
-                        }
-                    }
-
+                    ImplUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
+                        addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -412,36 +379,7 @@ public final class UrlBuilder {
      * @return The UrlBuilder that was parsed from the URL object.
      */
     public static UrlBuilder parse(URL url) {
-        final UrlBuilder result = new UrlBuilder();
-
-        if (url != null) {
-            final String protocol = url.getProtocol();
-            if (protocol != null && !protocol.isEmpty()) {
-                result.setScheme(protocol);
-            }
-
-            final String host = url.getHost();
-            if (host != null && !host.isEmpty()) {
-                result.setHost(host);
-            }
-
-            final int port = url.getPort();
-            if (port != -1) {
-                result.setPort(port);
-            }
-
-            final String path = url.getPath();
-            if (path != null && !path.isEmpty()) {
-                result.setPath(path);
-            }
-
-            final String query = url.getQuery();
-            if (query != null && !query.isEmpty()) {
-                result.setQuery(query);
-            }
-        }
-
-        return result;
+        return ImplUtils.parseUrl(url, true);
     }
 
     private static String emptyToNull(String value) {

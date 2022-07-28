@@ -7,15 +7,22 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -138,6 +145,107 @@ public final class ImplUtils {
 
         // All optimizations have been exhausted, fallback to buffering write.
         stream.write(FluxUtil.byteBufferToArray(buffer));
+    }
+
+    /**
+     * Utility method for parsing a {@link URL} into a {@link UrlBuilder}.
+     *
+     * @param url The URL being parsed.
+     * @param includeQuery Whether the query string should be excluded.
+     * @return The UrlBuilder that represents the parsed URL.
+     */
+    public static UrlBuilder parseUrl(URL url, boolean includeQuery) {
+        final UrlBuilder result = new UrlBuilder();
+
+        if (url != null) {
+            final String protocol = url.getProtocol();
+            if (protocol != null && !protocol.isEmpty()) {
+                result.setScheme(protocol);
+            }
+
+            final String host = url.getHost();
+            if (host != null && !host.isEmpty()) {
+                result.setHost(host);
+            }
+
+            final int port = url.getPort();
+            if (port != -1) {
+                result.setPort(port);
+            }
+
+            final String path = url.getPath();
+            if (path != null && !path.isEmpty()) {
+                result.setPath(path);
+            }
+
+            final String query = url.getQuery();
+            if (query != null && !query.isEmpty() && includeQuery) {
+                result.setQuery(query);
+            }
+        }
+
+        return result;
+    }
+
+    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
+            : new QueryParameterIterator(queryParameters);
+    }
+
+    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
+        private final String queryParameters;
+
+        private boolean done = false;
+        private int position;
+
+        QueryParameterIterator(String queryParameters) {
+            this.queryParameters = queryParameters;
+
+            // If the URL query begins with '?' the first possible start of a query parameter key is the
+            // second character in the query.
+            position = (queryParameters.startsWith("?")) ? 1 : 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !done;
+        }
+
+        @Override
+        public Map.Entry<String, String> next() {
+            if (done) {
+                throw new NoSuchElementException();
+            }
+
+            int nextPosition = queryParameters.indexOf('=', position);
+
+            if (nextPosition == -1) {
+                // Query parameters completed with a key only 'https://example.com?param'
+                done = true;
+                return new AbstractMap.SimpleImmutableEntry<>(queryParameters.substring(position), "");
+            }
+
+            String key = queryParameters.substring(position, nextPosition);
+
+            // Position is set to nextPosition + 1 to skip over the '='
+            position = nextPosition + 1;
+
+            nextPosition = queryParameters.indexOf('&', position);
+
+            String value = null;
+            if (nextPosition == -1) {
+                // This was the last key-value pair in the query parameters 'https://example.com?param=done'
+                done = true;
+                value = queryParameters.substring(position);
+            } else {
+                value = queryParameters.substring(position, nextPosition);
+                // Position is set to nextPosition + 1 to skip over the '&'
+                position = nextPosition + 1;
+            }
+
+            return new AbstractMap.SimpleImmutableEntry<>(key, value);
+        }
     }
 
     private ImplUtils() {
