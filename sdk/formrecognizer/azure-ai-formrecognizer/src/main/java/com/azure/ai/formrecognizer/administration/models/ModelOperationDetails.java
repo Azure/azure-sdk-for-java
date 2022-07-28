@@ -4,15 +4,15 @@
 package com.azure.ai.formrecognizer.administration.models;
 
 
-import com.azure.ai.formrecognizer.implementation.util.ModelOperationHelper;
+import com.azure.ai.formrecognizer.implementation.util.ModelOperationDetailsHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The ModelOperation model.
+ * The ModelOperationDetails model.
  */
-public final class ModelOperation extends ModelOperationInfo {
+public final class ModelOperationDetails extends ModelOperationSummary {
 
     /*
      * Unique model identifier.
@@ -64,10 +64,12 @@ public final class ModelOperation extends ModelOperationInfo {
      *
      * @return the createdDateTime value.
      */
+    @Override
     public OffsetDateTime getCreatedOn() {
         return createdOn;
     }
 
+    @Override
     void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
@@ -160,60 +162,60 @@ public final class ModelOperation extends ModelOperationInfo {
     }
 
     static {
-        ModelOperationHelper.setAccessor(new ModelOperationHelper.ModelOperationAccessor() {
+        ModelOperationDetailsHelper.setAccessor(new ModelOperationDetailsHelper.ModelOperationDetailsAccessor() {
             @Override
-            public void setModelId(ModelOperation modelOperation, String modelId) {
-                modelOperation.setModelId(modelId);
+            public void setModelId(ModelOperationDetails modelOperationDetails, String modelId) {
+                modelOperationDetails.setModelId(modelId);
             }
 
             @Override
-            public void setDescription(ModelOperation modelOperation, String description) {
-                modelOperation.setDescription(description);
+            public void setDescription(ModelOperationDetails modelOperationDetails, String description) {
+                modelOperationDetails.setDescription(description);
             }
 
             @Override
-            public void setCreatedOn(ModelOperation modelOperation, OffsetDateTime createdOn) {
-                modelOperation.setCreatedOn(createdOn);
+            public void setCreatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime createdOn) {
+                modelOperationDetails.setCreatedOn(createdOn);
             }
 
             @Override
-            public void setDocTypes(ModelOperation modelOperation, Map<String, DocTypeInfo> docTypes) {
-                modelOperation.setDocTypes(docTypes);
+            public void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes) {
+                modelOperationDetails.setDocTypes(docTypes);
             }
 
             @Override
-            public void setError(ModelOperation modelOperation, DocumentModelOperationError error) {
-                modelOperation.setError(error);
+            public void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError error) {
+                modelOperationDetails.setError(error);
             }
 
             @Override
-            public void setOperationId(ModelOperation modelOperation, String operationId) {
-                modelOperation.setOperationId(operationId);
+            public void setOperationId(ModelOperationDetails modelOperationDetails, String operationId) {
+                modelOperationDetails.setOperationId(operationId);
             }
 
             @Override
-            public void setStatus(ModelOperation modelOperation, ModelOperationStatus status) {
-                modelOperation.setStatus(status);
+            public void setStatus(ModelOperationDetails modelOperationDetails, ModelOperationStatus status) {
+                modelOperationDetails.setStatus(status);
             }
 
             @Override
-            public void setPercentCompleted(ModelOperation modelOperation, Integer percentCompleted) {
-                modelOperation.setPercentCompleted(percentCompleted);
+            public void setPercentCompleted(ModelOperationDetails modelOperationDetails, Integer percentCompleted) {
+                modelOperationDetails.setPercentCompleted(percentCompleted);
             }
 
             @Override
-            public void setLastUpdatedOn(ModelOperation modelOperation, OffsetDateTime lastUpdatedOn) {
-                modelOperation.setLastUpdatedOn(lastUpdatedOn);
+            public void setLastUpdatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime lastUpdatedOn) {
+                modelOperationDetails.setLastUpdatedOn(lastUpdatedOn);
             }
 
             @Override
-            public void setKind(ModelOperation modelOperation, ModelOperationKind kind) {
-                modelOperation.setKind(kind);
+            public void setKind(ModelOperationDetails modelOperationDetails, ModelOperationKind kind) {
+                modelOperationDetails.setKind(kind);
             }
 
             @Override
-            public void setResourceLocation(ModelOperation modelOperation, String resourceLocation) {
-                modelOperation.setResourceLocation(resourceLocation);
+            public void setResourceLocation(ModelOperationDetails modelOperationDetails, String resourceLocation) {
+                modelOperationDetails.setResourceLocation(resourceLocation);
             }
         });
     }

@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -82,7 +82,7 @@ public final class Utility {
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
                                                  Configuration configuration, RetryPolicy retryPolicy,
                                                  RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
-                                                 TokenCredential tokenCredential, FormRecognizerAudience audience,
+                                                 TokenCredential tokenCredential, DocumentAnalysisAudience audience,
                                                  List<HttpPipelinePolicy> perCallPolicies,
                                                  List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
 
@@ -111,7 +111,7 @@ public final class Utility {
         // Authentications
         if (tokenCredential != null) {
             if (audience == null) {
-                audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
             }
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience + DEFAULT_SCOPE));

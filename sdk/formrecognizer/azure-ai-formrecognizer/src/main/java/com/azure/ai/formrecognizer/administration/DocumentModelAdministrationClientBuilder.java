@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -114,7 +114,7 @@ public final class DocumentModelAdministrationClientBuilder implements
     private RetryOptions retryOptions;
     private TokenCredential tokenCredential;
     private DocumentAnalysisServiceVersion version;
-    private FormRecognizerAudience audience;
+    private DocumentAnalysisAudience audience;
 
     /**
      * Creates a {@link DocumentModelAdministrationClient} based on options set in the builder. Every time
@@ -158,7 +158,7 @@ public final class DocumentModelAdministrationClientBuilder implements
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
-            audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
         }
 
         // Global Env configuration store
@@ -460,13 +460,13 @@ public final class DocumentModelAdministrationClientBuilder implements
 
     /**
      * Sets the audience for the Azure Form Recognizer service.
-     * The default audience is {@link FormRecognizerAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     * The default audience is {@link DocumentAnalysisAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
      *
      * @param audience ARM management audience associated with the given form recognizer resource.
      * @throws NullPointerException If {@code audience} is null.
      * @return The updated {@link DocumentModelAdministrationClientBuilder} object.
      */
-    public DocumentModelAdministrationClientBuilder audience(FormRecognizerAudience audience) {
+    public DocumentModelAdministrationClientBuilder audience(DocumentAnalysisAudience audience) {
         Objects.requireNonNull(audience, "'audience' is required and can not be null");
         this.audience = audience;
         return this;
