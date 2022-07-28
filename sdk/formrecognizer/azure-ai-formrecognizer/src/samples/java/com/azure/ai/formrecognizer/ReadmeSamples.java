@@ -376,12 +376,12 @@ public class ReadmeSamples {
         // Next, we get a paged list of all of our models
         PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
         System.out.println("We have following models in the account:");
-        customDocumentModels.forEach(documentModelInfo -> {
-            System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-            modelId.set(documentModelInfo.getModelId());
+        customDocumentModels.forEach(documentModelSummary -> {
+            System.out.printf("Model ID: %s%n", documentModelSummary.getModelId());
+            modelId.set(documentModelSummary.getModelId());
 
             // get custom document analysis model info
-            DocumentModelDetails documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
+            DocumentModelDetails documentModel = documentModelAdminClient.getModel(documentModelSummary.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
