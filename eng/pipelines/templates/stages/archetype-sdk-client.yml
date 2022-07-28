@@ -113,7 +113,8 @@ stages:
     - ${{ parameters.LiveTestStages }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
     - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
       - template: archetype-java-release-batch.yml
         parameters:
