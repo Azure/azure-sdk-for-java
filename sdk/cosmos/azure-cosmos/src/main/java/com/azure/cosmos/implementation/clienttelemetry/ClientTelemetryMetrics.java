@@ -37,6 +37,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class ClientTelemetryMetrics {
@@ -246,6 +247,49 @@ public final class ClientTelemetryMetrics {
             this.operationTags = operationTags;
         }
 
+        public void recordOperation(
+            float requestCharge,
+            Duration latency,
+            int maxItemCount,
+            int actualItemCount,
+            CosmosDiagnostics diagnostics) {
+
+            DistributionSummary requestChargeMeter = DistributionSummary
+                .builder(nameOf("op.RUs"))
+                .baseUnit("RU (request unit)")
+                .description("Operation RU charge")
+                .maximumExpectedValue(10_000_000d)
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
+                .tags(operationTags)
+                .register(compositeRegistry);
+            requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
+
+            Timer latencyMeter = Timer
+                .builder(nameOf("op.latency"))
+                .description("Operation latency")
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
+                .tags(operationTags)
+                .register(compositeRegistry);
+            latencyMeter.record(latency);
+
+            this.recordItemCounts(maxItemCount, actualItemCount);
+
+            List<ClientSideRequestStatistics> clientSideRequestStatistics =
+                diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
+
+            if (clientSideRequestStatistics != null) {
+                for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
+
+                    recordStoreResponseStatistics(requestStatistics.getResponseStatisticsList());
+                    recordStoreResponseStatistics(requestStatistics.getSupplementalResponseStatisticsList());
+                    recordGatewayStatistics(requestStatistics.getGatewayStatistics());
+                    recordAddressResolutionStatistics(requestStatistics.getAddressResolutionStatistics());
+                }
+            }
+        }
+
         private void recordRequestPayloadSizes(
             int requestPayloadSizeInBytes,
             int responsePayloadSizeInBytes
@@ -353,13 +397,41 @@ public final class ClientTelemetryMetrics {
             return Tags.of(effectiveTags);
         }
 
+        private Tags createAddressResolutionTags(
+            EnumSet<TagName> metricTagNames,
+            String serviceEndpoint,
+            boolean isForceRefresh,
+            boolean isForceCollectionRoutingMapRefresh
+        ) {
+            List<Tag> effectiveTags = new ArrayList<>();
+            if (metricTagNames.contains(TagName.ServiceEndpoint)) {
+                effectiveTags.add(Tag.of(
+                    TagName.ServiceEndpoint.toString(),
+                    serviceEndpoint != null ? escape(serviceEndpoint) : "NONE"));
+            }
+
+            if (metricTagNames.contains(TagName.IsForceRefresh)) {
+                effectiveTags.add(Tag.of(
+                    TagName.IsForceRefresh.toString(),
+                    isForceRefresh ? "True" : "False"));
+            }
+
+            if (metricTagNames.contains(TagName.IsForceCollectionRoutingMapRefresh)) {
+                effectiveTags.add(Tag.of(
+                    TagName.IsForceCollectionRoutingMapRefresh.toString(),
+                    isForceCollectionRoutingMapRefresh ? "True" : "False"));
+            }
+
+            return Tags.of(effectiveTags);
+        }
+
         private void recordRntbdChannelStatistics(
             int pendingRequestQueueSize,
             int channelTaskQueueSize,
             Tags requestTags) {
 
             DistributionSummary pendingRequestQueueSizeMeter = DistributionSummary
-                .builder(nameOf("req.stats.channel.pendingRequestQueueSize"))
+                .builder(nameOf("req.rntbd.stats.channel.pendingRequestQueueSize"))
                 .baseUnit("#")
                 .description("Channel statistics(Pending request queue size)")
                 .publishPercentiles(0.95, 0.99)
@@ -369,7 +441,7 @@ public final class ClientTelemetryMetrics {
             pendingRequestQueueSizeMeter.record(pendingRequestQueueSize);
 
             DistributionSummary channelTaskQueueSizeMeter = DistributionSummary
-                .builder(nameOf("req.stats.channel.channelTaskQueueSize"))
+                .builder(nameOf("req.rntbd.stats.channel.channelTaskQueueSize"))
                 .baseUnit("#")
                 .description("Channel statistics(Channel task queue size)")
                 .publishPercentiles(0.95, 0.99)
@@ -385,7 +457,7 @@ public final class ClientTelemetryMetrics {
             }
 
             DistributionSummary acquiredChannelsMeter = DistributionSummary
-                .builder(nameOf("req.stats.endpoint.acquiredChannels"))
+                .builder(nameOf("req.rntbd.stats.endpoint.acquiredChannels"))
                 .baseUnit("#")
                 .description("Endpoint statistics(acquired channels)")
                 .publishPercentiles(0.95, 0.99)
@@ -395,7 +467,7 @@ public final class ClientTelemetryMetrics {
             acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
 
             DistributionSummary availableChannelsMeter = DistributionSummary
-                .builder(nameOf("req.stats.endpoint.availableChannels"))
+                .builder(nameOf("req.rntbd.stats.endpoint.availableChannels"))
                 .baseUnit("#")
                 .description("Endpoint statistics(available channels)")
                 .publishPercentiles()
@@ -405,7 +477,7 @@ public final class ClientTelemetryMetrics {
             availableChannelsMeter.record(endpointStatistics.getAvailableChannels());
 
             DistributionSummary inflightRequestsMeter = DistributionSummary
-                .builder(nameOf("req.stats.endpoint.inflightRequests"))
+                .builder(nameOf("req.rntbd.stats.endpoint.inflightRequests"))
                 .baseUnit("#")
                 .description("Endpoint statistics(inflight requests)")
                 .tags(requestTags)
@@ -415,7 +487,7 @@ public final class ClientTelemetryMetrics {
             inflightRequestsMeter.record(endpointStatistics.getInflightRequests());
 
             DistributionSummary executorTaskQueueSizeMeter = DistributionSummary
-                .builder(nameOf("req.stats.endpoint.executorTaskQueueSize"))
+                .builder(nameOf("req.rntbd.stats.endpoint.executorTaskQueueSize"))
                 .baseUnit("#")
                 .description("Endpoint statistics(executor task queue size)")
                 .publishPercentiles()
@@ -440,7 +512,7 @@ public final class ClientTelemetryMetrics {
                 }
 
                 String name = nameOf(
-                    "req.channel.acquisition.timeline." +
+                    "req.rntbd.channel.acquisition.timeline." +
                         escape(acquisitionEvent.getEventType().toString()));
                 Timer acquisitionEventMeter = Timer
                     .builder(name)
@@ -453,7 +525,7 @@ public final class ClientTelemetryMetrics {
             }
         }
 
-        private void recordRequestTimeline(RequestTimeline requestTimeline, Tags requestTags) {
+        private void recordRequestTimeline(String prefix, RequestTimeline requestTimeline, Tags requestTags) {
             if (requestTimeline == null) {
                 return;
             }
@@ -465,7 +537,7 @@ public final class ClientTelemetryMetrics {
                 }
 
                 Timer eventMeter = Timer
-                    .builder(nameOf("req.timeline." + escape(event.getName())))
+                    .builder(nameOf(prefix + escape(event.getName())))
                     .description(String.format("Request timeline (%s)", event.getName()))
                     .publishPercentiles(0.95, 0.99)
                     .publishPercentileHistogram(true)
@@ -475,92 +547,130 @@ public final class ClientTelemetryMetrics {
             }
         }
 
-        public void recordOperation(
-            float requestCharge,
-            Duration latency,
-            int maxItemCount,
-            int actualItemCount,
-            CosmosDiagnostics diagnostics) {
+        private void recordStoreResponseStatistics(
+            List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
 
-            DistributionSummary requestChargeMeter = DistributionSummary
-                .builder(nameOf("op.RUs"))
-                .baseUnit("RU (request unit)")
-                .description("Operation RU charge")
-                .maximumExpectedValue(10_000_000d)
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(operationTags)
-                .register(compositeRegistry);
-            requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
+            for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics: storeResponseStatistics) {
+                StoreResultDiagnostics storeResultDiagnostics = responseStatistics.getStoreResult();
+                StoreResponseDiagnostics storeResponseDiagnostics =
+                    storeResultDiagnostics.getStoreResponseDiagnostics();
 
-            Timer latencyMeter = Timer
-                .builder(nameOf("op.latency"))
-                .description("Operation latency")
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
-                .tags(operationTags)
-                .register(compositeRegistry);
-            latencyMeter.record(latency);
+                Tags requestTags = operationTags.and(
+                    createRequestTags(
+                        metricTagNames,
+                        storeResponseDiagnostics.getPartitionKeyRangeId(),
+                        storeResponseDiagnostics.getStatusCode(),
+                        storeResponseDiagnostics.getSubStatusCode(),
+                        responseStatistics.getRequestResourceType(),
+                        responseStatistics.getRequestOperationType(),
+                        responseStatistics.getRegionName(),
+                        storeResultDiagnostics.getStorePhysicalAddressEscapedAuthority(),
+                        storeResultDiagnostics.getStorePhysicalAddressEscapedPath())
+                );
 
-            this.recordItemCounts(maxItemCount, actualItemCount);
+                DistributionSummary backendRequestLatencyMeter = DistributionSummary
+                    .builder(nameOf("req.rntbd.BackendLatency"))
+                    .baseUnit("ms")
+                    .description("Backend Request latency")
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
 
-            List<ClientSideRequestStatistics> clientSideRequestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatistics(diagnostics);
+                recordRequestTimeline(
+                    "req.rntbd.timeline.",
+                    storeResponseDiagnostics.getRequestTimeline(), requestTags);
 
-            if (clientSideRequestStatistics != null) {
-                for (ClientSideRequestStatistics requestStatistics : clientSideRequestStatistics) {
+                recordRntbdChannelAcquisitionTimeline(
+                    storeResponseDiagnostics.getChannelAcquisitionTimeline(),
+                    requestTags);
 
-                    for (ClientSideRequestStatistics.StoreResponseStatistics responseStatistics :
-                        requestStatistics.getResponseStatisticsList()) {
+                recordRequestPayloadSizes(
+                    storeResponseDiagnostics.getRequestPayloadLength(),
+                    storeResponseDiagnostics.getResponsePayloadLength()
+                );
 
-                        StoreResultDiagnostics storeResultDiagnostics = responseStatistics.getStoreResult();
-                        StoreResponseDiagnostics storeResponseDiagnostics =
-                            storeResultDiagnostics.getStoreResponseDiagnostics();
+                recordRntbdChannelStatistics(
+                    storeResponseDiagnostics.getPendingRequestQueueSize(),
+                    storeResponseDiagnostics.getRntbdChannelTaskQueueSize(),
+                    requestTags
+                );
 
-                        Tags requestTags = operationTags.and(
-                            createRequestTags(
-                                metricTagNames,
-                                storeResponseDiagnostics.getPartitionKeyRangeId(),
-                                storeResponseDiagnostics.getStatusCode(),
-                                storeResponseDiagnostics.getStatusCode(),
-                                responseStatistics.getRequestResourceType(),
-                                responseStatistics.getRequestOperationType(),
-                                responseStatistics.getRegionName(),
-                                storeResultDiagnostics.getStorePhysicalAddressEscapedAuthority(),
-                                storeResultDiagnostics.getStorePhysicalAddressEscapedPath())
-                        );
+                recordRntbdEndpointStatistics(
+                    storeResponseDiagnostics.getRntbdEndpointStatistics(),
+                    requestTags);
+            }
+        }
 
-                        Timer backendRequestLatencyMeter = Timer
-                            .builder(nameOf("req.BELatency"))
-                            .description("Backend Request latency")
-                            .publishPercentiles(0.95, 0.99)
-                            .publishPercentileHistogram(true)
-                            .tags(requestTags)
-                            .register(compositeRegistry);
-                        backendRequestLatencyMeter.record(latency);
+        private void recordGatewayStatistics(
+            ClientSideRequestStatistics.GatewayStatistics gatewayStatistics) {
 
-                        recordRequestTimeline(storeResponseDiagnostics.getRequestTimeline(), requestTags);
+            if (gatewayStatistics == null) {
+                return;
+            }
 
-                        recordRntbdChannelAcquisitionTimeline(
-                            storeResponseDiagnostics.getChannelAcquisitionTimeline(),
-                            requestTags);
+            EnumSet<TagName> metricTagNamesForGateway = metricTagNames.clone();
+            metricTagNamesForGateway.remove(TagName.RegionName);
+            metricTagNamesForGateway.remove(TagName.ServiceAddress);
+            metricTagNamesForGateway.remove(TagName.ServiceEndpoint);
 
-                        recordRequestPayloadSizes(
-                            storeResponseDiagnostics.getRequestPayloadLength(),
-                            storeResponseDiagnostics.getResponsePayloadLength()
-                        );
+            Tags requestTags = operationTags.and(
+                createRequestTags(
+                    metricTagNamesForGateway,
+                    gatewayStatistics.getPartitionKeyRangeId(),
+                    gatewayStatistics.getStatusCode(),
+                    gatewayStatistics.getSubStatusCode(),
+                    gatewayStatistics.getResourceType(),
+                    gatewayStatistics.getOperationType(),
+                    null,
+                    null,
+                    null)
+            );
 
-                        recordRntbdChannelStatistics(
-                            storeResponseDiagnostics.getPendingRequestQueueSize(),
-                            storeResponseDiagnostics.getRntbdChannelTaskQueueSize(),
-                            requestTags
-                        );
+           recordRequestTimeline("req.gw.timeline.", gatewayStatistics.getRequestTimeline(), requestTags);
+        }
 
-                        recordRntbdEndpointStatistics(
-                            storeResponseDiagnostics.getRntbdEndpointStatistics(),
-                            requestTags);
-                    }
+        private void recordAddressResolutionStatistics(
+            Map<String, ClientSideRequestStatistics.AddressResolutionStatistics> addressResolutionStatisticsMap) {
+
+            if (addressResolutionStatisticsMap == null || addressResolutionStatisticsMap.size() == 0) {
+                return;
+            }
+
+            for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics
+                : addressResolutionStatisticsMap.values()) {
+
+                if (addressResolutionStatistics.isInflightRequest() ||
+                    addressResolutionStatistics.getEndTimeUTC() == null) {
+
+                    // skipping inflight or failed address resolution statistics
+                    // capturing error count etc. won't make sense here - request diagnostic
+                    // logs are the right way to debug those - not metrics
+                    continue;
                 }
+
+                Tags addressResolutionTags = operationTags.and(
+                    createAddressResolutionTags(
+                        metricTagNames,
+                        addressResolutionStatistics.getTargetEndpoint(),
+                        addressResolutionStatistics.isForceRefresh(),
+                        addressResolutionStatistics.isForceCollectionRoutingMapRefresh()
+                    )
+                );
+
+                Duration latency = Duration.between(
+                    addressResolutionStatistics.getStartTimeUTC(),
+                    addressResolutionStatistics.getEndTimeUTC());
+
+                Timer addressResolutionLatencyMeter = Timer
+                    .builder(nameOf("req.addressResolution.latency"))
+                    .description("Address resolution latency")
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
+                    .tags(addressResolutionTags)
+                    .register(compositeRegistry);
+                addressResolutionLatencyMeter.record(latency);
             }
         }
     }
@@ -625,7 +735,7 @@ public final class ClientTelemetryMetrics {
                  .tags(tags)
                  .register(registry);
 
-            this.requestSize = DistributionSummary.builder(nameOf("rntbd.requests.requestSize"))
+            this.requestSize = DistributionSummary.builder(nameOf("rntbd.req.reqSize"))
                                                   .description("RNTBD request size (bytes)")
                                                   .baseUnit("bytes")
                                                   .tags(tags)
@@ -633,7 +743,7 @@ public final class ClientTelemetryMetrics {
                                                   .publishPercentiles(0.9, 0.95, 0.99)
                                                   .register(registry);
 
-            this.responseSize = DistributionSummary.builder(nameOf("rntbd.requests.responseSize"))
+            this.responseSize = DistributionSummary.builder(nameOf("rntbd.req.rspSize"))
                                                    .description("RNTBD response size (bytes)")
                                                    .baseUnit("bytes")
                                                    .tags(tags)

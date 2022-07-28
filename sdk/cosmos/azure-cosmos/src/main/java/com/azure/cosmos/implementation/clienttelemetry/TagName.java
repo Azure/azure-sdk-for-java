@@ -16,7 +16,9 @@ public enum TagName {
     RequestOperationType("RequestOperationType", 256),
     RegionName("RegionName", 512),
     ServiceEndpoint("ServiceEndpoint", 1024),
-    ServiceAddress("ServiceAddress", 2048);
+    ServiceAddress("ServiceAddress", 2048),
+    IsForceRefresh("IsForceRefresh", 4096),
+    IsForceCollectionRoutingMapRefresh("IsForceCollectionRoutingMapRefresh",  8192);
 
     private final int value;
     private final String stringValue;

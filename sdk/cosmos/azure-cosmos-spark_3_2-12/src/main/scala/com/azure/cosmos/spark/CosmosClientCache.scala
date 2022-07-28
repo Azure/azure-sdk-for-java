@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.clienttelemetry.TagName
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
@@ -145,7 +145,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             case Some(session) =>
               val ctx = session.sparkContext
 
-              if (customApplicationNameSuffix.isBlank) {
+              if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
                 s"${CosmosClientMetrics.hostName}-${ctx.appName}"
               } else {
                 s"$customApplicationNameSuffix-${CosmosClientMetrics.hostName}-${ctx.appName}"

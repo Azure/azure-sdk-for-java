@@ -104,12 +104,8 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   private val databasesToCleanUp = new ListBuffer[String]()
 
   override def beforeAll(): Unit = {
-    System.out.println("Cosmos Client started!!!!!!")
     super.beforeAll()
-    cosmosClient = new CosmosClientBuilder()
-      .endpoint(TestConfigurations.HOST)
-      .key(TestConfigurations.MASTER_KEY)
-      .buildAsyncClient()
+    createClient()
   }
 
   override def afterEach(): Unit = {
@@ -136,6 +132,14 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
     }
   }
 
+  def createClient(): Unit = {
+    System.out.println("Cosmos Client started!!!!!!")
+    cosmosClient = new CosmosClientBuilder()
+      .endpoint(TestConfigurations.HOST)
+      .key(TestConfigurations.MASTER_KEY)
+      .buildAsyncClient()
+  }
+
   def databaseExists(databaseName: String): Boolean = {
     try {
       cosmosClient.getDatabase(databaseName).read().block()
@@ -153,6 +157,19 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
 
   def cleanupDatabaseLater(databaseName: String) : Unit = {
     databasesToCleanUp.append(databaseName)
+  }
+}
+
+trait CosmosGatewayClient extends CosmosClient {
+  this: Suite =>
+
+  override def createClient(): Unit = {
+    System.out.println("Cosmos Gateway Client started!!!!!!")
+    cosmosClient = new CosmosClientBuilder()
+      .endpoint(TestConfigurations.HOST)
+      .key(TestConfigurations.MASTER_KEY)
+      .gatewayMode()
+      .buildAsyncClient()
   }
 }
 
