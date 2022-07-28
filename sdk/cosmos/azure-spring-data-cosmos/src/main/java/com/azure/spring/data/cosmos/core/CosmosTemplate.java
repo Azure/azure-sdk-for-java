@@ -755,18 +755,18 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * offset records. Starting with the 2nd page it picks up where the first page left off
          * so we do not need to apply the offset as the continuation token handles the pages.
          */
+        int feedResponseContentSize = pageable.getPageSize();
+        if (!pageable.hasPrevious()) {
+            feedResponseContentSize = (int) (feedResponseContentSize + pageable.getOffset());
+        }
         if (pageable instanceof CosmosPageRequest) {
-            int contentSize = pageable.getPageSize();
-            if (!pageable.hasPrevious()) {
-                contentSize = (int) (contentSize + pageable.getOffset());
-            }
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), contentSize);
+                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), feedResponseContentSize);
         } else {
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(pageable.getPageSize());
+                .byPage(feedResponseContentSize);
         }
 
         final FeedResponse<JsonNode> feedResponse = feedResponseFlux
@@ -788,21 +788,21 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * After we apply the offset to the first page, the continuation token will pick
          * up the second and future pages at the correct index.
          */
-        int offset = 0;
+        int offsetForFirstPageResults = 0;
         if (!pageable.hasPrevious()) {
-            offset = (int) pageable.getOffset();
+            offsetForFirstPageResults = (int) pageable.getOffset();
         }
 
         final List<T> result = new ArrayList<>();
         for (int index = 0; it.hasNext()
-            && index < pageable.getPageSize() + offset; index++) {
+            && index < pageable.getPageSize() + offsetForFirstPageResults; index++) {
 
             final JsonNode jsonNode = it.next();
             if (jsonNode == null) {
                 continue;
             }
 
-            if (index >= offset) {
+            if (index >= offsetForFirstPageResults) {
                 maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
                 final T entity = mappingCosmosConverter.read(returnType, jsonNode);
                 result.add(entity);
@@ -825,7 +825,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             pageSize = pageable.getPageSize();
         }
 
-        final CosmosPageRequest pageRequest = CosmosPageRequest.of(offset,
+        final CosmosPageRequest pageRequest = CosmosPageRequest.of(pageable.getOffset(),
             pageable.getPageNumber(),
             pageSize,
             feedResponse.getContinuationToken(),
