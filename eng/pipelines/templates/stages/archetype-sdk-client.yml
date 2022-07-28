@@ -120,7 +120,9 @@ stages:
         parameters:
           DependsOn:
             - Build
-            - ${{ if eq(parameters.ReleaseDependsOnLiveTests, 'true') }}:
+            # If the build depends on live tests don't let live tests results prevent from
+            # publishing the nightly dev builds.
+            - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), ne(variables['Build.Reason'],'Schedule')) }}:
               - ${{ each liveTestStage in parameters.LiveTestStages }}:
                 - ${{ liveTestStage.stage }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
