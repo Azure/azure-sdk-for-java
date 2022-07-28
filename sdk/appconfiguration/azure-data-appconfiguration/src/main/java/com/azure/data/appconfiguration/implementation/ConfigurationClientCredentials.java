@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.implementation;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -75,13 +76,21 @@ public class ConfigurationClientCredentials {
      *
      * @param url the request url
      * @param httpMethod the request HTTP method
-     * @param byteBuffer the body content of the request
-     * @return a flux of headers to add for authorization
+     * @param binaryData the body content of the request
+     * @return a map of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, ByteBuffer byteBuffer) {
-        MessageDigest messageDigest = getMessageDigest();
+    Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, BinaryData binaryData) {
+        final ByteBuffer byteBuffer = binaryData == null ? getEmptyBuffer() : binaryData.toByteBuffer();
+
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
+        }
         messageDigest.update(byteBuffer);
+
         return headerProvider.getAuthenticationHeaders(
             url,
             httpMethod,
@@ -206,12 +215,7 @@ public class ConfigurationClientCredentials {
             }
         }
     }
-
-    private MessageDigest getMessageDigest() {
-        try {
-            return MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
-        }
+    private ByteBuffer getEmptyBuffer() {
+        return ByteBuffer.allocate(0);
     }
 }

@@ -12,7 +12,6 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.Objects;
 
@@ -52,18 +51,14 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final ByteBuffer contents = context.getHttpRequest().getBodyAsBinaryData()
-            == null ? getEmptyBuffer() : context.getHttpRequest().getBodyAsBinaryData().toByteBuffer();
-
-        return Mono.just(credentials
-                .getAuthorizationHeaders(
-                    context.getHttpRequest().getUrl(),
-                    context.getHttpRequest().getHttpMethod().toString(),
-                    contents))
+        return Mono.defer(() -> Mono.just(credentials.getAuthorizationHeaders(
+                context.getHttpRequest().getUrl(),
+                context.getHttpRequest().getHttpMethod().toString(),
+                context.getHttpRequest().getBodyAsBinaryData()))
             .flatMapMany(headers -> Flux.fromIterable(headers.entrySet()))
             .map(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()))
             .last()
-            .flatMap(request -> next.process());
+            .flatMap(request -> next.process()));
     }
 
     /**
@@ -76,24 +71,17 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      */
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        final ByteBuffer contents = context.getHttpRequest().getBodyAsBinaryData()
-            == null ? getEmptyBuffer() : context.getHttpRequest().getBodyAsBinaryData().toByteBuffer();
-
         Map<String, String> headers = credentials
             .getAuthorizationHeaders(
                 context.getHttpRequest().getUrl(),
                 context.getHttpRequest().getHttpMethod().toString(),
-                contents);
+                context.getHttpRequest().getBodyAsBinaryData());
 
         headers.entrySet()
             .stream()
             .forEach(header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()));
 
         return next.processSync();
-    }
-
-    private ByteBuffer getEmptyBuffer() {
-        return ByteBuffer.allocate(0);
     }
 }
 

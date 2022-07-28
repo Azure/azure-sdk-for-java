@@ -206,11 +206,6 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
-        // if http pipeline is not already defined
-        if (pipeline == null) {
-            createHttpPipeline();
-        }
-
         return new ConfigurationAsyncClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY);
     }
 
@@ -300,7 +295,7 @@ public final class ConfigurationClientBuilder implements
      *
      * @param endpoint The URL of the Azure App Configuration instance.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException If {@code endpoint} is null, or it cannot be parsed into a valid URL.
      */
     @Override
     public ConfigurationClientBuilder endpoint(String endpoint) {

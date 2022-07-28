@@ -264,7 +264,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             final String etag = client.addConfigurationSettingWithResponse(initial).block().getValue().getETag();
 
@@ -273,7 +273,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial, true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(update, null, false))
                     .assertNext(response -> assertConfigurationEquals(update, response))

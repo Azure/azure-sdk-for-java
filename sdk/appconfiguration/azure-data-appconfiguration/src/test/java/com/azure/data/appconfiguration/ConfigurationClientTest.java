@@ -227,12 +227,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"), true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"), true, Context.NONE).getValue(), ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addConfigurationSettingWithResponse(initial, Context.NONE).getValue().getETag();
 
             assertConfigurationEquals(update, client.setConfigurationSettingWithResponse(update.setETag(etag), true, Context.NONE));
-            assertRestException(() -> client.setConfigurationSettingWithResponse(initial, true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setConfigurationSettingWithResponse(initial, true, Context.NONE).getValue(), ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.getConfigurationSetting(update.getKey(), update.getLabel()));
         });
     }

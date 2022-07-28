@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -13,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
@@ -50,15 +48,8 @@ public class ConfigurationCredentialPolicyTest {
             return next.process();
         };
 
-        final HttpClient httpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(new MockHttpResponse(request, 200));
-            }
-        };
-
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
+            .httpClient(new NoOpHttpClient())
             .policies(configurationCredentialsPolicy, auditorPolicy)
             .build();
 
