@@ -22,7 +22,7 @@ import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -270,7 +270,7 @@ class DirectoryAPITest extends APISpec {
 
     def "Create encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 

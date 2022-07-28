@@ -127,7 +127,7 @@ public class DataLakeServiceClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
-            blobServiceClientBuilder.buildAsyncClient(), azureSasCredential, fileSystemEncryptionScope);
+            blobServiceClientBuilder.buildAsyncClient(), azureSasCredential);
     }
 
     /**
