@@ -20,7 +20,7 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-test-eventhub')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-test-eventhub-binder')]",
     "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
     "azureEventHubsDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec",
     "azureStorageBlobDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
