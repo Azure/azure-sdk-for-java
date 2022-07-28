@@ -41,7 +41,8 @@ import java.time.OffsetDateTime;
  *
  * @see ConfigurationClientBuilder
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class,
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationService.class)
 public final class ConfigurationClient {
     private final ConfigurationClientImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;

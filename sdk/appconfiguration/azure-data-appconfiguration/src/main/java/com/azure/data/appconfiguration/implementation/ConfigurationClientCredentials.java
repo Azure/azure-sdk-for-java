@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 public class ConfigurationClientCredentials {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
 
+    private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.allocate(0);
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -81,7 +82,7 @@ public class ConfigurationClientCredentials {
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
     Map<String, String> getAuthorizationHeaders(URL url, String httpMethod, BinaryData binaryData) {
-        final ByteBuffer byteBuffer = binaryData == null ? getEmptyBuffer() : binaryData.toByteBuffer();
+        final ByteBuffer byteBuffer = binaryData == null ? EMPTY_BYTE_BUFFER : binaryData.toByteBuffer();
 
         MessageDigest messageDigest;
         try {
@@ -214,8 +215,5 @@ public class ConfigurationClientCredentials {
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }
         }
-    }
-    private ByteBuffer getEmptyBuffer() {
-        return ByteBuffer.allocate(0);
     }
 }
