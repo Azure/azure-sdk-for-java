@@ -12,14 +12,10 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
-    },
-    "storageNamePrefix": {
-      "defaultValue": "[substring(uniqueString(parameters('baseName')), 0, 11)]",
-      "type": "string"
     }
   },
   "variables": {
-    "storageAccountsName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
+    "storageAccountsName": "[concat(parameters('baseName'),'-test-storage')]",
     "azureStorageBlobDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
     "azureStorageQueueDataContributorRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/974c5e8b-45b9-4653-ba55-5f855dd0fb88",
     "location": "[resourceGroup().location]"
