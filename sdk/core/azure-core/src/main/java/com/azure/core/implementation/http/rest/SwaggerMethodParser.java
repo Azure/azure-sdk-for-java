@@ -113,7 +113,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param swaggerMethod the Swagger method to parse.
      */
     public SwaggerMethodParser(Method swaggerMethod) {
-        this(SwaggerInterfaceParser.getOrCreateInterfaceParser(swaggerMethod.getDeclaringClass()), swaggerMethod);
+        this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
     SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {

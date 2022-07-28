@@ -28,7 +28,7 @@ public final class SwaggerInterfaceParser {
      * @param swaggerInterface The interface that will be parsed.
      * @return The {@link SwaggerInterfaceParser} for the passed interface.
      */
-    public static SwaggerInterfaceParser getOrCreateInterfaceParser(Class<?> swaggerInterface) {
+    public static SwaggerInterfaceParser getInstance(Class<?> swaggerInterface) {
         if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
             INTERFACE_PARSERS.clear();
         }
