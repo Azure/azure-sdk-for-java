@@ -66,7 +66,8 @@ final class ObjectMapperFactory {
             }
 
             LOGGER.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
-                + "Setting coercion configurations will be skipped.", ex);
+                + "Setting coercion configurations will be skipped. "
+                + "Please update your Jackson dependencies to at least version 2.12", ex);
         }
     }
 
