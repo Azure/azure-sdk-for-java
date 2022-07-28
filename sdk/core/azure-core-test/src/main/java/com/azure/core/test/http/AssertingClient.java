@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 /**
@@ -20,11 +21,14 @@ public final class AssertingClient implements HttpClient {
 
     private final List<Predicate<HttpRequest>> syncAssertions;
     private final List<Predicate<HttpRequest>> asyncAssertions;
+    private final BiFunction<HttpRequest, Context, Boolean> skipRequestBiFunction;
+
     AssertingClient(HttpClient delegate, List<Predicate<HttpRequest>> syncAssertions,
-                    List<Predicate<HttpRequest>> asyncAssertions) {
+                    List<Predicate<HttpRequest>> asyncAssertions, BiFunction<HttpRequest, Context, Boolean> function) {
         this.delegate = delegate;
         this.syncAssertions = syncAssertions;
         this.asyncAssertions = asyncAssertions;
+        this.skipRequestBiFunction = function;
     }
 
     @Override
@@ -39,8 +43,7 @@ public final class AssertingClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        //skip paging requests until #30031 resolved
-        skipPagingRequest(context, asyncAssertions);
+        skipRequest(request, asyncAssertions, context);
         for (Predicate<HttpRequest> asyncAssertion : asyncAssertions) {
             if (!asyncAssertion.test(request)) {
                 return Mono.error(new IllegalStateException("unexpected request"));
@@ -51,8 +54,7 @@ public final class AssertingClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        //skip paging requests until #30031 resolved
-        skipPagingRequest(context, syncAssertions);
+        skipRequest(request, syncAssertions, context);
         for (Predicate<HttpRequest> syncAssertion : syncAssertions) {
             if (!syncAssertion.test(request)) {
                 throw new IllegalStateException("unexpected request");
@@ -61,9 +63,8 @@ public final class AssertingClient implements HttpClient {
         return delegate.sendSync(request, context);
     }
 
-    private void skipPagingRequest(Context context, List<Predicate<HttpRequest>> assertions) {
-        String callerMethod = (String) context.getData("caller-method").orElse("");
-        if (callerMethod.contains("list") && !assertions.isEmpty()) {
+    private void skipRequest(HttpRequest request, List<Predicate<HttpRequest>> assertions, Context context) {
+        if (skipRequestBiFunction.apply(request, context) && !assertions.isEmpty()) {
             assertions.remove(assertions.size() - 1);
         }
     }

@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 /**
@@ -19,6 +20,7 @@ public class AssertingHttpClientBuilder {
 
     private final List<Predicate<HttpRequest>> syncAssertions;
     private final List<Predicate<HttpRequest>> asyncAssertions;
+    private BiFunction<HttpRequest, Context, Boolean> biFunction;
 
     /**
      * Create an instance of {@link AssertingHttpClientBuilder} with the provided HttpClient.
@@ -57,6 +59,16 @@ public class AssertingHttpClientBuilder {
      * @return A new {@link AssertingClient} instance.
      */
     public HttpClient build() {
-        return new AssertingClient(this.delegate, syncAssertions, asyncAssertions);
+        return new AssertingClient(this.delegate, syncAssertions, asyncAssertions, biFunction);
+    }
+
+    /**
+     * Method used to specify http requests to be skipped when executing assertions.
+     * @param skipRequestFunction the function used to specify http requests to be skipped for sync assertions.
+     * @return the AssertingHttpClientBuilder itself.
+     */
+    public AssertingHttpClientBuilder skipRequest(BiFunction<HttpRequest, Context, Boolean> skipRequestFunction) {
+        this.biFunction = skipRequestFunction;
+        return this;
     }
 }
