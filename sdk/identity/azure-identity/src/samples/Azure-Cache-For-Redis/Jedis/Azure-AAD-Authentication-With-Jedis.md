@@ -38,11 +38,11 @@ Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/late
   This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
 * [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
-  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
-  
+  This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
+
 * [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper):
- This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
- 
+  This sample is recommended to users building long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and reauthentication on user's behalf.
+
 
 #### Authenticate with Azure AD: Hello World
 This sample is intended to assist in authenticating with Azure AD via the Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Jedis instance.
@@ -83,7 +83,7 @@ jedis.close();
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
-**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch Azure AD Access Token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
 * [Client Certificate Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
 * [Client Secret Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
 * [Managed Identity Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
@@ -341,14 +341,13 @@ jedisClient.close();
 
 ##### Invalid Username Password Pair Error
 In this error scenario, the username provided and the access token used as password are not compatible.
-To mitigate this error, ensure that:
-* On Portal, Under your `Redis Cache Resource` -> RBAC Rules, you've assigned the required role to your user/service principal identity.
-* On Portal, Under your `Redis Cache Resource` -> Advanced settings -> AAD Access Authorization box is checked/enabled, if not enable it and press the Save button.
+To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
+* In **RBAC Rules**, you've assigned the required role to your user/service principal identity.
+* In **Advanced settings**, the **AAD access authorization** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
-To mitigate this error, ensure that:
-* On Portal, Under your `Redis Cache Resource` -> RBAC Rules, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
-* In the event you're using a custom role, then ensure the permissions granted under your custom role include the one required for your target action.
-
+To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
+* In **RBAC Rules**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
+* In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
 

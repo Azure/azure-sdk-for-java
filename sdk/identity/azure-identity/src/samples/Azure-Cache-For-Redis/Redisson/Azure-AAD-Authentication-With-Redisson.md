@@ -77,7 +77,7 @@ redisson.shutdown();
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
-**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch Azure AD Access Token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
 * [Client Certificate Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
 * [Client Secret Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
 * [Managed Identity Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
@@ -159,7 +159,7 @@ private static AccessToken getAccessToken(TokenCredential tokenCredential, Token
 
 
 #### Authenticate with Azure AD: Using Token Cache
-This sample is intended to assist in authenticating with Azure AD via Redisson client library. It focuses on displaying the logic required to fetch an Azure AD access token using a token cache and to use it as password when setting up the Redisson client instance. It also shows how to recreate and authenticate the Redisson client instance using the cached access token when its connection is broken in error/exception scenarios. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
+This sample is intended to assist in authenticating with Azure AD via the Redisson client library. It focuses on displaying the logic required to fetch an Azure AD access token using a token cache and to use it as password when setting up the Redisson client instance. It also shows how to recreate and authenticate the Redisson client instance using the cached access token when its connection is broken in error/exception scenarios. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
 
 ##### Migration Guidance
 When migrating your existing application code, replace the password input with the Azure AD token.
@@ -287,14 +287,13 @@ public static class TokenRefreshCache {
 
 ##### Invalid Username Password Pair Error
 In this error scenario, the username provided and the access token used as password are not compatible.
-To mitigate this error, ensure that:
-* On Portal, Under your `Redis Cache Resource` -> RBAC Rules, you've assigned the required role to your user/service principal identity.
-* On Portal, Under your `Redis Cache Resource` -> Advanced settings -> AAD Access Authorization box is checked/enabled, if not enable it and press the Save button.
+To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
+* In **RBAC Rules**, you've assigned the required role to your user/service principal identity.
+* In **Advanced settings**, the **AAD access authorization** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
-To mitigate this error, ensure that:
-* On Portal, Under your `Redis Cache Resource` -> RBAC Rules, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
-* In the event you're using a custom role, then ensure the permissions granted under your custom role include the one required for your target action.
-
+To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
+* In **RBAC Rules**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
+* In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
 
