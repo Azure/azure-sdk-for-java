@@ -80,7 +80,9 @@ public final class ReactorShim {
             return MethodHandles.publicLookup().findVirtual(Flux.class, WINDOW_TIMEOUT_OPERATOR,
                 MethodType.methodType(Flux.class, int.class, Duration.class, boolean.class));
         } catch (IllegalAccessException | NoSuchMethodException err) {
-            LOGGER.verbose("Failed to retrieve MethodHandle for backpressure aware windowTimeout Reactor operator.", err);
+            LOGGER.verbose("Failed to retrieve MethodHandle for backpressure aware windowTimeout Reactor operator." +
+                "Falling back to non-backpressure aware operator instead." +
+                "Please update Reactor dependency to at least version 3.4.19.", err);
         }
         return null;
     }
