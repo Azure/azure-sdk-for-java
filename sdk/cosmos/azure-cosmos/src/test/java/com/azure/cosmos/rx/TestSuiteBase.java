@@ -33,6 +33,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -515,6 +516,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static CosmosAsyncContainer safeCreateCollection(CosmosAsyncClient client, String databaseId, CosmosContainerProperties collection, CosmosContainerRequestOptions options) {
         deleteCollectionIfExists(client, databaseId, collection.getId());
         return createCollection(client.getDatabase(databaseId), collection, options);
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinitionWithFullFidelity() {
+        CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition(UUID.randomUUID().toString());
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+        return cosmosContainerProperties;
     }
 
     static protected CosmosContainerProperties getCollectionDefinition() {

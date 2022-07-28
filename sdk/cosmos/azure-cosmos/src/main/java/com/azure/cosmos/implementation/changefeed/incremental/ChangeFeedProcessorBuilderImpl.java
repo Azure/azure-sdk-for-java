@@ -452,7 +452,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
                     String leasePrefix = this.getLeasePrefix();
 
-                    return LeaseStoreManager.builder()
+                    return LeaseStoreManagerImpl.builder()
                         .leasePrefix(leasePrefix)
                         .leaseCollectionLink(this.leaseContextClient.getContainerClient())
                         .leaseContextClient(this.leaseContextClient)

@@ -69,21 +69,12 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         FeedRangeInternal feedRange,
         ChangeFeedProcessorOptions processorOptions) {
 
-        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation()))
-        {
+        //  TODO: (kuthapar) - how will customers use this? given now the continuation token in the lease will be the full json.
+        if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
             return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
                 processorOptions.getStartContinuation(),
                 feedRange);
         }
-
-        if (processorOptions.getStartTime() != null) {
-            return ChangeFeedStartFromInternal.createFromPointInTime(processorOptions.getStartTime());
-        }
-
-        if (processorOptions.isStartFromBeginning()) {
-            return ChangeFeedStartFromInternal.createFromBeginning();
-        }
-
         return ChangeFeedStartFromInternal.createFromNow();
     }
 
@@ -103,7 +94,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
                 new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
-                ChangeFeedMode.INCREMENTAL,
+                ChangeFeedMode.FULL_FIDELITY,
                 getStartFromSettings(
                     feedRange,
                     this.changeFeedProcessorOptions),
