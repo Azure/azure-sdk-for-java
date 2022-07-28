@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,6 +16,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
@@ -22,17 +24,25 @@ import reactor.util.concurrent.Queues;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 
 /**
  * Keeps track of publishing events to a partition.
  */
 class EventHubBufferedPartitionProducer implements Closeable {
     private final ClientLogger logger;
+    private final BufferedProducerClientOptions options;
+    private final AmqpRetryOptions retryOptions;
     private final EventHubProducerAsyncClient client;
     private final String partitionId;
     private final AmqpErrorContext errorContext;
@@ -41,15 +51,19 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final Sinks.Many<EventData> eventSink;
     private final CreateBatchOptions createBatchOptions;
     private final Queue<EventData> eventQueue;
+    private final Semaphore flushSemaphore = new Semaphore(1);
+    private final PublishResultSubscriber publishResultSubscriber;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
-        BufferedProducerClientOptions options) {
+        BufferedProducerClientOptions options, AmqpRetryOptions retryOptions) {
         this.client = client;
         this.partitionId = partitionId;
         this.errorContext = new AmqpErrorContext(client.getFullyQualifiedNamespace());
         this.createBatchOptions = new CreateBatchOptions().setPartitionId(partitionId);
+        this.retryOptions = retryOptions;
 
         this.logger = new ClientLogger(EventHubBufferedPartitionProducer.class + "-" + partitionId);
+        this.options = options;
 
         final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
         this.eventQueue = queueSupplier.get();
@@ -58,7 +72,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         final Flux<EventDataBatch> eventDataBatchFlux = new EventDataAggregator(eventSink.asFlux(),
             this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
 
-        final PublishResultSubscriber publishResultSubscriber = new PublishResultSubscriber(partitionId,
+        this.publishResultSubscriber = new PublishResultSubscriber(partitionId,
             options.getSendSucceededContext(), options.getSendFailedContext(), eventQueue, logger);
 
         this.publishSubscription = publishEvents(eventDataBatchFlux)
@@ -77,26 +91,44 @@ class EventHubBufferedPartitionProducer implements Closeable {
      *     event.
      */
     Mono<Void> enqueueEvent(EventData eventData) {
-        return Mono.create(sink -> {
-            sink.onRequest(request -> {
+        final Mono<Void> enqueueOperation = Mono.create(sink -> {
+            try {
+                final boolean success = flushSemaphore.tryAcquire(retryOptions.getTryTimeout().toMillis(),
+                    TimeUnit.MILLISECONDS);
+
+                if (!success) {
+                    sink.error(new TimeoutException("Timed out waiting for flush operation to complete."));
+                    return;
+                }
+            } catch (InterruptedException e) {
+                // Unsure whether this is recoverable by trying again? Maybe, since this could be scheduled on
+                // another thread.
+                sink.error(new TimeoutException("Unable to acquire flush semaphore due to interrupted exception."));
+                return;
+            }
+
+            try {
                 if (isClosed.get()) {
                     sink.error(new IllegalStateException(String.format(
                         "Partition publisher id[%s] is already closed. Cannot enqueue more events.", partitionId)));
                     return;
                 }
 
-                try {
-                    eventSink.emitNext(eventData, (signalType, emitResult) -> {
-                        // If the draining queue is slower than the publishing queue.
-                        System.err.printf("[%s] Could not push event downstream. %s.", partitionId, signalType);
-                        return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
-                    });
-                    sink.success();
-                } catch (Exception e) {
-                    sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(), errorContext));
-                }
-            });
+                eventSink.emitNext(eventData, (signalType, emitResult) -> {
+                    // If the draining queue is slower than the publishing queue.
+                    System.err.printf("[%s] Could not push event downstream. %s.", partitionId, signalType);
+                    return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
+                });
+                sink.success();
+            } catch (Exception e) {
+                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
+                    errorContext));
+            } finally {
+                flushSemaphore.release();
+            }
         });
+
+        return withRetry(enqueueOperation, retryOptions, "Timed out trying to enqueue event data.", true);
     }
 
     /**
@@ -124,7 +156,14 @@ class EventHubBufferedPartitionProducer implements Closeable {
      * @return A Mono that completes when all events are flushed.
      */
     Mono<Void> flush() {
-        return Mono.empty();
+        return Mono.create((MonoSink<Void> sink) -> {
+            try {
+                publishResultSubscriber.startFlush(flushSemaphore, sink);
+            } catch (InterruptedException e) {
+                logger.warning("Unable to acquire flush semaphore.");
+                sink.error(e);
+            }
+        });
     }
 
     @Override
@@ -187,6 +226,10 @@ class EventHubBufferedPartitionProducer implements Closeable {
         private final Consumer<SendBatchFailedContext> onFailed;
         private final Queue<EventData> dataQueue;
         private final ClientLogger logger;
+        private final AtomicBoolean flush = new AtomicBoolean(false);
+
+        private Semaphore flushSemaphore;
+        private MonoSink<Void> flushSink;
 
         PublishResultSubscriber(String partitionId, Consumer<SendBatchSucceededContext> onSucceed,
             Consumer<SendBatchFailedContext> onFailed, Queue<EventData> dataQueue, ClientLogger logger) {
@@ -209,12 +252,20 @@ class EventHubBufferedPartitionProducer implements Closeable {
             } else {
                 onFailed.accept(new SendBatchFailedContext(result.batch.getEvents(), partitionId, result.error));
             }
+
+            if (dataQueue.isEmpty() && flush.get()) {
+                logger.verbose("Queue is empty. Completing flush operation.");
+
+                tryCompleteFlush();
+            }
         }
 
         @Override
         protected void hookOnError(Throwable throwable) {
             logger.error("Publishing subscription completed and ended in an error.", throwable);
             onFailed.accept(new SendBatchFailedContext(null, partitionId, throwable));
+
+            tryCompleteFlush();
         }
 
         @Override
@@ -225,6 +276,42 @@ class EventHubBufferedPartitionProducer implements Closeable {
             this.dataQueue.clear();
 
             onFailed.accept(new SendBatchFailedContext(events, partitionId, null));
+
+            tryCompleteFlush();
+        }
+
+        /**
+         * Flushes the queue. Releases semaphore when it is complete.
+         *
+         * @param semaphore Semaphore to acquire and release.
+         * @param sink Async sink to complete when operation finishes.
+         *
+         * @throws NullPointerException if {@code semaphore} or {@code sink} is null.
+         */
+        void startFlush(Semaphore semaphore, MonoSink<Void> sink) throws InterruptedException {
+            Objects.requireNonNull(semaphore, "'semaphore' should not be null.");
+            Objects.requireNonNull(sink, "'sink' should not be null.");
+
+            if (!flush.compareAndSet(false, true)) {
+                return;
+            }
+
+            this.flushSemaphore = semaphore;
+            this.flushSink = sink;
+            semaphore.acquire();
+        }
+
+        private void tryCompleteFlush() {
+            if (!flush.get()) {
+                return;
+            }
+
+            if (flushSemaphore != null) {
+                flushSemaphore.release();
+            }
+
+            flush.compareAndSet(true, false);
+            flushSink.success();
         }
     }
 

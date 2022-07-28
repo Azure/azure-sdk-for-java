@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
@@ -42,6 +43,7 @@ public class EventHubBufferedPartitionProducerTest {
     private static final String NAMESPACE = "test-eventhubs-namespace";
     private static final String EVENT_HUB_NAME = "test-hub";
     private static final List<String> PARTITION_IDS = Arrays.asList("one", "two", PARTITION_ID, "four");
+    private static final AmqpRetryOptions DEFAULT_RETRY_OPTIONS = new AmqpRetryOptions();
 
     private AutoCloseable mockCloseable;
 
@@ -122,7 +124,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options);
+            options, DEFAULT_RETRY_OPTIONS);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
@@ -170,7 +172,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty(), Mono.error(error));
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options);
+            options, DEFAULT_RETRY_OPTIONS);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -238,7 +240,7 @@ public class EventHubBufferedPartitionProducerTest {
         });
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options);
+            options, DEFAULT_RETRY_OPTIONS);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -305,7 +307,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options);
+            options, DEFAULT_RETRY_OPTIONS);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2), producer.enqueueEvent(event3)), 1L)

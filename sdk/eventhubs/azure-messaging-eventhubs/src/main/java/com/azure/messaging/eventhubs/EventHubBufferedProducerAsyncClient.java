@@ -89,7 +89,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             })
             .map(partitionId -> {
                 return partitionProducers.computeIfAbsent(partitionId, key -> {
-                    return new EventHubBufferedPartitionProducer(client, key, clientOptions);
+                    return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
                 });
             }).then();
 
@@ -233,7 +233,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
 
             final EventHubBufferedPartitionProducer producer =
                 partitionProducers.computeIfAbsent(options.getPartitionId(), key -> {
-                    return new EventHubBufferedPartitionProducer(client, key, clientOptions);
+                    return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
                 });
 
             return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
@@ -257,7 +257,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                 final String partitionId = partitionResolver.assignRoundRobin(ids);
                 final EventHubBufferedPartitionProducer producer =
                     partitionProducers.computeIfAbsent(partitionId, key -> {
-                        return new EventHubBufferedPartitionProducer(client, key, clientOptions);
+                        return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
                     });
 
                 return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
