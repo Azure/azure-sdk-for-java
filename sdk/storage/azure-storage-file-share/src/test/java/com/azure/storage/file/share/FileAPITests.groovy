@@ -1824,6 +1824,29 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    def "Rename sas token"() {
+        // return back to this test: pass sas into the builder and see if you can repro the test from datalake
+        setup:
+        def permissions = new ShareFileSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+        def sas = primaryFileClient.generateSas(sasValues)
+        def client =
+
+        when:
+        def destClient = client.rename(fsc.getFileSystemName(), generatePathName())
+
+        then:
+        notThrown(ShareStorageException)
+        destClient.getProperties()
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Rename different directory"() {
         setup:
