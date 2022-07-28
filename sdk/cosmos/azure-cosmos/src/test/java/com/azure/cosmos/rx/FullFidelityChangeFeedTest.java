@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -10,7 +9,6 @@ import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
@@ -60,7 +58,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = { "simple" })
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromNowForLogicalPartition() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options1 = CosmosChangeFeedRequestOptions
@@ -208,7 +206,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" })
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationToken() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
@@ -288,7 +286,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" })
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationTokenOperationsOrder() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(0);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
@@ -343,7 +341,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" })
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
@@ -467,21 +465,6 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
     @AfterClass(groups = { "simple", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
-    }
-
-    private static Document getDocumentDefinition(String partitionKey) {
-        String uuid = UUID.randomUUID().toString();
-        Document doc = new Document();
-        doc.setId(uuid);
-        BridgeInternal.setProperty(doc, "mypk", partitionKey);
-        BridgeInternal.setProperty(doc, "prop", uuid);
-        return doc;
-    }
-
-    private static void waitAtleastASecond(Instant befTime) throws InterruptedException {
-        while (befTime.plusSeconds(1).isAfter(Instant.now())) {
-            Thread.sleep(100);
-        }
     }
 
     @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
