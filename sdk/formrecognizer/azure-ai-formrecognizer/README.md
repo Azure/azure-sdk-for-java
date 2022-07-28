@@ -533,7 +533,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Manage custom models: [ManageCustomModels][manage_custom_models]
 * Copy a model between Form Recognizer resources: [CopyModel][copy_model]
 * Create a composed model from a collection of custom-built models: [ComposeModel][compose_model]
-* Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
+* Get/List document model operations associated with the Form Recognizer resource: GetOperation
 
 ### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
@@ -556,7 +556,7 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
 * Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
 * Create a composed model from a collection of custom-built models: [ComposeModelAsync][compose_model_async]
-* Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
+* Get/List document model operations associated with the Form Recognizer resource: GetOperationAsync
 
 ### Additional documentation
 See the [Sample README][sample_readme] for several code snippets illustrating common patterns used in the Form Recognizer Java SDK.
@@ -629,8 +629,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java
 [copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModelAsync.java
-[get_operation]: <!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummary.java)-->
-[get_operation_async]: <!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummaryAsync.java)-->
 
 [fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
