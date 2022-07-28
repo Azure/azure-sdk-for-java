@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KubeEnvironments GetByResourceGroup. */
 public final class KubeEnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_Get.json
      */
     /**
      * Sample code: Get kube environments by name.

@@ -1,14 +1,25 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
+## 2.17.0 (2022-07-25)
 
 ### Features Added
 
+- Supported `getDeploymentStatus` in `SupportsOneDeploy`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Merged multiple classes `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem`,
+  `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem`, 
+  `DomainPatchResourcePropertiesDomainNotRenewableReasonsItem` and `DomainPropertiesDomainNotRenewableReasonsItem` 
+  into one class `ResourceNotRenewableReason`.
+- `AppServiceEnvironmentPatchResource` was removed.
+- `ValidateRequest` was removed.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
 
 ## 2.16.0 (2022-06-24)
 

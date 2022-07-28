@@ -343,7 +343,6 @@ public class AddressResolver implements IAddressResolver {
         volatile boolean collectionRoutingMapCacheIsUptoDate;
         volatile DocumentCollection collection;
         volatile CollectionRoutingMap routingMap;
-        volatile ResolutionResult resolutionResult;
     }
 
     private Mono<RefreshState> getOrRefreshRoutingMap(RxDocumentServiceRequest request, boolean forceRefreshPartitionAddresses) {

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps StopWebSiteNetworkTraceSlot. */
 public final class WebAppsStopWebSiteNetworkTraceSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/StopWebSiteNetworkTrace.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/StopWebSiteNetworkTrace.json
      */
     /**
      * Sample code: Stop a currently running network trace operation for a site.

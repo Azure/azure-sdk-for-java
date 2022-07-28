@@ -85,7 +85,7 @@ public interface AttachedDataNetworks {
         Context context);
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -93,14 +93,14 @@ public interface AttachedDataNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedIterable}.
      */
     PagedIterable<AttachedDataNetwork> listByPacketCoreDataPlane(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName);
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -109,7 +109,7 @@ public interface AttachedDataNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedIterable}.
      */
     PagedIterable<AttachedDataNetwork> listByPacketCoreDataPlane(
