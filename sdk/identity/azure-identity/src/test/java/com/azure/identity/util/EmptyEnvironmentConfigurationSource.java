@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.util;
 
 import com.azure.core.util.Configuration;
@@ -12,7 +15,7 @@ import java.util.stream.Collectors;
  * A {@link ConfigurationSource} that contains empty values for AZURE_* environment variables.
  */
 public class EmptyEnvironmentConfigurationSource implements ConfigurationSource {
-    final private Map<String, String> testData;
+    private final Map<String, String> testData;
 
     public EmptyEnvironmentConfigurationSource() {
         this.testData = new HashMap<>();
