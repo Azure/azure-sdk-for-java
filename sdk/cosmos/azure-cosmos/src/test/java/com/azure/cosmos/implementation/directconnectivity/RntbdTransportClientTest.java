@@ -35,6 +35,7 @@ import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
@@ -822,6 +823,7 @@ public final class RntbdTransportClientTest {
         final URI physicalAddress;
         final URI remoteURI;
         final Tag tag;
+        private final Tag clientMetricTag;
 
         private FakeEndpoint(
             final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
@@ -862,6 +864,9 @@ public final class RntbdTransportClientTest {
             );
 
             this.tag = Tag.of(FakeEndpoint.class.getSimpleName(), this.fakeChannel.remoteAddress().toString());
+            this.clientMetricTag = Tag.of(
+                TagName.ServiceEndpoint.toString(),
+                String.format("%s_%d", this.physicalAddress.getHost(), this.physicalAddress.getPort()));
         }
 
         // region Accessors
@@ -943,6 +948,9 @@ public final class RntbdTransportClientTest {
         public Tag tag() {
             return this.tag;
         }
+
+        @Override
+        public Tag clientMetricTag() { return this.clientMetricTag;}
 
         @Override
         public long usedDirectMemory() {

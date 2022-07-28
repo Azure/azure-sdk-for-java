@@ -144,6 +144,12 @@
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-azure-monitor</artifactId>
+      <version>1.9.1</version> <!-- {x-version-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -182,6 +188,7 @@
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.3]</include>  <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.9.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -603,6 +610,14 @@
                     <relocation>
                       <pattern>javax.xml</pattern>
                       <shadedPattern>${shadingPrefix}.javax.xml</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.microsoft.azure</pattern>
+                      <shadedPattern>${shadingPrefix}.com.microsoft.azure</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.google</pattern>
+                      <shadedPattern>${shadingPrefix}.com.google</shadedPattern>
                     </relocation>
                   </relocations>
                   <filters>

@@ -89,6 +89,7 @@ public class ClientTelemetry {
         new AtomicReference<>(null);
     private ClientTelemetryInfo clientTelemetryInfo;
     private final boolean clientTelemetryConfigEnabled;
+    private final boolean clientMetricsEnabled;
     private final Configs configs;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final HttpClient httpClient;
@@ -144,6 +145,10 @@ public class ClientTelemetry {
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(clientTelemetryConfig);
+        this.clientMetricsEnabled = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .isClientMetricsEnabled(clientTelemetryConfig);
         this.httpClient = getHttpClientForClientTelemetry();
         this.metadataHttpClient = getHttpClientForIMDS();
         this.clientTelemetrySchedulingSec = Configs.getClientTelemetrySchedulingInSec();
@@ -191,6 +196,10 @@ public class ClientTelemetry {
 
     public boolean isClientTelemetryEnabled() {
         return this.clientTelemetryConfigEnabled;
+    }
+
+    public boolean isClientMetricsEnabled() {
+        return this.clientMetricsEnabled;
     }
 
     public void init() {

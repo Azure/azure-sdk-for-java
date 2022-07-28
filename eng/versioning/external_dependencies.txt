@@ -348,6 +348,7 @@ cosmos_org.scala-lang:scala-library;2.12.10
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
 cosmos_commons-io:commons-io;2.4
+cosmos_io.micrometer:micrometer-registry-azure-monitor;1.9.1
 
 # Cosmos Spark connector tests only
 cosmos_org.scalatest:scalatest_2.12;3.2.2

@@ -6,7 +6,6 @@ package com.azure.cosmos.spark.plugins
 import com.azure.cosmos.spark.{CosmosClientMetrics, CosmosConfigNames, CosmosConstants}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.SparkContext
-import org.apache.spark.SparkContext.jarOfObject
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
 
 import java.util
@@ -16,11 +15,11 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
-  override def driverPlugin(): DriverPlugin = new CosmosSparkMetricsDriverPlugin()
+  override def driverPlugin(): DriverPlugin = new CosmosMetricsSparkDriverPlugin()
 
-  override def executorPlugin(): ExecutorPlugin = new CosmosSparkMetricsExecutorPlugin()
+  override def executorPlugin(): ExecutorPlugin = new CosmosMetricsSparkExecutorPlugin()
 
-  private class CosmosSparkMetricsDriverPlugin extends DriverPlugin with BasicLoggingTrait {
+  private class CosmosMetricsSparkDriverPlugin extends DriverPlugin with BasicLoggingTrait {
     private[this] var slf4jReporterEnabled = CosmosConstants.defaultSlf4jMetricReporterEnabled
     private[this] var metricsCollectionIntervalInSeconds = CosmosConstants.defaultMetricsIntervalInSeconds
 
@@ -37,9 +36,10 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
       metricsCollectionIntervalInSeconds = sc
         .getConf
-        .getInt(CosmosConfigNames.MetricsIntervalInSeconds, 60)
+        .getInt(CosmosConfigNames.MetricsIntervalInSeconds, CosmosConstants.defaultMetricsIntervalInSeconds)
 
-      logInfo(s"CosmosSparkMetricsDriverPlugin initialized - Console enabled $slf4jReporterEnabled")
+      logInfo(s"CosmosMetricsSparkDriverPlugin initialized (Slf4JReporter " +
+        s"enabled: $slf4jReporterEnabled, metrics interval (seconds): $metricsCollectionIntervalInSeconds)")
 
       val newConfig = originalConfig +
         (CosmosConfigNames.MetricsEnabledForSlf4j -> slf4jReporterEnabled.toString) +
@@ -59,7 +59,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
           dropWizardRegistry,
           this.slf4jReporterEnabled,
           this.metricsCollectionIntervalInSeconds)
-        logInfo(s"CosmosSparkMetricsDriverPlugin metrics for application $appId registered (Slf4JReporter " +
+        logInfo(s"CosmosMetricsSparkDriverPlugin metrics for application $appId registered (Slf4JReporter " +
           s"enabled: $slf4jReporterEnabled, metrics interval (seconds): $metricsCollectionIntervalInSeconds)")
       }
     }
@@ -70,7 +70,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
     }
   }
 
-  private class CosmosSparkMetricsExecutorPlugin extends ExecutorPlugin with BasicLoggingTrait {
+  private class CosmosMetricsSparkExecutorPlugin extends ExecutorPlugin with BasicLoggingTrait {
     private[this] var slf4jReporterEnabled = CosmosConstants.defaultSlf4jMetricReporterEnabled
     private[this] var metricsCollectionIntervalInSeconds = CosmosConstants.defaultMetricsIntervalInSeconds
 
@@ -96,17 +96,17 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
             metricsCollectionIntervalInSeconds)
 
         logInfo(
-          s"CosmosSparkMetricsExecutorPlugin metrics registered - (Slf4JReporter " +
+          s"CosmosMetricsSparkExecutorPlugin metrics registered - (Slf4JReporter " +
             s"enabled: $slf4jReporterEnabled, metrics interval (seconds): $metricsCollectionIntervalInSeconds)")
       }
 
-      logInfo("CosmosSparkMetricsExecutorPlugin initialized")
+      logInfo("CosmosMetricsSparkExecutorPlugin initialized")
     }
 
     override def shutdown(): Unit = {
       super.shutdown()
 
-      logInfo("CosmosSparkMetricsExecutorPlugin shutdown initiated")
+      logInfo("CosmosMetricsSparkExecutorPlugin shutdown initiated")
     }
   }
 }

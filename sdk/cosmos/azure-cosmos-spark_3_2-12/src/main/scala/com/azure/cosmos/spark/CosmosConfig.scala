@@ -95,6 +95,7 @@ private[spark] object CosmosConfigNames {
     "spark.cosmos.serialization.dateTimeConversionMode"
   val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
   val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
+  val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -150,7 +151,8 @@ private[spark] object CosmosConfigNames {
     SerializationInclusionMode,
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
-    MetricsIntervalInSeconds
+    MetricsIntervalInSeconds,
+    MetricsAzureMonitorConnectionString
   )
 
   def validateConfigName(name: String): Unit = {

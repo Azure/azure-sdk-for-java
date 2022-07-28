@@ -46,6 +46,7 @@ public class CosmosClientTelemetryConfig {
     private String clientCorrelationId = null;
     private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
     private MeterRegistry clientMetricRegistry = null;
+    private boolean isClientMetricsEnabled = false;
 
     private CosmosClientTelemetryConfig() {
         this.clientTelemetryEnabled = DEFAULT_CLIENT_TELEMETRY_ENABLED;
@@ -167,6 +168,7 @@ public class CosmosClientTelemetryConfig {
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientTelemetryConfig clientMetrics(MeterRegistry clientMetricRegistry) {
         this.clientMetricRegistry = clientMetricRegistry;
+        this.isClientMetricsEnabled = clientMetricRegistry != null;
 
         return this;
     }
@@ -298,6 +300,11 @@ public class CosmosClientTelemetryConfig {
                 @Override
                 public boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
                     return config.isSendClientTelemetryToServiceEnabled();
+                }
+
+                @Override
+                public boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config) {
+                    return config.isClientMetricsEnabled;
                 }
 
                 @Override

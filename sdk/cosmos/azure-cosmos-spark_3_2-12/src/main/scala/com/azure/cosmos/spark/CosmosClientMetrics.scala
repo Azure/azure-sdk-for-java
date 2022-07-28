@@ -23,6 +23,19 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
   var hostName: Option[String] = None
   var slf4JReporter : Option[Slf4jReporter] = None
 
+  def addMeterRegistry
+  (
+    newMeterRegistry: MeterRegistry
+  ) : Unit = {
+    this.meterRegistry match {
+      case Some(existingRegistry) => existingRegistry.add(newMeterRegistry)
+      case None =>
+        this.meterRegistry = Some(new CompositeMeterRegistry(
+          Clock.SYSTEM,
+          Iterable.apply(newMeterRegistry).asJava))
+
+    }
+  }
   def registerDropwizardRegistry
   (
     executorId: String,
@@ -63,14 +76,7 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
         reporter.start(metricsCollectionIntervalInSeconds.toLong, TimeUnit.SECONDS)
       }
 
-      this.meterRegistry match {
-        case Some(existingRegistry) => existingRegistry.add(dropWizardMeterRegistry)
-        case None =>
-          this.meterRegistry = Some(new CompositeMeterRegistry(
-            Clock.SYSTEM,
-            Iterable.apply(dropWizardMeterRegistry.asInstanceOf[MeterRegistry]).asJava))
-
-      }
+      addMeterRegistry(dropWizardMeterRegistry)
     }
   }
 

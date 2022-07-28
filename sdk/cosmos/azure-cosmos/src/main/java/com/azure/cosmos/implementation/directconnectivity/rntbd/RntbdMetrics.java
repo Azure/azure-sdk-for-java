@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
     "requestSize", "responseSize", "channelsAcquired", "channelsAvailable", "requestQueueLength", "usedDirectMemory",
     "usedHeapMemory"
 })
-public final class RntbdMetrics {
+public final class RntbdMetrics implements RntbdMetricsCompletionRecorder {
 
     // region Fields
 
@@ -33,6 +33,8 @@ public final class RntbdMetrics {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdMetrics.class);
     private static final CompositeMeterRegistry registry = new CompositeMeterRegistry();
+
+    private static boolean hasAnyRegistry = false;
 
     static {
         try {
@@ -58,11 +60,15 @@ public final class RntbdMetrics {
     private final Tags tags;
     private final RntbdTransportClient transportClient;
 
+    public static boolean isEmpty() {
+        return !hasAnyRegistry;
+    }
+
     // endregion
 
     // region Constructors
 
-    public RntbdMetrics(RntbdTransportClient client, RntbdEndpoint endpoint) {
+    private RntbdMetrics(RntbdTransportClient client, RntbdEndpoint endpoint) {
 
         this.transportClient = client;
         this.endpoint = endpoint;
@@ -128,11 +134,17 @@ public final class RntbdMetrics {
             .register(registry);
     }
 
+    static RntbdMetricsCompletionRecorder create(RntbdTransportClient client, RntbdEndpoint endpoint) {
+        return new RntbdMetrics(client, endpoint);
+    }
+
     // endregion
 
     // region Accessors
 
     public static void add(MeterRegistry registry) {
+
+        hasAnyRegistry = true;
         RntbdMetrics.registry.add(registry);
     }
 

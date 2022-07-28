@@ -809,7 +809,6 @@ public class CosmosClientBuilder implements
      * @return CosmosAsyncClient
      */
     public CosmosAsyncClient buildAsyncClient() {
-
         validateConfig();
         buildConnectionPolicy();
         return new CosmosAsyncClient(this);
