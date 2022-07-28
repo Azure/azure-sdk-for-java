@@ -7,9 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * A builder class that is used to create URLs.
@@ -22,7 +21,7 @@ public final class UrlBuilder {
 
     private String scheme;
     private String host;
-    private String port;
+    private Integer port;
     private String path;
 
     // LinkedHashMap preserves insertion order
@@ -83,11 +82,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setPort(String port) {
-        if (port == null || port.isEmpty()) {
-            this.port = null;
-        } else {
-            with(port, UrlTokenizerState.PORT);
-        }
+        this.port = CoreUtils.isNullOrEmpty(port) ? null : Integer.parseInt(port);
         return this;
     }
 
@@ -98,7 +93,8 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setPort(int port) {
-        return setPort(Integer.toString(port));
+        this.port = port;
+        return this;
     }
 
     /**
@@ -107,7 +103,7 @@ public final class UrlBuilder {
      * @return the port that has been assigned to this UrlBuilder.
      */
     public Integer getPort() {
-        return port == null ? null : Integer.valueOf(port);
+        return port;
     }
 
     /**
@@ -204,30 +200,15 @@ public final class UrlBuilder {
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with a list of values under the same name,
         // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
-        final Map<String, String> singleKeyValueQuery =
-            this.query.entrySet()
-                      .stream()
-                      .collect(Collectors.toMap(
-                            e -> e.getKey(),
-                            e -> {
-                                QueryParameter parameter = e.getValue();
-                                String value = null;
-
-                                if (parameter != null) {
-                                    // get all parameters joined by a comma.
-                                    // name=a&name=b&name=c becomes name=a,b,c
-                                    value = parameter.getValue();
-                                }
-
-                                return value;
-                            }
-                        ));
-
-        return singleKeyValueQuery;
+        return query.entrySet().stream()
+            // get all parameters joined by a comma.
+            // name=a&name=b&name=c becomes name=a,b,c
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue()));
     }
 
     /**
      * Returns the query string currently configured in this UrlBuilder instance.
+     *
      * @return A String containing the currently configured query string.
      */
     public String getQueryString() {
@@ -235,19 +216,25 @@ public final class UrlBuilder {
             return "";
         }
 
-        StringBuilder queryBuilder = new StringBuilder("?");
-        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
-            for (String queryValue : entry.getValue().getValuesList()) {
-                if (queryBuilder.length() > 1) {
-                    queryBuilder.append("&");
-                }
-                queryBuilder.append(entry.getKey());
-                queryBuilder.append("=");
-                queryBuilder.append(queryValue);
-            }
-        }
+        StringBuilder queryBuilder = new StringBuilder();
+        appendQueryString(queryBuilder);
 
         return queryBuilder.toString();
+    }
+
+    private void appendQueryString(StringBuilder stringBuilder) {
+        stringBuilder.append("?");
+
+        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
+            for (String queryValue : entry.getValue().getValuesList()) {
+                if (stringBuilder.length() > 1) {
+                    stringBuilder.append("&");
+                }
+                stringBuilder.append(entry.getKey());
+                stringBuilder.append("=");
+                stringBuilder.append(queryValue);
+            }
+        }
     }
 
     private UrlBuilder with(String text, UrlTokenizerState startState) {
@@ -255,71 +242,71 @@ public final class UrlBuilder {
 
         while (tokenizer.next()) {
             final UrlToken token = tokenizer.current();
-            final String tokenText = token.text();
+            final String tokenText = emptyToNull(token.text());
             final UrlTokenType tokenType = token.type();
             switch (tokenType) {
                 case SCHEME:
-                    scheme = emptyToNull(tokenText);
+                    scheme = tokenText;
                     break;
 
                 case HOST:
-                    host = emptyToNull(tokenText);
+                    host = tokenText;
                     break;
 
                 case PORT:
-                    port = emptyToNull(tokenText);
+                    port = tokenText == null ? null : Integer.parseInt(tokenText);
                     break;
 
                 case PATH:
-                    final String tokenPath = emptyToNull(tokenText);
-                    if (path == null || "/".equals(path) || !"/".equals(tokenPath)) {
-                        path = tokenPath;
+                    if (path == null || "/".equals(path) || !"/".equals(tokenText)) {
+                        path = tokenText;
                     }
                     break;
 
                 case QUERY:
-                    if (!CoreUtils.isNullOrEmpty(tokenText)) {
-                        int keyStart = 0;
-                        int keyEnd;
-                        int valueStart = -1;
-                        int valueEnd;
-                        boolean inValue = false;
+                    if (tokenText == null) {
+                        break;
+                    }
+                    int keyStart = 0;
+                    int keyEnd;
+                    int valueStart = -1;
+                    int valueEnd;
+                    boolean inValue = false;
 
-                        // If the URL query begins with '?' the first possible start of a query parameter key is the
-                        // second character in the query.
-                        if (tokenText.startsWith("?")) {
-                            keyStart = 1;
-                        }
+                    // If the URL query begins with '?' the first possible start of a query parameter key is the
+                    // second character in the query.
+                    if (tokenText.startsWith("?")) {
+                        keyStart = 1;
+                    }
 
-                        String key = null;
-                        while (true) {
-                            if (inValue) {
-                                valueEnd = tokenText.indexOf('&', valueStart);
+                    String key = null;
+                    while (true) {
+                        if (inValue) {
+                            valueEnd = tokenText.indexOf('&', valueStart);
 
-                                if (valueEnd == -1) {
-                                    // Value goes until the end of the query parameter.
-                                    addQueryParameter(key, tokenText.substring(valueStart));
-                                    break;
-                                } else {
-                                    inValue = false;
-                                    keyStart = valueEnd + 1;
-
-                                    String value = (valueStart == valueEnd)
-                                        ? "" : tokenText.substring(valueStart, valueEnd);
-                                    addQueryParameter(key, value);
-                                }
+                            if (valueEnd == -1) {
+                                // Value goes until the end of the query parameter.
+                                addQueryParameter(key, tokenText.substring(valueStart));
+                                break;
                             } else {
-                                keyEnd = tokenText.indexOf('=', keyStart);
+                                inValue = false;
+                                keyStart = valueEnd + 1;
 
-                                if (keyEnd == -1) {
-                                    // Key doesn't have a value, add a query parameters with an empty string value.
-                                    addQueryParameter(tokenText.substring(keyStart), "");
-                                    break;
-                                } else {
-                                    inValue = true;
-                                    key = (keyStart == keyEnd) ? "" : tokenText.substring(keyStart, keyEnd);
-                                    valueStart = keyEnd + 1;
-                                }
+                                String value = (valueStart == valueEnd)
+                                    ? "" : tokenText.substring(valueStart, valueEnd);
+                                addQueryParameter(key, value);
+                            }
+                        } else {
+                            keyEnd = tokenText.indexOf('=', keyStart);
+
+                            if (keyEnd == -1) {
+                                // Key doesn't have a value, add a query parameters with an empty string value.
+                                addQueryParameter(tokenText.substring(keyStart), "");
+                                break;
+                            } else {
+                                inValue = true;
+                                key = (keyStart == keyEnd) ? "" : tokenText.substring(keyStart, keyEnd);
+                                valueStart = keyEnd + 1;
                             }
                         }
                     }
@@ -379,13 +366,14 @@ public final class UrlBuilder {
             result.append(path);
         }
 
-        result.append(getQueryString());
+        appendQueryString(result);
 
         return result.toString();
     }
 
     /**
      * Returns the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
+     *
      * @return the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
      */
     static Map<String, UrlBuilder> getParsedUrls() {

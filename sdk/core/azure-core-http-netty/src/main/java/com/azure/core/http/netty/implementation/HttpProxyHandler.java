@@ -45,9 +45,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATE;
 import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
@@ -71,8 +71,6 @@ public final class HttpProxyHandler extends ProxyHandler {
     private static final String AUTH_BASIC = "basic";
     private static final String AUTH_DIGEST = "digest";
 
-    private static final Pattern AUTH_SCHEME_PATTERN = Pattern.compile("^" + AUTH_DIGEST, Pattern.CASE_INSENSITIVE);
-
     /*
      * Proxies use 'CONNECT' as the HTTP method.
      */
@@ -94,18 +92,20 @@ public final class HttpProxyHandler extends ProxyHandler {
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
+    private final AtomicBoolean firstAttempt;
 
     private String authScheme = null;
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
+        AtomicReference<ChallengeHolder> proxyChallengeHolderReference, AtomicBoolean firstAttempt) {
         super(proxyAddress);
 
         this.challengeHandler = challengeHandler;
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
         this.codec = new HttpClientCodec();
+        this.firstAttempt = firstAttempt;
     }
 
     @Override
@@ -151,7 +151,8 @@ public final class HttpProxyHandler extends ProxyHandler {
             String authorizationHeader = createAuthorizationHeader();
 
             if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
-                authScheme = AUTH_SCHEME_PATTERN.matcher(authorizationHeader).find() ? AUTH_DIGEST : AUTH_BASIC;
+                // Checks if the authorization header begins with 'digest' using a case-insensitive match.
+                authScheme = AUTH_DIGEST.regionMatches(true, 0, authorizationHeader, 0, 6) ? AUTH_DIGEST : AUTH_BASIC;
                 request.headers().set(PROXY_AUTHORIZATION, authorizationHeader);
                 ctx.channel().attr(PROXY_AUTHORIZATION_KEY).set(authorizationHeader);
             }
@@ -240,8 +241,13 @@ public final class HttpProxyHandler extends ProxyHandler {
                 throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
                     "Never received response for CONNECT request.", innerHeaders);
             } else if (status.code() != 200) {
-                throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
-                    "Failed to connect to proxy. Status: " + status, innerHeaders);
+                // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
+                // first attempt.
+                if (!firstAttempt.get()) {
+                    // Later attempts throw an exception.
+                    throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
+                        "Failed to connect to proxy. Status: " + status, innerHeaders);
+                }
             }
         }
 

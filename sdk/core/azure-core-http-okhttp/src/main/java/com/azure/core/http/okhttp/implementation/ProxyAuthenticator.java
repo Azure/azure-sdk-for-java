@@ -189,7 +189,7 @@ public final class ProxyAuthenticator implements Authenticator {
      * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
      * outlining that the values didn't match.
      */
-    private void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
+    private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
         Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);

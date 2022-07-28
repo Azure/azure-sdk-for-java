@@ -433,7 +433,8 @@ public class NettyAsyncHttpClientTests {
                 .build();
 
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
-                .verifyError(ProxyConnectException.class);
+                .verifyErrorMatches(exception -> exception instanceof ProxyConnectException
+                    && exception.getMessage().contains("Failed to connect to proxy. Status: "));
         }
     }
 

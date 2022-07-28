@@ -3,11 +3,11 @@
 
 package com.azure.core.util;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Represents a single parameter to be added to a query string.
@@ -28,6 +28,8 @@ class QueryParameter {
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
+    private static final AtomicReferenceFieldUpdater<QueryParameter, String> CACHED_STRING_VALUE_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(QueryParameter.class, String.class, "cachedStringValue");
 
     /**
      * Create a QueryParameter instance using the provided name and value.
@@ -100,7 +102,7 @@ class QueryParameter {
             // most common case is that we don't have a list of values, but a single one
             // a convenience return value is implemented here to avoid NPEs.
             // List.of() would be a better option but it is Java 9+ only.
-            return Collections.unmodifiableList(Arrays.asList(value));
+            return Collections.unmodifiableList(Collections.singletonList(value));
         } else {
             return Collections.unmodifiableList(values);
         }
@@ -121,7 +123,7 @@ class QueryParameter {
 
         // add additional value to the parameter value list
         values.add(newValue);
-        cachedStringValue = null;
+        CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
 
     /**
@@ -132,16 +134,10 @@ class QueryParameter {
     @Override
     public String toString() {
         checkCachedStringValue();
-        return name + "=" + cachedStringValue;
+        return name + "=" + CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     private void checkCachedStringValue() {
-        if (cachedStringValue == null) {
-            if (values == null) {
-                cachedStringValue = value;
-            } else {
-                cachedStringValue = String.join(",", values);
-            }
-        }
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, (values == null) ? value : String.join(",", values));
     }
 }
