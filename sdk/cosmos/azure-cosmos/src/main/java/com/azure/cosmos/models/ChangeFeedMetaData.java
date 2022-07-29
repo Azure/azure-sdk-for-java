@@ -20,6 +20,8 @@ public class ChangeFeedMetaData {
     private ChangeFeedOperationType operationType;
     @JsonProperty("previousImageLSN")
     private long previousLogSequenceNumber;
+    @JsonProperty("timeToLiveExpired")
+    private boolean timeToLiveExpired;
 
     /**
      * Gets the conflict resolution timestamp
@@ -57,6 +59,16 @@ public class ChangeFeedMetaData {
         return previousLogSequenceNumber;
     }
 
+    /**
+     * Used to distinguish explicit deletes (e.g. via deleteItem() API) from deletes caused by TTL expiration
+     * (a collection may define time-to-live policy for documents).
+     *
+     * @return true if ttlExpiration caused the delete.
+     */
+    public boolean isTimeToLiveExpired() {
+        return timeToLiveExpired;
+    }
+
     @Override
     public String toString() {
         return "ChangeFeedMetaData{" +
@@ -64,6 +76,7 @@ public class ChangeFeedMetaData {
             ", logSequenceNumber=" + logSequenceNumber +
             ", operationType=" + operationType +
             ", previousLogSequenceNumber=" + previousLogSequenceNumber +
+            ", timeToLiveExpired=" + timeToLiveExpired +
             '}';
     }
 }

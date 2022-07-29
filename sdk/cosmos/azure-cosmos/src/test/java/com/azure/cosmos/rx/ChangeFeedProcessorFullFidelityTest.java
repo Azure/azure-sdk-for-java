@@ -134,6 +134,7 @@ public class ChangeFeedProcessorFullFidelityTest {
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
             feedContainerPartitionKeyPath);
         cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+//        cosmosContainerProperties.setDefaultTimeToLiveInSeconds(5);
         testDatabase.createContainer(cosmosContainerProperties).block();
         logger.info("Feed container created if not existed");
 
