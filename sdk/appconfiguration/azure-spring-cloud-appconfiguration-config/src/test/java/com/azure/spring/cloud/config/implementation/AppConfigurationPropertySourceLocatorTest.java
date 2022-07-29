@@ -18,7 +18,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,13 +204,6 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
         AppConfigurationPropertySourceLocator.STARTUP.set(true);
-
-        StateHolder state = new StateHolder();
-        state.setNextForcedRefresh(Duration.ofMinutes(10));
-
-        state.setLoadState(TEST_STORE_NAME, false);
-
-        StateHolder.updateState(state);
     }
 
     @Test
@@ -235,7 +227,6 @@ public class AppConfigurationPropertySourceLocatorTest {
             assertEquals(expectedSourceNames.length, sources.size());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
         }
-        System.out.println(StateHolder.getNextForcedRefresh());
     }
 
     @Test
