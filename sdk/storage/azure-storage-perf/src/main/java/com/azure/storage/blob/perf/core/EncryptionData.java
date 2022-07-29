@@ -14,10 +14,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
+import static com.azure.storage.blob.perf.core.EncryptionAlgorithm.AES_CBC_256;
+import static com.azure.storage.blob.perf.core.EncryptionAlgorithm.AES_GCM_256;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
-import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_CBC_256;
-import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_GCM_256;
 
 /**
  * Represents the encryption data that is stored on the service.
@@ -238,7 +237,7 @@ final class EncryptionData {
 
         try {
             EncryptionData encryptionData = MAPPER.readValue(encryptionDataString, EncryptionData.class);
-            if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)) {
+            if (encryptionData.getEncryptionAgent().getProtocol().equals("1.0")) {
                 Objects.requireNonNull(encryptionData.getContentEncryptionIV(),
                     "contentEncryptionIV in encryptionData cannot be null");
                 Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "

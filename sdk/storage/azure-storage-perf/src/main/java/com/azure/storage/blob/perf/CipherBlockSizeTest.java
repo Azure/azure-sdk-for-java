@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.perf.core;
+package com.azure.storage.blob.perf;
 
-import com.azure.storage.blob.perf.BlobPerfStressOptions;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
 
@@ -11,7 +11,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -26,8 +25,8 @@ public class CipherBlockSizeTest extends BlobTestBase<BlobPerfStressOptions> {
 
     private static String randomData;
 
-    public CipherBlockSizeTest(BlobPerfStressOptions options, String blobName) {
-        super(options, blobName);
+    public CipherBlockSizeTest(BlobPerfStressOptions options) {
+        super(options, BLOB_NAME_PREFIX);
     }
 
     @Override
@@ -64,9 +63,9 @@ public class CipherBlockSizeTest extends BlobTestBase<BlobPerfStressOptions> {
                 outBuff.position(0);
                 cipher.update(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 4 * Constants.MB,
                     4 * Constants.MB), outBuff);
-                outBuff.position(0);
-                cipher.update(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 8* Constants.MB,
-                    4 * Constants.MB), outBuff);
+                outBuff.clear();
+                cipher.update(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 8 * Constants.MB,
+                    2 * Constants.MB), outBuff);
                 cipher.doFinal();
             } else if (options.getClientEncryption().equals("2.0")) {
                 ByteBuffer outBuff = ByteBuffer.allocate(5 * Constants.MB);
@@ -76,18 +75,18 @@ public class CipherBlockSizeTest extends BlobTestBase<BlobPerfStressOptions> {
                 cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
                 cipher.doFinal(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 0, 4 * Constants.MB),
                     outBuff);
-                outBuff.position(0);
+                outBuff.clear();
 
                 cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
                 cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
                 cipher.doFinal(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 4 * Constants.MB,
                     4 * Constants.MB), outBuff);
-                outBuff.position(0);
+                outBuff.clear();
 
                 cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
                 cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
-                cipher.doFinal(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 8* Constants.MB,
-                    4 * Constants.MB), outBuff);
+                cipher.doFinal(ByteBuffer.wrap(randomData.getBytes(StandardCharsets.UTF_8), 8 * Constants.MB,
+                    2 * Constants.MB), outBuff);
             } else {
                 throw new RuntimeException();
             }

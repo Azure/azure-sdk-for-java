@@ -4,6 +4,7 @@
 package com.azure.storage;
 
 import com.azure.perf.test.core.PerfStressProgram;
+import com.azure.storage.blob.perf.CipherBlockSizeTest;
 import com.azure.storage.blob.perf.DownloadBlobTest;
 import com.azure.storage.blob.perf.DownloadBlobToFileTest;
 import com.azure.storage.blob.perf.ListBlobsTest;
@@ -51,7 +52,8 @@ public class App {
             ReadFileDatalakeTest.class,
             UploadFileDatalakeTest.class,
             UploadFromFileDatalakeTest.class,
-            DownloadBlobNonSharedClientTest.class
+            DownloadBlobNonSharedClientTest.class,
+            CipherBlockSizeTest.class
         }, args);
     }
 }
