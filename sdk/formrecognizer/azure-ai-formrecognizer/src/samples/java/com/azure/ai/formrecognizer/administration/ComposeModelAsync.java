@@ -65,7 +65,7 @@ public class ComposeModelAsync {
                 System.out.printf("Composed model created on: %s%n", documentModel.getCreatedOn());
 
                 System.out.println("Document Fields:");
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+                documentModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                     docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());

@@ -179,8 +179,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             assertNotNull(composedModel.getModelId());
             assertEquals(TestUtils.EXPECTED_DESC, composedModel.getDescription());
-            assertEquals(2, composedModel.getDocTypes().size());
-            composedModel.getDocTypes().forEach((key, docTypeInfo) -> {
+            assertEquals(2, composedModel.getDocumentTypes().size());
+            composedModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                 if (key.contains("async_component_model_1") || key.contains("async_component_model_2")) {
                     assert true;
                 } else {

@@ -84,7 +84,7 @@ public class AnalyzeLayoutAsync {
                 // selection marks
                 documentPage.getSelectionMarks().forEach(documentSelectionMark ->
                     System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-                        documentSelectionMark.getState().toString(),
+                        documentSelectionMark.getSelectionMarkState().toString(),
                         documentSelectionMark.getBoundingPolygon().toString(),
                         documentSelectionMark.getConfidence()));
             });

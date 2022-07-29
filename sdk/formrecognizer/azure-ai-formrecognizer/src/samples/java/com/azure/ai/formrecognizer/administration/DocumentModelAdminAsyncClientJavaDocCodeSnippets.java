@@ -71,7 +71,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             .subscribe(documentModel -> {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+                documentModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                     docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -107,7 +107,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Model Description: %s%n", documentModel.getDescription());
                 System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
                 System.out.printf("Model assigned tags: %s%n", documentModel.getTags());
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+                documentModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                     docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -235,7 +235,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             .subscribe(documentModel -> {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+                documentModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                     docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -270,7 +270,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Model Description: %s%n", documentModel.getDescription());
                 System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
                 System.out.printf("Model assigned tags: %s%n", documentModel.getTags());
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+                documentModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                     docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -327,7 +327,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-            documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+            documentModel.getDocumentTypes().forEach((key, docTypeInfo) -> {
                 docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -350,7 +350,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
             System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
             System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
-            documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
+            documentModelDetails.getDocumentTypes().forEach((key, docTypeInfo) -> {
                 docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());

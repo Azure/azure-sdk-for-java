@@ -14,7 +14,11 @@
 - Renamed `ModelOperationInfo` model to `ModelOperationSummary`
 - Renamed `getAccountProperties` method to `getResourceDetails`
 - Renamed `AccountProperties` model to `ResourceDetails`
-
+- Renamed `state` property on model `DocumentSelectionMark` to `selectionMarkState`
+- Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
+- Renamed `DocTypeInfo` model to `DocumentTypeDetails`
+- Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
+- 
 ### Bugs Fixed
 
 ### Other Changes

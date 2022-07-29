@@ -65,7 +65,7 @@ public class ComposeModel {
         System.out.printf("Composed model created on: %s%n", documentModelDetails.getCreatedOn());
 
         System.out.println("Document Fields:");
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());

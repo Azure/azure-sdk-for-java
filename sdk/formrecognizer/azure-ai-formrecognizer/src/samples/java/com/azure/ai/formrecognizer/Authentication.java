@@ -107,7 +107,7 @@ public class Authentication {
             DocumentField merchantNameField = receiptFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (DocumentFieldType.STRING == merchantNameField.getType()) {
-                    String merchantName = merchantNameField.getValueString();
+                    String merchantName = merchantNameField.getValueAsString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
@@ -116,7 +116,7 @@ public class Authentication {
             DocumentField transactionDateField = receiptFields.get("TransactionDate");
             if (transactionDateField != null) {
                 if (DocumentFieldType.DATE == transactionDateField.getType()) {
-                    LocalDate transactionDate = transactionDateField.getValueDate();
+                    LocalDate transactionDate = transactionDateField.getValueAsDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
                 }
@@ -126,28 +126,28 @@ public class Authentication {
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
                 if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-                    List<DocumentField> receiptItems = receiptItemsField.getValueList();
+                    List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
                     receiptItems.stream()
                         .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                        .map(formField -> formField.getValueMap())
+                        .map(formField -> formField.getValueAsMap())
                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                             if ("Name".equals(key)) {
                                 if (DocumentFieldType.STRING == formField.getType()) {
-                                    String name = formField.getValueString();
+                                    String name = formField.getValueAsString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
                                         name, formField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
                                 if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float quantity = formField.getValueFloat();
+                                    Float quantity = formField.getValueAsFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
                                 if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float totalPrice = formField.getValueFloat();
+                                    Float totalPrice = formField.getValueAsFloat();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
                                         totalPrice, formField.getConfidence());
                                 }
