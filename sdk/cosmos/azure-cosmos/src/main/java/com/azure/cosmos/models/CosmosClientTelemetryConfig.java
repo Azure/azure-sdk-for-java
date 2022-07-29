@@ -66,12 +66,15 @@ public class CosmosClientTelemetryConfig {
 
     /**
      * Enables or disables sending Cosmos DB client telemetry to the Azure Cosmos DB Service
-     * @param clientTelemetryEnabled
+     * @param sendClientTelemetryToServiceEnabled a flag indicating whether sending client telemetry to the backend should be
+     * enabled or not
      * @return current CosmosClientTelemetryConfig
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientTelemetryConfig sendClientTelemetryToServiceEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
+    public CosmosClientTelemetryConfig sendClientTelemetryToServiceEnabled(
+        boolean sendClientTelemetryToServiceEnabled) {
+
+        this.clientTelemetryEnabled = sendClientTelemetryToServiceEnabled;
 
         return this;
     }

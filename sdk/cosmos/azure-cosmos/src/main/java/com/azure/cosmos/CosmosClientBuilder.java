@@ -778,6 +778,11 @@ public class CosmosClientBuilder implements
         return readRequestsFallbackEnabled;
     }
 
+    /**
+     * Returns the client telemetry config instance for this builder
+     * @return the client telemetry config instance for this builder
+     */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientTelemetryConfig clientTelemetryConfig() {
         return this.clientTelemetryConfig;
     }
