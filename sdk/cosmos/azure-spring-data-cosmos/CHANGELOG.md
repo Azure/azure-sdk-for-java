@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed issues with pagination when an offset is passed in with the pageable object. - See [PR 29462](https://github.com/Azure/azure-sdk-for-java/pull/29462)
+* Fixed sorted queries to utilize composite indexes. - See [PR 30199](https://github.com/Azure/azure-sdk-for-java/pull/30199)
 
 #### Other Changes
 
