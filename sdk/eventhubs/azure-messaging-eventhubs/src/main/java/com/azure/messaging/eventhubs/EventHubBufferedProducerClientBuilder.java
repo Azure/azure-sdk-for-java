@@ -381,17 +381,27 @@ public final class EventHubBufferedProducerClientBuilder {
 
         if (Objects.isNull(clientOptions.getSendSucceededContext())) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'onSendBatchSucceeded' cannot be null."));
-        } else if (Objects.isNull(clientOptions.getSendFailedContext())) {
+        }
+
+        if (Objects.isNull(clientOptions.getSendFailedContext())) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'onSendBatchFailed' cannot be null."));
-        } else if (Objects.isNull(clientOptions.getMaxWaitTime())) {
+        }
+
+        if (Objects.isNull(clientOptions.getMaxWaitTime())) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'maxWaitTime' cannot be null."));
-        } else if (clientOptions.getMaxEventBufferLengthPerPartition() < 1) {
+        }
+
+        if (clientOptions.getMaxEventBufferLengthPerPartition() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxEventBufferLengthPerPartition' cannot be less than 1."));
-        } else if (clientOptions.getMaxConcurrentSends() < 1) {
+        }
+
+        if (clientOptions.getMaxConcurrentSends() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxConcurrentSends' cannot be less than 1."));
-        } else if (clientOptions.getMaxConcurrentSendsPerPartition() < 1) {
+        }
+
+        if (clientOptions.getMaxConcurrentSendsPerPartition() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxConcurrentSendsPerPartition' cannot be less than 1."));
         }
