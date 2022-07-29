@@ -100,9 +100,9 @@ client.setOptions(ClientOptions.builder()
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
 // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-RedisStringCommands sync = connection.sync();
+RedisStringCommands<String, String> sync = connection.sync();
 sync.set("Az:testKey", "testVal");
-System.out.println(sync.get("Az:testKey").toString());
+System.out.println(sync.get("Az:testKey"));
 
 
 // Implementation of Redis Credentials used above.
@@ -193,9 +193,9 @@ client.setOptions(ClientOptions.builder()
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
 // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-RedisStringCommands sync = connection.sync();
+RedisStringCommands<String, String> sync = connection.sync();
 sync.set("Az:testKey", "testVal");
-System.out.println(sync.get("Az:testKey").toString());
+System.out.println(sync.get("Az:testKey"));
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
@@ -238,10 +238,10 @@ int maxTries = 3;
 int i = 0;
 while (i < maxTries) {
     // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-    RedisStringCommands sync = connection.sync();
+    RedisStringCommands<String, String> sync = connection.sync();
     try {
         sync.set("Az:testKey", "testVal");
-        System.out.println(sync.get("Az:testKey").toString());
+        System.out.println(sync.get("Az:testKey"));
     } catch (RedisException e) {
         // TODO: Handle the Exception as required in your application.
         e.printStackTrace();
@@ -359,10 +359,10 @@ int i = 0;
 
 while (i < maxTries) {
     // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-    RedisStringCommands sync = connection.sync();
+    RedisStringCommands<String, String> sync = connection.sync();
     try {
         sync.set("Az:testKey", "testVal");
-        System.out.println(sync.get("Az:testKey").toString());
+        System.out.println(sync.get("Az:testKey"));
         break;
     } catch (RedisException e) {
         // TODO: Handle the Exception as required in your application.
@@ -382,7 +382,7 @@ while (i < maxTries) {
     }
     i++;
 }
-
+        
 // Helper code
 private static RedisClient createLettuceRedisClient(String hostName, int port, String username, AccessToken accessToken) {
 
@@ -443,10 +443,10 @@ int maxTries = 3;
 int i = 0;
 while (i < maxTries) {
     // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-    RedisStringCommands sync = connection.sync();
+    RedisStringCommands<String, String> sync = connection.sync();
     try {
         sync.set("Az:testKey", "testVal");
-        System.out.println(sync.get("Az:testKey").toString());
+        System.out.println(sync.get("Az:testKey"));
     } catch (RedisException e) {
         // Handle the Exception as required in your application.
         e.printStackTrace();
@@ -624,10 +624,10 @@ int i = 0;
 
 while (i < maxTries) {
     // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-    RedisStringCommands sync = connection.sync();
+    RedisStringCommands<String, String> sync = connection.sync();
     try {
         sync.set("Az:testKey", "testVal");
-        System.out.println(sync.get("Az:testKey").toString());
+        System.out.println(sync.get("Az:testKey"));
         break;
     } catch (RedisException e) {
         // Handle the Exception as required in your application.
