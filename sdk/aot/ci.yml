@@ -29,17 +29,30 @@ pr:
       - sdk/aot/azure-aot-graalvm-support/pom.xml
       - sdk/aot/azure-aot-graalvm-support-netty/pom.xml
 
+parameters:
+- name: release_azureaotgraalvmsupport
+  displayName: 'azure-aot-graalvm-support'
+  type: boolean
+  default: true
+- name: release_azureaotgraalvmsupportnetty
+  displayName: 'azure-aot-graalvm-support-netty'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: aot
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-aot-graalvm-support
         groupId: com.azure
         safeName: azureaotgraalvmsupport
+        releaseInBatch: ${{ parameters.release_azureaotgraalvmsupport }}
       - name: azure-aot-graalvm-support-netty
         groupId: com.azure
         safeName: azureaotgraalvmsupportnetty
+        releaseInBatch: ${{ parameters.release_azureaotgraalvmsupportnetty }}
     AdditionalModules:
       - name: azure-aot-graalvm-samples
         groupId: com.azure
