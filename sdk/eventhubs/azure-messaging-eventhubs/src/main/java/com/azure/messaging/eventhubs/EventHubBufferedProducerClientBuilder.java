@@ -409,6 +409,10 @@ public final class EventHubBufferedProducerClientBuilder {
      * @return A new instance of {@link EventHubBufferedProducerClient}.
      */
     public EventHubBufferedProducerClient buildClient() {
-        return new EventHubBufferedProducerClient(buildAsyncClient());
+        final AmqpRetryOptions options = retryOptions == null
+            ? EventHubClientBuilder.DEFAULT_RETRY
+            : retryOptions;
+
+        return new EventHubBufferedProducerClient(buildAsyncClient(), options.getTryTimeout());
     }
 }
