@@ -122,12 +122,46 @@ public final class BridgeInternal {
         Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
-        return ModelBridgeInternal.toFeedResponsePage(response, factoryMethod, cls);
+        FeedResponse<T> feedResponse = ModelBridgeInternal.toFeedResponsePage(response, factoryMethod, cls);
+        applyDiagnosticsToFeedResponse(response.getCosmosDiagnostics(), feedResponse);
+
+        return feedResponse;
+    }
+
+    private static <T> FeedResponse<T> applyDiagnosticsToFeedResponse(CosmosDiagnostics diagnostics, FeedResponse<T> response) {
+        if (diagnostics == null) {
+            return response;
+        }
+
+        ClientSideRequestStatistics requestStatistics = diagnostics.clientSideRequestStatistics();
+        if (requestStatistics != null) {
+            BridgeInternal
+                .addClientSideDiagnosticsToFeed(
+                    response.getCosmosDiagnostics(),
+                    Collections.singletonList(requestStatistics));
+        }
+
+        FeedResponseDiagnostics feedResponseDiagnosticsFromCosmosDiagnostics = diagnostics
+            .getFeedResponseDiagnostics();
+
+        if (feedResponseDiagnosticsFromCosmosDiagnostics != null) {
+            BridgeInternal.addClientSideDiagnosticsToFeed(
+                response.getCosmosDiagnostics(),
+                feedResponseDiagnosticsFromCosmosDiagnostics.getClientSideRequestStatisticsList());
+        }
+
+        return response;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
-        return ModelBridgeInternal.toFeedResponsePage(results, headers, noChanges);
+    public static <T> FeedResponse<T> toFeedResponsePage(
+        List<T> results, Map<String, String> headers, boolean noChanges, CosmosDiagnostics diagnostics) {
+        FeedResponse<T> feedResponseWithQueryMetrics =
+            ModelBridgeInternal.toFeedResponsePage(results, headers, noChanges);
+
+        applyDiagnosticsToFeedResponse(diagnostics, feedResponseWithQueryMetrics);
+
+        return feedResponseWithQueryMetrics;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -136,7 +170,10 @@ public final class BridgeInternal {
         Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
-        return ModelBridgeInternal.toChangeFeedResponsePage(response, factoryMethod, cls);
+        FeedResponse<T> feedResponse = ModelBridgeInternal.toChangeFeedResponsePage(response, factoryMethod, cls);
+        applyDiagnosticsToFeedResponse(response.getCosmosDiagnostics(), feedResponse);
+
+        return feedResponse;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -200,7 +237,12 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
                                                   ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        cosmosDiagnostics.setFeedResponseDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+        FeedResponseDiagnostics feedDiagnostics = new FeedResponseDiagnostics(queryMetricsMap);
+        List<ClientSideRequestStatistics> requestStatistics = cosmosDiagnostics.getClientSideRequestStatistics();
+        if (requestStatistics != null) {
+            feedDiagnostics.addClientSideRequestStatistics(requestStatistics);
+        }
+        cosmosDiagnostics.setFeedResponseDiagnostics(feedDiagnostics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

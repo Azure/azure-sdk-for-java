@@ -166,7 +166,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private <T> Flux<T> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<T> publisher, Context context) {
         TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
-        if (!isTracerEnabled(pagedFluxOptions)) {
+        if (tracerProvider == null ||
+            !tracerProvider.isEnabled()) {
+
             return publisher;
         }
 
@@ -176,6 +178,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
+        TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
 
         Flux<FeedResponse<T>> result =
             wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions), context)
@@ -206,8 +209,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
                 switch (signal.getType()) {
                     case ON_COMPLETE:
-                        if (isTracerEnabled(pagedFluxOptions)) {
-                            pagedFluxOptions.getTracerProvider().endSpan(signal, HttpConstants.StatusCodes.OK);
+                        if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.endSpan(signal, HttpConstants.StatusCodes.OK);
                         }
                         break;
                     case ON_ERROR:
@@ -262,23 +265,27 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             }
                         }
 
-                        if (isTracerEnabled(pagedFluxOptions)) {
-                            pagedFluxOptions.getTracerProvider().endSpan(signal, TracerProvider.ERROR_CODE);
+                        if (isTracerEnabled(tracerProvider)) {
+                            tracerProvider.endSpan(signal, TracerProvider.ERROR_CODE);
                         }
 
                         break;
                     case ON_NEXT:
                         FeedResponse<T> feedResponse = signal.get();
-                        if (isTracerEnabled(pagedFluxOptions) &&
+                        boolean diagnosticsCapturedInPagedFluxByTracer = false;
+                        if (isTracerEnabled(tracerProvider) &&
                             this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
+
+                            diagnosticsCapturedInPagedFluxByTracer = true;
                             try {
                                 Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
                                 if (threshold == null) {
-                                    threshold = pagedFluxOptions.getTracerProvider().QUERY_THRESHOLD_FOR_DIAGNOSTICS;
+                                    threshold = tracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS;
                                 }
 
                                 if (Duration.between(startTime.get(), Instant.now()).compareTo(threshold) > 0) {
-                                    addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
+                                    addDiagnosticsOnTracerEvent(
+                                        tracerProvider,
                                         feedResponse.getCosmosDiagnostics(),
                                         TracerProvider.getContextFromReactorOrNull(signal.getContextView()));
                                 }
@@ -302,7 +309,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             feedResponse.getCosmosDiagnostics() : null;
 
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
-                            if (this.cosmosDiagnosticsAccessor
+                            if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor
                                     .isDiagnosticsCapturedInPagedFlux(diagnostics)
                                     .compareAndSet(false, true)) {
 
@@ -351,9 +358,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         break;
             }});
 
-        if (isTracerEnabled(pagedFluxOptions)) {
+        if (isTracerEnabled(tracerProvider)) {
             return result.contextWrite(TracerProvider.setContextInReactor(
-                pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
+                tracerProvider.startSpan(
+                    pagedFluxOptions.getTracerSpanName(),
                     pagedFluxOptions.getDatabaseId(),
                     pagedFluxOptions.getServiceEndpoint(),
                     context)));
@@ -552,7 +560,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         }
     }
 
-    private boolean isTracerEnabled(CosmosPagedFluxOptions pagedFluxOptions) {
-        return pagedFluxOptions.getTracerProvider() != null && pagedFluxOptions.getTracerProvider().isEnabled();
+    private boolean isTracerEnabled(TracerProvider tracerProvider) {
+        return tracerProvider != null &&
+            tracerProvider.isEnabled() &&
+            !tracerProvider.isNoOpTracer();
     }
 }

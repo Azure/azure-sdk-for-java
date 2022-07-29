@@ -113,7 +113,16 @@ public final class CosmosAsyncClient implements Closeable {
             .getCosmosClientTelemetryConfigAccessor()
             .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
-        this.tracerProvider = new TracerProvider(TRACER);
+        this.tracerProvider = new TracerProvider(
+            TRACER,
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig),
+            ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .isClientMetricsEnabled(this.clientTelemetryConfig));
         this.apiType = builder.apiType();
         this.clientCorrelationId =  builder.getClientCorrelationId();
         this.metricTagNames = builder.getMetricTagNames();

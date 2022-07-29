@@ -86,7 +86,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncClient() throws Exception {
         Tracer mockTracer = getMockTracer();
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
@@ -130,7 +130,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncDatabase() throws Exception {
         Tracer mockTracer = getMockTracer();
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
@@ -186,7 +186,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncContainer() throws Exception {
         Tracer mockTracer = getMockTracer();
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
         ReflectionUtils.setTracerProvider(client, tracerProvider);
@@ -274,7 +274,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncScripts() throws Exception {
         Tracer mockTracer = getMockTracer();
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
@@ -414,7 +414,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void tracerExceptionSpan() throws Exception {
         Tracer mockTracer = getMockTracer();
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer, false, false));
         setThreshHoldDurationOnTracer(tracerProvider, Duration.ZERO, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         int traceApiCounter = 1;

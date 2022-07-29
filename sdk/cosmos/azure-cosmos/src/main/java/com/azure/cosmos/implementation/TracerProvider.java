@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -66,14 +67,31 @@ public class TracerProvider {
     private static final Object DUMMY_VALUE = new Object();
     private final Mono<Object> propagatingMono;
     private final Flux<Object> propagatingFlux;
-    public TracerProvider(Tracer tracer) {
-        this.tracer = tracer;
+
+    public TracerProvider(
+        Tracer tracer,
+        boolean isSendClientTelemetryToServiceEnabled,
+        boolean isClientMetricsEnabled) {
+
+        if (tracer == null &&
+            isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled) {
+
+            this.tracer = NoOpTracer.INSTANCE;
+
+        } else {
+            this.tracer = tracer;
+        }
+
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
     }
 
     public boolean isEnabled() {
         return tracer != null;
+    }
+
+    public boolean isNoOpTracer() {
+        return tracer == NoOpTracer.INSTANCE;
     }
 
     /**
@@ -665,6 +683,55 @@ public class TracerProvider {
         @Override
         public void subscribe(CoreSubscriber<? super Object> actual) {
             TracerProvider.subscribe(tracer, actual);
+        }
+    }
+
+    //Noop Tracer
+    private static final class NoOpTracer implements Tracer {
+        public static final Tracer INSTANCE = new NoOpTracer();
+
+        private NoOpTracer() {
+        }
+
+        @Override
+        public Context start(String methodName, Context context) {
+            return Context.NONE;
+        }
+
+        @Override
+        public Context start(String methodName, Context context, ProcessKind processKind) {
+            return Context.NONE;
+        }
+
+        @Override
+        public void end(int responseCode, Throwable error, Context context) {
+        }
+
+        @Override
+        public void end(String errorCondition, Throwable error, Context context) {
+        }
+
+        @Override
+        public void setAttribute(String key, String value, Context context) {
+        }
+
+        @Override
+        public Context setSpanName(String spanName, Context context) {
+            return Context.NONE;
+        }
+
+        @Override
+        public void addLink(Context context) {
+        }
+
+        @Override
+        public Context extractContext(String diagnosticId, Context context) {
+            return Context.NONE;
+        }
+
+        @Override
+        public Context getSharedSpanBuilder(String spanName, Context context) {
+            return Context.NONE;
         }
     }
 }

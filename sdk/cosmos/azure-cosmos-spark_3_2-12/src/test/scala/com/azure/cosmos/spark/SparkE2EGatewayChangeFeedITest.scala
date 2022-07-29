@@ -2,18 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
-
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, GetFeedRangeForPartitionKeyValue}
-import org.apache.hadoop.fs.{FileSystem, Path}
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 
-import java.io.{BufferedReader, InputStreamReader}
-import java.nio.file.Paths
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 class SparkE2EGatewayChangeFeedITest
   extends IntegrationSpec
@@ -29,132 +26,12 @@ class SparkE2EGatewayChangeFeedITest
     this.reinitializeContainer()
   }
 
-  "spark change feed DataSource version" can "be determined" in {
-    CosmosChangeFeedDataSource.version shouldEqual CosmosConstants.currentVersion
-  }
-
-  "spark change feed query (incremental)" can "use default schema" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
-
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    for (state <- Array(true, false)) {
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("isAlive", state)
-      objectNode.put("id", UUID.randomUUID().toString)
-      container.createItem(objectNode).block()
-    }
-    val cfg = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.maxItemCount" -> "2",
-      "spark.cosmos.read.inferSchema.enabled" -> "false"
-    )
-
-    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
-    val rowsArray = df.collect()
-    rowsArray should have size 2
-    df.schema.equals(
-      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
-
-    val cfgExplicit = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.read.maxItemCount" -> "1",
-      "spark.cosmos.changeFeed.mode" -> "Incremental"
-    )
-
-    val dfExplicit = spark.read.format("cosmos.oltp.changeFeed").options(cfgExplicit).load()
-    val rowsArrayExplicit = dfExplicit.collect()
-    rowsArrayExplicit should have size 2
-    dfExplicit.schema.equals(
-      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
-  }
-
-  "spark change feed query (incremental)" can "use user provided schema" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
-
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    for (state <- Array(true, false)) {
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("isAlive", state)
-      objectNode.put("id", UUID.randomUUID().toString)
-      container.createItem(objectNode).block()
-    }
-    val cfg = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.maxItemCount" -> "1",
-      "spark.cosmos.read.inferSchema.enabled" -> "false"
-    )
-
-    val customSchema = StructType(Array(
-      StructField("id", StringType),
-      StructField("name", StringType),
-      StructField("type", StringType),
-      StructField("age", IntegerType),
-      StructField("isAlive", BooleanType)
-    ))
-
-    val df = spark.read.schema(customSchema).format("cosmos.oltp.changeFeed").options(cfg).load()
-    val rowsArray = df.collect()
-    rowsArray should have size 2
-    df.schema.equals(customSchema) shouldEqual true
-  }
-
-  "spark change feed query (full fidelity)" can "use default schema" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
-
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    for (state <- Array(true, false)) {
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("isAlive", state)
-      objectNode.put("id", UUID.randomUUID().toString)
-      container.createItem(objectNode).block()
-    }
-    val cfg = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.changeFeed.mode" -> "FullFidelity",
-      "spark.cosmos.read.maxItemCount" -> "1",
-      "spark.cosmos.changeFeed.startFrom" -> "NOW"
-    )
-
-    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
-    val rowsArray = df.collect()
-    rowsArray should have size 0
-    df.schema.equals(
-      ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
-  }
-
   "spark change feed micro batch (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    CosmosClientMetrics.meterRegistry.isDefined shouldEqual true
+    val meterRegistry = CosmosClientMetrics.meterRegistry.get
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val sinkContainerName = cosmosClient
@@ -239,284 +116,35 @@ class SparkE2EGatewayChangeFeedITest
 
     validationDF
       .show(truncate = false)
+
+    assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = false)
   }
 
-  "spark change feed query (incremental)" can "filter feed ranges" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  private[this] def assertMetrics(meterRegistry: CompositeMeterRegistry, prefix: String, expectedToFind: Boolean): Unit = {
+    meterRegistry.getRegistries.size() > 0 shouldEqual true
+    val firstRegistry: MeterRegistry = meterRegistry.getRegistries().toArray()(0).asInstanceOf[MeterRegistry]
+    val meters = firstRegistry.getMeters.asScala
 
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    var lastId: String = ""
-    for (i <- 0 to 100) {
-      lastId = UUID.randomUUID().toString
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("index", i.toString)
-      objectNode.put("id", lastId)
-      container.createItem(objectNode).block()
-    }
-
-    spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValue(), StringType)
-    val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
-    val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$lastId')")
-
-    val feedRange = dummyDf
-      .collect()(0)
-      .getAs[String](0)
-
-    logInfo(s"FeedRange from UDF: $feedRange")
-
-    val cfg = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.maxItemCount" -> "2",
-      "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
-      "spark.cosmos.partitioning.feedRangeFilter" -> feedRange
-    )
-
-    val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
-    df.rdd.getNumPartitions shouldEqual 1
-    val rowsArray = df.collect()
-    rowsArray should have size 1
-    df.schema.equals(
-      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
-  }
-
-  "spark change feed query (incremental)" should "honor checkpoint location and read limit" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
-
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-
-    for (sequenceNumber <- 1 to 50) {
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("sequenceNumber", sequenceNumber)
-      objectNode.put("id", UUID.randomUUID().toString)
-      container.createItem(objectNode).block()
-    }
-
-    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
-    val cfg = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
-      "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
-      "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation
-    )
-
-    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
-    val rowsArray1 = df1.collect()
-    // technically possible that even with 50 documents randomly distributed across 3 partitions some
-    // has no documents
-    // rowsArray should have size df.rdd.getNumPartitions
-    rowsArray1.length > 0 shouldEqual true
-    rowsArray1.length <= df1.rdd.getNumPartitions shouldEqual true
-
-    val initialCount = rowsArray1.length
-
-    df1.schema.equals(
-      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
-
-    val hdfs = org.apache.hadoop.fs.FileSystem.get(spark.sparkContext.hadoopConfiguration)
-
-    val startOffsetFolderLocation = Paths.get(checkpointLocation, "startOffset").toString
-    val startOffsetFileLocation = Paths.get(startOffsetFolderLocation, "0").toString
-    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
-    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
-
-    val latestOffsetFolderLocation = Paths.get(checkpointLocation, "latestOffset").toString
-    val latestOffsetFileLocation = Paths.get(latestOffsetFolderLocation, "0").toString
-    hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
-    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
-
-    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
-
-    val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
-    val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
-    val rowsArray2 = df2.collect()
-    rowsArray2 should have size 50 - initialCount
-  }
-
-  "spark change feed query (incremental)" can "proceed with simulated Spark2 Checkpoint" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
-
-    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-
-    for (sequenceNumber <- 1 to 50) {
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("sequenceNumber", sequenceNumber)
-      objectNode.put("id", UUID.randomUUID().toString)
-      container.createItem(objectNode).block()
-    }
-
-    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
-    val cfg = Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.useGatewayMode" -> "true",
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
-      "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
-      "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation
-    )
-
-    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
-    val rowsArray1 = df1.collect()
-    // technically possible that even with 50 documents randomly distributed across 3 partitions some
-    // has no documents
-    // rowsArray should have size df.rdd.getNumPartitions
-    rowsArray1.length > 0 shouldEqual true
-    rowsArray1.length <= df1.rdd.getNumPartitions shouldEqual true
-
-    val initialCount = rowsArray1.length
-
-    df1.schema.equals(
-      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
-
-    val hdfs = org.apache.hadoop.fs.FileSystem.get(spark.sparkContext.hadoopConfiguration)
-
-    val startOffsetFolderLocation = Paths.get(checkpointLocation, "startOffset").toString
-    val startOffsetFileLocation = Paths.get(startOffsetFolderLocation, "0").toString
-    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
-    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
-
-    val latestOffsetFolderLocation = Paths.get(checkpointLocation, "latestOffset").toString
-    val latestOffsetFileLocation = Paths.get(latestOffsetFolderLocation, "0").toString
-    hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
-    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
-
-    // convert ChangeFeedOffset to simulated Spark 2.4 continuation
-    val fileContent = this.readFileContentAsString(hdfs, latestOffsetFileLocation)
-    val indexOfNewLine = fileContent.indexOf("\n")
-    fileContent.substring(0, indexOfNewLine) shouldEqual "v1"
-    val offsetJson = fileContent.substring(indexOfNewLine + 1)
-    val changeFeedStateEncoded = ChangeFeedOffset.fromJson(offsetJson).changeFeedState
-    val changeFeedState = ChangeFeedState.fromString(changeFeedStateEncoded)
-    val databaseResourceIdAndTokenMap = calculateTokenMap(changeFeedState, cfg)
-    // calling UDF to get migrated offset
-    val migratedOffset = new CreateChangeFeedOffsetFromSpark2()
-      .call(
-        databaseResourceIdAndTokenMap._1,
-        changeFeedState.getContainerRid,
-        cfg,
-        databaseResourceIdAndTokenMap._2
-      )
-
-    if (hdfs.exists(new Path(startOffsetFileLocation))) {
-      hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileLocation + ".bak"))
-    }
-
-    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(latestOffsetFileLocation + ".bak"))
-
-    val outputStream = hdfs.create(new Path(startOffsetFileLocation), true)
-    outputStream.writeBytes(migratedOffset)
-    outputStream.flush()
-    outputStream.close()
-    hdfs.delete(new Path(latestOffsetFileLocation), false)
-
-    val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
-    val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
-    val rowsArray2 = df2.collect()
-    rowsArray2 should have size 50 - initialCount
-  }
-
-  private[this] def readFileContentAsString(fileSystem: FileSystem, fileName: String): String = {
-    val reader: BufferedReader = new BufferedReader(
-      new InputStreamReader(fileSystem.open(new Path(fileName))))
-
-    val fileContent: StringBuilder = new StringBuilder()
-    var line: String = reader.readLine()
-    while (line != null) {
-      if (fileContent.nonEmpty) {
-        fileContent.append("\n")
+    if (expectedToFind) {
+      if (meters.size <= 0) {
+        logError("No meters found")
       }
 
-      fileContent.append(line)
-      line = reader.readLine()
+      meters.size > 0 shouldEqual true
     }
 
-    fileContent.toString
-  }
+    val firstMatchedMetersIndex = meters
+      .indexWhere(meter => meter.getId.getName.startsWith(prefix))
 
-  private def calculateTokenMap
-  (
-    changeFeedState: ChangeFeedState, cfg: Map[String, String]
-  ): (String, Map[Int, Long]) = {
+    if (firstMatchedMetersIndex >= 0 != expectedToFind) {
+      logError(s"Matched meter with index $firstMatchedMetersIndex does not reflect expectation $expectedToFind")
+    }
 
-    val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, cfg)
-    val cosmosClientConfig = CosmosClientConfiguration(
-      effectiveUserConfig,
-      useEventualConsistency = false)
-
-    val tokenMap = scala.collection.mutable.Map[Int, Long]()
-    var databaseResourceId = "n/a"
-
-    Loan(
-      List[Option[CosmosClientCacheItem]](
-        Some(CosmosClientCache(
-          cosmosClientConfig,
-          None,
-          s"E2ETest calculateTokenMap"))
-      ))
-      .to(cosmosClientCacheItems => {
-
-        databaseResourceId = cosmosClientCacheItems(0).get
-          .client
-          .getDatabase(cosmosDatabase)
-          .read()
-          .block()
-          .getProperties
-          .getResourceId
-
-        val container = cosmosClientCacheItems(0).get
-          .client
-          .getDatabase(cosmosDatabase)
-          .getContainer(cosmosContainer)
-
-        val pkRanges = SparkBridgeInternal
-          .getPartitionKeyRanges(container)
-
-        pkRanges
-          .foreach(pkRange => {
-            val pkRangeId: Int = pkRange.getId.toInt
-            val effectiveRange = pkRange.toRange
-
-            val filteredCompositeContinuations = changeFeedState
-              .getContinuation
-              .getCurrentContinuationTokens
-              .filter(compositeContinuationToken => effectiveRange.equals(compositeContinuationToken.getRange))
-
-            filteredCompositeContinuations should have size 1
-
-            val quotedToken = filteredCompositeContinuations.head.getToken
-            val lsn: Long = quotedToken.substring(1, quotedToken.length - 1).toLong
-
-            tokenMap += (pkRangeId -> lsn)
-          })
-      })
-
-    (databaseResourceId, tokenMap.toMap)
+    firstMatchedMetersIndex >= 0 shouldEqual expectedToFind
   }
 
   //scalastyle:on magic.number
