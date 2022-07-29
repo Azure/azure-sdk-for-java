@@ -25,12 +25,12 @@ public final class NumberFormatter {
         }
 
         double log = Math.log10(Math.abs(value));
-        int significantDigits = (int)Math.ceil(Math.max(log, minSignificantDigits));
+        int significantDigits = (int)Math.max(Math.ceil(log), minSignificantDigits);
 
-        double divisor = Math.pow(10, Math.ceil(log - significantDigits));
+        double divisor = Math.pow(10, Math.ceil(log) - significantDigits);
         double rounded = divisor * Math.round(value / divisor);
 
-        int decimals = (int)Math.ceil(Math.max(0, significantDigits - log - 1));
+        int decimals = (int)Math.max(0, significantDigits - Math.floor(log) - 1);
 
         return String.format("%,." + decimals + "f", rounded);
     }
