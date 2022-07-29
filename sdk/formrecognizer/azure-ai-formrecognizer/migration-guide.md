@@ -193,7 +193,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField merchantNameField = receiptFields.get("MerchantName");
     if (merchantNameField != null) {
         if (DocumentFieldType.STRING == merchantNameField.getType()) {
-            String merchantName = merchantNameField.getValueString();
+            String merchantName = merchantNameField.getValueAsString();
             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                 merchantName, merchantNameField.getConfidence());
         }
@@ -202,7 +202,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField merchantPhoneNumberField = receiptFields.get("MerchantPhoneNumber");
     if (merchantPhoneNumberField != null) {
         if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
-            String merchantAddress = merchantPhoneNumberField.getValuePhoneNumber();
+            String merchantAddress = merchantPhoneNumberField.getValueAsPhoneNumber();
             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                 merchantAddress, merchantPhoneNumberField.getConfidence());
         }
@@ -211,7 +211,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField transactionDateField = receiptFields.get("TransactionDate");
     if (transactionDateField != null) {
         if (DocumentFieldType.DATE == transactionDateField.getType()) {
-            LocalDate transactionDate = transactionDateField.getValueDate();
+            LocalDate transactionDate = transactionDateField.getValueAsDate();
             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                 transactionDate, transactionDateField.getConfidence());
         }
@@ -221,21 +221,21 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     if (receiptItemsField != null) {
         System.out.printf("Receipt Items: %n");
         if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-            List<DocumentField> receiptItems = receiptItemsField.getValueList();
+            List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
             receiptItems.stream()
                 .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                .map(documentField -> documentField.getValueMap())
+                .map(documentField -> documentField.getValueAsMap())
                 .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                     if ("Name".equals(key)) {
                         if (DocumentFieldType.STRING == documentField.getType()) {
-                            String name = documentField.getValueString();
+                            String name = documentField.getValueAsString();
                             System.out.printf("Name: %s, confidence: %.2fs%n",
                                 name, documentField.getConfidence());
                         }
                     }
                     if ("Quantity".equals(key)) {
                         if (DocumentFieldType.FLOAT == documentField.getType()) {
-                            Float quantity = documentField.getValueFloat();
+                            Float quantity = documentField.getValueAsFloat();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, documentField.getConfidence());
                         }
@@ -307,7 +307,7 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-            documentSelectionMark.getState().toString(),
+            documentSelectionMark.getSelectionMarkState().toString(),
             documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
@@ -533,7 +533,7 @@ DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult(
 System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
 System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
 System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
-documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
     System.out.printf("Document type: %s%n", key);
     documentTypeDetails.getFieldSchema().forEach((name, documentFieldSchema) -> {
         System.out.printf("Document field: %s%n", name);

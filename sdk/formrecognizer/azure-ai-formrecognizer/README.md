@@ -258,7 +258,7 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-            documentSelectionMark.getState().toString(),
+            documentSelectionMark.getSelectionMarkState().toString(),
             documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
@@ -303,7 +303,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField merchantNameField = receiptFields.get("MerchantName");
     if (merchantNameField != null) {
         if (DocumentFieldType.STRING == merchantNameField.getType()) {
-            String merchantName = merchantNameField.getValueString();
+            String merchantName = merchantNameField.getValueAsString();
             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                 merchantName, merchantNameField.getConfidence());
         }
@@ -312,7 +312,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField merchantPhoneNumberField = receiptFields.get("MerchantPhoneNumber");
     if (merchantPhoneNumberField != null) {
         if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
-            String merchantAddress = merchantPhoneNumberField.getValuePhoneNumber();
+            String merchantAddress = merchantPhoneNumberField.getValueAsPhoneNumber();
             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                 merchantAddress, merchantPhoneNumberField.getConfidence());
         }
@@ -321,7 +321,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     DocumentField transactionDateField = receiptFields.get("TransactionDate");
     if (transactionDateField != null) {
         if (DocumentFieldType.DATE == transactionDateField.getType()) {
-            LocalDate transactionDate = transactionDateField.getValueDate();
+            LocalDate transactionDate = transactionDateField.getValueAsDate();
             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                 transactionDate, transactionDateField.getConfidence());
         }
@@ -331,21 +331,21 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
     if (receiptItemsField != null) {
         System.out.printf("Receipt Items: %n");
         if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-            List<DocumentField> receiptItems = receiptItemsField.getValueList();
+            List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
             receiptItems.stream()
                 .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                .map(documentField -> documentField.getValueMap())
+                .map(documentField -> documentField.getValueAsMap())
                 .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                     if ("Name".equals(key)) {
                         if (DocumentFieldType.STRING == documentField.getType()) {
-                            String name = documentField.getValueString();
+                            String name = documentField.getValueAsString();
                             System.out.printf("Name: %s, confidence: %.2fs%n",
                                 name, documentField.getConfidence());
                         }
                     }
                     if ("Quantity".equals(key)) {
                         if (DocumentFieldType.FLOAT == documentField.getType()) {
-                            Float quantity = documentField.getValueFloat();
+                            Float quantity = documentField.getValueAsFloat();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, documentField.getConfidence());
                         }
@@ -387,7 +387,7 @@ DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult(
 System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
 System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
 System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
-documentModelDetails.getDocTypes().forEach((key, documentTypeDetails) -> {
+documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
     System.out.printf("Document type: %s%n", key);
     documentTypeDetails.getFieldSchema().forEach((name, documentFieldSchema) -> {
         System.out.printf("Document field: %s%n", name);
@@ -470,16 +470,16 @@ System.out.printf("The resource has %s models, and we can have at most %s models
 // Next, we get a paged list of all of our models
 PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
 System.out.println("We have following models in the account:");
-customDocumentModels.forEach(documentModelInfo -> {
-    System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-    modelId.set(documentModelInfo.getModelId());
+customDocumentModels.forEach(documentModelSummary -> {
+    System.out.printf("Model ID: %s%n", documentModelSummary.getModelId());
+    modelId.set(documentModelSummary.getModelId());
 
     // get custom document analysis model info
-    DocumentModelDetails documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
+    DocumentModelDetails documentModel = documentModelAdminClient.getModel(documentModelSummary.getModelId());
     System.out.printf("Model ID: %s%n", documentModel.getModelId());
     System.out.printf("Model Description: %s%n", documentModel.getDescription());
     System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
-    documentModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+    documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
         documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
             System.out.printf("Field: %s", field);
             System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -533,7 +533,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Manage custom models: [ManageCustomModels][manage_custom_models]
 * Copy a model between Form Recognizer resources: [CopyModel][copy_model]
 * Create a composed model from a collection of custom-built models: [ComposeModel][compose_model]
-* Get/List document model operations associated with the Form Recognizer resource: GetOperation
+* Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
 
 ### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
@@ -556,7 +556,7 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
 * Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
 * Create a composed model from a collection of custom-built models: [ComposeModelAsync][compose_model_async]
-* Get/List document model operations associated with the Form Recognizer resource: GetOperationAsync
+* Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
 
 ### Additional documentation
 See the [Sample README][sample_readme] for several code snippets illustrating common patterns used in the Form Recognizer Java SDK.
@@ -629,6 +629,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java
 [copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModelAsync.java
+[get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummary.java
+[get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummaryAsync.java
 
 [fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
