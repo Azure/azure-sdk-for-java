@@ -103,6 +103,7 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
+        storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         activityId = request.getActivityId().toString();
 
         this.requestPayloadSizeInBytes = request.getContentLength();
@@ -316,6 +317,8 @@ public class ClientSideRequestStatistics {
         private ResourceType requestResourceType;
         @JsonSerialize
         private OperationType requestOperationType;
+        @JsonSerialize
+        private String requestSessionToken;
 
         @JsonIgnore
         private String regionName;
@@ -337,6 +340,9 @@ public class ClientSideRequestStatistics {
         }
 
         public String getRegionName() { return regionName; }
+
+
+        public String getRequestSessionToken() { return requestSessionToken; }
     }
 
     public static class SystemInformation {
