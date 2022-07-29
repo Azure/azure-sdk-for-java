@@ -92,6 +92,7 @@ public class StateHolderTest {
         assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
 
         // Test 2
+        endpoint = testInfo.getDisplayName() + "2" + ".azconfig.io";
         stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -10));
         StateHolder.updateState(stateHolder);
         originalState = StateHolder.getState(endpoint);
@@ -100,8 +101,9 @@ public class StateHolderTest {
         stateHolder.updateNextRefreshTime(null, providerProperties);
         newState = StateHolder.getState(endpoint);
         assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
-
-        // Test 3
+        
+        //Test 3
+        endpoint = testInfo.getDisplayName() + "3" + ".azconfig.io";
         stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -1));
         StateHolder.updateState(stateHolder);
         originalState = StateHolder.getState(endpoint);
@@ -122,7 +124,6 @@ public class StateHolderTest {
             backoffTimeCalculatorMock.verify(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(),
                 Mockito.any(), Mockito.any()), times(1));
         }
-        
 
         providerProperties.setDefaultMinBackoff((long) 0);
 
