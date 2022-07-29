@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
@@ -472,14 +472,16 @@ class SparkE2EGatewayChangeFeedITest
     val tokenMap = scala.collection.mutable.Map[Int, Long]()
     var databaseResourceId = "n/a"
 
-    Loan(CosmosClientCache(
-      cosmosClientConfig,
-      None,
-      s"E2ETest calculateTokenMap"
-    ))
-      .to(cosmosClientCacheItem => {
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache(
+          cosmosClientConfig,
+          None,
+          s"E2ETest calculateTokenMap"))
+      ))
+      .to(cosmosClientCacheItems => {
 
-        databaseResourceId = cosmosClientCacheItem
+        databaseResourceId = cosmosClientCacheItems(0).get
           .client
           .getDatabase(cosmosDatabase)
           .read()
@@ -487,7 +489,7 @@ class SparkE2EGatewayChangeFeedITest
           .getProperties
           .getResourceId
 
-        val container = cosmosClientCacheItem
+        val container = cosmosClientCacheItems(0).get
           .client
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)
