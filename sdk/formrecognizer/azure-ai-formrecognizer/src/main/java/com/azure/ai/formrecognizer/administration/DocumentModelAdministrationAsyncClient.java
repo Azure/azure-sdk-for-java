@@ -6,16 +6,16 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
-import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSource;
@@ -26,9 +26,9 @@ import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -82,7 +82,7 @@ public final class DocumentModelAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationAsyncClient.class);
     private final FormRecognizerClientImpl service;
     private final DocumentAnalysisServiceVersion serviceVersion;
-    private final FormRecognizerAudience audience;
+    private final DocumentAnalysisAudience audience;
 
     /**
      * Create a {@link DocumentModelAdministrationAsyncClient} that sends requests to the Form Recognizer service's endpoint.
@@ -94,7 +94,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      */
     DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion,
-        FormRecognizerAudience audience) {
+        DocumentAnalysisAudience audience) {
         this.service = service;
         this.serviceVersion = serviceVersion;
         this.audience = audience;
@@ -135,7 +135,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return the audience the client is using.
      */
-    FormRecognizerAudience getAudience() {
+    DocumentAnalysisAudience getAudience() {
         return audience;
     }
 
@@ -150,10 +150,11 @@ public final class DocumentModelAdministrationAsyncClient {
      * for information on building your own administration data set.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * documentModelAdministrationAsyncClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE
+     * documentModelAdministrationAsyncClient.beginBuildModel&#40;trainingFilesUrl,
+     *         DocumentModelBuildMode.TEMPLATE
      *     &#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
@@ -169,22 +170,22 @@ public final class DocumentModelAdministrationAsyncClient {
      *         &#125;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode -->
      *
      * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
-     * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
+     * {@link DocumentModelBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns the trained {@link DocumentModelInfo custom document analysis model}.
+     * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
      * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(String trainingFilesUrl,
-                                                                                  DocumentBuildMode buildMode) {
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String trainingFilesUrl,
+                                                                                  DocumentModelBuildMode buildMode) {
         return beginBuildModel(trainingFilesUrl, buildMode, null);
     }
 
@@ -199,7 +200,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * for information on building your own administration data set.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;model-id&quot;;
@@ -207,11 +208,11 @@ public final class DocumentModelAdministrationAsyncClient {
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * documentModelAdministrationAsyncClient.beginBuildModel&#40;trainingFilesUrl,
-     *         DocumentBuildMode.TEMPLATE,
+     *         DocumentModelBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
+     *             .setPrefix&#40;&quot;Invoice&quot;&#41;
      *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setPrefix&#40;&quot;Invoice&quot;&#41;
      *             .setTags&#40;attrs&#41;&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
@@ -229,30 +230,30 @@ public final class DocumentModelAdministrationAsyncClient {
      *         &#125;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions -->
      *
      * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
-     * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
+     * {@link DocumentModelBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns the trained {@link DocumentModelInfo custom document analysis model}.
+     * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
      * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(String trainingFilesUrl,
-                                                                                  DocumentBuildMode buildMode,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String trainingFilesUrl,
+                                                                                  DocumentModelBuildMode buildMode,
                                                                                   BuildModelOptions buildModelOptions) {
         return beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(String trainingFilesUrl,
-                                                                           DocumentBuildMode buildMode,
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String trainingFilesUrl,
+                                                                           DocumentModelBuildMode buildMode,
                                                                            BuildModelOptions buildModelOptions,
                                                                            Context context) {
 
@@ -261,7 +262,7 @@ public final class DocumentModelAdministrationAsyncClient {
         if (modelId == null) {
             modelId = Utility.generateRandomModelID();
         }
-        return new PollerFlux<DocumentOperationResult, DocumentModelInfo>(
+        return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
             buildModelActivationOperation(trainingFilesUrl, buildMode, modelId, buildModelOptions, context),
             createModelPollOperation(context),
@@ -273,55 +274,55 @@ public final class DocumentModelAdministrationAsyncClient {
      * Get information about the current Form Recognizer resource.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetails -->
      * <pre>
-     * documentModelAdministrationAsyncClient.getResourceInfo&#40;&#41;
-     *     .subscribe&#40;accountProperties -&gt; &#123;
-     *         System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *             accountProperties.getDocumentModelLimit&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *             accountProperties.getDocumentModelCount&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo -->
-     *
-     * @return The requested resource information details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceInfo> getResourceInfo() {
-        return getResourceInfoWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get the information about the current Form Recognizer resource with a Http response.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse -->
-     * <pre>
-     * documentModelAdministrationAsyncClient.getResourceInfoWithResponse&#40;&#41;
-     *     .subscribe&#40;response -&gt; &#123;
-     *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     *         ResourceInfo resourceInfo = response.getValue&#40;&#41;;
+     * documentModelAdministrationAsyncClient.getResourceDetails&#40;&#41;
+     *     .subscribe&#40;resourceInfo -&gt; &#123;
      *         System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
      *             resourceInfo.getDocumentModelLimit&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
      *             resourceInfo.getDocumentModelCount&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetails -->
+     *
+     * @return The requested resource information details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResourceDetails> getResourceDetails() {
+        return getResourceDetailsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get the information about the current Form Recognizer resource with a Http response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetailsWithResponse -->
+     * <pre>
+     * documentModelAdministrationAsyncClient.getResourceDetailsWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *         ResourceDetails resourceDetails = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
+     *             resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
+     *             resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetailsWithResponse -->
      *
      * @return A {@link Response} containing the requested resource information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceInfo>> getResourceInfoWithResponse() {
+    public Mono<Response<ResourceDetails>> getResourceDetailsWithResponse() {
         try {
-            return withContext(this::getResourceInfoWithResponse);
+            return withContext(this::getResourceDetailsWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ResourceInfo>> getResourceInfoWithResponse(Context context) {
+    Mono<Response<ResourceDetails>> getResourceDetailsWithResponse(Context context) {
         return service.getInfoWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue())));
@@ -497,13 +498,13 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @param componentModelIds The list of component models to compose.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns the created {@link DocumentModelInfo composed model}.
+     * or has been cancelled. The completed operation returns the created {@link DocumentModelDetails composed model}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginComposeModel(
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginComposeModel(
         List<String> componentModelIds) {
         return beginComposeModel(componentModelIds, null);
     }
@@ -553,18 +554,18 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param composeModelOptions The configurable {@link ComposeModelOptions options} to pass when
      * creating a composed model.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns the copied model {@link DocumentModelInfo}.
+     * or has been cancelled. The completed operation returns the copied model {@link DocumentModelDetails}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginComposeModel(List<String> componentModelIds,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginComposeModel(List<String> componentModelIds,
                                                                                     ComposeModelOptions composeModelOptions) {
         return beginComposeModel(componentModelIds, composeModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelInfo> beginComposeModel(List<String> componentModelIds,
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginComposeModel(List<String> componentModelIds,
                                                                              ComposeModelOptions composeModelOptions, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(componentModelIds)) {
@@ -586,7 +587,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 .setDescription(composeModelOptions.getDescription())
                 .setTags(composeModelOptions.getTags());
 
-            return new PollerFlux<DocumentOperationResult, DocumentModelInfo>(
+            return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
                 DEFAULT_POLL_INTERVAL,
                 Utility.activationOperation(() -> service.composeDocumentModelWithResponseAsync(composeRequest, context)
                     .map(response -> Transforms.toDocumentOperationResult(
@@ -635,19 +636,19 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()}
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns the copied model {@link DocumentModelInfo}.
+     * or has been cancelled. The completed operation returns the copied model {@link DocumentModelDetails}.
      * @throws DocumentModelOperationException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginCopyModelTo(String modelId,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
                                                                                    CopyAuthorization target) {
         return beginCopyModelTo(modelId, target, null);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelInfo> beginCopyModelTo(String modelId,
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
                                                                             CopyAuthorization target, Context context) {
-        return new PollerFlux<DocumentOperationResult, DocumentModelInfo>(
+        return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
             getCopyActivationOperation(modelId, target, context),
             createModelPollOperation(context),
@@ -734,7 +735,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentModelInfo> getModel(String modelId) {
+    public Mono<DocumentModelDetails> getModel(String modelId) {
         return getModelWithResponse(modelId).flatMap(FluxUtil::toMono);
     }
 
@@ -747,11 +748,11 @@ public final class DocumentModelAdministrationAsyncClient {
      * String modelId = &quot;&#123;model_id&#125;&quot;;
      * documentModelAdministrationAsyncClient.getModelWithResponse&#40;modelId&#41;.subscribe&#40;response -&gt; &#123;
      *     System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     *     DocumentModelInfo documentModelInfo = response.getValue&#40;&#41;;
-     *     System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelInfo.getModelId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelInfo.getDescription&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelInfo.getCreatedOn&#40;&#41;&#41;;
-     *     documentModelInfo.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
+     *     DocumentModelDetails documentModelDetails = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
+     *     documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
      *         docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *             System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *             System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
@@ -763,11 +764,11 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getModelWithResponse#string -->
      *
      * @param modelId The unique model identifier.
-     * @return A {@link Response} containing the requested {@link DocumentModelInfo model}.
+     * @return A {@link Response} containing the requested {@link DocumentModelDetails model}.
      * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentModelInfo>> getModelWithResponse(String modelId) {
+    public Mono<Response<DocumentModelDetails>> getModelWithResponse(String modelId) {
         try {
             return withContext(context -> getModelWithResponse(modelId, context));
         } catch (RuntimeException ex) {
@@ -775,7 +776,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<DocumentModelInfo>> getModelWithResponse(String modelId, Context context) {
+    Mono<Response<DocumentModelDetails>> getModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
@@ -793,13 +794,13 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperation#string -->
      * <pre>
      * String operationId = &quot;&#123;operation_Id&#125;&quot;;
-     * documentModelAdministrationAsyncClient.getOperation&#40;operationId&#41;.subscribe&#40;modelOperation -&gt; &#123;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperation.getStatus&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperation.getModelId&#40;&#41;&#41;;
-     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperation.getStatus&#40;&#41;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     * documentModelAdministrationAsyncClient.getOperation&#40;operationId&#41;.subscribe&#40;modelOperationDetails -&gt; &#123;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationDetails.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationDetails.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationDetails.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperationDetails.getModelId&#40;&#41;&#41;;
+     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
      * </pre>
@@ -810,7 +811,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelOperation> getOperation(String operationId) {
+    public Mono<ModelOperationDetails> getOperation(String operationId) {
         return getOperationWithResponse(operationId).flatMap(FluxUtil::toMono);
     }
 
@@ -824,24 +825,24 @@ public final class DocumentModelAdministrationAsyncClient {
      * String operationId = &quot;&#123;operation_Id&#125;&quot;;
      * documentModelAdministrationAsyncClient.getOperationWithResponse&#40;operationId&#41;.subscribe&#40;response -&gt; &#123;
      *     System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     *     ModelOperation modelOperation = response.getValue&#40;&#41;;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperation.getStatus&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperation.getModelId&#40;&#41;&#41;;
-     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperation.getStatus&#40;&#41;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     *     ModelOperationDetails modelOperationDetails = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationDetails.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationDetails.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationDetails.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperationDetails.getModelId&#40;&#41;&#41;;
+     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperationWithResponse#string -->
      *
      * @param operationId Unique operation ID.
-     * @return A {@link Response} containing the requested {@link ModelOperation}.
+     * @return A {@link Response} containing the requested {@link ModelOperationDetails}.
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelOperation>> getOperationWithResponse(String operationId) {
+    public Mono<Response<ModelOperationDetails>> getOperationWithResponse(String operationId) {
         try {
             return withContext(context -> getOperationWithResponse(operationId, context));
         } catch (RuntimeException ex) {
@@ -849,7 +850,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<ModelOperation>> getOperationWithResponse(String operationId, Context context) {
+    Mono<Response<ModelOperationDetails>> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
@@ -866,22 +867,22 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.listOperations -->
      * <pre>
      * documentModelAdministrationAsyncClient.listOperations&#40;&#41;
-     *     .subscribe&#40;modelOperation -&gt; &#123;
-     *         System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperation.getStatus&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Operation Created on: %s%n&quot;, modelOperation.getCreatedOn&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Operation Percent completed: %d%n&quot;, modelOperation.getPercentCompleted&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Operation Last updated on: %s%n&quot;, modelOperation.getLastUpdatedOn&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperation.getResourceLocation&#40;&#41;&#41;;
+     *     .subscribe&#40;modelOperationSummary -&gt; &#123;
+     *         System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationSummary.getOperationId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationSummary.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Operation Created on: %s%n&quot;, modelOperationSummary.getCreatedOn&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Operation Percent completed: %d%n&quot;, modelOperationSummary.getPercentCompleted&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationSummary.getKind&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Operation Last updated on: %s%n&quot;, modelOperationSummary.getLastUpdatedOn&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperationSummary.getResourceLocation&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.listOperations -->
      *
-     * @return {@link PagedFlux} of {@link ModelOperationInfo}.
+     * @return {@link PagedFlux} of {@link ModelOperationDetails}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelOperationInfo> listOperations() {
+    public PagedFlux<ModelOperationSummary> listOperations() {
         try {
             return new PagedFlux<>(() -> withContext(this::listFirstPageOperationInfo),
                 continuationToken -> withContext(context -> listNextPageOperationInfo(continuationToken, context)));
@@ -890,12 +891,12 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<ModelOperationInfo> listOperations(Context context) {
+    PagedFlux<ModelOperationSummary> listOperations(Context context) {
         return new PagedFlux<>(() -> listFirstPageOperationInfo(context),
             continuationToken -> listNextPageOperationInfo(continuationToken, context));
     }
 
-    private Function<PollingContext<DocumentOperationResult>, Mono<DocumentModelInfo>>
+    private Function<PollingContext<DocumentOperationResult>, Mono<DocumentModelDetails>>
         fetchModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
@@ -928,7 +929,7 @@ public final class DocumentModelAdministrationAsyncClient {
 
     private Function<PollingContext<DocumentOperationResult>, Mono<DocumentOperationResult>>
         buildModelActivationOperation(
-        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId,
+        String trainingFilesUrl, DocumentModelBuildMode buildMode, String modelId,
         BuildModelOptions buildModelOptions, Context context) {
         return (pollingContext) -> {
             try {
@@ -1039,7 +1040,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<ModelOperationInfo>> listFirstPageOperationInfo(Context context) {
+    private Mono<PagedResponse<ModelOperationSummary>> listFirstPageOperationInfo(Context context) {
         return service.getOperationsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all operations"))
             .doOnSuccess(response -> logger.info("Listed all operations"))
@@ -1054,7 +1055,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<ModelOperationInfo>> listNextPageOperationInfo(String nextPageLink, Context context) {
+    private Mono<PagedResponse<ModelOperationSummary>> listNextPageOperationInfo(String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }

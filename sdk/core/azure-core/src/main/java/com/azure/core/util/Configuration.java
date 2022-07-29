@@ -97,9 +97,14 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
 
     /**
-     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     * Path of a PFX/PEM certificate file to use when performing service principal authentication with Azure.
      */
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
+
+    /**
+     * Password for a PFX/PEM certificate used when performing service principal authentication with Azure.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD = "AZURE_CLIENT_CERTIFICATE_PASSWORD";
 
     /**
      * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
@@ -150,6 +155,12 @@ public class Configuration implements Cloneable {
      * Disables tracing.
      */
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
+
+    /**
+     * Disables metrics.
+     */
+    public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
+
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it

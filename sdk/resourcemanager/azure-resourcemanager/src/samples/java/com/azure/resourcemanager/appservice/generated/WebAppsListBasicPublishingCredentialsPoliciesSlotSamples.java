@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps ListBasicPublishingCredentialsPoliciesSlot. */
 public final class WebAppsListBasicPublishingCredentialsPoliciesSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListPublishingCredentialsPoliciesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListPublishingCredentialsPoliciesSlot.json
      */
     /**
      * Sample code: List Publishing Credentials Policies.

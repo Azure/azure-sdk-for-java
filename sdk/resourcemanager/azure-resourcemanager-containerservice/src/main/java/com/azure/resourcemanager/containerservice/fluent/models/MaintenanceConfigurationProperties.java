@@ -15,8 +15,10 @@ import java.util.List;
 public final class MaintenanceConfigurationProperties {
     /*
      * Time slots during the week when planned maintenance is allowed to
-     * proceed. If two array entries specify the same day of the week, the
-     * applied configuration is the union of times in both entries.
+     * proceed.
+     *
+     * If two array entries specify the same day of the week, the applied
+     * configuration is the union of times in both entries.
      */
     @JsonProperty(value = "timeInWeek")
     private List<TimeInWeek> timeInWeek;
@@ -28,8 +30,10 @@ public final class MaintenanceConfigurationProperties {
     private List<TimeSpan> notAllowedTime;
 
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @return the timeInWeek value.
      */
@@ -38,8 +42,10 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationProperties object itself.

@@ -27,6 +27,9 @@ public final class ImplUtils {
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private static final String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
 
+    // future improvement - make this configurable
+    public static final int MAX_CACHE_SIZE = 10000;
+
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
      * <p>

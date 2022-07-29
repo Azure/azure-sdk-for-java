@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Global GetSubscriptionOperationWithAsyncResponse. */
 public final class GlobalGetSubscriptionOperationWithAsyncResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSubscriptionOperationWithAsyncResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSubscriptionOperationWithAsyncResponse.json
      */
     /**
      * Sample code: Gets an operation in a subscription and given region.

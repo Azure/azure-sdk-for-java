@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`.
+
 ### Other Changes
 
 ## 1.30.0 (2022-06-30)
@@ -26,6 +28,8 @@
 - Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
   - Added ability to get and set `ProgressReporter` on `Context`.
 - Added `HttpPipelineCallContext.getContext()`.
+- Added `com.azure.core.util.metrics` package and metrics abstractions (intended for client libraries):
+  `MeterProvider`, `Meter`, `LongCounter` and `DoubleHistogram`.
 
 ### Bugs Fixed
 

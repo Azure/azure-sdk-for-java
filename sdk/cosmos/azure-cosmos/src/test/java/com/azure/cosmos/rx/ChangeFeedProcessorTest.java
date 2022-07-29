@@ -109,7 +109,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .subscribe();
             } catch (Exception ex) {
@@ -122,7 +122,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -172,7 +172,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .subscribe();
             } catch (Exception ex) {
@@ -187,7 +187,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -236,12 +236,12 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                changeFeedProcessorMain.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessorMain.start().subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .then(Mono.just(changeFeedProcessorMain)
                         .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .flatMap(value -> changeFeedProcessorMain.stop()
-                            .subscribeOn(Schedulers.elastic())
+                            .subscribeOn(Schedulers.boundedElastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         ))
                     .subscribe();
@@ -372,12 +372,12 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                changeFeedProcessorMain.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessorMain.start().subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .then(Mono.just(changeFeedProcessorMain)
                         .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .flatMap(value -> changeFeedProcessorMain.stop()
-                            .subscribeOn(Schedulers.elastic())
+                            .subscribeOn(Schedulers.boundedElastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         ))
                     .subscribe();
@@ -527,12 +527,12 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                changeFeedProcessorFirst.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .then(Mono.just(changeFeedProcessorFirst)
                         .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .flatMap(value -> changeFeedProcessorFirst.stop()
-                            .subscribeOn(Schedulers.elastic())
+                            .subscribeOn(Schedulers.boundedElastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         ))
                     .doOnSuccess(aVoid -> {
@@ -579,7 +579,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                     .delayElement(Duration.ofMillis(1000))
                                     .flatMap(cosmosItemResponse -> {
                                         ChangeFeedProcessorTest.log.info("Start second Change feed processor");
-                                        return changeFeedProcessorSecond.start().subscribeOn(Schedulers.elastic())
+                                        return changeFeedProcessorSecond.start().subscribeOn(Schedulers.boundedElastic())
                                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                                     });
                             })
@@ -602,7 +602,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             assertThat(changeFeedProcessorSecond.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessorSecond.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessorSecond.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             // Wait for the feed processor to shutdown.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -664,7 +664,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .last()
                     .flatMap(cosmosItemResponse -> {
                         ChangeFeedProcessorTest.log.info("Start first Change feed processor");
-                        return changeFeedProcessorFirst.start().subscribeOn(Schedulers.elastic())
+                        return changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                     })
                     .then(
@@ -735,7 +735,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-            changeFeedProcessorFirst.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessorFirst.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             // Wait for the feed processor to shutdown.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -791,14 +791,14 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            leaseMonitoringChangeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+            leaseMonitoringChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
                 .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                 .onErrorResume(throwable -> {
                     log.error("Change feed processor for lease monitoring did not start in the expected time", throwable);
                     return Mono.error(throwable);
                 })
                 .then(
-                    changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                    changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
                         .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .onErrorResume(throwable -> {
                             log.error("Change feed processor did not start in the expected time", throwable);
@@ -815,11 +815,11 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         .then(
                             // increase throughput to force a single partition collection to go through a split
                             createdFeedCollectionForSplit
-                                .readThroughput().subscribeOn(Schedulers.elastic())
+                                .readThroughput().subscribeOn(Schedulers.boundedElastic())
                                 .flatMap(currentThroughput ->
                                     createdFeedCollectionForSplit
                                         .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT))
-                                        .subscribeOn(Schedulers.elastic())
+                                        .subscribeOn(Schedulers.boundedElastic())
                                 )
                                 .then()
                         )
@@ -868,7 +868,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             String partitionKeyRangesPath = extractContainerSelfLink(createdFeedCollectionForSplit);
 
             AsyncDocumentClient contextClient = getContextClient(createdDatabase);
-            Flux.just(1).subscribeOn(Schedulers.elastic())
+            Flux.just(1).subscribeOn(Schedulers.boundedElastic())
                 .flatMap(value -> {
                     log.warn("Reading current throughput change.");
                     return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
@@ -907,8 +907,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT * 2);
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
-            leaseMonitoringChangeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            leaseMonitoringChangeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
             assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
@@ -1018,7 +1018,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, JsonNode> receivedDocuments, int sleepTime) throws InterruptedException {
         try {
-            changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+            changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
                 .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                 .subscribe();
         } catch (Exception ex) {
@@ -1049,7 +1049,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(item.getHostName()).isEqualTo(hostName).as("Change Feed Processor ownership");
         }
 
-        changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+        changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
         for (InternalObjectNode item : createdDocuments) {
             assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();

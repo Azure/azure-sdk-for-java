@@ -3,17 +3,21 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 
-import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
+import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, GetFeedRangeForPartitionKeyValue}
 import org.apache.hadoop.fs.{FileSystem, Path}
+import org.apache.spark.sql.functions
+import org.apache.spark.sql.types._
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.nio.file.Paths
+import java.util.UUID
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
@@ -342,6 +346,102 @@ class SparkE2EChangeFeedITest
     rowsArray2 should have size 50 - initialCount
   }
 
+  "spark change feed query (full fidelity)" should "honor checkpoint location" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.mode" -> "FullFidelity",
+      "spark.cosmos.changeFeed.startFrom" -> "NOW",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation
+    )
+
+    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    val rowsArray1 = df1.collect()
+    rowsArray1.length == 0 shouldEqual true
+
+    df1.schema.equals(
+      ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
+
+    val hdfs = org.apache.hadoop.fs.FileSystem.get(spark.sparkContext.hadoopConfiguration)
+
+    val startOffsetFolderLocation = Paths.get(checkpointLocation, "startOffset").toString
+    val startOffsetFileLocation = Paths.get(startOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
+
+    val latestOffsetFolderLocation = Paths.get(checkpointLocation, "latestOffset").toString
+    val latestOffsetFileLocation = Paths.get(latestOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
+
+    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    val createdObjectIds = new ArrayBuffer[String]()
+    val replacedObjectIds = new ArrayBuffer[String]()
+    val deletedObjectIds = new ArrayBuffer[String]()
+    for (sequenceNumber <- 1 to 5) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("sequenceNumber", sequenceNumber)
+      val id = UUID.randomUUID().toString
+      objectNode.put("id", id)
+      createdObjectIds += id
+      if (sequenceNumber % 2 == 0) {
+        replacedObjectIds += id
+      }
+      if (sequenceNumber % 3 == 0) {
+        deletedObjectIds += id
+      }
+      container.createItem(objectNode).block()
+    }
+
+    for (id <- replacedObjectIds) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "dog")
+      objectNode.put("age", 25)
+      objectNode.put("id", id)
+      container.replaceItem(objectNode, id, new PartitionKey(id)).block()
+    }
+
+    for (id <- deletedObjectIds) {
+      container.deleteItem(id, new PartitionKey(id)).block()
+    }
+
+    // wait for the log store to get these changes
+    Thread.sleep(2000)
+
+    val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    val groupedFrame = df2.groupBy(CosmosTableSchemaInferrer.OperationTypeAttributeName)
+      .agg(functions.collect_list("id").as("ids"))
+
+    val collectedFrame = groupedFrame.collect()
+    collectedFrame.foreach(row => {
+      val wrappedArray = row.get(1).asInstanceOf[mutable.WrappedArray[String]]
+      val array = wrappedArray.array
+      row.get(0) match {
+        case "create" =>
+          validateArraysUnordered(createdObjectIds, array)
+        case "replace" =>
+          validateArraysUnordered(replacedObjectIds, array)
+        case "delete" =>
+          validateArraysUnordered(deletedObjectIds, array)
+      }
+    })
+  }
+
   "spark change feed query (incremental)" can "proceed with simulated Spark2 Checkpoint" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -431,6 +531,17 @@ class SparkE2EChangeFeedITest
     rowsArray2 should have size 50 - initialCount
   }
 
+  private def validateArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Unit = {
+    assert(inputArrayBuffer.length == outputArray.length)
+    val set: mutable.HashSet[String] = new mutable.HashSet[String]()
+    for (element <- inputArrayBuffer) {
+      set.add(element)
+    }
+    for (element <- outputArray) {
+      assert(set.contains(element))
+    }
+  }
+
   private[this] def readFileContentAsString(fileSystem: FileSystem, fileName: String): String = {
     val reader: BufferedReader = new BufferedReader(
       new InputStreamReader(fileSystem.open(new Path(fileName))))
@@ -462,14 +573,16 @@ class SparkE2EChangeFeedITest
     val tokenMap = scala.collection.mutable.Map[Int, Long]()
     var databaseResourceId = "n/a"
 
-    Loan(CosmosClientCache(
-      cosmosClientConfig,
-      None,
-      s"E2ETest calculateTokenMap"
-    ))
-      .to(cosmosClientCacheItem => {
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache(
+          cosmosClientConfig,
+          None,
+          s"E2ETest calculateTokenMap"))
+      ))
+      .to(cosmosClientCacheItems => {
 
-        databaseResourceId = cosmosClientCacheItem
+        databaseResourceId = cosmosClientCacheItems(0).get
           .client
           .getDatabase(cosmosDatabase)
           .read()
@@ -477,7 +590,7 @@ class SparkE2EChangeFeedITest
           .getProperties
           .getResourceId
 
-        val container = cosmosClientCacheItem
+        val container = cosmosClientCacheItems(0).get
           .client
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)

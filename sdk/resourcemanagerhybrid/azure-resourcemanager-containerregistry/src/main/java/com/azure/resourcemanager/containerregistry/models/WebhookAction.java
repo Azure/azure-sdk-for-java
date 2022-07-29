@@ -36,7 +36,11 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
         return fromString(name, WebhookAction.class);
     }
 
-    /** @return known WebhookAction values. */
+    /**
+     * Gets known WebhookAction values.
+     *
+     * @return known WebhookAction values.
+     */
     public static Collection<WebhookAction> values() {
         return values(WebhookAction.class);
     }

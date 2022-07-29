@@ -31,7 +31,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthBot.
+     * @return a HealthBot along with {@link Response}.
      */
     Response<HealthBot> getByResourceGroupWithResponse(String resourceGroupName, String botName, Context context);
 
@@ -65,7 +65,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Healthbot operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HealthBot> listByResourceGroup(String resourceGroupName);
 
@@ -77,7 +77,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Healthbot operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HealthBot> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -86,7 +86,7 @@ public interface Bots {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Healthbot operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HealthBot> list();
 
@@ -97,7 +97,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Healthbot operation response.
+     * @return the list of Healthbot operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HealthBot> list(Context context);
 
@@ -108,7 +108,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthBot.
+     * @return a HealthBot along with {@link Response}.
      */
     HealthBot getById(String id);
 
@@ -120,7 +120,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthBot.
+     * @return a HealthBot along with {@link Response}.
      */
     Response<HealthBot> getByIdWithResponse(String id, Context context);
 
