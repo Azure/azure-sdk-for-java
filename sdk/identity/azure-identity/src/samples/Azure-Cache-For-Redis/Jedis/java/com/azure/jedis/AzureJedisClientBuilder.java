@@ -130,9 +130,9 @@ public class AzureJedisClientBuilder {
         if (this.password != null && this.tokenCredential != null) {
             throw this.clientLogger.logExceptionAsError(new IllegalArgumentException("Both Token Credential and Password are provided in AzureJedisClientBuilder. Only one of them should be provided."));
         } else {
-            return tokenCredential != null ?
-                    new AzureJedisClient(cacheHostName, port, username, tokenCredential, useSSL, retryOptions) :
-                    new AzureJedisClient(cacheHostName, port, username, password, useSSL, retryOptions);
+            return tokenCredential != null
+                ? new AzureJedisClient(cacheHostName, port, username, tokenCredential, useSSL, retryOptions)
+                : new AzureJedisClient(cacheHostName, port, username, password, useSSL, retryOptions);
         }
     }
 

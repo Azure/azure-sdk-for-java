@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.lettuce.sample;
 
 import com.azure.core.credential.AccessToken;
@@ -5,14 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import io.lettuce.core.*;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisException;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisStringCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.exceptions.JedisException;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.SocketOptions;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -30,7 +34,7 @@ public class AuthenticateWithTokenCache {
         TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
 
         // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
-        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
+        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
         // Host Name, Port, Username and Azure AD Token are required here.

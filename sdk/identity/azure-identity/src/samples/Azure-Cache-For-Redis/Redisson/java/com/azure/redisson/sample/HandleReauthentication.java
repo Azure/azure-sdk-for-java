@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.redisson.sample;
 
 import com.azure.core.credential.AccessToken;
@@ -5,19 +8,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import io.lettuce.core.*;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisStringCommands;
-import io.lettuce.core.codec.StringCodec;
-import io.lettuce.core.protocol.ProtocolVersion;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RBuckets;
 import org.redisson.api.RedissonClient;
+import org.redisson.client.RedisException;
 import org.redisson.config.Config;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.exceptions.JedisException;
 
 public class HandleReauthentication {
 

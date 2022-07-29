@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sample;
 
 import com.azure.core.credential.AccessToken;
@@ -23,7 +26,7 @@ public class AuthenticateWithTokenCache {
         // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
         TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
+        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
         // SSL connection is required.
