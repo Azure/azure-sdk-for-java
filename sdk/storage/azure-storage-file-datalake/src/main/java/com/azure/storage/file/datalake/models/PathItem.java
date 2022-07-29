@@ -25,12 +25,9 @@ public class PathItem {
     private String encryptionScope;
 
     static {
-        AccessorUtility.setPathItemAccessor(new AccessorUtility.PathItemAccessor() {
-            @Override
-            public PathItem setPathItemProperties(PathItem pathItem, String encryptionScope) {
-                pathItem.encryptionScope = encryptionScope;
-                return pathItem;
-            }
+        AccessorUtility.setPathItemAccessor((pathItem, encryptionScope) -> {
+            pathItem.encryptionScope = encryptionScope;
+            return pathItem;
         });
     }
 

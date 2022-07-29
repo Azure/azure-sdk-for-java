@@ -48,12 +48,9 @@ public class PathProperties {
     private String encryptionScope;
 
     static {
-        AccessorUtility.setPathPropertiesAccessor(new AccessorUtility.PathPropertiesAccessor() {
-            @Override
-            public PathProperties setPathProperties(PathProperties properties, String encryptionScope) {
-                properties.encryptionScope = encryptionScope;
-                return properties;
-            }
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope) -> {
+            properties.encryptionScope = encryptionScope;
+            return properties;
         });
     }
 

@@ -26,14 +26,10 @@ public final class FileSystemProperties {
 
 
     static {
-        AccessorUtility.setFileSystemPropertiesAccessor(new AccessorUtility.FileSystemPropertiesAccessor() {
-            @Override
-            public FileSystemProperties setFileSystemProperties(FileSystemProperties properties, String encryptionScope,
-                Boolean encryptionScopeOverridePrevented) {
-                properties.encryptionScope = encryptionScope;
-                properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
-                return properties;
-            }
+        AccessorUtility.setFileSystemPropertiesAccessor((properties, encryptionScope, encryptionScopeOverridePrevented) -> {
+            properties.encryptionScope = encryptionScope;
+            properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
+            return properties;
         });
     }
 
