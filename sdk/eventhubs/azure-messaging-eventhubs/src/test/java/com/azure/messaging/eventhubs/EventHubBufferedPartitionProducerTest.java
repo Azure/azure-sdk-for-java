@@ -335,9 +335,11 @@ public class EventHubBufferedPartitionProducerTest {
             .expectComplete()
             .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
+        // We allow the operation timeout for flush to complete, so have to make this interval a bit bigger.
+        final Duration totalTime = DEFAULT_RETRY_OPTIONS.getTryTimeout().plus(DEFAULT_RETRY_OPTIONS.getTryTimeout());
         StepVerifier.create(Mono.when(producer.enqueueEvent(event4), producer.enqueueEvent(event5)))
             .expectComplete()
-            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+            .verify(totalTime);
 
         System.out.println("Flushing events.");
 
