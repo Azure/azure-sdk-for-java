@@ -5,19 +5,14 @@ package com.azure.cosmos.spark
 import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import io.micrometer.core.instrument.MeterRegistry
-import io.micrometer.core.instrument.composite.CompositeMeterRegistry
-
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
 
 class SparkE2EGatewayChangeFeedITest
   extends IntegrationSpec
     with SparkWithDropwizardAndSlf4jMetrics
     with CosmosGatewayClient
     with CosmosContainerWithRetention
-    with BasicLoggingTrait {
+    with BasicLoggingTrait
+    with MetricAssertions {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
@@ -122,31 +117,8 @@ class SparkE2EGatewayChangeFeedITest
     assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
     assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = false)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = false)
   }
-
-  private[this] def assertMetrics(meterRegistry: CompositeMeterRegistry, prefix: String, expectedToFind: Boolean): Unit = {
-    meterRegistry.getRegistries.size() > 0 shouldEqual true
-    val firstRegistry: MeterRegistry = meterRegistry.getRegistries().toArray()(0).asInstanceOf[MeterRegistry]
-    val meters = firstRegistry.getMeters.asScala
-
-    if (expectedToFind) {
-      if (meters.size <= 0) {
-        logError("No meters found")
-      }
-
-      meters.size > 0 shouldEqual true
-    }
-
-    val firstMatchedMetersIndex = meters
-      .indexWhere(meter => meter.getId.getName.startsWith(prefix))
-
-    if (firstMatchedMetersIndex >= 0 != expectedToFind) {
-      logError(s"Matched meter with index $firstMatchedMetersIndex does not reflect expectation $expectedToFind")
-    }
-
-    firstMatchedMetersIndex >= 0 shouldEqual expectedToFind
-  }
-
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }

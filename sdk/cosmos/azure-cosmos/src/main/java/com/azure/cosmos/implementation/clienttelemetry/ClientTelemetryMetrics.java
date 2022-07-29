@@ -202,9 +202,9 @@ public final class ClientTelemetryMetrics {
         }
 
         if (metricTagNames.contains(TagName.Operation)) {
-            String operationTagValue = !isPointOperation && Strings.isNullOrWhiteSpace(operationId)
-                ? String.format("%s/%s", resourceType.toString(), operationType.toString())
-                : String.format("%s/%s/%s", resourceType.toString(), operationType.toString(), escape(operationId));
+            String operationTagValue = !isPointOperation && !Strings.isNullOrWhiteSpace(operationId)
+                ? String.format("%s/%s/%s", resourceType.toString(), operationType.toString(), escape(operationId))
+                : String.format("%s/%s", resourceType.toString(), operationType.toString());
 
             effectiveTags.add(Tag.of(TagName.Operation.toString(), operationTagValue));
         }
@@ -664,7 +664,7 @@ public final class ClientTelemetryMetrics {
                     addressResolutionStatistics.getEndTimeUTC());
 
                 Timer addressResolutionLatencyMeter = Timer
-                    .builder(nameOf("req.addressResolution.latency"))
+                    .builder(nameOf("rntbd.addressResolution.latency"))
                     .description("Address resolution latency")
                     .publishPercentiles(0.95, 0.99)
                     .publishPercentileHistogram(true)

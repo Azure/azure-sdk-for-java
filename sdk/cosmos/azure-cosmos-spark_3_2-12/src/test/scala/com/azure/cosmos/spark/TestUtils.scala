@@ -4,10 +4,14 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
@@ -19,12 +23,13 @@ import javax.annotation.concurrent.NotThreadSafe
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.iterableAsScalaIterableConverter
 // scalastyle:off underscore.import
+import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // extending class will have a pre-created spark session
 @NotThreadSafe // marking this as not thread safe because we have to stop Spark Context in some unit tests
 // there can only ever be one active Spark Context so running Spark tests in parallel could cause issues
-trait Spark extends BeforeAndAfterAll {
+trait Spark extends BeforeAndAfterAll with BasicLoggingTrait {
   this: Suite =>
   //scalastyle:off
   var spark : SparkSession = _
@@ -66,7 +71,7 @@ trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
       .appName("spark connector sample")
       .master("local")
       .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
-      .config("spark.cosmos.metrics.intervalInSeconds", "1")
+      .config("spark.cosmos.metrics.intervalInSeconds", "10")
       .getOrCreate()
 
     spark
@@ -86,6 +91,31 @@ trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
       .getOrCreate()
 
     spark
+  }
+}
+
+trait MetricAssertions extends BasicLoggingTrait with Matchers {
+  def assertMetrics(meterRegistry: CompositeMeterRegistry, prefix: String, expectedToFind: Boolean): Unit = {
+    meterRegistry.getRegistries.size() > 0 shouldEqual true
+    val firstRegistry: MeterRegistry = meterRegistry.getRegistries.toArray()(0).asInstanceOf[MeterRegistry]
+    val meters = firstRegistry.getMeters.asScala
+
+    if (expectedToFind) {
+      if (meters.size <= 0) {
+        logError("No meters found")
+      }
+
+      meters.nonEmpty shouldEqual true
+    }
+
+    val firstMatchedMetersIndex = meters
+      .indexWhere(meter => meter.getId.getName.startsWith(prefix))
+
+    if (firstMatchedMetersIndex >= 0 != expectedToFind) {
+      logError(s"Matched meter with index $firstMatchedMetersIndex does not reflect expectation $expectedToFind")
+    }
+
+    firstMatchedMetersIndex >= 0 shouldEqual expectedToFind
   }
 }
 
