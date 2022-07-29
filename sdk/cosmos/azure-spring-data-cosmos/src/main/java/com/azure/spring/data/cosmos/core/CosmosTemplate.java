@@ -749,15 +749,24 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
 
         Flux<FeedResponse<JsonNode>> feedResponseFlux;
+        /*
+         * The user can pass in an offset with the pageable, if this is done we need to apply
+         * the offset to the first page so that we can shift the data and skip the number of
+         * offset records. Starting with the 2nd page it picks up where the first page left off
+         * so we do not need to apply the offset as the continuation token handles the pages.
+         */
+        int feedResponseContentSize = pageable.getPageSize();
+        if (!pageable.hasPrevious()) {
+            feedResponseContentSize = (int) (feedResponseContentSize + pageable.getOffset());
+        }
         if (pageable instanceof CosmosPageRequest) {
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(),
-                    pageable.getPageSize());
+                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), feedResponseContentSize);
         } else {
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(pageable.getPageSize());
+                .byPage(feedResponseContentSize);
         }
 
         final FeedResponse<JsonNode> feedResponse = feedResponseFlux
@@ -774,18 +783,30 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         assert feedResponse != null;
         final Iterator<JsonNode> it = feedResponse.getResults().iterator();
 
+        /*
+         * We only use offset on the first page because of the use of continuation tokens.
+         * After we apply the offset to the first page, the continuation token will pick
+         * up the second and future pages at the correct index.
+         */
+        int offsetForFirstPageResults = 0;
+        if (!pageable.hasPrevious()) {
+            offsetForFirstPageResults = (int) pageable.getOffset();
+        }
+
         final List<T> result = new ArrayList<>();
         for (int index = 0; it.hasNext()
-            && index < pageable.getPageSize(); index++) {
+            && index < pageable.getPageSize() + offsetForFirstPageResults; index++) {
 
             final JsonNode jsonNode = it.next();
             if (jsonNode == null) {
                 continue;
             }
 
-            maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
-            final T entity = mappingCosmosConverter.read(returnType, jsonNode);
-            result.add(entity);
+            if (index >= offsetForFirstPageResults) {
+                maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
+                final T entity = mappingCosmosConverter.read(returnType, jsonNode);
+                result.add(entity);
+            }
         }
 
         final int contentSize = result.size();

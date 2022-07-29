@@ -41,6 +41,8 @@
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.implementation=ALL-UNNAMED
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration=ALL-UNNAMED
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
+
+      --add-reads com.azure.messaging.servicebus=com.azure.http.netty
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -101,7 +103,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

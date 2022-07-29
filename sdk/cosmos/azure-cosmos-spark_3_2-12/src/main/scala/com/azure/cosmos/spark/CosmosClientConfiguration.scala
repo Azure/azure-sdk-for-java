@@ -20,7 +20,18 @@ private[spark] object CosmosClientConfiguration {
   def apply(
              config: Map[String, String],
              useEventualConsistency: Boolean): CosmosClientConfiguration = {
+
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
+    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
+
+    apply(cosmosAccountConfig, diagnosticsConfig, useEventualConsistency)
+  }
+
+  def apply(
+            cosmosAccountConfig: CosmosAccountConfig,
+            diagnosticsConfig: DiagnosticsConfig,
+            useEventualConsistency: Boolean): CosmosClientConfiguration = {
+
     var applicationName = CosmosConstants.userAgentSuffix
     val customApplicationNameSuffix = cosmosAccountConfig.applicationName
     val runtimeInfo = runtimeInformation()
@@ -31,8 +42,6 @@ private[spark] object CosmosClientConfiguration {
     if (cosmosAccountConfig.applicationName.isDefined){
       applicationName = s"$applicationName $customApplicationNameSuffix"
     }
-
-    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
 
     CosmosClientConfiguration(
       cosmosAccountConfig.endpoint,

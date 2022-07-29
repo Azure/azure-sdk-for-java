@@ -484,7 +484,6 @@ public class CosmosQueryRequestOptions {
      * Gets the Dedicated Gateway Request Options
      * @return the Dedicated Gateway Request Options
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return this.dedicatedGatewayRequestOptions;
     }
@@ -494,7 +493,6 @@ public class CosmosQueryRequestOptions {
      * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
      * @return the CosmosQueryRequestOptions
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
         return this;

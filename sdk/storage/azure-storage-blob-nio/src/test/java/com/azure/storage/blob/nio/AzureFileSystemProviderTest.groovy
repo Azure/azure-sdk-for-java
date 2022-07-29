@@ -1308,7 +1308,7 @@ class AzureFileSystemProviderTest extends APISpec {
         where:
         attributes             | _
         null                   | _
-        new FileAttribute<>[0] | _
+        new FileAttribute<?>[0] | _
     }
 
     def "ByteChannel write options missing required"() {

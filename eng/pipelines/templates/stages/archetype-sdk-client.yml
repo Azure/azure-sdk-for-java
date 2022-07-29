@@ -62,6 +62,12 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+- name: LiveTestStages
+  type: stageList
+  default: []
+- name: ReleaseDependsOnLiveTests
+  type: string
+  default: not-specified
 
 stages:
   - stage: Build
@@ -103,13 +109,22 @@ stages:
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 
+  - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+    - ${{ parameters.LiveTestStages }}
+
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+  # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
     - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
       - template: archetype-java-release-batch.yml
         parameters:
           DependsOn:
             - Build
+            # If the build depends on live tests don't let live tests results prevent from
+            # publishing the nightly dev builds.
+            - ${{ if and(eq(parameters.ReleaseDependsOnLiveTests, 'true'), ne(variables['Build.Reason'],'Schedule')) }}:
+              - ${{ each liveTestStage in parameters.LiveTestStages }}:
+                - ${{ liveTestStage.stage }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
@@ -125,6 +140,9 @@ stages:
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
           UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+          # This where the MavenBreakGlassApprovers is set for the release tasks.
+          ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
+            Environment: 'MavenBreakGlassApprovers'
     - ${{ else }}:
       - template: archetype-java-release.yml
         parameters:

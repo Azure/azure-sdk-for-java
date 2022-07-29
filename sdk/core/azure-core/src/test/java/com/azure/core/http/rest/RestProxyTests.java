@@ -8,6 +8,7 @@ import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
@@ -70,6 +71,10 @@ public class RestProxyTests {
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
         @Get("my/url/path")
         @ExpectedResponses({200})
@@ -426,5 +431,23 @@ public class RestProxyTests {
             Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
                 Collections.singletonMap("key", "value2"))
         );
+    }
+
+    @Test
+    public void doesNotChangeEncodedPath() {
+        String nextLinkUrl =
+            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> {
+                assertEquals(nextLinkUrl, request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(null, 200));
+            })
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+
+        StepVerifier.create(testInterface.testListNext(nextLinkUrl))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 }
