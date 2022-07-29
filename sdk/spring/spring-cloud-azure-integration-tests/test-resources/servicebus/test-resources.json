@@ -25,15 +25,18 @@
     }
   },
   "variables": {
-    "serviceBusNamespaceName": "[concat(parameters('baseName'),'-test-servicebus')]",
+    "azureServiceBusNamespaceName": "[concat(parameters('baseName'),'-test-servicebus')]",
     "azureServiceBusDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419",
+    "azureServiceBusNamespaceName_1": "[concat(parameters('baseName'), '-test-servicebus-1')]",
+    "azureServiceBusNamespaceName_2": "[concat(parameters('baseName'), '-test-servicebus-2')]",
+    "azureServiceBusNamespaceName_3": "[concat(parameters('baseName'), '-test-servicebus-3')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.ServiceBus/namespaces",
       "apiVersion": "2022-01-01-preview",
-      "name": "[variables('serviceBusNamespaceName')]",
+      "name": "[variables('azureServiceBusNamespaceName')]",
       "location": "[variables('location')]",
       "sku": {
         "name": "Standard",
@@ -49,10 +52,10 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('serviceBusNamespaceName'), '/RootManageSharedAccessKey')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('serviceBusNamespaceName'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
       ],
       "properties": {
         "rights": [
@@ -65,10 +68,10 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('serviceBusNamespaceName'), '/que001')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/que001')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('serviceBusNamespaceName'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
       ],
       "properties": {
         "maxMessageSizeInKilobytes": 256,
@@ -90,10 +93,10 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('serviceBusNamespaceName'), '/errorHandler-in-0')]",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/errorHandler-in-0')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('serviceBusNamespaceName'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
       ],
       "properties": {
         "maxMessageSizeInKilobytes": 256,
@@ -120,6 +123,264 @@
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
         "principalId": "[parameters('testApplicationOid')]"
       }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('azureServiceBusNamespaceName_1')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1')))]",
+      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'))]",
+      "dependsOn": [
+        "[variables('azureServiceBusNamespaceName_1')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('azureServiceBusNamespaceName_2')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2')))]",
+      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_2'))]",
+      "dependsOn": [
+        "[variables('azureServiceBusNamespaceName_2')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('azureServiceBusNamespaceName_3')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_3')))]",
+      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_3'))]",
+      "dependsOn": [
+        "[variables('azureServiceBusNamespaceName_3')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/RootManageSharedAccessKey')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/RootManageSharedAccessKey')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/queue1')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/queue1')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/topic1')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "defaultMessageTimeToLive": "P14D",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "enableBatchedOperations": true,
+        "status": "Active",
+        "supportOrdering": true,
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/topic1')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+      ],
+      "properties": {
+        "defaultMessageTimeToLive": "P14D",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "enableBatchedOperations": true,
+        "status": "Active",
+        "supportOrdering": true,
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/topic1/topicSub')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_1'), 'topic1')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 1,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/topic1/topicSub')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('azureServiceBusNamespaceName_2'), 'topic1')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 1,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
     }
   ],
   "outputs": {
@@ -137,11 +398,23 @@
     },
     "AZURE_SERVICE_BUS_JMS_CONNECTION_STRING": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('serviceBusNamespaceName'), 'RootManageSharedAccessKey'), '2022-01-01-preview').primaryConnectionString]"
+      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('azureServiceBusNamespaceName'), 'RootManageSharedAccessKey'), '2022-01-01-preview').primaryConnectionString]"
     },
     "AZURE_SERVICE_BUS_NAMESPACE": {
       "type": "string",
-      "value": "[variables('serviceBusNamespaceName')]"
+      "value": "[variables('azureServiceBusNamespaceName')]"
+    },
+    "AZURE_SERVICE_BUS_NAMESPACE1": {
+      "type": "string",
+      "value": "[variables('azureServiceBusNamespaceName_1')]"
+    },
+    "AZURE_SERVICE_BUS_NAMESPACE2": {
+      "type": "string",
+      "value": "[variables('azureServiceBusNamespaceName_2')]"
+    },
+    "AZURE_SERVICE_BUS_NAMESPACE3": {
+      "type": "string",
+      "value": "[variables('azureServiceBusNamespaceName_3')]"
     }
   }
 }

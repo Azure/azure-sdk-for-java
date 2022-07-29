@@ -1,5 +1,11 @@
 spring:
   cloud:
+    azure:
+      credential:
+        client-id: ${AZURE_SPRING_CLIENT_ID}
+        client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+      profile:
+        tenant-id: ${AZURE_SPRING_TENANT_ID}
     stream:
       function:
         definition: queueConsume;queueSupply;topicConsume;topicSupply;
@@ -36,9 +42,3 @@ spring:
                   servicebus:
                     namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
                     entity-type: queue
-    azure:
-      credential:
-        client-id: ${AZURE_SPRING_CLIENT_ID}
-        client-secret: ${AZURE_SPRING_CLIENT_SECRET}
-      profile:
-        tenant-id: ${AZURE_SPRING_TENANT_ID}

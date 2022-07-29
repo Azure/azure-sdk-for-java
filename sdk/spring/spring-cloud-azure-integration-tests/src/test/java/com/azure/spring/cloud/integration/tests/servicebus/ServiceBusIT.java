@@ -35,11 +35,14 @@ public class ServiceBusIT {
     static class TestConfig {
         @Bean
         ServiceBusRecordMessageListener messageListener() {
-            return message -> {};
-        };
+            return message -> {
+            };
+        }
+
         @Bean
         ServiceBusErrorHandler errorHandler() {
-            return errorContext -> {};
+            return errorContext -> {
+            };
         }
     }
 

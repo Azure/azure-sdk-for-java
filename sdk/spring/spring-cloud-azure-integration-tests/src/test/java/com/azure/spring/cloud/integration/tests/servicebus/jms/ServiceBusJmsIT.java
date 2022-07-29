@@ -29,7 +29,7 @@ public class ServiceBusJmsIT {
     public void testServiceBusJmsOperation() throws InterruptedException {
         LOGGER.info("ServiceBusJmsIT begin.");
         jmsTemplate.convertAndSend(QUEUE_NAME, data);
-        LOGGER.info("Send message: {}",data);
+        LOGGER.info("Send message: {}", data);
         String msg = EXCHANGER.exchange(null);
         Assertions.assertEquals(msg, data);
         LOGGER.info("ServiceBusJmsIT end.");

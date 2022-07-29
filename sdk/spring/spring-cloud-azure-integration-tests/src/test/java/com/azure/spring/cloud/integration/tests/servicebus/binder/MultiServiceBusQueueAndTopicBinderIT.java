@@ -23,8 +23,10 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = { MultiServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
-    MultiServiceBusQueueAndTopicBinderIT.TestTopicConfig.class })
+@SpringBootTest(classes = {
+    MultiServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
+    MultiServiceBusQueueAndTopicBinderIT.TestTopicConfig.class
+})
 @ActiveProfiles("servicebus-binder-multi")
 class MultiServiceBusQueueAndTopicBinderIT {
 
