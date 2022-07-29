@@ -858,7 +858,14 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         String restorePointName,
         RestorePointExpandOptions expand) {
         return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RestorePointInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -877,7 +884,14 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         String resourceGroupName, String restorePointCollectionName, String restorePointName) {
         final RestorePointExpandOptions expand = null;
         return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RestorePointInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

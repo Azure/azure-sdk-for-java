@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of new failover policies for the failover priority change. */
 @Fluent
 public final class FailoverPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverPolicies.class);
-
     /*
      * List of failover policies.
      */
@@ -48,7 +45,7 @@ public final class FailoverPolicies {
      */
     public void validate() {
         if (failoverPolicies() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property failoverPolicies in model FailoverPolicies"));
@@ -56,4 +53,6 @@ public final class FailoverPolicies {
             failoverPolicies().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FailoverPolicies.class);
 }

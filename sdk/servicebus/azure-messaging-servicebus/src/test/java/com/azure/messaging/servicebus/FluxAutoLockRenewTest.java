@@ -450,7 +450,7 @@ public class FluxAutoLockRenewTest {
 
         // Act & Assert
         StepVerifier.create(renewOperator
-                .subscriberContext((context) -> context.put("A", "B")))
+                .contextWrite((context) -> context.put("A", "B")))
             .thenRequest(1)
             .expectAccessibleContext()
             .contains("A", "B")

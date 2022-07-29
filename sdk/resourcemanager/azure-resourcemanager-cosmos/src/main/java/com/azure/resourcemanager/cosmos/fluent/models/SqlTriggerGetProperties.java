@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB trigger. */
 @Fluent
 public final class SqlTriggerGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTriggerGetProperties.class);
-
     /*
      * The resource property.
      */

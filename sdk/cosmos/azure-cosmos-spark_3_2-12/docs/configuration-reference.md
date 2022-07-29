@@ -60,7 +60,7 @@ Used to influence the json serialization/deserialization behavior
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.serialization.inclusionMode`     | `Always`    | Determines whether null/default values will be serialized to json or whether properties with null/default value will be skipped. The behavior follows the same ideas as [Jackson's JsonInclude.Include](https://github.com/FasterXML/jackson-annotations/blob/d0820002721c76adad2cc87fcd88bf60f56b64de/src/main/java/com/fasterxml/jackson/annotation/JsonInclude.java#L98-L227). `Always` means json properties are created even for null and default values. `NonNull` means no json properties will be created for explicit null values. `NonEmpty` means json properties will not be created for empty string values or empty arrays/mpas. `NonDefault` means json properties will be skipped not just for null/empty but also when the value is identical to the default value `0` for numeric properties for example. |
-| `spark.cosmos.serialization.dateTimeConversionMode`     | `Default`    | The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`). With `Default` the standard Spark 3.* behavior is used (`java.sql.Date`/`java.time.LocalDate` are converted to EpochDay, `java.sql.Timestamp`/`java.time.Instant` are converted to MicrosecondsFromEpoch). With `AlwaysEpochMilliseconds` the same behavior the Cosmos DB connector for Spark 2.4 used is applied - `java.sql.Date`, `java.time.LocalDate`, `java.sql.Timestamp` and `java.time.Instant` are converted to MillisecondsFromEpoch.|
+| `spark.cosmos.serialization.dateTimeConversionMode`     | `Default`    | The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`, `AlwaysEpochMillisecondsWithSystemDefaultTimezone`). With `Default` the standard Spark 3.* behavior is used (`java.sql.Date`/`java.time.LocalDate` are converted to EpochDay, `java.sql.Timestamp`/`java.time.Instant` are converted to MicrosecondsFromEpoch). With `AlwaysEpochMilliseconds` the same behavior the Cosmos DB connector for Spark 2.4 used is applied - `java.sql.Date`, `java.time.LocalDate`, `java.sql.Timestamp` and `java.time.Instant` are converted to MillisecondsFromEpoch. The behavior for `AlwaysEpochMillisecondsWithSystemDefaultTimezone` is identical with `AlwaysEpochMilliseconds` except that it will assume System default time zone / Spark session time zone (specified via `spark.sql.session.timezone`) instead of UTC when the date/time to be parsed has no explicit time zone.|
 
 #### Change feed (only for Spark-Streaming using `cosmos.oltp.changeFeed` data source, which is read-only) configuration
 | Config Property Name                            | Default       | Description |
@@ -84,12 +84,17 @@ Used to influence the json serialization/deserialization behavior
 
 ### Throughput Control Config
 | Config Property Name      | Default | Description |
-| :---        |    :----   |         :--- | 
-| `spark.cosmos.throughputControl.enabled`      | `false`    | Whether throughput control is enabled  |
+| :---        |    :----   |         :--- |
+| `spark.cosmos.throughputControl.enabled`      | `false` | Whether throughput control is enabled |
+| `spark.cosmos.throughputControl.accountEndpoint`      | None    | Cosmos DB Account Endpoint Uri for throughput control. If not defined, then `spark.cosmos.accountEndpoint` will be used. |
+| `spark.cosmos.throughputControl.accountKey`      | None    | Cosmos DB Account Key for throughput control. |
+| `spark.cosmos.throughputControl.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true). |
+| `spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery`      | `false` | Can be used to disable TCP connection endpoint rediscovery. TCP connection endpoint rediscovery should only be disabled when using custom domain names with private endpoints when using a custom Spark environment. When using Azure Databricks or Azure Synapse as Spark runtime it should never be required to disable endpoint rediscovery. |
+| `spark.cosmos.throughputControl.useGatewayMode`      | `false`        | Use gateway mode for the client operations |
 | `spark.cosmos.throughputControl.name`      | None    | Throughput control group name   |
-| `spark.cosmos.throughputControl.targetThroughput`      | None   | Throughput control group target throughput  |
-| `spark.cosmos.throughputControl.targetThroughputThreshold`      | None    | Throughput control group target throughput threshold  |
+| `spark.cosmos.throughputControl.targetThroughput`      | None    | Throughput control group target throughput   |
+| `spark.cosmos.throughputControl.targetThroughputThreshold`      | None    | Throughput control group target throughput threshold |
 | `spark.cosmos.throughputControl.globalControl.database`      | None    | Database which will be used for throughput global control  |
-| `spark.cosmos.throughputControl.globalControl.container`      | None   | Container which will be used for throughput global control  |
+| `spark.cosmos.throughputControl.globalControl.container`      | None    | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
-| `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected |
+| `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected   |

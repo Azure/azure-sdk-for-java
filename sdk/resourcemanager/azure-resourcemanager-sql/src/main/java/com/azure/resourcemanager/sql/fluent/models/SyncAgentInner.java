@@ -5,69 +5,36 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SyncAgentState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An Azure SQL Database sync agent. */
-@JsonFlatten
 @Fluent
-public class SyncAgentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncAgentInner.class);
-
+public final class SyncAgentInner extends ProxyResource {
     /*
-     * Name of the sync agent.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
-    private String namePropertiesName;
-
-    /*
-     * ARM resource id of the sync database in the sync agent.
-     */
-    @JsonProperty(value = "properties.syncDatabaseId")
-    private String syncDatabaseId;
-
-    /*
-     * Last alive time of the sync agent.
-     */
-    @JsonProperty(value = "properties.lastAliveTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastAliveTime;
-
-    /*
-     * State of the sync agent.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private SyncAgentState state;
-
-    /*
-     * If the sync agent version is up to date.
-     */
-    @JsonProperty(value = "properties.isUpToDate", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isUpToDate;
-
-    /*
-     * Expiration time of the sync agent version.
-     */
-    @JsonProperty(value = "properties.expiryTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expiryTime;
-
-    /*
-     * Version of the sync agent.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
+    @JsonProperty(value = "properties")
+    private SyncAgentProperties innerProperties;
 
     /**
-     * Get the namePropertiesName property: Name of the sync agent.
+     * Get the innerProperties property: Resource properties.
      *
-     * @return the namePropertiesName value.
+     * @return the innerProperties value.
+     */
+    private SyncAgentProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the name property: Name of the sync agent.
+     *
+     * @return the name value.
      */
     public String namePropertiesName() {
-        return this.namePropertiesName;
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
@@ -76,7 +43,7 @@ public class SyncAgentInner extends ProxyResource {
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
-        return this.syncDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().syncDatabaseId();
     }
 
     /**
@@ -86,7 +53,10 @@ public class SyncAgentInner extends ProxyResource {
      * @return the SyncAgentInner object itself.
      */
     public SyncAgentInner withSyncDatabaseId(String syncDatabaseId) {
-        this.syncDatabaseId = syncDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncAgentProperties();
+        }
+        this.innerProperties().withSyncDatabaseId(syncDatabaseId);
         return this;
     }
 
@@ -96,7 +66,7 @@ public class SyncAgentInner extends ProxyResource {
      * @return the lastAliveTime value.
      */
     public OffsetDateTime lastAliveTime() {
-        return this.lastAliveTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastAliveTime();
     }
 
     /**
@@ -105,7 +75,7 @@ public class SyncAgentInner extends ProxyResource {
      * @return the state value.
      */
     public SyncAgentState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -114,7 +84,7 @@ public class SyncAgentInner extends ProxyResource {
      * @return the isUpToDate value.
      */
     public Boolean isUpToDate() {
-        return this.isUpToDate;
+        return this.innerProperties() == null ? null : this.innerProperties().isUpToDate();
     }
 
     /**
@@ -123,7 +93,7 @@ public class SyncAgentInner extends ProxyResource {
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
-        return this.expiryTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTime();
     }
 
     /**
@@ -132,7 +102,7 @@ public class SyncAgentInner extends ProxyResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -141,5 +111,8 @@ public class SyncAgentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

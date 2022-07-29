@@ -1894,7 +1894,14 @@ public final class VirtualMachinesClientImpl
     public Mono<VirtualMachineInner> getByResourceGroupAsync(
         String resourceGroupName, String vmName, InstanceViewTypes expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1911,7 +1918,14 @@ public final class VirtualMachinesClientImpl
     public Mono<VirtualMachineInner> getByResourceGroupAsync(String resourceGroupName, String vmName) {
         final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2062,7 +2076,14 @@ public final class VirtualMachinesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineInstanceViewInner> instanceViewAsync(String resourceGroupName, String vmName) {
         return instanceViewWithResponseAsync(resourceGroupName, vmName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineInstanceViewInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2750,7 +2771,7 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> generalizeAsync(String resourceGroupName, String vmName) {
-        return generalizeWithResponseAsync(resourceGroupName, vmName).flatMap(ignored -> Mono.empty());
+        return generalizeWithResponseAsync(resourceGroupName, vmName).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -5006,7 +5027,14 @@ public final class VirtualMachinesClientImpl
     public Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
         String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes) {
         return retrieveBootDiagnosticsDataWithResponseAsync(resourceGroupName, vmName, sasUriExpirationTimeInMinutes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RetrieveBootDiagnosticsDataResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -5024,7 +5052,14 @@ public final class VirtualMachinesClientImpl
         String resourceGroupName, String vmName) {
         final Integer sasUriExpirationTimeInMinutes = null;
         return retrieveBootDiagnosticsDataWithResponseAsync(resourceGroupName, vmName, sasUriExpirationTimeInMinutes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RetrieveBootDiagnosticsDataResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -5404,7 +5439,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> simulateEvictionAsync(String resourceGroupName, String vmName) {
-        return simulateEvictionWithResponseAsync(resourceGroupName, vmName).flatMap(ignored -> Mono.empty());
+        return simulateEvictionWithResponseAsync(resourceGroupName, vmName)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**

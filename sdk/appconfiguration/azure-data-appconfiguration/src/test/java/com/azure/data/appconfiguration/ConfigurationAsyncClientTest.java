@@ -1269,7 +1269,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final HttpHeaders headers = getCustomizedHeaders();
         addHeadersFromContextPolicyRunner(expected ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected)
-                .subscriberContext(Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
+                .contextWrite(Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
                 .assertNext(response -> {
                     final HttpHeaders requestHeaders = response.getRequest().getHeaders();
                     assertContainsHeaders(headers, requestHeaders);

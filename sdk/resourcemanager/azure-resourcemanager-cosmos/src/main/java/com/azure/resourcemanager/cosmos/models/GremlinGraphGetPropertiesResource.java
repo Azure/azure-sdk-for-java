@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GremlinGraphGetPropertiesResource model. */
 @Fluent
 public final class GremlinGraphGetPropertiesResource extends GremlinGraphResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphGetPropertiesResource.class);
-
     /*
      * A system generated property. A unique identifier.
      */
@@ -102,6 +98,13 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
     public GremlinGraphGetPropertiesResource withConflictResolutionPolicy(
         ConflictResolutionPolicy conflictResolutionPolicy) {
         super.withConflictResolutionPolicy(conflictResolutionPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
+        super.withAnalyticalStorageTtl(analyticalStorageTtl);
         return this;
     }
 

@@ -123,7 +123,7 @@ final class HeaderCollectionHandler {
             try {
                 lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
             } catch (Exception ex) {
-                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
+                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}. Will attempt to make field accessible.", field, ex);
 
                 // In a previous implementation compute returned null here in an attempt to indicate that there is no
                 // setter for the field. Unfortunately, null isn't a valid indicator to computeIfAbsent that a
@@ -146,7 +146,9 @@ final class HeaderCollectionHandler {
 
                 return handle;
             } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}.", setterName,
+                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}. "
+                    + "Will attempt to make field accessible. "
+                    + "Please consider adding public setter.", setterName,
                     clazzSimpleName, ex);
             }
 
@@ -159,8 +161,9 @@ final class HeaderCollectionHandler {
 
                 return handle;
             } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName, ex);
+                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}."
+                        + "Will attempt to make field accessible. "
+                        + "Please consider adding public setter.", setterName, clazzSimpleName, ex);
             }
 
             // In a previous implementation compute returned null here in an attempt to indicate that there is no setter

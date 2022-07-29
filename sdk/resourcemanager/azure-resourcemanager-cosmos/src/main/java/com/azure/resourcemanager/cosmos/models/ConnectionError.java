@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectionError model. */
 @Fluent
 public final class ConnectionError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionError.class);
-
     /*
      * The kind of connection error that occurred.
      */

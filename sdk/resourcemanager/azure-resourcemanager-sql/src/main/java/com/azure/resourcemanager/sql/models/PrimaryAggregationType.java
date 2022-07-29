@@ -39,7 +39,11 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
         return fromString(name, PrimaryAggregationType.class);
     }
 
-    /** @return known PrimaryAggregationType values. */
+    /**
+     * Gets known PrimaryAggregationType values.
+     *
+     * @return known PrimaryAggregationType values.
+     */
     public static Collection<PrimaryAggregationType> values() {
         return values(PrimaryAggregationType.class);
     }

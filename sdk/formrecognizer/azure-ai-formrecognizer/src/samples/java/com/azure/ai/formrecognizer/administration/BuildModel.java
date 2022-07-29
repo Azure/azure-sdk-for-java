@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
@@ -41,23 +41,23 @@ public class BuildModel {
         // Build custom document analysis model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentOperationResult, DocumentModelInfo> buildOperationPoller =
+        SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
             client.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("model desc"),
                 Context.NONE);
 
-        DocumentModelInfo documentModelInfo = buildOperationPoller.getFinalResult();
+        DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
         // Model Info
-        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
-        System.out.printf("Model created on: %s%n%n", documentModelInfo.getCreatedOn());
+        System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
+        System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
 
         System.out.println("Document Fields:");
-        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
+        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());

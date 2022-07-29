@@ -260,6 +260,28 @@ public abstract class AbstractQueryGenerator {
         return String.join(" ", queryTails.stream().filter(StringUtils::hasText).collect(Collectors.toList()));
     }
 
+    /**
+     * Generates a Cosmos count query.
+     *
+     * @param query the representation for query method.
+     * @param queryHead the query head.
+     * @return the SQL query spec.
+     */
+    protected SqlQuerySpec generateCosmosCountQuery(@NonNull CosmosQuery query,
+                                               @NonNull String queryHead) {
+        final AtomicInteger counter = new AtomicInteger();
+        final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query, counter);
+        String queryString = String.join(" ", queryHead, queryBody.getFirst(), generateQueryTail(query));
+        final List<Pair<String, Object>> parameters = queryBody.getSecond();
+
+        List<SqlParameter> sqlParameters = parameters.stream()
+            .map(p -> new SqlParameter("@" + p.getFirst(),
+                toCosmosDbValue(p.getSecond())))
+            .collect(Collectors.toList());
+
+        return new SqlQuerySpec(queryString, sqlParameters);
+    }
+
 
     /**
      * Generates a Cosmos query.
@@ -282,7 +304,9 @@ public abstract class AbstractQueryGenerator {
 
         if (query.getLimit() > 0) {
             queryString = new StringBuilder(queryString)
-                .append(" OFFSET 0 LIMIT ")
+                .append(" OFFSET ")
+                .append(query.getOffset())
+                .append(" LIMIT ")
                 .append(query.getLimit()).toString();
         }
 

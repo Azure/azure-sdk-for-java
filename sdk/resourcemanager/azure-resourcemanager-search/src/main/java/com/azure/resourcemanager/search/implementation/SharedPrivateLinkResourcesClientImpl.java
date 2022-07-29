@@ -29,13 +29,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.search.fluent.SharedPrivateLinkResourcesClient;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
 import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceListResult;
-import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperties;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -43,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SharedPrivateLinkResourcesClient. */
 public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SharedPrivateLinkResourcesService service;
 
@@ -161,22 +157,22 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties) {
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -203,12 +199,15 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (sharedPrivateLinkResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter sharedPrivateLinkResource is required and cannot be null."));
+        } else {
+            sharedPrivateLinkResource.validate();
         }
         final String accept = "application/json";
-        SharedPrivateLinkResourceInner sharedPrivateLinkResource = new SharedPrivateLinkResourceInner();
-        sharedPrivateLinkResource.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -224,7 +223,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                             sharedPrivateLinkResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -237,23 +236,23 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
         UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -281,12 +280,15 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (sharedPrivateLinkResource == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter sharedPrivateLinkResource is required and cannot be null."));
+        } else {
+            sharedPrivateLinkResource.validate();
         }
         final String accept = "application/json";
-        SharedPrivateLinkResourceInner sharedPrivateLinkResource = new SharedPrivateLinkResourceInner();
-        sharedPrivateLinkResource.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -312,26 +314,30 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link PollerFlux} for polling of describes a Shared Private Link Resource managed by the Azure
+     *     Cognitive Search service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
             String searchServiceName,
             String sharedPrivateLinkResourceName,
-            UUID clientRequestId,
-            SharedPrivateLinkResourceProperties properties) {
+            SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+            UUID clientRequestId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId, properties);
+                resourceGroupName,
+                searchServiceName,
+                sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
+                clientRequestId);
         return this
             .client
             .<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(
@@ -352,24 +358,24 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link PollerFlux} for polling of describes a Shared Private Link Resource managed by the Azure
+     *     Cognitive Search service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
             String searchServiceName,
             String sharedPrivateLinkResourceName,
+            SharedPrivateLinkResourceInner sharedPrivateLinkResource,
             UUID clientRequestId,
-            SharedPrivateLinkResourceProperties properties,
             Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -377,8 +383,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                 resourceGroupName,
                 searchServiceName,
                 sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
                 clientRequestId,
-                properties,
                 context);
         return this
             .client
@@ -400,24 +406,28 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource managed by the Azure
+     *     Cognitive Search service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties) {
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId) {
         return beginCreateOrUpdateAsync(
-                resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId, properties)
+                resourceGroupName,
+                searchServiceName,
+                sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
+                clientRequestId)
             .getSyncPoller();
     }
 
@@ -431,30 +441,30 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return the {@link SyncPoller} for polling of describes a Shared Private Link Resource managed by the Azure
+     *     Cognitive Search service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
         UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName,
                 searchServiceName,
                 sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
                 clientRequestId,
-                properties,
                 context)
             .getSyncPoller();
     }
@@ -469,24 +479,28 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties) {
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId) {
         return beginCreateOrUpdateAsync(
-                resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId, properties)
+                resourceGroupName,
+                searchServiceName,
+                sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
+                clientRequestId)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -501,18 +515,26 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName) {
+        String resourceGroupName,
+        String searchServiceName,
+        String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource) {
         final UUID clientRequestId = null;
-        final SharedPrivateLinkResourceProperties properties = null;
         return beginCreateOrUpdateAsync(
-                resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId, properties)
+                resourceGroupName,
+                searchServiceName,
+                sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
+                clientRequestId)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -527,30 +549,30 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service.
+     * @return describes a Shared Private Link Resource managed by the Azure Cognitive Search service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
         UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties,
         Context context) {
         return beginCreateOrUpdateAsync(
                 resourceGroupName,
                 searchServiceName,
                 sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
                 clientRequestId,
-                properties,
                 context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -566,10 +588,9 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,10 +601,14 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
-        UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties) {
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
+        UUID clientRequestId) {
         return createOrUpdateAsync(
-                resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId, properties)
+                resourceGroupName,
+                searchServiceName,
+                sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
+                clientRequestId)
             .block();
     }
 
@@ -597,6 +622,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -604,11 +630,17 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner createOrUpdate(
-        String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName) {
+        String resourceGroupName,
+        String searchServiceName,
+        String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource) {
         final UUID clientRequestId = null;
-        final SharedPrivateLinkResourceProperties properties = null;
         return createOrUpdateAsync(
-                resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId, properties)
+                resourceGroupName,
+                searchServiceName,
+                sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
+                clientRequestId)
             .block();
     }
 
@@ -622,10 +654,9 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      *     group.
      * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure Cognitive
      *     Search service within the specified resource group.
+     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
      *     included in response information as a way to track the request.
-     * @param properties Describes the properties of an existing Shared Private Link Resource managed by the Azure
-     *     Cognitive Search service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,15 +668,15 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
         String resourceGroupName,
         String searchServiceName,
         String sharedPrivateLinkResourceName,
+        SharedPrivateLinkResourceInner sharedPrivateLinkResource,
         UUID clientRequestId,
-        SharedPrivateLinkResourceProperties properties,
         Context context) {
         return createOrUpdateAsync(
                 resourceGroupName,
                 searchServiceName,
                 sharedPrivateLinkResourceName,
+                sharedPrivateLinkResource,
                 clientRequestId,
-                properties,
                 context)
             .block();
     }
@@ -664,8 +695,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(
@@ -714,7 +745,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -732,8 +763,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(
@@ -797,8 +828,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedPrivateLinkResourceInner> getAsync(
@@ -808,14 +839,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
         UUID clientRequestId) {
         return getWithResponseAsync(
                 resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId)
-            .flatMap(
-                (Response<SharedPrivateLinkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -830,8 +854,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedPrivateLinkResourceInner> getAsync(
@@ -839,14 +863,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
         final UUID clientRequestId = null;
         return getWithResponseAsync(
                 resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId)
-            .flatMap(
-                (Response<SharedPrivateLinkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -886,8 +903,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     *     group.
+     * @return the details of the shared private link resource managed by the search service in the given resource group
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedPrivateLinkResourceInner> getWithResponse(
@@ -915,7 +932,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -964,7 +981,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -982,7 +999,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1046,9 +1063,9 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String searchServiceName,
@@ -1078,9 +1095,9 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String searchServiceName,
@@ -1110,9 +1127,9 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String searchServiceName,
@@ -1137,9 +1154,9 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String searchServiceName,
@@ -1165,7 +1182,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1190,7 +1207,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1216,7 +1233,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1313,7 +1330,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listByServiceSinglePageAsync(
@@ -1361,7 +1379,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1377,7 +1395,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listByServiceSinglePageAsync(
@@ -1437,7 +1456,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedPrivateLinkResourceInner> listByServiceAsync(
@@ -1457,7 +1477,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedPrivateLinkResourceInner> listByServiceAsync(
@@ -1481,7 +1502,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedPrivateLinkResourceInner> listByServiceAsync(
@@ -1501,7 +1523,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> listByService(
@@ -1523,7 +1546,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service.
+     * @return a list of all shared private link resources managed by the given service as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> listByService(
@@ -1540,7 +1564,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of Shared Private Link Resources.
+     * @return response containing a list of Shared Private Link Resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listByServiceNextSinglePageAsync(
@@ -1568,7 +1593,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1581,7 +1606,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a list of Shared Private Link Resources.
+     * @return response containing a list of Shared Private Link Resources along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listByServiceNextSinglePageAsync(

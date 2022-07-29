@@ -12,6 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -117,6 +119,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         Update the RETRY_COUNT_CONTEXT to log retries.
          */
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
+
+        /*
+        Reset progress if progress is tracked.
+         */
+        ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
+        if (progressReporter != null) {
+            progressReporter.reset();
+        }
 
         /*
          We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation

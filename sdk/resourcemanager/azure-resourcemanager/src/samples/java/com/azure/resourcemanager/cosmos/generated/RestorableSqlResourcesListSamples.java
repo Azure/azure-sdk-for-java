@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorableSqlResources List. */
 public final class RestorableSqlResourcesListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBRestorableSqlResourceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBRestorableSqlResourceList.json
      */
     /**
      * Sample code: CosmosDBRestorableSqlResourceList.
@@ -22,6 +22,6 @@ public final class RestorableSqlResourcesListSamples {
             .manager()
             .serviceClient()
             .getRestorableSqlResources()
-            .list("WestUS", "d9b26648-2f53-4541-b3d8-3044f4f9810d", "WestUS", "10/13/2020 4:56", Context.NONE);
+            .list("WestUS", "d9b26648-2f53-4541-b3d8-3044f4f9810d", "WestUS", "06/01/2022 4:56", Context.NONE);
     }
 }

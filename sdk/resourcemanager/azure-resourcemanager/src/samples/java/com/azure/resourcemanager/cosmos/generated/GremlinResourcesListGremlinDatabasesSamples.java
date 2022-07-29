@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for GremlinResources ListGremlinDatabases. */
 public final class GremlinResourcesListGremlinDatabasesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBGremlinDatabaseList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGremlinDatabaseList.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseList.

@@ -330,7 +330,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -386,7 +386,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -631,7 +631,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -687,7 +687,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -926,7 +926,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -977,7 +977,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1160,7 +1160,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1211,7 +1211,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1238,7 +1238,14 @@ public final class CloudServicesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceInner> getByResourceGroupAsync(String resourceGroupName, String cloudServiceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, cloudServiceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CloudServiceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1306,7 +1313,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1357,7 +1364,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1384,7 +1391,14 @@ public final class CloudServicesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceInstanceViewInner> getInstanceViewAsync(String resourceGroupName, String cloudServiceName) {
         return getInstanceViewWithResponseAsync(resourceGroupName, cloudServiceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CloudServiceInstanceViewInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1443,7 +1457,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1488,7 +1502,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1598,7 +1612,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1654,7 +1668,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1773,7 +1787,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1824,7 +1838,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2008,7 +2022,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2060,7 +2074,7 @@ public final class CloudServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2255,7 +2269,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2311,7 +2325,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2545,7 +2559,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2601,7 +2615,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2837,7 +2851,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2895,7 +2909,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3149,7 +3163,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3205,7 +3219,7 @@ public final class CloudServicesClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3411,7 +3425,7 @@ public final class CloudServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -3447,7 +3461,7 @@ public final class CloudServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -3482,7 +3496,7 @@ public final class CloudServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listNextSinglePageAsync(String nextLink) {
@@ -3518,7 +3532,7 @@ public final class CloudServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {

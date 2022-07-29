@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that determine the run agent configuration. */
 @Fluent
 public final class AgentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentProperties.class);
-
     /*
      * The CPU configuration in terms of number of cores required for the run.
      */

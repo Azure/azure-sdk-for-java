@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentField;
@@ -160,9 +160,9 @@ public class Authentication {
     }
 
     private static void getResourceInfo(DocumentModelAdministrationClient documentModelAdminClient) {
-        ResourceInfo resourceInfo = documentModelAdminClient.getResourceInfo();
+        ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            resourceInfo.getDocumentModelLimit());
-        System.out.printf("Current count of built custom models: %d%n", resourceInfo.getDocumentModelCount());
+            resourceDetails.getDocumentModelLimit());
+        System.out.printf("Current count of built custom models: %d%n", resourceDetails.getDocumentModelCount());
     }
 }

@@ -1,32 +1,32 @@
 parameters:
-  - name: packageVersions
-    displayName: PackageVersions (regex of package versions to run)
-    type: string
-    default: '1|source'
-  - name: tests
-    displayName: Tests (regex of tests to run)
-    type: string
-    default: '^(jsonsend)|(jsonreceive)|(xmlsend)|(xmlreceive)|(binarydatasend)|(binarydatareceive)$'
-  - name: arguments
-    displayName: Arguments (regex of arguments to run)
-    type: string
-    default: '.*'
-  - name: iterations
-    displayName: Iterations (times to run each test)
-    type: number
-    default: '5'
-  - name: additionalArguments
-    displayName: AdditionalArguments (passed to PerfAutomation)
-    type: string
-    default: ' '
+- name: PackageVersions
+  displayName: PackageVersions (regex of package versions to run)
+  type: string
+  default: '1|source'
+- name: Tests
+  displayName: Tests (regex of tests to run)
+  type: string
+  default: '^(jsonsend)|(jsonreceive)|(xmlsend)|(xmlreceive)|(binarydatasend)|(binarydatareceive)$'
+- name: Arguments
+  displayName: Arguments (regex of arguments to run)
+  type: string
+  default: '.*'
+- name: Iterations
+  displayName: Iterations (times to run each test)
+  type: number
+  default: '5'
+- name: AdditionalArguments
+  displayName: AdditionalArguments (passed to PerfAutomation)
+  type: string
+  default: ' '
 
 extends:
   template: /eng/pipelines/templates/jobs/perf.yml
   parameters:
-    serviceDirectory: core
-    services: "^core$"
-    packageVersions: ${{ parameters.packageVersions }}
-    tests: ${{ parameters.tests }}
-    arguments: ${{ parameters.arguments }}
-    iterations: ${{ parameters.iterations }}
-    additionalArguments: ${{ parameters.additionalArguments }}
+    ServiceDirectory: core
+    Services: "^core$"
+    PackageVersions: ${{ parameters.PackageVersions }}
+    Tests: ${{ parameters.Tests }}
+    Arguments: ${{ parameters.Arguments }}
+    Iterations: ${{ parameters.Iterations }}
+    AdditionalArguments: ${{ parameters.AdditionalArguments }}

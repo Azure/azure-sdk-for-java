@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The source trigger that caused a run. */
 @Fluent
 public final class SourceTriggerDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceTriggerDescriptor.class);
-
     /*
      * The unique ID of the trigger.
      */

@@ -69,6 +69,10 @@ public final class SliceImpl implements Slice, Slice.Definition, Slice.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SliceInner innerModel() {
         return this.innerObject;
     }
