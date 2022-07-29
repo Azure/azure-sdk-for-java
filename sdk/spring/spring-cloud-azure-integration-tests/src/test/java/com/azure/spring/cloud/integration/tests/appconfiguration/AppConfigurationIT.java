@@ -28,7 +28,7 @@ public class AppConfigurationIT {
         LOGGER.info("AppConfigurationIT begin.");
         client.addConfigurationSetting(sampleKey, sampleLabel, sampleValue);
         ConfigurationSetting configurationSetting = client.getConfigurationSetting(sampleKey, sampleLabel);
-        Assertions.assertEquals(configurationSetting.getValue(),sampleValue);
+        Assertions.assertEquals(configurationSetting.getValue(), sampleValue);
         LOGGER.info("AppConfigurationIT end.");
     }
 

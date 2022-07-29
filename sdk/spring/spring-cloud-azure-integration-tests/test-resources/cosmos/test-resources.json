@@ -15,15 +15,16 @@
     }
   },
   "variables": {
-    "databaseAccountsName": "[concat(parameters('baseName'),'-test-cosmos')]",
-    "azureCosmosRoleId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', variables('databaseAccountsName'), '00000000-0000-0000-0000-000000000002')]",
+    "azureDatabaseAccountsName": "[concat(parameters('baseName'),'-test-cosmos')]",
+    "azureCosmosSpringDataDatabaseName": "[concat(variables('azureDatabaseAccountsName'), '/TestSpringData')]",
+    "azureCosmosRoleId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', variables('azureDatabaseAccountsName'), '00000000-0000-0000-0000-000000000002')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "2022-02-15-preview",
-      "name": "[variables('databaseAccountsName')]",
+      "name": "[variables('azureDatabaseAccountsName')]",
       "location": "[variables('location')]",
       "tags": {
         "defaultExperience": "Core (SQL)",
@@ -82,9 +83,9 @@
     {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
       "apiVersion": "2022-02-15-preview",
-      "name": "[concat(variables('databaseAccountsName'), '/TestDB')]",
+      "name": "[concat(variables('azureDatabaseAccountsName'), '/TestDB')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccountsName'))]"
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
       ],
       "properties": {
         "resource": {
@@ -93,12 +94,25 @@
       }
     },
     {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[variables('azureCosmosSpringDataDatabaseName')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "TestSpringData"
+        }
+      }
+    },
+    {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
       "apiVersion": "2022-02-15-preview",
-      "name": "[concat(variables('databaseAccountsName'), '/TestDB/Users')]",
+      "name": "[concat(variables('azureDatabaseAccountsName'), '/TestDB/Users')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('databaseAccountsName'), 'TestDB')]",
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccountsName'))]"
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('azureDatabaseAccountsName'), 'TestDB')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
       ],
       "properties": {
         "resource": {
@@ -136,18 +150,22 @@
     {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
       "apiVersion": "2021-05-15",
-      "name": "[concat(variables('databaseAccountsName'), '/',guid(parameters('baseName')))]",
+      "name": "[concat(variables('azureDatabaseAccountsName'), '/',guid(parameters('baseName')))]",
       "properties": {
         "principalId": "[parameters('testApplicationOid')]",
         "roleDefinitionId": "[variables('azureCosmosRoleId')]",
-        "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('databaseAccountsName'))]"
+        "scope": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
       }
     }
   ],
   "outputs": {
     "AZURE_COSMOS_ENDPOINT": {
       "type": "string",
-      "value": "[reference(variables('databaseAccountsName')).documentEndpoint]"
+      "value": "[reference(variables('azureDatabaseAccountsName')).documentEndpoint]"
+    },
+    "AZURE_COSMOS_SPRING_DATA_DATABASE": {
+      "type": "string",
+      "value": "[variables('azureCosmosSpringDataDatabaseName')]"
     }
   }
 }
