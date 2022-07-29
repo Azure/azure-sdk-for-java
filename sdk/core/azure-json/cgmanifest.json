@@ -1,0 +1,15 @@
+{
+  "Registrations": [
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "ArtifactId": "jackson-core",
+          "GroupId": "com.fasterxml.jackson.core",
+          "Version": "2.13.3"
+        }
+      }
+    }
+  ],
+  "Version": 1
+}

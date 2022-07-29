@@ -8,6 +8,7 @@ import com.azure.core.util.logging.LogLevel;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.security.PrivilegedExceptionAction;
 
@@ -51,13 +52,13 @@ public final class ReflectionUtils {
             classGetModule = lookup.unreflect(Class.class.getDeclaredMethod("getModule"));
             moduleIsNamed = lookup.unreflect(moduleClass.getDeclaredMethod("isNamed"));
             moduleAddReads = lookup.unreflect(moduleClass.getDeclaredMethod("addReads", moduleClass));
-            methodHandlesPrivateLookupIn = lookup.unreflect(
-                MethodHandles.class.getDeclaredMethod("privateLookupIn", Class.class, MethodHandles.Lookup.class));
+            methodHandlesPrivateLookupIn = lookup.findStatic(MethodHandles.class, "privateLookupIn",
+                MethodType.methodType(MethodHandles.Lookup.class, Class.class, MethodHandles.Lookup.class));
             moduleIsOpenUnconditionally = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class));
             moduleIsOpenToOtherModule = lookup.unreflect(
                 moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
 
-            coreModule = classGetModule.invokeExact(ReflectionUtils.class);
+            coreModule = classGetModule.invokeWithArguments(ReflectionUtils.class);
             moduleBased = true;
         } catch (Throwable throwable) {
             if (throwable instanceof Error) {
@@ -119,7 +120,7 @@ public final class ReflectionUtils {
                 // The unnamed module is opened unconditionally, have Core read it and use a private proxy lookup to enable all
                 // lookup scenarios.
                 if (!(boolean) MODULE_IS_NAMED.invoke(responseModule)) {
-                    MODULE_ADD_READS.invokeExact(CORE_MODULE, responseModule);
+                    MODULE_ADD_READS.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
 
@@ -131,10 +132,10 @@ public final class ReflectionUtils {
 
                 // Next check if the target class module is opened either unconditionally or to Core's module. If so, also use
                 // a private proxy lookup to enable all lookup scenarios.
-                if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY.invokeExact(responseModule, targetClass.getPackage().getName())
-                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE.invokeExact(responseModule, targetClass.getPackage().getName(),
-                        CORE_MODULE)) {
-                    MODULE_ADD_READS.invokeExact(CORE_MODULE, responseModule);
+                String packageName = targetClass.getPackage().getName();
+                if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY.invokeWithArguments(responseModule, packageName)
+                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE.invokeWithArguments(responseModule, packageName, CORE_MODULE)) {
+                    MODULE_ADD_READS.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
 
@@ -172,11 +173,11 @@ public final class ReflectionUtils {
     private static MethodHandles.Lookup performSafePrivateLookupIn(Class<?> targetClass) throws Throwable {
         // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager
         if (System.getSecurityManager() == null) {
-            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN.invoke(null, targetClass, LOOKUP);
+            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN.invokeExact(targetClass, LOOKUP);
         } else {
             return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () -> {
                 try {
-                    return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN.invoke(null, targetClass, LOOKUP);
+                    return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN.invokeExact(targetClass, LOOKUP);
                 } catch (Throwable throwable) {
                     if (throwable instanceof Error) {
                         throw (Error) throwable;

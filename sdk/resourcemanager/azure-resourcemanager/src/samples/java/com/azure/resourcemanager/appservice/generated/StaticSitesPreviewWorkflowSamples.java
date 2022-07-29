@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewReq
 /** Samples for StaticSites PreviewWorkflow. */
 public final class StaticSitesPreviewWorkflowSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GenerateStaticSiteWorkflowPreview.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GenerateStaticSiteWorkflowPreview.json
      */
     /**
      * Sample code: Generates a preview workflow file for the static site.

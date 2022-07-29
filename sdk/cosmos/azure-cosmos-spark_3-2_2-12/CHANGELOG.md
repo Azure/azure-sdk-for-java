@@ -7,6 +7,13 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+* Added support to allow config different account for throughput control - See [PR 30127](https://github.com/Azure/azure-sdk-for-java/pull/30127)
+
+### 4.12.1 (2022-07-22)
+
+#### Bugs Fixed
 * Fixed `NotFoundException` for changeFeed after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
 * Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
 
