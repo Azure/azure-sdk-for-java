@@ -8,14 +8,13 @@ import com.azure.ai.formrecognizer.administration.models.DocumentTypeDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.implementation.models.Error;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.GetInfoResponse;
 import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
@@ -33,7 +32,6 @@ import com.azure.ai.formrecognizer.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.models.DocumentLine;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentPageKind;
@@ -248,8 +246,7 @@ public class Transforms {
     }
 
     /**
-     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exists. Otherwise, return
-     * original {@link Throwable}.
+     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException}.
      *
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
@@ -268,6 +265,14 @@ public class Transforms {
             );
         }
         return throwable;
+    }
+
+    public static HttpResponseException mapResponseErrorToHttpResponseException(Error error) {
+        return new HttpResponseException(
+            error.getMessage(),
+            null,
+            toResponseError(error)
+        );
     }
 
     public static CopyAuthorization toCopyAuthorization(
@@ -571,8 +576,7 @@ public class Transforms {
         ModelOperationDetailsHelper.setStatus(modelOperationDetails,
             ModelOperationStatus.fromString(getOperationResponse.getStatus().toString()));
         ModelOperationDetailsHelper.setResourceLocation(modelOperationDetails, getOperationResponse.getResourceLocation());
-        DocumentModelOperationError error = toDocumentModelOperationError(getOperationResponse.getError());
-        ModelOperationDetailsHelper.setError(modelOperationDetails, error);
+        ModelOperationDetailsHelper.setError(modelOperationDetails, toResponseError(getOperationResponse.getError()));
         return modelOperationDetails;
     }
 
@@ -606,12 +610,6 @@ public class Transforms {
         return documentOperationResult;
     }
 
-    public static DocumentModelOperationException toDocumentModelOperationException(com.azure.ai.formrecognizer.implementation.models.Error error) {
-        DocumentModelOperationError documentModelOperationError = toDocumentModelOperationError(error);
-        DocumentModelOperationException documentModelOperationException
-            = new DocumentModelOperationException(documentModelOperationError);
-        return documentModelOperationException;
-    }
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.implementation.models.Error error) {
         if (error == null) {
             return null;
@@ -626,36 +624,5 @@ public class Transforms {
                 .append(": ").append(innerError.getMessage());
         }
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
-    }
-
-    private static DocumentModelOperationError toDocumentModelOperationError(com.azure.ai.formrecognizer.implementation.models.Error error) {
-        if (error != null) {
-            DocumentModelOperationError documentModelOperationError = new DocumentModelOperationError();
-            DocumentModelOperationErrorHelper.setCode(documentModelOperationError, error.getCode());
-            DocumentModelOperationErrorHelper.setInnerError(documentModelOperationError, toInnerError(error.getInnererror()));
-            DocumentModelOperationErrorHelper.setDetails(documentModelOperationError, toErrorDetails(error.getDetails()));
-            DocumentModelOperationErrorHelper.setMessage(documentModelOperationError, error.getMessage());
-            DocumentModelOperationErrorHelper.setTarget(documentModelOperationError, error.getTarget());
-            return documentModelOperationError;
-        }
-        return null;
-    }
-
-    private static DocumentModelOperationInnerError toInnerError(
-        com.azure.ai.formrecognizer.implementation.models.InnerError serviceInnerError) {
-        if (serviceInnerError == null) {
-            return null;
-        }
-        DocumentModelOperationInnerError innerError = new DocumentModelOperationInnerError();
-        InnerErrorHelper.setCode(innerError, serviceInnerError.getCode());
-        InnerErrorHelper.setMessage(innerError, serviceInnerError.getMessage());
-        InnerErrorHelper.setInnerError(innerError, toInnerError(serviceInnerError.getInnererror()));
-        return innerError;
-    }
-    private static List<DocumentModelOperationError> toErrorDetails(List<com.azure.ai.formrecognizer.implementation.models.Error> details) {
-        return !CoreUtils.isNullOrEmpty(details) ? details
-            .stream()
-            .map(error -> toDocumentModelOperationError(error))
-            .collect(Collectors.toList()) : null;
     }
 }
