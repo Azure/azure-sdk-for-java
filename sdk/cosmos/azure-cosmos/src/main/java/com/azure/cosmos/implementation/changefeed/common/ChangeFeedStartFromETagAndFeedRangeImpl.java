@@ -67,14 +67,17 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
     }
 
     @Override
-    public void populateRequest(RxDocumentServiceRequest request) {
+    public void populateRequest(RxDocumentServiceRequest request, ChangeFeedMode changeFeedMode) {
         checkNotNull(request, "Argument 'request' must not be null.");
 
         if (this.eTag != null) {
             // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
-            request.getHeaders().put(
-                HttpConstants.HttpHeaders.IF_NONE_MATCH,
-                this.eTag);
+            request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH, this.eTag);
+        } else if (ChangeFeedMode.FULL_FIDELITY == changeFeedMode) {
+            //  If there is no continuation token, we start from now (which is by default).
+            //  On REST level, change feed is using IfNoneMatch/ETag instead of continuation.
+            request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH,
+                HttpConstants.HeaderValues.IF_NONE_MATCH_ALL);
         }
     }
 

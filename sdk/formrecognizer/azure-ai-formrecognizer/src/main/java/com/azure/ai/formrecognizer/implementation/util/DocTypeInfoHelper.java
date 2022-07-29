@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
 
 import java.util.Map;
@@ -25,7 +25,7 @@ public final class DocTypeInfoHelper {
         void setDescription(DocTypeInfo docTypeInfo, String description);
         void setFieldSchema(DocTypeInfo docTypeInfo, Map<String, DocumentFieldSchema> fieldSchema);
         void setFieldConfidence(DocTypeInfo docTypeInfo, Map<String, Float> fieldConfidence);
-        void setBuildMode(DocTypeInfo docTypeInfo, DocumentBuildMode buildMode);
+        void setBuildMode(DocTypeInfo docTypeInfo, DocumentModelBuildMode buildMode);
     }
 
     /**
@@ -49,7 +49,7 @@ public final class DocTypeInfoHelper {
         accessor.setFieldConfidence(docTypeInfo, fieldConfidence);
     }
 
-    static void setBuildMode(DocTypeInfo docTypeInfo, DocumentBuildMode buildMode) {
+    static void setBuildMode(DocTypeInfo docTypeInfo, DocumentModelBuildMode buildMode) {
         accessor.setBuildMode(docTypeInfo, buildMode);
     }
 }

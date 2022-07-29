@@ -3,12 +3,18 @@
 ## 12.18.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
+  that replaces deprecated `ParallelTransferOptions.getProgressReceiver` and `ParallelTransferOptions.setProgressReceiver`
+- `com.azure.storage.common.ProgressReceiver` extends `com.azure.core.util.ProgressListener` for backwards compatibility.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug where connection string with SAS token would not work if the token contains leading `?`.
 
 ### Other Changes
+- `com.azure.storage.common.ProgressReceiver` and `com.azure.storage.common.ProgressReporter` are deprecated
+  and replaced by `com.azure.core.util.ProgressListener` and `com.azure.core.util.ProgressReporter`.
 
 ## 12.17.0 (2022-07-07)
 

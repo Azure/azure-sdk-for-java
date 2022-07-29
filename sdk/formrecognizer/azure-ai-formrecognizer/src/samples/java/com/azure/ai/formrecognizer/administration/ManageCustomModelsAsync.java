@@ -31,9 +31,9 @@ public class ManageCustomModelsAsync {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        client.getResourceInfo().subscribe(accountProperties ->
+        client.getResourceDetails().subscribe(resourceInfo ->
             System.out.printf("The resource has %s  models, and we can have at most %s models.%n",
-                accountProperties.getDocumentModelCount(), accountProperties.getDocumentModelLimit()));
+                resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit()));
         // Next, we get a paged list of all of our models
         System.out.println("We have following models in the account:");
         client.listModels().subscribe(documentModelInfo -> {
