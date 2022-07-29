@@ -123,7 +123,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         when:
@@ -145,7 +145,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         def metadata = new HashMap<String, String>()
@@ -265,7 +265,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         when:
@@ -2392,7 +2392,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         client.create()

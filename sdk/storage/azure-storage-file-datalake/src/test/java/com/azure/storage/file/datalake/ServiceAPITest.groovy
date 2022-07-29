@@ -231,7 +231,7 @@ class ServiceAPITest extends APISpec {
 
         def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
             primaryDataLakeServiceClient.getAccountUrl())
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
         def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
 
@@ -406,7 +406,7 @@ class ServiceAPITest extends APISpec {
 
         def serviceClient = getServiceClientBuilder(environment.dataLakeAccount.credential,
             primaryDataLakeServiceClient.getAccountUrl())
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
         def fsClient = serviceClient.getFileSystemClient(generateFileSystemName())
 

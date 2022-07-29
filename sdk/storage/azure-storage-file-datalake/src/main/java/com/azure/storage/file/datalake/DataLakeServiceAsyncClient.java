@@ -31,7 +31,6 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,7 +95,6 @@ public class DataLakeServiceAsyncClient {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
 
         this.sasToken = sasToken;
-
     }
 
     /**

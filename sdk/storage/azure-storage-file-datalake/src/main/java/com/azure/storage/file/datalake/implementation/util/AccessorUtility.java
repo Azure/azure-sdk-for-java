@@ -8,11 +8,15 @@ import com.azure.storage.file.datalake.models.PathProperties;
  * Helper to access package-private methods of {@link PathProperties}, {@link FileSystemProperties} and
  * {@link PathItem}
  */
-public class AccessorUtility {
+public final class AccessorUtility {
 
     private static PathPropertiesAccessor pathPropertiesAccessor;
     private static FileSystemPropertiesAccessor fileSystemPropertiesAccessor;
     private static PathItemAccessor pathItemAccessor;
+
+    private AccessorUtility() {
+
+    }
 
     /**
      * Accessor interface for {@link PathProperties}
@@ -68,7 +72,7 @@ public class AccessorUtility {
      * Accessor interface for {@link PathItem}
      */
     public interface PathItemAccessor {
-        PathItem setPathItem(PathItem pathItem, String encryptionScope);
+        PathItem setPathItemProperties(PathItem pathItem, String encryptionScope);
     }
 
     /**

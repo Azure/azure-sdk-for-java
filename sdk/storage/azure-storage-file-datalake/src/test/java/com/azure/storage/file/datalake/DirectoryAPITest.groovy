@@ -278,7 +278,7 @@ class DirectoryAPITest extends APISpec {
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         client.create()

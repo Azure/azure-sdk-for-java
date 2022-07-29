@@ -27,8 +27,9 @@ public class PathItem {
     static {
         AccessorUtility.setPathItemAccessor(new AccessorUtility.PathItemAccessor() {
             @Override
-            public PathItem setPathItem(PathItem pathItem, String encryptionScope) {
-                return pathItem.setEncryptionScope(encryptionScope);
+            public PathItem setPathItemProperties(PathItem pathItem, String encryptionScope) {
+                pathItem.encryptionScope = encryptionScope;
+                return pathItem;
             }
         });
     }
@@ -173,10 +174,5 @@ public class PathItem {
      */
     public String getEncryptionScope() {
         return this.encryptionScope;
-    }
-
-    private PathItem setEncryptionScope(String encryptionScope) {
-        this.encryptionScope = encryptionScope;
-        return this;
     }
 }

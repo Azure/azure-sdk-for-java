@@ -289,13 +289,13 @@ public class DataLakeFileSystemClientBuilder implements
      * Sets the {@link FileSystemEncryptionScopeOptions encryption scope} that is used to determine how file systems are
      * encrypted on the server.
      *
-     * @param fileSystemEncryptionScope Encryption scope containing the encryption key information.
+     * @param fileSystemEncryptionScopeOptions Encryption scope containing the encryption key information.
      * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public DataLakeFileSystemClientBuilder fileSystemEncryptionScope(
-        FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
+    public DataLakeFileSystemClientBuilder fileSystemEncryptionScopeOptions(
+        FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
         blobContainerClientBuilder
-            .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScope));
+            .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScopeOptions));
         return this;
     }
 

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Encryption scope options to be used when creating a file system.
  */
-public class FileSystemEncryptionScopeOptions {
+public final class FileSystemEncryptionScopeOptions {
 
     /*
      * Optional.  Version 2021-06-08 and later. Specifies the default

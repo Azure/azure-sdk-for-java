@@ -361,7 +361,7 @@ class Transforms {
             path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
             path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
 
-        return AccessorUtility.getPathItemAccessor().setPathItem(pathItem, path.getEncryptionScope());
+        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope());
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
