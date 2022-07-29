@@ -25,15 +25,6 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class RequestIdPolicyTests {
-    static final HttpRequest HTTP_REQUEST;
-
-    static {
-        try {
-            HTTP_REQUEST = createHttpRequest("https://www.bing.com");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private final HttpResponse mockResponse = new HttpResponse(null) {
         @Override
@@ -98,8 +89,8 @@ public class RequestIdPolicyTests {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
-            () -> pipeline.send(HTTP_REQUEST)
+            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
+            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
         );
     }
 
@@ -127,8 +118,8 @@ public class RequestIdPolicyTests {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
-            () -> pipeline.send(HTTP_REQUEST)
+            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
+            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
         );
     }
 

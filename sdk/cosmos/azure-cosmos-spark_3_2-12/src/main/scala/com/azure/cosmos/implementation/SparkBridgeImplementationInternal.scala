@@ -3,20 +3,24 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
-import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedState, ChangeFeedStateV1}
+import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyDefinition, SparkModelBridgeInternal}
-import com.azure.cosmos.spark.NormalizedRange
+import com.azure.cosmos.models.{FeedRange, PartitionKey, SparkModelBridgeInternal}
+import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+
+import scala.::
+import scala.collection.mutable
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.feedranges._
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[cosmos] object SparkBridgeImplementationInternal {
+private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTrait {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 
@@ -133,7 +137,7 @@ private[cosmos] object SparkBridgeImplementationInternal {
     new FeedRangeEpkImpl(toCosmosRange(range))
   }
 
-  private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
+  private[cosmos] def toCosmosRange(range: NormalizedRange): Range[String] = {
     new Range[String](range.min, range.max, true, false)
   }
 
@@ -184,7 +188,110 @@ private[cosmos] object SparkBridgeImplementationInternal {
       .setIoThreadPriority(config, ioThreadPriority)
   }
 
-  def setUserAgentWithSnapshotInsteadOfBeta() = {
-    HttpConstants.Versions.useSnapshotInsteadOfBeta();
+  def setUserAgentWithSnapshotInsteadOfBeta(): Unit = {
+    HttpConstants.Versions.useSnapshotInsteadOfBeta()
+  }
+
+  def createChangeFeedOffsetFromSpark2
+  (
+    client: CosmosAsyncClient,
+    databaseResourceId: String,
+    containerResourceId: String,
+    tokens: Map[Int, Long]
+  ): String = {
+
+    val databaseName = client
+      .getDatabase(databaseResourceId)
+      .read()
+      .block()
+      .getProperties
+      .getId
+
+    val containerName = client
+      .getDatabase(databaseResourceId)
+      .getContainer(containerResourceId)
+      .read()
+      .block()
+      .getProperties
+      .getId
+
+    val container = client
+      .getDatabase(databaseName)
+      .getContainer(containerName)
+
+    val pkRanges = SparkBridgeInternal
+      .getPartitionKeyRanges(container)
+
+    val pkRangesByPkRangeId = mutable.Map[Int, PartitionKeyRange]()
+    val pkRangesByParentPkRangeId = mutable.Map[Int, List[PartitionKeyRange]]()
+
+    pkRanges
+      .foreach(pkRange => {
+        pkRangesByPkRangeId.put(pkRange.getId.toInt, pkRange)
+        if (pkRange.getParents != null && pkRange.getParents.size > 0) {
+          pkRange
+            .getParents
+            .forEach(parentId => {
+              if (pkRangesByParentPkRangeId.contains(parentId.toInt)) {
+                val existingChildren = pkRangesByParentPkRangeId.get(parentId.toInt).get
+                val newChildren = existingChildren :+ pkRange
+                pkRangesByParentPkRangeId.put(parentId.toInt, newChildren)
+              } else {
+                pkRangesByParentPkRangeId.put(parentId.toInt, List(pkRange))
+              }
+            })
+        }
+      })
+
+    val continuations = tokens
+      .map(token => {
+        val pkRangeId = token._1
+        val lsn: Long = token._2
+
+        val range: Range[String] = if (pkRangesByPkRangeId.contains(pkRangeId)) {
+          pkRangesByPkRangeId.get(pkRangeId).get.toRange
+        } else if (pkRangesByParentPkRangeId.contains(pkRangeId)) {
+          val normalizedChildRanges = pkRangesByParentPkRangeId
+            .get(pkRangeId)
+            .get
+            .map(childPkRange => rangeToNormalizedRange(childPkRange.toRange))
+            .sorted
+
+          toCosmosRange(new NormalizedRange(
+                      normalizedChildRanges.head.min,
+                      normalizedChildRanges.last.max))
+        } else {
+          throw new IllegalStateException(
+            s"Can't resolve PKRangeId $pkRangeId - it is possible that this partition has been split multiple times. " +
+              "In this case the change feed continuation can not be migrated - a new change feed needs to be " +
+              "started instead."
+          )
+        }
+
+        new CompositeContinuationToken(
+          "\"" + lsn + "\"",
+          range)
+      }).toList
+
+    val feedRangeContinuation: FeedRangeContinuation = FeedRangeContinuation
+      .create(
+        containerResourceId,
+        FeedRangeEpkImpl.forFullRange,
+        continuations.asJava
+      )
+
+    val changeFeedState: ChangeFeedState = new ChangeFeedStateV1(
+      containerResourceId,
+      FeedRangeEpkImpl.forFullRange,
+      ChangeFeedMode.INCREMENTAL,
+      ChangeFeedStartFromInternal.createFromLegacyContinuation(),
+      feedRangeContinuation
+    )
+
+    s"v1\n" +
+    new ChangeFeedOffset(
+      changeFeedState.toString,
+      None
+    ).json()
   }
 }

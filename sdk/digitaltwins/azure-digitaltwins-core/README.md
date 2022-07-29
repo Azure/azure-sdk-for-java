@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-digitaltwins-core</artifactId>
-  <version>1.2.3</version>
+  <version>1.3.0</version>
 </dependency>
 ```
 
@@ -75,7 +75,7 @@ In order to interact with the Azure Digital Twins service, you will need to crea
 
 ## Key concepts
 
-Azure Digital Twins Preview is an Azure IoT service that creates comprehensive models of the physical environment.
+Azure Digital Twins is an Azure IoT service that creates comprehensive models of the physical environment.
 It can create spatial intelligence graphs to model the relationships and interactions between people, spaces, and devices.
 
 You can learn more about Azure Digital Twins by visiting [Azure Digital Twins Documentation][digital_twins_documentation]

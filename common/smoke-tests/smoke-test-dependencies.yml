@@ -56,7 +56,7 @@ jobs:
         Java 8 MacOS (AzureCloud):
           JavaTestVersion: '1.8'
           Pool: Azure Pipelines
-          OSVmImage: macOS-10.15
+          OSVmImage: macos-11
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
@@ -64,7 +64,7 @@ jobs:
         Java LTS MacOS (AzureCloud):
           JavaTestVersion: '1.11'
           Pool: Azure Pipelines
-          OSVmImage: macOS-10.15
+          OSVmImage: macos-11
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml

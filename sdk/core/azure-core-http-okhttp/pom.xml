@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
   <packaging>jar</packaging>
-  <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+  <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
 
   <name>Microsoft Azure OkHttp HTTP Client Library</name>
   <description>This package contains the OkHttp HTTP client plugin for azure-core.</description>
@@ -51,6 +51,9 @@
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp=ALL-UNNAMED
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
   </properties>
 
   <developers>
@@ -64,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -77,27 +80,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.11.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.11.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -148,17 +151,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:deprecation</arg>
-          </compilerArgs>
         </configuration>
       </plugin>
     </plugins>

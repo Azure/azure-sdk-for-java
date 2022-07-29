@@ -21,7 +21,6 @@ public class UnsupportedJacksonVersionsTests {
 
         JacksonVersion version = JacksonVersion.getInstance();
         String helpInfo = version.getHelpInfo();
-        assertTrue(helpInfo.contains("jackson-annotations=" + jacksonVersionString));
         assertTrue(helpInfo.contains("jackson-core=" + jacksonVersionString));
         assertTrue(helpInfo.contains("jackson-databind=" + jacksonVersionString));
         assertTrue(helpInfo.contains("jackson-dataformat-xml=" + jacksonVersionString));

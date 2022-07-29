@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -15,6 +16,7 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -67,6 +69,19 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobClient#upload(BinaryData)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadWithBinaryData() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.upload(binaryData).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData
+    }
+
+    /**
      * Code snippet for {@link BlockBlobClient#upload(InputStream, long, boolean)}
      *
      * @throws IOException If an I/O error occurs
@@ -77,6 +92,20 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Uploaded BlockBlob MD5 is %s%n",
             Base64.getEncoder().encodeToString(client.upload(data, length, overwrite).getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#upload(BinaryData, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadWithOverwriteWithBinaryData() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean
+        boolean overwrite = false;
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.upload(binaryData, overwrite).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean
     }
 
     /**
@@ -211,6 +240,33 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Staging block completed with status %d%n",
             client.stageBlockWithResponse(base64BlockId, data, length, md5, leaseId, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#stageBlock(String, BinaryData)}
+     */
+    public void stageBlock3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        client.stageBlock(base64BlockId, binaryData);
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#stageBlockWithResponse(String, InputStream, long, byte[], String, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void stageBlock4() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context
+        Context context = new Context("key", "value");
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(base64BlockId, binaryData)
+            .setContentMd5(md5)
+            .setLeaseId(leaseId);
+        System.out.printf("Staging block completed with status %d%n",
+            client.stageBlockWithResponse(options, timeout, context).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context
     }
 
     /**

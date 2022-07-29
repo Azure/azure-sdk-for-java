@@ -334,7 +334,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
      * <pre>
      * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateResponse -&gt;
      *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
      *             certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getSecretId&#40;&#41;&#41;&#41;;
@@ -366,7 +366,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String -->
      * <pre>
      * certificateAsyncClient.getCertificateWithResponse&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateResponse -&gt;
      *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
      *             certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
@@ -418,7 +418,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * String certificateVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
      * certificateAsyncClient.getCertificateVersionWithResponse&#40;&quot;certificateName&quot;, certificateVersion&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateWithVersion -&gt;
      *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
      *             certificateWithVersion.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
@@ -452,7 +452,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String -->
      * <pre>
      * certificateAsyncClient.getCertificateVersion&#40;&quot;certificateName&quot;, certificateVersion&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateWithVersion -&gt;
      *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
      *             certificateWithVersion.getProperties&#40;&#41;.getName&#40;&#41;, certificateWithVersion.getSecretId&#40;&#41;&#41;&#41;;
@@ -486,7 +486,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties -->
      * <pre>
      * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateResponseValue -&gt; &#123;
      *         KeyVaultCertificate certificate = certificateResponseValue;
      *         &#47;&#47;Update enabled status of the certificate
@@ -525,7 +525,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePropertiesWithResponse#CertificateProperties -->
      * <pre>
      * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateResponseValue -&gt; &#123;
      *         KeyVaultCertificate certificate = certificateResponseValue;
      *         &#47;&#47;Update the enabled status of the certificate.
@@ -651,7 +651,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificate#string -->
      * <pre>
      * certificateAsyncClient.getDeletedCertificate&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;deletedSecretResponse -&gt;
      *         System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;, deletedSecretResponse.getRecoveryId&#40;&#41;&#41;&#41;;
      * </pre>
@@ -684,7 +684,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificateWithResponse#string -->
      * <pre>
      * certificateAsyncClient.getDeletedCertificateWithResponse&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;deletedSecretResponse -&gt;
      *         System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;,
      *             deletedSecretResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;&#41;;
@@ -726,7 +726,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string -->
      * <pre>
      * certificateAsyncClient.purgeDeletedCertificateWithResponse&#40;&quot;deletedCertificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;purgeResponse -&gt;
      *         System.out.printf&#40;&quot;Purge Status response %d %n&quot;, purgeResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
@@ -757,7 +757,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string -->
      * <pre>
      * certificateAsyncClient.purgeDeletedCertificateWithResponse&#40;&quot;deletedCertificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;purgeResponse -&gt;
      *         System.out.printf&#40;&quot;Purge Status response %d %n&quot;, purgeResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
@@ -871,7 +871,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificate#string -->
      * <pre>
      * certificateAsyncClient.backupCertificate&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateBackupResponse -&gt;
      *         System.out.printf&#40;&quot;Certificate's Backup Byte array's length %s %n&quot;, certificateBackupResponse.length&#41;&#41;;
      * </pre>
@@ -902,7 +902,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificateWithResponse#string -->
      * <pre>
      * certificateAsyncClient.backupCertificateWithResponse&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateBackupResponse -&gt;
      *         System.out.printf&#40;&quot;Certificate's Backup Byte array's length %s %n&quot;,
      *             certificateBackupResponse.getValue&#40;&#41;.length&#41;&#41;;
@@ -947,7 +947,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * byte[] certificateBackupByteArray = &#123;&#125;;
      * certificateAsyncClient.restoreCertificateBackup&#40;certificateBackupByteArray&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Restored Certificate with name %s and key id %s %n&quot;,
      *         certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;;
      * </pre>
@@ -978,7 +978,7 @@ public final class CertificateAsyncClient {
      * <pre>
      * byte[] certificateBackup = &#123;&#125;;
      * certificateAsyncClient.restoreCertificateBackup&#40;certificateBackup&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Restored Certificate with name %s and key id %s %n&quot;,
      *         certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1020,7 +1020,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates -->
      * <pre>
      * certificateAsyncClient.listPropertiesOfCertificates&#40;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificate -&gt; certificateAsyncClient.getCertificateVersion&#40;certificate.getName&#40;&#41;,
      *         certificate.getVersion&#40;&#41;&#41;
      *         .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received certificate with name %s and key id %s&quot;,
@@ -1055,7 +1055,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates -->
      * <pre>
      * certificateAsyncClient.listPropertiesOfCertificates&#40;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificate -&gt; certificateAsyncClient.getCertificateVersion&#40;certificate.getName&#40;&#41;,
      *         certificate.getVersion&#40;&#41;&#41;
      *         .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received certificate with name %s and key id %s&quot;,
@@ -1131,7 +1131,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates -->
      * <pre>
      * certificateAsyncClient.listDeletedCertificates&#40;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;deletedCertificateResponse -&gt;  System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;,
      *         deletedCertificateResponse.getRecoveryId&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1165,7 +1165,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates -->
      * <pre>
      * certificateAsyncClient.listDeletedCertificates&#40;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;deletedCertificateResponse -&gt;  System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;,
      *         deletedCertificateResponse.getRecoveryId&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1241,7 +1241,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions -->
      * <pre>
      * certificateAsyncClient.listPropertiesOfCertificateVersions&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificate -&gt; certificateAsyncClient.getCertificateVersion&#40;certificate.getName&#40;&#41;,
      *         certificate.getVersion&#40;&#41;&#41;
      *         .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received certificate with name %s and key id %s&quot;,
@@ -1388,7 +1388,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string -->
      * <pre>
      * certificateAsyncClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;policy -&gt;
      *         System.out.printf&#40;&quot;Certificate policy is returned with issuer name %s and subject name %s %n&quot;,
      *             policy.getIssuerName&#40;&#41;, policy.getSubject&#40;&#41;&#41;&#41;;
@@ -1419,7 +1419,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string -->
      * <pre>
      * certificateAsyncClient.getCertificatePolicyWithResponse&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;policyResponse -&gt;
      *         System.out.printf&#40;&quot;Certificate policy is returned with issuer name %s and subject name %s %n&quot;,
      *             policyResponse.getValue&#40;&#41;.getIssuerName&#40;&#41;, policyResponse.getValue&#40;&#41;.getSubject&#40;&#41;&#41;&#41;;
@@ -1460,7 +1460,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string -->
      * <pre>
      * certificateAsyncClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificatePolicyResponseValue -&gt; &#123;
      *         CertificatePolicy certificatePolicy = certificatePolicyResponseValue;
      *         &#47;&#47; Update transparency
@@ -1500,7 +1500,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string -->
      * <pre>
      * certificateAsyncClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;certificatePolicyResponseValue -&gt; &#123;
      *         CertificatePolicy certificatePolicy = certificatePolicyResponseValue;
      *         &#47;&#47; Update transparency
@@ -1554,7 +1554,7 @@ public final class CertificateAsyncClient {
      *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
      *     .setPassword&#40;&quot;temp2&quot;&#41;;
      * certificateAsyncClient.createIssuer&#40;issuer&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;
      *         System.out.printf&#40;&quot;Issuer created with %s and %s&quot;, issuerResponse.getName&#40;&#41;,
      *             issuerResponse.getProvider&#40;&#41;&#41;;
@@ -1591,7 +1591,7 @@ public final class CertificateAsyncClient {
      *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
      *     .setPassword&#40;&quot;temp2&quot;&#41;;
      * certificateAsyncClient.createIssuerWithResponse&#40;newIssuer&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;
      *         System.out.printf&#40;&quot;Issuer created with %s and %s&quot;, issuerResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *             issuerResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
@@ -1647,7 +1647,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string -->
      * <pre>
      * certificateAsyncClient.getIssuerWithResponse&#40;&quot;issuerName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponse -&gt; &#123;
      *         System.out.printf&#40;&quot;Issuer returned with %s and %s&quot;, issuerResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *             issuerResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
@@ -1679,7 +1679,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string -->
      * <pre>
      * certificateAsyncClient.getIssuer&#40;&quot;issuerName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuer -&gt; &#123;
      *         System.out.printf&#40;&quot;Issuer returned with %s and %s&quot;, issuer.getName&#40;&#41;,
      *             issuer.getProvider&#40;&#41;&#41;;
@@ -1725,7 +1725,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuerWithResponse#string -->
      * <pre>
      * certificateAsyncClient.deleteIssuerWithResponse&#40;&quot;issuerName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;deletedIssuerResponse -&gt;
      *         System.out.printf&#40;&quot;Deleted issuer with name %s %n&quot;, deletedIssuerResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1756,7 +1756,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuer#string -->
      * <pre>
      * certificateAsyncClient.deleteIssuer&#40;&quot;issuerName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;deletedIssuerResponse -&gt;
      *         System.out.printf&#40;&quot;Deleted issuer with name %s %n&quot;, deletedIssuerResponse.getName&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1802,7 +1802,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers -->
      * <pre>
      * certificateAsyncClient.listPropertiesOfIssuers&#40;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerProperties -&gt; certificateAsyncClient.getIssuer&#40;issuerProperties.getName&#40;&#41;&#41;
      *         .subscribe&#40;issuerResponse -&gt; System.out.printf&#40;&quot;Received issuer with name %s and provider %s&quot;,
      *             issuerResponse.getName&#40;&#41;, issuerResponse.getProvider&#40;&#41;&#41;&#41;&#41;;
@@ -1875,7 +1875,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer -->
      * <pre>
      * certificateAsyncClient.getIssuer&#40;&quot;issuerName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponseValue -&gt; &#123;
      *         CertificateIssuer issuer = issuerResponseValue;
      *         &#47;&#47;Update the enabled status of the issuer.
@@ -1916,7 +1916,7 @@ public final class CertificateAsyncClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer -->
      * <pre>
      * certificateAsyncClient.getIssuer&#40;&quot;issuerName&quot;&#41;
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;issuerResponseValue -&gt; &#123;
      *         CertificateIssuer issuer = issuerResponseValue;
      *         &#47;&#47;Update the enabled status of the issuer.

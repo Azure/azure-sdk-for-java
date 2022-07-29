@@ -6,32 +6,74 @@ package com.azure.storage.blob.perf.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.UUID;
+import java.util.Random;
 
-import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.perf.BlobPerfStressOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder;
+import com.azure.storage.blob.specialized.cryptography.EncryptionVersion;
+import reactor.core.publisher.Mono;
 
-public abstract class BlobTestBase<TOptions extends PerfStressOptions> extends ContainerTest<TOptions> {
+public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> extends ContainerTest<TOptions> {
 
     public static final int DEFAULT_BUFFER_SIZE = 8192;
+    protected static  final String BLOB_NAME_PREFIX = "randomblobtest-";
     protected final BlobClient blobClient;
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
+    private static final FakeKey fakeKeyEncryptionKey;
 
-    public BlobTestBase(TOptions options) {
+    static {
+        Random rand = new Random(System.currentTimeMillis());
+        byte[] data = new byte[256];
+        rand.nextBytes(data);
+        fakeKeyEncryptionKey = new FakeKey("keyId", data);
+    }
+
+    public BlobTestBase(TOptions options, String blobName) {
         super(options);
 
-        String blobName = "randomblobtest-" + UUID.randomUUID().toString();
+        if (options.getClientEncryption() != null) {
+            EncryptionVersion version;
+            if (options.getClientEncryption().equals("1.0")) {
+                version = EncryptionVersion.V1;
+            } else if (options.getClientEncryption().equals("2.0")) {
+                version = EncryptionVersion.V2;
+            } else {
+                throw new IllegalArgumentException("Encryption version not recognized");
+            }
 
-        blobClient = blobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
 
-        blockBlobClient = blobClient.getBlockBlobClient();
-        blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient();
+            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
+                .blobClient(blobContainerClient.getBlobClient(blobName))
+                .key(fakeKeyEncryptionKey, KeyWrapAlgorithm.A256KW.toString());
+
+            blobClient = builder.buildEncryptedBlobClient();
+            blobAsyncClient = builder.buildEncryptedBlobAsyncClient();
+        } else {
+            blobClient = blobContainerClient.getBlobClient(blobName);
+            blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+        }
+
+        blockBlobClient = blobContainerClient.getBlobClient(blobName).getBlockBlobClient();
+        blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+    }
+
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync()
+            .then();
+    }
+
+    @Override
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
+            .then();
     }
 
     public long copyStream(InputStream input, OutputStream out) throws IOException {

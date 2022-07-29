@@ -11,9 +11,9 @@ stages:
         - name: azure-messaging-eventhubs-checkpointstore-blob
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
-        - name: azure-messaging-eventhubs-checkpointstore-redis
+        - name: azure-messaging-eventhubs-checkpointstore-jedis
           groupId: com.azure
-          safeName: azuremessagingeventhubscheckpointstoreredis
+          safeName: azuremessagingeventhubscheckpointstorejedis
       TimeoutInMinutes: 120
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:

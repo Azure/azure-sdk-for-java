@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB storedProcedure. */
 @Fluent
 public final class SqlStoredProcedureCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStoredProcedureCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a storedProcedure
      */
@@ -78,7 +75,7 @@ public final class SqlStoredProcedureCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model SqlStoredProcedureCreateUpdateProperties"));
@@ -89,4 +86,6 @@ public final class SqlStoredProcedureCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlStoredProcedureCreateUpdateProperties.class);
 }

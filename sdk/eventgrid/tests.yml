@@ -13,3 +13,10 @@ stages:
         - name: azure-messaging-eventgrid-cloudnative-cloudevents
           groupId: com.azure
           safeName: azuremessagingeventgridcloudnativecloudevents
+      EnvVars:
+        # Static resource is used for testing publishing events to partner topics because this feature is not GA yet.
+        # Python var names were used when the keys were added to TestSecrets2 Key Vault.
+        # Instead of duplicating it in all languages, we'll use this temporarily until this feature is GA'd.
+        EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT: $(python-eventgrid-partner-endpoint)
+        EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY: $(python-eventgrid-partner-key)
+        EVENTGRID_PARTNER_CHANNEL_NAME: $(python-eventgrid-partner-channel-name)

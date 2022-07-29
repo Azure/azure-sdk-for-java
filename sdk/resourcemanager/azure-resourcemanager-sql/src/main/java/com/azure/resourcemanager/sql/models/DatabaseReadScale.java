@@ -27,7 +27,11 @@ public final class DatabaseReadScale extends ExpandableStringEnum<DatabaseReadSc
         return fromString(name, DatabaseReadScale.class);
     }
 
-    /** @return known DatabaseReadScale values. */
+    /**
+     * Gets known DatabaseReadScale values.
+     *
+     * @return known DatabaseReadScale values.
+     */
     public static Collection<DatabaseReadScale> values() {
         return values(DatabaseReadScale.class);
     }

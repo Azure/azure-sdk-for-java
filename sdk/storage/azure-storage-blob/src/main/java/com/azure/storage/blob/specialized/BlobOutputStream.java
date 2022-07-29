@@ -35,6 +35,12 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class BlobOutputStream extends StorageOutputStream {
 
+    private volatile boolean isClosed;
+
+    /**
+     *
+     * @param writeThreshold How many bytes the output will retain before it initiates a write to the Storage service.
+     */
     BlobOutputStream(final int writeThreshold) {
         super(writeThreshold);
     }
@@ -114,7 +120,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     @Override
     public synchronized void close() throws IOException {
         try {
-            // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
+            // if the stream is already closed, we can stop executing any further steps to avoid throwing
+            // STREAM_CLOSED exception
+            if (isClosed) {
+                return;
+            }
             // if an exception was thrown by any thread in the threadExecutor, realize it now
             this.checkStreamState();
 
@@ -125,7 +135,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             try {
                 this.commit();
             } catch (final BlobStorageException e) {
-                throw new IOException(e);
+                throw new IOException("The blob has not been commited. Data has not been persisted.", e);
             }
             /* Need this check because for block blob the buffered upload error only manifests itself after commit is
                called */
@@ -133,8 +143,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 throw lastError;
             }
         } finally {
-            // if close() is called again, an exception will be thrown
             this.lastError = new IOException(Constants.STREAM_CLOSED);
+            isClosed = true;
         }
     }
 
@@ -186,7 +196,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             Flux<ByteBuffer> fbb = Flux.range(0, 1).concatMap(pos -> Mono.fromCallable(() ->
                 ByteBuffer.wrap(data, (int) offset, writeLength)));
 
-            return this.appendBlock(fbb.subscribeOn(Schedulers.elastic()), writeLength);
+            return this.appendBlock(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength);
         }
 
         @Override
@@ -346,7 +356,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);
-            return this.writePages(fbb.subscribeOn(Schedulers.elastic()), writeLength, pageOffset);
+            return this.writePages(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength, pageOffset);
         }
 
         @Override

@@ -290,7 +290,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                 .buildChangeFeedProcessor();
 
             try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .subscribe();
 
@@ -308,7 +308,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             } catch (InterruptedException e) {
                 throw new RuntimeException("Interrupted exception", e);
             } finally {
-                changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
                 // Wait for the feed processor to shutdown.
                 try {

@@ -9,11 +9,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SliceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for attached data network API service call. */
+/** Response for network slice API service call. */
 @Fluent
 public final class SliceListResult {
     /*
-     * A list of data networks in a resource group.
+     * A list of network slices in a mobile network.
      */
     @JsonProperty(value = "value")
     private List<SliceInner> value;
@@ -25,7 +25,7 @@ public final class SliceListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of data networks in a resource group.
+     * Get the value property: A list of network slices in a mobile network.
      *
      * @return the value value.
      */
@@ -34,7 +34,7 @@ public final class SliceListResult {
     }
 
     /**
-     * Set the value property: A list of data networks in a resource group.
+     * Set the value property: A list of network slices in a mobile network.
      *
      * @param value the value value to set.
      * @return the SliceListResult object itself.

@@ -1,8 +1,9 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
+### 4.34.0-beta.1 (Unreleased)
 
 #### Features Added
+* GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
 
 #### Breaking Changes
 
@@ -11,6 +12,28 @@
 #### Other Changes
 * Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
 * Remove requires `io.netty.transport.epoll` from `module-info`.
+
+### 4.33.1 (2022-07-22)
+
+#### Bugs Fixed
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. - See [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed `ForbiddenException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
+* Fixed a regression introduced in [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440) which causes an `IllegalArgumentException` for distinct queries when using POJO serialization. - See [PR 30025](https://github.com/Azure/azure-sdk-for-java/pull/30025)
+* Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
+
+#### Other Changes
+* Supported username and password to be used in `GatewayConnectionConfig.setProxy` . - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
+
+### 4.33.0 (2022-07-14)
+#### Other Changes
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
+
+### 4.32.1 (2022-06-30)
+
+#### Bugs Fixed
+* Added a fix for `CloneNotSupportedException` when trying to instantiate a `Cosmos(Async)Client` and using a MAC provider which would not support cloning. Instead, this should be handled gracefully (less ideal perf is expected - but functionally it should work.) - See [PR 29719](https://github.com/Azure/azure-sdk-for-java/pull/29719)
 
 ### 4.32.0 (2022-06-27)
 #### Other Changes

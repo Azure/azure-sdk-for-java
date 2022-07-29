@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for PartnerTopics Update. */
 public final class PartnerTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopics_Update.json
      */
     /**
      * Sample code: PartnerTopics_Update.

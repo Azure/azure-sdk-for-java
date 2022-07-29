@@ -1,15 +1,26 @@
 # Release History
 
-## 7.10.0-beta.1 (Unreleased)
+## 7.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed incorrect message ordering after session processor abandon message and when `maxConcurrentSessions` is 1. ([#24064](https://github.com/Azure/azure-sdk-for-java/issues/24064), [#30027](https://github.com/Azure/azure-sdk-for-java/issues/30027))
 ### Other Changes
 
+## 7.10.0 (2022-07-12)
+
+### Features Added
+- Exposing `ServiceBusClientBuilder.customEndpointAddress` to support connecting to an intermediary before Azure ServiceBus.
+
+### Other Changes
+- Moved message state key to `azure-core-amqp` constants. ([#26898](https://github.com/Azure/azure-sdk-for-java/issues/26898))
+#### Dependency Updates
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded `azure-core-amqp` from `2.5.2` to `2.6.0`.
+- Upgraded `azure-identity` from `1.5.2` to `1.5.3`.
 ## 7.9.1 (2022-06-16)
 
 ### Bugs Fixed

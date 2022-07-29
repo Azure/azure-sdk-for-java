@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Domains CreateOrUpdate. */
 public final class DomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Domains_CreateOrUpdate.json
      */
     /**
      * Sample code: Domains_CreateOrUpdate.

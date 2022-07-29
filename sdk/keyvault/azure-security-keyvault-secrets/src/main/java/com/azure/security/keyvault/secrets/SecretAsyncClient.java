@@ -275,7 +275,7 @@ public final class SecretAsyncClient {
      * secretAsyncClient.getSecret&#40;&quot;secretName&quot;, secretVersion&#41;
      *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
      *     &#47;&#47; Otherwise, the line below can be removed.
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;secretWithVersion -&gt;
      *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
      *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
@@ -314,7 +314,7 @@ public final class SecretAsyncClient {
      * secretAsyncClient.getSecretWithResponse&#40;&quot;secretName&quot;, secretVersion&#41;
      *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
      *     &#47;&#47; Otherwise, the line below can be removed.
-     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
      *     .subscribe&#40;secretWithVersion -&gt;
      *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
      *             secretWithVersion.getValue&#40;&#41;.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;

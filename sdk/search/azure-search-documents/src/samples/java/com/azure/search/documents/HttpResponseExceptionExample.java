@@ -80,7 +80,7 @@ public class HttpResponseExceptionExample {
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("Non_Existent_Field eq 'Luxury'");
 
-        SearchPagedFlux results = client.search("hotel", searchOptions, null);
+        SearchPagedFlux results = client.search("hotel", searchOptions);
         results
             .subscribe(
                 foo -> {

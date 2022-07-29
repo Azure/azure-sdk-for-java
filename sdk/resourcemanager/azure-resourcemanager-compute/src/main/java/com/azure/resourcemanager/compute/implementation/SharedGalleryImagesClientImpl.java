@@ -438,7 +438,14 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedGalleryImageInner> getAsync(String location, String galleryUniqueName, String galleryImageName) {
         return getWithResponseAsync(location, galleryUniqueName, galleryImageName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<SharedGalleryImageInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

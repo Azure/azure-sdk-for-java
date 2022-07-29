@@ -26,7 +26,7 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RecommendedElasticPoolInner>> getWithResponseAsync(
@@ -42,7 +42,7 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecommendedElasticPoolInner> getAsync(
@@ -74,7 +74,7 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommended elastic pool.
+     * @return a recommended elastic pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecommendedElasticPoolInner> getWithResponse(
@@ -89,7 +89,8 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecommendedElasticPoolInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -103,7 +104,8 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendedElasticPoolInner> listByServer(String resourceGroupName, String serverName);
@@ -118,7 +120,8 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool request.
+     * @return represents the response to a list recommended elastic pool request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendedElasticPoolInner> listByServer(
@@ -134,7 +137,8 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecommendedElasticPoolMetricInner> listMetricsAsync(
@@ -150,7 +154,8 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendedElasticPoolMetricInner> listMetrics(
@@ -167,7 +172,8 @@ public interface RecommendedElasticPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list recommended elastic pool metrics request.
+     * @return represents the response to a list recommended elastic pool metrics request as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendedElasticPoolMetricInner> listMetrics(

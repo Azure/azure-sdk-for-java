@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.33.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.34.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -59,10 +59,6 @@ Licensed under the MIT License.
 
     <!-- Prevents Checkstyle validating test source files. -->
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
-
-    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-    <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
-    <revapi.skip>true</revapi.skip>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
     <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
   </properties>
@@ -93,19 +89,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -216,13 +212,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.9.1</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.9.2</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -282,7 +278,7 @@ Licensed under the MIT License.
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.13.3]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.9.1]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.9.2]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.hdrhistogram:HdrHistogram:[2.1.12]</include> <!-- {x-include-update;cosmos_org.hdrhistogram:HdrHistogram;external_dependency} -->
               </includes>

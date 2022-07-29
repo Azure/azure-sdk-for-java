@@ -5,7 +5,8 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
-$packageDownloadUrl = "https://repo1.maven.org/maven2"
+$GithubUri = "https://github.com/Azure/azure-sdk-for-java"
+$PackageRepositoryUri = "https://repo1.maven.org/maven2"
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 
@@ -63,7 +64,7 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
   $uri = "https://oss.sonatype.org/content/repositories/releases/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
-  
+
   $attempt = 1
   while ($attempt -le 3)
   {
@@ -255,7 +256,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
     }
     else {
       $newItem = New-Object PSObject -Property @{
-        packageDownloadUrl = $packageDownloadUrl
+        packageDownloadUrl = $PackageRepositoryUri
         packageGroupId = $releasingPkg.GroupId
         packageArtifactId = $releasingPkg.PackageId
         packageVersion = $releasingPkg.PackageVersion
@@ -292,7 +293,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory" 
+      -DoutputDirectory="$packageDirectory"
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -355,7 +356,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 }
 
 function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
-  return ValidatePackages(@{ Group = $groupId; Name = $artifactId; Version = $version; }, $DocValidationImageId)
+  return ValidatePackages @{ Group = $groupId; Name = $artifactId; Version = $version; } $DocValidationImageId
 }
 
 function ValidatePackages([array]$packageInfos, $DocValidationImageId) {
@@ -367,11 +368,11 @@ function ValidatePackages([array]$packageInfos, $DocValidationImageId) {
   # Add more validation by replicating as much of the docs CI process as
   # possible
   # https://github.com/Azure/azure-sdk-for-python/issues/20109
-  if (!$DocValidationImageId) 
+  if (!$DocValidationImageId)
   {
     return FallbackValidation -packageInfos $packageInfos -workingDirectory $workingDirectory
-  } 
-  else 
+  }
+  else
   {
     return DockerValidation -packageInfos $packageInfos -DocValidationImageId $DocValidationImageId -workingDirectory $workingDirectory
   }
@@ -394,7 +395,7 @@ function FallbackValidation ($packageInfos, $workingDirectory) {
 
     $isValid = (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
       -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
-      
+
     if (!$isValid) {
       LogWarning "Package $artifactNamePrefix ref docs validation failed."
     }
@@ -417,14 +418,14 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
 
   # Cannot use Join-Path because the container and host path separators may differ
   $containerConfigurationPath = "$containerWorkingDirectory/$configurationFileName"
-  
+
   $configuration = [ordered]@{
     "output_path" = "docs-ref-autogen";
-    "packages" = @($packageInfos | ForEach-Object { [ordered]@{ 
+    "packages" = @($packageInfos | ForEach-Object { [ordered]@{
         packageGroupId = $_.Group;
         packageArtifactId = $_.Name;
         packageVersion = $_.Version;
-        packageDownloadUrl = $packageDownloadUrl;
+        packageDownloadUrl = $PackageRepositoryUri;
       } });
   }
 
@@ -432,19 +433,19 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
 
   docker run -v "${workingDirectory}:${containerWorkingDirectory}" `
     -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath -t $DocValidationImageId 2>&1 `
-    | Where-Object { -not ($_ -match '^Progress .*B\s*$') } ` # Remove progress messages 
+    | Where-Object { -not ($_ -match '^Progress .*B\s*$') } ` # Remove progress messages
     | Out-Host
-  
-  if ($LASTEXITCODE -ne 0) { 
+
+  if ($LASTEXITCODE -ne 0) {
     LogWarning "The `docker` command failed with exit code $LASTEXITCODE."
-     
+
     # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
     # If the docker validation failed because of docker itself instead of the application, or if we don't know which
     # package failed, fall back to mvn validation
-    if ($LASTEXITCODE -in 125..127 -Or $packageInfos.Length -gt 1) { 
+    if ($LASTEXITCODE -in 125..127 -Or $packageInfos.Length -gt 1) {
       return FallbackValidation -packageInfos $packageInfos -workingDirectory $workingDirectory
     }
-  
+
     return $false
   }
 
@@ -464,15 +465,17 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValida
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
     'preview' `
-    $FilteredMetadata
+    $FilteredMetadata `
+    $DocValidationImageId
 
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
     'latest' `
-    $FilteredMetadata
+    $FilteredMetadata`
+    $DocValidationImageId
 }
 
-function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
+function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidationImageId) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
 
   $packageOutputPath = 'docs-ref-autogen'
@@ -539,7 +542,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion 
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $DocValidationImageId
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -562,11 +565,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $remainingPackages = @()
   if ($Mode -eq 'preview') {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+      ![string]::IsNullOrWhiteSpace($_.VersionPreview) -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   } else {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+      ![string]::IsNullOrWhiteSpace($_.VersionGA) -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   }
 
@@ -580,7 +583,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion 
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $DocValidationImageId
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
@@ -591,7 +594,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
       packageArtifactId = $packageName
       packageGroupId = $packageGroupId
       packageVersion = $packageVersion
-      packageDownloadUrl = $packageDownloadUrl
+      packageDownloadUrl = $PackageRepositoryUri
     }
 
     $outputPackages += $package
@@ -665,9 +668,10 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   {
     $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
   }
+  $fullLibraryName = $GroupId + ":" + $PackageName
   python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
-  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
-  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --tf $PackageProperties.ReadMePath
+  # -ll option says "only update README and CHANGELOG entries for libraries that are on the list"
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --ll $fullLibraryName
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
 }
@@ -680,7 +684,7 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
     if($response.numFound -ne 0)
     {
       $existingVersion = $response.docs.v
-      if ($existingVersion.Count -gt 0) 
+      if ($existingVersion.Count -gt 0)
       {
         [Array]::Reverse($existingVersion)
         return $existingVersion
@@ -694,15 +698,15 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
   }
 }
 
-function Get-java-DocsMsMetadataForPackage($PackageInfo) { 
+function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   $readmeName = $PackageInfo.Name.ToLower()
   Write-Host "Docs.ms Readme name: $($readmeName)"
 
   # Readme names (which are used in the URL) should not include redundant terms
-  # when viewed in URL form. For example: 
+  # when viewed in URL form. For example:
   # https://review.docs.microsoft.com/en-us/java/api/overview/azure/storage-blob-readme
   # Note how the end of the URL doesn't look like:
-  # ".../azure/azure-storage-blobs-readme" 
+  # ".../azure/azure-storage-blobs-readme"
 
   # This logic eliminates a preceeding "azure-" in the readme filename.
   # "azure-storage-blobs" -> "storage-blobs"
