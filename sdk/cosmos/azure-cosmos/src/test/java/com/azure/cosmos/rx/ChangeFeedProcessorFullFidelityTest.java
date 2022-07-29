@@ -10,8 +10,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ChangeFeedOperationType;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,15 +45,15 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static CosmosAsyncContainer feedContainer;
     private static CosmosAsyncContainer leaseContainer;
 
-    private static Map<ChangeFeedOperationType, List<ChangeFeedProcessorResponse>> changeFeedMap = new ConcurrentHashMap<>();
+    private static Map<ChangeFeedOperationType, List<ChangeFeedProcessorItem>> changeFeedMap = new ConcurrentHashMap<>();
 
 
     public static void main(String[] args) {
         setup();
         runFullFidelityChangeFeedProcessorFromNow();
-        //        createItems();
-        //        updateItems();
-        //        deleteItems();
+        createItems();
+        updateItems();
+        deleteItems();
         ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
         executorService.scheduleAtFixedRate(ChangeFeedProcessorFullFidelityTest::checkChangeFeedMapDetails,
             30, 30, TimeUnit.SECONDS);
@@ -116,23 +119,23 @@ public class ChangeFeedProcessorFullFidelityTest {
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();
 
-        //        cosmosAsyncClient.createDatabaseIfNotExists(databaseId).block();
-        //        logger.info("Test database created if not existed");
+        cosmosAsyncClient.createDatabaseIfNotExists(databaseId).block();
+        logger.info("Test database created if not existed");
         testDatabase = cosmosAsyncClient.getDatabase(databaseId);
 
-        //        logger.info("Deleting feed container");
+        logger.info("Deleting feed container");
         feedContainer = testDatabase.getContainer(feedContainerId);
-        //        feedContainer.delete().block();
+        feedContainer.delete().block();
 
-        //        logger.info("Deleting lease container");
+        logger.info("Deleting lease container");
         leaseContainer = testDatabase.getContainer(leaseContainerId);
-        //        leaseContainer.delete().block();
+        leaseContainer.delete().block();
 
-        //        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
-        //            feedContainerPartitionKeyPath);
-        //        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
-        //        testDatabase.createContainer(cosmosContainerProperties).block();
-        //        logger.info("Feed container created if not existed");
+        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
+            feedContainerPartitionKeyPath);
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+        testDatabase.createContainer(cosmosContainerProperties).block();
+        logger.info("Feed container created if not existed");
 
         testDatabase.createContainerIfNotExists(leaseContainerId, leaseContainerPartitionKeyPath).block();
         logger.info("Lease container created if not existed");
@@ -145,8 +148,8 @@ public class ChangeFeedProcessorFullFidelityTest {
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
-            .handleChanges(changeFeedProcessorResponses -> {
-                for (ChangeFeedProcessorResponse item : changeFeedProcessorResponses) {
+            .handleChanges(changeFeedProcessorItems -> {
+                for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
                         logger.info("Item is : {}", item.toString());
                         ChangeFeedOperationType operationType = item.getChangeFeedMetaData().getOperationType();

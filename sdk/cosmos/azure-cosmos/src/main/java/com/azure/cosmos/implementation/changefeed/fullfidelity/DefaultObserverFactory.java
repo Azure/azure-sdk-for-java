@@ -4,8 +4,7 @@ package com.azure.cosmos.implementation.changefeed.fullfidelity;
 
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverFactory;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +14,9 @@ import java.util.function.Consumer;
 class DefaultObserverFactory implements ChangeFeedObserverFactory {
     private final Logger log = LoggerFactory.getLogger(DefaultObserverFactory.class);
 
-    private Consumer<List<ChangeFeedProcessorResponse>> consumer;
+    private Consumer<List<ChangeFeedProcessorItem>> consumer;
 
-    public DefaultObserverFactory(Consumer<List<ChangeFeedProcessorResponse>> consumer) {
+    public DefaultObserverFactory(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.consumer = consumer;
     }
 

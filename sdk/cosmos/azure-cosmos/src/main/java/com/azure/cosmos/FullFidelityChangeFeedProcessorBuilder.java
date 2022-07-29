@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedProcessorBuilderImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.util.Beta;
 
 import java.util.List;
@@ -34,11 +34,12 @@ public class FullFidelityChangeFeedProcessorBuilder {
     private CosmosAsyncContainer feedContainer;
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private Consumer<List<ChangeFeedProcessorResponse>> consumer;
+    private Consumer<List<ChangeFeedProcessorItem>> consumer;
 
     /**
      * Instantiates a new Cosmos a new ChangeFeedProcessor builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FullFidelityChangeFeedProcessorBuilder() {
     }
 
@@ -48,6 +49,7 @@ public class FullFidelityChangeFeedProcessorBuilder {
      * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.
      * @return current Builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FullFidelityChangeFeedProcessorBuilder hostName(String hostName) {
         this.hostName = hostName;
         return this;
@@ -59,6 +61,7 @@ public class FullFidelityChangeFeedProcessorBuilder {
      * @param feedContainer the instance of {@link CosmosAsyncContainer} to be used.
      * @return current Builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FullFidelityChangeFeedProcessorBuilder feedContainer(CosmosAsyncContainer feedContainer) {
         this.feedContainer = feedContainer;
 
@@ -71,6 +74,7 @@ public class FullFidelityChangeFeedProcessorBuilder {
      * @param leaseContainer the instance of {@link CosmosAsyncContainer} to use.
      * @return current Builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FullFidelityChangeFeedProcessorBuilder leaseContainer(CosmosAsyncContainer leaseContainer) {
         this.leaseContainer = leaseContainer;
 
@@ -93,7 +97,8 @@ public class FullFidelityChangeFeedProcessorBuilder {
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
-    public FullFidelityChangeFeedProcessorBuilder handleChanges(Consumer<List<ChangeFeedProcessorResponse>> consumer) {
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public FullFidelityChangeFeedProcessorBuilder handleChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.consumer = consumer;
 
         return this;
@@ -114,6 +119,7 @@ public class FullFidelityChangeFeedProcessorBuilder {
      * @param changeFeedProcessorOptions the change feed processor options to use.
      * @return current Builder.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FullFidelityChangeFeedProcessorBuilder options(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
 
@@ -125,6 +131,7 @@ public class FullFidelityChangeFeedProcessorBuilder {
      *
      * @return an instance of {@link ChangeFeedProcessor}.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessor buildChangeFeedProcessor() {
         if (hostName == null || hostName.isEmpty()) {
             throw new IllegalArgumentException("hostName");

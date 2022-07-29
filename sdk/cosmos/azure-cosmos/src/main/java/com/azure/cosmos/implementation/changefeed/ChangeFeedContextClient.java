@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -48,8 +48,8 @@ public interface ChangeFeedContextClient {
     Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
                                                                CosmosChangeFeedRequestOptions requestOptions);
 
-    Flux<FeedResponse<ChangeFeedProcessorResponse>> createDocumentChangeFeedQueryV1(CosmosAsyncContainer collectionLink,
-                                                                                  CosmosChangeFeedRequestOptions requestOptions);
+    Flux<FeedResponse<ChangeFeedProcessorItem>> createDocumentChangeFeedQueryV1(CosmosAsyncContainer collectionLink,
+                                                                                CosmosChangeFeedRequestOptions requestOptions);
 
     /**
      * Reads a database.

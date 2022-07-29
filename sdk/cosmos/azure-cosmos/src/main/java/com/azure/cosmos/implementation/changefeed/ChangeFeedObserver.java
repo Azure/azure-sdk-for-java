@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
@@ -36,5 +36,5 @@ public interface ChangeFeedObserver {
      */
     Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs);
 
-    Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorResponse> docs);
+    Mono<Void> processChangesV1(ChangeFeedObserverContext context, List<ChangeFeedProcessorItem> docs);
 }

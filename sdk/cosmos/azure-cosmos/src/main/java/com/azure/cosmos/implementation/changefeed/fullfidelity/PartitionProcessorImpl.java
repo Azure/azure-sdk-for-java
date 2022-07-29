@@ -19,7 +19,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitExcep
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -261,7 +261,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     }
 
     private Mono<Void> dispatchChanges(
-        FeedResponse<ChangeFeedProcessorResponse> response,
+        FeedResponse<ChangeFeedProcessorItem> response,
         ChangeFeedState continuationState) {
 
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(

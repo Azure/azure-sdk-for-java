@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -98,7 +98,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<ChangeFeedProcessorResponse>> createDocumentChangeFeedQueryV1(
+    public Flux<FeedResponse<ChangeFeedProcessorItem>> createDocumentChangeFeedQueryV1(
         CosmosAsyncContainer collectionLink, CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
         // ChangeFeed processor relies on getting GoneException signals
         // to handle split of leases - so we need to suppress the split-proofing
@@ -108,7 +108,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
-        Flux<FeedResponse<ChangeFeedProcessorResponse>> feedResponseFlux =
+        Flux<FeedResponse<ChangeFeedProcessorItem>> feedResponseFlux =
             clientWrapper
                 .getCollectionCache()
                 .resolveByNameAsync(
@@ -123,13 +123,13 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     return clientWrapper
                         .queryDocumentChangeFeed(collection, effectiveRequestOptions, Document.class)
                         .map(response -> {
-                            List<ChangeFeedProcessorResponse> results = response.getResults()
-                                                             .stream()
-                                                             .map(document ->
+                            List<ChangeFeedProcessorItem> results = response.getResults()
+                                                                            .stream()
+                                                                            .map(document ->
                                                                  ModelBridgeInternal.toObjectFromJsonSerializable(
                                                                      document,
-                                                                     ChangeFeedProcessorResponse.class))
-                                                             .collect(Collectors.toList());
+                                                                     ChangeFeedProcessorItem.class))
+                                                                            .collect(Collectors.toList());
                             return BridgeInternal.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),

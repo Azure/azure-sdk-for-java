@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
@@ -26,7 +26,7 @@ public interface ChangeFeedObserverContext {
      */
     FeedResponse<JsonNode> getFeedResponse();
 
-    FeedResponse<ChangeFeedProcessorResponse> getFeedResponseV1();
+    FeedResponse<ChangeFeedProcessorItem> getFeedResponseV1();
 
     /**
      * Checkpoints progress of a stream. This method is valid only if manual checkpoint was configured.

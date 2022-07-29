@@ -23,7 +23,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import org.slf4j.Logger;
@@ -270,7 +270,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         return this;
     }
 
-    public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<ChangeFeedProcessorResponse>> consumer) {
+    public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
 

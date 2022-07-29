@@ -3,7 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.ChangeFeedProcessorResponse;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 
 /**
  * Code snippets for FullFidelityChangeFeedProcessor
@@ -27,8 +27,8 @@ public class FullFidelityChangeFeedProcessorCodeSnippet {
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .handleChanges(docs -> {
-                for (ChangeFeedProcessorResponse item : docs) {
-                    // Implementation for handling and processing of each ChangeFeedProcessorResponse item goes here
+                for (ChangeFeedProcessorItem item : docs) {
+                    // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
             })
             .buildChangeFeedProcessor();
@@ -52,8 +52,8 @@ public class FullFidelityChangeFeedProcessorCodeSnippet {
             .leaseContainer(leaseContainer)
             // BEGIN: com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges
             .handleChanges(docs -> {
-                for (ChangeFeedProcessorResponse item : docs) {
-                    // Implementation for handling and processing of each ChangeFeedProcessorResponse item goes here
+                for (ChangeFeedProcessorItem item : docs) {
+                    // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
             })
             // END: com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges

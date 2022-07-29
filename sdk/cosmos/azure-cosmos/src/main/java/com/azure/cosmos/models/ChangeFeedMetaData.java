@@ -22,12 +22,6 @@ public class ChangeFeedMetaData {
     private long previousLogSequenceNumber;
 
     /**
-     * Default constructor
-     */
-    public ChangeFeedMetaData() {
-    }
-
-    /**
      * Gets the conflict resolution timestamp
      *
      * @return conflict resolution timestamp
