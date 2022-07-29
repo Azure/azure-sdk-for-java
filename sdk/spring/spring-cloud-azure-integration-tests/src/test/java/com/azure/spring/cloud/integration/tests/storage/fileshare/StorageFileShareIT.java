@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.integration.tests.storage.fileShare;
+package com.azure.spring.cloud.integration.tests.storage.fileshare;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 @SpringBootTest
-@ActiveProfiles(value = {"storage-file-share", "service-bus-jms"})
+@ActiveProfiles("storage-fileshare")
 public class StorageFileShareIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileShareIT.class);
     private final String data = "sample-data";

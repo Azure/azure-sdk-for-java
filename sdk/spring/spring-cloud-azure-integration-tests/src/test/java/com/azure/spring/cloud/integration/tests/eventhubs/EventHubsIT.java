@@ -24,10 +24,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 
-@SpringBootTest(classes = EventHubIT.TestConfig.class)
-@ActiveProfiles(profiles = {"event-hub","service-bus-jms"})
-public class EventHubIT {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubIT.class);
+@SpringBootTest(classes = EventHubsIT.TestConfig.class)
+@ActiveProfiles("eventhubs")
+public class EventHubsIT {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsIT.class);
     private final String data = "eventhub test";
 
     @Autowired
@@ -55,7 +55,7 @@ public class EventHubIT {
     }
     @Test
     public void testEventHubOperation() {
-        LOGGER.info("EventHubIT begin.");
+        LOGGER.info("EventHubsIT begin.");
         producerClient.send(Arrays.asList(new EventData(data)));
         producerClient.close();
         IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("0", 1, EventPosition.earliest());
@@ -64,9 +64,10 @@ public class EventHubIT {
         }
         processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
+        //TODO
         processorClient.stop();
         Assertions.assertFalse(processorClient.isRunning());
-        LOGGER.info("EventHubIT end.");
+        LOGGER.info("EventHubsIT end.");
     }
 
 }

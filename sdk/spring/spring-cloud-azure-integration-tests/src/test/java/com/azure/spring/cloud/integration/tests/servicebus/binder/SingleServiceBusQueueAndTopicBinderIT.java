@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     SingleServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
     SingleServiceBusQueueAndTopicBinderIT.TestTopicConfig.class
 })
-@ActiveProfiles(value = {"service-bus-binder-single", "service-bus-jms"})
+@ActiveProfiles("servicebus-binder-single")
 class SingleServiceBusQueueAndTopicBinderIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingleServiceBusQueueAndTopicBinderIT.class);

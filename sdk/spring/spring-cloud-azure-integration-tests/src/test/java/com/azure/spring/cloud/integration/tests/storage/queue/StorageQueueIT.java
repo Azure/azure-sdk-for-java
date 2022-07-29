@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.queue;
 
 import com.azure.storage.queue.QueueClient;
@@ -11,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(value = {"storage-queue", "service-bus-jms"})
+@ActiveProfiles("storage-queue")
 public class StorageQueueIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageQueueIT.class);
     private final String data = "storage queue test";

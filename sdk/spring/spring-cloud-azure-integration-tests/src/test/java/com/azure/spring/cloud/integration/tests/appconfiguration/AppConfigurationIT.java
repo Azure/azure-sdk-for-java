@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(value = {"app", "service-bus-jms"})
+@ActiveProfiles("appconfiguration")
 public class AppConfigurationIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationIT.class);
     private final String sampleKey = "sample-key";

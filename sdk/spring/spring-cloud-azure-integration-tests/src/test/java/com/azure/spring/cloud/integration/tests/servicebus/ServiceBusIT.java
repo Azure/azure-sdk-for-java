@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.servicebus;
 
 import com.azure.core.util.IterableStream;
@@ -15,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = ServiceBusIT.TestConfig.class)
-@ActiveProfiles(value = {"service-bus", "service-bus-jms"})
+@ActiveProfiles("servicebus")
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private final String data = "service bus test";
@@ -53,6 +55,7 @@ public class ServiceBusIT {
         }
         processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
+        //TODO
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
         LOGGER.info("ServiceBusIT end.");

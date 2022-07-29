@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.integration.tests.cosmos.springData;
+package com.azure.spring.cloud.integration.tests.cosmos.springdata;
 
 import com.azure.spring.cloud.integration.tests.cosmos.User;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(value = {"spring-data-cosmos", "service-bus-jms"})
+@ActiveProfiles("cosmos-springdata")
 public class SpringDataCosmosIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringDataCosmosIT.class);
     private final String userId = "testSpringDataCosmos";

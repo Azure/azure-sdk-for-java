@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
-@ActiveProfiles(value = {"event-hubs-binder", "service-bus-jms"})
+@ActiveProfiles("eventhubs-binder")
 class EventHubsBinderBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderBatchModeIT.class);

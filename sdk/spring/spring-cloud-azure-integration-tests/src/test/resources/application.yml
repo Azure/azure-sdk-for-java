@@ -1,0 +1,4 @@
+spring:
+  jms:
+    servicebus:
+      enabled: false

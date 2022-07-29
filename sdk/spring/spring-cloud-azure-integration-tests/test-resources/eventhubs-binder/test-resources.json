@@ -395,7 +395,7 @@
       "type": "string",
       "value": "[variables('storageAccountName')]"
     },
-    "AZURE_EVENTHUBS_NAMESPACE": {
+    "AZURE_EVENTHUBS_BINDER_NAMESPACE": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
     },

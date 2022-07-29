@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(value = {"cosmos", "service-bus-jms"})
+@ActiveProfiles("cosmos")
 public class CosmosIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosIT.class);
     private final String databaseName = "TestDB";

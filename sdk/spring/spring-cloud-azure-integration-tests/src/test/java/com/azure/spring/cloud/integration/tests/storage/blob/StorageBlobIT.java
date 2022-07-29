@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 @SpringBootTest
-@ActiveProfiles(value = {"storage-blob", "service-bus-jms"})
+@ActiveProfiles("storage-blob")
 public class StorageBlobIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobIT.class);
     private final String data = "sample-data";

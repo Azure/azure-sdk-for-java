@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.servicebus.jms;
 
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.concurrent.Exchanger;
 
 @SpringBootTest
-@ActiveProfiles("service-bus-jms")
+@ActiveProfiles("servicebus-jms")
 public class ServiceBusJmsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsIT.class);
     private final String data = "service bus jms test";

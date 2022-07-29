@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles(value = {"keyvault-secret", "service-bus-jms"})
+@ActiveProfiles("keyvault-secret")
 public class KeyVaultSecretIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretIT.class);
     private final String name = "sample-key";

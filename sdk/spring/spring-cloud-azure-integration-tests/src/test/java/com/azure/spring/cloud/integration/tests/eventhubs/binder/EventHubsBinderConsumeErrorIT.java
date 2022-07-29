@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
 import com.azure.spring.messaging.AzureHeaders;
@@ -33,7 +32,7 @@ import java.util.function.Supplier;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-message",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-message"
     })
-@ActiveProfiles(value = {"event-hubs-binder", "service-bus-jms"})
+@ActiveProfiles("eventhubs-binder")
 class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);
