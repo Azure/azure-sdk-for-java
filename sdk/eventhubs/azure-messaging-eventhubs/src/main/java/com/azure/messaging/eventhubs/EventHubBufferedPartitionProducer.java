@@ -22,9 +22,9 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
 
 import java.io.Closeable;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
@@ -35,13 +35,16 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.EMIT_RESULT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
  * Keeps track of publishing events to a partition.
  */
 class EventHubBufferedPartitionProducer implements Closeable {
-    private final ClientLogger logger;
-    private final BufferedProducerClientOptions options;
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubBufferedPartitionProducer.class);
+
     private final AmqpRetryOptions retryOptions;
     private final EventHubProducerAsyncClient client;
     private final String partitionId;
@@ -51,6 +54,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final Sinks.Many<EventData> eventSink;
     private final CreateBatchOptions createBatchOptions;
     private final Queue<EventData> eventQueue;
+    private final AtomicBoolean flush = new AtomicBoolean(false);
     private final Semaphore flushSemaphore = new Semaphore(1);
     private final PublishResultSubscriber publishResultSubscriber;
 
@@ -62,9 +66,6 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.createBatchOptions = new CreateBatchOptions().setPartitionId(partitionId);
         this.retryOptions = retryOptions;
 
-        this.logger = new ClientLogger(EventHubBufferedPartitionProducer.class + "-" + partitionId);
-        this.options = options;
-
         final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
         this.eventQueue = queueSupplier.get();
         this.eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
@@ -73,7 +74,8 @@ class EventHubBufferedPartitionProducer implements Closeable {
             this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
 
         this.publishResultSubscriber = new PublishResultSubscriber(partitionId,
-            options.getSendSucceededContext(), options.getSendFailedContext(), eventQueue, logger);
+            options.getSendSucceededContext(), options.getSendFailedContext(), eventQueue, flushSemaphore, flush,
+            retryOptions.getTryTimeout(), LOGGER);
 
         this.publishSubscription = publishEvents(eventDataBatchFlux)
             .publishOn(Schedulers.boundedElastic(), 1)
@@ -93,10 +95,9 @@ class EventHubBufferedPartitionProducer implements Closeable {
     Mono<Void> enqueueEvent(EventData eventData) {
         final Mono<Void> enqueueOperation = Mono.create(sink -> {
             try {
-                final boolean success = flushSemaphore.tryAcquire(retryOptions.getTryTimeout().toMillis(),
-                    TimeUnit.MILLISECONDS);
+                if (flush.get()
+                    && !flushSemaphore.tryAcquire(retryOptions.getTryTimeout().toMillis(), TimeUnit.MILLISECONDS)) {
 
-                if (!success) {
                     sink.error(new TimeoutException("Timed out waiting for flush operation to complete."));
                     return;
                 }
@@ -116,15 +117,24 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
                 eventSink.emitNext(eventData, (signalType, emitResult) -> {
                     // If the draining queue is slower than the publishing queue.
-                    System.err.printf("[%s] Could not push event downstream. %s.", partitionId, signalType);
-                    return emitResult == Sinks.EmitResult.FAIL_OVERFLOW;
+                    LOGGER.atInfo()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
+                        .addKeyValue(EMIT_RESULT_KEY, emitResult)
+                        .log("Could not push event downstream.");
+                    switch (emitResult) {
+                        case FAIL_OVERFLOW:
+                        case FAIL_NON_SERIALIZED:
+                            return true;
+                        default:
+                            LOGGER.info("Not trying to emit again. EmitResult: {}", emitResult);
+                            return false;
+                    }
                 });
                 sink.success();
             } catch (Exception e) {
                 sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
                     errorContext));
-            } finally {
-                flushSemaphore.release();
             }
         });
 
@@ -156,14 +166,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
      * @return A Mono that completes when all events are flushed.
      */
     Mono<Void> flush() {
-        return Mono.create((MonoSink<Void> sink) -> {
-            try {
-                publishResultSubscriber.startFlush(flushSemaphore, sink);
-            } catch (InterruptedException e) {
-                logger.warning("Unable to acquire flush semaphore.");
-                sink.error(e);
-            }
-        });
+        return publishResultSubscriber.startFlush();
     }
 
     @Override
@@ -172,8 +175,14 @@ class EventHubBufferedPartitionProducer implements Closeable {
             return;
         }
 
-        publishSubscription.dispose();
-        client.close();
+        try {
+            publishResultSubscriber.startFlush().block(retryOptions.getTryTimeout());
+        } catch (IllegalStateException e) {
+            LOGGER.info("Timed out waiting for flush to complete.", e);
+        } finally {
+            publishSubscription.dispose();
+            client.close();
+        }
     }
 
     /**
@@ -203,7 +212,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         try {
             return batch.toFuture().get();
         } catch (InterruptedException | ExecutionException e) {
-            throw logger.logThrowableAsError(new UncheckedInterruptedException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedInterruptedException(e));
         }
     }
 
@@ -225,18 +234,23 @@ class EventHubBufferedPartitionProducer implements Closeable {
         private final Consumer<SendBatchSucceededContext> onSucceed;
         private final Consumer<SendBatchFailedContext> onFailed;
         private final Queue<EventData> dataQueue;
+        private final Duration operationTimeout;
         private final ClientLogger logger;
-        private final AtomicBoolean flush = new AtomicBoolean(false);
 
-        private Semaphore flushSemaphore;
+        private final AtomicBoolean flush;
+        private final Semaphore flushSemaphore;
         private MonoSink<Void> flushSink;
 
         PublishResultSubscriber(String partitionId, Consumer<SendBatchSucceededContext> onSucceed,
-            Consumer<SendBatchFailedContext> onFailed, Queue<EventData> dataQueue, ClientLogger logger) {
+            Consumer<SendBatchFailedContext> onFailed, Queue<EventData> dataQueue, Semaphore flushSemaphore,
+            AtomicBoolean flush, Duration operationTimeout, ClientLogger logger) {
             this.partitionId = partitionId;
             this.onSucceed = onSucceed;
             this.onFailed = onFailed;
             this.dataQueue = dataQueue;
+            this.flushSemaphore = flushSemaphore;
+            this.flush = flush;
+            this.operationTimeout = operationTimeout;
             this.logger = logger;
         }
 
@@ -253,16 +267,15 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 onFailed.accept(new SendBatchFailedContext(result.batch.getEvents(), partitionId, result.error));
             }
 
-            if (dataQueue.isEmpty() && flush.get()) {
-                logger.verbose("Queue is empty. Completing flush operation.");
-
-                tryCompleteFlush();
-            }
+            tryCompleteFlush();
         }
 
         @Override
         protected void hookOnError(Throwable throwable) {
-            logger.error("Publishing subscription completed and ended in an error.", throwable);
+            logger.atError()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Publishing subscription completed and ended in an error.", throwable);
+
             onFailed.accept(new SendBatchFailedContext(null, partitionId, throwable));
 
             tryCompleteFlush();
@@ -270,7 +283,9 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
         @Override
         protected void hookOnComplete() {
-            logger.info("Publishing subscription completed. Clearing rest of queue.");
+            logger.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Publishing subscription completed. Clearing rest of queue.");
 
             final List<EventData> events = new ArrayList<>(this.dataQueue);
             this.dataQueue.clear();
@@ -283,28 +298,53 @@ class EventHubBufferedPartitionProducer implements Closeable {
         /**
          * Flushes the queue. Releases semaphore when it is complete.
          *
-         * @param semaphore Semaphore to acquire and release.
-         * @param sink Async sink to complete when operation finishes.
-         *
          * @throws NullPointerException if {@code semaphore} or {@code sink} is null.
          */
-        void startFlush(Semaphore semaphore, MonoSink<Void> sink) throws InterruptedException {
-            Objects.requireNonNull(semaphore, "'semaphore' should not be null.");
-            Objects.requireNonNull(sink, "'sink' should not be null.");
+        Mono<Void> startFlush() {
+            return Mono.create(sink -> {
+                if (!flush.compareAndSet(false, true)) {
+                    logger.atInfo()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Flush operation already in progress.");
+                    sink.success();
+                    return;
+                }
 
-            if (!flush.compareAndSet(false, true)) {
-                return;
-            }
+                this.flushSink = sink;
+                try {
+                    if (!flushSemaphore.tryAcquire(operationTimeout.toMillis(), TimeUnit.MILLISECONDS)) {
+                        sink.error(new TimeoutException("Unable to acquire flush semaphore to begin timeout operation."));
+                    }
 
-            this.flushSemaphore = semaphore;
-            this.flushSink = sink;
-            semaphore.acquire();
+                    tryCompleteFlush();
+                } catch (InterruptedException e) {
+                    logger.atWarning()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Unable to acquire flush semaphore.");
+
+                    sink.error(e);
+                }
+            });
         }
 
+        /**
+         * Checks whether data queue is empty, if it is, completes the flush.
+         */
         private void tryCompleteFlush() {
             if (!flush.get()) {
                 return;
             }
+
+            if (!dataQueue.isEmpty()) {
+                logger.atVerbose()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .log("Data queue is not empty. Not completing flush.");
+                return;
+            }
+
+            logger.atVerbose()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Completing flush operation.");
 
             if (flushSemaphore != null) {
                 flushSemaphore.release();
