@@ -7841,7 +7841,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -7859,7 +7859,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -7906,7 +7906,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -7924,7 +7924,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -7970,7 +7970,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -7988,7 +7988,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -8024,7 +8024,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -8070,7 +8070,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -8115,7 +8115,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -8151,7 +8151,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -8208,7 +8208,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -8265,7 +8265,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -8310,7 +8310,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -8356,7 +8356,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -8392,7 +8392,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     createdDateTime: String (Optional)
      *     lastActionDateTime: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
@@ -8441,7 +8441,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     createdDateTime: String (Optional)
      *     lastActionDateTime: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
@@ -8489,7 +8489,7 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     createdDateTime: String (Optional)
      *     lastActionDateTime: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
@@ -9928,7 +9928,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -9982,7 +9982,7 @@ public final class DeviceManagementsImpl {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
