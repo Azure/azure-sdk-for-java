@@ -66,10 +66,10 @@ RedissonClient redisson = Redisson.create(config);
 
 // perform operations
 RBuckets rBuckets =  redisson.getBuckets();
-RBucket bucket = redisson.getBucket("Az:key");
+RBucket<String> bucket = redisson.getBucket("Az:key");
 bucket.set("This is object value");
 
-String objectValue = bucket.get().toString();
+String objectValue = bucket.get();
 System.out.println("stored object value: " + objectValue);
 
 redisson.shutdown();
@@ -93,6 +93,7 @@ When migrating your existing application code, replace the password input with t
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
+
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -113,10 +114,10 @@ while (i < maxTries) {
     try {
         // perform operations
         RBuckets rBuckets = redisson.getBuckets();
-        RBucket bucket = redisson.getBucket("Az:key");
+        RBucket<String> bucket = redisson.getBucket("Az:key");
         bucket.set("This is object value");
 
-        String objectValue = bucket.get().toString();
+        String objectValue = bucket.get();
         System.out.println("stored object value: " + objectValue);
         break;
     } catch (RedisException exception) {
@@ -188,7 +189,7 @@ while (i < maxTries) {
     try {
         // perform operations
         RBuckets rBuckets = redisson.getBuckets();
-        RBucket bucket = redisson.getBucket("Az:key");
+        RBucket<String> bucket = redisson.getBucket("Az:key");
         bucket.set("This is object value");
 
         String objectValue = bucket.get().toString();
