@@ -10,7 +10,6 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.NormalizeNull;
-import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 
 /**
  * Wrapper for Configuration Client to manage backoff.
@@ -25,8 +24,6 @@ class ConfigurationClientWrapper {
 
     private int failedAttempts;
 
-    private AppConfigurationStoreHealth health;
-
     /**
      * Wrapper for Configuration Client to manage backoff.
      * @param endpoint client endpoint
@@ -37,7 +34,6 @@ class ConfigurationClientWrapper {
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);
         this.failedAttempts = 0;
-        this.health = AppConfigurationStoreHealth.UP;
     }
 
     /**
@@ -67,6 +63,7 @@ class ConfigurationClientWrapper {
      * Sets the number of failed attempts to 0.
      */
     void resetFailedAttempts() {
+        // TODO (mametcal) this is never used ...
         this.failedAttempts = 0;
     }
 
@@ -98,12 +95,10 @@ class ConfigurationClientWrapper {
         try {
             ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(client.getConfigurationSetting(key, label));
-            this.health = AppConfigurationStoreHealth.UP;
             return watchKey;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
 
-            this.health = AppConfigurationStoreHealth.DOWN;
             if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
                 throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
             }
@@ -122,12 +117,10 @@ class ConfigurationClientWrapper {
         throws HttpResponseException, AppConfigurationStatusException {
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
-            this.health = AppConfigurationStoreHealth.UP;
             return settings;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
 
-            this.health = AppConfigurationStoreHealth.DOWN;
             if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
                 throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
             }
@@ -143,14 +136,6 @@ class ConfigurationClientWrapper {
         if (syncToken != null) {
             client.updateSyncToken(syncToken);
         }
-    }
-
-    AppConfigurationStoreHealth getHealth() {
-        return health;
-    }
-
-    void setHealth(AppConfigurationStoreHealth health) {
-        this.health = health;
     }
 
 }

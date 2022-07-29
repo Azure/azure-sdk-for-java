@@ -191,6 +191,8 @@ public class ConnectionManager {
             }
             if (avalibleClients.size() == 0) {
                 this.health = AppConfigurationStoreHealth.DOWN;
+            } else {
+                this.health = AppConfigurationStoreHealth.UP;
             }
         }
 
@@ -208,16 +210,17 @@ public class ConnectionManager {
      * Call when the current client failed
      * @param endpoint replica endpoint
      */
-    void backoffClient(String endpoint) {
-        clients.stream().filter(client -> endpoint.equals(client.getEndpoint())).map(client -> {
-            int failedAttempt = client.getFailedAttempts();
-            long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt,
-                appProperties.getDefaultMaxBackoff(),
-                appProperties.getDefaultMinBackoff());
-            client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
-            client.setHealth(AppConfigurationStoreHealth.DOWN);
-            return client;
-        });
+    void backoffClient(String endpoint) {        
+        for (ConfigurationClientWrapper client: clients) {
+            if (client.getEndpoint().equals(endpoint)) {
+                int failedAttempt = client.getFailedAttempts();
+                long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt,
+                    appProperties.getDefaultMaxBackoff(),
+                    appProperties.getDefaultMinBackoff());
+                client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+                break;
+            }
+        }
     }
 
     /**

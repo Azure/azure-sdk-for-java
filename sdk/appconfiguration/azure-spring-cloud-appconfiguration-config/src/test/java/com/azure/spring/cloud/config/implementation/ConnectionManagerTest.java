@@ -29,6 +29,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
+import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
@@ -173,6 +174,7 @@ public class ConnectionManagerTest {
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
         assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
         assertEquals(0, clientWrapper.getFailedAttempts());
+        assertEquals(1, spy.getAllEndpoints().size());
     }
 
     @Test
@@ -286,6 +288,7 @@ public class ConnectionManagerTest {
         assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
         assertEquals(TEST_ENDPOINT_GEO, clientWrapper.getEndpoint());
         assertEquals(0, clientWrapper.getFailedAttempts());
+        assertEquals(2, spy.getAllEndpoints().size());
     }
 
     @Test
@@ -306,5 +309,90 @@ public class ConnectionManagerTest {
             () -> connectionManager.getAvalibleClients().get(0)).getMessage();
 
         assertEquals("More than 1 Conncetion method was set for connecting to App Configuration.", message);
+    }
+
+    @Test
+    public void getCurrentClient() {
+        configStore = new ConfigStore();
+        List<String> connectionStrings = new ArrayList<>();
+
+        connectionStrings.add(TEST_CONN_STRING);
+        connectionStrings.add(TEST_CONN_STRING_GEO);
+
+        configStore.setConnectionStrings(connectionStrings);
+
+        configStore.validateAndInit();
+
+        connectionManager = new ConnectionManager(configStore, providerProperties, tokenProviderMock, null, false,
+            false, null);
+
+        String originEndpoint = configStore.getEndpoint();
+        String replicaEndpoint = ConnectionManager
+            .getEndpointFromConnectionString(configStore.getConnectionStrings().get(1));
+
+        assertEquals(originEndpoint, connectionManager.getCurrentClient());
+
+        connectionManager.setCurrentClient(replicaEndpoint);
+        assertEquals(replicaEndpoint, connectionManager.getCurrentClient());
+        assertEquals(originEndpoint, connectionManager.getCurrentClient());
+    }
+
+    @Test
+    public void backoffTest() {
+        configStore = new ConfigStore();
+        List<String> connectionStrings = new ArrayList<>();
+
+        connectionStrings.add(TEST_CONN_STRING);
+        connectionStrings.add(TEST_CONN_STRING_GEO);
+
+        configStore.setConnectionStrings(connectionStrings);
+
+        configStore.validateAndInit();
+
+        connectionManager = new ConnectionManager(configStore, providerProperties, tokenProviderMock, null, false,
+            false, null);
+        ConnectionManager spy = Mockito.spy(connectionManager);
+        Mockito.doReturn(builderMock).when(spy).getBuilder();
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+
+        String originEndpoint = configStore.getEndpoint();
+        String replicaEndpoint = ConnectionManager
+            .getEndpointFromConnectionString(configStore.getConnectionStrings().get(1));
+
+        List<String> expectedEndpoints = new ArrayList<>();
+        expectedEndpoints.add(originEndpoint);
+        expectedEndpoints.add(replicaEndpoint);
+
+        assertEquals(2, spy.getAvalibleClients().size());
+        assertEquals(2, spy.getAllEndpoints().size());
+        assertTrue(spy.getAllEndpoints().containsAll(expectedEndpoints));
+        assertEquals(AppConfigurationStoreHealth.UP, spy.getHealth());
+
+        spy.backoffClient(originEndpoint);
+
+        expectedEndpoints.remove(1);
+
+        assertEquals(1, spy.getAvalibleClients().size());
+        assertEquals(2, spy.getAllEndpoints().size());
+        assertTrue(spy.getAllEndpoints().containsAll(expectedEndpoints));
+        assertEquals(AppConfigurationStoreHealth.UP, spy.getHealth());
+
+        spy.backoffClient(originEndpoint);
+
+        assertEquals(1, spy.getAvalibleClients().size());
+        assertEquals(2, spy.getAllEndpoints().size());
+        assertTrue(spy.getAllEndpoints().containsAll(expectedEndpoints));
+        assertEquals(AppConfigurationStoreHealth.UP, spy.getHealth());
+        
+        spy.backoffClient(replicaEndpoint);
+        expectedEndpoints.remove(0);
+
+        assertEquals(0, spy.getAvalibleClients().size());
+        assertEquals(2, spy.getAllEndpoints().size());
+        assertTrue(spy.getAllEndpoints().containsAll(expectedEndpoints));
+        assertEquals(AppConfigurationStoreHealth.DOWN, spy.getHealth());
     }
 }
