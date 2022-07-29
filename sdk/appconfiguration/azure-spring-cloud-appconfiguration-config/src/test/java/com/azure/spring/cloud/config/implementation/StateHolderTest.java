@@ -37,8 +37,8 @@ public class StateHolderTest {
     }
 
     @Test
-    public void expireState() {
-        String endpoint = "testEndpoint";
+    public void expireState(TestInfo testInfo) {
+        String endpoint = testInfo.getDisplayName() + ".azconfig.io";
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
@@ -54,33 +54,25 @@ public class StateHolderTest {
         StateHolder.updateState(testState);
         State currentState = StateHolder.getState(endpoint);
         assertNotEquals(state, currentState);
-    }
 
-    @Test
-    public void notExpireState() {
-        String endpoint = "notTestEndpoint";
-        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys = new ArrayList<ConfigurationSetting>();
 
-        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
+        monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setRefreshInterval(Duration.ofSeconds(-30));
 
-        StateHolder testState = new StateHolder();
+        testState = new StateHolder();
         testState.setNextForcedRefresh(Duration.ofMinutes(10));
         testState.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
         StateHolder.updateState(testState);
 
-        State state = StateHolder.getState(endpoint);
+        state = StateHolder.getState(endpoint);
         testState.expireState(endpoint);
         StateHolder.updateState(testState);
-        State currentState = StateHolder.getState(endpoint);
+        currentState = StateHolder.getState(endpoint);
         assertEquals(state, currentState);
-    }
 
-    @Test
-    public void updateNextRefreshTimeTest(TestInfo testInfo) {
-        String endpoint = testInfo.getDisplayName() + ".azconfig.io";
         StateHolder stateHolder = new StateHolder();
-        List<ConfigurationSetting> watchKeys = new ArrayList<>();
+        watchKeys = new ArrayList<>();
         Duration duration = Duration.ofMinutes((long) 10);
 
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
@@ -129,17 +121,16 @@ public class StateHolderTest {
             backoffTimeCalculatorMock.verify(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(),
                 Mockito.any(), Mockito.any()), times(1));
         }
-    }
+        
 
-    @Test
-    public void updateNextRefreshForcedRefresh(TestInfo testInfo) {
-        String endpoint = testInfo.getDisplayName() + ".azconfig.io";
-        StateHolder stateHolder = new StateHolder();
-        Duration duration = Duration.ofMinutes((long) -1);
-        List<ConfigurationSetting> watchKeys = new ArrayList<>();
+        providerProperties.setDefaultMinBackoff((long) 0);
+
+        stateHolder = new StateHolder();
+        duration = Duration.ofMinutes((long) -1);
+        watchKeys = new ArrayList<>();
         stateHolder.setNextForcedRefresh(duration);
 
-        ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
+        watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
 
         watchKeys.add(watchKey);
 
