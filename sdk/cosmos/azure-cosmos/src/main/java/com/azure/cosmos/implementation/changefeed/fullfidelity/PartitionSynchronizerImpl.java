@@ -4,15 +4,16 @@ package com.azure.cosmos.implementation.changefeed.fullfidelity;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
@@ -58,18 +60,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        // TODO: log the partition getKey ID found.
         return this.enumPartitionKeyRanges()
-            .map(pkRange -> new FeedRangeEpkImpl(pkRange.toRange()))
-            .collectList()
-            .flatMap(feedRangeEpks -> {
-                Set<FeedRangeEpkImpl> feedRangeEpkSet = new HashSet<>(feedRangeEpks);
-                return this.createLeases(feedRangeEpkSet).then();
-            })
-            .onErrorResume( throwable -> {
-                // TODO: log the exception.
-                return Mono.empty();
-            });
+                   .collectList()
+                   .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
+                   .onErrorResume(throwable -> {
+                       logger.error("Create lease failed", throwable);
+                       return Mono.empty();
+                   });
     }
 
     @Override
@@ -79,6 +76,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         }
 
         final String leaseToken = lease.getLeaseToken();
+        final Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
 
         // TODO fabianm - this needs more elaborate processing in case the initial
         // FeedRangeContinuation has continuation state for multiple feed Ranges
@@ -105,28 +103,27 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         // We will directly reuse the original/parent continuation token as the seed for the new leases until then.
         final String lastContinuationToken = lease.getContinuationToken();
 
-        logger.info("Partition {} is gone due to split; will attempt to resume using continuation token {}.", leaseToken, lastContinuationToken);
+        logger.info("Partition {} with feed range {} is gone due to split; will attempt to resume using continuation token {}.", leaseToken, epkRange, lastContinuationToken);
 
         // After a split, the children are either all or none available
         return this.enumPartitionKeyRanges()
-            .filter(range -> range != null && range.getParents() != null && range.getParents().contains(leaseToken))
-            .map(PartitionKeyRange::getId)
-            .collectList()
-            .flatMapMany(addedLeaseTokens -> {
-                if (addedLeaseTokens.size() == 0) {
-                    logger.error("Partition {} had split but we failed to find at least one child partition", leaseToken);
-                    throw new RuntimeException(String.format("Partition %s had split but we failed to find at least one child partition", leaseToken));
-                }
-                return Flux.fromIterable(addedLeaseTokens);
-            })
-            .flatMap(addedRangeId -> {
-                // Creating new lease.
-                return this.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
-            }, this.degreeOfParallelism)
-            .map(newLease -> {
-                logger.info("Partition {} split into new partition with lease token {} and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
-                return newLease;
-            });
+                   .filter(pkRange -> {
+                        //   TODO:(kuthapar) - check this logic
+                        if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
+                            //  This lease exists, no need to create one for this pkRange
+                            return false;
+                        }
+                        return true;
+                    })
+                    .flatMap(pkRange -> {
+                        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+                        logger.info("Creating lease for pkRange : {}", pkRange);
+                        return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
+                    }, this.degreeOfParallelism)
+                    .map(newLease -> {
+                        logger.info("Partition {} split into new partition with lease token {} and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
+                        return newLease;
+                    });
     }
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
@@ -138,7 +135,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .map(FeedResponse::getResults)
             .flatMap(Flux::fromIterable)
             .onErrorResume(throwable -> {
-                // TODO: Log the exception.
+                logger.warn("Exception occurred while reading partition key range feed", throwable);
                 return Flux.empty();
             });
     }
@@ -151,30 +148,28 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      * Same applies also to split partitions. We do not search for parent lease and take continuation token since this
      *   might end up of reprocessing all the events since the split.
      *
-     * @param feedRangeEpkSet set of feed range epks for the lease.
+     * @param partitionKeyRanges a list of all partition key ranges.
      * @return a deferred computation of this call.
      */
-    private Flux<Lease> createLeases(Set<FeedRangeEpkImpl> feedRangeEpkSet)
-    {
-        Set<FeedRangeEpkImpl> addedLeaseTokens = new HashSet<>(feedRangeEpkSet);
-
-        return this.leaseContainer.getAllLeases()
-            .map(lease -> {
-                if (lease != null) {
-                    // Get leases after getting ranges, to make sure that no other hosts checked in continuation for
-                    //   split partition after we got leases.
-                    addedLeaseTokens.remove(lease.getLeaseToken());
-                }
-
-                return lease;
+    private Flux<Lease> createLeases(List<PartitionKeyRange> partitionKeyRanges) {
+        return this.leaseContainer
+            .getAllLeases()
+            .flatMap(lease -> {
+                return Flux.fromIterable(partitionKeyRanges)
+                           .filter(pkRange -> {
+                               Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
+                               //   TODO:(kuthapar) - check this logic
+                               if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
+                                   //  This lease exists, no need to create one for this pkRange
+                                   return false;
+                               }
+                               return true;
+                           });
             })
-            .thenMany(Flux.fromIterable(addedLeaseTokens)
-                .flatMap( addedRangeId ->
-                    this.leaseManager.createLeaseIfNotExist(addedRangeId, null), this.degreeOfParallelism)
-                .map( lease -> {
-                    // TODO: log the lease info that was added.
-                    return lease;
-                })
-            );
+            .flatMap(pkRange -> {
+                FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+                logger.info("Creating lease for pkRange : {}", pkRange);
+                return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
+            }, this.degreeOfParallelism);
     }
 }

@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.changefeed.fullfidelity.ServiceItemLeaseV1;
 import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
@@ -66,6 +67,7 @@ public class ServiceItemLeaseTests {
             .withContinuationToken("12")
             .withTimestamp(timeNow)
             .withVersion(LeaseVersion.EPK_RANGE_BASED_LEASE)
+            .withFeedRange(FeedRangeEpkImpl.forFullRange())
             .withTs("122311231");
 
         Lease lease2 = new ServiceItemLeaseV1()
@@ -75,6 +77,7 @@ public class ServiceItemLeaseTests {
             .withContinuationToken("22")
             .withTimestamp(timeNow)
             .withVersion(LeaseVersion.EPK_RANGE_BASED_LEASE)
+            .withFeedRange(FeedRangeEpkImpl.forFullRange())
             .withTs("122311232");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -83,11 +86,13 @@ public class ServiceItemLeaseTests {
             String.format("%s%s%s",
                 "{\"id\":\"id1\",\"_etag\":\"etag1\",\"LeaseToken\":\"1\",\"ContinuationToken\":\"12\",\"timestamp\":\"",
                 timeNowValue,
-                "\",\"Owner\":\"Owner1\",\"Version\":1}"));
+                "\",\"Owner\":\"Owner1\",\"version\":1,\"feedRange\":{\"Range\":{\"min\":\"\",\"max\":\"FF\","
+                    + "\"isMinInclusive\":true,\"isMaxInclusive\":false}}}"));
         assertThat(mapper.writeValueAsString(lease2)).isEqualTo(
             String.format("%s%s%s",
                 "{\"id\":\"id2\",\"_etag\":\"etag2\",\"LeaseToken\":\"2\",\"ContinuationToken\":\"22\",\"timestamp\":\"",
                 timeNowValue,
-                "\",\"Owner\":null,\"Version\":1}"));
+                "\",\"Owner\":null,\"version\":1,\"feedRange\":{\"Range\":{\"min\":\"\",\"max\":\"FF\","
+                    + "\"isMinInclusive\":true,\"isMaxInclusive\":false}}}"));
     }
 }
