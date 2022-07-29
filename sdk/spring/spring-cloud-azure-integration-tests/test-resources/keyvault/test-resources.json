@@ -15,15 +15,15 @@
     }
   },
   "variables": {
-    "keyVaultName": "[parameters('baseName')]",
-    "azureKeyVaultUri": "[concat('https://', variables('keyVaultName'), '.vault.azure.net/')]",
+    "azureKeyVaultName": "[parameters('baseName')]",
+    "azureKeyVaultUri": "[concat('https://', variables('azureKeyVaultName'), '.vault.azure.net/')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2021-11-01-preview",
-      "name": "[variables('keyVaultName')]",
+      "name": "[variables('azureKeyVaultName')]",
       "location": "[variables('location')]",
       "properties": {
         "sku": {
@@ -39,7 +39,7 @@
               "keys": [],
               "secrets": [
                 "Get",
-                "Set",
+                "Set"
               ],
               "certificates": []
             }
