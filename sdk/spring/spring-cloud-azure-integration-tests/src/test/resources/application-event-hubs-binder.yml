@@ -7,7 +7,7 @@ spring:
           client-secret: ${AZURE_SPRING_CLIENT_SECRET}
         profile:
           tenant-id: ${AZURE_SPRING_TENANT_ID}
-        namespace: ${AZURE_EVENTHUBS_NAMESPACE}
+        namespace: ${AZURE_EVENTHUBS_BINDER_NAMESPACE}
         processor:
           checkpoint-store:
             account-name: ${STORAGE_ACCOUNT_TEST_EVENTHUB}
