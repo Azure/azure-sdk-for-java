@@ -20,10 +20,8 @@ import com.azure.cosmos.implementation.changefeed.PartitionManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import org.slf4j.Logger;
@@ -158,9 +156,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                    .flatMap(leaseStoreManager1 -> leaseStoreManager1
                        .getAllLeases()
                        .flatMap(lease -> {
-                           final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-                               .createForProcessingFromNow(feedRange)
+                               .createForProcessingFromNow(lease.getFeedRange())
                                .setMaxItemCount(1)
                                .fullFidelity();
 

@@ -68,14 +68,14 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
                 // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
                 Random random = new Random();
                 Lease expiredLease = expiredLeases.get(random.nextInt(expiredLeases.size()));
-                this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
+                this.logger.info("Found unused or expired lease {} with lease token {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
+                    expiredLease.getFeedRange(), expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
 
                 return Collections.singletonList(expiredLease);
             } else {
                 for (Lease lease : expiredLeases) {
-                    this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {} and maxScaleCount {} ",
-                        lease.getLeaseToken(), lease.getOwner(), this.hostName, myCount, this.maxPartitionCount);
+                    this.logger.info("Found unused or expired lease {} with lease token {} (owner was {}); previous lease count for instance owner {} is {} and maxScaleCount {} ",
+                        lease.getFeedRange(), lease.getLeaseToken(), lease.getOwner(), this.hostName, myCount, this.maxPartitionCount);
                 }
             }
 
@@ -153,6 +153,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         for (Lease lease : allLeases) {
             // Debug.Assert(lease.LeaseToken != null, "TakeLeasesAsync: lease.LeaseToken cannot be null.");
 
+            //  TODO:(kuthapar) should we also change this logic to use feed range implementation
             allPartitions.put(lease.getLeaseToken(), lease);
 
             if (lease.getOwner() == null || lease.getOwner().isEmpty() || this.isExpired(lease)) {

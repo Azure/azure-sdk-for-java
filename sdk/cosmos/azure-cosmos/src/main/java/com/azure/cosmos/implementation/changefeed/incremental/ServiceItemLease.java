@@ -120,6 +120,11 @@ public class ServiceItemLease implements Lease {
     }
 
     @Override
+    public ChangeFeedState getContinuationStateV1(String containerRid) {
+        throw new UnsupportedOperationException("getContinuationStateV1() is not supported for V0 wire format");
+    }
+
+    @Override
     public ChangeFeedState getContinuationState(String containerRid, FeedRangeInternal feedRange) {
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");

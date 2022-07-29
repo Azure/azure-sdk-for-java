@@ -138,17 +138,20 @@ public class ServiceItemLeaseV1 implements Lease {
     }
 
     @Override
-    public ChangeFeedState getContinuationState(String containerRid, FeedRangeInternal feedRange) {
+    public ChangeFeedState getContinuationStateV1(String containerRid) {
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
-        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
-        //  TODO: (kuthapar) - we don't need to worry about the feedRange anymore. Remove it
         return new ChangeFeedStateV1(
             containerRid,
-            feedRange,
+            this.feedRangeInternal,
             ChangeFeedMode.FULL_FIDELITY,
-            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.continuationToken, feedRange),
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.continuationToken, this.feedRangeInternal),
             null);
+    }
+
+    @Override
+    public ChangeFeedState getContinuationState(String containerRid, FeedRangeInternal feedRange) {
+        throw new UnsupportedOperationException("getContinuationState() is not supported for V1 wire format");
     }
 
     @Override

@@ -63,7 +63,7 @@ class PartitionControllerImpl implements PartitionController {
         if (workerTask != null && workerTask.isRunning()) {
             return this.leaseManager.updateProperties(lease)
                 .map(updatedLease -> {
-                    logger.debug("Partition {}: updated.", updatedLease.getLeaseToken());
+                    logger.debug("Partition {} with lease token {}: updated.", updatedLease.getFeedRange(), updatedLease.getLeaseToken());
                     return updatedLease;
                 });
         }
@@ -72,14 +72,14 @@ class PartitionControllerImpl implements PartitionController {
             .map(updatedLease -> {
                 WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
                 if (checkTask == null) {
-                    logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
+                    logger.info("Partition {} with lease token {}: acquired.", updatedLease.getFeedRange(), updatedLease.getLeaseToken());
                     PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
                     this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
                 }
                 return updatedLease;
             })
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                logger.warn("Partition {} with lease token {}: unexpected error; removing lease from current cache.", lease.getFeedRange(), lease.getLeaseToken());
                 return this.removeLease(lease).then(Mono.error(throwable));
             });
     }
@@ -98,7 +98,7 @@ class PartitionControllerImpl implements PartitionController {
 
         return this.leaseContainer.getOwnedLeases()
             .flatMap( lease -> {
-                logger.info("Acquired lease for PartitionId '{}' on startup.", lease.getLeaseToken());
+                logger.info("Acquired lease for PartitionId '{}' with lease token {} on startup.", lease.getFeedRange(), lease.getLeaseToken());
                 return this.addOrUpdateLease(lease);
             }).then();
     }
@@ -110,21 +110,21 @@ class PartitionControllerImpl implements PartitionController {
                 if (workerTask != null && workerTask.isRunning()) {
                     workerTask.cancelJob();
                 }
-                logger.info("Partition {}: released.", lease.getLeaseToken());
+                logger.info("Partition {} with lease token {}: released.", lease.getFeedRange(), lease.getLeaseToken());
 
                 return this.leaseManager.release(lease);
             })
             .onErrorResume(e -> {
                 if (e instanceof LeaseLostException) {
-                    logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
+                    logger.warn("Partition {} with lease token {}: lease already removed.", lease.getFeedRange(), lease.getLeaseToken());
                 } else {
-                    logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
+                    logger.warn("Partition {} with lease token {}: failed to remove lease.", lease.getFeedRange(), lease.getLeaseToken(), e);
                 }
 
                 return Mono.empty();
             })
             .doOnSuccess(aVoid -> {
-                logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
+                logger.info("Partition {} with lease token {}: successfully removed lease.", lease.getFeedRange(), lease.getLeaseToken());
             });
     }
 
@@ -152,9 +152,9 @@ class PartitionControllerImpl implements PartitionController {
                     PartitionSplitException ex = (PartitionSplitException) throwable;
                     return this.handleSplit(lease, ex.getLastContinuation());
                 } else if (throwable instanceof TaskCancelledException) {
-                    logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
+                    logger.debug("Partition {} with lease token {}: processing canceled.", lease.getFeedRange(), lease.getLeaseToken());
                 } else {
-                    logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
+                    logger.warn("Partition {} with lease token {}: processing failed.", lease.getFeedRange(), lease.getLeaseToken(), throwable);
                 }
 
                 return Mono.empty();
@@ -170,7 +170,7 @@ class PartitionControllerImpl implements PartitionController {
                 return this.addOrUpdateLease(l);
             }).then(this.leaseManager.delete(lease))
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: failed to split", lease.getLeaseToken(), throwable);
+                logger.warn("Partition {} with lease token {}: failed to split", lease.getFeedRange(), lease.getLeaseToken(), throwable);
                 return  Mono.empty();
             });
     }

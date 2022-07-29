@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.fullfidelity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -71,9 +72,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException ex = (CosmosException) throwable;
-                            if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
-                                logger.info(
-                                    "Partition {} could not be found.", cachedLease.getLeaseToken());
+                            if (Exceptions.isNotFound(ex)) {
+                                logger.info("Partition {} with lease token {} could not be found.", cachedLease.getFeedRange(), cachedLease.getLeaseToken());
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
@@ -84,7 +84,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
-                            "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
+                            "Partition {} with lease token {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
+                            cachedLease.getFeedRange(),
                             cachedLease.getLeaseToken(),
                             cachedLease.getConcurrencyToken(),
                             serverLease.getOwner(),
@@ -92,7 +93,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
                         // Check if we still have the expected ownership on the target lease.
                         if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(cachedLease.getOwner())) {
-                            logger.info("Partition {} lease was acquired already by owner '{}'", serverLease.getLeaseToken(), serverLease.getOwner());
+                            logger.info("Partition {} with lease token {} lease was acquired already by owner '{}'",
+                                serverLease.getFeedRange(), serverLease.getLeaseToken(), serverLease.getOwner());
                             throw new LeaseLostException(serverLease);
                         }
 
@@ -105,7 +107,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .retryWhen(Retry.max(RETRY_COUNT_ON_CONFLICT).filter(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.info(
-                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
+                        "Partition {} with lease token {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
+                        cachedLease.getFeedRange(),
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner());
@@ -116,7 +119,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(
-                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
+                        "Partition {} with lease token {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
+                        cachedLease.getFeedRange(),
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),

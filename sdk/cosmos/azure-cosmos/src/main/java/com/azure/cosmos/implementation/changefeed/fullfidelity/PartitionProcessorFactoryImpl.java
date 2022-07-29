@@ -88,19 +88,18 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
             throw new IllegalArgumentException("lease");
         }
 
-        FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
         ChangeFeedState state;
         if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
-                new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
+                lease.getFeedRange(),
                 ChangeFeedMode.FULL_FIDELITY,
                 getStartFromSettings(
-                    feedRange,
+                    lease.getFeedRange(),
                     this.changeFeedProcessorOptions),
                 null);
         } else {
-            state = lease.getContinuationState(this.collectionResourceId, feedRange);
+            state = lease.getContinuationStateV1(this.collectionResourceId);
         }
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)

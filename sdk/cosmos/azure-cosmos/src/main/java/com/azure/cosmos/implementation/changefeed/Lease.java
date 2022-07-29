@@ -81,6 +81,8 @@ public interface Lease {
         String containerRid,
         FeedRangeInternal feedRange);
 
+    ChangeFeedState getContinuationStateV1(String containerRid);
+
     /**
      * Gets the continuation token used to determine the last processed point of the Change Feed.
      *

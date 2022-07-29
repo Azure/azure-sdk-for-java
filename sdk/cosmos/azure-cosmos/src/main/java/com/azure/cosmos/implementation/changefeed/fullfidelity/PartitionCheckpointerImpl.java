@@ -44,7 +44,8 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
             cancellationToken)
             .map(lease1 -> {
                 this.lease = lease1;
-                logger.info("Checkpoint: partition {}, new continuation {}", this.lease.getLeaseToken(), this.lease.getContinuationToken());
+                logger.info("Checkpoint: partition {} with lease token {}, new continuation {}",
+                    this.lease.getFeedRange(), this.lease.getLeaseToken(), this.lease.getContinuationToken());
                 return lease1;
             });
     }
