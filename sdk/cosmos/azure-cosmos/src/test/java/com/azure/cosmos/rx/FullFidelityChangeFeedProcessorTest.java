@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
+import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorState;

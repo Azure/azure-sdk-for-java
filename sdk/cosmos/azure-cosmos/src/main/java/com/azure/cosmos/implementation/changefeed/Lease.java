@@ -4,9 +4,11 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -18,12 +20,27 @@ import java.util.Map;
  * Ensure reliable recovery for cases when an instance of {@link ChangeFeedProcessor} gets disconnected, hangs or crashes.
  */
 public interface Lease {
+
+    ZonedDateTime UNIX_START_TIME = ZonedDateTime.parse("1970-01-01T00:00:00.0Z[UTC]");
+    String PROPERTY_NAME_LEASE_TOKEN = "LeaseToken";
+    String PROPERTY_NAME_CONTINUATION_TOKEN = "ContinuationToken";
+    String PROPERTY_NAME_TIMESTAMP = "timestamp";
+    String PROPERTY_NAME_OWNER = "Owner";
+    String PROPERTY_NAME_VERSION = "version";
+    String PROPERTY_NAME_FEED_RANGE = "feedRange";
+
     /**
      * Gets the partition associated with the lease.
      *
      * @return the partition associated with the lease.
      */
     String getLeaseToken();
+
+    /**
+     * Gets the feed range associated with the lease.
+     * @return feed range associated with the lease.
+     */
+    FeedRangeInternal getFeedRange();
 
     /**
      * Gets the host name owner of the lease.
@@ -36,17 +53,31 @@ public interface Lease {
     String getOwner();
 
     /**
+     * Gets the version of this lease. See {@link LeaseVersion} for more details.
+     * @return version of the lease.
+     */
+    LeaseVersion getVersion();
+
+    /**
+     * Sets the lease version for the lease.
+     * @param leaseVersion lease version for the lease.
+     */
+    void setVersion(LeaseVersion leaseVersion);
+
+    /**
+     * Sets the feed range for the lease.
+     * @param feedRangeInternal feed range for the lease.
+     */
+    void setFeedRange(FeedRangeInternal feedRangeInternal);
+
+    /**
      * Gets the timestamp of the lease.
      *
      * @return the timestamp of the lease.
      */
     String getTimestamp();
 
-    ChangeFeedState getIncrementalContinuationState(
-        String containerRid,
-        FeedRangeInternal feedRange);
-
-    ChangeFeedState getFullFidelityContinuationState(
+    ChangeFeedState getContinuationState(
         String containerRid,
         FeedRangeInternal feedRange);
 

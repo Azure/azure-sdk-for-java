@@ -10,7 +10,9 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -58,11 +60,11 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     public Mono<Void> createMissingLeases() {
         // TODO: log the partition getKey ID found.
         return this.enumPartitionKeyRanges()
-            .map(Resource::getId)
+            .map(pkRange -> new FeedRangeEpkImpl(pkRange.toRange()))
             .collectList()
-            .flatMap( partitionKeyRangeIds -> {
-                Set<String> leaseTokens = new HashSet<>(partitionKeyRangeIds);
-                return this.createLeases(leaseTokens).then();
+            .flatMap(feedRangeEpks -> {
+                Set<FeedRangeEpkImpl> feedRangeEpkSet = new HashSet<>(feedRangeEpks);
+                return this.createLeases(feedRangeEpkSet).then();
             })
             .onErrorResume( throwable -> {
                 // TODO: log the exception.
@@ -149,12 +151,12 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      * Same applies also to split partitions. We do not search for parent lease and take continuation token since this
      *   might end up of reprocessing all the events since the split.
      *
-     * @param leaseTokens a hash set of all the lease tokens.
+     * @param feedRangeEpkSet set of feed range epks for the lease.
      * @return a deferred computation of this call.
      */
-    private Flux<Lease> createLeases(Set<String> leaseTokens)
+    private Flux<Lease> createLeases(Set<FeedRangeEpkImpl> feedRangeEpkSet)
     {
-        Set<String> addedLeaseTokens = new HashSet<>(leaseTokens);
+        Set<FeedRangeEpkImpl> addedLeaseTokens = new HashSet<>(feedRangeEpkSet);
 
         return this.leaseContainer.getAllLeases()
             .map(lease -> {

@@ -13,11 +13,12 @@ import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManagerSettings;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
+import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -30,6 +31,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides flexible way to buildAsyncClient lease manager constructor parameters.
@@ -157,43 +160,49 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
-        if (leaseToken == null) {
-            throw new IllegalArgumentException("leaseToken");
-        }
+        throw new UnsupportedOperationException("partition key range id based leases are not supported for Change Feed V1 wire format");
+    }
 
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken) {
+        checkNotNull(feedRange, "Argument 'feedRanges' should not be null");
+
+        String leaseToken = feedRange.getRange().getMin() + "-" + feedRange.getRange().getMax();
         String leaseDocId = this.getDocumentId(leaseToken);
-        ServiceItemLease documentServiceLease = new ServiceItemLease()
+        ServiceItemLeaseV1 documentServiceLease = new ServiceItemLeaseV1()
+            .withVersion(LeaseVersion.EPK_RANGE_BASED_LEASE)
             .withId(leaseDocId)
             .withLeaseToken(leaseToken)
+            .withFeedRange(feedRange)
             .withContinuationToken(continuationToken);
 
         return this.leaseDocumentClient.createItem(this.settings.getLeaseCollectionLink(), documentServiceLease, null, false)
-            .onErrorResume( ex -> {
-                if (ex instanceof CosmosException) {
-                    CosmosException e = (CosmosException) ex;
-                    if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
-                        logger.info("Some other host created lease for {}.", leaseToken);
-                        return Mono.empty();
-                    }
-                }
+                                       .onErrorResume( ex -> {
+                                           if (ex instanceof CosmosException) {
+                                               CosmosException e = (CosmosException) ex;
+                                               if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
+                                                   logger.info("Some other host created lease for {}.", leaseToken);
+                                                   return Mono.empty();
+                                               }
+                                           }
 
-                return Mono.error(ex);
-            })
-            .map(documentResourceResponse -> {
-                if (documentResourceResponse == null) {
-                    return null;
-                }
+                                           return Mono.error(ex);
+                                       })
+                                       .map(documentResourceResponse -> {
+                                           if (documentResourceResponse == null) {
+                                               return null;
+                                           }
 
-                InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
+                                           InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
 
-                logger.info("Created lease for partition {}.", leaseToken);
+                                           logger.info("Created lease for partition {}.", leaseToken);
 
-                return documentServiceLease
-                    .withId(document.getId())
-                    .withETag(document.getETag())
-                    .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document,
-                        Constants.Properties.LAST_MODIFIED));
-            });
+                                           return documentServiceLease
+                                               .withId(document.getId())
+                                               .withETag(document.getETag())
+                                               .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document,
+                                                   Constants.Properties.LAST_MODIFIED));
+                                       });
     }
 
     @Override
@@ -267,7 +276,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLeaseV1.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -310,7 +319,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLeaseV1.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -374,7 +383,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createItemRequestOptions(lease),
                                                  InternalObjectNode.class)
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLeaseV1.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> {
                 if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
 
@@ -421,7 +430,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.leaseStore.releaseInitializationLock();
     }
 
-    private Flux<ServiceItemLease> listDocuments(String prefix) {
+    private Flux<ServiceItemLeaseV1> listDocuments(String prefix) {
         if (prefix == null || prefix.isEmpty())  {
             throw new IllegalArgumentException("prefix");
         }
@@ -440,7 +449,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             InternalObjectNode.class);
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
-            .map(ServiceItemLease::fromDocument);
+            .map(ServiceItemLeaseV1::fromDocument);
     }
 
     private String getDocumentId(String leaseToken)
