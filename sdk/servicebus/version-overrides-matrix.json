@@ -1,0 +1,16 @@
+{
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+    },
+    "JavaTestVersion": "1.11",
+    "TestGoals": "surefire:test",
+    "VersionOverrides": [
+      "jackson_2.10",
+      "reactor_3.4",
+      "reactor_3.5"
+    ],
+    "AZURE_VERSION_OVERRIDE_TESTS": true,
+    "TestFromSource": true
+  }
+}

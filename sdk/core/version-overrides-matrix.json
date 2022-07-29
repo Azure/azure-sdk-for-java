@@ -1,10 +1,4 @@
 {
-  "displayNames": {
-    "2.10.0": "jackson2_10",
-    "2.11.0": "jackson2_11",
-    "2.12.0": "jackson2_12",
-    "2.13.0": "jackson2_13"
-  },
   "matrix": {
     "Agent": {
       "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -12,12 +6,14 @@
     "JavaTestVersion": "1.11",
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
-    "AZURE_CORE_TEST_SUPPORTED_JACKSON_VERSION": [
-        "2.10.0",
-        "2.11.0",
-        "2.12.0",
-        "2.13.0"
+    "VersionOverrides": [
+        "jackson_2.10",
+        "jackson_2.11",
+        "jackson_2.12",
+        "reactor_3.5",
+        "reactor_3.4"
     ],
+    "AZURE_VERSION_OVERRIDE_TESTS": true,
     "TestFromSource": true
   }
 }
