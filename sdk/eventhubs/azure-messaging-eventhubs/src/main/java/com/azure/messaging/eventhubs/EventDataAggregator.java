@@ -17,7 +17,6 @@ import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
 
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -25,6 +24,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
  * Aggregates {@link EventData} into {@link EventDataBatch} and pushes them downstream when:
@@ -120,10 +121,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.currentBatch = batchSupplier.get();
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
-            this.disposable = Flux.switchOnNext(eventSink.asFlux().map(e -> Flux.interval(options.getMaxWaitTime())))
+            this.disposable = Flux.switchOnNext(eventSink.asFlux().map(e -> Flux.interval(options.getMaxWaitTime())
+                    .takeUntil(index -> isCompleted.get())))
                 .subscribe(index -> {
-                    System.err.printf("[%s] %s %s. Time elapsed. Index: %d%n", partitionId, formatter.format(Instant.now()), this,
-                        index);
+                    logger.atVerbose()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Time elapsed. Attempt to publish downstream.");
                     updateOrPublishBatch(null, true);
                 });
         }
@@ -148,8 +151,14 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          */
         @Override
         public void cancel() {
+            if (!isCompleted.compareAndSet(false, true)) {
+                return;
+            }
+
             // Do not keep requesting more events upstream
-            System.err.printf("[%s] %s Disposing of aggregator.%n", partitionId, formatter.format(Instant.now()));
+            logger.atVerbose()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Disposing of aggregator.");
             subscription.cancel();
 
             updateOrPublishBatch(null, true);
@@ -289,7 +298,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     if (error != null) {
                         onError(error);
                     }
-                } else{
+                } else {
                     this.lastError = exception;
                 }
 
