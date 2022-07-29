@@ -54,7 +54,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final Sinks.Many<EventData> eventSink;
     private final CreateBatchOptions createBatchOptions;
     private final Queue<EventData> eventQueue;
-    private final AtomicBoolean flush = new AtomicBoolean(false);
+    private final AtomicBoolean isFlushing = new AtomicBoolean(false);
     private final Semaphore flushSemaphore = new Semaphore(1);
     private final PublishResultSubscriber publishResultSubscriber;
 
@@ -74,7 +74,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
             this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
 
         this.publishResultSubscriber = new PublishResultSubscriber(partitionId,
-            options.getSendSucceededContext(), options.getSendFailedContext(), eventQueue, flushSemaphore, flush,
+            options.getSendSucceededContext(), options.getSendFailedContext(), eventQueue, flushSemaphore, isFlushing,
             retryOptions.getTryTimeout(), LOGGER);
 
         this.publishSubscription = publishEvents(eventDataBatchFlux)
@@ -95,7 +95,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
     Mono<Void> enqueueEvent(EventData eventData) {
         final Mono<Void> enqueueOperation = Mono.create(sink -> {
             try {
-                if (flush.get()
+                if (isFlushing.get()
                     && !flushSemaphore.tryAcquire(retryOptions.getTryTimeout().toMillis(), TimeUnit.MILLISECONDS)) {
 
                     sink.error(new TimeoutException("Timed out waiting for flush operation to complete."));
@@ -237,7 +237,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         private final Duration operationTimeout;
         private final ClientLogger logger;
 
-        private final AtomicBoolean flush;
+        private final AtomicBoolean isFlushing;
         private final Semaphore flushSemaphore;
         private MonoSink<Void> flushSink;
 
@@ -249,7 +249,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
             this.onFailed = onFailed;
             this.dataQueue = dataQueue;
             this.flushSemaphore = flushSemaphore;
-            this.flush = flush;
+            this.isFlushing = flush;
             this.operationTimeout = operationTimeout;
             this.logger = logger;
         }
@@ -302,7 +302,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
          */
         Mono<Void> startFlush() {
             return Mono.create(sink -> {
-                if (!flush.compareAndSet(false, true)) {
+                if (!isFlushing.compareAndSet(false, true)) {
                     logger.atInfo()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .log("Flush operation already in progress.");
@@ -331,7 +331,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
          * Checks whether data queue is empty, if it is, completes the flush.
          */
         private void tryCompleteFlush() {
-            if (!flush.get()) {
+            if (!isFlushing.get()) {
                 return;
             }
 
@@ -350,7 +350,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 flushSemaphore.release();
             }
 
-            flush.compareAndSet(true, false);
+            isFlushing.compareAndSet(true, false);
             flushSink.success();
         }
     }

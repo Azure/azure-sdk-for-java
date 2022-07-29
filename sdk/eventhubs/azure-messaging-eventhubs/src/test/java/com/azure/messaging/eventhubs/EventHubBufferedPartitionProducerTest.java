@@ -317,13 +317,15 @@ public class EventHubBufferedPartitionProducerTest {
         setupBatchMock(batch5, batchEvents5, event2, event3, event4, event5);
 
         // Delaying send operation.
-        when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
+        when(client.send(any(EventDataBatch.class)))
+            .thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
             options, DEFAULT_RETRY_OPTIONS);
 
         // Act & Assert
-        StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2), producer.enqueueEvent(event3)), 1L)
+        StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2),
+                producer.enqueueEvent(event3)), 1L)
             .then(() -> {
                 // event1 was enqueued, event2 is in a batch, and event3 is currently in the queue waiting to be
                 // pushed downstream.
@@ -336,10 +338,11 @@ public class EventHubBufferedPartitionProducerTest {
             .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         // We allow the operation timeout for flush to complete, so have to make this interval a bit bigger.
-        final Duration totalTime = DEFAULT_RETRY_OPTIONS.getTryTimeout().plus(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+        final Duration totalVerifyTime = DEFAULT_RETRY_OPTIONS.getTryTimeout()
+            .plus(DEFAULT_RETRY_OPTIONS.getTryTimeout());
         StepVerifier.create(Mono.when(producer.enqueueEvent(event4), producer.enqueueEvent(event5)))
             .expectComplete()
-            .verify(totalTime);
+            .verify(totalVerifyTime);
 
         System.out.println("Flushing events.");
 
