@@ -244,16 +244,20 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
-        PropertySource<?> source = locator.locate(devEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(devEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
 
-        String[] expectedSourceNames = new String[] {
-            KEY_FILTER + "store1/dev"
-        };
-        assertEquals(expectedSourceNames.length, sources.size());
-        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+
+            String[] expectedSourceNames = new String[] {
+                KEY_FILTER + "store1/dev"
+            };
+            assertEquals(expectedSourceNames.length, sources.size());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        }
     }
 
     @Test
@@ -262,16 +266,20 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
-        PropertySource<?> source = locator.locate(multiEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(multiEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
 
-        String[] expectedSourceNames = new String[] {
-            KEY_FILTER + "store1/prod,dev"
-        };
-        assertEquals(expectedSourceNames.length, sources.size());
-        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+
+            String[] expectedSourceNames = new String[] {
+                KEY_FILTER + "store1/prod,dev"
+            };
+            assertEquals(expectedSourceNames.length, sources.size());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        }
     }
 
     @Test
@@ -286,19 +294,23 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
-        PropertySource<?> source = locator.locate(emptyEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
-        // Application name: foo and active profile: dev,prod, should construct below
-        // composite Property Source:
-        // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
-        // /application/]
-        String[] expectedSourceNames = new String[] {
-            KEY_FILTER + "store1/\0"
-        };
-        assertEquals(expectedSourceNames.length, sources.size());
-        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(emptyEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
+
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+            // Application name: foo and active profile: dev,prod, should construct below
+            // composite Property Source:
+            // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
+            // /application/]
+            String[] expectedSourceNames = new String[] {
+                KEY_FILTER + "store1/\0"
+            };
+            assertEquals(expectedSourceNames.length, sources.size());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        }
     }
 
     @Test
@@ -307,19 +319,23 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
-        PropertySource<?> source = locator.locate(emptyEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
-        // Application name: foo and active profile: dev,prod, should construct below
-        // composite Property Source:
-        // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
-        // /application/]
-        String[] expectedSourceNames = new String[] {
-            KEY_FILTER + "store1/\0"
-        };
-        assertEquals(expectedSourceNames.length, sources.size());
-        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(emptyEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
+
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+            // Application name: foo and active profile: dev,prod, should construct below
+            // composite Property Source:
+            // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
+            // /application/]
+            String[] expectedSourceNames = new String[] {
+                KEY_FILTER + "store1/\0"
+            };
+            assertEquals(expectedSourceNames.length, sources.size());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        }
     }
 
     @Test
@@ -342,21 +358,18 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         AppConfigurationPropertySourceLocator.STARTUP.set(false);
 
-        StateHolder state = new StateHolder();
-        state.setNextForcedRefresh(Duration.ofMinutes(10));
-
-        state.setLoadState(TEST_STORE_NAME, true);
-
-        StateHolder.updateState(state);
-
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientFactoryMock, tokenCredentialProvider, null, null);
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
         when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         when(clientWrapperMock.listSettings(any())).thenThrow(new RuntimeException());
-        RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
-        assertEquals("Failed to generate property sources for store1", e.getMessage());
+
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.getLoadState(Mockito.anyString())).thenReturn(true);
+            RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
+            assertEquals("Failed to generate property sources for store1", e.getMessage());
+        }
     }
 
     @Test
@@ -368,11 +381,14 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.isFailFast()).thenReturn(false);
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
-        PropertySource<?> source = locator.locate(emptyEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(emptyEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
 
-        // Once a store fails it should stop attempting to load
-        verify(configStoreMock, times(2)).isFailFast();
+            // Once a store fails it should stop attempting to load
+            verify(configStoreMock, times(2)).isFailFast();
+        }
     }
 
     @Test
@@ -386,14 +402,17 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientFactoryMock, tokenCredentialProvider, null, null);
 
-        PropertySource<?> source = locator.locate(emptyEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(emptyEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
-        String[] expectedSourceNames = new String[] { KEY_FILTER + TEST_STORE_NAME_2 + "/\0",
-            KEY_FILTER + TEST_STORE_NAME_1 + "/\0" };
-        assertEquals(2, sources.size());
-        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+            String[] expectedSourceNames = new String[] { KEY_FILTER + TEST_STORE_NAME_2 + "/\0",
+                KEY_FILTER + TEST_STORE_NAME_1 + "/\0" };
+            assertEquals(2, sources.size());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+        }
     }
 
     @Test
@@ -448,11 +467,14 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
-        PropertySource<?> source = locator.locate(emptyEnvironment);
-        assertTrue(source instanceof CompositePropertySource);
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(emptyEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
 
-        Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
 
-        assertEquals(0, sources.size());
+            assertEquals(0, sources.size());
+        }
     }
 }

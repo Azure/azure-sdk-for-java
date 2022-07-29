@@ -37,7 +37,8 @@ public class StateHolderTest {
     }
 
     @Test
-    public void expireState(TestInfo testInfo) {
+    public void stateHolderTest(TestInfo testInfo) {
+        // Need to do all at once because of static code
         String endpoint = testInfo.getDisplayName() + ".azconfig.io";
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 

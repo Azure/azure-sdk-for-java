@@ -36,8 +36,9 @@ final class StateHolder {
         return currentState;
     }
 
-    static void updateState(StateHolder newState) {
+    static StateHolder updateState(StateHolder newState) {
         currentState = newState;
+        return currentState;
     }
 
     /**
