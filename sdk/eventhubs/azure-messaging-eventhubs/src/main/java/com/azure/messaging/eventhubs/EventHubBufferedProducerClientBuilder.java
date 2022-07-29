@@ -253,7 +253,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder maxConcurrentSends(int maxConcurrentSends) {
+    EventHubBufferedProducerClientBuilder maxConcurrentSends(int maxConcurrentSends) {
         clientOptions.setMaxConcurrentSends(maxConcurrentSends);
         return this;
     }
@@ -267,7 +267,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder maxConcurrentSendsPerPartition(int maxConcurrentSendsPerPartition) {
+    EventHubBufferedProducerClientBuilder maxConcurrentSendsPerPartition(int maxConcurrentSendsPerPartition) {
         clientOptions.setMaxConcurrentSendsPerPartition(maxConcurrentSendsPerPartition);
         return this;
     }
