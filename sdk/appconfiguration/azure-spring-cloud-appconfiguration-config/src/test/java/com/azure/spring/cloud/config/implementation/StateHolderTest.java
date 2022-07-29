@@ -99,7 +99,7 @@ public class StateHolderTest {
         assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
 
         // Test 2
-        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -1));
+        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -10));
         StateHolder.updateState(stateHolder);
         originalState = StateHolder.getState(endpoint);
 
