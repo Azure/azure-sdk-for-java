@@ -224,6 +224,13 @@
       </resource>
     </resources>
 
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+
     <plugins>
       <!-- This plugin configures the bas requirements for compilation -->
       <plugin>
