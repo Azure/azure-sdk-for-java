@@ -17,14 +17,16 @@ import java.security.PrivilegedExceptionAction;
  */
 @SuppressWarnings("deprecation")
 public final class ReflectionUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
+
     private static final boolean MODULE_BASED;
 
-    private static final MethodHandle CLASS_GET_MODULE;
-    private static final MethodHandle MODULE_IS_NAMED;
-    private static final MethodHandle MODULE_ADD_READS;
-    private static final MethodHandle METHOD_HANDLES_PRIVATE_LOOKUP_IN;
-    private static final MethodHandle MODULE_IS_OPEN_UNCONDITIONALLY;
-    private static final MethodHandle MODULE_IS_OPEN_TO_OTHER_MODULE;
+    private static final MethodHandle CLASS_GET_MODULE_METHOD_HANDLE;
+    private static final MethodHandle MODULE_IS_NAMED_METHOD_HANDLE;
+    private static final MethodHandle MODULE_ADD_READS_METHOD_HANDLE;
+    private static final MethodHandle METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE;
+    private static final MethodHandle MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE;
+    private static final MethodHandle MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE;
 
     private static final MethodHandles.Lookup LOOKUP;
     private static final Object CORE_MODULE;
@@ -32,8 +34,6 @@ public final class ReflectionUtils {
     private static final MethodHandle JDK_INTERNAL_PRIVATE_LOOKUP_IN_CONSTRUCTOR;
 
     static {
-        ClientLogger logger = new ClientLogger(ReflectionUtils.class);
-
         boolean moduleBased = false;
         MethodHandle classGetModule = null;
         MethodHandle moduleIsNamed = null;
@@ -64,8 +64,9 @@ public final class ReflectionUtils {
             if (throwable instanceof Error) {
                 throw (Error) throwable;
             } else {
-                logger.log(LogLevel.INFORMATIONAL,
-                    () -> "Unable to use Module.privateLookupIn for finding the Method.Lookup to use.", throwable);
+                LOGGER.log(LogLevel.INFORMATIONAL,
+                    () -> "Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
+                        + "Will attempt to fallback to using the package-private constructor.", throwable);
             }
         }
 
@@ -80,17 +81,18 @@ public final class ReflectionUtils {
 
                 jdkInternalPrivateLookupInConstructor = lookup.unreflectConstructor(privateLookupInConstructor);
             } catch (ReflectiveOperationException ex) {
-                throw new RuntimeException("Unable to use private lookup in constructor.", ex);
+                throw LOGGER.logExceptionAsError(
+                    new RuntimeException("Unable to use package-private MethodHandles.Lookup constructor.", ex));
             }
         }
 
         MODULE_BASED = moduleBased;
-        CLASS_GET_MODULE = classGetModule;
-        MODULE_IS_NAMED = moduleIsNamed;
-        MODULE_ADD_READS = moduleAddReads;
-        METHOD_HANDLES_PRIVATE_LOOKUP_IN = methodHandlesPrivateLookupIn;
-        MODULE_IS_OPEN_UNCONDITIONALLY = moduleIsOpenUnconditionally;
-        MODULE_IS_OPEN_TO_OTHER_MODULE = moduleIsOpenToOtherModule;
+        CLASS_GET_MODULE_METHOD_HANDLE = classGetModule;
+        MODULE_IS_NAMED_METHOD_HANDLE = moduleIsNamed;
+        MODULE_ADD_READS_METHOD_HANDLE = moduleAddReads;
+        METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE = methodHandlesPrivateLookupIn;
+        MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE = moduleIsOpenUnconditionally;
+        MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE = moduleIsOpenToOtherModule;
         LOOKUP = lookup;
         CORE_MODULE = coreModule;
         JDK_INTERNAL_PRIVATE_LOOKUP_IN_CONSTRUCTOR = jdkInternalPrivateLookupInConstructor;
@@ -103,9 +105,9 @@ public final class ReflectionUtils {
      * have module boundaries that will prevent reflective access to the {@code targetClass}.
      * <p>
      * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
-     * containing the {@code targetClass} exports the package containing the class. Otherwise, the {@link
-     * MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing {@code
-     * targetClass}.
+     * containing the {@code targetClass} exports the package containing the class. Otherwise, the
+     * {@link MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing
+     * {@code targetClass}.
      *
      * @param targetClass The {@link Class} that will need to be reflectively accessed.
      * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
@@ -113,14 +115,14 @@ public final class ReflectionUtils {
      * @throws Exception If the underlying reflective calls throw an exception.
      */
     public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Exception {
-        if (MODULE_BASED) {
-            try {
-                Object responseModule = CLASS_GET_MODULE.invoke(targetClass);
+        try {
+            if (MODULE_BASED) {
+                Object responseModule = CLASS_GET_MODULE_METHOD_HANDLE.invoke(targetClass);
 
-                // The unnamed module is opened unconditionally, have Core read it and use a private proxy lookup to enable all
-                // lookup scenarios.
-                if (!(boolean) MODULE_IS_NAMED.invoke(responseModule)) {
-                    MODULE_ADD_READS.invokeWithArguments(CORE_MODULE, responseModule);
+                // The unnamed module is opened unconditionally, have Core read it and use a private proxy lookup to
+                // enable all lookup scenarios.
+                if (!(boolean) MODULE_IS_NAMED_METHOD_HANDLE.invoke(responseModule)) {
+                    MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
 
@@ -130,41 +132,31 @@ public final class ReflectionUtils {
                     return LOOKUP;
                 }
 
-                // Next check if the target class module is opened either unconditionally or to Core's module. If so, also use
-                // a private proxy lookup to enable all lookup scenarios.
+                // Next check if the target class module is opened either unconditionally or to Core's module. If so,
+                // also use a private proxy lookup to enable all lookup scenarios.
                 String packageName = targetClass.getPackage().getName();
-                if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY.invokeWithArguments(responseModule, packageName)
-                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE.invokeWithArguments(responseModule, packageName, CORE_MODULE)) {
-                    MODULE_ADD_READS.invokeWithArguments(CORE_MODULE, responseModule);
+                if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE
+                    .invokeWithArguments(responseModule, packageName)
+                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE
+                    .invokeWithArguments(responseModule, packageName, CORE_MODULE)) {
+                    MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
 
                 // Otherwise, return the public lookup as there are no specialty ways to access the other module.
                 return MethodHandles.publicLookup();
-            } catch (Throwable throwable) {
-                // invoke(Class<?) throws a Throwable as the underlying method being called through reflection can throw
-                // anything, but the constructor being called is owned by the Java SDKs which won't throw Throwable. So,
-                // only Error needs to be inspected and handled specially, otherwise it can be assumed the Throwable is
-                // a type of Exception which can be thrown based on this method having Exception checked.
-                if (throwable instanceof Error) {
-                    throw (Error) throwable;
-                } else {
-                    throw (Exception) throwable;
-                }
-            }
-        } else {
-            try {
+            } else {
                 return (MethodHandles.Lookup) JDK_INTERNAL_PRIVATE_LOOKUP_IN_CONSTRUCTOR.invoke(targetClass);
-            } catch (Throwable throwable) {
-                // invoke(Class<?) throws a Throwable as the underlying method being called through reflection can throw
-                // anything, but the constructor being called is owned by the Java SDKs which won't throw Throwable. So,
-                // only Error needs to be inspected and handled specially, otherwise it can be assumed the Throwable is
-                // a type of Exception which can be thrown based on this method having Exception checked.
-                if (throwable instanceof Error) {
-                    throw (Error) throwable;
-                } else {
-                    throw (Exception) throwable;
-                }
+            }
+        } catch (Throwable throwable) {
+            // invoke(Class<?) throws a Throwable as the underlying method being called through reflection can throw
+            // anything, but the constructor being called is owned by the Java SDKs which won't throw Throwable. So,
+            // only Error needs to be inspected and handled specially, otherwise it can be assumed the Throwable is
+            // a type of Exception which can be thrown based on this method having Exception checked.
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            } else {
+                throw (Exception) throwable;
             }
         }
     }
@@ -173,11 +165,13 @@ public final class ReflectionUtils {
     private static MethodHandles.Lookup performSafePrivateLookupIn(Class<?> targetClass) throws Throwable {
         // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager
         if (System.getSecurityManager() == null) {
-            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN.invokeExact(targetClass, LOOKUP);
+            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
+                .invokeExact(targetClass, LOOKUP);
         } else {
             return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () -> {
                 try {
-                    return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN.invokeExact(targetClass, LOOKUP);
+                    return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
+                        .invokeExact(targetClass, LOOKUP);
                 } catch (Throwable throwable) {
                     if (throwable instanceof Error) {
                         throw (Error) throwable;
