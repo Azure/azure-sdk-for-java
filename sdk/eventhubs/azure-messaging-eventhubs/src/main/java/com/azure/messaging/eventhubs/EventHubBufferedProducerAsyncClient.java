@@ -19,6 +19,7 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -148,9 +149,16 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      *
      * @throws NullPointerException if {@code partitionId} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        if (Objects.isNull(partitionId)) {
+            return monoError(logger, new NullPointerException("'partitionId' cannot be null."));
+        } else if (CoreUtils.isNullOrEmpty(partitionId)) {
+            return monoError(logger, new IllegalArgumentException("'partitionId' cannot be empty."));
+        }
+
         return client.getPartitionProperties(partitionId);
     }
 
@@ -173,6 +181,9 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @param partitionId The partition identifier.
      *
      * @return The number of events that are buffered and waiting to be published for a given partition.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is empty.
      */
     public int getBufferedEventCount(String partitionId) {
         final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
