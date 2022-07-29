@@ -133,7 +133,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 });
                 sink.success();
             } catch (Exception e) {
-                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
+                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(), e,
                     errorContext));
             }
         });
@@ -212,7 +212,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         try {
             return batch.toFuture().get();
         } catch (InterruptedException | ExecutionException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedInterruptedException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedInterruptedException(e));
         }
     }
 

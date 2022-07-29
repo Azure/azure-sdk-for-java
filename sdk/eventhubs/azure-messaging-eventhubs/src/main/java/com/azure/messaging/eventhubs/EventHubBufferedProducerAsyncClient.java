@@ -341,7 +341,6 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             return;
         }
 
-        flush().block(retryOptions.getTryTimeout());
         partitionProducers.values().forEach(partitionProducer -> partitionProducer.close());
         client.close();
     }

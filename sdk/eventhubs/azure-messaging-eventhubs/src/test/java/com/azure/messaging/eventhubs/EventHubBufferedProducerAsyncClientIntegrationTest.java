@@ -188,7 +188,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
                 final String partitionKey = "partition-" + index;
                 final EventData eventData = new EventData(partitionKey);
                 final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
-                final int delay = randomInterval.nextInt(60);
+                final int delay = randomInterval.nextInt(20);
 
                 final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
 
@@ -206,7 +206,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
                 return Mono.delay(Duration.ofSeconds(delay)).then(producer.enqueueEvent(eventData, sendOptions)
                     .doFinally(signal  -> {
                         System.out.printf("\t[%s] %s Published event.%n", expectedPartitionId, formatter.format(Instant.now()));
-                }));
+                    }));
             }).collect(Collectors.toList());
 
         // Waiting for at least maxWaitTime because events will get published by then.

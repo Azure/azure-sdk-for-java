@@ -128,10 +128,12 @@ public class EventHubBufferedPartitionProducerTest {
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(producer.enqueueEvent(event2))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         assertTrue(successSemaphore.tryAcquire(waitTime.toMillis(), TimeUnit.MILLISECONDS),
             "Should have been able to get a successful batch pushed downstream.");
@@ -176,11 +178,13 @@ public class EventHubBufferedPartitionProducerTest {
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(Mono.when(producer.enqueueEvent(event3)))
             .thenAwait(options.getMaxWaitTime())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         assertTrue(successSemaphore.tryAcquire(waitTime.toMillis(), TimeUnit.MILLISECONDS),
             "Should have been able to get a successful signal downstream.");
@@ -244,15 +248,18 @@ public class EventHubBufferedPartitionProducerTest {
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(producer.enqueueEvent(event3))
             .thenAwait(options.getMaxWaitTime())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(Mono.when(producer.enqueueEvent(event4), producer.enqueueEvent(event5)))
             .thenAwait(options.getMaxWaitTime())
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         assertTrue(success.await(waitTime.toMillis(), TimeUnit.MILLISECONDS),
             "Should have been able to get a successful signal downstream.");
@@ -303,6 +310,12 @@ public class EventHubBufferedPartitionProducerTest {
         final EventData event5 = new EventData("five");
         setupBatchMock(batch3, batchEvents3, event4, event5);
 
+        final List<EventData> batchEvents4 = new ArrayList<>();
+        setupBatchMock(batch4, batchEvents4, event2, event3, event4, event5);
+
+        final List<EventData> batchEvents5 = new ArrayList<>();
+        setupBatchMock(batch5, batchEvents5, event2, event3, event4, event5);
+
         // Delaying send operation.
         when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
 
@@ -319,10 +332,18 @@ public class EventHubBufferedPartitionProducerTest {
                 final int bufferedEventCount = producer.getBufferedEventCount();
                 assertEquals(1, bufferedEventCount);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(Mono.when(producer.enqueueEvent(event4), producer.enqueueEvent(event5)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        System.out.println("Flushing events.");
+
+        StepVerifier.create(producer.flush())
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         final long totalTime = waitTime.toMillis() + waitTime.toMillis();
         assertTrue(success.await(totalTime, TimeUnit.MILLISECONDS),
