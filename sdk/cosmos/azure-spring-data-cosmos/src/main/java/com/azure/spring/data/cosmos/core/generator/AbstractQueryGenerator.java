@@ -28,6 +28,8 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  */
 public abstract class AbstractQueryGenerator {
 
+    private static String tableName = "r";
+
     /**
      * Initialization
      */
@@ -235,13 +237,14 @@ public abstract class AbstractQueryGenerator {
 
         final String direction = order.isDescending() ? "DESC" : "ASC";
 
-        return String.format("r.%s %s", order.getProperty(), direction);
+        return String.format("%s.%s %s", tableName, order.getProperty(), direction);
     }
 
-    static String generateQuerySort(@NonNull Sort sort) {
+    static String generateQuerySort(@NonNull Sort sort, @NonNull String inputTableName) {
         if (sort.isUnsorted()) {
             return "";
         }
+        tableName = inputTableName;
 
         final String queryTail = "ORDER BY";
         final List<String> subjects = sort.stream().map(AbstractQueryGenerator::getParameter).collect(Collectors.toList());
@@ -255,7 +258,7 @@ public abstract class AbstractQueryGenerator {
     private String generateQueryTail(@NonNull CosmosQuery query) {
         final List<String> queryTails = new ArrayList<>();
 
-        queryTails.add(generateQuerySort(query.getSort()));
+        queryTails.add(generateQuerySort(query.getSort(), "r"));
 
         return String.join(" ", queryTails.stream().filter(StringUtils::hasText).collect(Collectors.toList()));
     }

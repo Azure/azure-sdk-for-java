@@ -7,6 +7,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.util.Assert;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Augment custom queries sourced from @Query annotations
@@ -40,8 +42,13 @@ public class NativeQueryGenerator {
         if (sort == null || sort.isUnsorted()) {
             return querySpec;
         } else {
-            String querySort = AbstractQueryGenerator.generateQuerySort(sort);
-            String queryText = "select * from (" + querySpec.getQueryText() + ") r " + querySort;
+            Matcher matcher = Pattern.compile("\\sfrom\\s").matcher(querySpec.getQueryText());
+            matcher.find();
+            String tableName = querySpec.getQueryText().substring(matcher.start(0)+6);
+            tableName = tableName.substring(0, tableName.indexOf(" "));
+
+            String querySort = AbstractQueryGenerator.generateQuerySort(sort, tableName);
+            String queryText = querySpec.getQueryText() + " " + querySort;
             return cloneWithQueryText(querySpec, queryText);
         }
     }
