@@ -133,7 +133,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
 
-        if (clientTelemetry.isClientMetricsEnabled()) {
+        if (clientTelemetry != null &&
+            clientTelemetry.isClientMetricsEnabled()) {
+
             RntbdMetricsCompletionRecorder rntbdMetricsV2 =
                 ClientTelemetryMetrics.createRntbdMetrics(provider.transportClient, this);
             if (RntbdMetrics.isEmpty()) {
