@@ -73,10 +73,6 @@ public class AppConfigurationRefreshUtilTest {
     @BeforeEach
     public void setup(TestInfo testInfo) {
         MockitoAnnotations.openMocks(this);
-        StateHolder state = new StateHolder();
-        state.setNextForcedRefresh(Duration.ofMinutes(10));
-        StateHolder.updateState(state);
-
         configStore = new ConfigStore();
 
         FeatureFlagStore ffStore = new FeatureFlagStore();
