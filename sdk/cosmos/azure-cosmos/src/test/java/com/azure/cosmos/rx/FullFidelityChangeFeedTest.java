@@ -334,8 +334,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             fail("change feed missing results");
         }
     }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    // TODO: re-enable this test once pipeline emulator has these changes - currently only in preview
+    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions

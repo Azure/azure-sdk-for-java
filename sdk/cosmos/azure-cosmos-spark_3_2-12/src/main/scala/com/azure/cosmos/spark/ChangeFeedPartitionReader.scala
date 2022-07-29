@@ -107,7 +107,7 @@ private case class ChangeFeedPartitionReader
 
     private def changeFeedItemFactoryMethodV1(jsonNode: JsonNode): ChangeFeedSparkRowItem = {
       val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
-      val row = cosmosRowConverter.fromObjectNodeToRowV1(readSchema,
+      val row = cosmosRowConverter.fromObjectNodeToChangeFeedRowV1(readSchema,
           objectNode,
           readConfig.schemaConversionMode)
       ChangeFeedSparkRowItem(row, cosmosRowConverter.getChangeFeedLsn(objectNode))

@@ -6,11 +6,11 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.TestUtils;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -54,7 +54,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
         String endpoint = getEndpoint();
-        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+        DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -99,12 +99,12 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         assertNotNull(actualResult.getTargetResourceId());
     }
 
-    static void validateResourceInfo(ResourceInfo actualResourceInfo) {
-        assertNotNull(actualResourceInfo.getDocumentModelLimit());
-        assertNotNull(actualResourceInfo.getDocumentModelCount());
+    static void validateResourceInfo(ResourceDetails actualResourceDetails) {
+        assertNotNull(actualResourceDetails.getDocumentModelLimit());
+        assertNotNull(actualResourceDetails.getDocumentModelCount());
     }
 
-    void validateDocumentModelData(DocumentModelInfo actualCustomModel) {
+    void validateDocumentModelData(DocumentModelDetails actualCustomModel) {
         assertNotNull(actualCustomModel.getCreatedOn());
         assertNotNull(actualCustomModel.getModelId());
 

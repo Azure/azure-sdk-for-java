@@ -420,6 +420,9 @@ class SparkE2EChangeFeedITest
       container.deleteItem(id, new PartitionKey(id)).block()
     }
 
+    // wait for the log store to get these changes
+    Thread.sleep(2000)
+
     val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val groupedFrame = df2.groupBy(CosmosTableSchemaInferrer.OperationTypeAttributeName)
       .agg(functions.collect_list("id").as("ids"))
@@ -430,11 +433,11 @@ class SparkE2EChangeFeedITest
       val array = wrappedArray.array
       row.get(0) match {
         case "create" =>
-          compareArraysUnordered(createdObjectIds, array) shouldEqual true
+          validateArraysUnordered(createdObjectIds, array)
         case "replace" =>
-          compareArraysUnordered(replacedObjectIds, array) shouldEqual true
+          validateArraysUnordered(replacedObjectIds, array)
         case "delete" =>
-          compareArraysUnordered(deletedObjectIds, array) shouldEqual true
+          validateArraysUnordered(deletedObjectIds, array)
       }
     })
   }
@@ -528,23 +531,15 @@ class SparkE2EChangeFeedITest
     rowsArray2 should have size 50 - initialCount
   }
 
-  private def compareArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Boolean = {
-    println("Input : ", inputArrayBuffer.mkString(","))
-    println("Output : ", outputArray.mkString(","))
-    if (inputArrayBuffer.length != outputArray.length) {
-      return false
-    }
+  private def validateArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Unit = {
+    assert(inputArrayBuffer.length == outputArray.length)
     val set: mutable.HashSet[String] = new mutable.HashSet[String]()
     for (element <- inputArrayBuffer) {
       set.add(element)
     }
     for (element <- outputArray) {
-      if (!set.contains(element)) {
-        println("Returning false on ", element)
-        return false
-      }
+      assert(set.contains(element))
     }
-    true
   }
 
   private[this] def readFileContentAsString(fileSystem: FileSystem, fileName: String): String = {

@@ -6,12 +6,12 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.models.AddressValue;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentTable;
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
@@ -70,7 +70,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                                                              DocumentAnalysisServiceVersion serviceVersion,
                                                              boolean useKeyCredential) {
         String endpoint = getEndpoint();
-        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+        DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
 
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(endpoint)
@@ -97,7 +97,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
         String endpoint = getEndpoint();
-        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+        DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)

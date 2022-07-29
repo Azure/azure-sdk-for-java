@@ -11,14 +11,13 @@ import java.util.stream.Collectors;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
+
 /**
  * A builder class that is used to create URLs.
  */
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
-
-    // future improvement - make this configurable
-    private static final int MAX_CACHE_SIZE = 10000;
 
     private String scheme;
     private String host;
@@ -278,18 +277,48 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    String queryString = emptyToNull(tokenText);
-                    if (queryString != null) {
-                        if (queryString.startsWith("?")) {
-                            queryString = queryString.substring(1);
+                    if (!CoreUtils.isNullOrEmpty(tokenText)) {
+                        int keyStart = 0;
+                        int keyEnd;
+                        int valueStart = -1;
+                        int valueEnd;
+                        boolean inValue = false;
+
+                        // If the URL query begins with '?' the first possible start of a query parameter key is the
+                        // second character in the query.
+                        if (tokenText.startsWith("?")) {
+                            keyStart = 1;
                         }
 
-                        for (String entry : queryString.split("&")) {
-                            String[] nameValue = entry.split("=");
-                            if (nameValue.length == 2) {
-                                addQueryParameter(nameValue[0], nameValue[1]);
+                        String key = null;
+                        while (true) {
+                            if (inValue) {
+                                valueEnd = tokenText.indexOf('&', valueStart);
+
+                                if (valueEnd == -1) {
+                                    // Value goes until the end of the query parameter.
+                                    addQueryParameter(key, tokenText.substring(valueStart));
+                                    break;
+                                } else {
+                                    inValue = false;
+                                    keyStart = valueEnd + 1;
+
+                                    String value = (valueStart == valueEnd)
+                                        ? "" : tokenText.substring(valueStart, valueEnd);
+                                    addQueryParameter(key, value);
+                                }
                             } else {
-                                addQueryParameter(nameValue[0], "");
+                                keyEnd = tokenText.indexOf('=', keyStart);
+
+                                if (keyEnd == -1) {
+                                    // Key doesn't have a value, add a query parameters with an empty string value.
+                                    addQueryParameter(tokenText.substring(keyStart), "");
+                                    break;
+                                } else {
+                                    inValue = true;
+                                    key = (keyStart == keyEnd) ? "" : tokenText.substring(keyStart, keyEnd);
+                                    valueStart = keyEnd + 1;
+                                }
                             }
                         }
                     }
