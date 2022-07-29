@@ -39,8 +39,8 @@ private[spark] object CosmosClientConfiguration {
       applicationName = s"$applicationName ${runtimeInfo.get}"
     }
 
-    if (cosmosAccountConfig.applicationName.isDefined){
-      applicationName = s"$applicationName $customApplicationNameSuffix"
+    if (customApplicationNameSuffix.isDefined){
+      applicationName = s"$applicationName ${customApplicationNameSuffix.get}"
     }
 
     CosmosClientConfiguration(
