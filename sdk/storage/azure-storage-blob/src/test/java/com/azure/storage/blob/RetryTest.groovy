@@ -58,14 +58,20 @@ class RetryTest extends Specification {
 
         then:
         StepVerifier.create(responseMono)
-            .expectErrorMatches({
-                it instanceof IOException && it.message == "Exception number " + retryTestOptions.getMaxTries()
-                    && it.suppressed != null
-                    && it.suppressed[0] instanceof IOException && it.suppressed[0].message == "Exception number 1"
-                    && it.suppressed[1] instanceof IOException && it.suppressed[1].message == "Exception number 2"
-                    && it.suppressed[2] instanceof IOException && it.suppressed[2].message == "Exception number 3"
-                    && it.suppressed[3] instanceof IOException && it.suppressed[3].message == "Exception number 4"
-                    && it.suppressed[4] instanceof IOException && it.suppressed[4].message == "Exception number 5"
+            .expectErrorSatisfies({
+                assert it instanceof IOException
+                assert it.message == "Exception number " + retryTestOptions.getMaxTries()
+                assert it.suppressed != null
+                assert it.suppressed[0] instanceof IOException
+                assert it.suppressed[0].message == "Exception number 1"
+                assert it.suppressed[1] instanceof IOException
+                assert it.suppressed[1].message == "Exception number 2"
+                assert it.suppressed[2] instanceof IOException
+                assert it.suppressed[2].message == "Exception number 3"
+                assert it.suppressed[3] instanceof IOException
+                assert it.suppressed[3].message == "Exception number 4"
+                assert it.suppressed[4] instanceof IOException
+                assert it.suppressed[4].message == "Exception number 5"
             }).verify()
     }
 
