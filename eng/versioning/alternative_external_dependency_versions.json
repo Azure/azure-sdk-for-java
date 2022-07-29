@@ -44,5 +44,12 @@
     { "io.projectreactor.netty:reactor-netty-http": "1.1.0-M5" },
     { "io.projectreactor:reactor-core": "3.5.0-M5" },
     { "io.projectreactor:reactor-test": "3.5.0-M5" }
+  ],
+  "reactor_3.4":
+  [
+    { "io.projectreactor.netty:reactor-netty": "1.0.0" },
+    { "io.projectreactor.netty:reactor-netty-http": "1.0.0" },
+    { "io.projectreactor:reactor-core": "3.4.0" },
+    { "io.projectreactor:reactor-test": "3.4.0" }
   ]
 }
