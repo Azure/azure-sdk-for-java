@@ -3,12 +3,12 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.ModelOperationInfoHelper;
+import com.azure.ai.formrecognizer.implementation.util.ModelOperationSummaryHelper;
 
 import java.time.OffsetDateTime;
 
-/** ModelOperationInfo. */
-public class ModelOperationInfo {
+/** ModelOperationSummary. */
+public class ModelOperationSummary {
     /*
      * Operation ID
      */
@@ -57,7 +57,6 @@ public class ModelOperationInfo {
      * Set the operationId property: Operation ID.
      *
      * @param operationId the operationId value to set.
-     * @return the OperationInfo object itself.
      */
     void setOperationId(String operationId) {
         this.operationId = operationId;
@@ -76,7 +75,6 @@ public class ModelOperationInfo {
      * Set the status property: Operation status.
      *
      * @param status the status value to set.
-     * @return the OperationInfo object itself.
      */
     void setStatus(ModelOperationStatus status) {
         this.status = status;
@@ -95,7 +93,6 @@ public class ModelOperationInfo {
      * Set the percentCompleted property: Operation progress (0-100).
      *
      * @param percentCompleted the percentCompleted value to set.
-     * @return the OperationInfo object itself.
      */
     void setPercentCompleted(Integer percentCompleted) {
         this.percentCompleted = percentCompleted;
@@ -114,7 +111,6 @@ public class ModelOperationInfo {
      * Set the createdDateTime property: Date and time (UTC) when the operation was created.
      *
      * @param createdOn the createdDateTime value to set.
-     * @return the OperationInfo object itself.
      */
     void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
@@ -133,7 +129,6 @@ public class ModelOperationInfo {
      * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
      *
      * @param lastUpdatedOn the lastUpdatedDateTime value to set.
-     * @return the OperationInfo object itself.
      */
     void setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
@@ -152,7 +147,6 @@ public class ModelOperationInfo {
      * Set the kind property: Type of operation.
      *
      * @param kind the kind value to set.
-     * @return the OperationInfo object itself.
      */
     void setKind(ModelOperationKind kind) {
         this.kind = kind;
@@ -171,47 +165,46 @@ public class ModelOperationInfo {
      * Set the resourceLocation property: URL of the resource targeted by this operation.
      *
      * @param resourceLocation the resourceLocation value to set.
-     * @return the OperationInfo object itself.
      */
     void setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
     }
 
     static {
-        ModelOperationInfoHelper.setAccessor(new ModelOperationInfoHelper.ModelOperationInfoAccessor() {
+        ModelOperationSummaryHelper.setAccessor(new ModelOperationSummaryHelper.ModelOperationSummaryAccessor() {
             @Override
-            public void setOperationId(ModelOperationInfo modelOperationInfo, String operationId) {
-                modelOperationInfo.setOperationId(operationId);
+            public void setOperationId(ModelOperationSummary modelOperationSummary, String operationId) {
+                modelOperationSummary.setOperationId(operationId);
             }
 
             @Override
-            public void setStatus(ModelOperationInfo modelOperationInfo, ModelOperationStatus status) {
-                modelOperationInfo.setStatus(status);
+            public void setStatus(ModelOperationSummary modelOperationSummary, ModelOperationStatus status) {
+                modelOperationSummary.setStatus(status);
             }
 
             @Override
-            public void setPercentCompleted(ModelOperationInfo modelOperationInfo, Integer percentCompleted) {
-                modelOperationInfo.setPercentCompleted(percentCompleted);
+            public void setPercentCompleted(ModelOperationSummary modelOperationSummary, Integer percentCompleted) {
+                modelOperationSummary.setPercentCompleted(percentCompleted);
             }
 
             @Override
-            public void setCreatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime createdOn) {
-                modelOperationInfo.setCreatedOn(createdOn);
+            public void setCreatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime createdOn) {
+                modelOperationSummary.setCreatedOn(createdOn);
             }
 
             @Override
-            public void setLastUpdatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn) {
-                modelOperationInfo.setLastUpdatedOn(lastUpdatedOn);
+            public void setLastUpdatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime lastUpdatedOn) {
+                modelOperationSummary.setLastUpdatedOn(lastUpdatedOn);
             }
 
             @Override
-            public void setKind(ModelOperationInfo modelOperationInfo, ModelOperationKind kind) {
-                modelOperationInfo.setKind(kind);
+            public void setKind(ModelOperationSummary modelOperationSummary, ModelOperationKind kind) {
+                modelOperationSummary.setKind(kind);
             }
 
             @Override
-            public void setResourceLocation(ModelOperationInfo modelOperationInfo, String resourceLocation) {
-                modelOperationInfo.setResourceLocation(resourceLocation);
+            public void setResourceLocation(ModelOperationSummary modelOperationSummary, String resourceLocation) {
+                modelOperationSummary.setResourceLocation(resourceLocation);
             }
         });
     }

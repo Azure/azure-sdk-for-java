@@ -3,16 +3,17 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * Async sample to get/list all document model operations associated with the Form Recognizer resource.
+ * Sample to get/list all document model operations associated with the Form Recognizer resource.
  * Kinds of operations returned are "documentModelBuild", "documentModelCompose", and "documentModelCopyTo".
  * Note that operation information only persists for 24 hours.
- * If the operation was successful, the document model can be accessed using get_model or list_models APIs
+ * If the operation was successful, the document model can be accessed using getModel() or listModels() APIs
  */
-public class GetOperationInfoAsync {
+public class GetOperationSummary {
 
     /**
      * Main method to invoke this demo.
@@ -21,12 +22,12 @@ public class GetOperationInfoAsync {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient();
+            .buildClient();
 
-        client.listOperations().subscribe(modelOperationInfo -> {
+        client.listOperations().forEach(modelOperationInfo -> {
             System.out.printf("Operation ID: %s%n", modelOperationInfo.getOperationId());
             System.out.printf("Operation Kind: %s%n", modelOperationInfo.getKind());
             System.out.printf("Operation Status: %s%n", modelOperationInfo.getStatus());
@@ -34,13 +35,12 @@ public class GetOperationInfoAsync {
             System.out.printf("Operation percent completion status: %d%n", modelOperationInfo.getPercentCompleted());
 
             // get the specific operation info
-            client.getOperation(modelOperationInfo.getOperationId()).subscribe(modelOperation -> {
-                System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-                if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {
-                    System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
-                }
-            });
-
+            ModelOperationDetails modelOperationDetails =
+                client.getOperation(modelOperationInfo.getOperationId());
+            System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getModelId());
+            if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {
+                System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
+            }
         });
 
     }

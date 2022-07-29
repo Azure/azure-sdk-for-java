@@ -10,6 +10,8 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
+* Remove requires `io.netty.transport.epoll` from `module-info`.
 
 ### 4.33.1 (2022-07-22)
 

@@ -3,12 +3,12 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.ResourceInfoHelper;
+import com.azure.ai.formrecognizer.implementation.util.ResourceDetailsHelper;
 
 /**
- * The ResourceInfo model.
+ * The ResourceDetails model.
  */
-public final class ResourceInfo {
+public final class ResourceDetails {
 
     /*
      * The current count of built document analysis models.
@@ -47,17 +47,17 @@ public final class ResourceInfo {
     }
 
     static {
-        ResourceInfoHelper.setAccessor(new ResourceInfoHelper.ResourceInfoAccessor() {
+        ResourceDetailsHelper.setAccessor(new ResourceDetailsHelper.ResourceDetailsAccessor() {
             @Override
             public void setDocumentModelCount(
-                ResourceInfo resourceInfo, int documentModelCount) {
-                resourceInfo.setDocumentModelCount(documentModelCount);
+                ResourceDetails resourceDetails, int documentModelCount) {
+                resourceDetails.setDocumentModelCount(documentModelCount);
             }
 
             @Override
             public void setDocumentModelLimit(
-                ResourceInfo resourceInfo, int documentModelLimit) {
-                resourceInfo.setDocumentModelLimit(documentModelLimit);
+                ResourceDetails resourceDetails, int documentModelLimit) {
+                resourceDetails.setDocumentModelLimit(documentModelLimit);
             }
         });
     }
