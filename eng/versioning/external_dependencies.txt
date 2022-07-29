@@ -118,6 +118,7 @@ org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;4.2.3
 io.lettuce:lettuce-core;6.2.0.RELEASE
 org.redisson:redisson;3.17.0
+net.bytebuddy:byte-buddy;1.12.9
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.7.1
