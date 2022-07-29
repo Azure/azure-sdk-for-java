@@ -59,7 +59,7 @@ public class SyncRestProxy extends RestProxyBase {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
         try {
-            context = startTracingSpan(method, context);
+            context = startTracingSpan(methodParser, context);
 
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.

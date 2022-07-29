@@ -10,13 +10,13 @@ import java.util.Collection;
 /** Defines values for ModelOperationKind. */
 public final class ModelOperationKind extends ExpandableStringEnum<ModelOperationKind> {
     /** Static value documentModelBuild for ModelOperationKind. */
-    public static final ModelOperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
+    public static final ModelOperationKind BUILD = fromString("documentModelBuild");
 
     /** Static value documentModelCompose for ModelOperationKind. */
-    public static final ModelOperationKind DOCUMENT_MODEL_COMPOSE = fromString("documentModelCompose");
+    public static final ModelOperationKind COMPOSE = fromString("documentModelCompose");
 
     /** Static value documentModelCopyTo for ModelOperationKind. */
-    public static final ModelOperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
+    public static final ModelOperationKind COPY_TO = fromString("documentModelCopyTo");
 
     /**
      * Creates or finds a ModelOperationKind from its string representation.

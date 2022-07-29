@@ -3,24 +3,39 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-/** Defines values for ModelOperationStatus. */
-public enum ModelOperationStatus {
-    /** Enum value notStarted. */
-    NOT_STARTED("notStarted"),
+import com.azure.core.util.ExpandableStringEnum;
 
-    /** Enum value running. */
-    RUNNING("running"),
+import java.util.Collection;
 
-    /** Enum value failed. */
-    FAILED("failed"),
+/**
+ * Defines values for ModelOperationStatus.
+ */
+public final class ModelOperationStatus extends ExpandableStringEnum<ModelOperationStatus> {
 
-    /** Enum value succeeded. */
-    SUCCEEDED("succeeded"),
+    /**
+     * Enum value notStarted.
+     */
+    public static final ModelOperationStatus NOT_STARTED = fromString("notStarted");
+    /**
+     * Enum value running.
+     */
+    public static final ModelOperationStatus RUNNING = fromString("running");
+    /**
+     * Enum value failed.
+     */
+    public static final ModelOperationStatus FAILED = fromString("failed");
+    /**
+     * Enum value succeeded.
+     */
+    public static final ModelOperationStatus SUCCEEDED = fromString("succeeded");
+    /**
+     * Enum value canceled.
+     */
+    public static final ModelOperationStatus CANCELED = fromString("canceled");
 
-    /** Enum value canceled. */
-    CANCELED("canceled");
-
-    /** The actual serialized value for a ModelOperationStatus instance. */
+    /**
+     * The actual serialized value for a ModelOperationStatus instance.
+     */
     private final String value;
 
     ModelOperationStatus(String value) {
@@ -28,23 +43,20 @@ public enum ModelOperationStatus {
     }
 
     /**
-     * Parses a serialized value to a ModelOperationStatus instance.
+     * Creates or finds a ModelOperationStatus from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ModelOperationStatus object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ModelOperationStatus.
      */
-    public static ModelOperationStatus fromString(String value) {
-        ModelOperationStatus[] items = ModelOperationStatus.values();
-        for (ModelOperationStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ModelOperationStatus fromString(String name) {
+        return fromString(name, ModelOperationStatus.class);
     }
 
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known ModelOperationStatus values.
+     */
+    public static Collection<ModelOperationStatus> values() {
+        return values(ModelOperationStatus.class);
     }
+
 }
