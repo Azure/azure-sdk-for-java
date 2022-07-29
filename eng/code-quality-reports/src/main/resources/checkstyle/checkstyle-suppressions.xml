@@ -57,6 +57,8 @@
 
   <!-- Do not worry about leaking implementation API out of azure-core-test -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.test.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.test.*"/>
 
   <!-- Don't apply custom Checkstyle rules to files under implementation package -->
   <suppress
@@ -196,7 +198,7 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions"/>
-            
+
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerBuilder"/>
