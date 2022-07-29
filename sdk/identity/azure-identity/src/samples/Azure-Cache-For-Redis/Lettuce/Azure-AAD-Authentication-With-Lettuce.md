@@ -11,6 +11,7 @@
 
 #### Prerequisites
 - Configuration of Role and Role Assignments is required before using the sample code in this document.
+- Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
 - **Dependency Requirements:**
    ```xml
     <dependency>
@@ -27,8 +28,6 @@
    ```
 
 #### Samples Guidance
-Familiarity with the [Lettuce](https://github.com/lettuce-io/lettuce-core) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
-
 * [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world):
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
@@ -36,7 +35,7 @@ This sample is recommended for users getting started to use Azure AD authenticat
 This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
 * [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
-This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache caching a non expired Azure AD token.
+This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a token cache caching a non-expired Azure AD token.
 
 ##### Challenges
 The Lettuce client handshake process is described below. The RESP 3 Protocol uses `HELLO` command, which currently isn't supported on the service side.
@@ -210,7 +209,7 @@ System.out.println(sync.get("Az:testKey").toString());
 * [Device Code Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
 
 ##### Authenticate with Azure AD: Handle Reauthentication
-This sample is intended to assist in authenticating with Azure AD via Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
+This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
@@ -290,6 +289,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
  * Redis Credential Implementation for Azure Redis for Cache
  */
 public static class AzureRedisCredentials implements RedisCredentials {
+    // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
         .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
     private TokenCredential tokenCredential;
@@ -494,6 +494,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
  * Redis Credential Implementation for Azure Redis for Cache
  */
 public static class AzureRedisCredentials implements RedisCredentials {
+    // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
         .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
     private TokenCredential tokenCredential;

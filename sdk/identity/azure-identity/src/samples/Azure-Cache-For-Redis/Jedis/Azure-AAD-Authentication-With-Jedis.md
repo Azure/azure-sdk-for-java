@@ -12,6 +12,7 @@
 
 #### Prerequisites
  - Configuration of Role and Role Assignments is required before using the sample code in this document.
+ - Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
  - **Dependency Requirements:**
     ```xml
     <dependency>
@@ -83,7 +84,7 @@ jedis.close();
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
-**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
 * [Client Certificate Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
 * [Client Secret Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
 * [Managed Identity Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
@@ -159,7 +160,7 @@ private static AccessToken getAccessToken(TokenCredential tokenCredential, Token
 ```
 
 #### Authenticate with Azure AD: Using Token Cache
-This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
+This sample is intended to assist in authenticating with Azure AD via the Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.

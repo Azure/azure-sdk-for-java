@@ -78,7 +78,7 @@
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
       <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
-      <scope>test</scope>
+<!--      <scope>test</scope>-->
     </dependency>
     <dependency>
       <groupId>redis.clients</groupId>
@@ -96,6 +96,12 @@
       <groupId>org.redisson</groupId>
       <artifactId>redisson</artifactId>
       <version>3.17.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.12.9</version>
       <scope>test</scope>
     </dependency>
     <dependency>

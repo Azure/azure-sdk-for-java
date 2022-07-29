@@ -10,6 +10,7 @@
 
 #### Prerequisites
 - Configuration of Role and Role Assignments is required before using the sample code in this document.
+- Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
 - **Dependency Requirements:**
    ```xml
     <dependency>
@@ -26,8 +27,6 @@
    ```
 
 #### Samples Guidance
-Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
-
 * [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world):
    This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
@@ -35,7 +34,7 @@ Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure
    This sample is recommended to users looking to build long-running applications and would like to handle reauthenticating with Azure AD upon token expiry.
 
 * [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
-  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache. The Token Cache stores and proactively refreshes the Azure AD Access Token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
+  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a token cache. The token cache stores and proactively refreshes the Azure AD access token 2 minutes before expiry and ensures a non-expired token is available for use when the cache is accessed.
 
 #### Authenticate with Azure AD: Hello World
 This sample is intended to assist in authenticating with Azure AD via the Redisson client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Redisson client instance. It Further shows how to recreate and authenticate the Redisson Client instance when its connection is broken in error/exception scenarios.
