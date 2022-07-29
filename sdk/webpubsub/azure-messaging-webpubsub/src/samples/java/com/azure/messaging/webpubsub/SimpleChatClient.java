@@ -3,15 +3,15 @@
 
 package com.azure.messaging.webpubsub;
 
+import jakarta.websocket.ClientEndpoint;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.DeploymentException;
+import jakarta.websocket.OnClose;
+import jakarta.websocket.OnMessage;
+import jakarta.websocket.OnOpen;
+import jakarta.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.DeploymentException;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
