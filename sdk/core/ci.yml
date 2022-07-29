@@ -64,6 +64,10 @@ parameters:
   displayName: 'azure-core-management'
   type: boolean
   default: true
+- name: release_azurecoremetricsopentelemetry
+  displayName: 'azure-core-metrics-opentelemetry'
+  type: boolean
+  default: false
 - name: release_azurecoreserializeravroapache
   displayName: 'azure-core-serializer-avro-apache'
   type: boolean
@@ -133,6 +137,10 @@ extends:
         groupId: com.azure
         safeName: azurecoremanagement
         releaseInBatch: ${{ parameters.release_azurecoremanagement }}
+      - name: azure-core-metrics-opentelemetry
+        groupId: com.azure
+        safeName: azurecoremetricsopentelemetry
+        releaseInBatch: ${{ parameters.release_azurecoremetricsopentelemetry }}
       - name: azure-core-serializer-avro-apache
         groupId: com.azure
         safeName: azurecoreserializeravroapache
@@ -195,6 +203,9 @@ extends:
             - name: azure-core-serializer-avro-apache
               groupId: com.azure
               safeName: azurecoreserializeravroapache
+            - name: azure-core-metrics-opentelemetry
+              groupId: com.azure
+              safeName: azurecoremetricsopentelemetry
             - name: azure-core-serializer-json-gson
               groupId: com.azure
               safeName: azurecoreserializerjsongson

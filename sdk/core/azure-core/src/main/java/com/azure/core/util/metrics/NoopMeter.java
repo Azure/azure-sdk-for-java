@@ -86,6 +86,14 @@ final class NoopMeter implements Meter {
         return NOOP_ATTRIBUTES;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
     @Override
     public void close() {
     }
