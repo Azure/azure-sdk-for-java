@@ -17,9 +17,6 @@ import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
 
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
@@ -88,10 +85,6 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private volatile long requested;
         private static final AtomicLongFieldUpdater<EventDataAggregatorMain> REQUESTED =
             AtomicLongFieldUpdater.newUpdater(EventDataAggregatorMain.class, "requested");
-
-        private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-            .withLocale(Locale.US)
-            .withZone(ZoneId.of("America/Los_Angeles"));
 
         private final Sinks.Many<Long> eventSink;
         private final Disposable disposable;
