@@ -44,7 +44,7 @@ public class NativeQueryGenerator {
         } else {
             Matcher matcher = Pattern.compile("\\sfrom\\s").matcher(querySpec.getQueryText());
             matcher.find();
-            String tableName = querySpec.getQueryText().substring(matcher.start(0)+6);
+            String tableName = querySpec.getQueryText().substring(matcher.start(0) + 6);
             tableName = tableName.substring(0, tableName.indexOf(" "));
 
             String querySort = AbstractQueryGenerator.generateQuerySort(sort, tableName);
