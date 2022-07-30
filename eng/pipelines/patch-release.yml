@@ -3,6 +3,9 @@ pr: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
+    # This is only used for Cosmos' spark library. It'll be a no-op for any pom
+    # that doesn't have the property declared.
+    AdditionalBuildOptions: '-DsparkShading'
     SkipAggregateReports: true
     artifacts:
     - name: azure-sdk-template

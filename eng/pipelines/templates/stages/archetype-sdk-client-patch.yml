@@ -24,11 +24,6 @@ parameters:
 - name: SkipAggregateReports
   type: boolean
   default: false
-  # JRS Unsure if AdditionalLintingOptions is necessary. Only keyvault uses them and we're not going to
-  # be running spotbugs, checkstyle, revapi and javadoc in this pipeline
-- name: AdditionalLintingOptions
-  type: string
-  default: ''
 - name: BuildParallelization
   type: string
   default: '2C'
@@ -41,6 +36,11 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+# JRS this is here for testing purposes only since I'm using template to test
+- name: TestPipeline
+  type: boolean
+  default: true
+
 
 stages:
   - stage: Build
@@ -77,7 +77,7 @@ stages:
           parameters:
             PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
             ServiceDirectory: "template"
-            TestPipeline: true
+            TestPipeline: ${{parameters.TestPipeline}}
 
         - task: UsePythonVersion@0
           displayName: 'Use Python 3.6'
@@ -174,8 +174,6 @@ stages:
 
         - template: ../steps/upload-repository-on-failure.yml
 
-# JRS - At this point do we need to build/install in order to run SpotBugs, Checkstyle, RevApi, and Javadoc?
-# There's going to be a problem running that due to AdditionalLintingOptions that only exists for keyvault
     - job: 'AnalyzeAndVerify'
       condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
@@ -211,7 +209,7 @@ stages:
           parameters:
             PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
             ServiceDirectory: "template"
-            TestPipeline: true
+            TestPipeline: ${{parameters.TestPipeline}}
 
         - task: PythonScript@0
           displayName: 'Set versions for source build'
@@ -262,9 +260,11 @@ stages:
         # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
         # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
         # validation, so omit uberJars from the artifacts list to verify.
+        # Note: This is different from the Batch release verification step because the ServiceDirectory, for this
+        # pipeline, is attached to each Artifact. It needs to be in the query so it can be passed into the script
         - pwsh: |
-            $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
-            $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+            $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, ServiceDirectory, uberJar | Where-Object -Not "uberJar")
+            $ArtifactsList | Format-Table -Property GroupId, Name, ServiceDirectory | Out-String | Write-Host
             python --version
             foreach($artifact in $ArtifactsList) {
               $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/$($artifact.ServiceDirectory)
@@ -292,19 +292,6 @@ stages:
             # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of
             # what's going on below
             ScanPaths: $(ServiceDirectoriesFullPath)
-
-        # JRS - verify-links right now isn't something that's can take multiple service directories
-        # without a major rewrite as it sets the working directory to the service directory on top
-        # of everything else
-        # Question: Do we actually need the verify-links here?
-        #- template: /eng/common/pipelines/templates/steps/verify-links.yml
-        #  parameters:
-        #    ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-        #      Directory: ''
-        #      Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-        #    ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-        #      Directory: sdk/${{ parameters.ServiceDirectory }}
-        #    CheckLinkGuidance: $true
 
         - template: /eng/common/pipelines/templates/steps/verify-samples.yml
           parameters:
@@ -341,15 +328,14 @@ stages:
 
   # This pipeline should never get kicked off outside of an internal, manual run. Put the checks here
   # so the pipeline never gets to the signing/release portions unless this is the case.
-# JRS commit this out so I can test the pipeline up to this point
-#  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-#    - template: archetype-java-release-batch.yml
-#      parameters:
-#        DependsOn:
-#          - Build
-#        SDKType: ${{ parameters.SDKType }}
-#        Artifacts: ${{ parameters.Artifacts }}
-#        TestPipeline: ${{ parameters.TestPipeline }}
-#        ArtifactName: packages
-#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-#        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+    - template: archetype-java-release-batch.yml
+      parameters:
+        DependsOn:
+          - Build
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        ArtifactName: packages
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
