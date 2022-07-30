@@ -62,6 +62,17 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
           Clock.SYSTEM) {
 
           override protected def nullGaugeValue: java.lang.Double = Double.NaN
+
+          override protected def close(): Unit = {
+            super.close()
+
+            slf4JReporter match {
+              case Some(slf4JReporterSnapshot) =>
+                slf4JReporterSnapshot.stop()
+                slf4JReporterSnapshot.close()
+              case None =>
+            }
+          }
         }
 
       dropWizardMeterRegistry.config().namingConvention(NamingConvention.dot)

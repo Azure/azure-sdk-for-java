@@ -47,6 +47,7 @@ public class CosmosClientTelemetryConfig {
     private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
+    private CosmosClientBuilder owner = null;
 
     private CosmosClientTelemetryConfig() {
         this.clientTelemetryEnabled = DEFAULT_CLIENT_TELEMETRY_ENABLED;
@@ -71,12 +72,12 @@ public class CosmosClientTelemetryConfig {
      * @return current CosmosClientTelemetryConfig
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientTelemetryConfig sendClientTelemetryToServiceEnabled(
+    public CosmosClientBuilder sendClientTelemetryToServiceEnabled(
         boolean sendClientTelemetryToServiceEnabled) {
 
         this.clientTelemetryEnabled = sendClientTelemetryToServiceEnabled;
 
-        return this;
+        return this.owner;
     }
 
     boolean isSendClientTelemetryToServiceEnabled() {
@@ -98,9 +99,9 @@ public class CosmosClientTelemetryConfig {
      * @return current CosmosClientTelemetryConfig
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientTelemetryConfig clientCorrelationId(String clientCorrelationId) {
+    public CosmosClientBuilder clientCorrelationId(String clientCorrelationId) {
         this.clientCorrelationId = clientCorrelationId;
-        return this;
+        return this.owner;
     }
 
     String getClientCorrelationId() {
@@ -117,7 +118,7 @@ public class CosmosClientTelemetryConfig {
      * @return current CosmosClientTelemetryConfig
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientTelemetryConfig metricTagNames(String tagNames) {
+    public CosmosClientBuilder metricTagNames(String tagNames) {
         if (Strings.isNullOrWhiteSpace(tagNames)) {
             this.metricTagNames = EnumSet.allOf(TagName.class);
         }
@@ -155,7 +156,7 @@ public class CosmosClientTelemetryConfig {
 
         this.metricTagNames = newTagNames;
 
-        return this;
+        return this.owner;
     }
 
     EnumSet<TagName> getMetricTagNames() {
@@ -169,11 +170,11 @@ public class CosmosClientTelemetryConfig {
      * @return current CosmosClientTelemetryConfig
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientTelemetryConfig clientMetrics(MeterRegistry clientMetricRegistry) {
+    public CosmosClientBuilder clientMetrics(MeterRegistry clientMetricRegistry) {
         this.clientMetricRegistry = clientMetricRegistry;
         this.isClientMetricsEnabled = clientMetricRegistry != null;
 
-        return this;
+        return this.owner;
     }
 
     Duration getHttpNetworkRequestTimeout() {
@@ -234,6 +235,15 @@ public class CosmosClientTelemetryConfig {
         }
 
         return null;
+    }
+
+    private CosmosClientTelemetryConfig ensureInitialized(CosmosClientBuilder owner) {
+        if (this.owner != null) {
+            return this;
+        }
+
+        this.owner = owner;
+        return this;
     }
 
     private static class JsonProxyOptionsConfig {
@@ -308,6 +318,14 @@ public class CosmosClientTelemetryConfig {
                 @Override
                 public boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config) {
                     return config.isClientMetricsEnabled;
+                }
+
+                @Override
+                public CosmosClientTelemetryConfig ensureInitialized(
+                    CosmosClientTelemetryConfig config,
+                    CosmosClientBuilder owner) {
+
+                    return config.ensureInitialized(owner);
                 }
 
                 @Override

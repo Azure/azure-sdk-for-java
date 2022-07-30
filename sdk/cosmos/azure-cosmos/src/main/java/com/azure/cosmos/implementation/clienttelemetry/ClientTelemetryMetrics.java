@@ -48,25 +48,7 @@ public final class ClientTelemetryMetrics {
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-/", false);
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientTelemetryMetrics.class);
     private static final CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
-    private static final AtomicLong staticCtorCallCount = new AtomicLong(0);
-
-    static {
-        if (staticCtorCallCount.incrementAndGet() == 1) {
-            try {
-                int step = Integer.getInteger("azure.cosmos.clientTelemetry.consoleLogging.step", 0);
-                if (step > 0) {
-                    ClientTelemetryMetrics.add(ConsoleLoggingRegistryFactory.create(step));
-                }
-            } catch (Throwable throwable) {
-                logger.error("failed to initialize console logging registry due to ", throwable);
-                if (throwable instanceof Error) {
-                    throw (Error) throwable;
-                }
-            }
-        }
-    }
 
     public static void recordSystemUsage(
         float averageSystemCpuUsage,

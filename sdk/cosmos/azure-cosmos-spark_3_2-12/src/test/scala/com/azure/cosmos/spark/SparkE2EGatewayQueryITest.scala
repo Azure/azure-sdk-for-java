@@ -11,7 +11,7 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 class SparkE2EGatewayQueryITest
 extends IntegrationSpec
-    with SparkWithJustDropwizardAndNoSlf4jMetrics
+    with SparkWithDropwizardAndSlf4jMetrics
     with CosmosGatewayClient
     with AutoCleanableCosmosContainer
     with BasicLoggingTrait

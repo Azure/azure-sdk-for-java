@@ -19,7 +19,7 @@ public final class ConsoleLoggingRegistryFactory {
 
         final MetricRegistry dropwizardRegistry = new MetricRegistry();
 
-        ConsoleReporter consoleReporter = ConsoleReporter
+        final ConsoleReporter consoleReporter = ConsoleReporter
             .forRegistry(dropwizardRegistry)
             .convertRatesTo(TimeUnit.SECONDS)
             .convertDurationsTo(TimeUnit.MILLISECONDS)
@@ -41,11 +41,18 @@ public final class ConsoleLoggingRegistryFactory {
 
         };
 
-        final MeterRegistry consoleLoggingRegistry = new DropwizardMeterRegistry(
+        final DropwizardMeterRegistry consoleLoggingRegistry = new DropwizardMeterRegistry(
             dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
             @Override
             protected Double nullGaugeValue() {
                 return Double.NaN;
+            }
+
+            @Override
+            public void close() {
+                super.close();
+                consoleReporter.stop();
+                consoleReporter.close();
             }
         };
 

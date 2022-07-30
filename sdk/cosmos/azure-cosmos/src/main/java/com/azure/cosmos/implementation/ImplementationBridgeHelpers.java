@@ -1114,6 +1114,7 @@ public class ImplementationBridgeHelpers {
             boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             CosmosClientTelemetryConfig getDefaultConfig();
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
+            CosmosClientTelemetryConfig ensureInitialized(CosmosClientTelemetryConfig config, CosmosClientBuilder owner);
         }
     }
 }

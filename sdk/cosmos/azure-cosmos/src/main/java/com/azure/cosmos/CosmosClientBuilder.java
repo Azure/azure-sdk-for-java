@@ -759,7 +759,7 @@ public class CosmosClientBuilder implements
         return ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig());
     }
 
     /**
@@ -784,28 +784,31 @@ public class CosmosClientBuilder implements
      */
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientTelemetryConfig clientTelemetryConfig() {
-        return this.clientTelemetryConfig;
+        return ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .ensureInitialized(this.clientTelemetryConfig, this);
     }
 
     String getClientCorrelationId() {
         return ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .getClientCorrelationId(this.clientTelemetryConfig);
+            .getClientCorrelationId(this.clientTelemetryConfig());
     }
 
     EnumSet<TagName> getMetricTagNames() {
         return ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .getMetricTagNames(this.clientTelemetryConfig);
+            .getMetricTagNames(this.clientTelemetryConfig());
     }
 
     MeterRegistry getClientMetricRegistry() {
         return ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .getClientMetricRegistry(this.clientTelemetryConfig);
+            .getClientMetricRegistry(this.clientTelemetryConfig());
     }
 
     /**
