@@ -326,7 +326,7 @@ stages:
   # This pipeline should never get kicked off outside of an internal, manual run. Put the checks here
   # so the pipeline never gets to the signing/release portions unless this is the case.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release-batch.yml
+    - template: archetype-java-release-patch.yml
       parameters:
         DependsOn:
           - Build
