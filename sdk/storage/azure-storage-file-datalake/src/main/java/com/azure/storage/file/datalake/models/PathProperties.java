@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.annotation.Immutable;
-
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
@@ -15,7 +13,6 @@ import java.util.Map;
 /**
  * This class contains the response information returned from the service when getting path properties.
  */
-@Immutable
 public class PathProperties {
     private final OffsetDateTime creationTime;
     private final OffsetDateTime lastModified;
