@@ -21,8 +21,7 @@ public final class FluidRelayContainerInner extends ProxyResource {
     private FluidRelayContainerProperties innerProperties;
 
     /*
-     * System meta data for this resource, including creation and modification
-     * information.
+     * System meta data for this resource, including creation and modification information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
