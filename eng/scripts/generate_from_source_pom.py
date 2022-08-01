@@ -52,13 +52,14 @@ client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool):
+def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool,
+                           service_directory: str):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
-
-    projects = create_projects(project_list_identifiers, artifact_identifier_to_version, match_any_version)
+    # print(artifact_identifier_to_version)
+    projects = create_projects(project_list_identifiers, artifact_identifier_to_version, match_any_version, service_directory)
 
     dependent_modules: Set[str] = set()
 
@@ -156,7 +157,7 @@ def load_client_artifact_identifiers() -> Dict[str, ArtifactVersion]:
 
 # Function that creates the Projects within the repository.
 # Projects contain a Maven identifier, module path, parent POM, its dependency Maven identifiers, and Maven identifiers for projects dependent on it.
-def create_projects(project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool) -> Dict[str, Project]:
+def create_projects(project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool, service_directory: str) -> Dict[str, Project]:
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
@@ -173,7 +174,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_version, match_any_version)
+                project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_version, match_any_version, service_directory)
                 if project is not None:
                     projects[project.identifier] = project
 
@@ -185,7 +186,8 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
 
     return projects
 
-def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool):
+def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion],
+                           match_any_version: bool, service_directory: str):
     if 'eng' in pom_path.split(os.sep):
         return
 
@@ -198,8 +200,15 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
     parent_pom = get_parent_pom(tree_root)
 
     # If this is one of the parent POMs, retain it as a project.
+
+    if ("/sdk/" + service_directory + "/") in pom_path:
+        print("project_identifier", project_identifier)
+        project_identifier = service_directory.replace('-', '') + project_identifier
+        print("New project_identifier", project_identifier, directory_path, module_path, parent_pom)
     if project_identifier in parent_pom_identifiers:
         return Project(project_identifier, directory_path, module_path, parent_pom)
+
+
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
     if not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
@@ -281,11 +290,12 @@ def main():
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
+    parser.add_argument('--service-directory', type=str)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list, args.set_skip_linting_projects, args.match_any_version)
+    create_from_source_pom(args.project_list, args.set_skip_linting_projects, args.match_any_version, args.service_directory)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')

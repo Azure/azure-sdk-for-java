@@ -59,6 +59,8 @@ steps:
     
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
+    Write-Host "ServiceDirectory = $serviceDirectory"
+    Write-Host "##vso[task.setvariable variable=ServiceDirectory;]$serviceDirectory"
     if ($serviceDirectory -eq "spring" -or $serviceDirectory -eq "spring-3") {
       Write-Host "##vso[task.setvariable variable=ProjectListOriginal]$ProjectList"
       Write-Host "##vso[task.setvariable variable=ProjectList;]$pathProjects"

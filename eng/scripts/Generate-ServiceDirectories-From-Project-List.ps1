@@ -23,6 +23,8 @@ $script:FoundError = $false
 Write-Host "SourcesDirectory=$SourcesDirectory"
 Write-Host "ProjectList=$ProjectList"
 
+Write-Host "Moary debug **********"
+
 function Build-Unreleased-List-From-File {
     param([string]$versionFile)
     $unreleasedList = @()
