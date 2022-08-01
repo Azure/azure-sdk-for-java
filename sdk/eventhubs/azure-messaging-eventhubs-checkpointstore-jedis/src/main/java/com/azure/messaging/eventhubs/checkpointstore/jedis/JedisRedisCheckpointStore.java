@@ -38,6 +38,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * Constructor for JedisRedisCheckpointStore
      *
      * @param jedisPool a JedisPool object that creates a pool connected to the Azure Redis Cache
+     * @throws IllegalArgumentException thrown when JedisPool object supplied is null
      */
     public JedisRedisCheckpointStore(JedisPool jedisPool) throws IllegalArgumentException {
         if (jedisPool == null) {
@@ -99,8 +100,8 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * This method returns the list of checkpoints from the underlying data store, and if no checkpoints are available, then it returns empty results.
      *
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance  Event Hub
-     * @param eventHubName            The Event Hub name from which checkpoint information is acquired
-     * @param consumerGroup           The consumer group name associated with the checkpoint
+     * @param eventHubName The Event Hub name from which checkpoint information is acquired
+     * @param consumerGroup The consumer group name associated with the checkpoint
      * @return Flux of Checkpoint objects
      */
     @Override
@@ -140,8 +141,8 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * This method returns the list of ownership records from the underlying data store, and if no ownership records are available, then it returns empty results.
      *
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
-     * @param eventHubName            The Event Hub name from which checkpoint information is acquired
-     * @param consumerGroup           The consumer group name associated with the checkpoint
+     * @param eventHubName The Event Hub name from which checkpoint information is acquired
+     * @param consumerGroup The consumer group name associated with the checkpoint
      * @return Flux of PartitionOwnership objects
      */
     @Override
