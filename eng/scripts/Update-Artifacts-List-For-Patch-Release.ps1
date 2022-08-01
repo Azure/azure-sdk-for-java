@@ -9,6 +9,7 @@ param(
 
 $StartTime = $(get-date)
 . "${PSScriptRoot}/../common/scripts/common.ps1"
+. "${PSScriptRoot}/../common/scripts/Helpers/PSModule-Helpers.ps1"
 
 # Verify that the yml file to update exists
 # !Test-Path doesn't work to negate as powershell thinks that !Test-Path is a cmdlet name
@@ -23,14 +24,11 @@ if (!(Test-Path $SourcesDirectory -PathType Container)) {
     exit 1
 }
 
-if (Get-Module -ListAvailable -Name powershell-yaml) {
-    Write-Host "powershell-yml already installed"
-} else {
-    Install-Module -Name powershell-yaml -RequiredVersion 0.4.1 -Force -Scope CurrentUser
-}
+Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1" | Import-Module
 
 $artifactsDict = [ordered]@{}
 $addModulesDict  = [ordered]@{}
+
 $ymlFiles = Get-ChildItem -Path $SourcesDirectory -Recurse -Depth 3 -File -Filter "ci.yml"
 foreach ($ymlFile in $ymlFiles) {
     if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
@@ -46,6 +44,7 @@ foreach ($ymlFile in $ymlFiles) {
     }
     $ymlContent = Get-Content $ymlFile.FullName -Raw
     $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
+    $serviceDir = $ymlObject["extends"]["parameters"]["ServiceDirectory"]
     foreach ($artifact in $ymlObject["extends"]["parameters"]["artifacts"]) {
         # The artifact type from the yml object is [System.Collections.Specialized.OrderedDictionary]
         # This needs to be an ordered list, the ordering needs to be preserved so that name is first.
@@ -55,7 +54,6 @@ foreach ($ymlFile in $ymlFiles) {
         # Since we're processing a random list of artifacts from a multitude of service directories,
         # add the ServiceDirectory to each artifact's metadata. This will allow some of the scripts
         # that need the ServiceDirectory to have it readily available.
-        $serviceDir = $ymlObject["extends"]["parameters"]["ServiceDirectory"]
         $artifact.Add("ServiceDirectory", $serviceDir)
         $key = $artifact["groupId"] + ":" + $artifact["name"]
         $artifactsDict.Add($key, $artifact)

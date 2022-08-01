@@ -61,8 +61,8 @@ stages:
               Paths:
                 - '**/*.xml'
                 - '**/*.md'
-                - '!sdk/**/test-recordings'
-                - '!sdk/**/session-records'
+                - '!sdk/**/test-recordings/*'
+                - '!sdk/**/session-records/*'
 
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:
@@ -193,8 +193,8 @@ stages:
               - '**/*.xml'
               - '**/*.md'
               - '.vscode/cspell.json'
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+              - '!sdk/**/test-recordings/*'
+              - '!sdk/**/session-records/*'
 
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:
@@ -268,22 +268,6 @@ stages:
             }
           displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
-          # JRS - Do I need to actually rewrite this. The scripts being run that'll generate the artifacts
-          # list are figuring out everything that needs to be built and released. This step should be
-          # unncessary
-          # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
-          # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
-          # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
-          # select any artifacts to be released.
-          #- task: PowerShell@2
-          #  displayName: Verify Release Set
-          #  inputs:
-          #    pwsh: true
-          #    filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
-          #    arguments: >
-          #      -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-          #      -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
-
         - template: /eng/common/pipelines/templates/steps/verify-readme.yml
           parameters:
             # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of
@@ -300,7 +284,7 @@ stages:
             SourceDirectory: $(Build.SourcesDirectory)
             BasePathLength: 38
 
-        # JRS - I hate this, I hate this a lot. Verify changelog, the way it currently works would
+        # Verify changelog, the way it currently works would
         # require a complete overhaul in order to be able to deal with multiple artifacts and
         # multiple service directories. Even ignoring this, there's still the fact that each artifact's
         # metadata can cause this step to be skipped so we still need to loop over this.

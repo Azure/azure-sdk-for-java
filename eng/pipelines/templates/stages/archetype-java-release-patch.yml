@@ -193,8 +193,8 @@ stages:
                       Paths:
                         - '**/*.xml'
                         - '**/*.md'
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
+                        - '!sdk/**/test-recordings/*'
+                        - '!sdk/**/session-records/*'
 
                   - task: UsePythonVersion@0
                     displayName: 'Use Python 3.6'
@@ -223,7 +223,7 @@ stages:
                       CommitMsg: "Increment package versions for patch releases"
                       PRTitle: "Increment versions for patch releases"
                       PRLabels: "auto-merge"
-                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                      CloseAfterOpenForTesting: 'false'
 
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
@@ -251,8 +251,8 @@ stages:
                         - sdk
                         - common/perf-test-core
                         - .github/CODEOWNERS
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
+                        - '!sdk/**/test-recordings/*'
+                        - '!sdk/**/session-records/*'
                   - download: current
                     displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                     artifact: ${{parameters.ArtifactName}}
