@@ -46,11 +46,11 @@ public class ManageCustomModelsAsync {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Description: %s%n", documentModel.getDescription());
                 System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
-                    docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());
-                        System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
                     });
                 });
             });
