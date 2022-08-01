@@ -72,10 +72,10 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('eventHubNamespaceName'), '/processoreventhub')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/processoreventhub')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {
         "messageRetentionInDays": 1,
@@ -86,11 +86,11 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
       "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('eventHubNamespaceName'), '/processoreventhub/$Default')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/processoreventhub/$Default')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), 'processoreventhub')]",
-        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'processoreventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {}
     },
