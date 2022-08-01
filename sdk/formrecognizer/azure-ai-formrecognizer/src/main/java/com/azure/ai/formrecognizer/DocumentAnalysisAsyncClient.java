@@ -230,9 +230,8 @@ public final class DocumentAnalysisAsyncClient {
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
-     * &#47;&#47; Utility method to convert input stream to Byte buffer
-     * Flux&lt;ByteBuffer&gt; buffer =
-     *     Utility.toFluxByteBuffer&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
+     * &#47;&#47; Utility method to convert input stream to Binary Data
+     * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
      * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer, document.length&#40;&#41;&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
@@ -283,9 +282,8 @@ public final class DocumentAnalysisAsyncClient {
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
      *
-     * &#47;&#47; Utility method to convert input stream to Byte buffer
-     * Flux&lt;ByteBuffer&gt; buffer =
-     *     Utility.toFluxByteBuffer&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
+     * &#47;&#47; Utility method to convert input stream to Binary Data
+     * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
      * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer, document.length&#40;&#41;,
      *         new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;&#41;

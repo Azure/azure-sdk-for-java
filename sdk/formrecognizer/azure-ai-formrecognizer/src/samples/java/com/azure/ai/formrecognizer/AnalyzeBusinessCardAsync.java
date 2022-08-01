@@ -48,11 +48,11 @@ public class AnalyzeBusinessCardAsync {
         byte[] fileContent = Files.readAllBytes(businessCard.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller
-            = client.beginAnalyzeDocument("prebuilt-businessCard",
-            BinaryData.fromStream(targetStream),
-            businessCard.length(),
-            new AnalyzeDocumentOptions().setPages(Arrays.asList("1")).setLocale("en-US"));
+        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller =
+            client.beginAnalyzeDocument("prebuilt-businessCard",
+                BinaryData.fromStream(targetStream),
+                businessCard.length(),
+                new AnalyzeDocumentOptions().setPages(Arrays.asList("1")).setLocale("en-US"));
 
         Mono<AnalyzeResult> businessCardPageResultsMono
             = analyzeBusinessCardPoller
