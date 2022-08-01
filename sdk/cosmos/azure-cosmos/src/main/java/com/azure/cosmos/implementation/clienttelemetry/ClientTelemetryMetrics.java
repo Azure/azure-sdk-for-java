@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -22,6 +23,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsCompletionRecorder;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -33,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -265,10 +268,49 @@ public final class ClientTelemetryMetrics {
 
                     recordStoreResponseStatistics(requestStatistics.getResponseStatisticsList());
                     recordStoreResponseStatistics(requestStatistics.getSupplementalResponseStatisticsList());
-                    recordGatewayStatistics(requestStatistics.getGatewayStatistics());
+                    recordGatewayStatistics(requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
                     recordAddressResolutionStatistics(requestStatistics.getAddressResolutionStatistics());
                 }
             }
+
+            FeedResponseDiagnostics feedDiagnostics = diagnosticsAccessor
+                .getFeedResponseDiagnostics(diagnostics);
+
+            if (feedDiagnostics == null) {
+                return;
+            }
+
+            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics =
+                feedDiagnostics.getQueryPlanDiagnosticsContext();
+
+            recordQueryPlanDiagnostics(queryPlanDiagnostics);
+        }
+
+        private void recordQueryPlanDiagnostics(
+            QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics
+        ) {
+            if (queryPlanDiagnostics == null) {
+                return;
+            }
+
+            Tags requestTags = operationTags.and(
+                createQueryPlanTags(metricTagNames)
+            );
+
+            Duration latency = queryPlanDiagnostics.getDuration();
+
+            if (latency != null) {
+                Timer requestLatencyMeter = Timer
+                    .builder(nameOf("req.gw.latency"))
+                    .description("Gateway Request latency")
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                requestLatencyMeter.record(latency);
+            }
+
+            recordRequestTimeline("req.gw.timeline.", queryPlanDiagnostics.getRequestTimeline(), requestTags);
         }
 
         private void recordRequestPayloadSizes(
@@ -373,6 +415,23 @@ public final class ClientTelemetryMetrics {
                 effectiveTags.add(Tag.of(
                     TagName.ServiceAddress.toString(),
                     serviceAddress != null ? escape(serviceAddress) : "NONE"));
+            }
+
+            return Tags.of(effectiveTags);
+        }
+
+        private Tags createQueryPlanTags(
+            EnumSet<TagName> metricTagNames
+        ) {
+            List<Tag> effectiveTags = new ArrayList<>();
+
+            if (metricTagNames.contains(TagName.RequestOperationType)) {
+                effectiveTags.add(Tag.of(
+                    TagName.RequestOperationType.toString(),
+                    String.format(
+                        "%s_%s",
+                        ResourceType.DocumentCollection.toString(),
+                        OperationType.QueryPlan.toString())));
             }
 
             return Tags.of(effectiveTags);
@@ -559,6 +618,18 @@ public final class ClientTelemetryMetrics {
                     .register(compositeRegistry);
                 backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
 
+                Duration latency = responseStatistics.getDuration();
+                if (latency != null) {
+                    Timer requestLatencyMeter = Timer
+                        .builder(nameOf("req.rntbd.latency"))
+                        .description("RNTBD Request latency")
+                        .publishPercentiles(0.95, 0.99)
+                        .publishPercentileHistogram(true)
+                        .tags(requestTags)
+                        .register(compositeRegistry);
+                    requestLatencyMeter.record(latency);
+                }
+
                 recordRequestTimeline(
                     "req.rntbd.timeline.",
                     storeResponseDiagnostics.getRequestTimeline(), requestTags);
@@ -585,6 +656,7 @@ public final class ClientTelemetryMetrics {
         }
 
         private void recordGatewayStatistics(
+            Duration latency,
             ClientSideRequestStatistics.GatewayStatistics gatewayStatistics) {
 
             if (gatewayStatistics == null) {
@@ -609,7 +681,18 @@ public final class ClientTelemetryMetrics {
                     null)
             );
 
-           recordRequestTimeline("req.gw.timeline.", gatewayStatistics.getRequestTimeline(), requestTags);
+            if (latency != null) {
+                Timer requestLatencyMeter = Timer
+                    .builder(nameOf("req.gw.latency"))
+                    .description("Gateway Request latency")
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                requestLatencyMeter.record(latency);
+            }
+
+            recordRequestTimeline("req.gw.timeline.", gatewayStatistics.getRequestTimeline(), requestTags);
         }
 
         private void recordAddressResolutionStatistics(

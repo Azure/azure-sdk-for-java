@@ -82,7 +82,14 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
     }
 
+    @JsonIgnore
     public Duration getDuration() {
+        if (requestStartTimeUTC == null ||
+            requestEndTimeUTC == null ||
+            requestEndTimeUTC.isBefore(requestStartTimeUTC)) {
+            return null;
+        }
+
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
@@ -99,6 +106,7 @@ public class ClientSideRequestStatistics {
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
+        storeResponseStatistics.requestStartTimeUTC = this.requestStartTimeUTC;
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
@@ -313,6 +321,8 @@ public class ClientSideRequestStatistics {
         private StoreResultDiagnostics storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private Instant requestResponseTimeUTC;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        private Instant requestStartTimeUTC;
         @JsonSerialize
         private ResourceType requestResourceType;
         @JsonSerialize
@@ -343,6 +353,17 @@ public class ClientSideRequestStatistics {
 
 
         public String getRequestSessionToken() { return requestSessionToken; }
+
+        @JsonIgnore
+        public Duration getDuration() {
+            if (requestStartTimeUTC == null ||
+                requestResponseTimeUTC == null ||
+                requestResponseTimeUTC.isBefore(requestStartTimeUTC)) {
+                return null;
+            }
+
+            return Duration.between(requestStartTimeUTC, requestResponseTimeUTC);
+        }
     }
 
     public static class SystemInformation {
@@ -381,9 +402,9 @@ public class ClientSideRequestStatistics {
             ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws
             IOException {
             generator.writeStartObject();
-            long requestLatency = statistics
-                .getDuration()
-                .toMillis();
+            Duration duration = statistics
+                .getDuration();
+            long requestLatency = duration != null ? duration.toMillis() : 0;
             generator.writeStringField("userAgent", Utils.getUserAgent());
             generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);

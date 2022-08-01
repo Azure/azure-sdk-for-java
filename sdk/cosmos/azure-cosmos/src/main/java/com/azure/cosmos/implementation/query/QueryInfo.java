@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.Strings;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -216,6 +217,16 @@ public final class QueryInfo extends JsonSerializable {
 
         public Instant getEndTimeUTC() {
             return endTimeUTC;
+        }
+
+        public Duration getDuration() {
+            if (startTimeUTC == null ||
+                endTimeUTC == null ||
+                endTimeUTC.isBefore(startTimeUTC)) {
+                return null;
+            }
+
+            return Duration.between(startTimeUTC, endTimeUTC);
         }
 
         public RequestTimeline getRequestTimeline() {

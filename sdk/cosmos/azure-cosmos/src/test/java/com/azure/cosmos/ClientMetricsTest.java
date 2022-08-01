@@ -8,6 +8,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -18,6 +19,7 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -107,6 +109,9 @@ public class ClientMetricsTest extends TestSuiteBase {
             validateItemResponse(properties, readResponse1);
 
             this.validateMetrics();
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw" , false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
             this.afterTest();
         }
@@ -170,6 +175,9 @@ public class ClientMetricsTest extends TestSuiteBase {
             assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
             this.validateMetrics();
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw" , true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
             this.afterTest();
         }
@@ -197,6 +205,9 @@ public class ClientMetricsTest extends TestSuiteBase {
             assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
             this.validateMetrics();
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw" , true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
             this.afterTest();
         }
@@ -233,6 +244,10 @@ public class ClientMetricsTest extends TestSuiteBase {
     }
 
     private void assertMetrics(String prefix, boolean expectedToFind) {
+        assertMetrics(prefix, expectedToFind, null);
+    }
+
+    private void assertMetrics(String prefix, boolean expectedToFind, Tag withTag) {
         assertThat(this.meterRegistry).isNotNull();
         assertThat(this.meterRegistry.getMeters()).isNotNull();
         List<Meter> meters = this.meterRegistry.getMeters().stream().collect(Collectors.toList());
@@ -244,7 +259,8 @@ public class ClientMetricsTest extends TestSuiteBase {
         List<Meter> meterMatches = meters
             .stream()
             .filter(meter -> meter.getId().getName().startsWith(prefix) &&
-                meter.measure().iterator().next().getValue() > 0)
+                    (withTag == null || meter.getId().getTags().contains(withTag)) &&
+                    meter.measure().iterator().next().getValue() > 0)
             .collect(Collectors.toList());
 
         if (expectedToFind) {
