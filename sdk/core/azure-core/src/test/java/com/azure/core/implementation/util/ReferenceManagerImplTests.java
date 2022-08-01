@@ -5,12 +5,13 @@ package com.azure.core.implementation.util;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Integration tests for {@link ReferenceManagerImpl}.
+ * Tests for {@link ReferenceManagerImpl}.
  */
-public class ReferenceManagerImplIT {
+public class ReferenceManagerImplTests {
     /*
      * This is an integration test instead of a unit test because integration tests use the generated JAR, with
      * multi-release support, instead of the class files in Maven's output directory. Given that, the integration tests
@@ -19,11 +20,10 @@ public class ReferenceManagerImplIT {
     @Test
     public void validateImplementationVersion() {
         String javaSpecificationVersion = System.getProperty("java.specification.version");
-        int implementationSpecificationVersion = ReferenceManagerImpl.getJavaImplementationMajorVersion();
         if ("1.8".equals(javaSpecificationVersion)) {
-            assertEquals(8, implementationSpecificationVersion);
+            assertFalse(ReferenceManagerImpl.isCleanerUsed(), "Java 8 cannot use Cleaner-based reference management.");
         } else {
-            assertEquals(9, implementationSpecificationVersion);
+            assertTrue(ReferenceManagerImpl.isCleanerUsed(), "Java 9+ must use Cleaner-based reference management.");
         }
     }
 }

@@ -30,6 +30,9 @@ public enum KeyName {
      */
     @JsonCreator
     public static KeyName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyName[] items = KeyName.values();
         for (KeyName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
