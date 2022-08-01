@@ -20,7 +20,7 @@
   },
   "functions": [],
   "variables": {
-    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-test-eventhub-binder')]",
+    "eventHubsNamespaceName": "[concat(parameters('baseName'),'-test-eventhubs')]",
     "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
     "azureEventHubsDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec",
     "azureStorageBlobDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
@@ -68,6 +68,31 @@
           "Send"
         ]
       }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('eventHubNamespaceName'), '/processoreventhub')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('eventHubNamespaceName'), '/processoreventhub/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubNamespaceName'), 'processoreventhub')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespaceName'))]"
+      ],
+      "properties": {}
     },
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
@@ -316,92 +341,16 @@
           "corsRules": []
         }
       }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-message')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-batch')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-manual')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-record')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-sync')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('storageAccountName'), '/default/test-eventhub-health')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
     }
   ],
   "outputs": {
-    "STORAGE_ACCOUNT_TEST_EVENTHUB": {
-      "type": "string",
-      "value": "[variables('storageAccountName')]"
-    },
-    "AZURE_EVENTHUBS_BINDER_NAMESPACE": {
+    "AZURE_EVENTHUBS_NAMESPACE": {
       "type": "string",
       "value": "[variables('eventHubsNamespaceName')]"
     },
-    "PRIMARY_STORAGE_BLOB_ENDPOINT": {
+    "AZURE_EVENT_HUB_NAME": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').primaryEndpoints.blob]"
+      "value": "processoreventhub"
     }
   }
 }
