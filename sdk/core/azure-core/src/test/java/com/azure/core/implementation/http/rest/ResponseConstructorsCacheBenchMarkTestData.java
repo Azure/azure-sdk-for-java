@@ -267,6 +267,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     class Input {
         private final Type returnType;
+        private final boolean returnTypeDecodeable;
+        private final boolean responseEagerlyRead;
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
@@ -276,6 +278,9 @@ class ResponseConstructorsCacheBenchMarkTestData {
               Mono<HttpResponse> httpResponse,
               Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
+            Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
+            this.returnTypeDecodeable = SwaggerMethodParser.isReturnTypeDecodeable(unwrappedReturnType);
+            this.responseEagerlyRead = SwaggerMethodParser.isResponseEagerlyRead(unwrappedReturnType);
             this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
                 @Override
                 public Type getReturnType() {
@@ -285,6 +290,16 @@ class ResponseConstructorsCacheBenchMarkTestData {
                 @Override
                 public boolean isExpectedResponseStatusCode(int statusCode) {
                     return false;
+                }
+
+                @Override
+                public boolean isReturnTypeDecodeable() {
+                    return returnTypeDecodeable;
+                }
+
+                @Override
+                public boolean isResponseEagerlyRead() {
+                    return responseEagerlyRead;
                 }
             }).block();
             this.bodyAsObject = bodyAsObject;

@@ -52,15 +52,15 @@ public final class ConfidentialLedgerClientImpl {
     private final ConfidentialLedgerClientService service;
 
     /** The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com. */
-    private final String ledgerUri;
+    private final String ledgerEndpoint;
 
     /**
      * Gets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      *
-     * @return the ledgerUri value.
+     * @return the ledgerEndpoint value.
      */
-    public String getLedgerUri() {
-        return this.ledgerUri;
+    public String getLedgerEndpoint() {
+        return this.ledgerEndpoint;
     }
 
     /** Service version. */
@@ -102,16 +102,16 @@ public final class ConfidentialLedgerClientImpl {
     /**
      * Initializes an instance of ConfidentialLedgerClient client.
      *
-     * @param ledgerUri The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * @param ledgerEndpoint The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerClientImpl(String ledgerUri, ConfidentialLedgerServiceVersion serviceVersion) {
+    public ConfidentialLedgerClientImpl(String ledgerEndpoint, ConfidentialLedgerServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                ledgerUri,
+                ledgerEndpoint,
                 serviceVersion);
     }
 
@@ -119,12 +119,12 @@ public final class ConfidentialLedgerClientImpl {
      * Initializes an instance of ConfidentialLedgerClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param ledgerUri The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * @param ledgerEndpoint The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      * @param serviceVersion Service version.
      */
     public ConfidentialLedgerClientImpl(
-            HttpPipeline httpPipeline, String ledgerUri, ConfidentialLedgerServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerUri, serviceVersion);
+            HttpPipeline httpPipeline, String ledgerEndpoint, ConfidentialLedgerServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerEndpoint, serviceVersion);
     }
 
     /**
@@ -132,17 +132,17 @@ public final class ConfidentialLedgerClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param ledgerUri The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * @param ledgerEndpoint The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      * @param serviceVersion Service version.
      */
     public ConfidentialLedgerClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String ledgerUri,
+            String ledgerEndpoint,
             ConfidentialLedgerServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.ledgerUri = ledgerUri;
+        this.ledgerEndpoint = ledgerEndpoint;
         this.serviceVersion = serviceVersion;
         this.service =
                 RestProxy.create(ConfidentialLedgerClientService.class, this.httpPipeline, this.getSerializerAdapter());
@@ -152,7 +152,7 @@ public final class ConfidentialLedgerClientImpl {
      * The interface defining all the services for ConfidentialLedgerClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{ledgerUri}")
+    @Host("{ledgerEndpoint}")
     @ServiceInterface(name = "ConfidentialLedgerCl")
     private interface ConfidentialLedgerClientService {
         @Get("/app/governance/constitution")
@@ -168,7 +168,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getConstitution(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -186,8 +186,8 @@ public final class ConfidentialLedgerClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getConsortiumMembers(
-                @HostParam("ledgerUri") String ledgerUri,
+        Mono<Response<BinaryData>> listConsortiumMembers(
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -206,7 +206,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEnclaveQuotes(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -225,7 +225,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCollections(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -244,7 +244,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLedgerEntries(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -262,8 +262,8 @@ public final class ConfidentialLedgerClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> postLedgerEntry(
-                @HostParam("ledgerUri") String ledgerUri,
+        Mono<Response<BinaryData>> createLedgerEntry(
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData entry,
                 @HeaderParam("Accept") String accept,
@@ -283,7 +283,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLedgerEntry(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("transactionId") String transactionId,
                 @HeaderParam("Accept") String accept,
@@ -303,7 +303,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getReceipt(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("transactionId") String transactionId,
                 @HeaderParam("Accept") String accept,
@@ -323,7 +323,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTransactionStatus(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("transactionId") String transactionId,
                 @HeaderParam("Accept") String accept,
@@ -343,7 +343,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCurrentLedgerEntry(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -362,7 +362,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteUser(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam(value = "userId", encoded = true) String userId,
                 @HeaderParam("Accept") String accept,
@@ -382,7 +382,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getUser(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam(value = "userId", encoded = true) String userId,
                 @HeaderParam("Accept") String accept,
@@ -402,7 +402,7 @@ public final class ConfidentialLedgerClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateUser(
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam(value = "userId", encoded = true) String userId,
                 @BodyParam("application/merge-patch+json") BinaryData userDetails,
@@ -422,9 +422,47 @@ public final class ConfidentialLedgerClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listConsortiumMembersNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCollectionsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLedgerEntriesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("ledgerUri") String ledgerUri,
+                @HostParam("ledgerEndpoint") String ledgerEndpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -437,8 +475,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     digest: String
-     *     script: String
+     *     digest: String (Required)
+     *     script: String (Required)
      * }
      * }</pre>
      *
@@ -456,7 +494,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getConstitution(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -470,8 +508,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     digest: String
-     *     script: String
+     *     digest: String (Required)
+     *     script: String (Required)
      * }
      * }</pre>
      *
@@ -488,7 +526,7 @@ public final class ConfidentialLedgerClientImpl {
     public Mono<Response<BinaryData>> getConstitutionWithResponseAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getConstitution(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
     }
 
     /**
@@ -498,8 +536,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     digest: String
-     *     script: String
+     *     digest: String (Required)
+     *     script: String (Required)
      * }
      * }</pre>
      *
@@ -522,12 +560,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     members: [
-     *         {
-     *             certificate: String
-     *             id: String
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -536,19 +575,29 @@ public final class ConfidentialLedgerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of members in the consortium along with {@link Response} on successful completion of {@link Mono}.
+     * @return list of members in the consortium along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConsortiumMembersWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getConsortiumMembers(
-                                this.getLedgerUri(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                        context ->
+                                service.listConsortiumMembers(
+                                        this.getLedgerEndpoint(),
+                                        this.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "members"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -558,12 +607,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     members: [
-     *         {
-     *             certificate: String
-     *             id: String
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -573,14 +623,28 @@ public final class ConfidentialLedgerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of members in the consortium along with {@link Response} on successful completion of {@link Mono}.
+     * @return list of members in the consortium along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConsortiumMembersWithResponseAsync(
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersSinglePageAsync(
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.getConsortiumMembers(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+        return service.listConsortiumMembers(
+                        this.getLedgerEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "members"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -590,12 +654,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     members: [
-     *         {
-     *             certificate: String
-     *             id: String
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -604,11 +669,84 @@ public final class ConfidentialLedgerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of members in the consortium along with {@link Response}.
+     * @return list of members in the consortium as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getConsortiumMembersWithResponse(RequestOptions requestOptions) {
-        return getConsortiumMembersWithResponseAsync(requestOptions).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listConsortiumMembersAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listConsortiumMembersSinglePageAsync(requestOptions),
+                nextLink -> listConsortiumMembersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Consortium members can manage the Confidential Ledger.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of members in the consortium as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listConsortiumMembersAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listConsortiumMembersSinglePageAsync(requestOptions, context),
+                nextLink -> listConsortiumMembersNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+    }
+
+    /**
+     * Consortium members can manage the Confidential Ledger.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of members in the consortium as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listConsortiumMembers(RequestOptions requestOptions) {
+        return new PagedIterable<>(listConsortiumMembersAsync(requestOptions));
     }
 
     /**
@@ -618,13 +756,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     currentNodeId: String
-     *     enclaveQuotes: {
-     *         String: {
-     *             nodeId: String
-     *             mrenclave: String
-     *             quoteVersion: String
-     *             raw: String
+     *     currentNodeId: String (Required)
+     *     enclaveQuotes (Required): {
+     *         String (Required): {
+     *             nodeId: String (Required)
+     *             mrenclave: String (Optional)
+     *             quoteVersion: String (Required)
+     *             raw: String (Required)
      *         }
      *     }
      * }
@@ -644,7 +782,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getEnclaveQuotes(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -658,13 +796,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     currentNodeId: String
-     *     enclaveQuotes: {
-     *         String: {
-     *             nodeId: String
-     *             mrenclave: String
-     *             quoteVersion: String
-     *             raw: String
+     *     currentNodeId: String (Required)
+     *     enclaveQuotes (Required): {
+     *         String (Required): {
+     *             nodeId: String (Required)
+     *             mrenclave: String (Optional)
+     *             quoteVersion: String (Required)
+     *             raw: String (Required)
      *         }
      *     }
      * }
@@ -684,7 +822,7 @@ public final class ConfidentialLedgerClientImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getEnclaveQuotes(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
     }
 
     /**
@@ -694,13 +832,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     currentNodeId: String
-     *     enclaveQuotes: {
-     *         String: {
-     *             nodeId: String
-     *             mrenclave: String
-     *             quoteVersion: String
-     *             raw: String
+     *     currentNodeId: String (Required)
+     *     enclaveQuotes (Required): {
+     *         String (Required): {
+     *             nodeId: String (Required)
+     *             mrenclave: String (Optional)
+     *             quoteVersion: String (Required)
+     *             raw: String (Required)
      *         }
      *     }
      * }
@@ -725,11 +863,12 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     collections: [
-     *         {
-     *             collectionId: String
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -738,19 +877,29 @@ public final class ConfidentialLedgerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a group of ledger collections along with {@link Response} on successful completion of {@link Mono}.
+     * @return paginated collections returned in response to a query along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCollectionsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.listCollections(
-                                this.getLedgerUri(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                        context ->
+                                service.listCollections(
+                                        this.getLedgerEndpoint(),
+                                        this.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "collections"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -760,11 +909,12 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     collections: [
-     *         {
-     *             collectionId: String
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -774,13 +924,28 @@ public final class ConfidentialLedgerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a group of ledger collections along with {@link Response} on successful completion of {@link Mono}.
+     * @return paginated collections returned in response to a query along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCollectionsWithResponseAsync(RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(
+            RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listCollections(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+                        this.getLedgerEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "collections"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -790,11 +955,12 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     collections: [
-     *         {
-     *             collectionId: String
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -803,11 +969,82 @@ public final class ConfidentialLedgerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a group of ledger collections along with {@link Response}.
+     * @return paginated collections returned in response to a query as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCollectionsWithResponse(RequestOptions requestOptions) {
-        return listCollectionsWithResponseAsync(requestOptions).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listCollectionsSinglePageAsync(requestOptions),
+                nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Collection ids are user-created collections of ledger entries.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paginated collections returned in response to a query as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions, Context context) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listCollectionsSinglePageAsync(requestOptions, context),
+                nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+    }
+
+    /**
+     * Collection ids are user-created collections of ledger entries.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paginated collections returned in response to a query as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
+        return new PagedIterable<>(listCollectionsAsync(requestOptions));
     }
 
     /**
@@ -824,17 +1061,19 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -854,7 +1093,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listLedgerEntries(
-                                        this.getLedgerUri(),
+                                        this.getLedgerEndpoint(),
                                         this.getServiceVersion().getVersion(),
                                         accept,
                                         requestOptions,
@@ -884,17 +1123,19 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -914,7 +1155,11 @@ public final class ConfidentialLedgerClientImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listLedgerEntries(
-                        this.getLedgerUri(), this.getServiceVersion().getVersion(), accept, requestOptions, context)
+                        this.getLedgerEndpoint(),
+                        this.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -940,17 +1185,19 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -989,17 +1236,19 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -1039,17 +1288,19 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -1079,13 +1330,15 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -1093,7 +1346,7 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     collectionId: String
+     *     collectionId: String (Required)
      * }
      * }</pre>
      *
@@ -1107,13 +1360,13 @@ public final class ConfidentialLedgerClientImpl {
      *     when the write will become durable along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> postLedgerEntryWithResponseAsync(
+    public Mono<Response<BinaryData>> createLedgerEntryWithResponseAsync(
             BinaryData entry, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.postLedgerEntry(
-                                this.getLedgerUri(),
+                        service.createLedgerEntry(
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 entry,
                                 accept,
@@ -1132,13 +1385,15 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -1146,7 +1401,7 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     collectionId: String
+     *     collectionId: String (Required)
      * }
      * }</pre>
      *
@@ -1161,11 +1416,16 @@ public final class ConfidentialLedgerClientImpl {
      *     when the write will become durable along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> postLedgerEntryWithResponseAsync(
+    public Mono<Response<BinaryData>> createLedgerEntryWithResponseAsync(
             BinaryData entry, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.postLedgerEntry(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), entry, accept, requestOptions, context);
+        return service.createLedgerEntry(
+                this.getLedgerEndpoint(),
+                this.getServiceVersion().getVersion(),
+                entry,
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1179,13 +1439,15 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -1193,7 +1455,7 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     collectionId: String
+     *     collectionId: String (Required)
      * }
      * }</pre>
      *
@@ -1207,8 +1469,8 @@ public final class ConfidentialLedgerClientImpl {
      *     when the write will become durable along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> postLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
-        return postLedgerEntryWithResponseAsync(entry, requestOptions).block();
+    public Response<BinaryData> createLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
+        return createLedgerEntryWithResponseAsync(entry, requestOptions).block();
     }
 
     /**
@@ -1224,15 +1486,17 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     entry: {
-     *         contents: String
-     *         collectionId: String
-     *         transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     entry (Optional): {
+     *         contents: String (Required)
+     *         collectionId: String (Optional)
+     *         transactionId: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1253,7 +1517,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getLedgerEntry(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 transactionId,
                                 accept,
@@ -1274,15 +1538,17 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     entry: {
-     *         contents: String
-     *         collectionId: String
-     *         transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     entry (Optional): {
+     *         contents: String (Required)
+     *         collectionId: String (Optional)
+     *         transactionId: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1302,7 +1568,7 @@ public final class ConfidentialLedgerClientImpl {
             String transactionId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getLedgerEntry(
-                this.getLedgerUri(),
+                this.getLedgerEndpoint(),
                 this.getServiceVersion().getVersion(),
                 transactionId,
                 accept,
@@ -1323,15 +1589,17 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     entry: {
-     *         contents: String
-     *         collectionId: String
-     *         transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     entry (Optional): {
+     *         contents: String (Required)
+     *         collectionId: String (Optional)
+     *         transactionId: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1356,29 +1624,29 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     receipt: {
-     *         cert: String
-     *         leaf: String
-     *         leafComponents: {
-     *             claimsDigest: String
-     *             commitEvidence: String
-     *             writeSetDigest: String
+     *     receipt (Optional): {
+     *         cert: String (Optional)
+     *         leaf: String (Optional)
+     *         leafComponents (Optional): {
+     *             claimsDigest: String (Optional)
+     *             commitEvidence: String (Optional)
+     *             writeSetDigest: String (Optional)
      *         }
-     *         nodeId: String
-     *         proof: [
-     *             {
-     *                 left: String
-     *                 right: String
+     *         nodeId: String (Required)
+     *         proof (Required): [
+     *              (Required){
+     *                 left: String (Optional)
+     *                 right: String (Optional)
      *             }
      *         ]
-     *         root: String
-     *         serviceEndorsements: [
-     *             String
+     *         root: String (Optional)
+     *         serviceEndorsements (Optional): [
+     *             String (Optional)
      *         ]
-     *         signature: String
+     *         signature: String (Required)
      *     }
-     *     state: String(Loading/Ready)
-     *     transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -1397,7 +1665,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getReceipt(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 transactionId,
                                 accept,
@@ -1412,29 +1680,29 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     receipt: {
-     *         cert: String
-     *         leaf: String
-     *         leafComponents: {
-     *             claimsDigest: String
-     *             commitEvidence: String
-     *             writeSetDigest: String
+     *     receipt (Optional): {
+     *         cert: String (Optional)
+     *         leaf: String (Optional)
+     *         leafComponents (Optional): {
+     *             claimsDigest: String (Optional)
+     *             commitEvidence: String (Optional)
+     *             writeSetDigest: String (Optional)
      *         }
-     *         nodeId: String
-     *         proof: [
-     *             {
-     *                 left: String
-     *                 right: String
+     *         nodeId: String (Required)
+     *         proof (Required): [
+     *              (Required){
+     *                 left: String (Optional)
+     *                 right: String (Optional)
      *             }
      *         ]
-     *         root: String
-     *         serviceEndorsements: [
-     *             String
+     *         root: String (Optional)
+     *         serviceEndorsements (Optional): [
+     *             String (Optional)
      *         ]
-     *         signature: String
+     *         signature: String (Required)
      *     }
-     *     state: String(Loading/Ready)
-     *     transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -1453,7 +1721,7 @@ public final class ConfidentialLedgerClientImpl {
             String transactionId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getReceipt(
-                this.getLedgerUri(),
+                this.getLedgerEndpoint(),
                 this.getServiceVersion().getVersion(),
                 transactionId,
                 accept,
@@ -1468,29 +1736,29 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     receipt: {
-     *         cert: String
-     *         leaf: String
-     *         leafComponents: {
-     *             claimsDigest: String
-     *             commitEvidence: String
-     *             writeSetDigest: String
+     *     receipt (Optional): {
+     *         cert: String (Optional)
+     *         leaf: String (Optional)
+     *         leafComponents (Optional): {
+     *             claimsDigest: String (Optional)
+     *             commitEvidence: String (Optional)
+     *             writeSetDigest: String (Optional)
      *         }
-     *         nodeId: String
-     *         proof: [
-     *             {
-     *                 left: String
-     *                 right: String
+     *         nodeId: String (Required)
+     *         proof (Required): [
+     *              (Required){
+     *                 left: String (Optional)
+     *                 right: String (Optional)
      *             }
      *         ]
-     *         root: String
-     *         serviceEndorsements: [
-     *             String
+     *         root: String (Optional)
+     *         serviceEndorsements (Optional): [
+     *             String (Optional)
      *         ]
-     *         signature: String
+     *         signature: String (Required)
      *     }
-     *     state: String(Loading/Ready)
-     *     transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -1514,8 +1782,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     state: String(Committed/Pending)
-     *     transactionId: String
+     *     state: String(Committed/Pending) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -1535,7 +1803,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTransactionStatus(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 transactionId,
                                 accept,
@@ -1550,8 +1818,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     state: String(Committed/Pending)
-     *     transactionId: String
+     *     state: String(Committed/Pending) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -1570,7 +1838,7 @@ public final class ConfidentialLedgerClientImpl {
             String transactionId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getTransactionStatus(
-                this.getLedgerUri(),
+                this.getLedgerEndpoint(),
                 this.getServiceVersion().getVersion(),
                 transactionId,
                 accept,
@@ -1585,8 +1853,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     state: String(Committed/Pending)
-     *     transactionId: String
+     *     state: String(Committed/Pending) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -1614,13 +1882,15 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -1637,7 +1907,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getCurrentLedgerEntry(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -1655,13 +1925,15 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -1678,7 +1950,7 @@ public final class ConfidentialLedgerClientImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getCurrentLedgerEntry(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
     }
 
     /**
@@ -1692,13 +1964,15 @@ public final class ConfidentialLedgerClientImpl {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -1731,7 +2005,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteUser(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 userId,
                                 accept,
@@ -1756,7 +2030,12 @@ public final class ConfidentialLedgerClientImpl {
             String userId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteUser(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), userId, accept, requestOptions, context);
+                this.getLedgerEndpoint(),
+                this.getServiceVersion().getVersion(),
+                userId,
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1782,8 +2061,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1801,7 +2080,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getUser(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 userId,
                                 accept,
@@ -1816,8 +2095,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1835,7 +2114,12 @@ public final class ConfidentialLedgerClientImpl {
             String userId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getUser(
-                this.getLedgerUri(), this.getServiceVersion().getVersion(), userId, accept, requestOptions, context);
+                this.getLedgerEndpoint(),
+                this.getServiceVersion().getVersion(),
+                userId,
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1845,8 +2129,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1870,8 +2154,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1879,8 +2163,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1901,7 +2185,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateUser(
-                                this.getLedgerUri(),
+                                this.getLedgerEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 userId,
                                 userDetails,
@@ -1917,8 +2201,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1926,8 +2210,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1947,7 +2231,7 @@ public final class ConfidentialLedgerClientImpl {
             String userId, BinaryData userDetails, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createOrUpdateUser(
-                this.getLedgerUri(),
+                this.getLedgerEndpoint(),
                 this.getServiceVersion().getVersion(),
                 userId,
                 userDetails,
@@ -1963,8 +2247,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1972,8 +2256,8 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -1999,13 +2283,187 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of members in the consortium along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listConsortiumMembersNext(
+                                        nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "members"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of members in the consortium along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        return service.listConsortiumMembersNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "members"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paginated collections returned in response to a query along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listCollectionsNext(
+                                        nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "collections"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paginated collections returned in response to a query along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        return service.listCollectionsNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "collections"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -2027,7 +2485,7 @@ public final class ConfidentialLedgerClientImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listLedgerEntriesNext(
-                                        nextLink, this.getLedgerUri(), accept, requestOptions, context))
+                                        nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2046,13 +2504,13 @@ public final class ConfidentialLedgerClientImpl {
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -2072,7 +2530,7 @@ public final class ConfidentialLedgerClientImpl {
     public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.listLedgerEntriesNext(nextLink, this.getLedgerUri(), accept, requestOptions, context)
+        return service.listLedgerEntriesNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Snapshots List. */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/SnapshotsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/SnapshotsList.json
      */
     /**
      * Sample code: List Snapshots.

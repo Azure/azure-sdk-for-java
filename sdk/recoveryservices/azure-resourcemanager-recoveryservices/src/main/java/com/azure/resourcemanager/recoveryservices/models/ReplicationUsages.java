@@ -17,7 +17,7 @@ public interface ReplicationUsages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName);
 
@@ -30,7 +30,7 @@ public interface ReplicationUsages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName, Context context);
 }

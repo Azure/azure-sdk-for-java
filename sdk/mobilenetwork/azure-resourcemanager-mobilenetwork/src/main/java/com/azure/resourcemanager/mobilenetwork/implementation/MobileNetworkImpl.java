@@ -70,6 +70,10 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MobileNetworkInner innerModel() {
         return this.innerObject;
     }

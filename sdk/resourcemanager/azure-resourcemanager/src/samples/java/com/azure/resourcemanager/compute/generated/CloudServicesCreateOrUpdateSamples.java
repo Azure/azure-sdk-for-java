@@ -28,7 +28,7 @@ import java.util.Arrays;
 /** Samples for CloudServices CreateOrUpdate. */
 public final class CloudServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/CreateCloudServiceWithSingleRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithSingleRole.json
      */
     /**
      * Sample code: Create New Cloud Service with Single Role.
@@ -87,7 +87,7 @@ public final class CloudServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/CreateCloudServiceWithSingleRoleAndCertificate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithSingleRoleAndCertificate.json
      */
     /**
      * Sample code: Create New Cloud Service with Single Role and Certificate from Key Vault.
@@ -163,7 +163,7 @@ public final class CloudServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/CreateCloudServiceWithSingleRoleAndRDP.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithSingleRoleAndRDP.json
      */
     /**
      * Sample code: Create New Cloud Service with Single Role and RDP Extension.
@@ -230,7 +230,7 @@ public final class CloudServicesCreateOrUpdateSamples {
                                                         new CloudServiceExtensionProperties()
                                                             .withPublisher("Microsoft.Windows.Azure.Extensions")
                                                             .withType("RDP")
-                                                            .withTypeHandlerVersion("1.2.1")
+                                                            .withTypeHandlerVersion("1.2")
                                                             .withAutoUpgradeMinorVersion(false)
                                                             .withSettings(
                                                                 "<PublicConfig><UserName>UserAzure</UserName><Expiration>10/22/2021"
@@ -241,7 +241,7 @@ public final class CloudServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/CreateCloudServiceWithMultiRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithMultiRole.json
      */
     /**
      * Sample code: Create New Cloud Service with Multiple Roles.

@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Server communication link. */
-@JsonFlatten
 @Fluent
-public class ServerCommunicationLinkInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerCommunicationLinkInner.class);
+public final class ServerCommunicationLinkInner extends ProxyResource {
+    /*
+     * The properties of resource.
+     */
+    @JsonProperty(value = "properties")
+    private ServerCommunicationLinkProperties innerProperties;
 
     /*
      * Communication link location.
@@ -30,17 +30,14 @@ public class ServerCommunicationLinkInner extends ProxyResource {
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /*
-     * The state.
+    /**
+     * Get the innerProperties property: The properties of resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
-
-    /*
-     * The name of the partner server.
-     */
-    @JsonProperty(value = "properties.partnerServer")
-    private String partnerServer;
+    private ServerCommunicationLinkProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: Communication link location.
@@ -66,7 +63,7 @@ public class ServerCommunicationLinkInner extends ProxyResource {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -75,7 +72,7 @@ public class ServerCommunicationLinkInner extends ProxyResource {
      * @return the partnerServer value.
      */
     public String partnerServer() {
-        return this.partnerServer;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServer();
     }
 
     /**
@@ -85,7 +82,10 @@ public class ServerCommunicationLinkInner extends ProxyResource {
      * @return the ServerCommunicationLinkInner object itself.
      */
     public ServerCommunicationLinkInner withPartnerServer(String partnerServer) {
-        this.partnerServer = partnerServer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerCommunicationLinkProperties();
+        }
+        this.innerProperties().withPartnerServer(partnerServer);
         return this;
     }
 
@@ -95,5 +95,8 @@ public class ServerCommunicationLinkInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

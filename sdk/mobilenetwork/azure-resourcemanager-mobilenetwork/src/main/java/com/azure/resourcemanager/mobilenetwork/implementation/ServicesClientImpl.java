@@ -547,14 +547,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceInner> getAsync(String resourceGroupName, String mobileNetworkName, String serviceName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName)
-            .flatMap(
-                (Response<ServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -594,7 +587,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -656,7 +649,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -720,7 +713,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -744,7 +737,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -774,7 +767,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -793,7 +786,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -818,7 +811,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -839,7 +832,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -865,7 +858,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -884,7 +877,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -908,7 +901,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -970,7 +963,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1034,7 +1027,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1050,18 +1043,11 @@ public final class ServicesClientImpl implements ServicesClient {
     private Mono<ServiceInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
-            .flatMap(
-                (Response<ServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1080,7 +1066,7 @@ public final class ServicesClientImpl implements ServicesClient {
     }
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1295,7 +1281,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Services API service call along with {@link PagedResponse} on successful completion of
+     * @return response for services API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1333,7 +1319,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Services API service call along with {@link PagedResponse} on successful completion of
+     * @return response for services API service call along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

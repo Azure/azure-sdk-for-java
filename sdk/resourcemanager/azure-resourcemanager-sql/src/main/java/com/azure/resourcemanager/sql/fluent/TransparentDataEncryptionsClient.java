@@ -10,7 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TransparentDataEncryptionsClient. */
@@ -23,11 +22,12 @@ public interface TransparentDataEncryptionsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
      * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
-     * @param status The status of the database transparent data encryption.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database transparent data encryption configuration.
+     * @return represents a database transparent data encryption configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
@@ -35,7 +35,7 @@ public interface TransparentDataEncryptionsClient {
         String serverName,
         String databaseName,
         TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionStatus status);
+        TransparentDataEncryptionInner parameters);
 
     /**
      * Creates or updates a database's transparent data encryption configuration.
@@ -45,11 +45,11 @@ public interface TransparentDataEncryptionsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
      * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
-     * @param status The status of the database transparent data encryption.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database transparent data encryption configuration.
+     * @return represents a database transparent data encryption configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TransparentDataEncryptionInner> createOrUpdateAsync(
@@ -57,7 +57,7 @@ public interface TransparentDataEncryptionsClient {
         String serverName,
         String databaseName,
         TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionStatus status);
+        TransparentDataEncryptionInner parameters);
 
     /**
      * Creates or updates a database's transparent data encryption configuration.
@@ -67,26 +67,7 @@ public interface TransparentDataEncryptionsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
      * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database transparent data encryption configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TransparentDataEncryptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        TransparentDataEncryptionName transparentDataEncryptionName);
-
-    /**
-     * Creates or updates a database's transparent data encryption configuration.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database for which setting the transparent data encryption applies.
-     * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -97,7 +78,8 @@ public interface TransparentDataEncryptionsClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
-        TransparentDataEncryptionName transparentDataEncryptionName);
+        TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionInner parameters);
 
     /**
      * Creates or updates a database's transparent data encryption configuration.
@@ -107,12 +89,12 @@ public interface TransparentDataEncryptionsClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which setting the transparent data encryption applies.
      * @param transparentDataEncryptionName The name of the transparent data encryption configuration.
-     * @param status The status of the database transparent data encryption.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database transparent data encryption configuration.
+     * @return represents a database transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(
@@ -120,7 +102,7 @@ public interface TransparentDataEncryptionsClient {
         String serverName,
         String databaseName,
         TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionStatus status,
+        TransparentDataEncryptionInner parameters,
         Context context);
 
     /**
@@ -134,7 +116,8 @@ public interface TransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's transparent data encryption configuration.
+     * @return a database's transparent data encryption configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
@@ -154,7 +137,7 @@ public interface TransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's transparent data encryption configuration.
+     * @return a database's transparent data encryption configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TransparentDataEncryptionInner> getAsync(
@@ -195,7 +178,7 @@ public interface TransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's transparent data encryption configuration.
+     * @return a database's transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransparentDataEncryptionInner> getWithResponse(

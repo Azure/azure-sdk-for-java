@@ -314,7 +314,14 @@ public final class ProximityPlacementGroupsClientImpl
     public Mono<ProximityPlacementGroupInner> createOrUpdateAsync(
         String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ProximityPlacementGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -492,7 +499,14 @@ public final class ProximityPlacementGroupsClientImpl
     public Mono<ProximityPlacementGroupInner> updateAsync(
         String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ProximityPlacementGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -646,7 +660,8 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String proximityPlacementGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName).flatMap(ignored -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -807,7 +822,14 @@ public final class ProximityPlacementGroupsClientImpl
         String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ProximityPlacementGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -826,7 +848,14 @@ public final class ProximityPlacementGroupsClientImpl
         final String includeColocationStatus = null;
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ProximityPlacementGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

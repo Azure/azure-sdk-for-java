@@ -11,28 +11,58 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterSecurityProfile {
     /*
-     * Azure Defender settings for the security profile.
+     * Microsoft Defender settings for the security profile.
      */
-    @JsonProperty(value = "azureDefender")
-    private ManagedClusterSecurityProfileAzureDefender azureDefender;
+    @JsonProperty(value = "defender")
+    private ManagedClusterSecurityProfileDefender defender;
+
+    /*
+     * Azure Key Vault [key management
+     * service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+     * settings for the security profile.
+     */
+    @JsonProperty(value = "azureKeyVaultKms")
+    private AzureKeyVaultKms azureKeyVaultKms;
 
     /**
-     * Get the azureDefender property: Azure Defender settings for the security profile.
+     * Get the defender property: Microsoft Defender settings for the security profile.
      *
-     * @return the azureDefender value.
+     * @return the defender value.
      */
-    public ManagedClusterSecurityProfileAzureDefender azureDefender() {
-        return this.azureDefender;
+    public ManagedClusterSecurityProfileDefender defender() {
+        return this.defender;
     }
 
     /**
-     * Set the azureDefender property: Azure Defender settings for the security profile.
+     * Set the defender property: Microsoft Defender settings for the security profile.
      *
-     * @param azureDefender the azureDefender value to set.
+     * @param defender the defender value to set.
      * @return the ManagedClusterSecurityProfile object itself.
      */
-    public ManagedClusterSecurityProfile withAzureDefender(ManagedClusterSecurityProfileAzureDefender azureDefender) {
-        this.azureDefender = azureDefender;
+    public ManagedClusterSecurityProfile withDefender(ManagedClusterSecurityProfileDefender defender) {
+        this.defender = defender;
+        return this;
+    }
+
+    /**
+     * Get the azureKeyVaultKms property: Azure Key Vault [key management
+     * service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) settings for the security profile.
+     *
+     * @return the azureKeyVaultKms value.
+     */
+    public AzureKeyVaultKms azureKeyVaultKms() {
+        return this.azureKeyVaultKms;
+    }
+
+    /**
+     * Set the azureKeyVaultKms property: Azure Key Vault [key management
+     * service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) settings for the security profile.
+     *
+     * @param azureKeyVaultKms the azureKeyVaultKms value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withAzureKeyVaultKms(AzureKeyVaultKms azureKeyVaultKms) {
+        this.azureKeyVaultKms = azureKeyVaultKms;
         return this;
     }
 
@@ -42,8 +72,11 @@ public final class ManagedClusterSecurityProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (azureDefender() != null) {
-            azureDefender().validate();
+        if (defender() != null) {
+            defender().validate();
+        }
+        if (azureKeyVaultKms() != null) {
+            azureKeyVaultKms().validate();
         }
     }
 }

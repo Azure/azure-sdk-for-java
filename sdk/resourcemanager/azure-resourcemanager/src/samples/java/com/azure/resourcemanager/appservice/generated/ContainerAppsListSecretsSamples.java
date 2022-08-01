@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerApps ListSecrets. */
 public final class ContainerAppsListSecretsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListContainerAppSecrets.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListContainerAppSecrets.json
      */
     /**
      * Sample code: List Container Apps Secrets.

@@ -27,7 +27,7 @@ public final class DocTypeInfo {
      */
     private Map<String, Float> fieldConfidence;
 
-    private DocumentBuildMode buildMode;
+    private DocumentModelBuildMode buildMode;
 
     /**
      * Get the description property: Model description.
@@ -88,11 +88,11 @@ public final class DocTypeInfo {
      *
      * @return the buildMode value.
      */
-    public DocumentBuildMode getBuildMode() {
+    public DocumentModelBuildMode getBuildMode() {
         return buildMode;
     }
 
-    void setBuildMode(DocumentBuildMode buildMode) {
+    void setBuildMode(DocumentModelBuildMode buildMode) {
         this.buildMode = buildMode;
     }
 
@@ -114,7 +114,7 @@ public final class DocTypeInfo {
             }
 
             @Override
-            public void setBuildMode(DocTypeInfo docTypeInfo, DocumentBuildMode buildMode) {
+            public void setBuildMode(DocTypeInfo docTypeInfo, DocumentModelBuildMode buildMode) {
                 docTypeInfo.setBuildMode(buildMode);
             }
         });

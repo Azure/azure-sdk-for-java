@@ -7,21 +7,22 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PCC rule QoS policy. */
+/** Data flow policy rule QoS policy. */
 @Fluent
 public final class PccRuleQosPolicy extends QosPolicy {
     /*
-     * The Guaranteed Bit Rate (GBR) for all service data flows that use this
-     * PCC Rule. This is an optional setting. If you do not provide a value,
-     * there will be no GBR set for the PCC Rule that uses this QoS definition.
+     * The guaranteed bit rate (GBR) for all service data flows that use this
+     * data flow policy rule. This is an optional setting. If you do not
+     * provide a value, there will be no GBR set for the data flow policy rule
+     * that uses this QoS definition.
      */
     @JsonProperty(value = "guaranteedBitRate")
     private Ambr guaranteedBitRate;
 
     /**
-     * Get the guaranteedBitRate property: The Guaranteed Bit Rate (GBR) for all service data flows that use this PCC
-     * Rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the PCC Rule that
-     * uses this QoS definition.
+     * Get the guaranteedBitRate property: The guaranteed bit rate (GBR) for all service data flows that use this data
+     * flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the
+     * data flow policy rule that uses this QoS definition.
      *
      * @return the guaranteedBitRate value.
      */
@@ -30,9 +31,9 @@ public final class PccRuleQosPolicy extends QosPolicy {
     }
 
     /**
-     * Set the guaranteedBitRate property: The Guaranteed Bit Rate (GBR) for all service data flows that use this PCC
-     * Rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the PCC Rule that
-     * uses this QoS definition.
+     * Set the guaranteedBitRate property: The guaranteed bit rate (GBR) for all service data flows that use this data
+     * flow policy rule. This is an optional setting. If you do not provide a value, there will be no GBR set for the
+     * data flow policy rule that uses this QoS definition.
      *
      * @param guaranteedBitRate the guaranteedBitRate value to set.
      * @return the PccRuleQosPolicy object itself.
