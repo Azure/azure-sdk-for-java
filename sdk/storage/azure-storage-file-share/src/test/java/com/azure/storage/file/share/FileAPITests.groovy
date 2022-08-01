@@ -418,6 +418,7 @@ class FileAPITests extends APISpec {
         data.defaultBytes == stream.toByteArray()
     }
 
+
     def "Download all null"() {
         given:
         primaryFileClient.create(data.defaultDataSizeLong)
