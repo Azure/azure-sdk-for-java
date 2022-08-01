@@ -55,7 +55,7 @@ public class StateHolderTest {
         updateNextRefreshTimeNoRefreshTest(testInfo);
         updateNextRefreshTimeRefreshTest(testInfo);
         udpateNextRefreshBackoffCalcTest(testInfo);
-        
+
         // Load State Tests
         loadStateTest(testInfo);
     }
@@ -103,7 +103,7 @@ public class StateHolderTest {
 
         State originalState = StateHolder.getState(endpoint);
 
-        stateHolder.updateNextRefreshTime(null, providerProperties);
+        stateHolder.updateNextRefreshTime(null, providerProperties, testInfo.getDisplayName() + "updateRefreshTime");
         StateHolder.updateState(stateHolder);
         State newState = StateHolder.getState(endpoint);
         assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
@@ -121,7 +121,8 @@ public class StateHolderTest {
         State originalState = StateHolder.getState(endpoint);
 
         // Duration is less than the minBackOff
-        stateHolder.updateNextRefreshTime(null, providerProperties);
+        stateHolder.updateNextRefreshTime(null, providerProperties,
+            testInfo.getDisplayName() + "updateRefreshTimeRefresh");
         State newState = StateHolder.getState(endpoint);
         assertNotEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
         assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
@@ -144,7 +145,8 @@ public class StateHolderTest {
             backoffTimeCalculatorMock.when(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(), Mockito.any(),
                 Mockito.any())).thenReturn(ns);
 
-            stateHolder.updateNextRefreshTime(null, providerProperties);
+            stateHolder.updateNextRefreshTime(null, providerProperties,
+                testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc1");
             State newState = StateHolder.getState(endpoint);
 
             assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
@@ -165,13 +167,14 @@ public class StateHolderTest {
 
         Instant originalForcedRefresh = StateHolder.getNextForcedRefresh();
 
-        stateHolder.updateNextRefreshTime(Duration.ofMinutes((long) 11), providerProperties);
+        stateHolder.updateNextRefreshTime(Duration.ofMinutes((long) 11), providerProperties,
+            testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc2");
 
         Instant newForcedRefresh = StateHolder.getNextForcedRefresh();
 
         assertNotEquals(originalForcedRefresh, newForcedRefresh);
     }
-    
+
     private void loadStateTest(TestInfo testInfo) {
         String endpoint = testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc" + ".azconfig.io";
         StateHolder testStateHolder = new StateHolder();

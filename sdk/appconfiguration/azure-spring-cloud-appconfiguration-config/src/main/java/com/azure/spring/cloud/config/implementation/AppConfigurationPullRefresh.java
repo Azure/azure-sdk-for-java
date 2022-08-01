@@ -115,7 +115,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
                 }
             } catch (Exception e) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
+                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties, "refreshStores");
                 throw e;
             } finally {
                 running.set(false);

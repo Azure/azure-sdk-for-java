@@ -102,7 +102,7 @@ class AppConfigurationRefreshUtil {
             }
         } catch (Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
-            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
+            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties, "refreshStoresCheck");
             throw e;
         }
         return eventData;

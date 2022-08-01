@@ -163,7 +163,8 @@ final class StateHolder {
      * @param refreshInterval period between refresh checks.
      * @param properties Provider properties for min and max backoff periods.
      */
-    void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
+    void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties, String debugInfo) {
+        System.out.println("Debug Info: " + debugInfo);
         if (refreshInterval != null) {
             Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
                 clientRefreshAttempts, refreshInterval.getSeconds(), properties);

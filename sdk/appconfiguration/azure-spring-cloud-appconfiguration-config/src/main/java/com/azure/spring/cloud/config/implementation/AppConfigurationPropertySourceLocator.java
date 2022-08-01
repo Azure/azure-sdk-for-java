@@ -242,7 +242,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             if (properties.getRefreshInterval() != null) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties, "failedToGeneratePropertySource");
             }
             throw new RuntimeException(message, e);
         } else if (configStore.isFailFast()) {
