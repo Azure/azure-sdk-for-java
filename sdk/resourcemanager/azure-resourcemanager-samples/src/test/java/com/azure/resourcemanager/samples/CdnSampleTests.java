@@ -12,8 +12,8 @@ import org.junit.jupiter.api.condition.OS;
 public class CdnSampleTests extends SamplesTestBase {
 
     // Test is currently disabled on Linux as a Java API call within this test, source code and not test code,
-    // results in an UnknownHostException:
-    // https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/main/java/com/azure/resourcemanager/appservice/implementation/AppServiceDomainImpl.java#L87
+    // results in an UnknownHostException.
+    // https://github.com/Azure/azure-sdk-for-java/issues/30229
     @Test
     @DisabledOnOs(value = OS.LINUX)
     public void testManageCdnProfileWithCustomDomain() {
