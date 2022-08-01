@@ -50,6 +50,7 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 # File path where the aggregate POM will be written.
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
+service_directories = {"spring": ["spring-3"]}
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool,
@@ -201,9 +202,26 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
 
     # If this is one of the parent POMs, retain it as a project.
 
-    if ("/sdk/" + service_directory + "/") in pom_path:
+    exclude_service_directories = []
+    if service_directory in service_directories.keys():
+        exclude_service_directories.extend(service_directories[service_directory])
+    else:
+        for entry in service_directories.items():
+            multi_service_directories = entry[1]
+            if service_directory in multi_service_directories:
+                multi_service_directories.remove(service_directory)
+                exclude_service_directories.append(entry[0])
+                exclude_service_directories.extend(multi_service_directories)
+                break
+    path_list = pom_path.split(os.sep)
+    # sdk_path_list = path_list[path_list.index("sdk"):]
+    for sd in exclude_service_directories:
+        if "sdk" in path_list and ("/sdk/" + sd + "/") in pom_path:
+            return
+
+    if "-" in service_directory:
         print("project_identifier", project_identifier)
-        project_identifier = service_directory.replace('-', '') + project_identifier
+        project_identifier = service_directory.replace('-', '') + "_" + project_identifier
         print("New project_identifier", project_identifier, directory_path, module_path, parent_pom)
     if project_identifier in parent_pom_identifiers:
         return Project(project_identifier, directory_path, module_path, parent_pom)
@@ -269,6 +287,7 @@ def is_spring_child_pom(tree_root: ET.Element):
 
 def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
     for project_identifier in project_identifiers:
+        print(project_identifier)
         project = projects[project_identifier]
         source_projects.add(project)
 
