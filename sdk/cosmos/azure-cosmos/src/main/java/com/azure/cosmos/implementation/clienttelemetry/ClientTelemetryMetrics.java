@@ -7,7 +7,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -241,8 +240,8 @@ public final class ClientTelemetryMetrics {
                 .baseUnit("RU (request unit)")
                 .description("Operation RU charge")
                 .maximumExpectedValue(10_000_000d)
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
                 .tags(operationTags)
                 .register(compositeRegistry);
             requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
@@ -416,8 +415,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("req.rntbd.stats.channel.pendingRequestQueueSize"))
                 .baseUnit("#")
                 .description("Channel statistics(Pending request queue size)")
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
             pendingRequestQueueSizeMeter.record(pendingRequestQueueSize);
@@ -426,8 +425,8 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("req.rntbd.stats.channel.channelTaskQueueSize"))
                 .baseUnit("#")
                 .description("Channel statistics(Channel task queue size)")
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
             channelTaskQueueSizeMeter.record(channelTaskQueueSize);
@@ -551,9 +550,9 @@ public final class ClientTelemetryMetrics {
                 );
 
                 DistributionSummary backendRequestLatencyMeter = DistributionSummary
-                    .builder(nameOf("req.rntbd.BackendLatency"))
+                    .builder(nameOf("req.rntbd.backendLatency"))
                     .baseUnit("ms")
-                    .description("Backend Request latency")
+                    .description("Backend service latency")
                     .publishPercentiles(0.95, 0.99)
                     .publishPercentileHistogram(true)
                     .tags(requestTags)
@@ -722,7 +721,7 @@ public final class ClientTelemetryMetrics {
                                                   .baseUnit("bytes")
                                                   .tags(tags)
                                                   .publishPercentileHistogram(true)
-                                                  .publishPercentiles(0.9, 0.95, 0.99)
+                                                  .publishPercentiles(0.95, 0.99)
                                                   .register(registry);
 
             this.responseSize = DistributionSummary.builder(nameOf("rntbd.req.rspSize"))
@@ -730,7 +729,7 @@ public final class ClientTelemetryMetrics {
                                                    .baseUnit("bytes")
                                                    .tags(tags)
                                                    .publishPercentileHistogram(true)
-                                                   .publishPercentiles(0.9, 0.95, 0.99)
+                                                   .publishPercentiles(0.95, 0.99)
                                                    .register(registry);
         }
 

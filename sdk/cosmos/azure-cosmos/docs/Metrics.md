@@ -65,7 +65,7 @@ private static MeterRegistry createConsoleLoggingMeterRegistry() {
 }
 ```
 
-The micrometer.io documentation has a list with samples on how to create a `MeterRegistry` for several telemetry systems: [Micrometer Application Monitoring](https://micrometer.io/docs). You can also find an implementation via an Azure Monitor `MeterRegistry` here: [Spark sample with Azure Monitor `MeterRegistry`](https://aka.ms/azure-cosmos-spark_CosmosMetricsApplicationInsightsPlugin)
+The micrometer.io documentation has a list with samples on how to create a `MeterRegistry` for several telemetry systems: [Micrometer Application Monitoring](https://aka.ms/azure-cosmos-micrometer-docs). You can also find an implementation via an Azure Monitor `MeterRegistry` here: [Spark sample with Azure Monitor `MeterRegistry`](https://aka.ms/azure-cosmos-spark_CosmosMetricsApplicationInsightsPlugin)
 
 
 
@@ -98,22 +98,65 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 ### Metrics for logical operations
 
-```
-| Name    | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
-```
-
-
+| Name                             | Unit                                                      | Percentiles            | Description                                                  |
+| -------------------------------- | --------------------------------------------------------- | ---------------------- | ------------------------------------------------------------ |
+| cosmos.client.op.RUs             | RU (request unit)                                         | 95th, 99th + histogram | Total request units per operation (sum of RUs for all requested needed when processing an operation) |
+| cosmos.client.op.latency         | duration (MeterRegistry determines default - usually ms ) | 95th, 99th + histogram | Total end-to-end duration of the operation                   |
+| cosmos.client.op.maxItemCount    | #                                                         | None                   | For feed operations (query, readAll, readMany, change feed) this meter capture the requested maxItemCount per page/request |
+| cosmos.client.op.actualItemCount | #                                                         | None                   | For feed operations (query, readAll, readMany, change feed) this meter capture the actual item count in responses from the service |
 
 ### Metrics for requests to the Cosmos DB Gateway endpoint
 
-ddd
-
-
+| Name                              | Unit     | Percentiles            | Description                                                |
+| --------------------------------- | -------- | ---------------------- | ---------------------------------------------------------- |
+| cosmos.client.req.gw.timeline.xxx | duration | 95th, 99th + histogram | Duration spent in different stages of the request pipeline |
+| cosmos.client.req.reqPayloadSize  | bytes    | None                   | The request payload size in bytes                          |
+| cosmos.client.req.rspPayloadSize  | bytes    | None                   | The response payload size in bytes                         |
 
 ### Metrics for communication with the Cosmos DB backend replicas via direct TCP (aka RNTBD)
 
-ddd
+| Name                                                         | Unit     | Percentiles            | Description                                                  |
+| ------------------------------------------------------------ | -------- | ---------------------- | ------------------------------------------------------------ |
+| cosmos.client.req.rntbd.backendLatency            | duration | 95th, 99th + histogram | Duration spent for processing the request in the Cosmos DB service endpoint (self-attested by backend) |
+| cosmos.client.req.rntbd.timeline.xxx                         | duration | 95th, 99th + histogram | Duration spent in different stages of the request pipeline   |
+| cosmos.client.req.reqPayloadSize                             |    bytes    | None                   | The request payload size in bytes                             |
+| cosmos.client.req.rspPayloadSize                             |    bytes    | None                   | The response payload size in bytes                             |
+| cosmos.client.req.rntbd.addressResolution.latency | duration | 95th, 99th + histogram | Duration spent for resolving physical addresses of replica for a certain partition |
+| cosmos.client.req.rntbd.stats.channel.pendingRequestQueueSize | #        | None                   | Request queue size of a single RNTBD channel (one TCP connection to a certain service endpoint) - any value larger than 0 results in higher latency |
+| cosmos.client.req.rntbd.stats.channel.channelTaskQueueSize   | #        | None                   | Total number of pending requests + requests being processed per channel |
+| cosmos.client.req.rntbd.stats.endpoint.acquiredChannels      | #        | 95th, 99th + histogram | Number of new TCP connections being established per Cosmos DB service endpoint |
+| cosmos.client.req.rntbd.stats.endpoint.availableChannels     | #        | None                   | Number of established TCP connections per  Cosmos DB service endpoint |
+| cosmos.client.req.rntbd.stats.endpoint.inflightRequests      | #        | 95th, 99th + histogram | Number of concurrently processed requests  per Cosmos DB service endpoint |
+| cosmos.client.req.rntbd.stats.endpoint.executorTaskQueueSize | #        | None                   | Number of pending tasks per Cosmos DB service endpoint       |
+| cosmos.client.req.rntbd.channel.acquisition.timeline.xxx     | duration | None                   | Duration spent in different stages of grabbing an existing or creating a new channel (TCP connection) |
+| cosmos.client.req.rntbd.channel.acquisition.timeline.completeNew | duration | None                   | Duration of completing SSL handshake for new TCP connection  |
 
+### Metrics for RNTBD service endpoints (across operations, no operation-level tags)
+
+| Name                                            | Unit     | Percentiles            | Description                                                  |
+| ----------------------------------------------- | -------- | ---------------------- | ------------------------------------------------------------ |
+| cosmos.client.rntbd.requests.latency            | duration | 95th, 99th + histogram | End-to-end duration of processing RNTBD requests per service endpoint across all operations |
+| cosmos.client.rntbd.requests.failed.latency     | duration | 95th, 99th + histogram | End-to-end duration of failed RNTBD requests per service endpoint across all operations |
+| cosmos.client.rntbd.requests.successful.latency | duration | 95th, 99th + histogram | End-to-end duration of successful RNTBD requests per service endpoint across all operations |
+| cosmos.client.rntbd.req.reqSize                 | bytes    | 95th, 99th + histogram | Request payload size in RNTBD encoded bytes across requests for all operations per service endpoint |
+| cosmos.client.rntbd.req.rspSize                 | bytes    | 95th, 99th + histogram | Response payload size in RNTBD encoded bytes across requests for all operations per service endpoint |
+| cosmos.client.rntbd.endpoints.count             | snapshot | None                   | Current number (snapshot) of service endpoints with any active connections |
+| cosmos.client.rntbd.endpoints.evicted           | snapshot | None                   | Current number (snapshot) of endpoints for which TCP connections were closed |
+| cosmos.client.rntbd.requests.concurrent.count   | snapshot | None                   | Current number (snapshot) of concurrent requests handled per service endpoint |
+| cosmos.client.rntbd.requests.queued.count       | snapshot | None                   | Current number (snapshot) of requests being queued (delayed due to no channel available) per service endpoint |
+| cosmos.client.rntbd.channels.acquired.count     | snapshot | None                   | Current number (snapshot) of new channels (TCP connections) being acquired per service endpoint |
+| cosmos.client.rntbd.channels.acquired.count     | snapshot | None                   | Current number (snapshot) of existing channels (TCP connections)  per service endpoint |
+
+### System status  metrics (CPU, memory etc.)
+
+| Name                                     | Unit    | Percentiles            | Description                                                  |
+| ---------------------------------------- | ------- | ---------------------- | ------------------------------------------------------------ |
+| cosmos.client.system.avgCpuLoad          | Percent | 95th, 99th + histogram | SDK measures avg. system-wide CPU every 5 seconds. This meter captures the 5-second avg. CPU usage measurements. |
+| cosmos.client.system.freeMemoryAvailable | MB      | None                   | SDK measures free memory available for the process in MB every 5 seconds. This meter captures the 5-second measurements. |
+
+### Request timeline stages
+
+dddd
 
 
 ## How can I ignore tags/dimensions I am not interested in?
