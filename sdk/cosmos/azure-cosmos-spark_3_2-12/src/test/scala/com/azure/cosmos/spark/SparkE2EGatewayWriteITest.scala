@@ -3,9 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.spark.ItemWriteStrategy.{ItemDelete, ItemDeleteIfNotModified, ItemWriteStrategy}
+import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import org.scalatest.Succeeded
 
 class SparkE2EGatewayWriteITest
   extends IntegrationSpec
@@ -28,14 +27,14 @@ class SparkE2EGatewayWriteITest
   )
 
   private val deleteParameterTest = Seq(
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDelete),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDelete, hasETag = false),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDeleteIfNotModified),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDeleteIfNotModified, hasId = false),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDeleteIfNotModified, hasETag = false),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDelete),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDelete, hasETag = false),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified, hasId = false),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified, hasETag = false),
 
-    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemDelete),
-    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemDeleteIfNotModified)
+    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemDelete),
+    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified)
   )
 
   for (DeleteParameterTest(bulkEnabled, itemWriteStrategy, hasId, hasETag) <- deleteParameterTest) {
@@ -128,13 +127,13 @@ class SparkE2EGatewayWriteITest
       try {
         delete_df.write.format("cosmos.oltp").mode("Append").options(cfgDelete).save()
         hasId shouldBe true
-        if (itemWriteStrategy == ItemDeleteIfNotModified) {
+        if (itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified) {
           hasETag shouldBe true
         }
       } catch {
         case e: Exception =>
           logInfo("EXCEPTION: " + e.getMessage, e)
-          !hasId || (itemWriteStrategy == ItemDeleteIfNotModified && !hasETag) shouldBe true
+          !hasId || (itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified && !hasETag) shouldBe true
       }
 
       delete_df.unpersist()
@@ -149,7 +148,7 @@ class SparkE2EGatewayWriteITest
 
         val afterDelete_df = spark.read.format("cosmos.oltp").options(cfg).load().toDF()
 
-        if (itemWriteStrategy == ItemDeleteIfNotModified) {
+        if (itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified) {
           // Only the unmodified Record - HelloWorld should be deleted
           afterDelete_df.count() shouldEqual 2
           val bosons = queryItems("SELECT * FROM r where r.id = 'Boson'").toArray

@@ -4,9 +4,8 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
-import com.azure.cosmos.spark.ItemWriteStrategy.{ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwrite, ItemWriteStrategy}
+import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import org.scalatest.Succeeded
 
 class SparkE2EWriteITest
   extends IntegrationSpec
@@ -24,10 +23,10 @@ class SparkE2EWriteITest
   private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
   private val upsertParameterTest = Seq(
-    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemOverwrite),
+    UpsertParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite),
 
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemOverwrite),
-    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemAppend)
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemOverwrite),
+    UpsertParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemAppend)
   )
 
   for (UpsertParameterTest(bulkEnabled, itemWriteStrategy, hasId) <- upsertParameterTest) {
@@ -103,15 +102,15 @@ class SparkE2EWriteITest
       val quark = quarks(0)
       quark.get("particle name").asText() shouldEqual "Quark"
       quark.get("id").asText() shouldEqual "Quark"
-      quark.get("color").asText() shouldEqual (if (itemWriteStrategy == ItemOverwrite) "green" else "Red")
+      quark.get("color").asText() shouldEqual (if (itemWriteStrategy == ItemWriteStrategy.ItemOverwrite) "green" else "Red")
       quark.get("empty") shouldEqual null
 
-      quark.has("spin") shouldEqual !(itemWriteStrategy == ItemOverwrite)
-      if (!(itemWriteStrategy == ItemOverwrite)) {
+      quark.has("spin") shouldEqual !(itemWriteStrategy == ItemWriteStrategy.ItemOverwrite)
+      if (!(itemWriteStrategy == ItemWriteStrategy.ItemOverwrite)) {
         quark.get("spin").asDouble() shouldEqual 0.5
       }
 
-      if (itemWriteStrategy == ItemOverwrite) {
+      if (itemWriteStrategy == ItemWriteStrategy.ItemOverwrite) {
         quark.get("color charge").asText() shouldEqual "Yes"
       } else {
         quark.has("color charge") shouldEqual false
@@ -128,14 +127,14 @@ class SparkE2EWriteITest
   )
 
   private val deleteParameterTest = Seq(
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDelete),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDelete, hasETag = false),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDeleteIfNotModified),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDeleteIfNotModified, hasId = false),
-    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemDeleteIfNotModified, hasETag = false),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDelete),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDelete, hasETag = false),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified, hasId = false),
+    DeleteParameterTest(bulkEnabled = true, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified, hasETag = false),
 
-    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemDelete),
-    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemDeleteIfNotModified)
+    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemDelete),
+    DeleteParameterTest(bulkEnabled = false, itemWriteStrategy = ItemWriteStrategy.ItemDeleteIfNotModified)
   )
 
   for (DeleteParameterTest(bulkEnabled, itemWriteStrategy, hasId, hasETag) <- deleteParameterTest) {
@@ -225,13 +224,13 @@ class SparkE2EWriteITest
       try {
         delete_df.write.format("cosmos.oltp").mode("Append").options(cfgDelete).save()
         hasId shouldBe true
-        if (itemWriteStrategy == ItemDeleteIfNotModified) {
+        if (itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified) {
           hasETag shouldBe true
         }
       } catch {
         case e: Exception =>
           logInfo("EXCEPTION: " + e.getMessage, e)
-          !hasId || (itemWriteStrategy == ItemDeleteIfNotModified && !hasETag) shouldBe true
+          !hasId || (itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified && !hasETag) shouldBe true
       }
 
       delete_df.unpersist()
@@ -246,7 +245,7 @@ class SparkE2EWriteITest
 
         val afterDelete_df = spark.read.format("cosmos.oltp").options(cfg).load().toDF()
 
-        if (itemWriteStrategy == ItemDeleteIfNotModified) {
+        if (itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified) {
           // Only the unmodified Record - HelloWorld should be deleted
           afterDelete_df.count() shouldEqual 2
           val bosons = queryItems("SELECT * FROM r where r.id = 'Boson'").toArray

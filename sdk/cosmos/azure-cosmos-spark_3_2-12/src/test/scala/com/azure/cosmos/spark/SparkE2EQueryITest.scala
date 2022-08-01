@@ -2,16 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.sql.Timestamp
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
-
+import java.util.UUID
 import scala.collection.mutable
 
 class SparkE2EQueryITest
@@ -77,7 +76,6 @@ class SparkE2EQueryITest
     item.getAs[String]("id") shouldEqual id
 
     assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
-    assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
     // Gateway requests are not happening always - but they can happen
     //assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)

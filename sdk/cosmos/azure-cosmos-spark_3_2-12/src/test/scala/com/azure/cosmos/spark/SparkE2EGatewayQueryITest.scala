@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
 import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import java.util.UUID
 
 class SparkE2EGatewayQueryITest
 extends IntegrationSpec
