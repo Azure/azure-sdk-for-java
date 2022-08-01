@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOptions> {
 
     private EventProcessorClient eventProcessorClient;
+
     /**
      * Creates an instance of performance test.
      *
@@ -45,7 +46,7 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
         };
 
         Map<String, EventPosition> initalPositionMap = new HashMap<>();
-        for(int i = 0; i<options.getPartitions(); i++){
+        for (int i = 0; i < options.getPartitions(); i++) {
             initalPositionMap.put(String.valueOf(i), EventPosition.earliest());
         }
 
@@ -61,15 +62,15 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync().then( Mono.defer(() -> {
+        return super.setupAsync().then(Mono.defer(() -> {
             eventProcessorClient.start();
             return Mono.empty();
-            }));
+        }));
     }
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return super.cleanupAsync().then( Mono.defer(() ->{
+        return super.cleanupAsync().then(Mono.defer(() -> {
             eventProcessorClient.stop();
             System.out.println("Began cleanup");
             return Mono.empty();

@@ -18,13 +18,13 @@ public class EventProcessorJedisOptions extends PerfStressOptions {
     @Parameter(names = {"-u", "--userName"}, description = "The username required to configure a JedisPool object.")
     private String userName = "$Default";
 
-    @Parameter(names = { "-meps", "--maxEventsPerSecond" }, description = "Maximum Events to send per second.")
+    @Parameter(names = {"-meps", "--maxEventsPerSecond"}, description = "Maximum Events to send per second.")
     private int maxEventsPerSecond = 0;
 
-    @Parameter(names = { "-ea", "--errorAfter" }, description = "Error After duration in seconds.")
+    @Parameter(names = {"-ea", "--errorAfter"}, description = "Error After duration in seconds.")
     private int errorAfterInSeconds = 0;
 
-    @Parameter(names = { "-pt", "--partitions" }, description = "Number of Partitions.")
+    @Parameter(names = {"-pt", "--partitions"}, description = "Number of Partitions.")
     private int partitions = 1;
 
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
@@ -59,11 +59,13 @@ public class EventProcessorJedisOptions extends PerfStressOptions {
      *
      * @return The username for JedisPool object
      */
-     public String getUserName() {
+    public String getUserName() {
         return userName;
     }
+
     /**
      * Get Error after duration in seconds.
+     *
      * @return the error after duration in seconds.
      */
     public int getErrorAfterInSeconds() {
@@ -72,6 +74,7 @@ public class EventProcessorJedisOptions extends PerfStressOptions {
 
     /**
      * Get Maximum events per second.
+     *
      * @return the max events per second.
      */
     public int getMaxEventsPerSecond() {
