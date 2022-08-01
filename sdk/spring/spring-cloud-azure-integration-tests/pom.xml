@@ -34,7 +34,6 @@
 
   <properties>
     <skipSpringITs>true</skipSpringITs>
-<!--    <spring-cloud-azure-dependencies>4.4.0-beta.1</spring-cloud-azure-dependencies> &lt;!&ndash; {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} &ndash;&gt;-->
   </properties>
 
   <dependencies>
@@ -110,7 +109,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>default</id>
