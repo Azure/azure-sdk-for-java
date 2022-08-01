@@ -16,7 +16,7 @@
   },
   "variables": {
     "azureDatabaseAccountsName": "[concat(parameters('baseName'),'-test-cosmos')]",
-    "azureCosmosSpringDataDatabaseName": "[concat(variables('azureDatabaseAccountsName'), '/TestSpringData')]",
+    "azureCosmosSpringDataDatabaseName": "TestSpringData",
     "azureCosmosRoleId": "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions', variables('azureDatabaseAccountsName'), '00000000-0000-0000-0000-000000000002')]",
     "location": "[resourceGroup().location]"
   },
@@ -96,7 +96,7 @@
     {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
       "apiVersion": "2022-02-15-preview",
-      "name": "[variables('azureCosmosSpringDataDatabaseName')]",
+      "name": "[concat(variables('azureDatabaseAccountsName'), '/', variables('azureCosmosSpringDataDatabaseName'))]",
       "dependsOn": [
         "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
       ],
@@ -112,47 +112,6 @@
       "name": "[concat(variables('azureDatabaseAccountsName'), '/TestDB/Users')]",
       "dependsOn": [
         "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('azureDatabaseAccountsName'), 'TestDB')]",
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
-      ],
-      "properties": {
-        "resource": {
-          "id": "Users",
-          "indexingPolicy": {
-            "indexingMode": "consistent",
-            "automatic": true,
-            "includedPaths": [
-              {
-                "path": "/*"
-              }
-            ],
-            "excludedPaths": [
-              {
-                "path": "/\"_etag\"/?"
-              }
-            ]
-          },
-          "partitionKey": {
-            "paths": [
-              "/id"
-            ],
-            "kind": "Hash"
-          },
-          "uniqueKeyPolicy": {
-            "uniqueKeys": []
-          },
-          "conflictResolutionPolicy": {
-            "mode": "LastWriterWins",
-            "conflictResolutionPath": "/_ts"
-          }
-        }
-      }
-    },
-    {
-      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
-      "apiVersion": "2022-02-15-preview",
-      "name": "[concat(variables('azureDatabaseAccountsName'), '/TestSpringData/Users')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('azureDatabaseAccountsName'), 'TestSpringData')]",
         "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
       ],
       "properties": {
