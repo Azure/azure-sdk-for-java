@@ -2,8 +2,8 @@
 
 # Adds the following groups to the aggregate JavaDoc
 # Group;Title;Package
-Group;Azure Core;com.azure.core:com.azure.core.annotation:com.azure.core.credential:com.azure.core.cryptography:com.azure.core.exception:com.azure.core.http*:com.azure.core.models*:com.azure.core.util*
-Group;Azure Core - AMQP;com.azure.core.amqp:com.azure.core.amqp.exception*:com.azure.core.amqp.models*
+Group;Azure Core;com.azure.core:com.azure.core.annotation:com.azure.core.credential:com.azure.core.cryptography:com.azure.core.exception:com.azure.core.http*:com.azure.core.models*:com.azure.core.util*:com.azure.core.client.traits*
+Group;Azure Core - AMQP;com.azure.core.amqp:com.azure.core.amqp.exception*:com.azure.core.amqp.models*:com.azure.core.amqp.client.traits*
 Group;Azure Core - AMQP Experimental;com.azure.core.amqp.experimental*
 Group;Azure Core - Experimental;com.azure.core.experimental*
 Group;Azure Core - HTTP - Netty;com.azure.core.http.netty*
@@ -11,6 +11,7 @@ Group;Azure Core - HTTP - OkHttp;com.azure.core.http.okhttp*
 Group;Azure Core - JSON;com.azure.json*
 Group;Azure Core - JSON - GSON;com.azure.json.gson*
 Group;Azure Core - Management;com.azure.core.management*
+Group;Azure Core - Metrics - OpenTelemetry;com.azure.core.metrics.opentelemetry*
 Group;Azure Core - Serializer - Avro - Apache;com.azure.core.serializer.avro.apache*
 Group;Azure Core - Serializer - Avro - Jackson;com.azure.core.serializer.avro.jackson*
 Group;Azure Core - Serializer - JSON - Gson;com.azure.core.serializer.json.gson*
@@ -27,20 +28,24 @@ Group;Azure Cosmos;com.azure.cosmos*
 Group;Azure Device Update for IoT Hub;com.azure.iot.deviceupdate*
 Group;Azure Digital Twins;com.azure.digitaltwins.core*
 Group;Azure Document Translator;com.azure.ai.documenttranslator*
+Group;Azure Event Grid;com.azure.messaging.eventgrid*
 Group;Azure Event Hubs;com.azure.messaging.eventhubs*
 Group;Azure Form Recognizer;com.azure.ai.formrecognizer*
 Group;Azure Identity;com.azure.identity*
 Group;Azure IoT Models Repository;com.azure.iot.modelsrepository*
 Group;Azure Key Vault;com.azure.security.keyvault*
+Group;Azure Metrics Advisor;com.azure.ai.metricsadvisor*
 Group;Azure Mixed Reality Authentication;com.azure.mixedreality.authentication*
 Group;Azure Mixed Reality Remote Rendering;com.azure.mixedreality.remoterendering*
 Group;Azure Monitor - Ingestion;com.azure.monitor.ingestion*
 Group;Azure Monitor - Logs and Metrics query;com.azure.monitor.query*
 Group;Azure Monitor - OpenTelemetry Exporter;com.azure.monitor.opentelemetry.exporter*
 Group;Azure Personalizer;com.azure.ai.personalizer*
+Group;Azure Purview Administration;com.azure.analytics.purview.administration*
 Group;Azure Purview Catalog;com.azure.analytics.purview.catalog*
 Group;Azure Purview Scanning;com.azure.analytics.purview.scanning*
 Group;Azure Quantum Jobs;com.azure.quantum.jobs*
+Group;Azure Schema Registry;com.azure.data.schemaregistry*
 Group;Azure Search Documents;com.azure.search.documents*
 Group;Azure Security Attestation;com.azure.security.attestation*
 Group;Azure Service Bus;com.azure.messaging.servicebus*
@@ -53,6 +58,8 @@ Group;Azure Storage Blobs - NIO;com.azure.storage.blob.nio*
 Group;Azure Storage Files - Share;com.azure.storage.file.share*
 Group;Azure Storage Files - Data Lake;com.azure.storage.file.datalake*
 Group;Azure Storage - Queues;com.azure.storage.queue*
+Group;Azure Synapse;com.azure.analysis.synapse*
+Group;Azure Tables;com.azure.data.tables*
 Group;Azure Text Analytics;com.azure.ai.textanalytics*
 Group;Azure Web Pub Sub;com.azure.messaging.webpubsub*
 
@@ -61,9 +68,9 @@ Group;Azure Web Pub Sub;com.azure.messaging.webpubsub*
 Link;https://docs.oracle.com/javase/8/docs/api/
 Link;https://projectreactor.io/docs/core/release/api/
 Link;https://projectreactor.io/docs/netty/release/api/
-Link;https://fasterxml.github.io/jackson-annotations/javadoc/2.12/
-Link;https://fasterxml.github.io/jackson-core/javadoc/2.12/
-Link;https://fasterxml.github.io/jackson-databind/javadoc/2.12/
+Link;https://fasterxml.github.io/jackson-annotations/javadoc/2.13/
+Link;https://fasterxml.github.io/jackson-core/javadoc/2.13/
+Link;https://fasterxml.github.io/jackson-databind/javadoc/2.13/
 Link;https://netty.io/4.1/api/
 Link;https://avro.apache.org/docs/current/api/java/
 

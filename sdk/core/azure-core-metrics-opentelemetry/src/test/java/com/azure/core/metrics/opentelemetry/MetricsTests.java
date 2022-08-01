@@ -64,6 +64,7 @@ public class MetricsTests {
     @Test
     public void basicHistogram() {
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+        assertTrue(meter.isEnabled());
         DoubleHistogram histogram = meter.createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
         assertTrue(histogram.isEnabled());
         histogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
@@ -99,6 +100,7 @@ public class MetricsTests {
             .setEnabled(false)
             .setProvider(sdkMeterProvider);
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
+        assertFalse(meter.isEnabled());
         DoubleHistogram histogram = meter
             .createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
 
@@ -112,6 +114,8 @@ public class MetricsTests {
     public void noopOTelMeterProvider() {
         MetricsOptions options = new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop());
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
+        assertFalse(meter.isEnabled());
+
         DoubleHistogram histogram = meter
             .createDoubleHistogram("az.sdk.test-histogram", "important metric", null);
 

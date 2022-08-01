@@ -9,9 +9,11 @@
 - Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
 - Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
 - Renamed `DocumentModelInfo` model to `DocumentModelSummary`
-- Renamed `DocumentModel` model to `DocumentModelInfo`
-- Renamed `getAccountProperties` method to `getResourceInfo`
-- Renamed `AccountProperties` model to `ResourceInfo`
+- Renamed `DocumentModelDetails` model to `DocumentModelInfo`
+- Renamed `ModelOperation` model to `ModelOperationDetails`
+- Renamed `ModelOperationInfo` model to `ModelOperationSummary`
+- Renamed `getAccountProperties` method to `getResourceDetails`
+- Renamed `AccountProperties` model to `ResourceDetails`
 
 ### Bugs Fixed
 

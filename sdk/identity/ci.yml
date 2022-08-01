@@ -29,11 +29,18 @@ pr:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
 
+parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: identity
     EnableBatchRelease: true
+    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-identity
         groupId: com.azure
@@ -44,3 +51,12 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+        parameters:
+          ServiceDirectory: identity
+          SupportedClouds: 'Public,UsGov,China'
+          Artifacts:
+            - name: azure-identity
+              groupId: com.azure
+              safeName: azureidentity
