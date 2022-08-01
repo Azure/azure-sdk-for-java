@@ -34,15 +34,19 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class ClientTelemetryMetrics {
+    private static final Logger logger = LoggerFactory.getLogger(ClientTelemetryMetrics.class);
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
     private static final
@@ -50,7 +54,38 @@ public final class ClientTelemetryMetrics {
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-/", false);
 
-    private static final CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
+    private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
+    private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
+
+    private static String convertStackTraceToString(Throwable throwable)
+    {
+        try (StringWriter sw = new StringWriter();
+             PrintWriter pw = new PrintWriter(sw))
+        {
+            throwable.printStackTrace(pw);
+            return sw.toString();
+        }
+        catch (IOException ioe)
+        {
+            throw new IllegalStateException(ioe);
+        }
+    }
+
+    private static CompositeMeterRegistry createFreshRegistry() {
+        CompositeMeterRegistry registry = new CompositeMeterRegistry();
+        if (logger.isTraceEnabled()) {
+            registry.config().onMeterAdded(
+                (meter) -> {
+                    logger.trace(
+                        "Meter '{}' added. Callstack: {}",
+                        meter.getId().getName(),
+                        convertStackTraceToString(new IllegalStateException("Dummy")));
+                }
+            );
+        }
+
+        return registry;
+    }
 
     public static void recordSystemUsage(
         float averageSystemCpuUsage,
@@ -142,8 +177,32 @@ public final class ClientTelemetryMetrics {
         return new RntbdMetricsV2(compositeRegistry, client, endpoint);
     }
 
-    public static void add(MeterRegistry registry) {
-        ClientTelemetryMetrics.compositeRegistry.add(registry);
+    public static synchronized void add(MeterRegistry registry) {
+        if (registryRefCount
+            .computeIfAbsent(registry, (meterRegistry) -> { return new AtomicLong(0); })
+            .incrementAndGet() == 1L) {
+            ClientTelemetryMetrics
+                .compositeRegistry
+                .add(registry);
+        }
+    }
+
+    public static synchronized void remove(MeterRegistry registry) {
+        if (registryRefCount
+            .get(registry)
+            .decrementAndGet() == 0L) {
+
+            registry.clear();
+            registry.close();
+
+            ClientTelemetryMetrics
+                .compositeRegistry
+                .remove(registry);
+
+            if (ClientTelemetryMetrics.compositeRegistry.getRegistries().isEmpty()) {
+                ClientTelemetryMetrics.compositeRegistry = createFreshRegistry();
+            }
+        }
     }
 
     public static String escape(String value) {

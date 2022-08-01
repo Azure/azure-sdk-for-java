@@ -8,7 +8,7 @@ import com.azure.cosmos.spark.{CosmosClientMetrics, CosmosConfigNames, CosmosCon
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.microsoft.applicationinsights.TelemetryConfiguration
 import io.micrometer.azuremonitor.{AzureMonitorConfig, AzureMonitorMeterRegistry}
-import io.micrometer.core.instrument.Clock
+import io.micrometer.core.instrument.{Clock, MeterRegistry}
 import org.apache.spark.SparkContext
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
 
@@ -24,7 +24,7 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
 
   override def executorPlugin(): ExecutorPlugin = new CosmosMetricsApplicationInsightsExecutorPlugin()
 
-  private[this] def createAndAddRegistry(connectionString: String, metricsCollectionIntervalInSeconds: Long): Unit= {
+  private[this] def createAndAddRegistry(connectionString: String, metricsCollectionIntervalInSeconds: Long): MeterRegistry = {
     val config = new DefaultAzureMonitorConfig(metricsCollectionIntervalInSeconds)
 
     val telemetryConfig = TelemetryConfiguration
@@ -38,6 +38,15 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
       .build()
 
     CosmosClientMetrics.addMeterRegistry(azureMonitorRegistry)
+
+    azureMonitorRegistry
+  }
+
+  private[this] def cleanupMeterRegistry(meterRegistry: Option[MeterRegistry]): Unit = {
+    meterRegistry match {
+      case Some(existingRegistry) => CosmosClientMetrics.removeMeterRegistry(existingRegistry)
+      case None =>
+    }
   }
 
   private class CosmosMetricsApplicationInsightsDriverPlugin
@@ -46,6 +55,7 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
 
     private[this] var connectionString: String = _
     private[this] var metricsCollectionIntervalInSeconds = CosmosConstants.defaultMetricsIntervalInSeconds
+    private[this] var meterRegistry: Option[MeterRegistry] = None
 
     override def init
     (
@@ -83,7 +93,7 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
     override def registerMetrics(appId: String, pluginContext: PluginContext): Unit = {
       super.registerMetrics(appId, pluginContext)
 
-      createAndAddRegistry(connectionString, metricsCollectionIntervalInSeconds)
+      this.meterRegistry = Some(createAndAddRegistry(connectionString, metricsCollectionIntervalInSeconds))
 
       logInfo(s"CosmosMetricsApplicationInsightsDriverPlugin metrics for application $appId " +
         s"registered (metrics interval (seconds): $metricsCollectionIntervalInSeconds)")
@@ -91,6 +101,10 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
 
     override def shutdown(): Unit = {
       super.shutdown()
+
+      cleanupMeterRegistry(this.meterRegistry)
+
+      logInfo("CosmosMetricsApplicationInsightsDriverPlugin shutdown initiated")
     }
   }
 
@@ -100,6 +114,7 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
 
     private[this] var connectionString: String = _
     private[this] var metricsCollectionIntervalInSeconds = CosmosConstants.defaultMetricsIntervalInSeconds
+    private[this] var meterRegistry: Option[MeterRegistry] = None
 
     override def init(ctx: PluginContext, extraConf: util.Map[String, String]): Unit = {
       super.init(ctx, extraConf)
@@ -116,7 +131,8 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
         metricsCollectionIntervalInSeconds = extraConf.get(CosmosConfigNames.MetricsIntervalInSeconds).toInt
       }
 
-      createAndAddRegistry(connectionString, metricsCollectionIntervalInSeconds)
+      this.meterRegistry = Some(
+        createAndAddRegistry(connectionString, metricsCollectionIntervalInSeconds))
 
       logInfo(s"CosmosMetricsApplicationInsightsExecutorPlugin metrics " +
         s"registered (metrics interval (seconds): $metricsCollectionIntervalInSeconds)")
@@ -124,6 +140,9 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
 
     override def shutdown(): Unit = {
       super.shutdown()
+
+      cleanupMeterRegistry(this.meterRegistry)
+      logInfo("CosmosMetricsApplicationInsightsExecutorPlugin shutdown initiated")
     }
   }
 

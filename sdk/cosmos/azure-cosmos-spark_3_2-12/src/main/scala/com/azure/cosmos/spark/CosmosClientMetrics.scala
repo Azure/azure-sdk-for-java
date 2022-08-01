@@ -36,6 +36,26 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
 
     }
   }
+
+  def removeMeterRegistry
+  (
+    toBeRemovedMeterRegistry: MeterRegistry
+  ) : Unit = {
+    val shouldShutdown = this.meterRegistry match {
+      case Some(existingRegistry) =>
+        if (existingRegistry.remove(toBeRemovedMeterRegistry).getRegistries().size() == 0) {
+          true
+        } else {
+          false
+        }
+      case None => true
+    }
+
+    if (shouldShutdown) {
+      this.shutdown()
+    }
+  }
+
   def registerDropwizardRegistry
   (
     executorId: String,
@@ -43,7 +63,7 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
     dropwizardMetricRegistry: MetricRegistry,
     slf4jReporterEnabled: Boolean,
     metricsCollectionIntervalInSeconds: Integer
-  ) : Unit = {
+  ) : Option[MeterRegistry] = {
 
     if (Option(dropwizardMetricRegistry).isDefined) {
       CosmosClientMetrics.executorId = Some(executorId)
@@ -88,12 +108,28 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
       }
 
       addMeterRegistry(dropWizardMeterRegistry)
+
+      Some(dropWizardMeterRegistry)
+    } else {
+      None
     }
   }
 
-  def shutdown(): Unit = {
-    if (slf4JReporter.isDefined) {
-      slf4JReporter.get.stop()
+  private[this] def shutdown(): Unit = {
+
+    val slf4jReporterSnapshot = this.slf4JReporter
+    this.slf4JReporter = None
+
+    val meterRegistrySnapshot = this.meterRegistry
+    this.meterRegistry = None
+
+    if (slf4jReporterSnapshot.isDefined) {
+      slf4jReporterSnapshot.get.stop()
+    }
+
+    if (meterRegistrySnapshot.isDefined) {
+      meterRegistrySnapshot.get.clear
+      meterRegistrySnapshot.get.close()
     }
   }
 }

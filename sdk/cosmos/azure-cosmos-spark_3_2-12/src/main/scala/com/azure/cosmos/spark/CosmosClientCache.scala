@@ -377,6 +377,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  def clearCache(): Unit = {
+    cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
+    cache.clear()
+    cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
+  }
+
   private[this] class CacheItemImpl
   (
     val cosmosClient: CosmosAsyncClient,
@@ -411,9 +417,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case Some(_) =>
             logInfo(
               s"ApplicationEndListener:onApplicationEnd(${ctx.hashCode}) closed - purging all cosmos clients")
-            cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
-            cache.clear()
-            cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
+            clearCache()
           case None =>
             logWarning(s"ApplicationEndListener:onApplicationEnd (${ctx.hashCode}) - not monitored anymore")
         }

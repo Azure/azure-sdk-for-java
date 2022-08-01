@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+
+import java.util.UUID
 
 class SparkE2EGatewayChangeFeedITest
   extends IntegrationSpec

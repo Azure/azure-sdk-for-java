@@ -37,6 +37,9 @@ trait Spark extends BeforeAndAfterAll with BasicLoggingTrait {
   def getSpark: SparkSession = spark
 
   def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
@@ -67,6 +70,8 @@ trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
   //scalastyle:off
 
   override def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
@@ -83,6 +88,8 @@ trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
   //scalastyle:off
 
   override def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
@@ -98,6 +105,7 @@ trait MetricAssertions extends BasicLoggingTrait with Matchers {
   def assertMetrics(meterRegistry: CompositeMeterRegistry, prefix: String, expectedToFind: Boolean): Unit = {
     meterRegistry.getRegistries.size() > 0 shouldEqual true
     val firstRegistry: MeterRegistry = meterRegistry.getRegistries.toArray()(0).asInstanceOf[MeterRegistry]
+    firstRegistry.isClosed shouldEqual false
     val meters = firstRegistry.getMeters.asScala
 
     if (expectedToFind) {

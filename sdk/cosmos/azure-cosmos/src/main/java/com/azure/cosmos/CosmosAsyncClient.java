@@ -84,6 +84,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final EnumSet<TagName> metricTagNames;
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
+    private final MeterRegistry clientMetricRegistrySnapshot;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -162,7 +163,7 @@ public final class CosmosAsyncClient implements Closeable {
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
 
-        MeterRegistry clientMetricRegistrySnapshot = builder.getClientMetricRegistry();
+        this.clientMetricRegistrySnapshot = builder.getClientMetricRegistry();
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
@@ -536,6 +537,9 @@ public final class CosmosAsyncClient implements Closeable {
      */
     @Override
     public void close() {
+        if (this.clientMetricRegistrySnapshot != null) {
+            ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
+        }
         asyncDocumentClient.close();
     }
 

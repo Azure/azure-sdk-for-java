@@ -5,6 +5,7 @@ package com.azure.cosmos.spark.plugins
 
 import com.azure.cosmos.spark.{CosmosClientMetrics, CosmosConfigNames, CosmosConstants}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import io.micrometer.core.instrument.MeterRegistry
 import org.apache.spark.SparkContext
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
 
@@ -19,9 +20,17 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
   override def executorPlugin(): ExecutorPlugin = new CosmosMetricsSparkExecutorPlugin()
 
+  private[this] def cleanupMeterRegistry(meterRegistry: Option[MeterRegistry]): Unit = {
+    meterRegistry match {
+      case Some(existingRegistry) => CosmosClientMetrics.removeMeterRegistry(existingRegistry)
+      case None =>
+    }
+  }
+
   private class CosmosMetricsSparkDriverPlugin extends DriverPlugin with BasicLoggingTrait {
     private[this] var slf4jReporterEnabled = CosmosConstants.defaultSlf4jMetricReporterEnabled
     private[this] var metricsCollectionIntervalInSeconds = CosmosConstants.defaultMetricsIntervalInSeconds
+    private[this] var meterRegistry: Option[MeterRegistry] = None
 
     override def init
     (
@@ -53,7 +62,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
       val dropWizardRegistry = pluginContext.metricRegistry()
       if (Option(dropWizardRegistry).isDefined) {
-        CosmosClientMetrics.registerDropwizardRegistry(
+        this.meterRegistry = CosmosClientMetrics.registerDropwizardRegistry(
           pluginContext.executorID(),
           pluginContext.hostname(),
           dropWizardRegistry,
@@ -66,14 +75,17 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
     override def shutdown(): Unit = {
       super.shutdown()
-      CosmosClientMetrics.shutdown()
+
+      cleanupMeterRegistry(this.meterRegistry)
+
+      logInfo("CosmosMetricsSparkDriverPlugin shutdown initiated")
     }
   }
 
   private class CosmosMetricsSparkExecutorPlugin extends ExecutorPlugin with BasicLoggingTrait {
     private[this] var slf4jReporterEnabled = CosmosConstants.defaultSlf4jMetricReporterEnabled
     private[this] var metricsCollectionIntervalInSeconds = CosmosConstants.defaultMetricsIntervalInSeconds
-
+    private[this] var meterRegistry: Option[MeterRegistry] = None
     override def init(ctx: PluginContext, extraConf: util.Map[String, String]): Unit = {
       super.init(ctx, extraConf)
 
@@ -87,7 +99,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
       val dropWizardRegistry = ctx.metricRegistry()
       if (Option(dropWizardRegistry).isDefined) {
-        CosmosClientMetrics
+        this.meterRegistry = CosmosClientMetrics
           .registerDropwizardRegistry(
             ctx.executorID(),
             ctx.hostname(),
@@ -105,6 +117,8 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
     override def shutdown(): Unit = {
       super.shutdown()
+
+      cleanupMeterRegistry(this.meterRegistry)
 
       logInfo("CosmosMetricsSparkExecutorPlugin shutdown initiated")
     }
