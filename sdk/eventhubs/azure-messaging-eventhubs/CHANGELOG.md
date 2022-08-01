@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added algorithm for mapping partition keys to partition ids.
+- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
+
 ### Breaking Changes
 
 ### Bugs Fixed

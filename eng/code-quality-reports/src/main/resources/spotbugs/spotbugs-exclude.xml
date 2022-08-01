@@ -2632,6 +2632,13 @@
     <Bug pattern="XXE_XMLSTREAMREADER"/>
   </Match>
 
+  <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
+  <Match>
+    <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
+    <Method name="computeHash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
+
   <!-- Non Shipped code -->
   <Match>
     <Or>
