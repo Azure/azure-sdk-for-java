@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServicesGetPropertiesHeaders model. */
@@ -27,6 +28,18 @@ public final class ServicesGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ServicesGetPropertiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ServicesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
