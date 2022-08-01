@@ -637,7 +637,14 @@ public final class SshPublicKeysClientImpl
     public Mono<SshPublicKeyResourceInner> createAsync(
         String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters) {
         return createWithResponseAsync(resourceGroupName, sshPublicKeyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<SshPublicKeyResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -804,7 +811,14 @@ public final class SshPublicKeysClientImpl
     public Mono<SshPublicKeyResourceInner> updateAsync(
         String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters) {
         return updateWithResponseAsync(resourceGroupName, sshPublicKeyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<SshPublicKeyResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -951,7 +965,8 @@ public final class SshPublicKeysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String sshPublicKeyName) {
-        return deleteWithResponseAsync(resourceGroupName, sshPublicKeyName).flatMap(ignored -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, sshPublicKeyName)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1097,7 +1112,14 @@ public final class SshPublicKeysClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SshPublicKeyResourceInner> getByResourceGroupAsync(String resourceGroupName, String sshPublicKeyName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, sshPublicKeyName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<SshPublicKeyResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1249,7 +1271,14 @@ public final class SshPublicKeysClientImpl
     public Mono<SshPublicKeyGenerateKeyPairResultInner> generateKeyPairAsync(
         String resourceGroupName, String sshPublicKeyName) {
         return generateKeyPairWithResponseAsync(resourceGroupName, sshPublicKeyName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<SshPublicKeyGenerateKeyPairResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

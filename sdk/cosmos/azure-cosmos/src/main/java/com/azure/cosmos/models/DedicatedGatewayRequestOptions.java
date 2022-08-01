@@ -2,14 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
-
 import java.time.Duration;
 
 /**
  * Dedicated Gateway Request Options
  */
-@Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class DedicatedGatewayRequestOptions {
 
     private Duration maxIntegratedCacheStaleness;
@@ -17,7 +14,6 @@ public final class DedicatedGatewayRequestOptions {
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions() {
 
     }
@@ -33,7 +29,6 @@ public final class DedicatedGatewayRequestOptions {
      *
      * @return Duration of maxIntegratedCacheStaleness
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getMaxIntegratedCacheStaleness() {
         return maxIntegratedCacheStaleness;
     }
@@ -50,7 +45,6 @@ public final class DedicatedGatewayRequestOptions {
      * @param maxIntegratedCacheStaleness Max Integrated Cache Staleness duration
      * @return this DedicatedGatewayRequestOptions
      */
-    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DedicatedGatewayRequestOptions setMaxIntegratedCacheStaleness(Duration maxIntegratedCacheStaleness) {
         this.maxIntegratedCacheStaleness = maxIntegratedCacheStaleness;
         return this;

@@ -12,6 +12,7 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -39,6 +41,7 @@ public class MockHttpClient extends NoOpHttpClient {
         .set("X-Processed-Time", "1.0")
         .set("Access-Control-Allow-Credentials", "true")
         .set("Content-Type", "application/json");
+    private static final Random RANDOM = new Random();
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -66,7 +69,15 @@ public class MockHttpClient extends NoOpHttpClient {
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
                         .set("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
                         .set("Content-Length", Integer.toString(byteCount));
-                    response = new MockHttpResponse(request, 200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
+                    byte[] content;
+                    if (byteCount > 0) {
+                        content = new byte[byteCount];
+                        RANDOM.nextBytes(content);
+                        newHeaders = newHeaders.set("ETag", MessageDigestUtils.md5(content));
+                    } else {
+                        content = null;
+                    }
+                    response = new MockHttpResponse(request, 200, newHeaders, content);
                 } else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);

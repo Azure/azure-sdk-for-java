@@ -26,7 +26,8 @@ public interface RestorableDroppedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(
@@ -43,7 +44,7 @@ public interface RestorableDroppedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RestorableDroppedDatabaseInner> getAsync(
@@ -78,7 +79,7 @@ public interface RestorableDroppedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestorableDroppedDatabaseInner> getWithResponse(
@@ -93,7 +94,7 @@ public interface RestorableDroppedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableDroppedDatabaseInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -107,7 +108,7 @@ public interface RestorableDroppedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableDroppedDatabaseInner> listByServer(String resourceGroupName, String serverName);
@@ -122,7 +123,7 @@ public interface RestorableDroppedDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableDroppedDatabaseInner> listByServer(

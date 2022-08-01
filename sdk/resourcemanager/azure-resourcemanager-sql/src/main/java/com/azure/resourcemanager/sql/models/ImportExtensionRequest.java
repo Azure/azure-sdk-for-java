@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.ImportExtensionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Import database parameters. */
-@JsonFlatten
 @Fluent
-public class ImportExtensionRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportExtensionRequest.class);
-
+public final class ImportExtensionRequest {
     /*
      * The name of the extension.
      */
@@ -29,47 +24,10 @@ public class ImportExtensionRequest {
     private String type;
 
     /*
-     * The type of the storage key to use.
+     * Represents the properties of the resource.
      */
-    @JsonProperty(value = "properties.storageKeyType")
-    private StorageKeyType storageKeyType;
-
-    /*
-     * The storage key to use.  If storage key type is SharedAccessKey, it must
-     * be preceded with a "?."
-     */
-    @JsonProperty(value = "properties.storageKey")
-    private String storageKey;
-
-    /*
-     * The storage uri to use.
-     */
-    @JsonProperty(value = "properties.storageUri")
-    private String storageUri;
-
-    /*
-     * The name of the SQL administrator.
-     */
-    @JsonProperty(value = "properties.administratorLogin")
-    private String administratorLogin;
-
-    /*
-     * The password of the SQL administrator.
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * The authentication type.
-     */
-    @JsonProperty(value = "properties.authenticationType")
-    private AuthenticationType authenticationType;
-
-    /*
-     * The type of import operation being performed. This is always Import.
-     */
-    @JsonProperty(value = "properties.operationMode")
-    private ImportOperationMode operationMode;
+    @JsonProperty(value = "properties")
+    private ImportExtensionProperties innerProperties;
 
     /**
      * Get the name property: The name of the extension.
@@ -112,12 +70,44 @@ public class ImportExtensionRequest {
     }
 
     /**
+     * Get the innerProperties property: Represents the properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private ImportExtensionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the operationMode property: The type of import operation being performed. This is always Import.
+     *
+     * @return the operationMode value.
+     */
+    public ImportOperationMode operationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationMode();
+    }
+
+    /**
+     * Set the operationMode property: The type of import operation being performed. This is always Import.
+     *
+     * @param operationMode the operationMode value to set.
+     * @return the ImportExtensionRequest object itself.
+     */
+    public ImportExtensionRequest withOperationMode(ImportOperationMode operationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withOperationMode(operationMode);
+        return this;
+    }
+
+    /**
      * Get the storageKeyType property: The type of the storage key to use.
      *
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
-        return this.storageKeyType;
+        return this.innerProperties() == null ? null : this.innerProperties().storageKeyType();
     }
 
     /**
@@ -127,7 +117,10 @@ public class ImportExtensionRequest {
      * @return the ImportExtensionRequest object itself.
      */
     public ImportExtensionRequest withStorageKeyType(StorageKeyType storageKeyType) {
-        this.storageKeyType = storageKeyType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withStorageKeyType(storageKeyType);
         return this;
     }
 
@@ -138,7 +131,7 @@ public class ImportExtensionRequest {
      * @return the storageKey value.
      */
     public String storageKey() {
-        return this.storageKey;
+        return this.innerProperties() == null ? null : this.innerProperties().storageKey();
     }
 
     /**
@@ -149,7 +142,10 @@ public class ImportExtensionRequest {
      * @return the ImportExtensionRequest object itself.
      */
     public ImportExtensionRequest withStorageKey(String storageKey) {
-        this.storageKey = storageKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withStorageKey(storageKey);
         return this;
     }
 
@@ -159,7 +155,7 @@ public class ImportExtensionRequest {
      * @return the storageUri value.
      */
     public String storageUri() {
-        return this.storageUri;
+        return this.innerProperties() == null ? null : this.innerProperties().storageUri();
     }
 
     /**
@@ -169,7 +165,10 @@ public class ImportExtensionRequest {
      * @return the ImportExtensionRequest object itself.
      */
     public ImportExtensionRequest withStorageUri(String storageUri) {
-        this.storageUri = storageUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withStorageUri(storageUri);
         return this;
     }
 
@@ -179,7 +178,7 @@ public class ImportExtensionRequest {
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
-        return this.administratorLogin;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLogin();
     }
 
     /**
@@ -189,7 +188,10 @@ public class ImportExtensionRequest {
      * @return the ImportExtensionRequest object itself.
      */
     public ImportExtensionRequest withAdministratorLogin(String administratorLogin) {
-        this.administratorLogin = administratorLogin;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withAdministratorLogin(administratorLogin);
         return this;
     }
 
@@ -199,7 +201,7 @@ public class ImportExtensionRequest {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -209,7 +211,10 @@ public class ImportExtensionRequest {
      * @return the ImportExtensionRequest object itself.
      */
     public ImportExtensionRequest withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -219,7 +224,7 @@ public class ImportExtensionRequest {
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
-        return this.authenticationType;
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationType();
     }
 
     /**
@@ -229,27 +234,10 @@ public class ImportExtensionRequest {
      * @return the ImportExtensionRequest object itself.
      */
     public ImportExtensionRequest withAuthenticationType(AuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
-     * Get the operationMode property: The type of import operation being performed. This is always Import.
-     *
-     * @return the operationMode value.
-     */
-    public ImportOperationMode operationMode() {
-        return this.operationMode;
-    }
-
-    /**
-     * Set the operationMode property: The type of import operation being performed. This is always Import.
-     *
-     * @param operationMode the operationMode value to set.
-     * @return the ImportExtensionRequest object itself.
-     */
-    public ImportExtensionRequest withOperationMode(ImportOperationMode operationMode) {
-        this.operationMode = operationMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportExtensionProperties();
+        }
+        this.innerProperties().withAuthenticationType(authenticationType);
         return this;
     }
 
@@ -259,5 +247,8 @@ public class ImportExtensionRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

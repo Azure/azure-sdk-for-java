@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -58,12 +58,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE
+        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
+                DocumentModelBuildMode.TEMPLATE
             )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -78,26 +79,26 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode, BuildModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "model-id";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
         documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
+                    .setPrefix("Invoice")
                     .setModelId(modelId)
                     .setDescription("model desc")
-                    .setPrefix("Invoice")
                     .setTags(attrs))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -114,7 +115,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
     }
 
     /**
@@ -189,35 +190,35 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getResourceInfo()}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getResourceDetails()}
      */
-    public void getAccountProperties() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo
-        documentModelAdministrationAsyncClient.getResourceInfo()
-            .subscribe(accountProperties -> {
-                System.out.printf("Max number of models that can be build for this account: %d%n",
-                    accountProperties.getDocumentModelLimit());
-                System.out.printf("Current count of built document analysis models: %d%n",
-                    accountProperties.getDocumentModelCount());
-            });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo
-    }
-
-    /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getResourceInfoWithResponse()}
-     */
-    public void getAccountPropertiesWithResponse() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse
-        documentModelAdministrationAsyncClient.getResourceInfoWithResponse()
-            .subscribe(response -> {
-                System.out.printf("Response Status Code: %d.", response.getStatusCode());
-                ResourceInfo resourceInfo = response.getValue();
+    public void getResourceInfo() {
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetails
+        documentModelAdministrationAsyncClient.getResourceDetails()
+            .subscribe(resourceInfo -> {
                 System.out.printf("Max number of models that can be build for this account: %d%n",
                     resourceInfo.getDocumentModelLimit());
                 System.out.printf("Current count of built document analysis models: %d%n",
                     resourceInfo.getDocumentModelCount());
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetails
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getResourceDetailsWithResponse()}
+     */
+    public void getResourceInfoWithResponse() {
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetailsWithResponse
+        documentModelAdministrationAsyncClient.getResourceDetailsWithResponse()
+            .subscribe(response -> {
+                System.out.printf("Response Status Code: %d.", response.getStatusCode());
+                ResourceDetails resourceDetails = response.getValue();
+                System.out.printf("Max number of models that can be build for this account: %d%n",
+                    resourceDetails.getDocumentModelLimit());
+                System.out.printf("Current count of built document analysis models: %d%n",
+                    resourceDetails.getDocumentModelCount());
+            });
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceDetailsWithResponse
     }
 
     /**
@@ -345,11 +346,11 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         documentModelAdministrationAsyncClient.getModelWithResponse(modelId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            DocumentModelInfo documentModelInfo = response.getValue();
-            System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-            System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
-            System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
-            documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
+            DocumentModelDetails documentModelDetails = response.getValue();
+            System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
+            System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
+            System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+            documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
                 docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -366,13 +367,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     public void getOperation() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperation#string
         String operationId = "{operation_Id}";
-        documentModelAdministrationAsyncClient.getOperation(operationId).subscribe(modelOperation -> {
-            System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-            System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-            System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-            System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-            if (ModelOperationStatus.FAILED.equals(modelOperation.getStatus())) {
-                System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
+        documentModelAdministrationAsyncClient.getOperation(operationId).subscribe(modelOperationDetails -> {
+            System.out.printf("Operation ID: %s%n", modelOperationDetails.getOperationId());
+            System.out.printf("Operation Kind: %s%n", modelOperationDetails.getKind());
+            System.out.printf("Operation Status: %s%n", modelOperationDetails.getStatus());
+            System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getModelId());
+            if (ModelOperationStatus.FAILED.equals(modelOperationDetails.getStatus())) {
+                System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
             }
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperation#string
@@ -386,13 +387,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String operationId = "{operation_Id}";
         documentModelAdministrationAsyncClient.getOperationWithResponse(operationId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            ModelOperation modelOperation = response.getValue();
-            System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-            System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-            System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-            System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-            if (ModelOperationStatus.FAILED.equals(modelOperation.getStatus())) {
-                System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
+            ModelOperationDetails modelOperationDetails = response.getValue();
+            System.out.printf("Operation ID: %s%n", modelOperationDetails.getOperationId());
+            System.out.printf("Operation Kind: %s%n", modelOperationDetails.getKind());
+            System.out.printf("Operation Status: %s%n", modelOperationDetails.getStatus());
+            System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getModelId());
+            if (ModelOperationStatus.FAILED.equals(modelOperationDetails.getStatus())) {
+                System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
             }
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperationWithResponse#string
@@ -404,14 +405,14 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     public void listOperations() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.listOperations
         documentModelAdministrationAsyncClient.listOperations()
-            .subscribe(modelOperation -> {
-                System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-                System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-                System.out.printf("Operation Created on: %s%n", modelOperation.getCreatedOn());
-                System.out.printf("Operation Percent completed: %d%n", modelOperation.getPercentCompleted());
-                System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-                System.out.printf("Operation Last updated on: %s%n", modelOperation.getLastUpdatedOn());
-                System.out.printf("Operation resource location: %s%n", modelOperation.getResourceLocation());
+            .subscribe(modelOperationSummary -> {
+                System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
+                System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
+                System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedOn());
+                System.out.printf("Operation Percent completed: %d%n", modelOperationSummary.getPercentCompleted());
+                System.out.printf("Operation Kind: %s%n", modelOperationSummary.getKind());
+                System.out.printf("Operation Last updated on: %s%n", modelOperationSummary.getLastUpdatedOn());
+                System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
             });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.listOperations
     }

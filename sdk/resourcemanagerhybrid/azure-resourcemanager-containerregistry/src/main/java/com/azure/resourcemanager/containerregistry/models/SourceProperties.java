@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the source code repository. */
 @Fluent
 public final class SourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceProperties.class);
-
     /*
      * The type of source control service.
      */
@@ -129,13 +126,13 @@ public final class SourceProperties {
      */
     public void validate() {
         if (sourceControlType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceControlType in model SourceProperties"));
         }
         if (repositoryUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property repositoryUrl in model SourceProperties"));
         }
@@ -143,4 +140,6 @@ public final class SourceProperties {
             sourceControlAuthProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceProperties.class);
 }

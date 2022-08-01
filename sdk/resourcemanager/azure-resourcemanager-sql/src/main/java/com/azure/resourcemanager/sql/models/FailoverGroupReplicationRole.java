@@ -27,7 +27,11 @@ public final class FailoverGroupReplicationRole extends ExpandableStringEnum<Fai
         return fromString(name, FailoverGroupReplicationRole.class);
     }
 
-    /** @return known FailoverGroupReplicationRole values. */
+    /**
+     * Gets known FailoverGroupReplicationRole values.
+     *
+     * @return known FailoverGroupReplicationRole values.
+     */
     public static Collection<FailoverGroupReplicationRole> values() {
         return values(FailoverGroupReplicationRole.class);
     }

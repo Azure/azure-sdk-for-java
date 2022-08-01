@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Provider GetFunctionAppStacksForLocation. */
 public final class ProviderGetFunctionAppStacksForLocationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetFunctionAppStacksForLocation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetFunctionAppStacksForLocation.json
      */
     /**
      * Sample code: Get Locations Function App Stacks.

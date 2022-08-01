@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InstanceSku model. */
+/** The role instance SKU. */
 @Immutable
 public final class InstanceSku {
     /*

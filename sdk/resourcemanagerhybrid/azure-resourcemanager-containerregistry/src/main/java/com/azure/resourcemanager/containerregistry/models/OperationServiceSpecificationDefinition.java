@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The definition of Azure Monitoring list. */
 @Fluent
 public final class OperationServiceSpecificationDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationServiceSpecificationDefinition.class);
-
     /*
      * A list of Azure Monitoring metrics definition.
      */

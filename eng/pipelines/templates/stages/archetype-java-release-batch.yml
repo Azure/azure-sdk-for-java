@@ -22,6 +22,11 @@ parameters:
     default: true
   - name: UseEsrpRelease
     type: boolean
+    # A different environment will be passed in for service directories that have
+    # live tests enabled for release and ReleaseDependsOnLiveTests is false
+  - name: Environment
+    type: string
+    default: 'maven'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -94,19 +99,7 @@ stages:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageName: "azure-sdk-template"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageName: "azure-sdk-template-two"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageName: "azure-sdk-template-three"
+                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -155,7 +148,7 @@ stages:
         - deployment: TagRepository
           displayName: "Create release tag"
           condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: VerifyReleaseVersion
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -185,7 +178,7 @@ stages:
           # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
           # this is here to ensure larger areas (30+) libraries don't time out.
           timeoutInMinutes: 120
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: TagRepository
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -258,7 +251,7 @@ stages:
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -311,7 +304,7 @@ stages:
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
 
           pool:
@@ -368,7 +361,7 @@ stages:
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          environment: maven
+          environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml

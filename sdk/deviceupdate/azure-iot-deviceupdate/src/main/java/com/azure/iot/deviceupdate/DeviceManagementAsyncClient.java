@@ -1578,7 +1578,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -1596,7 +1596,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -1633,7 +1633,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -1672,7 +1672,7 @@ public final class DeviceManagementAsyncClient {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -1709,7 +1709,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     createdDateTime: String (Optional)
      *     lastActionDateTime: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)

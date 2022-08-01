@@ -308,7 +308,14 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> createOrUpdateAsync(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DedicatedHostGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -477,7 +484,14 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> updateAsync(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, hostGroupName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DedicatedHostGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -623,7 +637,7 @@ public final class DedicatedHostGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String hostGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, hostGroupName).flatMap(ignored -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, hostGroupName).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -780,7 +794,14 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> getByResourceGroupAsync(
         String resourceGroupName, String hostGroupName, InstanceViewTypes expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DedicatedHostGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -798,7 +819,14 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> getByResourceGroupAsync(String resourceGroupName, String hostGroupName) {
         final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DedicatedHostGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

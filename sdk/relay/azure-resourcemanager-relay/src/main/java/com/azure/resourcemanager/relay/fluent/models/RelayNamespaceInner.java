@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.relay.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Description of a namespace resource. */
-@JsonFlatten
 @Fluent
-public class RelayNamespaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelayNamespaceInner.class);
-
+public final class RelayNamespaceInner extends Resource {
     /*
      * SKU of the namespace.
      */
@@ -28,34 +22,10 @@ public class RelayNamespaceInner extends Resource {
     private Sku sku;
 
     /*
-     * The provisioningState property.
+     * Description of Relay namespace
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStateEnum provisioningState;
-
-    /*
-     * The time the namespace was created.
-     */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
-
-    /*
-     * The time the namespace was updated.
-     */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Endpoint you can use to perform Service Bus operations.
-     */
-    @JsonProperty(value = "properties.serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceBusEndpoint;
-
-    /*
-     * Identifier for Azure Insights metrics.
-     */
-    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
+    @JsonProperty(value = "properties")
+    private RelayNamespaceProperties innerProperties;
 
     /**
      * Get the sku property: SKU of the namespace.
@@ -78,48 +48,12 @@ public class RelayNamespaceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the innerProperties property: Description of Relay namespace.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public ProvisioningStateEnum provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the createdAt property: The time the namespace was created.
-     *
-     * @return the createdAt value.
-     */
-    public OffsetDateTime createdAt() {
-        return this.createdAt;
-    }
-
-    /**
-     * Get the updatedAt property: The time the namespace was updated.
-     *
-     * @return the updatedAt value.
-     */
-    public OffsetDateTime updatedAt() {
-        return this.updatedAt;
-    }
-
-    /**
-     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
-     * @return the serviceBusEndpoint value.
-     */
-    public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
-    }
-
-    /**
-     * Get the metricId property: Identifier for Azure Insights metrics.
-     *
-     * @return the metricId value.
-     */
-    public String metricId() {
-        return this.metricId;
+    private RelayNamespaceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -137,6 +71,51 @@ public class RelayNamespaceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioningState property.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningStateEnum provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the createdAt property: The time the namespace was created.
+     *
+     * @return the createdAt value.
+     */
+    public OffsetDateTime createdAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
+    }
+
+    /**
+     * Get the updatedAt property: The time the namespace was updated.
+     *
+     * @return the updatedAt value.
+     */
+    public OffsetDateTime updatedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
+    }
+
+    /**
+     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
+     *
+     * @return the serviceBusEndpoint value.
+     */
+    public String serviceBusEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusEndpoint();
+    }
+
+    /**
+     * Get the metricId property: Identifier for Azure Insights metrics.
+     *
+     * @return the metricId value.
+     */
+    public String metricId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricId();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,6 +123,9 @@ public class RelayNamespaceInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
