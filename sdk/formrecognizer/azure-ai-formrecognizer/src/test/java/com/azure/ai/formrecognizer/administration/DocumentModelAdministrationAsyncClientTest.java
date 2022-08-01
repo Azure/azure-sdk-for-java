@@ -273,7 +273,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                         .getSyncPoller()
                         .getFinalResult());
 
-                Assertions.assertTrue(httpResponseException.getMessage().contains("Could not build the model: Can't find any OCR files for training."));
                 ResponseError actualError = (ResponseError) httpResponseException.getValue();
                 Assertions.assertEquals("InvalidRequest", actualError.getCode());
             } else {
