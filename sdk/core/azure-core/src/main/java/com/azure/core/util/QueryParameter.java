@@ -102,7 +102,7 @@ class QueryParameter {
             // most common case is that we don't have a list of values, but a single one
             // a convenience return value is implemented here to avoid NPEs.
             // List.of() would be a better option but it is Java 9+ only.
-            return Collections.unmodifiableList(Collections.singletonList(value));
+            return Collections.singletonList(value);
         } else {
             return Collections.unmodifiableList(values);
         }
