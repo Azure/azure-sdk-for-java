@@ -501,9 +501,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
 
-  <!-- Code generation doesn't add a space between '{' and '}' when the class is empty. -->
-  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>
-
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
   <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1002, 1006"/>
 

@@ -37,4 +37,32 @@ public final class CustomMultiLabelClassificationResult extends CustomResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationResult setProjectName(String projectName) {
+        super.setProjectName(projectName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationResult setDeploymentName(String deploymentName) {
+        super.setDeploymentName(deploymentName);
+        return this;
+    }
 }
