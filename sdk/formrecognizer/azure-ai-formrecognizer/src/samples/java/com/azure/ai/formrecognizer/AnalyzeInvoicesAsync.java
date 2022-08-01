@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -49,7 +49,7 @@ public class AnalyzeInvoicesAsync {
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeInvoicePoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeInvoicePoller =
-                client.beginAnalyzeDocument("prebuilt-invoice", Utility.toFluxByteBuffer(targetStream),
+                client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(targetStream),
                     invoice.length());
         }
 
