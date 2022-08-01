@@ -167,7 +167,7 @@ final class StateHolder {
         System.out.println("Debug Info: " + debugInfo);
         if (refreshInterval != null) {
             Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
-                clientRefreshAttempts, refreshInterval.getSeconds(), properties);
+                clientRefreshAttempts, refreshInterval.getSeconds(), properties, debugInfo);
 
             if (newForcedRefresh.compareTo(nextForcedRefresh) != 0) {
                 clientRefreshAttempts += 1;
@@ -178,12 +178,14 @@ final class StateHolder {
         for (Entry<String, State> entry : state.entrySet()) {
             State state = entry.getValue();
             Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
-                state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties);
+                state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties, debugInfo);
+            System.out.println(debugInfo + " - " + Instant.now() + " - " + newRefresh);
 
             if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
                 state.incrementRefreshAttempt();
             }
             State updatedState = new State(state, newRefresh);
+            System.out.println(debugInfo + " - " + entry.getKey() + " - " + updatedState.getNextRefreshCheck());
             this.state.put(entry.getKey(), updatedState);
         }
     }
@@ -198,7 +200,7 @@ final class StateHolder {
      * @return new Refresh Date
      */
     private Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
-        AppConfigurationProviderProperties properties) {
+        AppConfigurationProviderProperties properties, String debugInfo) {
         // The refresh interval is only updated if it is expired.
         if (!Instant.now().isAfter(nextRefreshCheck)) {
             return nextRefreshCheck;
@@ -209,6 +211,7 @@ final class StateHolder {
         Instant now = Instant.now();
 
         if (durationPeriod <= properties.getDefaultMinBackoff()) {
+            System.out.println(debugInfo + ": Plus Seconds: " + interval);
             return now.plusSeconds(interval);
         }
 
