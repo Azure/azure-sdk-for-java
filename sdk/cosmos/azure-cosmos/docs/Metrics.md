@@ -65,7 +65,7 @@ private static MeterRegistry createConsoleLoggingMeterRegistry() {
 }
 ```
 
-The micrometer.io documentation has a list with samples on how to create a `MeterRegistry` for several telemetry systems: [Micrometer Application Monitoring](https://micrometer.io/docs). You can also find an implementation via an Azure Monitor `MeterRegistry` here: [Spark sample with Azure Monitor `MeterRegistry`](../../azure-cosmos-spark_3_2-12/docs/src/main/scala/com/azure/cosmos/spark/plugins/CosmosMetricsApplicationInsightsPlugin.scala)
+The micrometer.io documentation has a list with samples on how to create a `MeterRegistry` for several telemetry systems: [Micrometer Application Monitoring](https://micrometer.io/docs). You can also find an implementation via an Azure Monitor `MeterRegistry` here: [Spark sample with Azure Monitor `MeterRegistry`](https://aka.ms/azure-cosmos-spark_CosmosMetricsApplicationInsightsPlugin)
 
 
 
