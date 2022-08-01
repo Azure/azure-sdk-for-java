@@ -15,6 +15,7 @@ import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import reactor.core.publisher.Mono
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -893,6 +894,7 @@ class QueueAPITests extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create queue with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()

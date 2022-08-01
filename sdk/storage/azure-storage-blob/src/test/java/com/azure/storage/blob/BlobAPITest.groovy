@@ -61,6 +61,7 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.IgnoreIf
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -276,6 +277,7 @@ class BlobAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @Retry(count = 5, delay = 1000)
     def "Upload fail with small timeouts for service client"() {
         setup:
         // setting very small timeout values for the service client

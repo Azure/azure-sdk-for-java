@@ -26,6 +26,7 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -3921,6 +3922,7 @@ class DirectoryAPITest extends APISpec {
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create file system with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()

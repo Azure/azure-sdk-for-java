@@ -19,6 +19,7 @@ import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -1412,6 +1413,7 @@ class DirectoryAPITests extends APISpec {
         _ | "/"
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create share with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()
