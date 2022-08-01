@@ -18,6 +18,7 @@
 - Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
 - Renamed `DocTypeInfo` model to `DocumentTypeDetails`
 - Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
+- Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
 
 ### Bugs Fixed
 
