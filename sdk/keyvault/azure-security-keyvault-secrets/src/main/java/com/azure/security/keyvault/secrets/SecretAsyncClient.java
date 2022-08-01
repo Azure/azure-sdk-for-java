@@ -22,7 +22,6 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -56,7 +55,7 @@ public final class SecretAsyncClient {
     private final SecretClientImpl secretClient;
 
     /**
-     * Creates a SecretAsyncClient that uses {@code pipeline} to service requests
+     * Creates a SecretAsyncClient to service requests
      *
      * @param secretClient the implementation client.
      */

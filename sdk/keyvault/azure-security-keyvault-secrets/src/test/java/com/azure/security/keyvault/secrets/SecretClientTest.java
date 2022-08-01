@@ -69,7 +69,7 @@ public class SecretClientTest extends SecretClientTestBase {
             return (callerMethod.contains("list") || callerMethod.contains("getSecrets")
                 || callerMethod.contains("getSecretVersions") || callerMethod.contains("delete")
                 || callerMethod.contains("recover"));
-            };
+        };
         return new AssertingHttpClientBuilder(httpClient)
             .skipRequest(skipRequestFunction)
             .assertSync()
