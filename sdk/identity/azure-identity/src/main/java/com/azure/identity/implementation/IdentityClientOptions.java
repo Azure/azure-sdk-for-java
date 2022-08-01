@@ -50,6 +50,7 @@ public final class IdentityClientOptions {
     private Configuration configuration;
     private IdentityLogOptionsImpl identityLogOptionsImpl;
     private boolean accountIdentifierLogging;
+    private ManagedIdentityType managedIdentityType;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -57,6 +58,7 @@ public final class IdentityClientOptions {
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         loadFromConfiguration(configuration);
+        managedIdentityType = ManagedIdentityType.NONE;
         identityLogOptionsImpl = new IdentityLogOptionsImpl();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
@@ -422,6 +424,15 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setIdentityLogOptionsImpl(IdentityLogOptionsImpl identityLogOptionsImpl) {
         this.identityLogOptionsImpl = identityLogOptionsImpl;
         return this;
+    }
+
+    public IdentityClientOptions setManagedIdentityType(ManagedIdentityType managedIdentityType) {
+        this.managedIdentityType = managedIdentityType;
+        return this;
+    }
+
+    public ManagedIdentityType getManagedIdentityType() {
+        return managedIdentityType;
     }
 
     /**
