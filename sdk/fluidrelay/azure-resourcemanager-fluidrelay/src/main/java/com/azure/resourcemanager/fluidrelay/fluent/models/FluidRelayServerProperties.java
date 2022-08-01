@@ -39,7 +39,9 @@ public final class FluidRelayServerProperties {
     private EncryptionProperties encryption;
 
     /*
-     * StorageSKU Sku of the storage associated with the resource
+     * StorageSKU
+     *
+     * Sku of the storage associated with the resource
      */
     @JsonProperty(value = "storagesku")
     private StorageSku storagesku;
@@ -103,7 +105,9 @@ public final class FluidRelayServerProperties {
     }
 
     /**
-     * Get the storagesku property: StorageSKU Sku of the storage associated with the resource.
+     * Get the storagesku property: StorageSKU
+     *
+     * <p>Sku of the storage associated with the resource.
      *
      * @return the storagesku value.
      */
@@ -112,7 +116,9 @@ public final class FluidRelayServerProperties {
     }
 
     /**
-     * Set the storagesku property: StorageSKU Sku of the storage associated with the resource.
+     * Set the storagesku property: StorageSKU
+     *
+     * <p>Sku of the storage associated with the resource.
      *
      * @param storagesku the storagesku value to set.
      * @return the FluidRelayServerProperties object itself.

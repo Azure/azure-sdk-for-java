@@ -18,11 +18,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Integration tests for {@link ReferenceManager}.
+ * Tests for {@link ReferenceManager}.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Forces JVM GC")
-public class ReferenceManagerIT {
+public class ReferenceManagerTests {
     @Test
     public void cleanupActionIsPerformedWhenObjectIsPhantomReachable() throws InterruptedException {
         byte[] expectedInitialBytes = new byte[4096];
