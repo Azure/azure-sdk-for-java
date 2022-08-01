@@ -102,7 +102,7 @@
       ],
       "properties": {
         "resource": {
-          "id": "TestDB"
+          "id": "TestSpringData"
         }
       }
     },
