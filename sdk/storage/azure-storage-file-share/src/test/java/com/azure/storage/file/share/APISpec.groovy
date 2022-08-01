@@ -193,6 +193,10 @@ class APISpec extends StorageSpec {
     }
 
     ShareFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        return getFileClientBuilder(credential, endpoint, policies).buildFileClient()
+    }
+
+    ShareFileClientBuilder getFileClientBuilder(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
 
@@ -206,7 +210,7 @@ class APISpec extends StorageSpec {
             builder.credential(credential)
         }
 
-        return builder.buildFileClient()
+        return builder
     }
 
     InputStream getInputStream(byte[] data) {

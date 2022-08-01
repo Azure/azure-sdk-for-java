@@ -11,6 +11,7 @@ import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
@@ -1833,14 +1834,22 @@ class FileAPITests extends APISpec {
             .setCreatePermission(true)
             .setDeletePermission(true)
 
-        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new ShareServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permissions)
+            .setStartTime(namer.getUtcNow().minusDays(1))
+            .setProtocol(SasProtocol.HTTPS_HTTP)
+            .setCacheControl("cache")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type")
 
-        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
         def sas = primaryFileClient.generateSas(sasValues)
-        def client =
+        def client = getFileClientBuilder(environment.primaryAccount.credential, primaryFileClient.getFileUrl())
+            .sasToken(sas)
+            .buildFileClient()
 
         when:
-        def destClient = client.rename(fsc.getFileSystemName(), generatePathName())
+        def destClient = client.rename(generatePathName())
 
         then:
         notThrown(ShareStorageException)
