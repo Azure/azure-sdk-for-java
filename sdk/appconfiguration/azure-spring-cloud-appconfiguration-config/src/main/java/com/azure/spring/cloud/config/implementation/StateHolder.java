@@ -163,11 +163,10 @@ final class StateHolder {
      * @param refreshInterval period between refresh checks.
      * @param properties Provider properties for min and max backoff periods.
      */
-    void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties, String debugInfo) {
-        System.out.println("Debug Info: " + debugInfo);
+    void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
         if (refreshInterval != null) {
             Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
-                clientRefreshAttempts, refreshInterval.getSeconds(), properties, debugInfo);
+                clientRefreshAttempts, refreshInterval.getSeconds(), properties);
 
             if (newForcedRefresh.compareTo(nextForcedRefresh) != 0) {
                 clientRefreshAttempts += 1;
@@ -178,14 +177,12 @@ final class StateHolder {
         for (Entry<String, State> entry : state.entrySet()) {
             State state = entry.getValue();
             Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
-                state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties, debugInfo);
-            System.out.println(debugInfo + " - " + Instant.now() + " - " + newRefresh);
+                state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties);
 
             if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
                 state.incrementRefreshAttempt();
             }
             State updatedState = new State(state, newRefresh);
-            System.out.println(debugInfo + " - " + entry.getKey() + " - " + updatedState.getNextRefreshCheck());
             this.state.put(entry.getKey(), updatedState);
         }
     }
@@ -200,7 +197,7 @@ final class StateHolder {
      * @return new Refresh Date
      */
     private Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
-        AppConfigurationProviderProperties properties, String debugInfo) {
+        AppConfigurationProviderProperties properties) {
         // The refresh interval is only updated if it is expired.
         if (!Instant.now().isAfter(nextRefreshCheck)) {
             return nextRefreshCheck;
@@ -211,7 +208,6 @@ final class StateHolder {
         Instant now = Instant.now();
 
         if (durationPeriod <= properties.getDefaultMinBackoff()) {
-            System.out.println(debugInfo + ": Plus Seconds: " + interval);
             return now.plusSeconds(interval);
         }
 
