@@ -148,6 +148,47 @@
       }
     },
     {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2022-02-15-preview",
+      "name": "[concat(variables('azureDatabaseAccountsName'), '/TestSpringData/Users')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', variables('azureDatabaseAccountsName'), 'TestSpringData')]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('azureDatabaseAccountsName'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "Users",
+          "indexingPolicy": {
+            "indexingMode": "consistent",
+            "automatic": true,
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/\"_etag\"/?"
+              }
+            ]
+          },
+          "partitionKey": {
+            "paths": [
+              "/id"
+            ],
+            "kind": "Hash"
+          },
+          "uniqueKeyPolicy": {
+            "uniqueKeys": []
+          },
+          "conflictResolutionPolicy": {
+            "mode": "LastWriterWins",
+            "conflictResolutionPath": "/_ts"
+          }
+        }
+      }
+    },
+    {
       "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
       "apiVersion": "2021-05-15",
       "name": "[concat(variables('azureDatabaseAccountsName'), '/',guid(parameters('baseName')))]",
