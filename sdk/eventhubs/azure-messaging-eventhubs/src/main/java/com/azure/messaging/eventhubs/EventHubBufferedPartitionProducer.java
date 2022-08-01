@@ -94,6 +94,12 @@ class EventHubBufferedPartitionProducer implements Closeable {
      */
     Mono<Void> enqueueEvent(EventData eventData) {
         final Mono<Void> enqueueOperation = Mono.create(sink -> {
+            if (isClosed.get()) {
+                sink.error(new IllegalStateException(String.format(
+                    "Partition publisher id[%s] is already closed. Cannot enqueue more events.", partitionId)));
+                return;
+            }
+
             try {
                 if (isFlushing.get()
                     && !flushSemaphore.tryAcquire(retryOptions.getTryTimeout().toMillis(), TimeUnit.MILLISECONDS)) {
@@ -110,8 +116,8 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
             try {
                 if (isClosed.get()) {
-                    sink.error(new IllegalStateException(String.format(
-                        "Partition publisher id[%s] is already closed. Cannot enqueue more events.", partitionId)));
+                    sink.error(new IllegalStateException(String.format("Partition publisher id[%s] was "
+                            + "closed between flushing events and now. Cannot enqueue events.", partitionId)));
                     return;
                 }
 

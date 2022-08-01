@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -205,6 +206,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *     partitions.
      *
      * @throws NullPointerException if {@code eventData} is null.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvent(EventData eventData) {
         return enqueueEvent(eventData, ROUND_ROBIN_SEND_OPTIONS);
@@ -228,6 +230,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code eventData} or {@code options} is null.
      * @throws IllegalArgumentException if {@link SendOptions#getPartitionId() getPartitionId} is set and is not
      *     valid.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvent(EventData eventData, SendOptions options) {
         if (eventData == null) {
@@ -288,6 +291,9 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *
      * @return The total number of events that are currently buffered and waiting to be published, across all
      *     partitions.
+     *
+     * @throws NullPointerException if {@code events} is null.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvents(Iterable<EventData> events) {
         return enqueueEvents(events, ROUND_ROBIN_SEND_OPTIONS);
@@ -310,6 +316,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code eventData} or {@code options} is null.
      * @throws IllegalArgumentException if {@link SendOptions#getPartitionId() getPartitionId} is set and is not
      *     valid.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvents(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
@@ -328,12 +335,16 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
 
     /**
      * Attempts to publish all events in the buffer immediately.  This may result in multiple batches being published,
-     * the outcome of each of which will be individually reported by the {@link EventHubBufferedProducerClientBuilder#onSendBatchFailed(Consumer)}
+     * the outcome of each of which will be individually reported by the
+     * {@link EventHubBufferedProducerClientBuilder#onSendBatchFailed(Consumer)}
      * and {@link EventHubBufferedProducerClientBuilder#onSendBatchSucceeded(Consumer)} handlers.
      *
      * Upon completion of this method, the buffer will be empty.
      *
      * @return A mono that completes when the buffers are empty.
+     *
+     * @throws InterruptedException if the producer could not complete the flush operation.
+     * @throws TimeoutException if the producer could not start the flush operation.
      */
     public Mono<Void> flush() {
         final List<Mono<Void>> flushOperations = partitionProducers.values().stream()

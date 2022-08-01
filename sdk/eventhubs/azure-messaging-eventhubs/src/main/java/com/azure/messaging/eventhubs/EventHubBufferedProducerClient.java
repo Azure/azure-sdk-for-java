@@ -148,6 +148,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      *     partitions.
      *
      * @throws NullPointerException if {@code eventData} is null.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Integer enqueueEvent(EventData eventData) {
         return client.enqueueEvent(eventData).block(operationTimeout);
@@ -171,6 +172,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      * @throws NullPointerException if {@code eventData} or {@code options} is null.
      * @throws IllegalArgumentException if {@link SendOptions#getPartitionId() getPartitionId} is set and is not
      *     valid.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Integer enqueueEvent(EventData eventData, SendOptions options) {
         return client.enqueueEvent(eventData, options).block(operationTimeout);
@@ -188,6 +190,9 @@ public final class EventHubBufferedProducerClient implements Closeable {
      *
      * @return The total number of events that are currently buffered and waiting to be published, across all
      *     partitions.
+     *
+     * @throws NullPointerException if {@code events} is null.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Integer enqueueEvents(Iterable<EventData> events) {
         return client.enqueueEvents(events).block(operationTimeout);
@@ -210,6 +215,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      * @throws NullPointerException if {@code eventData} or {@code options} is null.
      * @throws IllegalArgumentException if {@link SendOptions#getPartitionId() getPartitionId} is set and is not
      *     valid.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Integer enqueueEvents(Iterable<EventData> events, SendOptions options) {
         return client.enqueueEvents(events, options).block(operationTimeout);
@@ -223,7 +229,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      * Upon completion of this method, the buffer will be empty.
      */
     public void flush() {
-        client.flush();
+        client.flush().block(operationTimeout.plus(operationTimeout));
     }
 
     /**
