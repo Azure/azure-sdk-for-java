@@ -56,6 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ClientTelemetry {
+    public final static String VM_ID_PREFIX = "vmId:";
     public final static int ONE_KB_TO_BYTES = 1024;
     public final static int REQUEST_LATENCY_MAX_MILLI_SEC = 300000;
     public final static int REQUEST_LATENCY_SUCCESS_PRECISION = 4;
@@ -164,7 +165,7 @@ public class ClientTelemetry {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
-            String machineId = "vmId:" + metadataSnapshot.getVmId();
+            String machineId = VM_ID_PREFIX + metadataSnapshot.getVmId();
             if (diagnosticsClientConfig != null) {
                 diagnosticsClientConfig.withMachineId(machineId);
             }
@@ -323,7 +324,7 @@ public class ClientTelemetry {
 
     private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {
         this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
-        this.clientTelemetryInfo.setMachineId("vmId:" + azureVMMetadata.getVmId());
+        this.clientTelemetryInfo.setMachineId(VM_ID_PREFIX + azureVMMetadata.getVmId());
         this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }

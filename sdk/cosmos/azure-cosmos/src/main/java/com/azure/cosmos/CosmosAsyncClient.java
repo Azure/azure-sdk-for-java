@@ -9,6 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -159,6 +161,18 @@ public final class CosmosAsyncClient implements Closeable {
                                        .build();
 
         String effectiveClientCorrelationId = this.asyncDocumentClient.getClientCorrelationId();
+        String machineId = this.asyncDocumentClient.getMachineId();
+        if (!Strings.isNullOrWhiteSpace(machineId) && machineId.startsWith(ClientTelemetry.VM_ID_PREFIX)) {
+            machineId = machineId.replace(ClientTelemetry.VM_ID_PREFIX, "vmId_");
+            if (Strings.isNullOrWhiteSpace(effectiveClientCorrelationId)) {
+                effectiveClientCorrelationId = machineId;
+            } else {
+                effectiveClientCorrelationId = String.format(
+                    "%s_%s",
+                    machineId,
+                    effectiveClientCorrelationId);
+            }
+        }
         this.clientCorrelationTag = Tag.of(
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));

@@ -377,6 +377,8 @@ public interface AsyncDocumentClient {
 
     String getClientCorrelationId();
 
+    String getMachineId();
+
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
