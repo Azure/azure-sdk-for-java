@@ -162,7 +162,6 @@ public class EventDataAggregatorTest {
         setupBatchMock(batch2, batchEvents2, event1, event2, event3);
 
         final Duration waitTime = Duration.ofSeconds(5);
-        final Duration halfWaitTime = waitTime.minusSeconds(2);
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(waitTime);
 
@@ -194,12 +193,6 @@ public class EventDataAggregatorTest {
             .assertNext(b -> {
                 assertEquals(b, batch);
                 assertEquals(2, batchEvents.size());
-            })
-            .expectNoEvent(waitTime)
-            .then(() -> publisher.next(event3))
-            .thenAwait(waitTime)
-            .assertNext(e -> {
-                assertEquals(e, batch2, "Should be equal.");
             })
             .thenCancel()
             .verify();
