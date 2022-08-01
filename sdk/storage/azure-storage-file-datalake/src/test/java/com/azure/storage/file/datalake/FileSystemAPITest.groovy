@@ -24,7 +24,7 @@ import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScope
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -115,7 +115,7 @@ class FileSystemAPITest extends APISpec {
 
     def "Create encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 
@@ -123,7 +123,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         when:
@@ -137,7 +137,7 @@ class FileSystemAPITest extends APISpec {
 
     def "Create metadata encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 
@@ -145,7 +145,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         def metadata = new HashMap<String, String>()
@@ -257,7 +257,7 @@ class FileSystemAPITest extends APISpec {
 
     def "Create if not exists encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 
@@ -265,7 +265,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         when:
@@ -2384,7 +2384,7 @@ class FileSystemAPITest extends APISpec {
 
     def "List paths encryption scope"() {
         setup:
-        def encryptionScope = new FileSystemEncryptionScope()
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
             .setDefaultEncryptionScope(encryptionScopeString)
             .setEncryptionScopeOverridePrevented(true)
 
@@ -2392,7 +2392,7 @@ class FileSystemAPITest extends APISpec {
 
         def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
             .credential(environment.dataLakeAccount.credential)
-            .fileSystemEncryptionScope(encryptionScope)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
             .buildClient()
 
         client.create()
