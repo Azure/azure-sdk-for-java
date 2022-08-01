@@ -4,10 +4,51 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import java.util.List;
 
 /** The SentimentResponseDocumentsItem model. */
-@Immutable
+@Fluent
 public final class SentimentResponseDocumentsItem extends SentimentDocumentResult {
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setSentiment(DocumentSentimentValue sentiment) {
+        super.setSentiment(sentiment);
+        return this;
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
+        super.setConfidenceScores(confidenceScores);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setSentences(List<SentenceSentiment> sentences) {
+        super.setSentences(sentences);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponseDocumentsItem setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }
