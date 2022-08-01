@@ -572,10 +572,6 @@
                       <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
                     </relocation>
                     <relocation>
-                      <pattern>com.codahale</pattern>
-                      <shadedPattern>${shadingPrefix}.com.codahale</shadedPattern>
-                    </relocation>
-                    <relocation>
                       <pattern>org.codehaus</pattern>
                       <shadedPattern>${shadingPrefix}.org.codehaus</shadedPattern>
                     </relocation>

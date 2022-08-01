@@ -68,7 +68,6 @@ extends IntegrationSpec
     item.getAs[String]("id") shouldEqual id
 
     assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
-    assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
     assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = false)

@@ -5,6 +5,7 @@ package com.azure.cosmos.spark.plugins
 
 import com.azure.cosmos.spark.{CosmosClientMetrics, CosmosConfigNames, CosmosConstants}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.codahale.metrics.MetricRegistry
 import io.micrometer.core.instrument.MeterRegistry
 import org.apache.spark.SparkContext
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
@@ -60,7 +61,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
     override def registerMetrics(appId: String, pluginContext: PluginContext): Unit = {
       super.registerMetrics(appId, pluginContext)
 
-      val dropWizardRegistry = pluginContext.metricRegistry()
+      val dropWizardRegistry: MetricRegistry = pluginContext.metricRegistry()
       if (Option(dropWizardRegistry).isDefined) {
         this.meterRegistry = CosmosClientMetrics.registerDropwizardRegistry(
           pluginContext.executorID(),
