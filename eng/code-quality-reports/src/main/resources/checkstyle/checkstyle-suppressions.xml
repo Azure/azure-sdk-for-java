@@ -531,6 +531,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.json..*"/>
 
   <!-- Star import is ok in impl class - it makes it easier to import all parent APIs, etc -->
-  <suppress checks="AvoidStarImport" files=".*[/\\]Jedis[/\\]java[/\\]AzureJedisClient[/\\].*\.java"/>
+  <suppress checks="AvoidStarImport" files="com.azure.jedis.AzureJedisClient.java"/>
 
 </suppressions>
