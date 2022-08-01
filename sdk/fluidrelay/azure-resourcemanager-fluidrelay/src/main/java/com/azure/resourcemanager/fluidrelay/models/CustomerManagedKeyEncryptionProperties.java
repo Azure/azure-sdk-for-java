@@ -11,20 +11,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomerManagedKeyEncryptionProperties {
     /*
-     * All identity configuration for Customer-managed key settings defining
-     * which identity should be used to auth to Key Vault.
+     * All identity configuration for Customer-managed key settings defining which identity should be used to auth to
+     * Key Vault.
      */
     @JsonProperty(value = "keyEncryptionKeyIdentity")
     private CustomerManagedKeyEncryptionPropertiesKeyEncryptionKeyIdentity keyEncryptionKeyIdentity;
 
     /*
      * key encryption key Url, with or without a version. Ex:
-     * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
-     * or https://contosovault.vault.azure.net/keys/contosokek. Key auto
-     * rotation is enabled by providing a key uri without version. Otherwise,
-     * customer is responsible for rotating the key. The
-     * keyEncryptionKeyIdentity(either SystemAssigned or UserAssigned) should
-     * have permission to access this key url.
+     * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78 or
+     * https://contosovault.vault.azure.net/keys/contosokek. Key auto rotation is enabled by providing a key uri
+     * without version. Otherwise, customer is responsible for rotating the key. The keyEncryptionKeyIdentity(either
+     * SystemAssigned or UserAssigned) should have permission to access this key url.
      */
     @JsonProperty(value = "keyEncryptionKeyUrl")
     private String keyEncryptionKeyUrl;
