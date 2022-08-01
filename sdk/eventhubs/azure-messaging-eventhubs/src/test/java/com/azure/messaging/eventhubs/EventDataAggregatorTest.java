@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 
 public class EventDataAggregatorTest {
     private static final String NAMESPACE = "test.namespace";
+    private static final String PARTITION_ID = "test-id";
 
     private AutoCloseable mockCloseable;
 
@@ -92,7 +93,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         // Act & Assert
         StepVerifier.create(aggregator)
@@ -129,7 +130,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
         final IllegalArgumentException testException = new IllegalArgumentException("Test exception.");
 
         // Act & Assert
@@ -158,10 +159,9 @@ public class EventDataAggregatorTest {
         setupBatchMock(batch, batchEvents, event1, event2);
 
         final List<EventData> batchEvents2 = new ArrayList<>();
-        setupBatchMock(batch2, batchEvents2, event3);
+        setupBatchMock(batch2, batchEvents2, event1, event2, event3);
 
         final Duration waitTime = Duration.ofSeconds(5);
-        final Duration halfWaitTime = waitTime.minusSeconds(2);
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(waitTime);
 
@@ -181,27 +181,18 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         // Act & Assert
         StepVerifier.create(aggregator)
-            .then(() -> publisher.next(event1))
-            .thenAwait(halfWaitTime)
-            .then(() -> {
-                assertEquals(1, batchEvents.size());
-
+            .then(() ->  {
+                publisher.next(event1);
                 publisher.next(event2);
             })
             .thenAwait(waitTime)
             .assertNext(b -> {
                 assertEquals(b, batch);
                 assertEquals(2, batchEvents.size());
-            })
-            .expectNoEvent(waitTime)
-            .then(() -> publisher.next(event3))
-            .thenAwait(waitTime)
-            .assertNext(e -> {
-                assertEquals(e, batch2, "Should be equal.");
             })
             .thenCancel()
             .verify();
@@ -230,7 +221,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         StepVerifier.create(aggregator)
             .then(() -> {
@@ -274,7 +265,7 @@ public class EventDataAggregatorTest {
         };
 
         final TestPublisher<EventData> publisher = TestPublisher.createCold();
-        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options);
+        final EventDataAggregator aggregator = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
 
         final long request = 1L;
 

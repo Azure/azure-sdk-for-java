@@ -3,9 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
@@ -15,8 +17,16 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A client responsible for publishing instances of {@link EventData} to a specific Event Hub.  Depending on the options
@@ -51,36 +61,44 @@ import java.util.function.Consumer;
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {
+    private static final SendOptions ROUND_ROBIN_SEND_OPTIONS = new SendOptions();
+
     private final ClientLogger logger = new ClientLogger(EventHubBufferedProducerAsyncClient.class);
+    private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final EventHubProducerAsyncClient client;
-    private final EventHubClientBuilder builder;
     private final BufferedProducerClientOptions clientOptions;
+    private final PartitionResolver partitionResolver;
     private final Mono<Void> initialisationMono;
+    private final Mono<String[]> partitionIdsMono;
 
     //  Key: partitionId.
     private final ConcurrentHashMap<String, EventHubBufferedPartitionProducer> partitionProducers =
         new ConcurrentHashMap<>();
+    private final AmqpRetryOptions retryOptions;
 
-    EventHubBufferedProducerAsyncClient(EventHubClientBuilder builder, BufferedProducerClientOptions clientOptions) {
-        this.builder = builder;
+    EventHubBufferedProducerAsyncClient(EventHubClientBuilder builder, BufferedProducerClientOptions clientOptions,
+        PartitionResolver partitionResolver, AmqpRetryOptions retryOptions) {
         this.client = builder.buildAsyncProducerClient();
         this.clientOptions = clientOptions;
+        this.partitionResolver = partitionResolver;
+        this.retryOptions = retryOptions;
 
-        this.initialisationMono = Mono.using(
-            () -> builder.buildAsyncClient(),
-            eventHubClient -> {
-                return eventHubClient.getPartitionIds()
-                    .handle((partitionId, sink) -> {
-                        try {
-                            partitionProducers.put(partitionId, new EventHubBufferedPartitionProducer(client,
-                                partitionId, clientOptions));
-                            sink.complete();
-                        } catch (Exception e) {
-                            sink.error(e);
-                        }
-                    }).then();
-            },
-            eventHubClient -> eventHubClient.close()).cache();
+        final Mono<Void> partitionProducerFluxes = this.client.getEventHubProperties()
+            .flatMapMany(property -> {
+                final String[] as = property.getPartitionIds().stream().toArray(String[]::new);
+                return Flux.fromArray(as);
+            })
+            .map(partitionId -> {
+                return partitionProducers.computeIfAbsent(partitionId, key -> {
+                    return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
+                });
+            }).then();
+
+        this.initialisationMono = partitionProducerFluxes.cache();
+
+        this.partitionIdsMono = initialisationMono.then(Mono.fromCallable(() -> {
+            return new ArrayList<>(partitionProducers.keySet()).toArray(new String[0]);
+        })).cache();
     }
 
     /**
@@ -109,7 +127,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return client.getEventHubProperties();
+        return initialisationMono.then(Mono.defer(() -> client.getEventHubProperties()));
     }
 
     /**
@@ -119,7 +137,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
-        return client.getPartitionIds();
+        return partitionIdsMono.flatMapMany(ids -> Flux.fromArray(ids));
     }
 
     /**
@@ -131,9 +149,16 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      *
      * @throws NullPointerException if {@code partitionId} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
+        if (Objects.isNull(partitionId)) {
+            return monoError(logger, new NullPointerException("'partitionId' cannot be null."));
+        } else if (CoreUtils.isNullOrEmpty(partitionId)) {
+            return monoError(logger, new IllegalArgumentException("'partitionId' cannot be empty."));
+        }
+
         return client.getPartitionProperties(partitionId);
     }
 
@@ -156,6 +181,9 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @param partitionId The partition identifier.
      *
      * @return The number of events that are buffered and waiting to be published for a given partition.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
+     * @throws IllegalArgumentException if {@code partitionId} is empty.
      */
     public int getBufferedEventCount(String partitionId) {
         final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
@@ -175,9 +203,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *
      * @return The total number of events that are currently buffered and waiting to be published, across all
      *     partitions.
+     *
+     * @throws NullPointerException if {@code eventData} is null.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvent(EventData eventData) {
-        return null;
+        return enqueueEvent(eventData, ROUND_ROBIN_SEND_OPTIONS);
     }
 
     /**
@@ -189,13 +220,62 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * published yet. Publishing will take place at a nondeterministic point in the future as the buffer is processed.
      *
      * @param eventData The event to be enqueued into the buffer and, later, published.
-     * @param options The set of options to apply when publishing this event.
+     * @param options The set of options to apply when publishing this event.  If partitionKey and partitionId are
+     *     not set, then the event is distributed round-robin amongst all the partitions.
      *
      * @return The total number of events that are currently buffered and waiting to be published, across all
      *     partitions.
+     *
+     * @throws NullPointerException if {@code eventData} or {@code options} is null.
+     * @throws IllegalArgumentException if {@link SendOptions#getPartitionId() getPartitionId} is set and is not
+     *     valid.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvent(EventData eventData, SendOptions options) {
-        return null;
+        if (eventData == null) {
+            return monoError(logger, new NullPointerException("'eventData' cannot be null."));
+        } else if (options == null) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
+
+        if (!CoreUtils.isNullOrEmpty(options.getPartitionId())) {
+            if (!partitionProducers.containsKey(options.getPartitionId())) {
+                return monoError(logger, new IllegalArgumentException("partitionId is not valid. Available ones: "
+                    + String.join(",", partitionProducers.keySet())));
+            }
+
+            final EventHubBufferedPartitionProducer producer =
+                partitionProducers.computeIfAbsent(options.getPartitionId(), key -> {
+                    return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
+                });
+
+            return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
+        }
+
+        if (options.getPartitionKey() != null) {
+            return partitionIdsMono.flatMap(ids -> {
+                final String partitionId = partitionResolver.assignForPartitionKey(options.getPartitionKey(), ids);
+                final EventHubBufferedPartitionProducer producer = partitionProducers.get(partitionId);
+                if (producer == null) {
+                    return monoError(logger, new IllegalArgumentException(
+                        String.format("Unable to find EventHubBufferedPartitionProducer for partitionId: %s when "
+                                + "mapping partitionKey: %s to available partitions.", partitionId,
+                            options.getPartitionKey())));
+                }
+
+                return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
+            });
+        } else {
+            return partitionIdsMono.flatMap(ids -> {
+                final String partitionId = partitionResolver.assignRoundRobin(ids);
+                final EventHubBufferedPartitionProducer producer =
+                    partitionProducers.computeIfAbsent(partitionId, key -> {
+                        return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
+                    });
+
+                return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
+            });
+        }
     }
 
     /**
@@ -210,9 +290,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *
      * @return The total number of events that are currently buffered and waiting to be published, across all
      *     partitions.
+     *
+     * @throws NullPointerException if {@code events} is null.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvents(Iterable<EventData> events) {
-        return null;
+        return enqueueEvents(events, ROUND_ROBIN_SEND_OPTIONS);
     }
 
     /**
@@ -228,9 +311,25 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *
      * @return The total number of events that are currently buffered and waiting to be published, across all
      *     partitions.
+     *
+     * @throws NullPointerException if {@code eventData} or {@code options} is null.
+     * @throws IllegalArgumentException if {@link SendOptions#getPartitionId() getPartitionId} is set and is not
+     *     valid.
+     * @throws IllegalStateException if the producer was closed while queueing an event.
      */
     public Mono<Integer> enqueueEvents(Iterable<EventData> events, SendOptions options) {
-        return null;
+        if (events == null) {
+            return monoError(logger, new NullPointerException("'eventData' cannot be null."));
+        } else if (options == null) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
+
+        final List<Mono<Integer>> enqueued = StreamSupport.stream(events.spliterator(), false)
+            .map(event -> enqueueEvent(event, options))
+            .collect(Collectors.toList());
+
+        // concat subscribes to each publisher in sequence, so the last value will be the latest.
+        return Flux.concat(enqueued).last();
     }
 
     /**
@@ -244,7 +343,11 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * @return A mono that completes when the buffers are empty.
      */
     public Mono<Void> flush() {
-        return null;
+        final List<Mono<Void>> flushOperations = partitionProducers.values().stream()
+            .map(value -> value.flush())
+            .collect(Collectors.toList());
+
+        return Flux.merge(flushOperations).then();
     }
 
     /**
@@ -252,6 +355,11 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      */
     @Override
     public void close() {
+        if (isClosed.getAndSet(true)) {
+            return;
+        }
+
+        partitionProducers.values().forEach(partitionProducer -> partitionProducer.close());
         client.close();
     }
 
@@ -264,12 +372,12 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         private int maxConcurrentSendsPerPartition = 1;
 
         private int maxEventBufferLengthPerPartition = 1500;
-        private Duration maxWaitTime;
+        private Duration maxWaitTime = Duration.ofSeconds(30);
         private Consumer<SendBatchFailedContext> sendFailedContext;
         private Consumer<SendBatchSucceededContext> sendSucceededContext;
-        private int maxConcurrentSends;
+        private int maxConcurrentSends = 1;
 
-        boolean isEnableIdempotentRetries() {
+        boolean enableIdempotentRetries() {
             return enableIdempotentRetries;
         }
 

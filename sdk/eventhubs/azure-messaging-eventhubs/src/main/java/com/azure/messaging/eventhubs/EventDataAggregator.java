@@ -17,11 +17,12 @@ import reactor.core.publisher.FluxOperator;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
 
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
  * Aggregates {@link EventData} into {@link EventDataBatch} and pushes them downstream when:
@@ -33,10 +34,12 @@ import java.util.function.Supplier;
  */
 class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregator.class);
+
     private final AtomicReference<EventDataAggregatorMain> downstreamSubscription = new AtomicReference<>();
     private final Supplier<EventDataBatch> batchSupplier;
     private final String namespace;
     private final BufferedProducerClientOptions options;
+    private final String partitionId;
 
     /**
      * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
@@ -44,9 +47,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
      * @param source the {@link Publisher} to decorate
      */
     EventDataAggregator(Flux<? extends EventData> source, Supplier<EventDataBatch> batchSupplier,
-        String namespace, BufferedProducerClientOptions options) {
+        String namespace, BufferedProducerClientOptions options, String partitionId) {
         super(source);
 
+        this.partitionId = partitionId;
         this.batchSupplier = batchSupplier;
         this.namespace = namespace;
         this.options = options;
@@ -61,7 +65,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     @Override
     public void subscribe(CoreSubscriber<? super EventDataBatch> actual) {
         final EventDataAggregatorMain subscription = new EventDataAggregatorMain(actual, namespace, options,
-            batchSupplier, LOGGER);
+            batchSupplier, partitionId, LOGGER);
 
         if (!downstreamSubscription.compareAndSet(null, subscription)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException(
@@ -82,13 +86,13 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private static final AtomicLongFieldUpdater<EventDataAggregatorMain> REQUESTED =
             AtomicLongFieldUpdater.newUpdater(EventDataAggregatorMain.class, "requested");
 
-        private static final Duration MAX_TIME = Duration.ofMillis(Long.MAX_VALUE);
-
         private final Sinks.Many<Long> eventSink;
         private final Disposable disposable;
 
         private final AtomicBoolean isCompleted = new AtomicBoolean(false);
         private final CoreSubscriber<? super EventDataBatch> downstream;
+
+        private final String partitionId;
         private final ClientLogger logger;
         private final Supplier<EventDataBatch> batchSupplier;
         private final String namespace;
@@ -97,25 +101,25 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private Subscription subscription;
         private EventDataBatch currentBatch;
 
+        private volatile Throwable lastError;
+
         EventDataAggregatorMain(CoreSubscriber<? super EventDataBatch> downstream, String namespace,
-            BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, ClientLogger logger) {
+            BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, String partitionId,
+            ClientLogger logger) {
             this.namespace = namespace;
             this.downstream = downstream;
+            this.partitionId = partitionId;
             this.logger = logger;
             this.batchSupplier = batchSupplier;
             this.currentBatch = batchSupplier.get();
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
-            this.disposable = eventSink.asFlux()
-                .switchMap(value -> {
-                    if (value == 0) {
-                        return Flux.interval(MAX_TIME, MAX_TIME);
-                    } else {
-                        return Flux.interval(options.getMaxWaitTime(), options.getMaxWaitTime());
-                    }
-                })
-                .subscribe(next -> {
-                    logger.verbose("Time elapsed. Publishing batch.");
+            this.disposable = Flux.switchOnNext(eventSink.asFlux().map(e -> Flux.interval(options.getMaxWaitTime())
+                    .takeUntil(index -> isCompleted.get())))
+                .subscribe(index -> {
+                    logger.atVerbose()
+                        .addKeyValue(PARTITION_ID_KEY, partitionId)
+                        .log("Time elapsed. Attempt to publish downstream.");
                     updateOrPublishBatch(null, true);
                 });
         }
@@ -140,7 +144,14 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          */
         @Override
         public void cancel() {
+            if (!isCompleted.compareAndSet(false, true)) {
+                return;
+            }
+
             // Do not keep requesting more events upstream
+            logger.atVerbose()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Disposing of aggregator.");
             subscription.cancel();
 
             updateOrPublishBatch(null, true);
@@ -166,7 +177,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
 
             // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
-            // that means we did not publish the EventDataBatch (ie. because it was not full). We request another
+            // that means we did not publish the EventDataBatch (i.e. because it was not full). We request another
             // EventData upstream to try and fill this EventDataBatch and push it downstream.
             final long left = REQUESTED.get(this);
             if (left > 0) {
@@ -268,6 +279,22 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                         this.currentBatch = null;
                     }
                 }
+            } catch (EventHubBufferedPartitionProducer.UncheckedInterruptedException exception) {
+                logger.info("An exception occurred while trying to get a new batch.", exception);
+
+                if (this.lastError != null) {
+                    logger.info("Exception has been set already, terminating EventDataAggregator.");
+
+                    final Throwable error = Operators.onNextError(previous, exception, downstream.currentContext(),
+                        subscription);
+
+                    if (error != null) {
+                        onError(error);
+                    }
+                } else {
+                    this.lastError = exception;
+                }
+
             } catch (Throwable e) {
                 final Throwable error = Operators.onNextError(previous, e, downstream.currentContext(), subscription);
 

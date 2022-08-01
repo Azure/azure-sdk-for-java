@@ -14,11 +14,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
@@ -33,11 +35,22 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
     serviceClients = {EventHubBufferedProducerAsyncClient.class, EventHubBufferedProducerClient.class},
     protocol = ServiceClientProtocol.AMQP)
 public final class EventHubBufferedProducerClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubBufferedProducerClientBuilder.class);
+
     private final EventHubClientBuilder builder;
     private final BufferedProducerClientOptions clientOptions = new BufferedProducerClientOptions();
+    private final PartitionResolver partitionResolver = new PartitionResolver();
+    private AmqpRetryOptions retryOptions;
 
     /**
-     * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
+     * Creates a new instance with the following defaults:
+     * <ul>
+     *     <li>{@link #maxEventBufferLengthPerPartition(int)} is 1500</li>
+     *     <li>{@link #transportType(AmqpTransportType)} is {@link AmqpTransportType#AMQP}</li>
+     *     <li>{@link #maxConcurrentSendsPerPartition(int)} is 1</li>
+     *     <li>{@link #maxConcurrentSends(int)} is 1</li>
+     *     <li>{@link #maxWaitTime(Duration)} is 30 seconds</li>
+     * </ul>
      */
     public EventHubBufferedProducerClientBuilder() {
         builder = new EventHubClientBuilder();
@@ -220,7 +233,7 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder enableIdempotentRetries(boolean enableIdempotentRetries) {
+    EventHubBufferedProducerClientBuilder enableIdempotentRetries(boolean enableIdempotentRetries) {
         clientOptions.setEnableIdempotentRetries(enableIdempotentRetries);
         return this;
     }
@@ -229,8 +242,8 @@ public final class EventHubBufferedProducerClientBuilder {
      * The total number of batches that may be sent concurrently, across all partitions.  This limit takes precedence
      * over the value specified in {@link #maxConcurrentSendsPerPartition(int) maxConcurrentSendsPerPartition}, ensuring
      * this maximum is respected.  When batches for the same partition are published concurrently, the ordering of
-     * events is not guaranteed.  If the order events are published must be maintained,
-     * {@link #maxConcurrentSendsPerPartition(int) maxConcurrentSendsPerPartition} should not exceed 1.
+     * events is not guaranteed.  If the order events are published must be maintained, {@link
+     * #maxConcurrentSendsPerPartition(int) maxConcurrentSendsPerPartition} should not exceed 1.
      *
      * <p>
      * By default, this will be set to the number of processors available in the host environment.
@@ -240,20 +253,21 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder maxConcurrentSends(int maxConcurrentSends) {
+    EventHubBufferedProducerClientBuilder maxConcurrentSends(int maxConcurrentSends) {
         clientOptions.setMaxConcurrentSends(maxConcurrentSends);
         return this;
     }
 
     /**
-     * The number of batches that may be sent concurrently for a given partition.  This option is superseded by
-     * the value specified for {@link #maxConcurrentSends(int) maxConcurrrentSends}, ensuring that limit is respected.
+     * The number of batches that may be sent concurrently for a given partition.  This option is superseded by the
+     * value specified for {@link #maxConcurrentSends(int) maxConcurrrentSends}, ensuring that limit is respected.
      *
-     * @param maxConcurrentSendsPerPartition The number of batches that may be sent concurrently for a given partition.
+     * @param maxConcurrentSendsPerPartition The number of batches that may be sent concurrently for a given
+     *     partition.
      *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
-    public EventHubBufferedProducerClientBuilder maxConcurrentSendsPerPartition(int maxConcurrentSendsPerPartition) {
+    EventHubBufferedProducerClientBuilder maxConcurrentSendsPerPartition(int maxConcurrentSendsPerPartition) {
         clientOptions.setMaxConcurrentSendsPerPartition(maxConcurrentSendsPerPartition);
         return this;
     }
@@ -320,7 +334,6 @@ public final class EventHubBufferedProducerClientBuilder {
      *
      * @param proxyOptions The proxy configuration to use.
      *
-     *
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
     public EventHubBufferedProducerClientBuilder proxyOptions(ProxyOptions proxyOptions) {
@@ -336,6 +349,7 @@ public final class EventHubBufferedProducerClientBuilder {
      * @return The updated {@link EventHubBufferedProducerClientBuilder} object.
      */
     public EventHubBufferedProducerClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         builder.retryOptions(retryOptions);
         return this;
     }
@@ -353,14 +367,50 @@ public final class EventHubBufferedProducerClientBuilder {
         return this;
     }
 
-
     /**
      * Builds a new instance of the async buffered producer client.
      *
      * @return A new instance of {@link EventHubBufferedProducerAsyncClient}.
+     *
+     * @throws NullPointerException if {@link #onSendBatchSucceeded(Consumer)}, {@link
+     *     #onSendBatchFailed(Consumer)}, or {@link #maxWaitTime(Duration)} are null.
+     * @throws IllegalArgumentException if {@link #maxConcurrentSends(int)}, {@link
+     *     #maxConcurrentSendsPerPartition(int)}, or {@link #maxEventBufferLengthPerPartition(int)} are less than 1.
      */
     public EventHubBufferedProducerAsyncClient buildAsyncClient() {
-        return new EventHubBufferedProducerAsyncClient(builder, clientOptions);
+
+        if (Objects.isNull(clientOptions.getSendSucceededContext())) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'onSendBatchSucceeded' cannot be null."));
+        }
+
+        if (Objects.isNull(clientOptions.getSendFailedContext())) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'onSendBatchFailed' cannot be null."));
+        }
+
+        if (Objects.isNull(clientOptions.getMaxWaitTime())) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'maxWaitTime' cannot be null."));
+        }
+
+        if (clientOptions.getMaxEventBufferLengthPerPartition() < 1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'maxEventBufferLengthPerPartition' cannot be less than 1."));
+        }
+
+        if (clientOptions.getMaxConcurrentSends() < 1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'maxConcurrentSends' cannot be less than 1."));
+        }
+
+        if (clientOptions.getMaxConcurrentSendsPerPartition() < 1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'maxConcurrentSendsPerPartition' cannot be less than 1."));
+        }
+
+        final AmqpRetryOptions options = retryOptions == null
+            ? EventHubClientBuilder.DEFAULT_RETRY
+            : retryOptions;
+
+        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options);
     }
 
     /**
@@ -369,6 +419,10 @@ public final class EventHubBufferedProducerClientBuilder {
      * @return A new instance of {@link EventHubBufferedProducerClient}.
      */
     public EventHubBufferedProducerClient buildClient() {
-        return null;
+        final AmqpRetryOptions options = retryOptions == null
+            ? EventHubClientBuilder.DEFAULT_RETRY
+            : retryOptions;
+
+        return new EventHubBufferedProducerClient(buildAsyncClient(), options.getTryTimeout());
     }
 }
