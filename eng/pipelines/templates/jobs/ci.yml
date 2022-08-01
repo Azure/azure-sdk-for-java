@@ -190,6 +190,7 @@ jobs:
           workingDirectory: $(Agent.BuildDirectory)
           filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
           arguments: >
+            -SourcesDirectory ${{parameters.ServiceDirectory}}
             -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
             -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
             -InformationAction Continue

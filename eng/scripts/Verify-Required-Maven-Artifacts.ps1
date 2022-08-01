@@ -7,6 +7,7 @@
 # changelog.md and readme.md are verified elsewhere and are also affected by YML variables as to whether
 # or not they even need to be verified. Because they aren't mandatory, they will not be verified here.
 param(
+  [Parameter(Mandatory=$true)][string]$SourcesDirectory,
   [Parameter(Mandatory=$true)][string]$BuildOutputDirectory,
   # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
   [Parameter(Mandatory=$true)][array] $ArtifactsList
@@ -90,6 +91,10 @@ $foundError = $false
 # construct the filenames to verify using that.
 foreach($artifact in $ArtifactsList) {
   $libHashKey = "$($artifact.groupId):$($artifact.name)"
+  if ($SourcesDirectory -eq "spring-3") {
+      $libHashKey = "spring3_$($artifact.groupId):$($artifact.name)"
+      Write-Host "New lib hash key: $libHashKey"
+  }
   foreach ($fileType in $requiredFileTypes) {
     $fileName = "$($artifact.name)-$($libHash[$libHashKey].curVer)$($fileType)"
     $file = @(Get-ChildItem -Path $BuildOutputDirectory -Recurse -Name $fileName)
