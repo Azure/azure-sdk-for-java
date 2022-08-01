@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -342,9 +341,6 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      * Upon completion of this method, the buffer will be empty.
      *
      * @return A mono that completes when the buffers are empty.
-     *
-     * @throws InterruptedException if the producer could not complete the flush operation.
-     * @throws TimeoutException if the producer could not start the flush operation.
      */
     public Mono<Void> flush() {
         final List<Mono<Void>> flushOperations = partitionProducers.values().stream()

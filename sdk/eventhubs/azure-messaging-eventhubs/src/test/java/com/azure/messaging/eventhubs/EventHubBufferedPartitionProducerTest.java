@@ -348,7 +348,7 @@ public class EventHubBufferedPartitionProducerTest {
 
         StepVerifier.create(producer.flush())
             .expectComplete()
-            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+            .verify(totalVerifyTime);
 
         final long totalTime = waitTime.toMillis() + waitTime.toMillis();
         assertTrue(success.await(totalTime, TimeUnit.MILLISECONDS),
