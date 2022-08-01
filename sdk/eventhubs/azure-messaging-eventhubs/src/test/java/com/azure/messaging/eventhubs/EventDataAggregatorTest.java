@@ -159,7 +159,7 @@ public class EventDataAggregatorTest {
         setupBatchMock(batch, batchEvents, event1, event2);
 
         final List<EventData> batchEvents2 = new ArrayList<>();
-        setupBatchMock(batch2, batchEvents2, event3);
+        setupBatchMock(batch2, batchEvents2, event1, event2, event3);
 
         final Duration waitTime = Duration.ofSeconds(5);
         final Duration halfWaitTime = waitTime.minusSeconds(2);
@@ -186,11 +186,8 @@ public class EventDataAggregatorTest {
 
         // Act & Assert
         StepVerifier.create(aggregator)
-            .then(() -> publisher.next(event1))
-            .thenAwait(halfWaitTime)
-            .then(() -> {
-                assertEquals(1, batchEvents.size());
-
+            .then(() ->  {
+                publisher.next(event1);
                 publisher.next(event2);
             })
             .thenAwait(waitTime)

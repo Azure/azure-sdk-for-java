@@ -354,7 +354,7 @@ public class EventHubBufferedPartitionProducerTest {
         assertTrue(success.await(totalTime, TimeUnit.MILLISECONDS),
             "Should have been able to get a successful signal downstream.");
 
-        assertEquals(2, holder.succeededContexts.size());
+        assertTrue(2 <= holder.succeededContexts.size(), "Expected at least 2 succeeded contexts. Actual: " + holder.succeededContexts.size());
 
         // Verify the completed ones.
         final SendBatchSucceededContext first = holder.succeededContexts.get(0);
