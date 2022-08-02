@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MultiSlotRankRequest model. */
@@ -18,6 +19,7 @@ public final class MultiSlotRankRequest {
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
+    @JsonProperty(value = "contextFeatures")
     private List<Object> contextFeatures;
 
     /*
@@ -29,12 +31,14 @@ public final class MultiSlotRankRequest {
      * The first item in the array will be used as Baseline item in Offline
      * Evaluations.
      */
+    @JsonProperty(value = "actions", required = true)
     private List<RankableAction> actions;
 
     /*
      * The set of slots the Personalizer service should select actions for.
      * The set should not contain more than 50 slots.
      */
+    @JsonProperty(value = "slots", required = true)
     private List<SlotRequest> slots;
 
     /*
@@ -45,6 +49,7 @@ public final class MultiSlotRankRequest {
      * pseudo-random
      * generator when making a Personalizer call.
      */
+    @JsonProperty(value = "eventId")
     private String eventId;
 
     /*
@@ -59,6 +64,7 @@ public final class MultiSlotRankRequest {
      * You must call the Activate Event API if the event output is shown to
      * users, otherwise Rewards will be ignored.
      */
+    @JsonProperty(value = "deferActivation")
     private Boolean deferActivation;
 
     /**

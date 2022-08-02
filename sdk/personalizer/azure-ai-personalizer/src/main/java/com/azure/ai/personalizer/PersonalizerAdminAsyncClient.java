@@ -5,14 +5,8 @@ package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder;
-import com.azure.ai.personalizer.implementation.models.Evaluation;
-import com.azure.ai.personalizer.implementation.models.EvaluationContract;
-import com.azure.ai.personalizer.implementation.models.LogsProperties;
-import com.azure.ai.personalizer.implementation.models.ModelProperties;
-import com.azure.ai.personalizer.implementation.models.PolicyContract;
-import com.azure.ai.personalizer.implementation.models.PolicyReferenceContract;
-import com.azure.ai.personalizer.implementation.models.ServiceConfiguration;
 import com.azure.ai.personalizer.implementation.util.Transforms;
+import com.azure.ai.personalizer.models.*;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;

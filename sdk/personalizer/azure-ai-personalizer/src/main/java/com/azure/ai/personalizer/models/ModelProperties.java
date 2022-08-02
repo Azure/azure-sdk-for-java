@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties related to the trained model. */
@@ -13,11 +14,13 @@ public final class ModelProperties {
     /*
      * Creation time of the model.
      */
+    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Last time the model was modified.
      */
+    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties related to data used to train the model. */
 @Immutable
@@ -12,6 +13,7 @@ public final class LogsProperties {
     /*
      * Date range.
      */
+    @JsonProperty(value = "dateRange", access = JsonProperty.Access.WRITE_ONLY)
     private LogsPropertiesDateRange dateRange;
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to the policy within the evaluation. */
 @Fluent
@@ -12,11 +13,13 @@ public final class PolicyReferenceContract {
     /*
      * Evaluation Id of the evaluation.
      */
+    @JsonProperty(value = "evaluationId", required = true)
     private String evaluationId;
 
     /*
      * Name of the learning settings.
      */
+    @JsonProperty(value = "policyName", required = true)
     private String policyName;
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,26 +16,31 @@ public final class EvaluationContract {
      * True if the evaluation should explore for a more optimal learning
      * settings.
      */
+    @JsonProperty(value = "enableOfflineExperimentation")
     private Boolean enableOfflineExperimentation;
 
     /*
      * The name of the evaluation.
      */
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The start time of the evaluation.
      */
+    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
+    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * Additional learning settings to evaluate.
      */
+    @JsonProperty(value = "policies", required = true)
     private List<PolicyContract> policies;
 
     /**

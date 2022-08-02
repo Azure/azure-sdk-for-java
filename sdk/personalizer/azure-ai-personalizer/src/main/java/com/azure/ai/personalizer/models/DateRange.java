@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A date range starting at From and ending at To. */
@@ -13,11 +14,13 @@ public class DateRange {
     /*
      * Start date for the range.
      */
+    @JsonProperty(value = "from", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime from;
 
     /*
      * End date for the range.
      */
+    @JsonProperty(value = "to", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime to;
 
     /**

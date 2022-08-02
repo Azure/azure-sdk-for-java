@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServiceStatus model. */
 @Fluent
@@ -12,16 +13,19 @@ public final class ServiceStatus {
     /*
      * The service property.
      */
+    @JsonProperty(value = "service")
     private String service;
 
     /*
      * The apiStatus property.
      */
+    @JsonProperty(value = "apiStatus")
     private String apiStatus;
 
     /*
      * The apiStatusMessage property.
      */
+    @JsonProperty(value = "apiStatusMessage")
     private String apiStatusMessage;
 
     /**

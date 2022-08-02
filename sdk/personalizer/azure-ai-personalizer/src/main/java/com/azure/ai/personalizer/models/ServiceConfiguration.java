@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -17,23 +18,27 @@ public final class ServiceConfiguration {
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @JsonProperty(value = "rewardWaitTime", required = true)
     private Duration rewardWaitTime;
 
     /*
      * The reward given if a reward is not received within the specified wait
      * time.
      */
+    @JsonProperty(value = "defaultReward", required = true)
     private float defaultReward;
 
     /*
      * The function used to process rewards, if multiple reward scores are
      * received before rewardWaitTime is over.
      */
+    @JsonProperty(value = "rewardAggregation", required = true)
     private String rewardAggregation;
 
     /*
      * The percentage of rank responses that will use exploration.
      */
+    @JsonProperty(value = "explorationPercentage", required = true)
     private float explorationPercentage;
 
     /*
@@ -42,38 +47,45 @@ public final class ServiceConfiguration {
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @JsonProperty(value = "modelExportFrequency", required = true)
     private Duration modelExportFrequency;
 
     /*
      * Flag indicates whether log mirroring is enabled.
      */
+    @JsonProperty(value = "logMirrorEnabled")
     private Boolean logMirrorEnabled;
 
     /*
      * Azure storage account container SAS URI for log mirroring.
      */
+    @JsonProperty(value = "logMirrorSasUri")
     private String logMirrorSasUri;
 
     /*
      * Number of days historical logs are to be maintained. -1 implies the logs
      * will never be deleted.
      */
+    @JsonProperty(value = "logRetentionDays", required = true)
     private int logRetentionDays;
 
     /*
      * Last time model training configuration was updated
      */
+    @JsonProperty(value = "lastConfigurationEditDate")
     private OffsetDateTime lastConfigurationEditDate;
 
     /*
      * Learning Modes for Personalizer
      */
+    @JsonProperty(value = "learningMode")
     private LearningMode learningMode;
 
     /*
      * Flag indicating whether Personalizer will automatically optimize
      * Learning Settings by running Offline Evaluations periodically.
      */
+    @JsonProperty(value = "isAutoOptimizationEnabled")
     private Boolean isAutoOptimizationEnabled;
 
     /*
@@ -82,12 +94,14 @@ public final class ServiceConfiguration {
      * For example, PT5M (5 mins). For information about the time format,
      * \r\nsee http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @JsonProperty(value = "autoOptimizationFrequency")
     private Duration autoOptimizationFrequency;
 
     /*
      * Date when the first automatic optimization evaluation must be performed.
      * Only relevant if IsAutoOptimizationEnabled is true.
      */
+    @JsonProperty(value = "autoOptimizationStartDate")
     private OffsetDateTime autoOptimizationStartDate;
 
     /**

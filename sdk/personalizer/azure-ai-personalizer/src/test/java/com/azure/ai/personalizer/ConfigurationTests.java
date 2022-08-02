@@ -1,7 +1,7 @@
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.implementation.models.PolicyContract;
-import com.azure.ai.personalizer.implementation.models.ServiceConfiguration;
+import com.azure.ai.personalizer.models.PolicyContract;
+import com.azure.ai.personalizer.models.ServiceConfiguration;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConfigurationTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
-    public final void ConfigurationTests(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
+    public final void configurationTests(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         Duration newExperimentalUnitDuration = Duration.ofHours(4);
         Duration modelExportFrequency = Duration.ofHours(3);
         double newDefaultReward = 1.0;
@@ -27,20 +27,14 @@ public class ConfigurationTests extends PersonalizerTestBase {
             .setRewardWaitTime(newExperimentalUnitDuration)
             .setExplorationPercentage(newExplorationPercentage)
             .setLogRetentionDays(Integer.MAX_VALUE);
-        PersonalizerAdminClient client = GetAdministrationClient(httpClient, serviceVersion);
-        UpdateProperties(client, properties);
-        GetProperties(client, properties);
-        UpdateAndGetPolicy(client);
-        ResetPolicy(client);
+        PersonalizerAdminClient client = getAdministrationClient(httpClient, serviceVersion, true);
+        updateProperties(client, properties);
+        getProperties(client, properties);
+        updateAndGetPolicy(client);
+        resetPolicy(client);
     }
 
-    private PersonalizerAdminClient GetAdministrationClient(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        return getPersonalizerClientBuilder(httpClient, serviceVersion, true)
-            .buildAdminClient();
-    }
-
-
-    private void GetProperties(PersonalizerAdminClient client, ServiceConfiguration properties)
+    private void getProperties(PersonalizerAdminClient client, ServiceConfiguration properties)
     {
         ServiceConfiguration result = client.getProperties();
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
@@ -50,7 +44,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void UpdateProperties(PersonalizerAdminClient client, ServiceConfiguration properties)
+    private void updateProperties(PersonalizerAdminClient client, ServiceConfiguration properties)
     {
         ServiceConfiguration result = client.updateProperties(properties);
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
@@ -60,7 +54,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void UpdateAndGetPolicy(PersonalizerAdminClient client)
+    private void updateAndGetPolicy(PersonalizerAdminClient client)
     {
         PolicyContract newPolicy = new PolicyContract()
             .setName("app1")
@@ -73,7 +67,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0,190));
     }
 
-    private void ResetPolicy(PersonalizerAdminClient client)
+    private void resetPolicy(PersonalizerAdminClient client)
     {
         PolicyContract policy = client.resetPolicy();
         assertEquals("--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::",

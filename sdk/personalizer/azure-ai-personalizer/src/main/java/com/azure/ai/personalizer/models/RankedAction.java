@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A ranked action with its resulting probability. */
 @Immutable
@@ -12,11 +13,13 @@ public final class RankedAction {
     /*
      * Id of the action
      */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Probability of the action
      */
+    @JsonProperty(value = "probability", access = JsonProperty.Access.WRITE_ONLY)
     private Float probability;
 
     /**

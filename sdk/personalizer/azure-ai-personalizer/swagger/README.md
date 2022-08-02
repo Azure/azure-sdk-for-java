@@ -29,9 +29,8 @@ generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
-models-subpackage: implementation.models
+models-subpackage: models
 context-client-method-parameter: true
-custom-types-subpackage: models
 service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true

@@ -4,13 +4,8 @@
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
-import com.azure.ai.personalizer.implementation.models.MultiSlotRankRequest;
-import com.azure.ai.personalizer.implementation.models.MultiSlotRankResponse;
-import com.azure.ai.personalizer.implementation.models.MultiSlotRewardRequest;
-import com.azure.ai.personalizer.implementation.models.RankRequest;
-import com.azure.ai.personalizer.implementation.models.RankResponse;
-import com.azure.ai.personalizer.implementation.models.RewardRequest;
 import com.azure.ai.personalizer.implementation.util.Transforms;
+import com.azure.ai.personalizer.models.*;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -56,26 +51,25 @@ public final class PersonalizerAsyncClient {
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reward(String eventId, RewardRequest rewardRequest) {
-        return rewardWithResponse(eventId, rewardRequest).flatMap(FluxUtil::toMono);
+    public Mono<Void> reward(String eventId, float rewardValue) {
+        return rewardWithResponse(eventId, rewardValue).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponse(String eventId, RewardRequest rewardRequest) {
+    public Mono<Response<Void>> rewardWithResponse(String eventId, float rewardValue) {
         try {
-            return withContext(context -> rewardWithResponse(eventId, rewardRequest, context));
+            return withContext(context -> rewardWithResponse(eventId, rewardValue, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> rewardWithResponse(String eventId, RewardRequest rewardRequest, Context context) {
+    Mono<Response<Void>> rewardWithResponse(String eventId, float rewardValue, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
-        return service.getEvents().rewardWithResponseAsync(eventId, rewardRequest, context)
+        return service.getEvents().rewardWithResponseAsync(eventId, new RewardRequest().setValue(rewardValue), context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -103,15 +97,6 @@ public final class PersonalizerAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
-
-
-
-    public Mono<Response<MultiSlotRankResponse>> rankMultiSlot(MultiSlotRankRequest rankRequest, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getMultiSlots().rankWithResponseAsync(rankRequest, context);
-    }
-
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MultiSlotRankResponse> rankMultiSlot(MultiSlotRankRequest rankRequest) {
         return rankMultiSlotWithResponse(rankRequest).flatMap(FluxUtil::toMono);
@@ -133,11 +118,6 @@ public final class PersonalizerAsyncClient {
         return service.getMultiSlots().rankWithResponseAsync(rankRequest, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
-    }
-
-    public Mono<Response<Void>> rewardMultiSlot(String eventId, MultiSlotRewardRequest rewardRequest, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getMultiSlotEvents().rewardWithResponseAsync(eventId, rewardRequest, context);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -168,7 +148,7 @@ public final class PersonalizerAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> activateMultiSlot(String eventId) {
-        return activateWithResponse(eventId).flatMap(FluxUtil::toMono);
+        return activateMultiSlotWithResponse(eventId).flatMap(FluxUtil::toMono);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

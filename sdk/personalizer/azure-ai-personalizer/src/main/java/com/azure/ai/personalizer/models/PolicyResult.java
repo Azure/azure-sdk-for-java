@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -15,26 +16,31 @@ public final class PolicyResult {
     /*
      * The name of the Learning Settings.
      */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The arguments of the Learning Settings.
      */
+    @JsonProperty(value = "arguments", access = JsonProperty.Access.WRITE_ONLY)
     private String arguments;
 
     /*
      * The source of the Learning Settings.
      */
+    @JsonProperty(value = "policySource", access = JsonProperty.Access.WRITE_ONLY)
     private PolicySource policySource;
 
     /*
      * The aggregate results of the Offline Evaluation.
      */
+    @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private List<PolicyResultSummary> summary;
 
     /*
      * The aggregate total of the Offline Evaluation.
      */
+    @JsonProperty(value = "totalSummary", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyResultTotalSummary totalSummary;
 
     /**

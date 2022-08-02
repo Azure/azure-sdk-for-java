@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object containing more specific information than the parent object about the error. */
 @Fluent
@@ -12,12 +13,14 @@ public final class InternalError {
     /*
      * Detailed error code.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /*
      * An object containing more specific information than the parent object
      * about the error.
      */
+    @JsonProperty(value = "innererror")
     private InternalError innererror;
 
     /**

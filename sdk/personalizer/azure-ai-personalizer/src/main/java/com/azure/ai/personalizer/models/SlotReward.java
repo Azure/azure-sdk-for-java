@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SlotReward model. */
 @Fluent
@@ -12,12 +13,14 @@ public final class SlotReward {
     /*
      * Slot id for which we are sending the reward.
      */
+    @JsonProperty(value = "slotId", required = true)
     private String slotId;
 
     /*
      * Reward to be assigned to slotId. Value should be between -1 and 1
      * inclusive.
      */
+    @JsonProperty(value = "value", required = true)
     private float value;
 
     /**

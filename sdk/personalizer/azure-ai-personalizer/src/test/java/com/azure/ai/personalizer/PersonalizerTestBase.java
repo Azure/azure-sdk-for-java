@@ -1,18 +1,15 @@
 package com.azure.ai.personalizer;
 
+import com.azure.ai.personalizer.models.PolicyContract;
+import com.azure.ai.personalizer.models.ServiceConfiguration;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
-import java.util.Objects;
 
 import static com.azure.ai.personalizer.TestUtils.*;
 import static com.azure.ai.personalizer.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
@@ -32,7 +29,7 @@ public abstract class PersonalizerTestBase extends TestBase {
 
     public PersonalizerClientBuilder getPersonalizerClientBuilder(HttpClient httpClient,
                                                                   PersonalizerServiceVersion serviceVersion,
-                                                                  boolean useKeyCredential) {
+                                                                  boolean isSingleSlot) {
         String endpoint = getEndpoint();
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
@@ -47,29 +44,45 @@ public abstract class PersonalizerTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            if (useKeyCredential) {
+            if (isSingleSlot) {
                 builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_SINGLE_SLOT));
             } else {
-                builder.credential(getCredentialByAuthority(endpoint));
+                builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_MULTI_SLOT));
             }
         }
         return builder;
     }
 
-    static TokenCredential getCredentialByAuthority(String endpoint) {
-        String authority = TestUtils.getAuthority(endpoint);
-        if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
-            return new DefaultAzureCredentialBuilder()
-                .authorityHost(TestUtils.getAuthority(endpoint))
-                .build();
-        } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(AZURE_TENANT_ID)
-                .clientId(AZURE_CLIENT_ID)
-                .clientSecret(AZURE_PERSONALIZER_CLIENT_SECRET)
-                .authorityHost(authority)
-                .build();
+    protected PersonalizerClient getClient(
+        HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion,
+        boolean isSingleSlot) {
+        PersonalizerAdminClient adminClient = getAdministrationClient(httpClient, serviceVersion, isSingleSlot);
+        if (!isSingleSlot) {
+            enableMultiSlot(adminClient);
         }
+
+        return getPersonalizerClientBuilder(httpClient, serviceVersion, isSingleSlot)
+            .buildClient();
+    }
+
+    protected PersonalizerAdminClient getAdministrationClient(
+        HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion,
+        boolean isSingleSlot) {
+        return getPersonalizerClientBuilder(httpClient, serviceVersion, isSingleSlot)
+            .buildAdminClient();
+    }
+
+    private void enableMultiSlot(PersonalizerAdminClient adminClient) {
+        ServiceConfiguration configuration = adminClient.getProperties();
+        configuration.setIsAutoOptimizationEnabled(false);
+        adminClient.updateProperties(configuration);
+        //sleep 30 seconds to allow settings to propagate
+        sleepIfRunningAgainstService(30000);
+        adminClient.updatePolicy(new PolicyContract().setName("multislot").setArguments("--ccb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::"));
+        //sleep 30 seconds to allow settings to propagate
+        sleepIfRunningAgainstService(30000);
     }
 
     private String getEndpoint() {

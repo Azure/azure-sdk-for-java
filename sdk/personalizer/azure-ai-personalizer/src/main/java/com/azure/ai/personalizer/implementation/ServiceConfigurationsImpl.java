@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
-import com.azure.ai.personalizer.implementation.models.PolicyReferenceContract;
-import com.azure.ai.personalizer.implementation.models.ServiceConfiguration;
+import com.azure.ai.personalizer.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PolicyReferenceContract;
+import com.azure.ai.personalizer.models.ServiceConfiguration;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;

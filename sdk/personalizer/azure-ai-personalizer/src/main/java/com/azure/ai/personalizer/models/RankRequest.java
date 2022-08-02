@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Request a set of actions to be ranked by the Personalizer service. */
@@ -18,6 +19,7 @@ public final class RankRequest {
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
+    @JsonProperty(value = "contextFeatures")
     private List<Object> contextFeatures;
 
     /*
@@ -29,6 +31,7 @@ public final class RankRequest {
      * The first item in the array will be used as Baseline item in Offline
      * Evaluations.
      */
+    @JsonProperty(value = "actions", required = true)
     private List<RankableAction> actions;
 
     /*
@@ -36,6 +39,7 @@ public final class RankRequest {
      * Personalizer will consider the first non-excluded item in the array as
      * the Baseline action when performing Offline Evaluations.
      */
+    @JsonProperty(value = "excludedActions")
     private List<String> excludedActions;
 
     /*
@@ -46,6 +50,7 @@ public final class RankRequest {
      * pseudo-random
      * generator when making a Personalizer call.
      */
+    @JsonProperty(value = "eventId")
     private String eventId;
 
     /*
@@ -60,6 +65,7 @@ public final class RankRequest {
      * You must call the Activate Event API if the event output is shown to
      * users, otherwise Rewards will be ignored.
      */
+    @JsonProperty(value = "deferActivation")
     private Boolean deferActivation;
 
     /**

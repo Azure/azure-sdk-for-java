@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Learning settings specifying how to train the model. */
 @Fluent
@@ -12,11 +13,13 @@ public final class PolicyContract {
     /*
      * Name of the learning settings.
      */
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Arguments of the learning settings.
      */
+    @JsonProperty(value = "arguments", required = true)
     private String arguments;
 
     /**

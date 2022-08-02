@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Reward given to a list of slots. */
@@ -13,6 +14,7 @@ public final class MultiSlotRewardRequest {
     /*
      * List of SlotRewards
      */
+    @JsonProperty(value = "reward", required = true)
     private List<SlotReward> reward;
 
     /**

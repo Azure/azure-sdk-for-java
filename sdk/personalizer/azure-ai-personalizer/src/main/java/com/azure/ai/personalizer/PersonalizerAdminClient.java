@@ -3,12 +3,13 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.implementation.models.*;
+import com.azure.ai.personalizer.models.*;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -174,12 +175,12 @@ public final class PersonalizerAdminClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importModel(Flux<ByteBuffer> body, long contentLength) {
-        importModelWithResponse(body, contentLength, Context.NONE).getValue();
+    public void importModel(Flux<ByteBuffer> signedModel) {
+        importModelWithResponse(signedModel, Context.NONE).getValue();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> importModelWithResponse(Flux<ByteBuffer> body, long contentLength, Context context) {
-        return client.importModelWithResponse(body, contentLength, context).block();
+    public Response<Void> importModelWithResponse(Flux<ByteBuffer> signedModel, Context context) {
+        return client.importModelWithResponse(signedModel, FluxUtil.collectBytesInByteBufferStream(signedModel).block().length, context).block();
     }
 }

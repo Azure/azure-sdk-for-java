@@ -3,47 +3,46 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.implementation.models.RankRequest;
-import com.azure.ai.personalizer.implementation.models.RankResponse;
-import com.azure.ai.personalizer.implementation.models.RankableAction;
-import com.azure.ai.personalizer.implementation.models.RewardRequest;
-import com.azure.core.credential.AzureKeyCredential;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import com.azure.ai.personalizer.models.RankRequest;
+import com.azure.ai.personalizer.models.RankResponse;
+import com.azure.ai.personalizer.models.RankableAction;
+import com.azure.core.http.HttpClient;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.azure.ai.personalizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PersonalizerClientTest {
+public class PersonalizerClientTest extends PersonalizerTestBase {
 
-    private static PersonalizerClient client;
-
-    @BeforeAll
-    public static void initialize() {
-        client = new PersonalizerClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildClient();
-    }
-
-    @Test
-    public void testRankThenReward() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
+    public void testRankThenReward(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
+        PersonalizerClient client = getPersonalizerClient(httpClient, serviceVersion);
         String eventId = UUID.randomUUID().toString();
         RankResponse response = client.rank(createRankRequest(eventId));
         assertEquals(eventId, response.getEventId(), "Event Ids must match");
-        RewardRequest rewardRequest = new RewardRequest().setValue(0.5f);
-        client.reward(eventId, rewardRequest);
+        client.reward(eventId, 0.5f);
     }
 
-    @Test
-    public void testRankThenActivateAndReward() {
-        String eventId = "123456789";
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
+    public void testRankThenActivateAndReward(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
+        PersonalizerClient client = getPersonalizerClient(httpClient, serviceVersion);
+        String eventId = UUID.randomUUID().toString();
         RankResponse response = client.rank(createRankRequest(eventId));
         assertEquals(eventId, response.getEventId(), "Event Ids must match");
         client.activate(eventId);
-        RewardRequest rewardRequest = new RewardRequest().setValue(0.5f);
-        client.reward(eventId, rewardRequest);
+        client.reward(eventId, 0.5f);
+    }
+
+    private PersonalizerClient getPersonalizerClient(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
+        return getPersonalizerClientBuilder(httpClient, serviceVersion, true)
+            .buildClient();
     }
 
     public RankRequest createRankRequest(String eventId) {

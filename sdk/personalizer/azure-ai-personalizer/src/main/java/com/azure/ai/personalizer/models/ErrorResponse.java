@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used to return an error to the client. */
 @Fluent
@@ -12,6 +13,7 @@ public final class ErrorResponse {
     /*
      * The error object.
      */
+    @JsonProperty(value = "error", required = true)
     private PersonalizerError error;
 
     /**

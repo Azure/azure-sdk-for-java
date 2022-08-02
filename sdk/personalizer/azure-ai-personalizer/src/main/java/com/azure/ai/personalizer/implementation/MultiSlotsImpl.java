@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
-import com.azure.ai.personalizer.implementation.models.MultiSlotRankRequest;
-import com.azure.ai.personalizer.implementation.models.MultiSlotRankResponse;
+import com.azure.ai.personalizer.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.MultiSlotRankRequest;
+import com.azure.ai.personalizer.models.MultiSlotRankResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;

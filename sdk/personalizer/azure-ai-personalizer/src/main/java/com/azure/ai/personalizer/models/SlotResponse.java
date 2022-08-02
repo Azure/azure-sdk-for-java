@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SlotResponse model. */
 @Fluent
@@ -12,11 +13,13 @@ public final class SlotResponse {
     /*
      * Id is the slot ID.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * RewardActionID is the action ID recommended by Personalizer.
      */
+    @JsonProperty(value = "rewardActionId", access = JsonProperty.Access.WRITE_ONLY)
     private String rewardActionId;
 
     /**

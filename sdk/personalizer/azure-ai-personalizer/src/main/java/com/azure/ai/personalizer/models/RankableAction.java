@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An action with its associated features used for ranking. */
@@ -13,11 +14,13 @@ public final class RankableAction {
     /*
      * Id of the action.
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * List of dictionaries containing features.
      */
+    @JsonProperty(value = "features", required = true)
     private List<Object> features;
 
     /**

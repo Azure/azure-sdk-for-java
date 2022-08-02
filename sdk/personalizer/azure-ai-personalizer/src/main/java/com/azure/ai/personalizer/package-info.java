@@ -6,4 +6,5 @@
  * {@link com.azure.ai.personalizer.PersonalizerAdminClient} and
  * {@link com.azure.ai.personalizer.PersonalizerClient} to perform operations on
  * Azure Personalizer.
- */package com.azure.ai.personalizer;
+ */
+package com.azure.ai.personalizer;

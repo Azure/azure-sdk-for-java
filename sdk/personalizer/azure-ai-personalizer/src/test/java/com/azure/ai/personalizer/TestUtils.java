@@ -27,6 +27,15 @@ public final class TestUtils {
     public static final String PERSONALIZER_ENDPOINT_SINGLE_SLOT =
         GLOBAL_CONFIGURATION.get("PERSONALIZER_ENDPOINT_SINGLE_SLOT");
 
+    public static final String PERSONALIZER_API_KEY_SINGLE_SLOT =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_API_KEY_SINGLE_SLOT");
+
+    public static final String PERSONALIZER_ENDPOINT_MULTI_SLOT =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_ENDPOINT_MULTI_SLOT");
+
+    public static final String PERSONALIZER_API_KEY_MULTI_SLOT =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_API_KEY_MULTI_SLOT");
+
     public static final String INVALID_KEY = "invalid key";
 
     public static final String AZURE_CLIENT_ID
@@ -36,17 +45,11 @@ public final class TestUtils {
     public static final String AZURE_PERSONALIZER_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
 
-    public static final String PERSONALIZER_API_KEY_SINGLE_SLOT =
-        GLOBAL_CONFIGURATION.get("PERSONALIZER_API_KEY_SINGLE_SLOT");
-
     public static PersonalizerAudience getAudience(String endpoint) {
         String authority = getAuthority(endpoint);
         switch (authority) {
             case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
                 return PersonalizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
-
-            case AzureAuthorityHosts.AZURE_CHINA:
-                return PersonalizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
                 return PersonalizerAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
@@ -63,10 +66,6 @@ public final class TestUtils {
 
         if (endpoint.contains(".io")) {
             return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
-        }
-
-        if (endpoint.contains(".cn")) {
-            return AzureAuthorityHosts.AZURE_CHINA;
         }
 
         if (endpoint.contains(".us")) {

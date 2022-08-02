@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -16,11 +17,13 @@ public final class RankResponse {
     /*
      * The calculated ranking for the current request.
      */
+    @JsonProperty(value = "ranking", access = JsonProperty.Access.WRITE_ONLY)
     private List<RankedAction> ranking;
 
     /*
      * The eventId for the round trip from request to response.
      */
+    @JsonProperty(value = "eventId", access = JsonProperty.Access.WRITE_ONLY)
     private String eventId;
 
     /*
@@ -29,6 +32,7 @@ public final class RankResponse {
      * report the reward.
      * This might not be the first found in 'ranking'.
      */
+    @JsonProperty(value = "rewardActionId", access = JsonProperty.Access.WRITE_ONLY)
     private String rewardActionId;
 
     /**
@@ -57,10 +61,5 @@ public final class RankResponse {
      */
     public String getRewardActionId() {
         return this.rewardActionId;
-    }
-
-    public RankResponse setRanking(List<RankedAction> ranking) {
-        this.ranking = ranking;
-        return this;
     }
 }

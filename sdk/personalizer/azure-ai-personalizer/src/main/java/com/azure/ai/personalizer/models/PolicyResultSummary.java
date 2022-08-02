@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -14,21 +15,25 @@ public class PolicyResultSummary {
     /*
      * Timestamp of the aggregation.
      */
+    @JsonProperty(value = "timeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeStamp;
 
     /*
      * Numerator for IPS estimator.
      */
+    @JsonProperty(value = "ipsEstimatorNumerator", access = JsonProperty.Access.WRITE_ONLY)
     private Float ipsEstimatorNumerator;
 
     /*
      * Denominator for IPS estimator.
      */
+    @JsonProperty(value = "ipsEstimatorDenominator", access = JsonProperty.Access.WRITE_ONLY)
     private Float ipsEstimatorDenominator;
 
     /*
      * Denominator for SNIPS estimator.
      */
+    @JsonProperty(value = "snipsEstimatorDenominator", access = JsonProperty.Access.WRITE_ONLY)
     private Float snipsEstimatorDenominator;
 
     /*
@@ -36,26 +41,31 @@ public class PolicyResultSummary {
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @JsonProperty(value = "aggregateTimeWindow", access = JsonProperty.Access.WRITE_ONLY)
     private Duration aggregateTimeWindow;
 
     /*
      * Probability of non-zero values for the Policy evaluation.
      */
+    @JsonProperty(value = "nonZeroProbability")
     private Float nonZeroProbability;
 
     /*
      * Sum of Squares for the Policy evaluation results.
      */
+    @JsonProperty(value = "sumOfSquares", access = JsonProperty.Access.WRITE_ONLY)
     private Float sumOfSquares;
 
     /*
      * Gaussian confidence interval for the Policy evaluation.
      */
+    @JsonProperty(value = "confidenceInterval", access = JsonProperty.Access.WRITE_ONLY)
     private Float confidenceInterval;
 
     /*
      * Average reward.
      */
+    @JsonProperty(value = "averageReward", access = JsonProperty.Access.WRITE_ONLY)
     private Float averageReward;
 
     /**

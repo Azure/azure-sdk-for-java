@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A slot with it's associated features and list of excluded actions. */
@@ -13,16 +14,19 @@ public final class SlotRequest {
     /*
      * Slot ID
      */
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * List of dictionaries containing slot features.
      */
+    @JsonProperty(value = "features")
     private List<Object> features;
 
     /*
      * List of excluded action Ids.
      */
+    @JsonProperty(value = "excludedActions")
     private List<String> excludedActions;
 
     /*
@@ -34,6 +38,7 @@ public final class SlotRequest {
      * Each slot must have a unique BaselineAction which corresponds to an an
      * action from the event's Actions list.
      */
+    @JsonProperty(value = "baselineAction", required = true)
     private String baselineAction;
 
     /**

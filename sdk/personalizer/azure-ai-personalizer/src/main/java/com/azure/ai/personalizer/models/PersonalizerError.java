@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The error object. */
@@ -13,28 +14,33 @@ public final class PersonalizerError {
     /*
      * Error Codes returned by Personalizer
      */
+    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private PersonalizerErrorCode code;
 
     /*
      * A message explaining the error reported by the service.
      */
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Error source element.
      */
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported
      * error.
      */
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<PersonalizerError> details;
 
     /*
      * An object containing more specific information than the parent object
      * about the error.
      */
+    @JsonProperty(value = "innerError")
     private InternalError innerError;
 
     /**
@@ -47,34 +53,12 @@ public final class PersonalizerError {
     }
 
     /**
-     * Set the code property: Error Codes returned by Personalizer.
-     *
-     * @param code the code value to set.
-     * @return the PersonalizerError object itself.
-     */
-    public PersonalizerError setCode(PersonalizerErrorCode code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: A message explaining the error reported by the service.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: A message explaining the error reported by the service.
-     *
-     * @param message the message value to set.
-     * @return the PersonalizerError object itself.
-     */
-    public PersonalizerError setMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     /**
@@ -87,34 +71,12 @@ public final class PersonalizerError {
     }
 
     /**
-     * Set the target property: Error source element.
-     *
-     * @param target the target value to set.
-     * @return the PersonalizerError object itself.
-     */
-    public PersonalizerError setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
      * Get the details property: An array of details about specific errors that led to this reported error.
      *
      * @return the details value.
      */
     public List<PersonalizerError> getDetails() {
         return this.details;
-    }
-
-    /**
-     * Set the details property: An array of details about specific errors that led to this reported error.
-     *
-     * @param details the details value to set.
-     * @return the PersonalizerError object itself.
-     */
-    public PersonalizerError setDetails(List<PersonalizerError> details) {
-        this.details = details;
-        return this;
     }
 
     /**

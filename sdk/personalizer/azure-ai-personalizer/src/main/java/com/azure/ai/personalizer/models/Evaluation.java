@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,56 +15,67 @@ public final class Evaluation {
     /*
      * The ID of the evaluation.
      */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the evaluation.
      */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The start time of the evaluation.
      */
+    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
+    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The ID of the job processing the evaluation.
      */
+    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * The status of the job processing the evaluation.
      */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EvaluationJobStatus status;
 
     /*
      * The results of the evaluation.
      */
+    @JsonProperty(value = "policyResults")
     private List<PolicyResult> policyResults;
 
     /*
      * Feature Importance.
      */
+    @JsonProperty(value = "featureImportance")
     private List<List<String>> featureImportance;
 
     /*
      * Evaluation type (manual or through Automatic Optimization).
      */
+    @JsonProperty(value = "evaluationType")
     private EvaluationType evaluationType;
 
     /*
      * Thr optimal policy.
      */
+    @JsonProperty(value = "optimalPolicy")
     private String optimalPolicy;
 
     /*
      * Creation time.
      */
+    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /**

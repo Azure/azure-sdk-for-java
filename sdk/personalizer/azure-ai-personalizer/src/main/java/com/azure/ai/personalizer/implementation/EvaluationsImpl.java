@@ -4,10 +4,10 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
-import com.azure.ai.personalizer.implementation.models.Evaluation;
-import com.azure.ai.personalizer.implementation.models.EvaluationContract;
-import com.azure.ai.personalizer.implementation.models.EvaluationsCreateHeaders;
+import com.azure.ai.personalizer.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.Evaluation;
+import com.azure.ai.personalizer.models.EvaluationContract;
+import com.azure.ai.personalizer.models.EvaluationsCreateHeaders;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

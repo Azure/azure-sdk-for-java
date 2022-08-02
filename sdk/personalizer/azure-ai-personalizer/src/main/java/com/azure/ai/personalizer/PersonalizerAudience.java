@@ -9,9 +9,6 @@ import java.util.Collection;
 
 /** Defines values for PersonalizerAudience. */
 public class PersonalizerAudience extends ExpandableStringEnum<PersonalizerAudience> {
-    /** Static value AZURE_RESOURCE_MANAGER_CHINA for PersonalizerAudience. */
-    public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://cognitiveservices.azure.cn");
-
     /** Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for PersonalizerAudience. */
     public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_US_GOVERNMENT = fromString("https://cognitiveservices.azure.us");
 
