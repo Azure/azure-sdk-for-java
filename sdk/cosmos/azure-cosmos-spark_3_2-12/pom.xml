@@ -612,6 +612,10 @@
                       <shadedPattern>${shadingPrefix}.com.microsoft.azure</shadedPattern>
                     </relocation>
                     <relocation>
+                      <pattern>com.microsoft.applicationinsights</pattern>
+                      <shadedPattern>${shadingPrefix}.com.microsoft.applicationinsights</shadedPattern>
+                    </relocation>
+                    <relocation>
                       <pattern>com.google</pattern>
                       <shadedPattern>${shadingPrefix}.com.google</shadedPattern>
                     </relocation>
