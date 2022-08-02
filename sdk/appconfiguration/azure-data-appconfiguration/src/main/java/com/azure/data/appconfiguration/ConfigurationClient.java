@@ -12,8 +12,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.data.appconfiguration.implementation.ConfigurationService;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -41,18 +41,23 @@ import java.time.OffsetDateTime;
  *
  * @see ConfigurationClientBuilder
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, serviceInterfaces = ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class,
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationService.class)
 public final class ConfigurationClient {
-    private final ConfigurationAsyncClient client;
+    private final ConfigurationClientImpl serviceClient;
+    private final SyncTokenPolicy syncTokenPolicy;
 
     /**
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param client The {@link ConfigurationAsyncClient} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
+     * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
+     * service requests receive up-to-date values.
      */
-    ConfigurationClient(ConfigurationAsyncClient client) {
-        this.client = client;
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+        this.serviceClient = serviceClient;
+        this.syncTokenPolicy = syncTokenPolicy;
     }
 
     /**
@@ -156,7 +161,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               Context context) {
-        return client.addConfigurationSetting(setting, context).block();
+        return serviceClient.addConfigurationSettingWithResponse(setting, context);
     }
 
     /**
@@ -291,7 +296,7 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               boolean ifUnchanged,
                                                                               Context context) {
-        return client.setConfigurationSetting(setting, ifUnchanged, context).block();
+        return serviceClient.setConfigurationSettingWithResponse(setting, ifUnchanged, context);
     }
 
     /**
@@ -350,9 +355,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return client.getConfigurationSetting(
+        return serviceClient.getConfigurationSettingWithResponse(
             new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE)
-            .flatMap(FluxUtil::toMono).block();
+            .getValue();
     }
 
     /**
@@ -428,7 +433,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
+        return serviceClient.getConfigurationSettingWithResponse(setting, acceptDateTime, ifChanged, context);
     }
 
     /**
@@ -538,7 +543,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        return client.deleteConfigurationSetting(setting, ifUnchanged, context).block();
+        return serviceClient.deleteConfigurationSettingWithResponse(setting, ifUnchanged, context);
     }
 
     /**
@@ -670,7 +675,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
                                                                   Context context) {
-        return client.setReadOnly(setting, isReadOnly, context).block();
+        return serviceClient.setReadOnlyWithResponse(setting, isReadOnly, context);
     }
 
     /**
@@ -726,7 +731,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listConfigurationSettings(selector, context));
+        return new PagedIterable<>(serviceClient.listConfigurationSettingsAsync(selector, context));
     }
 
     /**
@@ -795,7 +800,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listRevisions(selector, context));
+        return new PagedIterable<>(serviceClient.listRevisionsAsync(selector, context));
     }
 
     /**
@@ -805,6 +810,6 @@ public final class ConfigurationClient {
      * @throws NullPointerException if the given token is null.
      */
     public void updateSyncToken(String token) {
-        client.updateSyncToken(token);
+        syncTokenPolicy.updateSyncToken(token);
     }
 }

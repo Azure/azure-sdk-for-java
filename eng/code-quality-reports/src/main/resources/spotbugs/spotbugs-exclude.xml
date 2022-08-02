@@ -1252,7 +1252,13 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.implementation.AutoCheckpointer"/>
+    <Class name="com.azure.cosmos.implementation.changefeed.incremental.AutoCheckpointer"/>
+    <Field name="processedDocCount"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.fullfidelity.AutoCheckpointer"/>
     <Field name="processedDocCount"/>
     <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>
@@ -2789,5 +2795,21 @@
   <Match>
     <Class name="com.azure.xml.DefaultXmlReader"/>
     <Bug pattern="XXE_XMLSTREAMREADER"/>
+  </Match>
+
+  <!-- Non Shipped code -->
+  <Match>
+    <Or>
+      <Package name="~com\.azure\.redisson.*"/>
+      <Package name="~com\.azure\.lettuce.*"/>
+      <Package name="~com\.azure\.jedis.*"/>
+    </Or>
+    <Bug pattern="UL_UNRELEASED_LOCK_EXCEPTION_PATH,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+                  BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+                  UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+                  UPM_UNCALLED_PRIVATE_METHOD,
+                  DLS_DEAD_LOCAL_STORE,
+                  DM_STRING_TOSTRING"/>
   </Match>
 </FindBugsFilter>
