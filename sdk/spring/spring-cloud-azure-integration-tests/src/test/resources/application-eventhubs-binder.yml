@@ -2,11 +2,6 @@ spring:
   cloud:
     azure:
       eventhubs:
-        credential:
-          client-id: ${AZURE_SPRING_CLIENT_ID}
-          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
-        profile:
-          tenant-id: ${AZURE_SPRING_TENANT_ID}
         namespace: ${AZURE_EVENTHUBS_NAMESPACE}
         processor:
           checkpoint-store:
@@ -22,12 +17,3 @@ spring:
         producer:
           errorChannelEnabled: true
       default-binder: eventhubs
-logging:
-  level:
-    com.azure:
-      core:
-        amqp: WARN
-      messaging:
-        servicebus: WARN
-        eventhubs: WARN
-      identity: WARN
