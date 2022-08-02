@@ -38,10 +38,10 @@ jobs:
           python ./sdk/spring-3/scripts/compatibility_delete_version.py
         displayName: 'Remove unused version'
       - task: Maven@3
-        displayName: 'Run tests'
+        displayName: 'Run tests Spring 3 test'
         inputs:
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
-          mavenPomFile: sdk/spring/pom.xml
+          mavenPomFile: sdk/spring-3/pom.xml
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)

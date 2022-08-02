@@ -57,10 +57,10 @@ steps:
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
-    displayName: 'Run tests'
+    displayName: 'Run tests Spring3'
     inputs:
       mavenPomFile: pom.xml
-      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
+      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} -P${{parameters.BuildProfile}}'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
