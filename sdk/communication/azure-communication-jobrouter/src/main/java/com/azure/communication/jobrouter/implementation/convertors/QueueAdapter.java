@@ -23,8 +23,8 @@ public class QueueAdapter {
      */
     public static JobQueue convertCreateQueueOptionsToJobQueue(CreateQueueOptions createQueueOptions) {
         Map<String, LabelValue> labelValueMap = createQueueOptions.getLabels();
-        Map<String, Object> labels = labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
         return new JobQueue()
             .setName(createQueueOptions.getName())
             .setLabels(labels)
@@ -39,8 +39,8 @@ public class QueueAdapter {
      */
     public static JobQueue convertUpdateQueueOptionsToJobQueue(UpdateQueueOptions updateQueueOptions) {
         Map<String, LabelValue> labelValueMap = updateQueueOptions.getLabels();
-        Map<String, Object> labels = labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
         return new JobQueue()
             .setName(updateQueueOptions.getName())
             .setLabels(labels)

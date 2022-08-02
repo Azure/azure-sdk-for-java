@@ -24,8 +24,8 @@ public class WorkerAdapter {
      */
     public static RouterWorker convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
         Map<String, LabelValue> labelValueMap = createWorkerOptions.getLabels();
-        Map<String, Object> labels = labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
 
         Map<String, QueueAssignment> queueAssignmentsMap = createWorkerOptions.getQueueAssignments();
         Map<String, Object> queueAssignments = queueAssignmentsMap.entrySet().stream()
@@ -46,8 +46,8 @@ public class WorkerAdapter {
      */
     public static RouterWorker convertUpdateWorkerOptionsToRouterWorker(UpdateWorkerOptions updateWorkerOptions) {
         Map<String, LabelValue> labelValueMap = updateWorkerOptions.getLabels();
-        Map<String, Object> labels = labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
 
         Map<String, QueueAssignment> queueAssignmentsMap = updateWorkerOptions.getQueueAssignments();
         Map<String, Object> queueAssignments = queueAssignmentsMap.entrySet().stream()

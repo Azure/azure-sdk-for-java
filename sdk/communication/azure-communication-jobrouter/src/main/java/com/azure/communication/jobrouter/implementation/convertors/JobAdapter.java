@@ -23,8 +23,8 @@ public class JobAdapter {
      */
     public static RouterJob convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, LabelValue> labelValueMap = createJobOptions.getLabels();
-        Map<String, Object> labels = labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
         return new RouterJob()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
@@ -45,8 +45,8 @@ public class JobAdapter {
      */
     public static RouterJob convertUpdateJobOptionsToRouterJob(UpdateJobOptions updateJobOptions) {
         Map<String, LabelValue> labelValueMap = updateJobOptions.getLabels();
-        Map<String, Object> labels = labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
         return new RouterJob()
             .setChannelId(updateJobOptions.getChannelId())
             .setChannelReference(updateJobOptions.getChannelReference())

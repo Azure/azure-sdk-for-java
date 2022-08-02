@@ -46,7 +46,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobRouterLiveTests extends JobRouterClientTestBase {
-    private static final String JAVA_LIVE_TEST = "JAVA_LIVE_TEST";
+    private static final String JAVA_LIVE_TEST = "JAVA_LIVE_TESTS";
 
     private RouterClient routerClient;
 
