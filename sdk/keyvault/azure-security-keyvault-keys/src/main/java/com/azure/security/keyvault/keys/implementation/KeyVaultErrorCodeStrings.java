@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class KeyVaultErrorCodeStrings {
+public final class KeyVaultErrorCodeStrings {
     static final String ERROR_STRINGS_FILE_NAME = "kvErrorStrings.properties";
     private static Properties errorStrings;
 

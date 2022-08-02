@@ -120,7 +120,7 @@ public final class KeyClientBuilder implements
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL vaultUrl;
+    private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
@@ -184,7 +184,7 @@ public final class KeyClientBuilder implements
     private KeyClientImpl buildInnerClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
+        String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
             throw logger
@@ -195,7 +195,7 @@ public final class KeyClientBuilder implements
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new KeyClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
+            return new KeyClientImpl(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -262,7 +262,8 @@ public final class KeyClientBuilder implements
         }
 
         try {
-            this.vaultUrl = new URL(vaultUrl);
+            URL url = new URL(vaultUrl);
+            this.vaultUrl = url.toString();
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "The Azure Key Vault url is malformed.", ex));
@@ -484,7 +485,7 @@ public final class KeyClientBuilder implements
         return this;
     }
 
-    private URL getBuildEndpoint(Configuration configuration) {
+    private String getBuildEndpoint(Configuration configuration) {
         if (vaultUrl != null) {
             return vaultUrl;
         }
@@ -495,7 +496,8 @@ public final class KeyClientBuilder implements
         }
 
         try {
-            return new URL(configEndpoint);
+            URL url =  new URL(configEndpoint);
+            return url.toString();
         } catch (MalformedURLException ex) {
             return null;
         }

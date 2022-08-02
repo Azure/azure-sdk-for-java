@@ -52,7 +52,7 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * @see KeyClientBuilder
  * @see PagedIterable
  */
-@ServiceClient(builder = KeyClientBuilder.class)
+@ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyClient {
     private final KeyClientImpl keyClient;
 

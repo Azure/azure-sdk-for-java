@@ -810,7 +810,7 @@ public class KeyClientImpl {
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
-    public Mono<Response<KeyVaultKey>>importKeyWithResponseAsync(ImportKeyOptions importKeyOptions, Context context) {
+    public Mono<Response<KeyVaultKey>> importKeyWithResponseAsync(ImportKeyOptions importKeyOptions, Context context) {
         context = context == null ? Context.NONE : context;
         KeyImportRequestParameters parameters = validateAndCreateKeyImportRequestParameters(importKeyOptions);
 
@@ -1250,7 +1250,7 @@ public class KeyClientImpl {
                                                     String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions,
                                                                         Context context) {
         try {
-            KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name, version,
+            KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name,
                 targetAttestationToken, releaseKeyOptions);
 
             return service.releaseAsync(vaultUrl, name, version, keyServiceVersion.getVersion(), keyReleaseParameters,
@@ -1266,7 +1266,7 @@ public class KeyClientImpl {
     public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version,
                              String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions, Context context) {
         try {
-            KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name, version,
+            KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name,
                 targetAttestationToken, releaseKeyOptions);
             context = enableSyncRestProxy(context);
 
@@ -1277,7 +1277,7 @@ public class KeyClientImpl {
         }
     }
 
-    private KeyReleaseParameters validateAndCreateKeyReleaseParameters(String name, String version,
+    private KeyReleaseParameters validateAndCreateKeyReleaseParameters(String name,
                                                String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions) {
         if (CoreUtils.isNullOrEmpty(name)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty"));

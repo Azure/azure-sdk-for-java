@@ -61,7 +61,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see KeyClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = KeyClientBuilder.class, isAsync = true)
+@ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyAsyncClient {
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
