@@ -22,6 +22,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
@@ -50,6 +51,7 @@ public class RouterAdministrationClientBuilder implements ConfigurationTrait<Rou
     private AzureKeyCredential credential;
     private HttpPipeline httpPipeline;
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
+    private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private HttpLogOptions logOptions;
     private ClientOptions clientOptions;
@@ -180,6 +182,21 @@ public class RouterAdministrationClientBuilder implements ConfigurationTrait<Rou
     @Override
     public RouterAdministrationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpPipelinePolicy} that will attempt to retry requests when needed.
+     * <p>
+     * A default retry policy will be supplied if one isn't provided.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
+     * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
+     * @return The updated RouterAdministrationClientBuilder object.
+     */
+    public RouterAdministrationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
