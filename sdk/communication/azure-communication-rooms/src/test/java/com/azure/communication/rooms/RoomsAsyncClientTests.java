@@ -285,7 +285,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     }
 
     private RoomsAsyncClient setupAsyncClient(HttpClient httpClient, String testName) {
-        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient, RoomsServiceVersion.V2022_02_01_Preview);
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient, RoomsServiceVersion.V2022_02_01_PREVIEW);
         createUsers(httpClient);
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
