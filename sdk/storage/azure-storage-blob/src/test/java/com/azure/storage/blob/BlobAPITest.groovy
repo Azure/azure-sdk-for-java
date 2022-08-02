@@ -295,7 +295,6 @@ class BlobAPITest extends APISpec {
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
             .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()
