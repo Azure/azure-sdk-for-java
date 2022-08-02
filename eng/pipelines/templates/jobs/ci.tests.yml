@@ -52,6 +52,7 @@ parameters:
   - name: BuildProfile
     type: string
     default: 'default'
+
 jobs:
   - job: 'Test'
     dependsOn: ${{ parameters.DependsOn }}
@@ -99,3 +100,4 @@ jobs:
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          BuildProfile: ${{ parameters.BuildProfile }}

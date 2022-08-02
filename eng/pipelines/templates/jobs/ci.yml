@@ -399,3 +399,4 @@ jobs:
         AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        BuildProfile: ${{ parameters.BuildProfile }}
