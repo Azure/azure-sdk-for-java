@@ -1,13 +1,12 @@
 parameters:
   - name: DependsOn
     type: object
-  - name: ServiceDirectory
-    type: string
   - name: SDKType
     type: string
   - name: Artifacts
     type: object
     default: []
+    # JRS this is here for testing purposes
   - name: TestPipeline
     type: boolean
     default: false
@@ -17,9 +16,6 @@ parameters:
   - name: TargetDocRepoName
     type: string
     default: ''
-  - name: EnableIntegrationStage
-    type: boolean
-    default: true
   - name: UseEsrpRelease
     type: boolean
     # A different environment will be passed in for service directories that have
@@ -74,82 +70,10 @@ stages:
       dependsOn: Signing
       condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
       jobs:
-        - job: VerifyReleaseVersion
-          displayName: "Verify release versions"
-          condition: ne(variables['Skip.VersionVerification'], 'true')
-          variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
-          pool:
-            name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: MMSUbuntu20.04
-
-          steps:
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - '${{ parameters.ServiceDirectory }}'
-                  - '**/*.xml'
-                  - '!sdk/**/test-recordings'
-                  - '!sdk/**/session-records'
-
-            - task: UsePythonVersion@0
-              displayName: 'Use Python 3.6'
-              inputs:
-                versionSpec: '3.6'
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            # Do all the verifications for all the artifacts after the sparse-checkout
-            - pwsh: |
-                $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
-                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
-                foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
-                }
-              displayName: 'Verify artifact versions for release'
-
-            # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
-            # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
-            # validation, so omit uberJars from the artifacts list to verify.
-            - pwsh: |
-                $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
-                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
-                foreach($artifact in $ArtifactsList) {
-                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                }
-              displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
-
-            - ${{ each artifact in parameters.Artifacts }}:
-              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
-            # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
-            # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
-            # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
-            # select any artifacts to be released.
-            - task: PowerShell@2
-              displayName: Verify Release Set
-              inputs:
-                pwsh: true
-                filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
-                arguments: >
-                  -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                  -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
-
         - deployment: TagRepository
           displayName: "Create release tag"
           condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
           environment: ${{ parameters.Environment }}
-          dependsOn: VerifyReleaseVersion
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
@@ -267,10 +191,10 @@ stages:
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
                       Paths:
-                        - '${{ parameters.ServiceDirectory }}'
                         - '**/*.xml'
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
+                        - '**/*.md'
+                        - '!sdk/**/test-recordings/*'
+                        - '!sdk/**/session-records/*'
 
                   - task: UsePythonVersion@0
                     displayName: 'Use Python 3.6'
@@ -295,11 +219,11 @@ stages:
 
                   - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
                     parameters:
-                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
-                      CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} releases"
-                      PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} releases"
+                      PRBranchName: increment-package-version-patch-release-$(Build.BuildId)
+                      CommitMsg: "Increment package versions for patch releases"
+                      PRTitle: "Increment versions for patch releases"
                       PRLabels: "auto-merge"
-                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                      CloseAfterOpenForTesting: 'false'
 
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
@@ -327,8 +251,8 @@ stages:
                         - sdk
                         - common/perf-test-core
                         - .github/CODEOWNERS
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
+                        - '!sdk/**/test-recordings/*'
+                        - '!sdk/**/session-records/*'
                   - download: current
                     displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                     artifact: ${{parameters.ArtifactName}}
@@ -391,127 +315,3 @@ stages:
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
                           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
-
-  - ${{if ne(parameters.EnableIntegrationStage, false)}}:
-    - stage: Integration
-      dependsOn: Signing
-      jobs:
-      - job: PublishPackages
-        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
-        displayName: Publish package to daily feed
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - name: RepositoryUrl
-            value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
-
-        pool:
-          name: azsdk-pool-mms-win-2019-general
-          vmImage: windows-2019
-        steps:
-        - checkout: azure-sdk-build-tools
-          path: azure-sdk-build-tools
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            SkipDefaultCheckout: true
-            Repositories:
-              - Name: Azure/azure-sdk-for-java
-                Commitish: $(Build.SourceVersion)
-                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-
-        - download: current
-          displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-          artifact: ${{parameters.ArtifactName}}-signed
-        - pwsh: |
-            # For safety default to publishing to the private feed.
-            # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
-            if ('$(Build.Repository.Name)' -eq 'Azure/azure-sdk-for-java') {
-              # Publish to the public feed
-              # Publish to https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-              echo "##vso[task.setvariable variable=RepositoryUrl]https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
-              echo "Using Java Public Dev Feed"
-            } else {
-              echo "Using Java Private Dev Feed"
-            }
-          displayName: Setup TargetFeed
-
-        - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-
-        - ${{ each artifact in parameters.Artifacts }}:
-          - ${{if ne(artifact.skipPublishDevFeed, 'true')}}:
-            - template: /eng/pipelines/templates/steps/java-publishing.yml
-              parameters:
-                ArtifactID: ${{artifact.name}}
-                GroupID: ${{artifact.groupId}}
-                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                RepositoryUrl: $(RepositoryUrl)
-                Target: JavaDevFeed
-                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-            - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-              parameters:
-                ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
-                ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-
-      - job: PublishDocsToNightlyBranch
-        dependsOn: PublishPackages
-        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
-        pool:
-          name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml
-          - name: DocValidationImageId
-            value: azuresdkimages.azurecr.io/javarefautocr:latest
-        steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipDefaultCheckout: true
-              Paths:
-                - sdk/**/*.md
-                - .github/CODEOWNERS
-          - download: current
-            displayName: 'Download Artifacts'
-            artifact: ${{parameters.ArtifactName}}
-          - pwsh: |
-              Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
-            displayName: Show visible artifacts
-          # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
-          # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
-          - powershell: |
-              # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
-              Get-Command mvn
-              if (!(Test-Path '~/.m2/')) {
-                mkdir ~/.m2/
-              }
-              if (Test-Path '~/.m2/setting.xml') {
-                Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
-              }
-              Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
-            displayName: 'Configure mvn'
-            workingDirectory: $(Build.SourcesDirectory)
-
-          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-            parameters:
-              PackageInfoLocations:
-                - ${{ each artifact in parameters.Artifacts }}:
-                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-              WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: "azure-sdk"
-              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-              Language: 'java'
-              DailyDocsBuild: true
-              SparseCheckoutPaths:
-                - docs-ref-services/
-                - metadata/
-              DocValidationImageId: "$(DocValidationImageId)"
-
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                parameters:
-                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
-                  ArtifactName: ${{artifact.name}}
-                  TargetBranch: $(TargetBranchName)
-                  DocRepoLocation: $(DocRepoLocation)
-                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                  TargetDocRepoOwner: "azure-sdk"
