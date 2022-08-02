@@ -28,6 +28,7 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
         }
     }
 
+    // todo cache ?
     public TokenCredential get() {
         ApplicationContext context = getApplicationContext();
         Objects.requireNonNull(context);
@@ -37,6 +38,9 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+        if (globalApplicationContext == null) {
+            globalApplicationContext = applicationContext;
+        }
     }
 
     public static void setGlobalApplicationContext(ApplicationContext applicationContext) {

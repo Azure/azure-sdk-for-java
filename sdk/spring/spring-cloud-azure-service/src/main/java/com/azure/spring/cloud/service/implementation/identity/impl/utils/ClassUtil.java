@@ -1,7 +1,7 @@
 package com.azure.spring.cloud.service.implementation.identity.impl.utils;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
 
 import java.lang.reflect.Constructor;
@@ -10,9 +10,9 @@ import java.lang.reflect.InvocationTargetException;
 public class ClassUtil {
 
     private ClassUtil() {
-
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T instantiateClass(Class<T> clazz, Object... args) {
         try {
             // TODO not use this paramater class
@@ -32,7 +32,8 @@ public class ClassUtil {
         }
     }
 
-    public static <T> Class<T> getClass(String className, Class<TokenCredential> assignableClass) {
+    @SuppressWarnings("unchecked")
+    public static <T> Class<T> getClass(String className, Class<TokenCredentialProvider> assignableClass) {
         if (className != null && !className.isEmpty()) {
             try {
                 Class<?> clazz = Class.forName(className);

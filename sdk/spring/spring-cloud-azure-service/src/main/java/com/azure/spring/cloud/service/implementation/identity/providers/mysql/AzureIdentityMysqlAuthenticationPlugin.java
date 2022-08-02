@@ -47,6 +47,7 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
 
     @Override
     public void init(Protocol<NativePacketPayload> protocol) {
+        this.protocol = protocol;
         Properties properties = protocol.getPropertySet().exposeAsProperties();
         AuthProperty.SCOPES.setProperty(properties, "https://ossrdbms-aad.database.windows.net/.default");
         init(properties);

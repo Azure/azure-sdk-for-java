@@ -31,7 +31,7 @@ public class TokenCredentialProviders {
             options = new TokenCredentialProviderOptions();
         }
 
-        Class<? extends TokenCredentialProvider> clazz = ClassUtil.getClass(options.getTokenCredentialProviderClassName(), TokenCredential.class);
+        Class<? extends TokenCredentialProvider> clazz = ClassUtil.getClass(options.getTokenCredentialProviderClassName(), TokenCredentialProvider.class);
         if (clazz == null) {
             clazz = defaultProviderClass;
         }

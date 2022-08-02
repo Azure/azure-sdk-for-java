@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,11 @@ public class AzureJdbcAutoConfiguration {
     static JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor(
            AzureGlobalProperties azureGlobalProperties) {
         return new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
+    }
+
+    @Bean
+    SpringTokenCredentialProvider springTokenCredentialProvider() {
+        return new SpringTokenCredentialProvider();
     }
 
 }

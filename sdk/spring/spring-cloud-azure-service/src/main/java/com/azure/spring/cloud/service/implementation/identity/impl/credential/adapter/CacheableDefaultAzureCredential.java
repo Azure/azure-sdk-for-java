@@ -18,5 +18,4 @@ public class CacheableDefaultAzureCredential extends CacheableTokenCredentialAda
                 Descriptor.CLIENT_ID
         };
     }
-
 }

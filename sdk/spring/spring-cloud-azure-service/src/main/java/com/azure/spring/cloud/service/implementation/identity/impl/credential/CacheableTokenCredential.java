@@ -23,6 +23,7 @@ public class CacheableTokenCredential implements TokenCredential {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (delegate instanceof CacheKeyDescriptor) {
             String cacheKey = ((CacheKeyDescriptor<String, TokenRequestContext>) delegate).getCacheKey(request);

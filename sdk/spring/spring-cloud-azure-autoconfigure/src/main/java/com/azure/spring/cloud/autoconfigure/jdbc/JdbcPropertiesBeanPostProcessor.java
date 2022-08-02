@@ -112,7 +112,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         Map<String, String> result = new HashMap<>();
 
         // TODO TOKEN_CREDENTIAL_BEAN_NAME, TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME
-        // TODO CACHE_ENABLED
+        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider");
+        // TODO CACHE_ENABLED, can we do this?
+        AuthProperty.CACHE_ENABLED.setProperty(result, "true");
         AuthProperty.CLIENT_ID.setProperty(result, properties.getCredential().getClientId());
         AuthProperty.CLIENT_SECRET.setProperty(result, properties.getCredential().getClientSecret());
         AuthProperty.CLIENT_CERTIFICATE_PATH.setProperty(result, properties.getCredential().getClientCertificatePath());

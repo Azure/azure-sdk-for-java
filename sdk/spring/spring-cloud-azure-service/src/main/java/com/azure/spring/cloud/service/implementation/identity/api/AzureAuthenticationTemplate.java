@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class AzureAuthenticationTemplate {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureAuthenticationTemplate.class);
-    public static final String PROP_GET_ACCESS_TOKEN_TIMEOUT_IN_SECONDS = "azure.getAccessTokenTimeoutInSeconds";
 
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
 

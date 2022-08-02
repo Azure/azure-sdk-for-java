@@ -9,13 +9,13 @@ public final class JdbcPropertyConstants {
     }
 
     public static final String POSTGRES_DRIVER_CLASS_NAME = "org.postgresql.Driver";
-    public static final String POSTGRES_AUTH_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.autoconfigure.implementation.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin";
+    public static final String POSTGRES_AUTH_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.service.implementation.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin";
     public static final String PROPERTY_NAME_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME = "authenticationPluginClassName";
     public static final String PROPERTY_NAME_POSTGRESQL_SSL_MODE = "sslmode";
     public static final String PROPERTY_VALUE_POSTGRESQL_SSL_MODE = "require";
 
     public static final String MYSQL_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-    public static final String MYSQL_AUTH_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.autoconfigure.implementation.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin";
+    public static final String MYSQL_AUTH_PLUGIN_CLASS_NAME = "com.azure.spring.cloud.service.implementation.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin";
     public static final String PROPERTY_NAME_MYSQL_SSL_MODE = "sslMode";
     public static final String PROPERTY_VALUE_MYSQL_SSL_MODE = "REQUIRED";
     public static final String PROPERTY_NAME_MYSQL_USE_SSL = "useSSL";
