@@ -155,8 +155,10 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             .flatMap(binaryData -> PollingUtils.deserializeResponse(
                     binaryData, serializer, new TypeReference<PollResult>() { })
                 .map(pollResult -> {
-                    if (pollResult.getResourceLocation() != null) {
-                        pollingContext.setData(PollingConstants.RESOURCE_LOCATION, pollResult.getResourceLocation());
+                    final String resourceLocation = pollResult.getResourceLocation();
+                    if (resourceLocation != null) {
+                        pollingContext.setData(PollingConstants.RESOURCE_LOCATION,
+                            getAbsolutePath(resourceLocation, endpoint, LOGGER));
                     }
                     pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
                     return pollResult.getStatus();

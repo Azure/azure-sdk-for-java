@@ -18,6 +18,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,6 +31,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.function.Supplier;
 
+import static com.azure.core.util.polling.implementation.PollingConstants.LOCATION;
+import static com.azure.core.util.polling.implementation.PollingConstants.RESOURCE_LOCATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -259,8 +264,9 @@ public class PollingStrategyTests {
         assertEquals(1, activationCallCount[0]);
     }
 
-    @Test
-    public void operationLocationPollingStrategyRelativePath() {
+    @ParameterizedTest
+    @ValueSource(strings = {"Operation-Location", "resourceLocation"})
+    public void operationResourcePollingStrategyRelativePath(String headerName) {
         int[] activationCallCount = new int[1];
         activationCallCount[0] = 0;
         String endpointUrl = "http://localhost";
@@ -273,7 +279,7 @@ public class PollingStrategyTests {
             SimpleResponse<PollResult> response = new SimpleResponse<>(
                 new HttpRequest(HttpMethod.POST, "http://localhost/post"),
                 200,
-                new HttpHeaders().set("Operation-Location", mockPollRelativePath),
+                new HttpHeaders().set(headerName, mockPollRelativePath),
                 new PollResult("InProgress"));
             return Mono.just(response);
         }));
@@ -298,7 +304,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(),
-                endpointUrl, new DefaultJsonSerializer(), "Operation-Location", Context.NONE),
+                endpointUrl, new DefaultJsonSerializer(), headerName, Context.NONE),
             new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         // Verify
