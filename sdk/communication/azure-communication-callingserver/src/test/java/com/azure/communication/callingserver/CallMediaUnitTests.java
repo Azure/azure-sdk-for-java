@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.FileSource;
+import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -21,6 +22,8 @@ public class CallMediaUnitTests {
     private CallMedia callMedia;
     private FileSource playSource;
 
+    private PlayOptions playOptions;
+
     @BeforeEach
     public void setup() {
         CallConnection callConnection =
@@ -32,18 +35,22 @@ public class CallMediaUnitTests {
         playSource = new FileSource();
         playSource.setPlaySourceId("playSourceId");
         playSource.setUri("filePath");
+
+        playOptions = new PlayOptions()
+            .setLoop(false)
+            .setOperationContext("operationContext");
     }
 
     @Test
     public void playFileWithResponseTest() {
         Response<Void> response = callMedia.playWithResponse(playSource,
-            Collections.singletonList(new CommunicationUserIdentifier("id")), Context.NONE);
+            Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void playFileToAllWithResponseTest() {
-        Response<Void> response = callMedia.playAllWithResponse(playSource, Context.NONE);
+        Response<Void> response = callMedia.playAllWithResponse(playSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 

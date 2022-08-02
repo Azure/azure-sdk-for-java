@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.FileSource;
+import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,8 @@ public class CallMediaAsyncUnitTests {
     private CallMediaAsync callMedia;
     private FileSource playSource;
 
+    private PlayOptions playOptions;
+
     @BeforeEach
     public void setup() {
         CallConnectionAsync callConnection =
@@ -32,13 +35,17 @@ public class CallMediaAsyncUnitTests {
         playSource = new FileSource();
         playSource.setPlaySourceId("playSourceId");
         playSource.setUri("filePath");
+
+        playOptions = new PlayOptions()
+            .setLoop(false)
+            .setOperationContext("operationContext");
     }
 
     @Test
     public void playFileWithResponseTest() {
         StepVerifier.create(
             callMedia.playWithResponse(playSource,
-                Collections.singletonList(new CommunicationUserIdentifier("id")), Context.NONE))
+                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -46,7 +53,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playAllWithResponse(playSource, Context.NONE))
+                callMedia.playAllWithResponse(playSource, playOptions, Context.NONE))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }

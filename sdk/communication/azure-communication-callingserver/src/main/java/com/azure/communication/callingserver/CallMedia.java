@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.callingserver.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -54,6 +55,7 @@ public class CallMedia {
      *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to.
+     * @param options play options.
      * @param context A {@link Context} representing the request context.
      * @return Response for successful play request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -61,23 +63,24 @@ public class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                           Context context) {
-        return callMediaAsync.playWithResponseInternal(playSource, playTo, context).block();
+                                           PlayOptions options, Context context) {
+        return callMediaAsync.playWithResponseInternal(playSource, playTo, options, context).block();
     }
 
     /**
      * PlayAllWithResponse
      *
      * @param playSource A {@link PlaySource} representing the source to play.
+     * @param options play options.
      * @param context A {@link Context} representing the request context.
      * @return Response for successful playAll request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playAllWithResponse(PlaySource playSource, Context context) {
+    public Response<Void> playAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
         return callMediaAsync
-            .playWithResponseInternal(playSource, Collections.emptyList(), context)
+            .playWithResponseInternal(playSource, Collections.emptyList(), options, context)
             .block();
     }
 

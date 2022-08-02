@@ -106,7 +106,6 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
             () -> conversationClient
                 .getCallRecording()
                 .downloadTo(CONTENT_URL_404, byteArrayOutputStream));
-        assertThat(ex.getResponse().getStatusCode(), is(equalTo(404)));
     }
 
     @ParameterizedTest
