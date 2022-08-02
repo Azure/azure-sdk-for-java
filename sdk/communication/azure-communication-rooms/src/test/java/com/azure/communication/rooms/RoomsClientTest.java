@@ -60,6 +60,20 @@ public class RoomsClientTest extends RoomsTestBase {
         assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteRoomSync(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithFullOperation");
+        assertNotNull(roomsClient);
+        CommunicationRoom createCommunicationRoom = roomsClient.createRoom(VALID_FROM, VALID_UNTIL, RoomJoinPolicy.INVITE_ONLY, participants4);
+        assertHappyPath(createCommunicationRoom);
+        assertEquals(createCommunicationRoom.getParticipants().size(), 2);
+
+        String roomId = createCommunicationRoom.getRoomId();
+
+        // Test delete room without response
+        Void deleteResponse = roomsClient.deleteRoom(roomId);        
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
