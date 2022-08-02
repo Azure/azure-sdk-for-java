@@ -85,9 +85,9 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode -->
      * <pre>
-     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
+     *     = documentModelAdministrationClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE&#41;
      *     .getFinalResult&#40;&#41;;
      *
@@ -103,7 +103,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
@@ -112,12 +112,12 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
      * @throws HttpResponseException If building model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginBuildModel(
-        String trainingFilesUrl, DocumentModelBuildMode buildMode) {
-        return beginBuildModel(trainingFilesUrl, buildMode, null, Context.NONE);
+        String blobContainerUrl, DocumentModelBuildMode buildMode) {
+        return beginBuildModel(blobContainerUrl, buildMode, null, Context.NONE);
     }
 
     /**
@@ -132,14 +132,14 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context -->
      * <pre>
-     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;custom-model-id&quot;;
      * String prefix = &quot;Invoice&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
+     *     = documentModelAdministrationClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
@@ -163,7 +163,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
@@ -176,14 +176,14 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
      * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginBuildModel(
-        String trainingFilesUrl, DocumentModelBuildMode buildMode,
+        String blobContainerUrl, DocumentModelBuildMode buildMode,
         BuildModelOptions buildModelOptions,
         Context context) {
-        return client.beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, context)
+        return client.beginBuildModel(blobContainerUrl, buildMode, buildModelOptions, context)
             .getSyncPoller();
     }
 

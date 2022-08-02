@@ -45,9 +45,9 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void beginBuildModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+            = documentModelAdministrationClient.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE)
             .getFinalResult();
 
@@ -69,14 +69,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void beginBuildModelWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "custom-model-id";
         String prefix = "Invoice";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+            = documentModelAdministrationClient.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)

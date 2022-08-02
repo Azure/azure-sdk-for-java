@@ -62,8 +62,8 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void beginBuildModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        documentModelAdministrationAsyncClient.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE
             )
             // if polling operation completed, retrieve the final result.
@@ -88,12 +88,12 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void beginBuildModelWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "model-id";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
+        documentModelAdministrationAsyncClient.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setPrefix("Invoice")

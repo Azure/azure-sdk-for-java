@@ -40,10 +40,10 @@ public class BuildModelAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
-            client.beginBuildModel(trainingFilesUrl,
+            client.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")

@@ -4,9 +4,9 @@
 
 ### Features Added
 - Add a constructor to create an instance of `CopyAuthorization` model.
+- Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
 
 ### Breaking Changes
-- Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
 - Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
 - Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
 - Renamed `DocumentModelInfo` model to `DocumentModelSummary`
@@ -20,6 +20,7 @@
 - Renamed `DocTypeInfo` model to `DocumentTypeDetails`
 - Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
 - Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
+- Renamed `trainingFilesUrl` to `blobContainerUrl` in `beginBuildModel` method
 
 ### Bugs Fixed
 
