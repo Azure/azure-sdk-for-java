@@ -204,7 +204,7 @@ public final class ShareServiceClientBuilder implements
             .version(serviceVersion.getVersion())
             .buildClient();
 
-        return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion);
+        return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion, azureSasCredential);
     }
 
     /**
