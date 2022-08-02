@@ -51,12 +51,25 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
 service_directories_dict = {"spring": ["spring-3"]}
-multi_service_directory_prefix_list = ["spring3"]
+# { service directory name: (version tag prefix, group id, the artifact id name for service directory) }
+multi_service_directory_prefix_dict = {"spring-3": ("spring3_", "com.azure.spring", "spring-cloud-azure")}
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool,
                            service_directory: str):
     project_list_identifiers = project_list.split(',')
+
+    for sd in service_directories_dict.items():
+        if service_directory in sd[1]:
+            for pli in project_list_identifiers:
+                pli_list = pli.split('/')
+                sd_name = pli_list[pli_list.index('sdk') + 1]
+                if len(pli_list) == 3:
+                    artifact_id = multi_service_directory_prefix_dict[sd_name][2]
+                else:
+                    artifact_id = pli_list[pli_list.index('sdk') + 2]
+                pli_tag = multi_service_directory_prefix_dict[sd_name][0] + multi_service_directory_prefix_dict[sd_name][1] + ':' + artifact_id
+                project_list_identifiers[project_list_identifiers.index(pli)] = pli_tag
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
@@ -297,6 +310,7 @@ def resolve_dependent_project(pom_identifier: str, dependent_modules: Set[str], 
 # Function which resolves the dependencies of the project.
 def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[str], projects: Dict[str, Project]):
     if pom_identifier in projects:
+        print("Moary", pom_identifier)
         for dependency in projects[pom_identifier].dependencies:
             # Only continue if the project's dependencies haven't already been resolved.
             if not dependency in dependency_modules:
