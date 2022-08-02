@@ -132,7 +132,8 @@ if ($script:FoundError) {
 }
 
 $temp =  ConvertTo-Json @($sparseCheckoutDirectories | Sort-Object | Get-Unique) -Compress
-Write-Host "setting env variable SparseCheckoutDirectories = $temp"
+Write-Host "Moary debug ********** 2"
+Write-Host "setting env variable SparseCheckoutDirectories 2 = $temp"
 Write-Host "##vso[task.setvariable variable=SparseCheckoutDirectories;]$temp"
 $temp =  ConvertTo-Json @($serviceDirectories | Sort-Object | Get-Unique) -Compress
 Write-Host "setting env variable ServiceDirectories = $temp"

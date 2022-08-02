@@ -51,6 +51,7 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
 service_directories_dict = {"spring": ["spring-3"]}
+multi_service_directory_prefix_list = ["spring3"]
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool,
@@ -106,15 +107,15 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
         sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
         sparse_checkout_directories.add(sparse_checkout_directory)
 
-        path_list = p.directory_path.split(os.sep)
+        path_list = p.directory_path.split('/')
         if 'sdk' in path_list:
             sdk_idx = path_list.index('sdk')
             service_directory_cur = path_list[sdk_idx + 1]
             # multi service directory into sparse checkout set
             if service_directory_cur and service_directory_cur in service_directories_dict:
                 for sd in service_directories_dict[service_directory_cur]:
-                    path_list[sdk_idx] = sd
-                    sparse_checkout_directory_cur = '/'.join(path_list)
+                    path_list[sdk_idx + 1] = sd
+                    sparse_checkout_directory_cur = '/'.join(path_list[0:-1])
                     print("Moary debug sparse_checkout_directory_cur **********", sparse_checkout_directory_cur)
                     sparse_checkout_directories.add(sparse_checkout_directory_cur)
 
@@ -131,7 +132,7 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
     # output the SparseCheckoutDirectories environment variable
     sparse_checkout_paths = list(sorted(sparse_checkout_directories))
     print('Moary debug **********')
-    print('setting env variable SparseCheckoutDirectories = {}'.format(sparse_checkout_paths))
+    print('setting env variable SparseCheckoutDirectories 1 = {}'.format(sparse_checkout_paths))
     print('##vso[task.setvariable variable=SparseCheckoutDirectories;]{}'.format(json.dumps(sparse_checkout_paths)))
 
     # output the ServiceDirectories environment variable
@@ -236,18 +237,26 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
     # print("Moary debug **********1 ", pom_path)
     path_list = pom_path.split(os.sep)
     service_directory_cur = None
+    is_multi_service_directory = False
+    multi_service_directory_suffix = None
+    multi_service_directory_group_id = None
     if 'sdk' in path_list:
         service_directory_cur = path_list[path_list.index('sdk') + 1]
-    if service_directory_cur and "-" in service_directory_cur:
+    if service_directory_cur and "spring-experimental" != service_directory_cur and "-" in service_directory_cur:
         print("project_identifier", project_identifier)
-        project_identifier = service_directory_cur.replace('-', '') + "_" + project_identifier
+
+        multi_service_directory_group_id = project_identifier.split(':')[0]
+        sd_suffix = service_directory_cur.replace('-', '') + "_"
+        project_identifier = sd_suffix + project_identifier
         print("New project_identifier", project_identifier, directory_path, module_path, parent_pom)
+        is_multi_service_directory = True
+        multi_service_directory_suffix = sd_suffix
 
     if project_identifier in parent_pom_identifiers:
         return Project(project_identifier, directory_path, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
+    if not is_multi_service_directory and not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
@@ -264,7 +273,9 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
             continue
 
         dependency_version = get_dependency_version(dependency)
-
+        dep_group_id = dependency_identifier.split(':')[0]
+        if is_multi_service_directory and multi_service_directory_group_id and multi_service_directory_group_id == dep_group_id:
+            dependency_identifier = multi_service_directory_suffix + dependency_identifier
         if not artifact_identifier_to_version[dependency_identifier].matches_version(dependency_version, match_any_version):
             continue
 
@@ -298,8 +309,8 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
 def is_spring_child_pom(tree_root: ET.Element):
     group_id_node = element_find(tree_root, 'groupId')
     artifact_id_node = element_find(tree_root, 'artifactId')
-    return not group_id_node is None and group_id_node.text == 'com.azure.spring' \
-           and not artifact_id_node is None \
+    return group_id_node and group_id_node.text == 'com.azure.spring' \
+           and artifact_id_node \
            and artifact_id_node.text != 'spring-cloud-azure' \
            and artifact_id_node.text != 'spring-cloud-azure-experimental' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
 

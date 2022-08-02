@@ -69,7 +69,7 @@ steps:
   # everything using the latest source. It'll greedily set any service directories as it figures
   # out what libraries, their dependents and so on, that need to be in ClientFromSourcePom.xml
   - task: PythonScript@0
-    displayName: 'Generate FromSource POM and directories for sparse checkout'
+    displayName: 'Generate FromSource POM and directories for sparse checkout 2'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
       arguments: '--project-list $(ProjectList) --service-directory $(ServiceDirectory)'
