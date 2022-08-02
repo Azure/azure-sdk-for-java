@@ -126,13 +126,13 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     private void generateRawId() {
         if (!rawIdSet) {
             if (this.isAnonymous) {
-                this.setRawId("8:teamsvisitor:" + this.userId);
+                super.setRawId("8:teamsvisitor:" + this.userId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                this.setRawId("8:dod:" + this.userId);
+                super.setRawId("8:dod:" + this.userId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                this.setRawId("8:gcch:" + this.userId);
+                super.setRawId("8:gcch:" + this.userId);
             } else {
-                this.setRawId("8:orgid:" + this.userId);
+                super.setRawId("8:orgid:" + this.userId);
             }
         }
     }
