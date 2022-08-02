@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-test-servicebus-binder</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;spring3_com.azure.spring:spring-cloud-azure-test-servicebus-binder;current} -->
+  <version>2.0.0</version> <!-- {x-version-update;spring3_com.azure.spring:spring-cloud-azure-test-servicebus-binder;current} -->
   <url>https://microsoft.github.io/spring-cloud-azure</url>
   <developers>
     <developer>
