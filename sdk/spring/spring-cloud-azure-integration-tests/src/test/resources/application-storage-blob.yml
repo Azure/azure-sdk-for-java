@@ -6,5 +6,3 @@ spring:
       storage:
         blob:
           account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
-resource:
-  blob: azure-blob://blobcontainer/blob.txt
