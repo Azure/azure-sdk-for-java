@@ -20,7 +20,6 @@ import scala.collection.JavaConverters._
 private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
   var meterRegistry: Option[CompositeMeterRegistry] = None
   var executorId: Option[String] = None
-  var hostName: Option[String] = None
   var slf4JReporter : Option[Slf4jReporter] = None
 
   def addMeterRegistry
@@ -59,7 +58,6 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
   def registerDropwizardRegistry
   (
     executorId: String,
-    hostname: String,
     dropwizardMetricRegistry: MetricRegistry,
     slf4jReporterEnabled: Boolean,
     metricsCollectionIntervalInSeconds: Integer
@@ -67,7 +65,6 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
 
     if (Option(dropwizardMetricRegistry).isDefined) {
       CosmosClientMetrics.executorId = Some(executorId)
-      CosmosClientMetrics.hostName = Some(hostname)
 
       val dropwizardConfig = new DropwizardConfig() {
         override def get(key: String): String = null

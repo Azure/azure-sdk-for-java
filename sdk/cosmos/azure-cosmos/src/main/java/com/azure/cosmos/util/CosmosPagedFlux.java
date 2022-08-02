@@ -178,7 +178,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         AtomicReference<Instant> startTime = new AtomicReference<>();
         AtomicLong feedResponseConsumerLatencyInNanos = new AtomicLong(0);
-        TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
 
         Flux<FeedResponse<T>> result =
             wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions), context)
@@ -207,8 +206,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             .getConsistencyLevel();
                 }
 
+                TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
                 switch (signal.getType()) {
                     case ON_COMPLETE:
+
                         if (isTracerEnabled(tracerProvider)) {
                             tracerProvider.endSpan(signal, HttpConstants.StatusCodes.OK);
                         }
@@ -358,9 +359,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         break;
             }});
 
-        if (isTracerEnabled(tracerProvider)) {
+        if (isTracerEnabled(pagedFluxOptions.getTracerProvider())) {
             return result.contextWrite(TracerProvider.setContextInReactor(
-                tracerProvider.startSpan(
+                pagedFluxOptions.getTracerProvider().startSpan(
                     pagedFluxOptions.getTracerSpanName(),
                     pagedFluxOptions.getDatabaseId(),
                     pagedFluxOptions.getServiceEndpoint(),

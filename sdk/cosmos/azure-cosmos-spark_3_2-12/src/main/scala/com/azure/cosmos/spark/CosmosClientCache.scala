@@ -145,9 +145,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               val ctx = session.sparkContext
 
               if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
-                s"${CosmosClientMetrics.hostName}-${ctx.appName}"
+                s"${CosmosClientMetrics.executorId}-${ctx.appName}"
               } else {
-                s"$customApplicationNameSuffix-${CosmosClientMetrics.hostName}-${ctx.appName}"
+                s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
               }
             case None => customApplicationNameSuffix
           }

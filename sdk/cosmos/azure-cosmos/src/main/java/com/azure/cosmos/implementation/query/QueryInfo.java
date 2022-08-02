@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -219,6 +220,7 @@ public final class QueryInfo extends JsonSerializable {
             return endTimeUTC;
         }
 
+        @JsonIgnore
         public Duration getDuration() {
             if (startTimeUTC == null ||
                 endTimeUTC == null ||

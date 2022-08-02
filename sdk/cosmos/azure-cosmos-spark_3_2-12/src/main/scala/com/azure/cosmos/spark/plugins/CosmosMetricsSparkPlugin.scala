@@ -65,7 +65,6 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
       if (Option(dropWizardRegistry).isDefined) {
         this.meterRegistry = CosmosClientMetrics.registerDropwizardRegistry(
           pluginContext.executorID(),
-          pluginContext.hostname(),
           dropWizardRegistry,
           this.slf4jReporterEnabled,
           this.metricsCollectionIntervalInSeconds)
@@ -103,7 +102,6 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
         this.meterRegistry = CosmosClientMetrics
           .registerDropwizardRegistry(
             ctx.executorID(),
-            ctx.hostname(),
             dropWizardRegistry,
             slf4jReporterEnabled,
             metricsCollectionIntervalInSeconds)
