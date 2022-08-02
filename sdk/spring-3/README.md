@@ -12,7 +12,7 @@ To check out the project and build it from source, do the following:
 ```shell
 git clone git@github.com:Azure/azure-sdk-for-java.git
 cd azure-sdk-for-java
-mvn clean package -f sdk/spring/pom.xml -P dev
+mvn clean package -f sdk/spring-3/pom.xml -P dev
 ```
 
 You can use the following command to install jars into your local repository quickly:
@@ -30,7 +30,7 @@ mvn clean install \
   -Pdev \
   -T 4 \
   -ntp \
-  -f sdk/spring/pom.xml
+  -f sdk/spring-3/pom.xml
 ```
 
 If you are using PowerShell, please use the following command instead:
@@ -47,7 +47,7 @@ mvn clean install `
  -Pdev `
  -T 4 `
  -ntp `
- -f sdk/spring/pom.xml
+ -f sdk/spring-3/pom.xml
 ```
 
 

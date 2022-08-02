@@ -36,7 +36,7 @@ def get_spring_cloud_version(filepath):
 
 def main():
     change_to_repo_root_dir()
-    get_spring_cloud_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
+    get_spring_cloud_version("./sdk/spring-3/spring-cloud-azure-supported-spring.json")
 
 
 if __name__ == '__main__':

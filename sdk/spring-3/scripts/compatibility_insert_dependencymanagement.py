@@ -1,6 +1,6 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to insert dependency management, properties and repositories into ./sdk/spring/**/pom*.xml.
+# This script is used to insert dependency management, properties and repositories into ./sdk/spring-3/**/pom*.xml.
 #
 # Sample:
 # 1. python .\sdk\spring\scripts\compatibility_insert_dependencymanagement.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3

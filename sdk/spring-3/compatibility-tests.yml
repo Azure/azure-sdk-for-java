@@ -28,3 +28,5 @@ stages:
             - script: |
                 python ./sdk/spring-3/scripts/compatibility_update_supported_version_matrix_json.py
               displayName: 'update test version'
+          MatrixFilters:
+            - JavaTestVersion=^(?!1.8|1.11).*

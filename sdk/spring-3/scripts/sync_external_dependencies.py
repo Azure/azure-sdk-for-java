@@ -29,7 +29,7 @@ SKIP_IDS = [
 
 
 def get_spring_boot_managed_external_dependencies_file_name(spring_boot_version):
-    return 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
+    return 'sdk/spring-3/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
 
 
 def get_args():

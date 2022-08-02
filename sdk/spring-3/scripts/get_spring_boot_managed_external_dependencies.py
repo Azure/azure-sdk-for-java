@@ -53,7 +53,7 @@ def get_root_poms(spring_boot_dependencies_version, spring_cloud_dependencies_ve
 
 
 def get_spring_boot_managed_external_dependencies_file_name(spring_boot_dependencies_version):
-    return 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_dependencies_version)
+    return 'sdk/spring-3/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_dependencies_version)
 
 
 def main():

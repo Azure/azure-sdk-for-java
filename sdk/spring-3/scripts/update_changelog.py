@@ -1,6 +1,6 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to update changelog about Spring Boot and Spring Cloud dependencies versions in `/sdk/spring/CHANGELOG.md`.
+# This script is used to update changelog about Spring Boot and Spring Cloud dependencies versions in `/sdk/spring-3/CHANGELOG.md`.
 #
 # Sample:
 # 1. python .\sdk\spring\scripts\update_changelog.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3
@@ -16,7 +16,7 @@ import argparse
 from log import log
 
 
-CHANGELOG_FILE = 'sdk/spring/CHANGELOG.md'
+CHANGELOG_FILE = 'sdk/spring-3/CHANGELOG.md'
 
 
 def get_args():

@@ -1,6 +1,6 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to delete dependency version in ./sdk/spring/**/pom*.xml for compatibility check.
+# This script is used to delete dependency version in ./sdk/spring-3/**/pom*.xml for compatibility check.
 # Sample:
 # 1. python .\sdk\spring\scripts\compatibility_delete_version.py
 #
@@ -20,7 +20,7 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    find_all_poms_do_version_control("./sdk/spring")
+    find_all_poms_do_version_control("./sdk/spring-3")
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
@@ -68,7 +68,7 @@ def get_managed_file_name():
         lines = external_file.readlines()
         for line in lines:
             if "org.springframework.boot:spring-boot-dependencies;" in line:
-                return "sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt".format(line.split(";")[1].replace("\n", ""))
+                return "sdk/spring-3/scripts/spring_boot_{}_managed_external_dependencies.txt".format(line.split(";")[1].replace("\n", ""))
 
 
 if __name__ == '__main__':

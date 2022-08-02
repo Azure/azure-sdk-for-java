@@ -45,8 +45,8 @@ def main():
     start_time = time.time()
     change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    suppoerted_spring_boot_version = get_supported_spring_boot_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
-    update_supported_version_matrix_json_file("./sdk/spring/supported-version-matrix.json", suppoerted_spring_boot_version)
+    suppoerted_spring_boot_version = get_supported_spring_boot_version("./sdk/spring-3/spring-cloud-azure-supported-spring.json")
+    update_supported_version_matrix_json_file("./sdk/spring-3/supported-version-matrix.json", suppoerted_spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
