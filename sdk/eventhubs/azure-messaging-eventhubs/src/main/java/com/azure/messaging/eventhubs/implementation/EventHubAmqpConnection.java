@@ -29,10 +29,9 @@ public interface EventHubAmqpConnection extends AmqpConnection {
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
-     * @param clientIdentifier The identifier of client.
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions, String clientIdentifier);
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions);
 
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
@@ -42,9 +41,8 @@ public interface EventHubAmqpConnection extends AmqpConnection {
      * @param entityPath The remote address to connect to for the message broker.
      * @param eventPosition Position to set the receive link to.
      * @param options Consumer options to use when creating the link.
-     * @param clientIdentifier The identifier of client.
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
-        ReceiveOptions options, String clientIdentifier);
+        ReceiveOptions options);
 }

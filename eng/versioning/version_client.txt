@@ -372,7 +372,6 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 unreleased_com.azure:azure-core;1.31.0-beta.1
-unreleased_com.azure:azure-core-amqp;2.7.0-beta.1
 unreleased_com.azure:azure-core-test;1.11.0-beta.1
 unreleased_com.azure:azure-ai-formrecognizer;4.0.0-beta.6
 

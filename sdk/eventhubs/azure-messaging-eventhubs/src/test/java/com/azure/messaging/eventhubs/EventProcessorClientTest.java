@@ -120,7 +120,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -214,7 +213,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(100L);
@@ -276,7 +274,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -355,7 +352,6 @@ public class EventProcessorClientTest {
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
 
         when(consumer1.receiveFromPartition(argThat(arg -> identifiers.remove(arg)), eq(position), any()))
             .thenReturn(Mono.fromRunnable(() -> count.countDown())
@@ -418,7 +414,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(eq(consumerGroup), eq(prefetch)))
             .thenReturn(consumer1);
@@ -463,7 +458,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(eq(consumerGroup), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT)))
             .thenReturn(consumer1);
@@ -509,7 +503,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -553,7 +546,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -598,7 +590,6 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
-        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);

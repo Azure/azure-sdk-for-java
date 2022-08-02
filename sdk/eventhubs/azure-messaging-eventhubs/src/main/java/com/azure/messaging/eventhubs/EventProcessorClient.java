@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -89,7 +90,7 @@ public class EventProcessorClient {
         EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
 
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
-        this.identifier = eventHubAsyncClient.getIdentifier();
+        this.identifier = UUID.randomUUID().toString();
 
         Map<String, Object> loggingContext = new HashMap<>();
         loggingContext.put("eventProcessorId", identifier);
