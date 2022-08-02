@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -23,10 +23,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {
-    MultiServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
-    MultiServiceBusQueueAndTopicBinderIT.TestTopicConfig.class
-})
+@SpringBootTest
 @ActiveProfiles("servicebus-binder-multi")
 class MultiServiceBusQueueAndTopicBinderIT {
 
@@ -42,7 +39,7 @@ class MultiServiceBusQueueAndTopicBinderIT {
     @Autowired
     private Sinks.Many<Message<String>> manyTopic;
 
-    @EnableAutoConfiguration
+    @TestConfiguration
     static class TestQueueConfig {
 
         @Bean
@@ -68,7 +65,7 @@ class MultiServiceBusQueueAndTopicBinderIT {
         }
     }
 
-    @EnableAutoConfiguration
+    @TestConfiguration
     static class TestTopicConfig {
 
         @Bean

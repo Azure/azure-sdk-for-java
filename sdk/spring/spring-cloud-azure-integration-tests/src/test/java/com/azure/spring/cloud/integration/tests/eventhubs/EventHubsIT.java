@@ -17,14 +17,19 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 
-@SpringBootTest(classes = EventHubsIT.TestConfig.class)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.NONE,
+    properties = {
+        "spring.autoconfigure.exclude=org.springframework.cloud.stream.config.BindingServiceConfiguration"
+            + ",org.springframework.cloud.stream.function.FunctionConfiguration"
+})
 @ActiveProfiles("eventhubs")
 public class EventHubsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsIT.class);
@@ -42,7 +47,7 @@ public class EventHubsIT {
     @Autowired
     private BlobCheckpointStore checkpointStore;
 
-    @EnableAutoConfiguration
+    @TestConfiguration
     static class TestConfig {
         @Bean
         EventHubsRecordMessageListener messageListener() {

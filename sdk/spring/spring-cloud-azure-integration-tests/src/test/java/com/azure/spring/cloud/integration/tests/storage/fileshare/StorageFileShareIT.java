@@ -23,7 +23,7 @@ public class StorageFileShareIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileShareIT.class);
     private final String data = "sample-data";
 
-    @Value("${resource.file}")
+    @Value("azure-file://fileshare/fileshare.txt")
     private Resource storageFileResource;
 
     @Test

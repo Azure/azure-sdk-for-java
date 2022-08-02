@@ -3,7 +3,11 @@
 package com.azure.spring.cloud.integration.tests.servicebus;
 
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.servicebus.*;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
@@ -11,14 +15,19 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.CountDownLatch;
 
-@SpringBootTest(classes = ServiceBusIT.TestConfig.class)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.NONE,
+    properties = {
+        "spring.autoconfigure.exclude=org.springframework.cloud.stream.config.BindingServiceConfiguration"
+            + ",org.springframework.cloud.stream.function.FunctionConfiguration"
+    })
 @ActiveProfiles("servicebus")
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
@@ -35,7 +44,7 @@ public class ServiceBusIT {
     @Autowired
     private ServiceBusProcessorClient processorClient;
 
-    @EnableAutoConfiguration
+    @TestConfiguration
     static class TestConfig {
         @Bean
         ServiceBusRecordMessageListener messageListener() {

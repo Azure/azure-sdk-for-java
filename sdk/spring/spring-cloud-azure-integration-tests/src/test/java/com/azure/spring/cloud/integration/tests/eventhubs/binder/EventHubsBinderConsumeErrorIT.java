@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
@@ -25,7 +25,7 @@ import java.util.concurrent.Exchanger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@SpringBootTest(classes = EventHubsBinderConsumeErrorIT.TestConfig.class)
+@SpringBootTest
 @TestPropertySource(properties = {
     "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-message",
@@ -41,7 +41,7 @@ class EventHubsBinderConsumeErrorIT {
     @Autowired
     private Sinks.One<Message<String>> one;
 
-    @EnableAutoConfiguration
+    @TestConfiguration
     static class TestConfig {
 
         static final Exchanger<String> EXCHANGER = new Exchanger<>();

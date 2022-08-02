@@ -23,7 +23,7 @@ public class StorageBlobIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobIT.class);
     private final String data = "sample-data";
 
-    @Value("${resource.blob}")
+    @Value("azure-blob://blobcontainer/blob.txt")
     private Resource storageBlobResource;
 
     @Test
