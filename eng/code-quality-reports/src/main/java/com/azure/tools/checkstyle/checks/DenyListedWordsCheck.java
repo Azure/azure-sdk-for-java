@@ -15,25 +15,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Ensure that code is not using words or abbreviations that are blacklisted by this Checkstyle.
- * blacklistedWords: the words that have been blacklisted in the checkstyle.xml config file
- *
- * Prints out a message stating the location and the class, method or variable as well as the list
- * blacklisted words.
+ * Ensure that code is not using words or abbreviations that are deny listed by this Checkstyle. denyListedWords: the
+ * words that have been denied in the checkstyle.xml config file
+ * <p>
+ * Prints out a message stating the location and the class, method or variable as well as the list of deny listed words.
  */
-public class BlacklistedWordsCheck extends AbstractCheck {
-    private final Set<String> blacklistedWords = new HashSet<>();
+public class DenyListedWordsCheck extends AbstractCheck {
+    private final Set<String> denyListedWords = new HashSet<>();
 
     static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
         + "Camelcase standards for the following words: %s.";
 
     /**
      * Adds words that Classes, Methods and Variables that should follow Camelcasing standards
-     * @param blacklistedWords words that should follow normal Camelcasing standards
+     *
+     * @param denyListedWords words that should follow normal Camelcasing standards
      */
-    public final void setBlacklistedWords(String... blacklistedWords) {
-        if (blacklistedWords != null) {
-            Collections.addAll(this.blacklistedWords, blacklistedWords);
+    public final void setDenyListedWords(String... denyListedWords) {
+        if (denyListedWords != null) {
+            Collections.addAll(this.denyListedWords, denyListedWords);
         }
     }
 
@@ -49,7 +49,7 @@ public class BlacklistedWordsCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[] {TokenTypes.CLASS_DEF,
+        return new int[]{TokenTypes.CLASS_DEF,
             TokenTypes.METHOD_DEF,
             TokenTypes.VARIABLE_DEF};
     }
@@ -65,7 +65,7 @@ public class BlacklistedWordsCheck extends AbstractCheck {
                 }
 
                 final String tokenName = token.findFirstToken(TokenTypes.IDENT).getText();
-                if (!hasBlacklistedWords(tokenName)) {
+                if (!hasDenyListedWords(tokenName)) {
                     break;
                 }
 
@@ -74,7 +74,7 @@ public class BlacklistedWordsCheck extends AbstractCheck {
                     break;
                 }
 
-                log(token, String.format(ERROR_MESSAGE, tokenName, String.join(", ", this.blacklistedWords)));
+                log(token, String.format(ERROR_MESSAGE, tokenName, String.join(", ", this.denyListedWords)));
 
                 break;
             default:
@@ -98,13 +98,13 @@ public class BlacklistedWordsCheck extends AbstractCheck {
 
     /**
      * Gets the disallowed abbreviation contained in given String.
+     *
      * @param tokenName the given String.
-     * @return the disallowed abbreviation contained in given String as a
-     *         separate String.
+     * @return the disallowed abbreviation contained in given String as a separate String.
      */
-    private boolean hasBlacklistedWords(String tokenName) {
-        for (String blacklistedWord : blacklistedWords) {
-            if (tokenName.contains(blacklistedWord)) {
+    private boolean hasDenyListedWords(String tokenName) {
+        for (String denyListedWord : denyListedWords) {
+            if (tokenName.contains(denyListedWord)) {
                 return true;
             }
         }
