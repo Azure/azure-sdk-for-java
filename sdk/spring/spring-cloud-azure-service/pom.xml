@@ -104,6 +104,21 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- jdbc   -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.29</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.3.4</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
