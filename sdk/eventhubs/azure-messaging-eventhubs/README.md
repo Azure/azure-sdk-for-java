@@ -21,26 +21,17 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples] | [Troubles
 
 ## Table of contents
 
+- [Table of contents](#table-of-contents)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Include the package](#include-the-package)
-    - [Include the BOM file](#include-the-bom-file)
-    - [Include direct dependency](#include-direct-dependency)
   - [Authenticate the client](#authenticate-the-client)
-    - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
-    - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
-    - [Authorizing with DefaultAzureCredential](#authorizing-with-defaultazurecredential)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
   - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
-    - [Create an Event Hub producer and publish events](#create-an-event-hub-producer-and-publish-events)
-    - [Publish events using partition identifier](#publish-events-using-partition-identifier)
-    - [Publish events using partition key](#publish-events-using-partition-key)
   - [Consume events from an Event Hub partition](#consume-events-from-an-event-hub-partition)
-    - [Consume events with EventHubConsumerAsyncClient](#consume-events-with-eventhubconsumerasyncclient)
-    - [Consume events with EventHubConsumerClient](#consume-events-with-eventhubconsumerclient)
   - [Consume events using an EventProcessorClient](#consume-events-using-an-eventprocessorclient)
-- [Troubleshooting][troubleshooting]
+- [Troubleshooting](#troubleshooting)
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
 
@@ -94,7 +85,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.12.2</version>
+    <version>5.13.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
