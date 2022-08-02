@@ -13,7 +13,7 @@ import java.util.Map;
  * Request options to create a job.
  * Job: A unit of work to be routed.
  */
-public class CreateJobOptions {
+public final class CreateJobOptions {
     /**
      * The id of the job.
      */

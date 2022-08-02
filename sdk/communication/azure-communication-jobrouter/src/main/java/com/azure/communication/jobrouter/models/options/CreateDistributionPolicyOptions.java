@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
  *  DistributionPolicy: Policy governing how jobs are distributed to workers.
  * */
 @Fluent
-public class CreateDistributionPolicyOptions {
+public final class CreateDistributionPolicyOptions {
     /**
      * The unique identifier of the policy.
      */

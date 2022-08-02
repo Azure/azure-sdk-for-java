@@ -13,7 +13,7 @@ import java.util.Map;
  * Request options to create a worker.
  * Worker: An entity for jobs to be routed to.
  */
-public class CreateWorkerOptions {
+public final class CreateWorkerOptions {
     /**
      * The id property.
      */

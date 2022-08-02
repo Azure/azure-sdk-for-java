@@ -9,7 +9,7 @@ import com.azure.communication.jobrouter.models.DistributionMode;
  *  Request options to update a DistributionPolicy.
  *  DistributionPolicy: Policy governing how jobs are distributed to workers.
  * */
-public class UpdateDistributionPolicyOptions {
+public final class UpdateDistributionPolicyOptions {
     /**
      * The unique identifier of the policy.
      */

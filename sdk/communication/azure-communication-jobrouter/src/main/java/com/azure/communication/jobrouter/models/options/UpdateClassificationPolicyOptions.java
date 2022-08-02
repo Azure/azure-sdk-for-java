@@ -14,7 +14,7 @@ import java.util.List;
  * ClassificationPolicy: A container for the rules that govern how jobs are classified.
  */
 @Fluent
-public class UpdateClassificationPolicyOptions {
+public final class UpdateClassificationPolicyOptions {
     /**
      * Unique identifier of this policy.
      */

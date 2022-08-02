@@ -13,7 +13,7 @@ import java.util.Map;
  * Queue: A queue that can contain jobs to be routed.
  */
 @Fluent
-public class CreateQueueOptions {
+public final class CreateQueueOptions {
     /**
      * The Id of this queue
      */

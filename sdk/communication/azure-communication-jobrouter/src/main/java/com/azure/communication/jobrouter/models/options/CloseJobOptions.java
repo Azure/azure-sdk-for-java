@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
  * Request options to close a job.
  * Job: A unit of work to be routed.
  */
-public class CloseJobOptions {
+public final class CloseJobOptions {
 
     /**
      * id of job to close.

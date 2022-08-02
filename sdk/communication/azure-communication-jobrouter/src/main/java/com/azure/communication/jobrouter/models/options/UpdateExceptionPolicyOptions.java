@@ -13,7 +13,7 @@ import java.util.Map;
  * ExceptionPolicy: A policy that defines actions to execute when exception are triggered.
  */
 @Fluent
-public class UpdateExceptionPolicyOptions {
+public final class UpdateExceptionPolicyOptions {
     /**
      * The Id of the exception policy
      */

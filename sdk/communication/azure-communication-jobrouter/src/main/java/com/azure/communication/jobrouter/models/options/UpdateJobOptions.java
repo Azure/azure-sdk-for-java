@@ -13,7 +13,7 @@ import java.util.Map;
  * Request options to update a job.
  * Job: A unit of work to be routed.
  */
-public class UpdateJobOptions {
+public final class UpdateJobOptions {
     /**
      * The id of the job.
      */
