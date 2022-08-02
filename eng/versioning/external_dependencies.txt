@@ -398,7 +398,7 @@ spring3_io.micrometer:micrometer-core;1.10.0-M2
 spring3_io.micrometer:micrometer-registry-azure-monitor;1.10.0-M2
 spring3_io.micrometer:micrometer-registry-graphite;1.10.0-M2
 spring3_jakarta.servlet:jakarta.servlet-api;6.0.0
-spring3_jakarta.validation:jakarta.validation-api;3.0.1
+spring3_jakarta.validation:jakarta.validation-api;3.0.0
 spring3_jakarta.xml.bind:jakarta.xml.bind-api;3.0.1
 spring3_org.apache.kafka:kafka-clients;3.2.0
 spring3_org.apache.qpid:qpid-jms-client;2.0.0

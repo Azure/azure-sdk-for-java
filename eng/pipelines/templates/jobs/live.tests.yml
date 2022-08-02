@@ -22,6 +22,7 @@ parameters:
   TestOptions: $(TestOptions)
   AdditionalBuildOptions: $(AdditionalBuildOptions)
   TestParallelization: '1'
+  BuildProfile: 'default'
 
 jobs:
   - job:
@@ -91,6 +92,7 @@ jobs:
           ParallelTestPlayback: 'false'
           SkipAggregateReports: 'true'
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          BuildProfile: ${{ parameters.BuildProfile }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}

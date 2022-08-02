@@ -107,6 +107,9 @@ parameters:
 - name: LtsVersion
   type: string
   default: $(JavaTestVersion)
+- name: BuildProfile
+  type: string
+  default: 'default'
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
@@ -145,6 +148,7 @@ stages:
               TestGoals: ${{ parameters.TestGoals }}
               TestOptions: ${{ parameters.TestOptions }}
               AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+              BuildProfile: ${{ parameters.BuildProfile }}
 
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
