@@ -404,6 +404,14 @@
       "type": "string",
       "value": "[variables('azureServiceBusNamespaceName')]"
     },
+    "AZURE_SERVICE_BUS_ENTITY_NAME": {
+      "type": "string",
+      "value": "que001"
+    },
+    "AZURE_SERVICE_BUS_ENTITY_TYPE": {
+      "type": "string",
+      "value": "queue"
+    },
     "AZURE_SERVICE_BUS_NAMESPACE1": {
       "type": "string",
       "value": "[variables('azureServiceBusNamespaceName_1')]"
