@@ -16,10 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.concurrent.CountDownLatch;
+
 @SpringBootTest(classes = ServiceBusIT.TestConfig.class)
 @ActiveProfiles("servicebus")
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
+    private static CountDownLatch LATCH = new CountDownLatch(1);
+    private static String MESSAGE = "";
     private final String data = "service bus test";
 
     @Autowired
@@ -36,6 +40,8 @@ public class ServiceBusIT {
         @Bean
         ServiceBusRecordMessageListener messageListener() {
             return message -> {
+                MESSAGE = message.getMessage().getBody().toString();
+                LATCH.countDown();
             };
         }
 
@@ -47,7 +53,7 @@ public class ServiceBusIT {
     }
 
     @Test
-    public void testServiceBusOperation() {
+    public void testServiceBusOperation() throws InterruptedException {
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(data));
         senderClient.close();
@@ -58,7 +64,8 @@ public class ServiceBusIT {
         }
         processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
-        //TODO
+        LATCH.await();
+        Assertions.assertEquals(data, MESSAGE);
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
         LOGGER.info("ServiceBusIT end.");
