@@ -19,7 +19,7 @@ import java.util.List;
  * Client for rooms operations with Azure Communication Rooms Service
  */
 @ServiceClient(builder = RoomsClientBuilder.class)
-public class RoomsClient {
+public final class RoomsClient {
     private final RoomsAsyncClient roomsAsyncClient;
 
     RoomsClient(RoomsAsyncClient roomsAsyncClient) {
@@ -109,6 +109,16 @@ public class RoomsClient {
         return roomsAsyncClient.getRoomWithResponse(roomId, context).block();
     }
 
+    /**
+     * Delete an existing room.
+     *
+     * @param roomId The room Id.
+     * @return Response with status code only.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void deleteRoom(String roomId) {
+        return roomsAsyncClient.deleteRoom(roomId).block();
+    }
 
     /**
      * Delete an existing room.
@@ -204,8 +214,8 @@ public class RoomsClient {
      * @return Room Participants List
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ParticipantsCollection listParticipants(String roomId) {
-        return roomsAsyncClient.getRoomParticipants(roomId).block();
+    public ParticipantsCollection getParticipants(String roomId) {
+        return roomsAsyncClient.getParticipants(roomId).block();
     }
 
     /**
@@ -216,8 +226,8 @@ public class RoomsClient {
      * @return The Room Participants list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ParticipantsCollection> listParticipantsWithResponse(String roomId, Context context) {
-        return roomsAsyncClient.getRoomParticipantsWithResponse(roomId, context).block();
+    public Response<ParticipantsCollection> getParticipantsWithResponse(String roomId, Context context) {
+        return roomsAsyncClient.getParticipantsWithResponse(roomId, context).block();
     }
 
 }

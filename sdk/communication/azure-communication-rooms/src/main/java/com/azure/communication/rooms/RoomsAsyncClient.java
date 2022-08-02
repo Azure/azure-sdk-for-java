@@ -4,6 +4,7 @@
 package com.azure.communication.rooms;
 
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
+
 import com.azure.communication.rooms.implementation.RoomsImpl;
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
 import com.azure.communication.rooms.implementation.converters.RoomsErrorConverter;
@@ -28,6 +29,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * The Async client for create, update, get, delete room of Azure Communication Room Service.
  */
 @ServiceClient(builder = RoomsClientBuilder.class, isAsync = true)
-public class RoomsAsyncClient {
+public final class RoomsAsyncClient {
     private final RoomsImpl roomsClient;
     private final ClientLogger logger = new ClientLogger(RoomsAsyncClient.class);
 
@@ -224,6 +226,32 @@ public class RoomsAsyncClient {
         }
     }
 
+    
+    /**
+     * Delete an existing room.
+     *
+     * @param roomId The room Id.
+     * @return The response with status code.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRoom(String roomId) {
+        return deleteRoom(roomId, null);
+    }
+
+    Mono<Void> deleteRoom(String roomId, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            return this.roomsClient
+            .deleteRoomWithResponseAsync(roomId, context)
+            .flatMap((Response<Void> response) -> {
+                return Mono.empty();
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+   
+   
     /**
      * Delete a existing room.
      *
@@ -417,11 +445,11 @@ public class RoomsAsyncClient {
      * @return The existing room.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ParticipantsCollection> getRoomParticipants(String roomId) {
-        return getRoomParticipants(roomId, null);
+    public Mono<ParticipantsCollection> getParticipants(String roomId) {
+        return getParticipants(roomId, null);
     }
 
-    Mono<ParticipantsCollection> getRoomParticipants(String roomId, Context context) {
+    Mono<ParticipantsCollection> getParticipants(String roomId, Context context) {
 
         context = context == null ? Context.NONE : context;
         try {
@@ -445,11 +473,11 @@ public class RoomsAsyncClient {
      * @return The existing room.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ParticipantsCollection>> getRoomParticipantsWithResponse(String roomId) {
-        return getRoomParticipantsWithResponse(roomId, null);
+    public Mono<Response<ParticipantsCollection>> getParticipantsWithResponse(String roomId) {
+        return getParticipantsWithResponse(roomId, null);
     }
 
-    Mono<Response<ParticipantsCollection>> getRoomParticipantsWithResponse(String roomId, Context context) {
+    Mono<Response<ParticipantsCollection>> getParticipantsWithResponse(String roomId, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return this.roomsClient

@@ -216,7 +216,7 @@ public class ReadmeSamples {
 
 
         try {
-            ParticipantsCollection roomParticipants =  roomsClient.listParticipants(roomId);
+            ParticipantsCollection roomParticipants =  roomsClient.getParticipants(roomId);
             System.out.println("No. of Participants in room: " + roomParticipants.getParticipants().size());
         } catch (RuntimeException ex) {
             System.out.println(ex);
