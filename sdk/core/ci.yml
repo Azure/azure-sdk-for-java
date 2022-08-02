@@ -187,6 +187,7 @@ extends:
                   - AZURE_CORE_TEST_SUPPORTED_JACKSON_VERSION
                 GenerateVMJobs: true
             AdditionalParameters:
+              ServiceDirectory: core
               Artifacts:
                 - name: azure-core-jackson-tests
                   groupId: com.azure
@@ -206,6 +207,7 @@ extends:
                     - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
                   GenerateVMJobs: true
               AdditionalParameters:
+                ServiceDirectory: core
                 Artifacts:
                   - name: azure-core-jackson-tests
                     groupId: com.azure
