@@ -3,9 +3,12 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.http.policy.ExponentialBackoffOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.HttpClientOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -1426,6 +1429,8 @@ class DirectoryAPITests extends APISpec {
         def clientBuilder = new ShareServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()

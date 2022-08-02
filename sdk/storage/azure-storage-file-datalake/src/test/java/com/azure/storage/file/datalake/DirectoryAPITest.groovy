@@ -5,7 +5,9 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.HttpClientOptions
@@ -13,6 +15,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
@@ -3935,6 +3938,8 @@ class DirectoryAPITest extends APISpec {
         def clientBuilder = new DataLakeServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()

@@ -7,7 +7,9 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
@@ -50,6 +52,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -291,6 +294,8 @@ class BlobAPITest extends APISpec {
         def clientBuilder = new BlobServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()

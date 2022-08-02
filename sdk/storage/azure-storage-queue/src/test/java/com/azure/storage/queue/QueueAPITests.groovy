@@ -3,11 +3,14 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.http.policy.ExponentialBackoffOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.queue.models.PeekedMessageItem
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
@@ -907,6 +910,8 @@ class QueueAPITests extends APISpec {
         def clientBuilder = new QueueServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(0)))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()
