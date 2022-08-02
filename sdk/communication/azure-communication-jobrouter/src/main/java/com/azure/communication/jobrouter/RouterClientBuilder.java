@@ -26,6 +26,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -55,6 +56,24 @@ public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuild
     private RetryOptions retryOptions;
     private Configuration configuration;
     private CommunicationConnectionString connectionString;
+    private JobRouterServiceVersion serviceVersion;
+
+    /**
+     * Sets the {@link JobRouterServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
+     *
+     * @param version {@link JobRouterServiceVersion} of the service to be used when making requests.
+     * @return the updated RouterClientBuilder object
+     */
+    public RouterClientBuilder serviceVersion(JobRouterServiceVersion version) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
 
     /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
