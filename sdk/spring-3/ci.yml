@@ -490,5 +490,5 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterstreamservicebus }}
-    MatrixFilters:
-        - JavaTestVersion=^(!1.(8|9|11)).*
+#    MatrixFilters:
+#        - JavaTestVersion=^(!1.(8|9|11)).*
