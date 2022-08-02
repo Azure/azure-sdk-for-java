@@ -4,7 +4,6 @@
 
 ### Features Added
 
-- Added algorithm for mapping partition keys to partition ids.
 - Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
 
 ### Breaking Changes
@@ -37,6 +36,13 @@
 
 - Upgraded `azure-core` to `1.31.0`.
 - Upgraded `azure-core-amqp` to `2.7.0`.
+
+## 5.13.0-beta.1 (2022-08-01)
+
+### Features Added
+
+- Added algorithm for mapping partition keys to partition ids.
+- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
 
 ## 5.12.2 (2022-07-07)
 
