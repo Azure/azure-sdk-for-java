@@ -42,7 +42,7 @@ public final class CommunicationUserIdentifier extends CommunicationIdentifier {
      * @return CommunicationUserIdentifier object itself
      */
     @Override
-    public CommunicationUserIdentifier setRawId(String rawId) {
+    protected CommunicationUserIdentifier setRawId(String rawId) {
         super.setRawId(rawId);
         return this;
     }

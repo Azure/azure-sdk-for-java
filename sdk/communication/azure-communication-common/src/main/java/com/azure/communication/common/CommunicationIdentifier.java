@@ -66,7 +66,7 @@ public abstract class CommunicationIdentifier {
      * @param rawId full id of the identifier
      * @return CommunicationIdentifier object itself
      */
-    public CommunicationIdentifier setRawId(String rawId) {
+    protected CommunicationIdentifier setRawId(String rawId) {
         this.rawId = rawId;
         return this;
     }

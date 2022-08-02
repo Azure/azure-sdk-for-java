@@ -17,7 +17,7 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
-    public UnknownIdentifier(String id) {
+    protected UnknownIdentifier(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
             throw new IllegalArgumentException("The initialization parameter [id] cannot be null or empty.");
         }
