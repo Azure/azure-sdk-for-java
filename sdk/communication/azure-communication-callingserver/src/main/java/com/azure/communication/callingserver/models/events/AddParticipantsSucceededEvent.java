@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +35,7 @@ public final class AddParticipantsSucceededEvent implements CallingServerBaseEve
     /*
      * Participants added
      */
-    @JsonProperty(value = "participants")
+    @JsonIgnore
     private final List<CommunicationIdentifier> participants;
 
     /*
