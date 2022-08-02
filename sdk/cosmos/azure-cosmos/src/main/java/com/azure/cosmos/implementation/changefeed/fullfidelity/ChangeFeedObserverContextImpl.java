@@ -17,13 +17,13 @@ import reactor.core.publisher.Mono;
  */
 class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     private final PartitionCheckpointer checkpointer;
-    private final String partitionKeyRangeId;
+    private final String leaseToken;
     private final FeedResponse<ChangeFeedProcessorItem> feedResponse;
     private final ChangeFeedState continuationState;
 
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
-        this.partitionKeyRangeId = leaseToken;
+        this.leaseToken = leaseToken;
         this.checkpointer = null;
         this.feedResponse = null;
         this.continuationState = null;
@@ -33,7 +33,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
                                          FeedResponse<ChangeFeedProcessorItem> feedResponse,
                                          ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
-        this.partitionKeyRangeId = leaseToken;
+        this.leaseToken = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;
         this.continuationState = continuationState;
@@ -54,11 +54,11 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     }
 
     /**
-     * @return the id of the partition for the current event.
+     * @return the lease token.
      */
     @Override
-    public String getPartitionKeyRangeId() {
-        return this.partitionKeyRangeId;
+    public String getLeaseToken() {
+        return this.leaseToken;
     }
 
     /**

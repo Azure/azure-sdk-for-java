@@ -60,6 +60,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
+//        logger.info("Creating missing leases now");
         return this.enumPartitionKeyRanges()
                    .collectList()
                    .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
@@ -152,24 +153,46 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      * @return a deferred computation of this call.
      */
     private Flux<Lease> createLeases(List<PartitionKeyRange> partitionKeyRanges) {
+//        logger.info("Creating missing leases for partition key ranges : {}, with size {}", partitionKeyRanges, partitionKeyRanges.size());
         return this.leaseContainer
             .getAllLeases()
-            .flatMap(lease -> {
+            //  collecting this as a list is important.
+            //  when initializing, all leases will return empty list.
+            .collectList()
+            .flatMapMany(leaseList -> {
+//                logger.info("lease list size is : {}", leaseList.size());
                 return Flux.fromIterable(partitionKeyRanges)
-                           .filter(pkRange -> {
-                               Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
-                               //   TODO:(kuthapar) - check this logic
-                               if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
-                                   //  This lease exists, no need to create one for this pkRange
+                           .flatMap(pkRange -> {
+//                               logger.info("pk range is : {}", pkRange);
+                               // check if there are epk based leases for the partitionKeyRange
+                               // If there is at least one, then we assume there are others
+                               // that cover the rest the full partition range
+                               // based on the fact that the lease store was always
+                               // initialized for the full collection
+                               // TODO: Annie: what if some epkRange did not create successfully?
+                               boolean anyMatch = leaseList.stream().anyMatch(lease -> {
+                                   Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
+                                   //   TODO:(kuthapar) - check this logic
+                                   if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
+//                                       logger.info("Filtering out partition key range : {} with epk range {}", pkRange, epkRange);
+                                       //  This lease exists, no need to create one for this pkRange
+                                       return true;
+                                   }
+//                                   logger.info("Creating lease for partition key range : {} with epk range {}", pkRange, epkRange);
                                    return false;
+                               });
+                               //   If there is no match, it means leases don't exist for these pkranges.
+                               if (!anyMatch) {
+//                                   logger.info("None matched the predicate");
+                                   return Mono.just(pkRange);
                                }
-                               return true;
-                           });
-            })
-            .flatMap(pkRange -> {
-                FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
-                logger.info("Creating lease for pkRange : {}", pkRange);
-                return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
-            }, this.degreeOfParallelism);
+//                               logger.info("Found at least one lease");
+                               return Mono.empty();
+                           }).flatMap(pkRange -> {
+                                FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+//                                logger.info("Creating lease for pkRange : {}", pkRange);
+                                return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
+                                }, this.degreeOfParallelism);
+            });
     }
 }

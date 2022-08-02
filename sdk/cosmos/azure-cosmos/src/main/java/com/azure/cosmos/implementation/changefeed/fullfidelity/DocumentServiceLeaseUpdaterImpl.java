@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.incremental.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
@@ -59,7 +58,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             Mono.just(this)
             .flatMap( value -> this.tryReplaceLease(cachedLease, itemId, partitionKey))
             .map(leaseDocument -> {
-                cachedLease.setServiceItemLease(ServiceItemLease.fromDocument(leaseDocument));
+                cachedLease.setServiceItemLease(ServiceItemLeaseV1.fromDocument(leaseDocument));
                 return cachedLease;
             })
             .hasElement()
@@ -82,7 +81,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     .map(cosmosItemResponse -> {
                         InternalObjectNode document =
                             BridgeInternal.getProperties(cosmosItemResponse);
-                        ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
+                        ServiceItemLeaseV1 serverLease = ServiceItemLeaseV1.fromDocument(document);
                         logger.info(
                             "Partition {} with lease token {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
                             cachedLease.getFeedRange(),

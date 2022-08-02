@@ -17,8 +17,6 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -246,18 +244,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
             });
     }
 
-    private FeedRangePartitionKeyRangeImpl getPkRangeFeedRangeFromStartState() {
-        final FeedRangeInternal feedRange = this.settings.getStartState().getFeedRange();
-        checkNotNull(feedRange, "FeedRange must not be null here.");
-
-        // TODO fabianm - move observer to FeedRange and remove this constraint for merge support
-        checkArgument(
-            feedRange instanceof FeedRangePartitionKeyRangeImpl,
-            "FeedRange must be a PkRangeId FeedRange when using Lease V1 contract.");
-
-        return (FeedRangePartitionKeyRangeImpl)feedRange;
-    }
-
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
@@ -268,7 +254,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState continuationState) {
 
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
-            this.getPkRangeFeedRangeFromStartState().getPartitionKeyRangeId(),
+            lease.getLeaseToken(),
             response,
             continuationState,
             this.checkpointer);

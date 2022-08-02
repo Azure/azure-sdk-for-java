@@ -191,7 +191,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
 
-                logger.info("Created lease for partition {}.", leaseToken);
+//                logger.info("Created lease for partition {}.", leaseToken);
 
                 return documentServiceLease
                     .withId(document.getId())

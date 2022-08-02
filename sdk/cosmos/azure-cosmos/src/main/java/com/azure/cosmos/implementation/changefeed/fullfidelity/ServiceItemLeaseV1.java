@@ -259,10 +259,17 @@ public class ServiceItemLeaseV1 implements Lease {
             .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED))
             .withOwner(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_OWNER))
             .withLeaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_LEASE_TOKEN))
-            .withContinuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_CONTINUATION_TOKEN))
-            .withVersion(LeaseVersion.fromVersionId(ModelBridgeInternal.getIntFromJsonSerializable(document, PROPERTY_NAME_VERSION)));
+            .withContinuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_CONTINUATION_TOKEN));
+
+        Integer versionId = ModelBridgeInternal.getIntFromJsonSerializable(document,
+            PROPERTY_NAME_VERSION);
+
+        if (versionId != null) {
+            lease.withVersion(LeaseVersion.fromVersionId(versionId));
+        }
 
         JsonNode feedRangeNode = (JsonNode) document.get(PROPERTY_NAME_FEED_RANGE);
+        //  TODO:(kuthapar) - we should make sure that lease token and feed range match (min and max).
         if (feedRangeNode != null) {
             try {
                 lease.withFeedRange(
