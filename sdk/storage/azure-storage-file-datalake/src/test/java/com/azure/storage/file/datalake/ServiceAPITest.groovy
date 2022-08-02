@@ -415,14 +415,15 @@ class ServiceAPITest extends APISpec {
         when:
         def response = serviceClient.listFileSystems()
 
+        // grab the FileSystemItem that matches the name of the file system with the encryption scope
         def list = new ArrayList<FileSystemItem>()
         for (FileSystemItem c : response) {
+            if (c.getName() == fsClient.getFileSystemName())
             list.add(c)
         }
 
-        // grab the second FileSystemItemProperties since that container is the one associated with the file
-        // system client
-        def properties = list.get(1).getProperties()
+        // grab the first FileSystemItemProperties from the populated list above
+        def properties = list.get(0).getProperties()
 
         then:
         properties.getEncryptionScope() == encryptionScopeString
