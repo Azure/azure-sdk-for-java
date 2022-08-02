@@ -241,7 +241,7 @@ public final class KeyClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new KeyClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
+        return new KeyClientImpl(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
