@@ -36,4 +36,25 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResult setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
 }

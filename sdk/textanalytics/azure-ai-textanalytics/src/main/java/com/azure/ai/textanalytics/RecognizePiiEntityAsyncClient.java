@@ -157,7 +157,7 @@ class RecognizePiiEntityAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextPiiEntitiesRecognitionInput()
                                .setParameters(
-                                   (PiiTaskParameters) new PiiTaskParameters()
+                                   new PiiTaskParameters()
                                                            .setDomain(PiiDomain.fromString(finalDomainFilter))
                                                            .setPiiCategories(
                                                                toCategoriesFilter(options.getCategoriesFilter()))

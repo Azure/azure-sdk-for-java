@@ -28,7 +28,7 @@ public final class DocumentModelDetails {
      */
     private OffsetDateTime createdOn;
 
-    private Map<String, DocTypeInfo> docTypes;
+    private Map<String, DocumentTypeDetails> documentTypes;
 
     /*
      * List of key-value tag attributes associated with the model.
@@ -79,13 +79,13 @@ public final class DocumentModelDetails {
      *
      * @return the docTypes value.
      */
-    public Map<String, DocTypeInfo> getDocTypes() {
-        return docTypes;
+    public Map<String, DocumentTypeDetails> getDocumentTypes() {
+        return documentTypes;
     }
 
-    void setDocTypes(
-        Map<String, DocTypeInfo> docTypes) {
-        this.docTypes = docTypes;
+    void setDocumentTypes(
+        Map<String, DocumentTypeDetails> documentTypes) {
+        this.documentTypes = documentTypes;
     }
 
     /**
@@ -119,8 +119,8 @@ public final class DocumentModelDetails {
             }
 
             @Override
-            public void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocTypeInfo> docTypes) {
-                documentModelDetails.setDocTypes(docTypes);
+            public void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocumentTypeDetails> docTypes) {
+                documentModelDetails.setDocumentTypes(docTypes);
             }
 
             @Override

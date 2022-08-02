@@ -501,9 +501,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
   <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
 
-  <!-- Code generation doesn't add a space between '{' and '}' when the class is empty. -->
-  <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>
-
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
   <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1002, 1006"/>
 
@@ -534,4 +531,8 @@ the main ServiceBusClientBuilder. -->
   <!-- azure-json doesn't have a dependency on azure-core -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.json..*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.json..*"/>
+
+  <!-- Star import is ok in impl class - it makes it easier to import all parent APIs, etc -->
+  <suppress checks="AvoidStarImport" files="com.azure.jedis.AzureJedisClient.java"/>
+
 </suppressions>

@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentTypeDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
@@ -32,7 +32,7 @@ public final class ModelOperationDetailsHelper {
 
         void setCreatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime createdOn);
 
-        void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes);
+        void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocumentTypeDetails> docTypes);
 
         void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError error);
 
@@ -70,7 +70,7 @@ public final class ModelOperationDetailsHelper {
         accessor.setCreatedOn(modelOperationDetails, createdOn);
     }
 
-    static void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes) {
+    static void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocumentTypeDetails> docTypes) {
         accessor.setDocTypes(modelOperationDetails, docTypes);
     }
 

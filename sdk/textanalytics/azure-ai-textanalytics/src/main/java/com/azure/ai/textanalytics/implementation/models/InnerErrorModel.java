@@ -39,8 +39,7 @@ public final class InnerErrorModel {
     private String target;
 
     /*
-     * An object containing more specific information than the current object
-     * about the error.
+     * An object containing more specific information than the current object about the error.
      */
     @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
