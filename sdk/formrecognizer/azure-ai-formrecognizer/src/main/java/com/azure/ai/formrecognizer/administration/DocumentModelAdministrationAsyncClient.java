@@ -185,7 +185,7 @@ public final class DocumentModelAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String blobContainerUrl,
                                                                                   DocumentModelBuildMode buildMode) {
-        return beginBuildModel(blobContainerUrl, buildMode, null);
+        return beginBuildModel(blobContainerUrl, buildMode, null, null);
     }
 
     /**
@@ -199,17 +199,18 @@ public final class DocumentModelAdministrationAsyncClient {
      * for information on building your own administration data set.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions -->
      * <pre>
      * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;model-id&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     * String prefix = &quot;Invoice&quot;;
      *
      * documentModelAdministrationAsyncClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE,
+     *         prefix,
      *         new BuildModelOptions&#40;&#41;
-     *             .setPrefix&#40;&quot;Invoice&quot;&#41;
      *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setTags&#40;attrs&#41;&#41;
@@ -229,7 +230,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *         &#125;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions -->
      *
      * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
@@ -237,6 +238,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentModelBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
+     * @param prefix case-sensitive prefix blob name prefix to filter documents for training.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
@@ -246,15 +248,17 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String blobContainerUrl,
-                                                                                  DocumentModelBuildMode buildMode,
-                                                                                  BuildModelOptions buildModelOptions) {
-        return beginBuildModel(blobContainerUrl, buildMode, buildModelOptions, Context.NONE);
+                                                                                     DocumentModelBuildMode buildMode,
+                                                                                     String prefix,
+                                                                                     BuildModelOptions buildModelOptions) {
+        return beginBuildModel(blobContainerUrl, buildMode, prefix, buildModelOptions, Context.NONE);
     }
 
     PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String blobContainerUrl,
-                                                                           DocumentModelBuildMode buildMode,
-                                                                           BuildModelOptions buildModelOptions,
-                                                                           Context context) {
+                                                                              DocumentModelBuildMode buildMode,
+                                                                              String prefix,
+                                                                              BuildModelOptions buildModelOptions,
+                                                                              Context context) {
 
         buildModelOptions =  buildModelOptions == null ? new BuildModelOptions() : buildModelOptions;
         String modelId = buildModelOptions.getModelId();
@@ -263,7 +267,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
         return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
-            buildModelActivationOperation(blobContainerUrl, buildMode, modelId, buildModelOptions, context),
+            buildModelActivationOperation(blobContainerUrl, buildMode, modelId, prefix, buildModelOptions, context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
@@ -929,7 +933,7 @@ public final class DocumentModelAdministrationAsyncClient {
     private Function<PollingContext<DocumentOperationResult>, Mono<DocumentOperationResult>>
         buildModelActivationOperation(
         String blobContainerUrl, DocumentModelBuildMode buildMode, String modelId,
-        BuildModelOptions buildModelOptions, Context context) {
+        String prefix, BuildModelOptions buildModelOptions, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(blobContainerUrl, "'blobContainerUrl' cannot be null.");
@@ -939,7 +943,7 @@ public final class DocumentModelAdministrationAsyncClient {
                         .fromString(buildMode.toString()))
                     .setAzureBlobSource(new AzureBlobContentSource()
                         .setContainerUrl(blobContainerUrl)
-                        .setPrefix(buildModelOptions.getPrefix()))
+                        .setPrefix(prefix))
                     .setDescription(buildModelOptions.getDescription())
                     .setTags(buildModelOptions.getTags());
 

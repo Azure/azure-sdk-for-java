@@ -21,6 +21,8 @@
 - Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
 - Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
 - Renamed `trainingFilesUrl` to `blobContainerUrl` in `beginBuildModel` method
+- Changed method `beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)` to `beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions)`
+- Removed `prefix` property on model `BuildModelOptions`
 
 ### Bugs Fixed
 

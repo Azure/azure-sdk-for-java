@@ -42,9 +42,10 @@ public class BuildModelAsync {
 
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String prefix = "{blob_name_prefix}";
         PollerFlux<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
             client.beginBuildModel(blobContainerUrl,
-                DocumentModelBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE, prefix,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("my custom model desc"));

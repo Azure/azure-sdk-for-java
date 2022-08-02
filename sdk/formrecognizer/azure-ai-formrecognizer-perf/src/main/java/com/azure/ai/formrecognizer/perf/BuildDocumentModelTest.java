@@ -34,7 +34,7 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
         SyncPoller<DocumentOperationResult, DocumentModelDetails>
             syncPoller = documentModelAdministrationAsyncClient
             .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
-                DocumentModelBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE, null,
                 new BuildModelOptions().setDescription("perf-training-model"))
             .getSyncPoller();
         modelId = syncPoller.getFinalResult().getModelId();
@@ -45,7 +45,7 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return documentModelAdministrationAsyncClient
             .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
-                DocumentModelBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE, null,
                 new BuildModelOptions().setDescription("perf-training-model"))
             .last()
             .flatMap(pollResponse -> {

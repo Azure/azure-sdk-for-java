@@ -134,6 +134,10 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         TestUtils.getErrorTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
+    void multipageTrainingRunner(Consumer<String> testRunner) {
+        TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
     private String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
