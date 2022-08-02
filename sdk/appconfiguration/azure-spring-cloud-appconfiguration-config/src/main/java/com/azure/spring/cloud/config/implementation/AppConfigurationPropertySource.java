@@ -92,7 +92,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private final AppConfigurationProperties appConfigurationProperties;
 
-    private final HashMap<String, KeyVaultClient> keyVaultClients;
+    private final Map<String, KeyVaultClient> keyVaultClients;
 
     private final ConfigurationClientWrapper clientWrapper;
 

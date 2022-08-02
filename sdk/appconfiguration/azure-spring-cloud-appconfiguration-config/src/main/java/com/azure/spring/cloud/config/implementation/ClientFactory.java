@@ -18,7 +18,7 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
  */
 public class ClientFactory {
 
-    private static final HashMap<String, ConnectionManager> CONNECTIONS = new HashMap<>();
+    private static final Map<String, ConnectionManager> CONNECTIONS = new HashMap<>();
 
     private final List<ConfigStore> configStores;
 
@@ -34,7 +34,7 @@ public class ClientFactory {
      */
     public ClientFactory(AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
         AppConfigurationCredentialProvider tokenCredentialProvider,
-        ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured) {
+        ConfigurationClientBuilderSetup clientProvider, boolean isDev, boolean isKeyVaultConfigured) {
         this.configStores = properties.getStores();
         if (CONNECTIONS.size() == 0) {
             for (ConfigStore store : properties.getStores()) {
