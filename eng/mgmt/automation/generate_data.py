@@ -23,7 +23,7 @@ DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
 YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
-def get_sdk_readme_abspath(config: dict, readme_file_path: str) -> Optional[str]:
+def get_or_update_sdk_readme(config: dict, readme_file_path: str) -> Optional[str]:
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     sdk_readme_abspath = None
@@ -88,7 +88,7 @@ def sdk_automation(config: dict) -> List[dict]:
     readme_file_path = readme_file_paths[0]
     logging.info('[RESOLVE] README from specification %s', readme_file_path)
 
-    sdk_readme_abspath = get_sdk_readme_abspath(config, readme_file_path)
+    sdk_readme_abspath = get_or_update_sdk_readme(config, readme_file_path)
 
     if sdk_readme_abspath:
         spec_readme_abspath = os.path.join(spec_root, readme_file_path)

@@ -13,7 +13,7 @@ os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import set_or_increase_version
 from generate_data import (
-    get_sdk_readme_abspath,
+    get_or_update_sdk_readme,
     sdk_automation_readme,
     update_readme,
 )
@@ -122,7 +122,7 @@ def codegen_sdk_automation(config: dict) -> List[dict]:
         return packages
 
     logging.info('[RESOLVE] README from specification %s', readme_file_path)
-    sdk_readme_abspath = get_sdk_readme_abspath(config, readme_file_path)
+    sdk_readme_abspath = get_or_update_sdk_readme(config, readme_file_path)
 
     if sdk_readme_abspath:
         spec_readme_abspath = os.path.join(spec_root, readme_file_path)
