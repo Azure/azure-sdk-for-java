@@ -13,6 +13,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -336,7 +337,7 @@ class DirectoryAPITest extends APISpec {
         def sas = getServiceClientBuilder(environment.primaryAccount.credential, environment.primaryAccount.dataLakeEndpoint)
             .encryptionScope(encryptionScopeString)
             .buildClient()
-            .generateAccountSas(sasValues)
+            .generateAccountSas(sasValues, new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true))
 
         def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
 
