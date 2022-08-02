@@ -71,20 +71,6 @@ public class ConnectionManager {
         return this.health;
     }
 
-    /**
-     * Returns a client.
-     * @return ConfiguraitonClient
-     */
-    String getCurrentClient() {
-        String currentClientEndpoint = currentReplica;
-
-        // This should always be reset after use. Any refresh event could trigger a check. Only ones that go through our
-        // code shouldn't try all replicas.
-        this.currentReplica = originEndpoint;
-
-        return currentClientEndpoint;
-    }
-
     void setCurrentClient(String replicaEndpoint) {
         this.currentReplica = replicaEndpoint;
     }
@@ -95,12 +81,20 @@ public class ConnectionManager {
     String getOriginEndpoint() {
         return originEndpoint;
     }
-
+    
     /**
      * Returns a client.
      * @return ConfiguraitonClient
      */
     List<AppConfigurationReplicaClient> getAvalibleClients() {
+        return getAvalibleClients(false);
+    }
+
+    /**
+     * Returns a client.
+     * @return ConfiguraitonClient
+     */
+    List<AppConfigurationReplicaClient> getAvalibleClients(Boolean useCurrent) {
         if (clients == null) {
             clients = clientBuilder.buildClients(configStore);
 
@@ -115,12 +109,16 @@ public class ConnectionManager {
         }
 
         List<AppConfigurationReplicaClient> avalibleClients = new ArrayList<>();
+        boolean foundCurrent = !useCurrent;
 
         if (client != null) {
             avalibleClients.add(client);
         } else if (clients.size() > 0) {
             for (AppConfigurationReplicaClient wrapper : clients) {
-                if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
+                if (wrapper.getEndpoint().equals(currentReplica)) {
+                    foundCurrent = true;
+                }
+                if (foundCurrent && wrapper.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + wrapper.getEndpoint());
                     avalibleClients.add(wrapper);
                 }
@@ -156,5 +154,14 @@ public class ConnectionManager {
                 break;
             }
         }
+    }
+    
+    /**
+     * Updates the sync token of the client. Only works if no replicas are being used.
+     * 
+     * @param syncToken App Configuraiton sync token
+     */
+    void updateSyncToken(String syncToken) {
+        client.updateSyncToken(syncToken);
     }
 }

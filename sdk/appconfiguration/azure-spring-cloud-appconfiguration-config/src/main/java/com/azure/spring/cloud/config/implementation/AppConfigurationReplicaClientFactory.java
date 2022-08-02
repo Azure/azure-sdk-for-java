@@ -45,6 +45,15 @@ public class AppConfigurationReplicaClientFactory {
     List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
         return CONNECTIONS.get(originEndpoint).getAvalibleClients();
     }
+    
+    /**
+     * Returns the current used endpoint for a given config store.
+     * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
+     * @return ConfigurationClient for accessing App Configuration
+     */
+    List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint, Boolean useCurrent) {
+        return CONNECTIONS.get(originEndpoint).getAvalibleClients(useCurrent);
+    }
 
     /**
      * Sets backoff time for the current client that is being used, and attempts to get a new one.
@@ -109,14 +118,14 @@ public class AppConfigurationReplicaClientFactory {
     void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
         CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
     }
-
-    /**
-     * Gets the current replica to connect to when refreshing configurations.
-     * @param originEndpoint Origin replica
-     * @return endpoint
-     */
-    String getCurrentConfigStoreClient(String originEndpoint) {
-        return CONNECTIONS.get(originEndpoint).getCurrentClient();
+    
+    void updateSyncToken(String originEndpoint, String syncToken) {
+        ConnectionManager manager = CONNECTIONS.get(originEndpoint);
+        if (manager.getAllEndpoints().size() > 1) {
+            // Sync Token is only used for stores without replicas
+            return;
+        }
+        manager.updateSyncToken(syncToken);
     }
 
 }

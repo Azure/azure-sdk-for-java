@@ -122,34 +122,20 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 // There is only one Feature Set for all AppConfigurationPropertySources
                 FeatureSet featureSet = new FeatureSet();
 
-                List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(configStore.getEndpoint());
-
-                String currentClientEndpoint = clientFactory.getCurrentConfigStoreClient(configStore.getEndpoint());
-
-                List<AppConfigurationReplicaClient> clientsToUse = new ArrayList<>();
-
-                // Need to only use clients after the others, we need to assume the others failed during a refresh
-                // check, or were in a failed state when the check started.
-                for (int i = 0; i < clients.size(); i++) {
-                    if (clientsToUse.size() > 0) {
-                        clientsToUse.add(clients.get(i));
-                    } else {
-                        if (clients.get(i).getEndpoint().equals(currentClientEndpoint)) {
-                            clientsToUse.add(clients.get(i));
-                        }
-                    }
-                }
+                List<AppConfigurationReplicaClient> clients = clientFactory
+                    .getAvailableClients(configStore.getEndpoint(), true);
 
                 boolean generatedPropertySources = false;
 
                 List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
                 boolean reloadFailed = false;
 
-                for (AppConfigurationReplicaClient client : clientsToUse) {
+                for (AppConfigurationReplicaClient client : clients) {
                     sourceList = new ArrayList<>();
 
-                    if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
-                        clientFactory)) {
+                    if (!STARTUP.get() && reloadFailed
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
+                            clientFactory)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }

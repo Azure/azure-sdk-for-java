@@ -93,31 +93,6 @@ public class ConnectionManagerTest {
     }
 
     @Test
-    public void getCurrentClient() {
-        configStore = new ConfigStore();
-        List<String> connectionStrings = new ArrayList<>();
-
-        connectionStrings.add(TEST_CONN_STRING);
-        connectionStrings.add(TEST_CONN_STRING_GEO);
-
-        configStore.setConnectionStrings(connectionStrings);
-
-        configStore.validateAndInit();
-
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
-
-        String originEndpoint = configStore.getEndpoint();
-        String replicaEndpoint = AppConfigurationReplicaClientBuilder
-            .getEndpointFromConnectionString(configStore.getConnectionStrings().get(1));
-
-        assertEquals(originEndpoint, connectionManager.getCurrentClient());
-
-        connectionManager.setCurrentClient(replicaEndpoint);
-        assertEquals(replicaEndpoint, connectionManager.getCurrentClient());
-        assertEquals(originEndpoint, connectionManager.getCurrentClient());
-    }
-
-    @Test
     public void backoffTest() {
         configStore = new ConfigStore();
         List<String> connectionStrings = new ArrayList<>();
