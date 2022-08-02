@@ -36,4 +36,25 @@ public final class KeyPhraseResult extends PreBuiltResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseResult setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
 }

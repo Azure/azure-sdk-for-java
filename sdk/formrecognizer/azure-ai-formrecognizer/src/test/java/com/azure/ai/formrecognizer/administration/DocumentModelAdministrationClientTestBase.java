@@ -108,7 +108,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         assertNotNull(actualCustomModel.getCreatedOn());
         assertNotNull(actualCustomModel.getModelId());
 
-        actualCustomModel.getDocTypes().forEach((s, docTypeInfo) -> assertNotNull(docTypeInfo.getFieldSchema()));
+        actualCustomModel.getDocumentTypes().forEach((s, docTypeInfo) -> assertNotNull(docTypeInfo.getFieldSchema()));
     }
 
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
