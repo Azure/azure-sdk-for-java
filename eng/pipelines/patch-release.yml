@@ -4,7 +4,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     SkipAggregateReports: true
-    AdditionalBuildOptions: -DsparkShading
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure

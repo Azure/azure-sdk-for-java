@@ -36,7 +36,6 @@ variables:
   # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
   # matrix has been processed
   TestFromSource: false
-  AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true
