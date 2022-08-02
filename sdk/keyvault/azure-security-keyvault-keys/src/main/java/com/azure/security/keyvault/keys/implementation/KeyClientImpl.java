@@ -81,12 +81,12 @@ public class KeyClientImpl {
 
     private final String vaultUrl;
     private final KeyService service;
-    private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(KeyClientImpl.class);
     private final HttpPipeline pipeline;
     private final KeyServiceVersion keyServiceVersion;
 
     /**
-     * Creates a {@link KeyAsyncClient} that uses an {@link HttpPipeline} to service requests.
+     * Creates a {@link KeyClientImpl} that uses an {@link HttpPipeline} to service requests.
      *
      * @param vaultUrl URL for the Azure Key Vault service.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses will flow through.
@@ -140,7 +140,7 @@ public class KeyClientImpl {
 
 
     /**
-     * The interface defining all the services for {@link KeyAsyncClient} to be used
+     * The interface defining all the services for {@link KeyClientImpl} to be used
      * by the proxy service to perform REST calls.
      *
      * This is package-private so that these REST calls are transparent to the user.
@@ -1080,7 +1080,7 @@ public class KeyClientImpl {
 
     /**
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listPropertiesOfKeys()}.
+     * {@link KeyClientImpl#listPropertiesOfKeys()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
      * of the list operations.
@@ -1135,7 +1135,7 @@ public class KeyClientImpl {
 
     /**
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listDeletedKeys()}.
+     * {@link KeyClientImpl#listDeletedKeys()}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to
      * one of the list operations.
@@ -1203,7 +1203,7 @@ public class KeyClientImpl {
 
     /**
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listPropertiesOfKeyVersions(String)}.
+     * {@link KeyClientImpl#listPropertiesOfKeyVersions(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
      * of the list operations.
