@@ -6,6 +6,7 @@ package com.azure.xml;
 import javax.xml.namespace.QName;
 import java.io.Closeable;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -221,5 +222,54 @@ public abstract class XmlReader implements Closeable {
         String textValue = getElementStringValue();
 
         return textValue == null ? null : converter.apply(textValue);
+    }
+
+    /**
+     * Reads an object from the XML stream.
+     * <p>
+     * Validates that the {@link XmlReader} is currently pointing to an {@link XmlToken#START_ELEMENT} which has the
+     * qualifying name specified by the {@code startTagName}.
+     *
+     * @param startTagName The expecting starting tag for the object.
+     * @param converter The function that reads the object.
+     * @param <T> Type of the object.
+     * @return An instance of the expected object,
+     * @throws IllegalStateException If the starting tag isn't {@link XmlToken#START_ELEMENT} or the tag doesn't match
+     * the expected {@code startTagName}
+     */
+    public final <T> T readObject(String startTagName, Function<XmlReader, T> converter) {
+        return readObject(new QName(null, startTagName), converter);
+    }
+
+    /**
+     * Reads an object from the XML stream.
+     * <p>
+     * Validates that the {@link XmlReader} is currently pointing to an {@link XmlToken#START_ELEMENT} which has the
+     * qualifying name specified by the {@code startTagName}.
+     *
+     * @param startTagName The expecting starting tag for the object.
+     * @param converter The function that reads the object.
+     * @param <T> Type of the object.
+     * @return An instance of the expected object,
+     * @throws IllegalStateException If the starting tag isn't {@link XmlToken#START_ELEMENT} or the tag doesn't match
+     * the expected {@code startTagName}
+     */
+    public final <T> T readObject(QName startTagName, Function<XmlReader, T> converter) {
+        if (currentToken() != XmlToken.START_ELEMENT) {
+            nextElement();
+        }
+
+        if (currentToken() != XmlToken.START_ELEMENT) {
+            throw new IllegalStateException("Illegal start of XML deserialization. "
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + currentToken() + "'.");
+        }
+
+        QName tagName = getElementName();
+        if (!Objects.equals(startTagName, tagName)) {
+            throw new IllegalStateException("Expected XML element to be '" + startTagName + "' but it was: "
+                + tagName + "'.");
+        }
+
+        return converter.apply(this);
     }
 }
