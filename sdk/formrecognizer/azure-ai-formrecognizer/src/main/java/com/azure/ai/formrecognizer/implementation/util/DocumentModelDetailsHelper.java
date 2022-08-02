@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentTypeDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 
 import java.time.OffsetDateTime;
@@ -29,7 +29,7 @@ public final class DocumentModelDetailsHelper {
 
         void setCreatedOn(DocumentModelDetails documentModelDetails, OffsetDateTime createdOn);
 
-        void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocTypeInfo> docTypes);
+        void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocumentTypeDetails> docTypes);
 
         void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags);
     }
@@ -55,7 +55,7 @@ public final class DocumentModelDetailsHelper {
         accessor.setCreatedOn(documentModelDetails, createdOn);
     }
 
-    static void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocTypeInfo> docTypes) {
+    static void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocumentTypeDetails> docTypes) {
         accessor.setDocTypes(documentModelDetails, docTypes);
     }
 
