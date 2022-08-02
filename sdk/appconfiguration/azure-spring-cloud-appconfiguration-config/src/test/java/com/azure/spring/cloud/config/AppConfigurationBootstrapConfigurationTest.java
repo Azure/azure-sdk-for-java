@@ -15,7 +15,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
-import com.azure.spring.cloud.config.implementation.ClientFactory;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientFactory;
 
 public class AppConfigurationBootstrapConfigurationTest {
 
@@ -48,7 +48,7 @@ public class AppConfigurationBootstrapConfigurationTest {
     public void clientsBeanCreated() throws Exception {
         CONTEXT_RUNNER
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING)).run(context -> {
-                assertThat(context).hasSingleBean(ClientFactory.class);
+                assertThat(context).hasSingleBean(AppConfigurationReplicaClientFactory.class);
             });
     }
 }

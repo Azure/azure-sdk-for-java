@@ -51,7 +51,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationProviderProperties appProperties;
 
-    private final ClientFactory clientFactory;
+    private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
@@ -71,7 +71,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientFactory clientFactory,
+        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
         KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
@@ -122,11 +122,11 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 // There is only one Feature Set for all AppConfigurationPropertySources
                 FeatureSet featureSet = new FeatureSet();
 
-                List<ConfigurationClientWrapper> clients = clientFactory.getAvailableClients(configStore.getEndpoint());
+                List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(configStore.getEndpoint());
 
                 String currentClientEndpoint = clientFactory.getCurrentConfigStoreClient(configStore.getEndpoint());
 
-                List<ConfigurationClientWrapper> clientsToUse = new ArrayList<>();
+                List<AppConfigurationReplicaClient> clientsToUse = new ArrayList<>();
 
                 // Need to only use clients after the others, we need to assume the others failed during a refresh
                 // check, or were in a failed state when the check started.
@@ -145,7 +145,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
                 boolean reloadFailed = false;
 
-                for (ConfigurationClientWrapper client : clientsToUse) {
+                for (AppConfigurationReplicaClient client : clientsToUse) {
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
@@ -269,7 +269,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
-    private List<AppConfigurationPropertySource> create(ConfigurationClientWrapper client, ConfigStore store,
+    private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,
         List<String> profiles, boolean initFeatures, FeatureSet featureSet) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 

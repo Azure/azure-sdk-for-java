@@ -40,7 +40,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
     private final AppConfigurationProviderProperties appProperties;
 
-    private final ClientFactory clientFactory;
+    private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final Duration refreshInterval;
 
@@ -52,7 +52,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * @param clientStore Clients stores used to connect to App Configuration.
      */
     public AppConfigurationPullRefresh(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientFactory clientFactory) {
+        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.refreshInterval = properties.getRefreshInterval();

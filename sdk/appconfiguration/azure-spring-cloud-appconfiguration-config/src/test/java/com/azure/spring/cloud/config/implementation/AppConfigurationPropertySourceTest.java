@@ -127,7 +127,7 @@ public class AppConfigurationPropertySourceTest {
     private AppConfigurationProperties appConfigurationProperties;
 
     @Mock
-    private ConfigurationClientWrapper clientMock;
+    private AppConfigurationReplicaClient clientMock;
 
     @Mock
     private ConfigurationAsyncClient configClientMock;

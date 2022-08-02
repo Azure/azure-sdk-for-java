@@ -94,7 +94,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private final Map<String, KeyVaultClient> keyVaultClients;
 
-    private final ConfigurationClientWrapper clientWrapper;
+    private final AppConfigurationReplicaClient clientWrapper;
 
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
@@ -108,7 +108,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     AppConfigurationPropertySource(ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
         List<String> profiles, AppConfigurationProperties appConfigurationProperties,
-        ConfigurationClientWrapper clientWrapper,
+        AppConfigurationReplicaClient clientWrapper,
         AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName

@@ -43,7 +43,7 @@ public class AppConfigurationPullRefreshTest {
     private RefreshEventData eventData;
 
     @Mock
-    private ClientFactory clientFactoryMock;
+    private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @BeforeEach
     public void setup(TestInfo testInfo) {

@@ -29,7 +29,7 @@ class AppConfigurationRefreshUtil {
      * @return If a refresh event is called.
      */
     static RefreshEventData refreshStoresCheck(AppConfigurationProviderProperties appProperties,
-        ClientFactory clientFactory, List<ConfigStore> configStores, Duration refreshInterval) {
+        AppConfigurationReplicaClientFactory clientFactory, List<ConfigStore> configStores, Duration refreshInterval) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
@@ -51,10 +51,10 @@ class AppConfigurationRefreshUtil {
                     String originEndpoint = configStore.getEndpoint();
                     AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
 
-                    List<ConfigurationClientWrapper> clients = clientFactory.getAvailableClients(originEndpoint);
+                    List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
 
                     if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
-                        for (ConfigurationClientWrapper client : clients) {
+                        for (AppConfigurationReplicaClient client : clients) {
                             try {
                                 refreshWithTime(client, StateHolder.getState(originEndpoint), originEndpoint,
                                     monitor.getRefreshInterval(), eventData);
@@ -77,7 +77,7 @@ class AppConfigurationRefreshUtil {
                     FeatureFlagStore featureStore = configStore.getFeatureFlags();
 
                     if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(originEndpoint)) {
-                        for (ConfigurationClientWrapper client : clients) {
+                        for (AppConfigurationReplicaClient client : clients) {
                             try {
                                 refreshWithTimeFeatureFlags(client, configStore.getFeatureFlags(),
                                     StateHolder.getStateFeatureFlag(originEndpoint),
@@ -108,8 +108,8 @@ class AppConfigurationRefreshUtil {
         return eventData;
     }
 
-    static boolean checkStoreAfterRefreshFailed(ConfigStore configStore, ConfigurationClientWrapper client,
-        ClientFactory clientFactory) {
+    static boolean checkStoreAfterRefreshFailed(ConfigStore configStore, AppConfigurationReplicaClient client,
+        AppConfigurationReplicaClientFactory clientFactory) {
         return refreshStoreCheck(client, clientFactory)
             || refreshStoreFeatureFlagCheck(configStore, client, clientFactory);
     }
@@ -120,7 +120,7 @@ class AppConfigurationRefreshUtil {
      * @param clientFactory
      * @return
      */
-    private static boolean refreshStoreCheck(ConfigurationClientWrapper client, ClientFactory clientFactory) {
+    private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, AppConfigurationReplicaClientFactory clientFactory) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
         String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
@@ -136,8 +136,8 @@ class AppConfigurationRefreshUtil {
      * @param clientFactory
      * @return
      */
-    private static boolean refreshStoreFeatureFlagCheck(ConfigStore configStore, ConfigurationClientWrapper client,
-        ClientFactory clientFactory) {
+    private static boolean refreshStoreFeatureFlagCheck(ConfigStore configStore, AppConfigurationReplicaClient client,
+        AppConfigurationReplicaClientFactory clientFactory) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
@@ -158,7 +158,7 @@ class AppConfigurationRefreshUtil {
      * @param refreshInterval Amount of time to wait until next check of this endpoint.
      * @return Refresh event was triggered. No other sources need to be checked.
      */
-    private static void refreshWithTime(ConfigurationClientWrapper client, State state, String endpoint,
+    private static void refreshWithTime(AppConfigurationReplicaClient client, State state, String endpoint,
         Duration refreshInterval, RefreshEventData eventData) throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
 
@@ -180,7 +180,7 @@ class AppConfigurationRefreshUtil {
      * @param refreshInterval Amount of time to wait until next check of this endpoint.
      * @return Refresh event was triggered. No other sources need to be checked.
      */
-    private static void refreshWithoutTime(ConfigurationClientWrapper client,
+    private static void refreshWithoutTime(AppConfigurationReplicaClient client,
         List<ConfigurationSetting> watchKeys, RefreshEventData eventData) throws AppConfigurationStatusException {
         for (ConfigurationSetting watchKey : watchKeys) {
             ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel());
@@ -196,7 +196,7 @@ class AppConfigurationRefreshUtil {
         }
     }
 
-    private static void refreshWithTimeFeatureFlags(ConfigurationClientWrapper client,
+    private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client,
         FeatureFlagStore featureStore, State state, Duration refreshInterval, RefreshEventData eventData)
         throws AppConfigurationStatusException {
         Instant date = Instant.now();
@@ -243,7 +243,7 @@ class AppConfigurationRefreshUtil {
         }
     }
 
-    private static void refreshWithoutTimeFeatureFlags(ConfigurationClientWrapper client,
+    private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
         ConfigStore configStore, List<ConfigurationSetting> watchKeys, RefreshEventData eventData)
         throws AppConfigurationStatusException {
         SettingSelector selector = new SettingSelector().setKeyFilter(configStore.getFeatureFlags().getKeyFilter())

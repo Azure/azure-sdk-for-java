@@ -89,7 +89,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretClientBuilder builderMock;
 
     @Mock
-    private ConfigurationClientWrapper clientWrapperMock;
+    private AppConfigurationReplicaClient clientWrapperMock;
 
     @Mock
     private SecretAsyncClient clientMock;

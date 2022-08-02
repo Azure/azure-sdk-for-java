@@ -19,7 +19,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-public class ConfigurationClientWrapperTest {
+public class AppConfigurationReplicaClientTest {
 
     @Mock
     private ConfigurationClient clientMock;
@@ -42,7 +42,7 @@ public class ConfigurationClientWrapperTest {
 
     @Test
     public void getWatchKeyTest() {
-        ConfigurationClientWrapper client = new ConfigurationClientWrapper(endpoint, clientMock);
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("watch").setLabel("\0");
 
@@ -69,7 +69,7 @@ public class ConfigurationClientWrapperTest {
     
     @Test
     public void listSettingsTest() {
-        ConfigurationClientWrapper client = new ConfigurationClientWrapper(endpoint, clientMock);
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
 

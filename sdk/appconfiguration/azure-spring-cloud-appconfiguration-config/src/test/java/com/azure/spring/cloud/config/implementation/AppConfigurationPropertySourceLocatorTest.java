@@ -76,10 +76,10 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ConfigurableEnvironment multiEnvironment;
 
     @Mock
-    private ClientFactory clientFactoryMock;
+    private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @Mock
-    private ConfigurationClientWrapper clientWrapperMock;
+    private AppConfigurationReplicaClient clientWrapperMock;
 
     @Mock
     private FeatureFlagStore featureFlagStoreMock;

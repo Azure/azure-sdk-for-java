@@ -15,7 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
-import com.azure.spring.cloud.config.implementation.ClientFactory;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientBuilder;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
@@ -39,12 +40,12 @@ public class AppConfigurationBootstrapConfiguration {
      * @param keyVaultCredentialProviderOptional Optional credentials for connecting to KeyVault
      * @param keyVaultClientProviderOptional Optional client for connecting to Key Vault
      * @param keyVaultSecretProviderOptional Secret Resolver
-     * @return App Configuration Property Source Locator
+     * @return AppConfigurationPropertySourceLocator
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientFactory clientFactory,
+        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
         Optional<KeyVaultSecretProvider> keyVaultSecretProviderOptional) throws IllegalArgumentException {
@@ -81,7 +82,22 @@ public class AppConfigurationBootstrapConfiguration {
     }
 
     /**
-     * Builds ClientStores used for connecting to App Configuration.
+     * Factory for working with App Configuration Clients
+     *
+     * @param clientBuilder Builder for configuration clients
+     * @param properties Client configurations for setting up connections to each config store.
+     * @param appProperties Library configurations for setting up connections to each config store.
+     * @return AppConfigurationReplicaClientFactory
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientBuilder clientBuilder,
+        AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
+        return new AppConfigurationReplicaClientFactory(clientBuilder, properties, appProperties);
+    }
+
+    /**
+     * Builder for clients connecting to App Configuration.
      *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
@@ -95,7 +111,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    ClientFactory buildClientFactory(AppConfigurationProperties properties,
+    AppConfigurationReplicaClientBuilder replicaClientBuilder(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
@@ -131,7 +147,13 @@ public class AppConfigurationBootstrapConfiguration {
             isKeyVaultConfigured = true;
         }
 
-        return new ClientFactory(properties, appProperties, tokenCredentialProvider,
-            clientProvider, isDev, isKeyVaultConfigured);
+        String clientId = "";
+
+        if (properties.getManagedIdentity() != null) {
+            clientId = properties.getManagedIdentity().getClientId();
+        }
+
+        return new AppConfigurationReplicaClientBuilder(tokenCredentialProvider, clientProvider, isDev,
+            isKeyVaultConfigured, clientId, appProperties.getMaxRetries());
     }
 }

@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
-import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
@@ -16,7 +14,7 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 /**
  * Manages all client connections for all configuration stores.
  */
-public class ClientFactory {
+public class AppConfigurationReplicaClientFactory {
 
     private static final Map<String, ConnectionManager> CONNECTIONS = new HashMap<>();
 
@@ -26,26 +24,14 @@ public class ClientFactory {
      * Sets up Connections to all configuration stores.
      * 
      * @param properties client properties
-     * @param appProperties library properties
-     * @param tokenCredentialProvider token Credential provider
-     * @param clientProvider client modifier
-     * @param isDev is a Dev environment
-     * @param isKeyVaultConfigured has key vault configured
+     * @param appProperties library properties  
      */
-    public ClientFactory(AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
-        AppConfigurationCredentialProvider tokenCredentialProvider,
-        ConfigurationClientBuilderSetup clientProvider, boolean isDev, boolean isKeyVaultConfigured) {
+    public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientBuilder clientBuilder,
+        AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
         this.configStores = properties.getStores();
         if (CONNECTIONS.size() == 0) {
             for (ConfigStore store : properties.getStores()) {
-                String clientId = "";
-
-                if (properties.getManagedIdentity() != null) {
-                    clientId = properties.getManagedIdentity().getClientId();
-                }
-
-                ConnectionManager manager = new ConnectionManager(store, appProperties, tokenCredentialProvider,
-                    clientProvider, isDev, isKeyVaultConfigured, clientId);
+                ConnectionManager manager = new ConnectionManager(clientBuilder, store, appProperties);
                 CONNECTIONS.put(manager.getOriginEndpoint(), manager);
             }
         }
@@ -56,7 +42,7 @@ public class ClientFactory {
      * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @return ConfigurationClient for accessing App Configuration
      */
-    List<ConfigurationClientWrapper> getAvailableClients(String originEndpoint) {
+    List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
         return CONNECTIONS.get(originEndpoint).getAvalibleClients();
     }
 

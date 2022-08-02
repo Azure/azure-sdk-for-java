@@ -19,12 +19,15 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
-public class ClientFactoryTest {
+public class AppConfigurationReplicaClientFactoryTest {
 
-    private ClientFactory clientFactory;
+    private AppConfigurationReplicaClientFactory clientFactory;
 
     @Mock
     private ConnectionManager connectionManagerMock;
+
+    @Mock
+    private AppConfigurationReplicaClientBuilder clientBuilderMock;
 
     private AppConfigurationProperties properties;
 
@@ -63,7 +66,7 @@ public class ClientFactoryTest {
         HashMap<String, ConnectionManager> connections = new HashMap<>();
         connections.put(originEndpoint, connectionManagerMock);
 
-        clientFactory = new ClientFactory(properties, clientProperties, null, null, false, false);
+        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, properties, clientProperties);
     }
 
     @Test

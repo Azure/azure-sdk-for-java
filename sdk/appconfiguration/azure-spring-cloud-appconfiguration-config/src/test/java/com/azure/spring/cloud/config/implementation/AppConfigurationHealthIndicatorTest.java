@@ -57,9 +57,9 @@ public class AppConfigurationHealthIndicatorTest {
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
         Map<String, AppConfigurationStoreHealth> storeHealth = new HashMap<>();
 
-        List<ConfigurationClientWrapper> clients = new ArrayList<>();
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
 
-        clients.add(new ConfigurationClientWrapper(storeName, client));
+        clients.add(new AppConfigurationReplicaClient(storeName, client));
 
         storeHealth.put(storeName, AppConfigurationStoreHealth.UP);
 

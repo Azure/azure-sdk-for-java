@@ -12,9 +12,9 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.NormalizeNull;
 
 /**
- * Wrapper for Configuration Client to manage backoff.
+ * Client for connecting to App Configuration when multiple replicas are in use.
  */
-class ConfigurationClientWrapper {
+class AppConfigurationReplicaClient {
 
     private final String endpoint;
 
@@ -29,7 +29,7 @@ class ConfigurationClientWrapper {
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
-    ConfigurationClientWrapper(String endpoint, ConfigurationClient client) {
+    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client) {
         this.endpoint = endpoint;
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);

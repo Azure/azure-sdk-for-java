@@ -36,16 +36,16 @@ public class AppConfigurationRefreshUtilTest {
     private static final String KEY_FILTER = "/application/*";
 
     @Mock
-    private ConfigurationClientWrapper clientMock;
+    private AppConfigurationReplicaClient clientMock;
 
     @Mock
-    private ClientFactory clientFactoryMock;
+    private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @Mock
     private PagedIterable<ConfigurationSetting> flagsPagedIterableMock;
 
     @Mock
-    private ConfigurationClientWrapper clientOriginMock;
+    private AppConfigurationReplicaClient clientOriginMock;
 
     @Mock
     private StateHolder currentStateMock;
@@ -58,7 +58,7 @@ public class AppConfigurationRefreshUtilTest {
 
     private RefreshEventData eventData = new RefreshEventData();
 
-    private List<ConfigurationClientWrapper> clients = new ArrayList<>();
+    private List<AppConfigurationReplicaClient> clients = new ArrayList<>();
 
     private List<ConfigStore> stores = new ArrayList<>();
 

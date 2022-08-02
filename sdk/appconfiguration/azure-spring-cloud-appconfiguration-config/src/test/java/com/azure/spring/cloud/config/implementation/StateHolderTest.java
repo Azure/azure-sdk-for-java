@@ -5,6 +5,7 @@ package com.azure.spring.cloud.config.implementation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.times;
 
 import java.time.Duration;
@@ -119,9 +120,13 @@ public class StateHolderTest {
         StateHolder.updateState(stateHolder);
 
         State originalState = StateHolder.getState(endpoint);
-        System.out.println("updateRefreshTimeRefresh Original Time: " + originalState.getNextRefreshCheck());
 
         // Duration is less than the minBackOff
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            fail("Sleep failed");
+        }
         stateHolder.updateNextRefreshTime(null, providerProperties);
         State newState = StateHolder.getState(endpoint);
         assertNotEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
