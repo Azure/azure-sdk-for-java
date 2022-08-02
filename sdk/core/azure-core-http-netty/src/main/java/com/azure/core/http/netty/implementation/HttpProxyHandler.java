@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -92,20 +91,20 @@ public final class HttpProxyHandler extends ProxyHandler {
     private final AuthorizationChallengeHandler challengeHandler;
     private final AtomicReference<ChallengeHolder> proxyChallengeHolderReference;
     private final HttpClientCodec codec;
-    private final AtomicBoolean firstAttempt;
+    private final CallMetadata callMetadata;
 
     private String authScheme = null;
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolderReference, AtomicBoolean firstAttempt) {
+        AtomicReference<ChallengeHolder> proxyChallengeHolderReference, CallMetadata callMetadata) {
         super(proxyAddress);
 
         this.challengeHandler = challengeHandler;
         this.proxyChallengeHolderReference = proxyChallengeHolderReference;
         this.codec = new HttpClientCodec();
-        this.firstAttempt = firstAttempt;
+        this.callMetadata = callMetadata;
     }
 
     @Override
@@ -243,7 +242,7 @@ public final class HttpProxyHandler extends ProxyHandler {
             } else if (status.code() != 200) {
                 // Return the error response on the first attempt as the proxy handler doesn't apply credentials on the
                 // first attempt.
-                if (!firstAttempt.get()) {
+                if (!callMetadata.getFirstCallWithProxy()) {
                     // Later attempts throw an exception.
                     throw new io.netty.handler.proxy.HttpProxyHandler.HttpProxyConnectException(
                         "Failed to connect to proxy. Status: " + status, innerHeaders);

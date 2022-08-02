@@ -424,11 +424,11 @@ public class NettyAsyncHttpClientTests {
      */
     @Test
     public void failedProxyAuthenticationReturnsCorrectError() {
-        try (MockProxyServer mockProxyServer = new MockProxyServer("2", "2")) {
+        try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .httpClient(new NettyAsyncHttpClientBuilder()
                     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
-                        .setCredentials("1", "1"))
+                        .setCredentials("2", "2"))
                     .build())
                 .build();
 
