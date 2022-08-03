@@ -21,3 +21,4 @@ stages:
       TestOptions: '-DskipSpringITs=false'
       BuildProfile: spring3
 
+# test pipeline
