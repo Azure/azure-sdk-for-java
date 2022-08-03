@@ -28,7 +28,6 @@ public class BindingServicePropertiesBeanPostProcessor implements BeanPostProces
             BindingServiceProperties bindingServiceProperties = (BindingServiceProperties) bean;
             if (bindingServiceProperties.getBinders().isEmpty()) {
                 BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                kafkaBinderSourceProperty.setType(KAKFA_BINDER_TYPE);
                 configureBinderSources(kafkaBinderSourceProperty, AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
 
                 Map<String, BinderProperties> kafkaBinderPropertyMap = new HashMap<>();
