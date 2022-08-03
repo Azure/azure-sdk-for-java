@@ -702,7 +702,10 @@ public class KeyClientImpl {
 
         return service.createKeyAsync(vaultUrl, createRsaKeyOptions.getName(), keyServiceVersion.getVersion(),
                 ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+                    KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.verbose("Creating RSA key - {}", createRsaKeyOptions.getName()))
+            .doOnSuccess(response -> logger.verbose("Created RSA key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to create RSA key - {}", createRsaKeyOptions.getName(), error));
     }
 
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions,
@@ -799,7 +802,10 @@ public class KeyClientImpl {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().setKey(keyMaterial);
 
         return service.importKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.verbose("Importing key - {}", name))
+            .doOnSuccess(response -> logger.verbose("Imported key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to import key - {}", name, error));
     }
 
     public Response<KeyVaultKey> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
