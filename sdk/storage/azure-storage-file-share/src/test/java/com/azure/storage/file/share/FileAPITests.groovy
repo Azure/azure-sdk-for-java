@@ -46,7 +46,6 @@ import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 
 import static com.azure.storage.file.share.FileTestHelper.assertExceptionStatusCodeAndMessage
 import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
@@ -1834,19 +1833,12 @@ class FileAPITests extends APISpec {
             .setCreatePermission(true)
             .setDeletePermission(true)
 
-        def sasValues = new ShareServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permissions)
-            .setStartTime(namer.getUtcNow().minusDays(1))
-            .setProtocol(SasProtocol.HTTPS_HTTP)
-            .setCacheControl("cache")
-            .setContentDisposition("disposition")
-            .setContentEncoding("encoding")
-            .setContentLanguage("language")
-            .setContentType("type")
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
-        def sas = primaryFileClient.generateSas(sasValues)
-        def client = getFileClientBuilder(environment.primaryAccount.credential, primaryFileClient.getFileUrl())
-            .sasToken(sas)
-            .buildFileClient()
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+
+        def sas = shareClient.generateSas(sasValues)
+        def client = getFileClient(sas, primaryFileClient.getFileUrl())
 
         when:
         def destClient = client.rename(generatePathName())

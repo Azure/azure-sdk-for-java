@@ -3109,15 +3109,15 @@ public class ShareFileAsyncClient {
             this.getAccountName(), this.getServiceVersion(), this.getSasToken());
     }
 
-    private String extractSasToken() {
-        for (int i = 0; i < this.getHttpPipeline().getPolicyCount(); i++) {
-            if (this.getHttpPipeline().getPolicy(i) instanceof AzureSasCredentialPolicy) {
-                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) this.getHttpPipeline().getPolicy(i);
-                return policy.getCredential().getSignature();
-            }
-        }
-        return null;
-    }
+//    private String extractSasToken() {
+//        for (int i = 0; i < this.getHttpPipeline().getPolicyCount(); i++) {
+//            if (this.getHttpPipeline().getPolicy(i) instanceof AzureSasCredentialPolicy) {
+//                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) this.getHttpPipeline().getPolicy(i);
+//                return policy.getCredential().getSignature();
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Get snapshot id which attached to {@link ShareFileAsyncClient}. Return {@code null} if no snapshot id attached.

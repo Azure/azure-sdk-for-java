@@ -208,6 +208,10 @@ public class ShareClientBuilder implements
         }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient,
             perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
+        if (sasToken != null && azureSasCredential == null) {
+            azureSasCredential = new AzureSasCredential(sasToken);
+        }
+
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)

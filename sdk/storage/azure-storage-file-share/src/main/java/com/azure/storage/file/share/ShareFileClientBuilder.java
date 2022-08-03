@@ -165,7 +165,6 @@ public class ShareFileClientBuilder implements
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
-    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -195,15 +194,13 @@ public class ShareFileClientBuilder implements
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
+            storageSharedKeyCredential, null, azureSasCredential, null, LOGGER);
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (azureSasCredential != null) {
                 return new AzureSasCredentialPolicy(azureSasCredential, false);
-            } else if (sasToken != null) {
-                return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
             } else {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
@@ -400,7 +397,7 @@ public class ShareFileClientBuilder implements
      */
     public ShareFileClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -426,9 +423,9 @@ public class ShareFileClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public ShareFileClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
+        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
         return this;
     }
 
