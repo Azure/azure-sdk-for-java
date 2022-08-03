@@ -656,6 +656,7 @@ public class KeyClientImpl {
 
     public Response<KeyVaultKey> createKeyWithResponse(String name, KeyType keyType, Context context) {
         KeyRequestParameters parameters = new KeyRequestParameters().setKty(keyType);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
         return service.createKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE,
@@ -663,7 +664,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<KeyVaultKey>> createKeyWithResponseAsync(CreateKeyOptions createKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateKeyRequestParameters(createKeyOptions);
 
         return service.createKeyAsync(vaultUrl, createKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
@@ -697,7 +697,6 @@ public class KeyClientImpl {
 
     public Mono<Response<KeyVaultKey>> createRsaKeyWithResponseAsync(CreateRsaKeyOptions createRsaKeyOptions,
                                                                      Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateRsaKeyRequestParameters(createRsaKeyOptions);
 
         return service.createKeyAsync(vaultUrl, createRsaKeyOptions.getName(), keyServiceVersion.getVersion(),
@@ -732,7 +731,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<KeyVaultKey>> createEcKeyWithResponseAsync(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateEcKeyRequestParameters(createEcKeyOptions);
 
         return service.createKeyAsync(vaultUrl, createEcKeyOptions.getName(), keyServiceVersion.getVersion(),
@@ -765,7 +763,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<KeyVaultKey>> createOctKeyWithResponseAsync(CreateOctKeyOptions createOctKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateOctKeyRequestParameters(createOctKeyOptions);
 
         return service.createKeyAsync(vaultUrl, createOctKeyOptions.getName(), keyServiceVersion.getVersion(),
@@ -810,6 +807,7 @@ public class KeyClientImpl {
 
     public Response<KeyVaultKey> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().setKey(keyMaterial);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.importKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
@@ -817,7 +815,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<KeyVaultKey>> importKeyWithResponseAsync(ImportKeyOptions importKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyImportRequestParameters parameters = validateAndCreateKeyImportRequestParameters(importKeyOptions);
 
         return service.importKeyAsync(vaultUrl, importKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
@@ -850,8 +847,6 @@ public class KeyClientImpl {
 
 
     public Mono<Response<KeyVaultKey>> getKeyWithResponseAsync(String name, String version, Context context) {
-        context = context == null ? Context.NONE : context;
-
         return service.getKeyAsync(vaultUrl, name, version, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Retrieving key - {}", name))
@@ -869,7 +864,6 @@ public class KeyClientImpl {
 
     public Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponseAsync(KeyProperties keyProperties, Context context,
                                                                 KeyOperation... keyOperations) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateUpdateKeyRequestParameters(keyProperties, keyOperations);
 
         return service.updateKeyAsync(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
@@ -952,7 +946,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponseAsync(String name, Context context) {
-        context = context == null ? Context.NONE : context;
         return service.getDeletedKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Retrieving deleted key - {}", name))
@@ -968,7 +961,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<Void>> purgeDeletedKeyWithResponseAsync(String name, Context context) {
-        context = context == null ? Context.NONE : context;
         return service.purgeDeletedKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Purging deleted key - {}", name))
@@ -1027,7 +1019,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<byte[]>> backupKeyWithResponseAsync(String name, Context context) {
-        context = context == null ? Context.NONE : context;
         return service.backupKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Backing up key - {}", name))
@@ -1051,7 +1042,6 @@ public class KeyClientImpl {
     }
 
     public Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponseAsync(byte[] backup, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
         return service.restoreKeyAsync(vaultUrl, keyServiceVersion.getVersion(), parameters, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -1245,6 +1235,7 @@ public class KeyClientImpl {
     }
 
     public Response<byte[]> getRandomBytesWithResponse(int count, Context context) {
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
         Response<RandomBytes> randomBytesResponse = service.getRandomBytes(vaultUrl, keyServiceVersion.getVersion(),
                 new GetRandomBytesRequest().setCount(count), "application/json",
@@ -1274,6 +1265,7 @@ public class KeyClientImpl {
         try {
             KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name,
                 targetAttestationToken, releaseKeyOptions);
+            context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
 
             return service.release(vaultUrl, name, version, keyServiceVersion.getVersion(), keyReleaseParameters,
@@ -1322,6 +1314,8 @@ public class KeyClientImpl {
             if (CoreUtils.isNullOrEmpty(name)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty"));
             }
+
+            context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
             return service.rotateKey(vaultUrl, name, keyServiceVersion.getVersion(), "application/json",
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
@@ -1351,6 +1345,8 @@ public class KeyClientImpl {
             if (CoreUtils.isNullOrEmpty(keyName)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'keyName' cannot be null or empty"));
             }
+
+            context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
             return service.getKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(), "application/json",
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
@@ -1385,6 +1381,8 @@ public class KeyClientImpl {
             if (CoreUtils.isNullOrEmpty(keyName)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'keyName' cannot be null or empty"));
             }
+
+            context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
             return service.updateKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(), keyRotationPolicy,
                     "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
