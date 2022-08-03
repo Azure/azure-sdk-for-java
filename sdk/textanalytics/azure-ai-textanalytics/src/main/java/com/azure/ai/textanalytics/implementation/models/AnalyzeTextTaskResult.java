@@ -25,6 +25,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "LanguageDetectionResults", value = LanguageDetectionTaskResult.class)
 })
 @Immutable
-public class AnalyzeTextTaskResult {
-
-}
+public class AnalyzeTextTaskResult {}

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.fluent.models.AuthorizationRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the list namespace operation. */
 @Fluent
 public final class AuthorizationRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationRuleListResult.class);
-
     /*
      * Result of the list authorization rules operation.
      */

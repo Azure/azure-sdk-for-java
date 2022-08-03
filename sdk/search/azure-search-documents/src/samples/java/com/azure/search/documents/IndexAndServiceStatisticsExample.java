@@ -312,7 +312,7 @@ public class IndexAndServiceStatisticsExample {
                     ),
                 new ScoringProfile("ProfileFour")
                     .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
-                    .setFunctions(new MagnitudeScoringFunction("Rating", 3.14,
+                    .setFunctions(new MagnitudeScoringFunction("Rating", 3.5,
                         new MagnitudeScoringParameters(1, 5)
                             .setShouldBoostBeyondRangeByConstant(false))
                         .setInterpolation(ScoringFunctionInterpolation.CONSTANT))))

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Continuous")
 @Fluent
 public final class ContinuousModeBackupPolicy extends BackupPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinuousModeBackupPolicy.class);
-
     /** {@inheritDoc} */
     @Override
     public ContinuousModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {

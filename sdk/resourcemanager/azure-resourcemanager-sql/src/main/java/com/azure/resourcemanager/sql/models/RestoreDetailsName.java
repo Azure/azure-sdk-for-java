@@ -24,7 +24,11 @@ public final class RestoreDetailsName extends ExpandableStringEnum<RestoreDetail
         return fromString(name, RestoreDetailsName.class);
     }
 
-    /** @return known RestoreDetailsName values. */
+    /**
+     * Gets known RestoreDetailsName values.
+     *
+     * @return known RestoreDetailsName values.
+     */
     public static Collection<RestoreDetailsName> values() {
         return values(RestoreDetailsName.class);
     }

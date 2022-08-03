@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.JobStepInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of job steps. */
 @Immutable
 public final class JobStepListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepListResult.class);
-
     /*
      * Array of results.
      */

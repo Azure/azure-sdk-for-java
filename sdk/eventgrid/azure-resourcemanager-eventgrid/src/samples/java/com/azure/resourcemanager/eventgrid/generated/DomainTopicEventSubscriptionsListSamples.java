@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopicEventSubscriptions List. */
 public final class DomainTopicEventSubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_List.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainTopicEventSubscriptions_List.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_List.

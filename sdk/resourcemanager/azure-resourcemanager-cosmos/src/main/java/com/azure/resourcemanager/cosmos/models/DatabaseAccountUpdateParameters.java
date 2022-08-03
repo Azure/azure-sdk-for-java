@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Parameters for patching Azure Cosmos DB database account properties. */
 @Fluent
 public final class DatabaseAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountUpdateParameters.class);
-
     /*
      * Tags are a list of key-value pairs that describe the resource. These
      * tags can be used in viewing and grouping this resource (across resource

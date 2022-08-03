@@ -198,7 +198,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-copyFile
         String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
         Duration pollInterval = Duration.ofSeconds(2);
-        SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, null, pollInterval);
+        SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, (Map<String, String>) null, pollInterval);
         // END: readme-sample-copyFile
     }
 

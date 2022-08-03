@@ -1,14 +1,31 @@
 # Release History
 
-## 12.18.0-beta.2 (Unreleased)
+## 12.19.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
+  that replaces deprecated `ParallelTransferOptions.getProgressReceiver` and `ParallelTransferOptions.setProgressReceiver`
+- `com.azure.storage.blob.ProgressReceiver` extends `com.azure.core.util.ProgressListener` for backwards compatibility.
+- Added `BlobDownloadAsyncResponse.writeValueToAsync` and `BlobDownloadAsyncResponse.close`.
+- Added `BlockBlobSimpleUploadOptions(BinaryData)` constructor, `BlockBlobStageBlockOptions`,
+  `BlockBlobAsyncClient.stageBlock(String, BinaryData)`, `BlockBlobAsyncClient.stageBlockWithResponse(BlockBlobStageBlockOptions)`,
+  `BlockBlobAsyncClient.upload(BinaryData)`, `BlockBlobAsyncClient.upload(BinaryData, boolean)`,
+  `BlockBlobClient.stageBlock(String, BinaryData)`, `BlockBlobClient.stageBlockWithResponse(BlockBlobStageBlockOptions, Duration, Context)`,
+  `BlockBlobClient.upload(BinaryData)`, `BlockBlobClient.upload(BinaryData, boolean)`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- `com.azure.storage.blob.ProgressReceiver` and `com.azure.storage.blob.ProgressReporter` are deprecated
+  and replaced by `com.azure.core.util.ProgressListener` and `com.azure.core.util.ProgressReporter`.
+
+## 12.18.0 (2022-07-07)
+
+### Features Added
+- BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
+- GA release for 2021-08-06 service version.
 
 ## 12.18.0-beta.1 (2022-06-15)
 

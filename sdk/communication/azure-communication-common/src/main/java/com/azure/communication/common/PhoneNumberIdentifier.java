@@ -10,13 +10,12 @@ import com.azure.core.util.CoreUtils;
 public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String phoneNumber;
-    private String rawId;
 
     /**
      * Creates a PhoneNumberIdentifier object
      *
      * @param phoneNumber the string identifier representing the PhoneNumber in E.164 format.
-     * E.164 is a phone number formatted as +[CountryCode][AreaCode][LocalNumber] eg. "+18005555555"
+     *                    E.164 is a phone number formatted as +[CountryCode][AreaCode][LocalNumber] eg. "+18005555555"
      * @throws IllegalArgumentException thrown if phoneNumber parameter fail the validation.
      */
     public PhoneNumberIdentifier(String phoneNumber) {
@@ -24,6 +23,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
             throw new IllegalArgumentException("The initialization parameter [phoneNumber] cannot be null to empty.");
         }
         this.phoneNumber = phoneNumber;
+        this.setRawId("4:" + phoneNumber.replaceAll("^[+]", ""));
     }
 
     /**
@@ -34,20 +34,15 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
     }
 
     /**
-     * Get full id of the identifier. This id is optional.
-     * @return full id of the identifier
-     */
-    public String getRawId() {
-        return rawId;
-    }
-
-    /**
      * Set full id of the identifier
+     * RawId is the encoded format for identifiers to store in databases or as stable keys in general.
+     *
      * @param rawId full id of the identifier
      * @return PhoneNumberIdentifier object itself
      */
+    @Override
     public PhoneNumberIdentifier setRawId(String rawId) {
-        this.rawId = rawId;
+        super.setRawId(rawId);
         return this;
     }
 
@@ -62,9 +57,6 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
         }
 
         PhoneNumberIdentifier phoneId = (PhoneNumberIdentifier) that;
-        if (!phoneNumber.equals(phoneId.phoneNumber)) {
-            return false;
-        }
 
         return getRawId() == null
             || phoneId.getRawId() == null
@@ -73,6 +65,6 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     @Override
     public int hashCode() {
-        return phoneNumber.hashCode();
+        return getRawId().hashCode();
     }
 }

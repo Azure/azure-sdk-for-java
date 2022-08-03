@@ -75,12 +75,12 @@ and then include the direct dependency in the dependencies section without the v
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.11.2</version>
+    <version>4.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -13,14 +13,14 @@ import java.util.List;
 @Fluent
 public final class SliceConfiguration {
     /*
-     * A reference to the Slice that these settings apply to
+     * A reference to the slice that these settings apply to
      */
     @JsonProperty(value = "slice", required = true)
     private SliceResourceId slice;
 
     /*
      * The default data network to use if the UE does not explicitly specify
-     * it.  Configuration for this object must exist in the
+     * it. Configuration for this object must exist in the
      * `dataNetworkConfigurations` map.
      */
     @JsonProperty(value = "defaultDataNetwork", required = true)
@@ -34,7 +34,7 @@ public final class SliceConfiguration {
     private List<DataNetworkConfiguration> dataNetworkConfigurations;
 
     /**
-     * Get the slice property: A reference to the Slice that these settings apply to.
+     * Get the slice property: A reference to the slice that these settings apply to.
      *
      * @return the slice value.
      */
@@ -43,7 +43,7 @@ public final class SliceConfiguration {
     }
 
     /**
-     * Set the slice property: A reference to the Slice that these settings apply to.
+     * Set the slice property: A reference to the slice that these settings apply to.
      *
      * @param slice the slice value to set.
      * @return the SliceConfiguration object itself.

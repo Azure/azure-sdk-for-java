@@ -28,6 +28,10 @@ public final class PartnerTopicProvisioningState extends ExpandableStringEnum<Pa
     /** Static value Failed for PartnerTopicProvisioningState. */
     public static final PartnerTopicProvisioningState FAILED = fromString("Failed");
 
+    /** Static value IdleDueToMirroredChannelResourceDeletion for PartnerTopicProvisioningState. */
+    public static final PartnerTopicProvisioningState IDLE_DUE_TO_MIRRORED_CHANNEL_RESOURCE_DELETION =
+        fromString("IdleDueToMirroredChannelResourceDeletion");
+
     /**
      * Creates or finds a PartnerTopicProvisioningState from its string representation.
      *

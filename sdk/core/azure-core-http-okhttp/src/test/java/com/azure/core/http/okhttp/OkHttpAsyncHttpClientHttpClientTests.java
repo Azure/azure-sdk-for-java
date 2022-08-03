@@ -21,6 +21,8 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 
+import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
+
 public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     private static WireMockServer server;
 
@@ -50,6 +52,7 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     @Test
     public void testVerySlowFluxGetsInterruptedByOkHttpInternals() {
         HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(createQuietDispatcher(IllegalStateException.class, "blocking read"))
             .callTimeout(Duration.ofMillis(1000)) // this caps full req-res round trip.
             .build();
 
@@ -72,6 +75,7 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     @Test
     public void testUnresponsiveFluxGetsInterruptedInFluxRequestBody() {
         HttpClient httpClient = new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(createQuietDispatcher(IllegalStateException.class, "blocking read"))
             .callTimeout(Duration.ofMillis(1000)) // this caps full req-res round trip.
             .build();
 

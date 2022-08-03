@@ -61,6 +61,13 @@ public interface DataSource {
     Map<String, String> tags();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.DataSourceInner object.
      *
      * @return the inner object.

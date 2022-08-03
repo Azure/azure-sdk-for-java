@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CassandraResources GetCassandraTable. */
 public final class CassandraResourcesGetCassandraTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCassandraTableGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraTableGet.json
      */
     /**
      * Sample code: CosmosDBCassandraTableGet.

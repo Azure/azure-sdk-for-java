@@ -67,13 +67,6 @@ public interface VerifiedPartner {
     PartnerDetails partnerTopicDetails();
 
     /**
-     * Gets the partnerDestinationDetails property: Details of the partner destination scenario.
-     *
-     * @return the partnerDestinationDetails value.
-     */
-    PartnerDetails partnerDestinationDetails();
-
-    /**
      * Gets the provisioningState property: Provisioning state of the verified partner.
      *
      * @return the provisioningState value.

@@ -7,10 +7,10 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.file.ClosedFileSystemException
@@ -257,11 +257,27 @@ class NioBlobOutputStreamTest extends APISpec {
 
     def "Close error"() {
         when:
+        // now calling close multiple times does not cause any error
         nioStream.close()
         nioStream.close()
 
         then:
-        thrown(IOException)
+        notThrown(IOException)
+    }
+
+    def "Close does not throw error"() {
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
+        def nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new BlockBlobOutputStreamOptions()), path)
+
+        when:
+        nioStream.write(1)
+        nioStream.close()
+        // assert no error is thrown since close handles multiple close requests now
+        nioStream.close()
+
+        then:
+        notThrown(IOException)
     }
 
     def "Close fs closed"() {

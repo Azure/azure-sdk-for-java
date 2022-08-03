@@ -31,7 +31,6 @@ import java.util.Objects;
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
-    private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -86,6 +85,8 @@ class VertxAsyncHttpClient implements HttpClient {
                         } else {
                             sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
                         }
+                    } else {
+                        sink.error(event.cause());
                     }
                 });
 
@@ -93,7 +94,7 @@ class VertxAsyncHttpClient implements HttpClient {
                     .subscribeOn(scheduler)
                     .map(Unpooled::wrappedBuffer)
                     .map(Buffer::buffer)
-                    .subscribe(buffer -> vertxHttpRequest.write(buffer), sink::error, vertxHttpRequest::end);
+                    .subscribe(vertxHttpRequest::write, sink::error, vertxHttpRequest::end);
             }, sink::error));
     }
 

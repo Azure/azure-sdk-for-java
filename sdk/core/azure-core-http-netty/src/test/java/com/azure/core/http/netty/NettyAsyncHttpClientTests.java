@@ -81,6 +81,9 @@ public class NettyAsyncHttpClientTests {
 
     static final String TEST_HEADER = "testHeader";
 
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
+        .initialRequest(0);
+
     private static WireMockServer server;
 
     @BeforeAll
@@ -100,7 +103,7 @@ public class NettyAsyncHttpClientTests {
         server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
         server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
-            .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
+            .withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
 
@@ -168,10 +171,7 @@ public class NettyAsyncHttpClientTests {
     public void testCancel() {
         NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
         //
-        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
-        stepVerifierOptions.initialRequest(0);
-        //
-        StepVerifier.create(response.getBody(), stepVerifierOptions)
+        StepVerifier.create(response.getBody(), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
@@ -194,10 +194,7 @@ public class NettyAsyncHttpClientTests {
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse(LONG_BODY_PATH);
         //
-        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
-        stepVerifierOptions.initialRequest(0);
-        //
-        StepVerifier.create(response.getBody(), stepVerifierOptions)
+        StepVerifier.create(response.getBody(), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)

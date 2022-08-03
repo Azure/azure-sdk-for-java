@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +12,6 @@ import java.util.List;
 /** Parameters to indicate the information about the restore. */
 @Fluent
 public final class RestoreParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreParameters.class);
-
     /*
      * Describes the mode of the restore.
      */
@@ -41,7 +36,7 @@ public final class RestoreParameters {
      * List of specific databases available for restore.
      */
     @JsonProperty(value = "databasesToRestore")
-    private List<DatabaseRestoreResourceInner> databasesToRestore;
+    private List<DatabaseRestoreResource> databasesToRestore;
 
     /**
      * Get the restoreMode property: Describes the mode of the restore.
@@ -112,7 +107,7 @@ public final class RestoreParameters {
      *
      * @return the databasesToRestore value.
      */
-    public List<DatabaseRestoreResourceInner> databasesToRestore() {
+    public List<DatabaseRestoreResource> databasesToRestore() {
         return this.databasesToRestore;
     }
 
@@ -122,7 +117,7 @@ public final class RestoreParameters {
      * @param databasesToRestore the databasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
-    public RestoreParameters withDatabasesToRestore(List<DatabaseRestoreResourceInner> databasesToRestore) {
+    public RestoreParameters withDatabasesToRestore(List<DatabaseRestoreResource> databasesToRestore) {
         this.databasesToRestore = databasesToRestore;
         return this;
     }

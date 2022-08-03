@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlResources GetSqlStoredProcedure. */
 public final class SqlResourcesGetSqlStoredProcedureSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlStoredProcedureGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlStoredProcedureGet.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureGet.

@@ -27,7 +27,11 @@ public final class BackupPolicyType extends ExpandableStringEnum<BackupPolicyTyp
         return fromString(name, BackupPolicyType.class);
     }
 
-    /** @return known BackupPolicyType values. */
+    /**
+     * Gets known BackupPolicyType values.
+     *
+     * @return known BackupPolicyType values.
+     */
     public static Collection<BackupPolicyType> values() {
         return values(BackupPolicyType.class);
     }

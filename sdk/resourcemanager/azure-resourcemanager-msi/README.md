@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-msi</artifactId>
-    <version>2.16.0</version>
+    <version>2.17.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

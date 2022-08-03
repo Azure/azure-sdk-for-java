@@ -18,8 +18,7 @@ public class PreBuiltResult {
     private List<DocumentError> errors;
 
     /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
+     * if showStats=true was specified in the request this field will contain information about the request payload.
      */
     @JsonProperty(value = "statistics")
     private RequestStatistics statistics;

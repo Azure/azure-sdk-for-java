@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CassandraClusters GetByResourceGroup. */
 public final class CassandraClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraClusterGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBManagedCassandraClusterGet.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterGet.

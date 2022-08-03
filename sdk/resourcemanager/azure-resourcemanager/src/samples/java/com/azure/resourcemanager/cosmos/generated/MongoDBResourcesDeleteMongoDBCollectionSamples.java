@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for MongoDBResources DeleteMongoDBCollection. */
 public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBCollectionDelete.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionDelete.

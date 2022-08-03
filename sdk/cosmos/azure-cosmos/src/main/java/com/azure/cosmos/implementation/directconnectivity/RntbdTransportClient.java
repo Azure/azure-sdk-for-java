@@ -347,7 +347,7 @@ public class RntbdTransportClient extends TransportClient {
                             RntbdObjectMapper.toJson(throwable));
                     }
                 });
-        }).subscriberContext(reactorContext);
+        }).contextWrite(reactorContext);
     }
 
     @Override

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.models.NameInfo;
 import com.azure.resourcemanager.recoveryservices.models.UsagesUnit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Usages of a vault. */
 @Fluent
 public final class VaultUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultUsageInner.class);
-
     /*
      * Unit of the usage.
      */
