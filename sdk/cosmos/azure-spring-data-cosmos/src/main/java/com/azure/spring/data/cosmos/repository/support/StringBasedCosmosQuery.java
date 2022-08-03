@@ -57,7 +57,7 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
             Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
             if (parameters[paramIndex] instanceof Collection) {
-                ArrayList<String> expandParam = (ArrayList<String>) ((Collection<?>) parameters[paramIndex]).stream()
+                List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
                     .map(Object::toString).collect(Collectors.toList());
                 List<String> expandedParamKeys = new ArrayList<>();
                 for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
