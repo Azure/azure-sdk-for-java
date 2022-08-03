@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -23,7 +25,7 @@ import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
-public class AppConfigurationReplicaClientBuilder {
+public class AppConfigurationReplicaClientBuilder implements EnvironmentAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationReplicaClientBuilder.class);
 
@@ -49,21 +51,20 @@ public class AppConfigurationReplicaClientBuilder {
 
     private final ConfigurationClientBuilderSetup clientProvider;
 
-    private final boolean isDev;
+    private boolean isDev;
 
-    private final boolean isKeyVaultConfigurated;
+    private final boolean isKeyVaultConfigured;
 
     private final String clientId;
 
     private final int maxRetries;
 
     public AppConfigurationReplicaClientBuilder(AppConfigurationCredentialProvider tokenCredentialProvider,
-        ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured, String clientId,
+        ConfigurationClientBuilderSetup clientProvider, Boolean isKeyVaultConfigured, String clientId,
         int maxRetries) {
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
-        this.isDev = isDev;
-        this.isKeyVaultConfigurated = isKeyVaultConfigured;
+        this.isKeyVaultConfigured = isKeyVaultConfigured;
         this.clientId = clientId;
         this.maxRetries = maxRetries;
     }
@@ -191,7 +192,7 @@ public class AppConfigurationReplicaClientBuilder {
         ExponentialBackoff retryPolicy = new ExponentialBackoff(maxRetries, Duration.ofMillis(800),
             Duration.ofSeconds(8));
 
-        builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigurated))
+        builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured))
             .retryPolicy(new RetryPolicy(retryPolicy));
 
         if (clientProvider != null) {
@@ -199,5 +200,15 @@ public class AppConfigurationReplicaClientBuilder {
         }
 
         return new AppConfigurationReplicaClient(endpoint, builder.buildClient());
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        for (String profile : environment.getActiveProfiles()) {
+            if ("dev".equalsIgnoreCase(profile)) {
+                this.isDev = true;
+                break;
+            }
+        }
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
 import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientBuilder;
@@ -112,7 +111,7 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientBuilder replicaClientBuilder(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, Environment env,
+        AppConfigurationProviderProperties appProperties,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
@@ -136,13 +135,6 @@ public class AppConfigurationBootstrapConfiguration {
         boolean isDev = false;
         boolean isKeyVaultConfigured = false;
 
-        for (String profile : env.getActiveProfiles()) {
-            if ("dev".equalsIgnoreCase(profile)) {
-                isDev = true;
-                break;
-            }
-        }
-
         if (keyVaultCredentialProviderOptional.isPresent() || keyVaultClientProviderOptional.isPresent()) {
             isKeyVaultConfigured = true;
         }
@@ -153,7 +145,7 @@ public class AppConfigurationBootstrapConfiguration {
             clientId = properties.getManagedIdentity().getClientId();
         }
 
-        return new AppConfigurationReplicaClientBuilder(tokenCredentialProvider, clientProvider, isDev,
-            isKeyVaultConfigured, clientId, appProperties.getMaxRetries());
+        return new AppConfigurationReplicaClientBuilder(tokenCredentialProvider, clientProvider, isKeyVaultConfigured,
+            clientId, appProperties.getMaxRetries());
     }
 }

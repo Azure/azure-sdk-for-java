@@ -89,7 +89,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretClientBuilder builderMock;
 
     @Mock
-    private AppConfigurationReplicaClient clientWrapperMock;
+    private AppConfigurationReplicaClient replicaClientMock;
 
     @Mock
     private SecretAsyncClient clientMock;
@@ -134,7 +134,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(testStore, selects, new ArrayList<>(),
-            appConfigurationProperties, clientWrapperMock, appProperties, tokenCredentialProvider, null,
+            appConfigurationProperties, replicaClientMock, appProperties, tokenCredentialProvider, null,
             new TestClient());
 
         TEST_ITEMS.add(ITEM_1);
@@ -152,7 +152,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
         when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
             .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientWrapperMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 

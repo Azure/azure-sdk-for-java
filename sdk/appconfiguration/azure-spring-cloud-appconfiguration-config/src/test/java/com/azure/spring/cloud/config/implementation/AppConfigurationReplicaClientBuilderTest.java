@@ -70,7 +70,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void buildClientFromEndpointTest() {
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, "", 0);
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
 
@@ -78,17 +78,17 @@ public class AppConfigurationReplicaClientBuilderTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        AppConfigurationReplicaClient clientWrapper = spy.buildClients(configStore).get(0);
+        AppConfigurationReplicaClient replicaClient = spy.buildClients(configStore).get(0);
 
-        assertNotNull(clientWrapper);
-        assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
-        assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
-        assertEquals(0, clientWrapper.getFailedAttempts());
+        assertNotNull(replicaClient);
+        assertTrue(replicaClient.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
+        assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
+        assertEquals(0, replicaClient.getFailedAttempts());
     }
 
     @Test
     public void buildClientFromEndpointWithTokenCredentialTest() {
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, "", 0);
 
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -98,12 +98,12 @@ public class AppConfigurationReplicaClientBuilderTest {
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
         when(tokenProviderMock.getAppConfigCredential(Mockito.eq(TEST_ENDPOINT))).thenReturn(credentialMock);
 
-        AppConfigurationReplicaClient clientWrapper = spy.buildClients(configStore).get(0);
+        AppConfigurationReplicaClient replicaClient = spy.buildClients(configStore).get(0);
 
-        assertNotNull(clientWrapper);
-        assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
-        assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
-        assertEquals(0, clientWrapper.getFailedAttempts());
+        assertNotNull(replicaClient);
+        assertTrue(replicaClient.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
+        assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
+        assertEquals(0, replicaClient.getFailedAttempts());
 
         verify(tokenProviderMock, times(1)).getAppConfigCredential(Mockito.anyString());
         verify(builderMock, times(1)).credential(Mockito.eq(credentialMock));
@@ -112,7 +112,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Test
     public void buildClientFromEndpointClientIdTest() {
         String clientId = "1234-5678-9012-3456";
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, clientId, 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, clientId, 0);
 
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -121,12 +121,12 @@ public class AppConfigurationReplicaClientBuilderTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        AppConfigurationReplicaClient clientWrapper = spy.buildClients(configStore).get(0);
+        AppConfigurationReplicaClient replicaClient = spy.buildClients(configStore).get(0);
 
-        assertNotNull(clientWrapper);
-        assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
-        assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
-        assertEquals(0, clientWrapper.getFailedAttempts());
+        assertNotNull(replicaClient);
+        assertTrue(replicaClient.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
+        assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
+        assertEquals(0, replicaClient.getFailedAttempts());
 
         verify(builderMock, times(1)).credential(Mockito.any(ManagedIdentityCredential.class));
     }
@@ -137,7 +137,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, "", 0);
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
 
@@ -156,7 +156,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void modifyClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, modifierMock, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, modifierMock, false, "", 0);
 
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -165,12 +165,12 @@ public class AppConfigurationReplicaClientBuilderTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
 
-        AppConfigurationReplicaClient clientWrapper = spy.buildClients(configStore).get(0);
+        AppConfigurationReplicaClient replicaClient = spy.buildClients(configStore).get(0);
 
-        assertNotNull(clientWrapper);
-        assertTrue(clientWrapper.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
-        assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
-        assertEquals(0, clientWrapper.getFailedAttempts());
+        assertNotNull(replicaClient);
+        assertTrue(replicaClient.getBackoffEndTime().isBefore(Instant.now().plusSeconds(1)));
+        assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
+        assertEquals(0, replicaClient.getFailedAttempts());
 
         verify(modifierMock, times(1)).setup(Mockito.eq(builderMock), Mockito.eq(TEST_ENDPOINT));
     }
@@ -187,7 +187,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, "", 0);
 
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -213,7 +213,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, "", 0);
 
         AppConfigurationReplicaClientBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -238,7 +238,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientBuilder(tokenProviderMock, null, false, "", 0);
 
         String message = assertThrows(IllegalArgumentException.class,
             () -> clientBuilder.buildClients(configStore).get(0)).getMessage();

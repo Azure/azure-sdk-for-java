@@ -79,7 +79,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @Mock
-    private AppConfigurationReplicaClient clientWrapperMock;
+    private AppConfigurationReplicaClient replicaClientMock;
 
     @Mock
     private FeatureFlagStore featureFlagStoreMock;
@@ -183,10 +183,10 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
 
-        when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(clientWrapperMock));
-        when(clientWrapperMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
-        when(clientWrapperMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
+        when(replicaClientMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         appProperties = new AppConfigurationProviderProperties();
         appProperties.setVersion("1.0");
@@ -213,6 +213,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             tokenCredentialProvider, null, null);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            System.out.println(stateHolderMock);
             PropertySource<?> source = locator.locate(emptyEnvironment);
 
             assertTrue(source instanceof CompositePropertySource);
@@ -335,8 +336,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientFactoryMock, tokenCredentialProvider, null, null);
 
-        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
-        when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
+        when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertEquals("Failed to generate property sources for " + TEST_STORE_NAME, e.getMessage());
         verify(configStoreMock, times(1)).isFailFast();
@@ -350,9 +351,9 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientFactoryMock, tokenCredentialProvider, null, null);
 
-        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
-        when(clientWrapperMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
-        when(clientWrapperMock.listSettings(any())).thenThrow(new RuntimeException());
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
+        when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
+        when(replicaClientMock.listSettings(any())).thenThrow(new RuntimeException());
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadState(Mockito.anyString())).thenReturn(true);
@@ -438,8 +439,8 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(configStoreMockError.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
-        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(clientWrapperMock));
-        when(clientWrapperMock.listSettings(Mockito.any())).thenThrow(new NullPointerException(""));
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
+        when(replicaClientMock.listSettings(Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 

@@ -94,7 +94,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private final Map<String, KeyVaultClient> keyVaultClients;
 
-    private final AppConfigurationReplicaClient clientWrapper;
+    private final AppConfigurationReplicaClient replicaClient;
 
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
@@ -108,7 +108,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     AppConfigurationPropertySource(ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
         List<String> profiles, AppConfigurationProperties appConfigurationProperties,
-        AppConfigurationReplicaClient clientWrapper,
+        AppConfigurationReplicaClient replicaClient,
         AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
@@ -121,7 +121,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         this.appConfigurationProperties = appConfigurationProperties;
         this.appProperties = appProperties;
         this.keyVaultClients = new HashMap<>();
-        this.clientWrapper = clientWrapper;
+        this.replicaClient = replicaClient;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
@@ -170,7 +170,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         if (featureStore.getEnabled()) {
             settingSelector.setKeyFilter(featureStore.getKeyFilter()).setLabelFilter(featureStore.getLabelFilter());
 
-            features = clientWrapper.listSettings(settingSelector);
+            features = replicaClient.listSettings(settingSelector);
         }
 
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
@@ -181,7 +181,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(label);
 
             // * for wildcard match
-            PagedIterable<ConfigurationSetting> settings = clientWrapper.listSettings(settingSelector);
+            PagedIterable<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector);
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');

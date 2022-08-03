@@ -114,13 +114,13 @@ public class ConnectionManager {
         if (client != null) {
             avalibleClients.add(client);
         } else if (clients.size() > 0) {
-            for (AppConfigurationReplicaClient wrapper : clients) {
-                if (wrapper.getEndpoint().equals(currentReplica)) {
+            for (AppConfigurationReplicaClient replicaClient : clients) {
+                if (replicaClient.getEndpoint().equals(currentReplica)) {
                     foundCurrent = true;
                 }
-                if (foundCurrent && wrapper.getBackoffEndTime().isBefore(Instant.now())) {
-                    LOGGER.debug("Using Client: " + wrapper.getEndpoint());
-                    avalibleClients.add(wrapper);
+                if (foundCurrent && replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
+                    LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
+                    avalibleClients.add(replicaClient);
                 }
             }
             if (avalibleClients.size() == 0) {

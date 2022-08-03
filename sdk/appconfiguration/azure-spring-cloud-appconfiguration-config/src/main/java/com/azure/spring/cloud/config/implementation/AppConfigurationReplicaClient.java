@@ -25,7 +25,7 @@ class AppConfigurationReplicaClient {
     private int failedAttempts;
 
     /**
-     * Wrapper for Configuration Client to manage backoff.
+     * Holds Configuration Client and info needed to manage backoff.
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
