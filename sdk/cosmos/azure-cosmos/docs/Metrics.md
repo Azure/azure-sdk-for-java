@@ -142,7 +142,7 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | cosmos.client.rntbd.requests.concurrent.count   | snapshot | None                   | Current number (snapshot) of concurrent requests handled per service endpoint |
 | cosmos.client.rntbd.requests.queued.count       | snapshot | None                   | Current number (snapshot) of requests being queued (delayed due to no channel available) per service endpoint |
 | cosmos.client.rntbd.channels.acquired.count     | snapshot | None                   | Current number (snapshot) of new channels (TCP connections) being acquired per service endpoint |
-| cosmos.client.rntbd.channels.acquired.count     | snapshot | None                   | Current number (snapshot) of existing channels (TCP connections)  per service endpoint |
+| cosmos.client.rntbd.channels.available.count    | snapshot | None                   | Current number (snapshot) of existing channels (TCP connections)  per service endpoint |
 
 ### System status  metrics (CPU, memory etc.)
 
