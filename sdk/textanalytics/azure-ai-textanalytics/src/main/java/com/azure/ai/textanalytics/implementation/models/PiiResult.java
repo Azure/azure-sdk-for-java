@@ -36,4 +36,25 @@ public final class PiiResult extends PreBuiltResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiResult setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
 }

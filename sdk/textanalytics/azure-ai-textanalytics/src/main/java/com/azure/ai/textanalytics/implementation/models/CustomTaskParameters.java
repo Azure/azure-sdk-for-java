@@ -61,4 +61,11 @@ public class CustomTaskParameters extends TaskParameters {
         this.deploymentName = deploymentName;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
+        return this;
+    }
 }

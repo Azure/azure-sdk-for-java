@@ -468,7 +468,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private EntitiesTaskParameters getEntitiesTaskParameters(RecognizeEntitiesAction action) {
-        return (EntitiesTaskParameters) new EntitiesTaskParameters()
+        return new EntitiesTaskParameters()
                                          .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                          .setModelVersion(action.getModelVersion())
                                          .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -497,7 +497,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private PiiTaskParameters getPiiTaskParameters(RecognizePiiEntitiesAction action) {
-        return (PiiTaskParameters) new PiiTaskParameters()
+        return new PiiTaskParameters()
                                        .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                        .setDomain(PiiDomain.fromString(
                                            action.getDomainFilter() == null
@@ -519,7 +519,7 @@ class AnalyzeActionsAsyncClient {
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
         final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
         final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
-        return (HealthcareTaskParameters) new HealthcareTaskParameters()
+        return new HealthcareTaskParameters()
                                               .setFhirVersion(fhirVersionImpl)
                                               .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                               .setModelVersion(action.getModelVersion())
@@ -549,7 +549,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private KeyPhraseTaskParameters getKeyPhraseTaskParameters(ExtractKeyPhrasesAction action) {
-        return (KeyPhraseTaskParameters) new KeyPhraseTaskParameters()
+        return new KeyPhraseTaskParameters()
                                              .setModelVersion(action.getModelVersion())
                                              .setLoggingOptOut(action.isServiceLogsDisabled());
     }
@@ -577,7 +577,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private EntityLinkingTaskParameters getEntityLinkingTaskParameters(RecognizeLinkedEntitiesAction action) {
-        return (EntityLinkingTaskParameters) new EntityLinkingTaskParameters()
+        return new EntityLinkingTaskParameters()
                                                  .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                                  .setModelVersion(action.getModelVersion())
                                                  .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -606,7 +606,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private SentimentAnalysisTaskParameters getSentimentAnalysisTaskParameters(AnalyzeSentimentAction action) {
-        return (SentimentAnalysisTaskParameters) new SentimentAnalysisTaskParameters()
+        return new SentimentAnalysisTaskParameters()
                                                      .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                                      .setOpinionMining(action.isIncludeOpinionMining())
                                                      .setModelVersion(action.getModelVersion())
@@ -637,15 +637,14 @@ class AnalyzeActionsAsyncClient {
 
     private ExtractiveSummarizationTaskParameters getExtractiveSummarizationTaskParameters(
         ExtractSummaryAction action) {
-        return (ExtractiveSummarizationTaskParameters)
-                   new ExtractiveSummarizationTaskParameters()
-                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                       .setSentenceCount(action.getMaxSentenceCount())
-                       .setSortBy(action.getOrderBy() == null ? null
-                                      : ExtractiveSummarizationSortingCriteria
-                                            .fromString(action.getOrderBy().toString()))
-                       .setModelVersion(action.getModelVersion())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new ExtractiveSummarizationTaskParameters()
+            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setSentenceCount(action.getMaxSentenceCount())
+            .setSortBy(action.getOrderBy() == null ? null
+                           : ExtractiveSummarizationSortingCriteria
+                                 .fromString(action.getOrderBy().toString()))
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private CustomEntitiesLROTask toCustomEntitiesLROTask(RecognizeCustomEntitiesAction action) {
@@ -671,12 +670,11 @@ class AnalyzeActionsAsyncClient {
     }
 
     private CustomEntitiesTaskParameters getCustomEntitiesTaskParameters(RecognizeCustomEntitiesAction action) {
-        return (CustomEntitiesTaskParameters)
-                   new CustomEntitiesTaskParameters()
-                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                       .setProjectName(action.getProjectName())
-                       .setDeploymentName(action.getDeploymentName())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new CustomEntitiesTaskParameters()
+            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setProjectName(action.getProjectName())
+            .setDeploymentName(action.getDeploymentName())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private CustomSingleLabelClassificationLROTask toCustomSingleLabelClassificationLROTask(
@@ -704,11 +702,10 @@ class AnalyzeActionsAsyncClient {
 
     private CustomSingleLabelClassificationTaskParameters getCustomSingleClassificationTaskParameters(
         SingleCategoryClassifyAction action) {
-        return (CustomSingleLabelClassificationTaskParameters)
-                   new CustomSingleLabelClassificationTaskParameters()
-                       .setProjectName(action.getProjectName())
-                       .setDeploymentName(action.getDeploymentName())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new CustomSingleLabelClassificationTaskParameters()
+            .setProjectName(action.getProjectName())
+            .setDeploymentName(action.getDeploymentName())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private CustomMultiLabelClassificationLROTask toCustomMultiLabelClassificationLROTask(
@@ -736,11 +733,10 @@ class AnalyzeActionsAsyncClient {
 
     private CustomMultiLabelClassificationTaskParameters getCustomMultiLabelClassificationTaskParameters(
         MultiCategoryClassifyAction action) {
-        return (CustomMultiLabelClassificationTaskParameters)
-                   new CustomMultiLabelClassificationTaskParameters()
-                       .setProjectName(action.getProjectName())
-                       .setDeploymentName(action.getDeploymentName())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new CustomMultiLabelClassificationTaskParameters()
+            .setProjectName(action.getProjectName())
+            .setDeploymentName(action.getDeploymentName())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsOperationDetail>>

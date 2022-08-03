@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class HealthcareRelation {
     /*
-     * Type of relation. Examples include: `DosageOfMedication` or
-     * 'FrequencyOfMedication', etc.
+     * Type of relation. Examples include: `DosageOfMedication` or 'FrequencyOfMedication', etc.
      */
     @JsonProperty(value = "relationType", required = true)
     private RelationType relationType;

@@ -25,7 +25,7 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+            <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->

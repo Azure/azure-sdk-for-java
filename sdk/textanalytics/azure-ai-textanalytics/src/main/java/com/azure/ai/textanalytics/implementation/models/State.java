@@ -45,6 +45,9 @@ public enum State {
      */
     @JsonCreator
     public static State fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         State[] items = State.values();
         for (State item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

@@ -15,9 +15,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Flux;
-
-import java.nio.ByteBuffer;
 
 /**
  * This class provides a synchronous client that contains the operations that apply to Azure Form Recognizer.
@@ -226,8 +223,7 @@ public final class DocumentAnalysisClient {
     public SyncPoller<DocumentOperationResult, AnalyzeResult>
         beginAnalyzeDocument(String modelId, BinaryData document, long length,
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
-        Flux<ByteBuffer> buffer = document.toFluxByteBuffer();
-        return client.beginAnalyzeDocument(modelId, buffer, length,
+        return client.beginAnalyzeDocument(modelId, document, length,
             analyzeDocumentOptions, context).getSyncPoller();
     }
 }
