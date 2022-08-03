@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -31,8 +30,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.function.Supplier;
 
-import static com.azure.core.util.polling.implementation.PollingConstants.LOCATION;
-import static com.azure.core.util.polling.implementation.PollingConstants.RESOURCE_LOCATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
