@@ -26,8 +26,8 @@ Last-but-not-least - to be able to use these Spark plugins the jar containing th
 Follow these steps for the installation:
 
 - Download the latest Azure Cosmos DB Spark connector jar from Maven
-  - Spark 3.1: https://repo1.maven.org/maven2/com/azure/cosmos/spark/azure-cosmos-spark_3-1_2-12/ReplaceWithTheLatestVersion/azure-cosmos-spark_3-1_2-12-ReplaceWithTheLatestVersion.jar 
-  - Spark 3.2: https://repo1.maven.org/maven2/com/azure/cosmos/spark/azure-cosmos-spark_3-1_2-12/ReplaceWithTheLatestVersion/azure-cosmos-spark_3-2_2-12-ReplaceWithTheLatestVersion.jar 
+  - Spark 3.1: `https://repo1.maven.org/maven2/com/azure/cosmos/spark/azure-cosmos-spark_3-1_2-12/ReplaceWithTheLatestVersion/azure-cosmos-spark_3-1_2-12-ReplaceWithTheLatestVersion.jar`
+  - Spark 3.2: `https://repo1.maven.org/maven2/com/azure/cosmos/spark/azure-cosmos-spark_3-1_2-12/ReplaceWithTheLatestVersion/azure-cosmos-spark_3-2_2-12-ReplaceWithTheLatestVersion.jar` 
 
 - Upload this jar to your Databricks file system (in `/dbfs/FileStore/plugins` folder)
 - Create a text file (NOTE: Use Unix Line feeds (LF - not Windows line feeds) with the content below and upload this start-up script as well.
