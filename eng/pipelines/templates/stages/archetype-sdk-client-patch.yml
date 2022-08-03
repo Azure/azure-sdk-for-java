@@ -26,7 +26,7 @@ parameters:
   default: '2C'
 - name: AdditionalBuildOptions
   type: string
-  default: $(AdditionalBuildOptions)
+  default: ''
 - name: UseEsrpRelease
   type: boolean
   default: true
