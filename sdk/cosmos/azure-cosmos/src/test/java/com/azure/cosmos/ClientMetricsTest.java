@@ -89,7 +89,16 @@ public class ClientMetricsTest extends TestSuiteBase {
             CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
             validateItemResponse(properties, itemResponse1);
 
-            this.validateMetrics();
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "201"),
+                Tag.of(TagName.RequestStatusCode.toString(), "201/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Create"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Create")
+            );
         } finally {
             this.afterTest();
         }
@@ -108,7 +117,17 @@ public class ClientMetricsTest extends TestSuiteBase {
                 InternalObjectNode.class);
             validateItemResponse(properties, readResponse1);
 
-            this.validateMetrics();
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Read"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Read")
+            );
+
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
             this.assertMetrics("cosmos.client.req.gw" , false, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
@@ -136,7 +155,16 @@ public class ClientMetricsTest extends TestSuiteBase {
                 options);
             assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
 
-            this.validateMetrics();
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Replace"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Replace")
+            );
         } finally {
             this.afterTest();
         }
@@ -155,7 +183,16 @@ public class ClientMetricsTest extends TestSuiteBase {
                 options);
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
 
-            this.validateMetrics();
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "204"),
+                Tag.of(TagName.RequestStatusCode.toString(), "204/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Delete"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Delete")
+            );
         } finally {
             this.afterTest();
         }
@@ -174,8 +211,18 @@ public class ClientMetricsTest extends TestSuiteBase {
                 container.readAllItems(cosmosQueryRequestOptions, InternalObjectNode.class);
             assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
-            this.validateMetrics();
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(),  "Document/ReadFeed"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             this.assertMetrics("cosmos.client.req.gw" , true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
@@ -204,8 +251,18 @@ public class ClientMetricsTest extends TestSuiteBase {
                 container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
             assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
-            this.validateMetrics();
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(),  "Document/Query"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             this.assertMetrics("cosmos.client.req.gw" , true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
@@ -239,6 +296,16 @@ public class ClientMetricsTest extends TestSuiteBase {
             this.assertMetrics("cosmos.client.req.rntbd", true);
         } else {
             this.assertMetrics("cosmos.client.req.gw", true);
+            this.assertMetrics("cosmos.client.req.rntbd", false);
+        }
+    }
+
+    private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag) {
+        this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
+        if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+            this.assertMetrics("cosmos.client.req.rntbd", true, expectedRequestTag);
+        } else {
+            this.assertMetrics("cosmos.client.req.gw", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd", false);
         }
     }

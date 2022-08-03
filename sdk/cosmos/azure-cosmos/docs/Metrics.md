@@ -77,14 +77,13 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | `Operation`                          | `Document / ReadFeed` or `Document / queryItems / SomeLogicalQueryIdentifier` | The operation type and for queries with optional logical operation identifier as suffix | operations + requests       |
 | `OperationStatusCode`                | `200` or `429` etc.                                          | The status code of the operation reported to the app/svc (could indicate sucess `200` even after hitting errors and retyring successfully) | operations  + requests      |
 | `ClientCorrelationId`                | `MyClientUsingAADAuth`                                       | An identifier of the Cosmos client instance - can be specified via the `CosmosClientBuilder. clientTelemetryConfig(). clientCorrelationId(String)` method or gets auto-generated | operations + requests       |
-| `IsPayloadLargerThan1KB`             | `True` or `False`                                            | A flag indicating whether the request/response payload size exceeded 1KB (relevant to determine whether latency SLA is applicable or not) | point operations            |
 | `ConsistencyLevel`                   | `Eventual`, `BoundedStaleness`, `Strong` or `Session`        | The consistency level used for the operation                 | operations + requests       |
 | `PartitionKeyRangeId`                | `1`                                                          | The partition key range id - an identifier for the physical shard/partition in the backend. This can be helpful to identify whether load is skewed across physical partitions. | operations + requests       |
 | `RequestStatusCode`                  | `200` or `429` etc.                                          | The status code of an individual request to the Cosmos DB Gateway or a replica | requests                    |
 | `RequestOperationType`               | `Document / ReadFeed` etc.                                   | The resource type and operation type of an individual request to the Cosmos DB Gateway or replica | requests                    |
 | `RegionName`                         | `West Europe`                                                | The Azure region name for the Cosmos DB Gateway or replica endpoint being called | requests                    |
-| `ServiceEndpoint`                    | ***TODO add***                                               | The hostname and port of the service endpoint being called   | requests                    |
-| `ServiceAddress`                     | ***TODO add***                                               | The path information allowing to determine physical partition and replica being called | requests (direct TCP/rntbd) |
+| `ServiceEndpoint`                    | cdb-ms-prod-westeurope1-fd39.documents.azure.com_14050       | The hostname and port of the service endpoint being called   | requests                    |
+| `ServiceAddress`                     | /apps/f88bfdf4-2954-4324-aad3-f1686668076d/services/3359112a-719d-474e-aa51-e89a142ae1b3/partitions/512fe816-24fa-4fbb-bbb1-587d2ce19851/replicas/133038444008943156p/ | The path information allowing to determine physical partition and replica being called | requests (direct TCP/rntbd) |
 | `IsForceRefresh`                     | `True` or `False`                                            | A flag indicating whether a forced address refresh is requested | address refresh requests    |
 | `IsForceCollectionRoutingMapRefresh` | `True` or `False`                                            | A flag indicating whether a forced refresh of partition and collection metadata is requested | address refresh requests    |
 
@@ -109,6 +108,7 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 | Name                              | Unit     | Percentiles            | Description                                                |
 | --------------------------------- | -------- | ---------------------- | ---------------------------------------------------------- |
+| cosmos.client.req.gw.latency      | duration | 95th, 99th + histogram | End-to-end duration spent for processing the request       |
 | cosmos.client.req.gw.timeline.xxx | duration | 95th, 99th + histogram | Duration spent in different stages of the request pipeline |
 | cosmos.client.req.reqPayloadSize  | bytes    | None                   | The request payload size in bytes                          |
 | cosmos.client.req.rspPayloadSize  | bytes    | None                   | The response payload size in bytes                         |
@@ -117,19 +117,16 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 | Name                                                         | Unit     | Percentiles            | Description                                                  |
 | ------------------------------------------------------------ | -------- | ---------------------- | ------------------------------------------------------------ |
+| cosmos.client.req.rntbd.latency                   | duration | 95th, 99th + histogram | End-to-end duration spent for processing the request                                                       |
 | cosmos.client.req.rntbd.backendLatency            | duration | 95th, 99th + histogram | Duration spent for processing the request in the Cosmos DB service endpoint (self-attested by backend) |
 | cosmos.client.req.rntbd.timeline.xxx                         | duration | 95th, 99th + histogram | Duration spent in different stages of the request pipeline   |
 | cosmos.client.req.reqPayloadSize                             |    bytes    | None                   | The request payload size in bytes                             |
 | cosmos.client.req.rspPayloadSize                             |    bytes    | None                   | The response payload size in bytes                             |
 | cosmos.client.req.rntbd.addressResolution.latency | duration | 95th, 99th + histogram | Duration spent for resolving physical addresses of replica for a certain partition |
-| cosmos.client.req.rntbd.stats.channel.pendingRequestQueueSize | #        | None                   | Request queue size of a single RNTBD channel (one TCP connection to a certain service endpoint) - any value larger than 0 results in higher latency |
-| cosmos.client.req.rntbd.stats.channel.channelTaskQueueSize   | #        | None                   | Total number of pending requests + requests being processed per channel |
 | cosmos.client.req.rntbd.stats.endpoint.acquiredChannels      | #        | 95th, 99th + histogram | Number of new TCP connections being established per Cosmos DB service endpoint |
 | cosmos.client.req.rntbd.stats.endpoint.availableChannels     | #        | None                   | Number of established TCP connections per  Cosmos DB service endpoint |
 | cosmos.client.req.rntbd.stats.endpoint.inflightRequests      | #        | 95th, 99th + histogram | Number of concurrently processed requests  per Cosmos DB service endpoint |
-| cosmos.client.req.rntbd.stats.endpoint.executorTaskQueueSize | #        | None                   | Number of pending tasks per Cosmos DB service endpoint       |
 | cosmos.client.req.rntbd.channel.acquisition.timeline.xxx     | duration | None                   | Duration spent in different stages of grabbing an existing or creating a new channel (TCP connection) |
-| cosmos.client.req.rntbd.channel.acquisition.timeline.completeNew | duration | None                   | Duration of completing SSL handshake for new TCP connection  |
 
 ### Metrics for RNTBD service endpoints (across operations, no operation-level tags)
 
@@ -156,18 +153,23 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 
 ### Request timeline stages
 
-dddd
+Metrics are available for other stages in the request pipeline as well - but the following stages will be of special interest for monitoring applications:
+
+- channelAcquisitionStarted: Higher values indicate that no channel (TCP connection) is available and a new one needs to be created - either because there is no open connection for the requested replica or because the number of concurrent requests is so high that another connection is needeed
+- transitTime: This is the duration between first byte sent and last byte received - so the time spent in the backend for processing the request + the network turnaround-time. High value with high variance to the backend-reported latency usually indicate either network problems or some resource constraint on the client (or network component like SNAT ports)
+- queued: is the time the requests waits because too many concurrent requests are being processed on a channel (TCP connection). Constantly high values here would indicate that the capacity of the application/service isn't sufficient and would need to be scaled-out.
+- The other pipeline stages are not expected to have regularly high values - any high values usually would indicate either some thread-pool issue on the client or client overload. Best way to double check usually is looking whether high values happen on only single (few) client machines or all of them - and what the CPU utilization (max) is at the time in question.
+
+
 
 
 ## How can I ignore tags/dimensions I am not interested in?
 
-dddd
+See the `MeterFilter.ignoreTags` documentation in the micrometer documentation here - `https://micrometer.io/docs/concepts#_transforming_metrics`
+
+
 
 ## How can I filter which metrics I want to collect?
 
-
-
-ddd
-
-
+See the `MeterFilter.accceptXXX/denyXXX` documentation in the micrometer documentation here - `https://micrometer.io/docs/concepts#_convenience_methods`
 

@@ -9,16 +9,15 @@ public enum TagName {
     Operation("Operation", 2),
     OperationStatusCode("OperationStatusCode", 4),
     ClientCorrelationId("ClientCorrelationId", 8),
-    IsPayloadLargerThan1KB("IsPayloadLargerThan1KB", 16),
-    ConsistencyLevel("ConsistencyLevel", 32),
-    PartitionKeyRangeId("PartitionKeyRangeId", 64),
-    RequestStatusCode("RequestStatusCode", 128),
-    RequestOperationType("RequestOperationType", 256),
-    RegionName("RegionName", 512),
-    ServiceEndpoint("ServiceEndpoint", 1024),
-    ServiceAddress("ServiceAddress", 2048),
-    IsForceRefresh("IsForceRefresh", 4096),
-    IsForceCollectionRoutingMapRefresh("IsForceCollectionRoutingMapRefresh",  8192);
+    ConsistencyLevel("ConsistencyLevel", 16),
+    PartitionKeyRangeId("PartitionKeyRangeId", 32),
+    RequestStatusCode("RequestStatusCode", 64),
+    RequestOperationType("RequestOperationType", 128),
+    RegionName("RegionName", 256),
+    ServiceEndpoint("ServiceEndpoint", 512),
+    ServiceAddress("ServiceAddress", 1024),
+    IsForceRefresh("IsForceRefresh", 2048),
+    IsForceCollectionRoutingMapRefresh("IsForceCollectionRoutingMapRefresh",  4096);
 
     private final int value;
     private final String stringValue;

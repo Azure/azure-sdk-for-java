@@ -52,7 +52,7 @@ public final class ClientTelemetryMetrics {
     private static final
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
             ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-    private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-/", false);
+    private static final PercentEscaper PERCENT_ESCAPER = new PercentEscaper("_-/.", false);
 
     private static CompositeMeterRegistry compositeRegistry = createFreshRegistry();
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
@@ -256,6 +256,8 @@ public final class ClientTelemetryMetrics {
             effectiveTags.add(Tag.of(TagName.OperationStatusCode.toString(), String.valueOf(statusCode)));
         }
 
+        // TODO @fabianm - remove this completely if we agree in the PR that this metric can be removed
+        /*
         if (isPointOperation &&
             metricTagNames.contains(TagName.IsPayloadLargerThan1KB)) {
 
@@ -267,7 +269,7 @@ public final class ClientTelemetryMetrics {
                         responsePayloadSizeInBytes
                     ) > ClientTelemetry.ONE_KB_TO_BYTES)
             ));
-        }
+        }*/
 
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {
             effectiveTags.add(Tag.of(
@@ -449,13 +451,13 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RequestStatusCode)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestStatusCode.toString(),
-                    String.format("%d_%d", statusCode, subStatusCode)));
+                    String.format("%d/%d", statusCode, subStatusCode)));
             }
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestOperationType.toString(),
-                    String.format("%s_%s", resourceType.toString(), operationType.toString())));
+                    String.format("%s/%s", resourceType.toString(), operationType.toString())));
             }
 
             if (metricTagNames.contains(TagName.RegionName)) {
@@ -488,7 +490,7 @@ public final class ClientTelemetryMetrics {
                 effectiveTags.add(Tag.of(
                     TagName.RequestOperationType.toString(),
                     String.format(
-                        "%s_%s",
+                        "%s/%s",
                         ResourceType.DocumentCollection.toString(),
                         OperationType.QueryPlan.toString())));
             }
@@ -524,6 +526,8 @@ public final class ClientTelemetryMetrics {
             return Tags.of(effectiveTags);
         }
 
+        // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
+        /*
         private void recordRntbdChannelStatistics(
             int pendingRequestQueueSize,
             int channelTaskQueueSize,
@@ -548,7 +552,7 @@ public final class ClientTelemetryMetrics {
                 .tags(requestTags)
                 .register(compositeRegistry);
             channelTaskQueueSizeMeter.record(channelTaskQueueSize);
-        }
+        }*/
 
         private void recordRntbdEndpointStatistics(RntbdEndpointStatistics endpointStatistics, Tags requestTags) {
             if (endpointStatistics == null) {
@@ -585,6 +589,8 @@ public final class ClientTelemetryMetrics {
                 .register(compositeRegistry);
             inflightRequestsMeter.record(endpointStatistics.getInflightRequests());
 
+            // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
+            /*
             DistributionSummary executorTaskQueueSizeMeter = DistributionSummary
                 .builder(nameOf("req.rntbd.stats.endpoint.executorTaskQueueSize"))
                 .baseUnit("#")
@@ -593,7 +599,7 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
-            executorTaskQueueSizeMeter.record(endpointStatistics.getExecutorTaskQueueSize());
+            executorTaskQueueSizeMeter.record(endpointStatistics.getExecutorTaskQueueSize());*/
         }
 
         private void recordRntbdChannelAcquisitionTimeline(
@@ -702,11 +708,13 @@ public final class ClientTelemetryMetrics {
                     storeResponseDiagnostics.getResponsePayloadLength()
                 );
 
+                // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
+                /*
                 recordRntbdChannelStatistics(
                     storeResponseDiagnostics.getPendingRequestQueueSize(),
                     storeResponseDiagnostics.getRntbdChannelTaskQueueSize(),
                     requestTags
-                );
+                );*/
 
                 recordRntbdEndpointStatistics(
                     storeResponseDiagnostics.getRntbdEndpointStatistics(),
