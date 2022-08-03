@@ -121,13 +121,6 @@
          <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
          <scope>test</scope>
        </dependency>
-    	<!-- https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305 -->
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version><!-- {x-version-update;com.google.code.findbugs:jsr305;current|dependency|external_dependency<select one>} -->
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
