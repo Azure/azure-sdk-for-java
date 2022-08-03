@@ -296,7 +296,7 @@ org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M7
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
-org.codehaus.mojo:exec-maven-plugin;1.2.1
+org.codehaus.mojo:exec-maven-plugin;3.1.0
 org.codehaus.mojo:findbugs-maven-plugin;3.0.5
 org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0.2
