@@ -335,13 +335,20 @@ public class CallConnectionAsync {
                 .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
             AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
-                .setParticipantsToAdd(participantModels)
-                .setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()))
-                .setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds())
-                .setOperationContext(addParticipantsOptions.getOperationContext());
+                .setParticipantsToAdd(participantModels);
+
+            if (addParticipantsOptions.getSourceCallerId() != null) {
+                request.setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()));
+            }
+            if (addParticipantsOptions.getInvitationTimeout() != null) {
+                request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
+            }
+            if (addParticipantsOptions.getOperationContext() != null) {
+                request.setOperationContext(addParticipantsOptions.getOperationContext());
+            }
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                //.onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

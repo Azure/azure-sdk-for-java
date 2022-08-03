@@ -5,10 +5,14 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.events.AcsEventType;
 import com.azure.communication.callingserver.models.events.AddParticipantsFailedEvent;
+import com.azure.communication.callingserver.models.events.AddParticipantsSucceededEvent;
 import com.azure.communication.callingserver.models.events.CallConnectedEvent;
 import com.azure.communication.callingserver.models.events.CallDisconnectedEvent;
+import com.azure.communication.callingserver.models.events.CallTransferAcceptedEvent;
+import com.azure.communication.callingserver.models.events.CallTransferFailedEvent;
 import com.azure.communication.callingserver.models.events.CallingServerBaseEvent;
 import com.azure.communication.callingserver.models.events.IncomingCallEvent;
+import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent;
 import com.azure.communication.callingserver.models.events.SubscriptionValidationEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
@@ -140,13 +144,13 @@ public final class EventHandler {
             } else if (type.equals(AcsEventType.ADD_PARTICIPANTS_FAILED)) {
                 ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
             } else if (type.equals(AcsEventType.ADD_PARTICIPANTS_SUCCEEDED)) {
-                ret = mapper.convertValue(eventData, CallDisconnectedEvent.class);
+                ret = mapper.convertValue(eventData, AddParticipantsSucceededEvent.class);
             } else if (type.equals(AcsEventType.CALL_TRANSFER_ACCEPTED)) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
+                ret = mapper.convertValue(eventData, CallTransferAcceptedEvent.class);
             } else if (type.equals(AcsEventType.CALL_TRANSFER_FAILED)) {
-                ret = mapper.convertValue(eventData, CallDisconnectedEvent.class);
+                ret = mapper.convertValue(eventData, CallTransferFailedEvent.class);
             } else if (type.equals(AcsEventType.PARTICIPANTS_UPDATED)) {
-                ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
+                ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
             }
 
             return ret;

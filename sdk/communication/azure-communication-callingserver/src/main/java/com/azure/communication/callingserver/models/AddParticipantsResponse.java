@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.accesshelpers.AddParticipantsResponseConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
 import com.azure.core.annotation.Immutable;
@@ -23,6 +24,16 @@ public final class AddParticipantsResponse {
      * The operation context provided by client.
      */
     private final String operationContext;
+
+    static {
+        AddParticipantsResponseConstructorProxy.setAccessor(
+            new AddParticipantsResponseConstructorProxy.AddParticipantsResponseConstructorAccessor() {
+                @Override
+                public AddParticipantsResponse create(AddParticipantsResponseInternal internalHeaders) {
+                    return new AddParticipantsResponse(internalHeaders);
+                }
+            });
+    }
 
     /**
      * Public constructor.
