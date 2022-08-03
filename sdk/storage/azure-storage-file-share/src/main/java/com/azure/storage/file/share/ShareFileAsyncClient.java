@@ -6,9 +6,11 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -159,6 +161,7 @@ public class ShareFileAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareFileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -170,7 +173,7 @@ public class ShareFileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     ShareFileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
-                         String snapshot, String accountName, ShareServiceVersion serviceVersion) {
+        String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
@@ -179,12 +182,13 @@ public class ShareFileAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
         this(fileAsyncClient.azureFileStorageClient, fileAsyncClient.shareName,
             Utility.urlEncode(fileAsyncClient.filePath), fileAsyncClient.snapshot, fileAsyncClient.accountName,
-            fileAsyncClient.serviceVersion);
+            fileAsyncClient.serviceVersion, fileAsyncClient.sasToken);
     }
 
     /**
@@ -217,6 +221,10 @@ public class ShareFileAsyncClient {
      */
     public ShareServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    AzureSasCredential getSasToken() {
+        return sasToken;
     }
 
     /**
@@ -3071,6 +3079,13 @@ public class ShareFileAsyncClient {
 //        String sasToken = this.extractSasToken();
 //        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
 
+        /*
+                String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
+         */
+
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
+
         return destinationFileClient.azureFileStorageClient.getFiles().renameWithResponseAsync(
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
@@ -3091,18 +3106,18 @@ public class ShareFileAsyncClient {
         }
 
         return new ShareFileAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
-            this.getAccountName(), this.getServiceVersion());
+            this.getAccountName(), this.getServiceVersion(), this.getSasToken());
     }
 
-//    private String extractSasToken() {
-//        for (int i = 0; i < this.getHttpPipeline().getPolicyCount(); i++) {
-//            if (this.getHttpPipeline().getPolicy(i) instanceof AzureSasCredentialPolicy) {
-//                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) this.getHttpPipeline().getPolicy(i);
-//                return policy.getCredential().getSignature();
-//            }
-//        }
-//        return null;
-//    }
+    private String extractSasToken() {
+        for (int i = 0; i < this.getHttpPipeline().getPolicyCount(); i++) {
+            if (this.getHttpPipeline().getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) this.getHttpPipeline().getPolicy(i);
+                return policy.getCredential().getSignature();
+            }
+        }
+        return null;
+    }
 
     /**
      * Get snapshot id which attached to {@link ShareFileAsyncClient}. Return {@code null} if no snapshot id attached.
