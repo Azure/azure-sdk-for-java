@@ -24,9 +24,9 @@ public class DeleteLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithConnectionStringClient(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "deleteRecordingWithConnectionStringClient");
-        deleteRecording(callingServerClient);
+        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecordingWithConnectionStringClient");
+        deleteRecording(callAutomationClient);
     }
 
     @ParameterizedTest
@@ -36,12 +36,12 @@ public class DeleteLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithTokenCredentialClient(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "deleteRecordingWithTokenCredentialClient");
-        deleteRecording(callingServerClient);
+        CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecordingWithTokenCredentialClient");
+        deleteRecording(callAutomationClient);
     }
 
-    private void deleteRecording(CallingServerClient callingServerAsyncClient) {
+    private void deleteRecording(CallAutomationClient callingServerAsyncClient) {
         try {
             Response<Void> response = callingServerAsyncClient
                 .getCallRecording()
@@ -60,9 +60,9 @@ public class DeleteLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording401(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "deleteRecording404Async");
-        Response<Void> response = callingServerClient
+        CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
+        CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
+        Response<Void> response = callAutomationClient
             .getCallRecording()
             .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
         assertThat(response.getStatusCode(), is(equalTo(401)));
@@ -75,19 +75,19 @@ public class DeleteLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording404(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "deleteRecording404Async");
-        Response<Void> response = callingServerClient
+        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
+        Response<Void> response = callAutomationClient
             .getCallRecording()
             .deleteRecordingWithResponse(RECORDING_DELETE_URL_404, Context.NONE);
         assertThat(response.getStatusCode(), is(equalTo(404)));
     }
 
-    private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {
+    private CallAutomationClient setupClient(CallAutomationClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
     }
 
-    protected CallingServerClientBuilder addLoggingPolicy(CallingServerClientBuilder builder, String testName) {
+    protected CallAutomationClientBuilder addLoggingPolicy(CallAutomationClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 }

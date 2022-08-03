@@ -19,16 +19,16 @@ import com.azure.core.util.Context;
  *
  * <p><strong>Instantiating a synchronous Calling Server Client</strong></p>
  *
- * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link CallAutomationClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see CallingServerClientBuilder
+ * @see CallAutomationClientBuilder
  */
-@ServiceClient(builder = CallingServerClientBuilder.class)
-public final class CallingServerClient {
-    private final CallingServerAsyncClient callingServerAsyncClient;
+@ServiceClient(builder = CallAutomationClientBuilder.class)
+public final class CallAutomationClient {
+    private final CallAutomationAsyncClient callAutomationAsyncClient;
 
-    CallingServerClient(CallingServerAsyncClient callingServerAsyncClient) {
-        this.callingServerAsyncClient = callingServerAsyncClient;
+    CallAutomationClient(CallAutomationAsyncClient callAutomationAsyncClient) {
+        this.callAutomationAsyncClient = callAutomationAsyncClient;
     }
 
     //region Pre-call Actions
@@ -42,7 +42,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionProperties createCall(CreateCallOptions createCallOptions) {
-        return callingServerAsyncClient.createCall(createCallOptions).block();
+        return callAutomationAsyncClient.createCall(createCallOptions).block();
     }
 
     /**
@@ -56,7 +56,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnectionProperties> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
-        return callingServerAsyncClient.createCallWithResponseInternal(createCallOptions, context).block();
+        return callAutomationAsyncClient.createCallWithResponseInternal(createCallOptions, context).block();
     }
 
     /**
@@ -70,7 +70,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionProperties answerCall(String incomingCallContext, String callbackUri) {
-        return callingServerAsyncClient.answerCall(incomingCallContext, callbackUri).block();
+        return callAutomationAsyncClient.answerCall(incomingCallContext, callbackUri).block();
     }
 
     /**
@@ -86,7 +86,7 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnectionProperties> answerCallWithResponse(String incomingCallContext, String callbackUri,
                                                                      Context context) {
-        return callingServerAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, context).block();
+        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, context).block();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void redirectCall(String incomingCallContext, CommunicationIdentifier target) {
-        return callingServerAsyncClient.redirectCall(incomingCallContext, target).block();
+        return callAutomationAsyncClient.redirectCall(incomingCallContext, target).block();
     }
 
     /**
@@ -115,7 +115,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, Context context) {
-        return callingServerAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
+        return callAutomationAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
     }
 
     /**
@@ -129,7 +129,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void rejectCall(String incomingCallContext, String callRejectReason) {
-        return callingServerAsyncClient.rejectCall(incomingCallContext, callRejectReason).block();
+        return callAutomationAsyncClient.rejectCall(incomingCallContext, callRejectReason).block();
     }
 
     /**
@@ -145,7 +145,7 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(String incomingCallContext, String callRejectReason,
                                                  Context context) {
-        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
+        return callAutomationAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
     }
     //endregion
 
@@ -158,7 +158,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection getCallConnection(String callConnectionId) {
-        return new CallConnection(callingServerAsyncClient.getCallConnectionAsync(callConnectionId));
+        return new CallConnection(callAutomationAsyncClient.getCallConnectionAsync(callConnectionId));
     }
     //endregion
 
@@ -172,7 +172,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallRecording getCallRecording() {
-        return new CallRecording(callingServerAsyncClient.getCallRecordingAsync());
+        return new CallRecording(callAutomationAsyncClient.getCallRecordingAsync());
     }
     //endregion
 }

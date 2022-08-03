@@ -58,8 +58,8 @@ public class CallingServerTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
-    protected CallingServerClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
-        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+    protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
+        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
             .connectionString(CONNECTION_STRING)
             .endpoint(ENDPOINT)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
@@ -72,10 +72,10 @@ public class CallingServerTestBase extends TestBase {
         return builder;
     }
 
-    protected CallingServerClientBuilder getCallingServerClientUsingTokenCredential(HttpClient httpClient) {
+    protected CallAutomationClientBuilder getCallingServerClientUsingTokenCredential(HttpClient httpClient) {
         TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
-        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
             .endpoint(ENDPOINT)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
@@ -88,10 +88,10 @@ public class CallingServerTestBase extends TestBase {
         return builder;
     }
 
-    protected CallingServerClientBuilder getCallingServerClientUsingInvalidTokenCredential(HttpClient httpClient) {
+    protected CallAutomationClientBuilder getCallingServerClientUsingInvalidTokenCredential(HttpClient httpClient) {
         TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
-        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
             .endpoint(ENDPOINT_401)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);

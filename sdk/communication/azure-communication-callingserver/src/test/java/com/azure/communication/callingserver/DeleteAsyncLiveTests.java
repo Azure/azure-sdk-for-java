@@ -22,9 +22,9 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithConnectionStringAsyncClient(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
-        deleteRecording(callingServerAsyncClient);
+        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
+        deleteRecording(callAutomationAsyncClient);
     }
 
     @ParameterizedTest
@@ -34,13 +34,13 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecordingWithTokenCredentialAsyncClient(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
-        deleteRecording(callingServerAsyncClient);
+        CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
+        deleteRecording(callAutomationAsyncClient);
     }
 
-    private void deleteRecording(CallingServerAsyncClient callingServerAsyncClient) {
-        StepVerifier.create(callingServerAsyncClient
+    private void deleteRecording(CallAutomationAsyncClient callAutomationAsyncClient) {
+        StepVerifier.create(callAutomationAsyncClient
             .getCallRecordingAsync()
             .deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(200))))
@@ -54,9 +54,9 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording401Async(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callingServerAsyncClient
+        CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
+        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
+        StepVerifier.create(callAutomationAsyncClient
                 .getCallRecordingAsync()
                 .deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(401))))
@@ -70,20 +70,20 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void deleteRecording404Async(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callingServerAsyncClient
+        CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
+        StepVerifier.create(callAutomationAsyncClient
                 .getCallRecordingAsync()
                 .deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(404))))
             .verifyComplete();
     }
 
-    private CallingServerAsyncClient setupAsyncClient(CallingServerClientBuilder builder, String testName) {
+    private CallAutomationAsyncClient setupAsyncClient(CallAutomationClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
 
-    protected CallingServerClientBuilder addLoggingPolicy(CallingServerClientBuilder builder, String testName) {
+    protected CallAutomationClientBuilder addLoggingPolicy(CallAutomationClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 }
