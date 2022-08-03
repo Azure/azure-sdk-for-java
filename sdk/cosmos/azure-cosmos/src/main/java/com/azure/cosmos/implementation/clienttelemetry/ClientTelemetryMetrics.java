@@ -673,15 +673,19 @@ public final class ClientTelemetryMetrics {
                         storeResultDiagnostics.getStorePhysicalAddressEscapedPath())
                 );
 
-                DistributionSummary backendRequestLatencyMeter = DistributionSummary
-                    .builder(nameOf("req.rntbd.backendLatency"))
-                    .baseUnit("ms")
-                    .description("Backend service latency")
-                    .publishPercentiles(0.95, 0.99)
-                    .publishPercentileHistogram(true)
-                    .tags(requestTags)
-                    .register(compositeRegistry);
-                backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
+                Double backendLatency = storeResultDiagnostics.getBackendLatencyInMs();
+
+                if (backendLatency != null) {
+                    DistributionSummary backendRequestLatencyMeter = DistributionSummary
+                        .builder(nameOf("req.rntbd.backendLatency"))
+                        .baseUnit("ms")
+                        .description("Backend service latency")
+                        .publishPercentiles(0.95, 0.99)
+                        .publishPercentileHistogram(true)
+                        .tags(requestTags)
+                        .register(compositeRegistry);
+                    backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
+                }
 
                 Duration latency = responseStatistics.getDuration();
                 if (latency != null) {
