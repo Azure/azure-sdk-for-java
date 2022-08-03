@@ -29,7 +29,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -468,7 +467,7 @@ public class CallRecordingAsync {
             AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-               return downloadToWithResponse(sourceEndpoint, destinationPath, file, options, contextValue);
+                return downloadToWithResponse(sourceEndpoint, destinationPath, file, options, contextValue);
             });
         } catch (IOException ex) {
             return monoError(logger, new RuntimeException(ex));
