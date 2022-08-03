@@ -18,9 +18,49 @@ public class BlobName implements XmlSerializable<BlobName> {
      */
     private String content;
 
+    /**
+     * Get the encoded property: Indicates if the blob name is encoded.
+     *
+     * @return the encoded value.
+     */
+    public Boolean isEncoded() {
+        return this.encoded;
+    }
+
+    /**
+     * Set the encoded property: Indicates if the blob name is encoded.
+     *
+     * @param encoded the encoded value to set.
+     * @return the BlobName object itself.
+     */
+    public BlobName setEncoded(Boolean encoded) {
+        this.encoded = encoded;
+        return this;
+    }
+
+    /**
+     * Get the content property: The name of the blob.
+     *
+     * @return the content value.
+     */
+    public String getContent() {
+        return this.content;
+    }
+
+    /**
+     * Set the content property: The name of the blob.
+     *
+     * @param content the content value to set.
+     * @return the BlobName object itself.
+     */
+    public BlobName setContent(String content) {
+        this.content = content;
+        return this;
+    }
+
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) {
-        xmlWriter.writeStartElement("BlobName");
+        xmlWriter.writeStartElement("Name");
         xmlWriter.writeBooleanAttribute("Encoded", encoded);
 
         xmlWriter.writeString(content);
@@ -29,7 +69,7 @@ public class BlobName implements XmlSerializable<BlobName> {
     }
 
     public static BlobName fromXml(XmlReader xmlReader) {
-        return xmlReader.readObject("BlobName", reader -> {
+        return xmlReader.readObject("Name", reader -> {
             BlobName result = new BlobName();
             result.encoded = reader.getAttributeNullableValue(null, "Encoded", Boolean::parseBoolean);
             result.content = reader.getElementStringValue();

@@ -17,6 +17,26 @@ public class BlobFlatListSegment implements XmlSerializable<BlobFlatListSegment>
      */
     private List<BlobItemInternal> blobItems = new ArrayList<>();
 
+    /**
+     * Get the blobItems property: The BlobItems property.
+     *
+     * @return the blobItems value.
+     */
+    public List<BlobItemInternal> getBlobItems() {
+        return this.blobItems;
+    }
+
+    /**
+     * Set the blobItems property: The BlobItems property.
+     *
+     * @param blobItems the blobItems value to set.
+     * @return the BlobFlatListSegment object itself.
+     */
+    public BlobFlatListSegment setBlobItems(List<BlobItemInternal> blobItems) {
+        this.blobItems = blobItems;
+        return this;
+    }
+
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) {
         xmlWriter.writeStartElement("Blobs");

@@ -51,6 +51,29 @@ public class BlobTags implements XmlSerializable<BlobTags> {
      */
     private TagSetWrapper blobTagSet;
 
+    /**
+     * Get the blobTagSet property: The BlobTagSet property.
+     *
+     * @return the blobTagSet value.
+     */
+    public List<BlobTag> getBlobTagSet() {
+        if (this.blobTagSet == null) {
+            this.blobTagSet = new TagSetWrapper(new ArrayList<BlobTag>());
+        }
+        return this.blobTagSet.items;
+    }
+
+    /**
+     * Set the blobTagSet property: The BlobTagSet property.
+     *
+     * @param blobTagSet the blobTagSet value to set.
+     * @return the BlobTags object itself.
+     */
+    public BlobTags setBlobTagSet(List<BlobTag> blobTagSet) {
+        this.blobTagSet = new TagSetWrapper(blobTagSet);
+        return this;
+    }
+
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) {
         xmlWriter.writeStartElement("Tags");

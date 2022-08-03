@@ -19,6 +19,46 @@ public class BlobTag implements XmlSerializable<BlobTag> {
      */
     private String value;
 
+    /**
+     * Get the key property: The Key property.
+     *
+     * @return the key value.
+     */
+    public String getKey() {
+        return this.key;
+    }
+
+    /**
+     * Set the key property: The Key property.
+     *
+     * @param key the key value to set.
+     * @return the BlobTag object itself.
+     */
+    public BlobTag setKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    /**
+     * Get the value property: The Value property.
+     *
+     * @return the value value.
+     */
+    public String getValue() {
+        return this.value;
+    }
+
+    /**
+     * Set the value property: The Value property.
+     *
+     * @param value the value value to set.
+     * @return the BlobTag object itself.
+     */
+    public BlobTag setValue(String value) {
+        this.value = value;
+        return this;
+    }
+
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) {
         xmlWriter.writeStartElement("Tag");
@@ -33,26 +73,17 @@ public class BlobTag implements XmlSerializable<BlobTag> {
         return xmlReader.readObject("Tag", reader -> {
             BlobTag deserialized = new BlobTag();
 
-            boolean keyFound = false;
-            boolean valueFound = false;
-
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 String elementName = reader.getElementName().getLocalPart();
 
                 if ("Key".equals(elementName)) {
                     deserialized.key = reader.getElementStringValue();
-                    keyFound = true;
                 } else if ("Value".equals(elementName)) {
                     deserialized.value = reader.getElementStringValue();
-                    valueFound = true;
                 }
             }
 
-            if (keyFound && valueFound) {
-                return deserialized;
-            }
-
-            throw new IllegalStateException("Missing required properties.");
+            return deserialized;
         });
     }
 }
