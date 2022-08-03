@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.service.implementation.identity.impl.utils;
 
 import com.azure.core.exception.AzureException;
@@ -23,7 +26,9 @@ import java.util.stream.Collectors;
 public class ClassUtil {
 
     private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
+    @SuppressWarnings("unchecked")
     private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new IdentityHashMap(9);
+    @SuppressWarnings("unchecked")
     private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new IdentityHashMap(9);
 
     static {
@@ -47,6 +52,7 @@ public class ClassUtil {
         primitiveWrapperTypeMap.put(Long.class, Long.TYPE);
         primitiveWrapperTypeMap.put(Short.class, Short.TYPE);
         primitiveWrapperTypeMap.put(Void.class, Void.TYPE);
+        @SuppressWarnings("unchecked")
         Iterator iterator = primitiveWrapperTypeMap.entrySet().iterator();
 
 
@@ -124,7 +130,6 @@ public class ClassUtil {
         return true;
     }
 
-
     private static  <T> T instantiateClass(Constructor<T> ctor, Object... args)  {
         notNull(ctor, "Constructor must not be null");
         try {
@@ -193,13 +198,12 @@ public class ClassUtil {
         } else {
             Class resolvedWrapper;
             if (lhsType.isPrimitive()) {
-                resolvedWrapper = (Class)primitiveWrapperTypeMap.get(rhsType);
+                resolvedWrapper = primitiveWrapperTypeMap.get(rhsType);
                 return lhsType == resolvedWrapper;
             } else {
-                resolvedWrapper = (Class)primitiveTypeToWrapperMap.get(rhsType);
+                resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
                 return resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper);
             }
         }
     }
-
 }

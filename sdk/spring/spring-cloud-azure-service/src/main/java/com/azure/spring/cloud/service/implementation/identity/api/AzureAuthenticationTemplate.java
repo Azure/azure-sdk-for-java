@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.service.implementation.identity.api;
 
 import com.azure.core.credential.AccessToken;
@@ -16,9 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
- * 1. get a token credential
- * 2. get an access token from token credential
- * 3. get the password from access token
  */
 public class AzureAuthenticationTemplate {
 

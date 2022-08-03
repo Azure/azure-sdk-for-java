@@ -1,5 +1,7 @@
-package com.azure.spring.cloud.service.implementation.identity.providers.postgresql;// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
+package com.azure.spring.cloud.service.implementation.identity.providers.postgresql;// Copyright (c) Microsoft Corporation. All rights reserved.
 
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.api.AzureAuthenticationTemplate;

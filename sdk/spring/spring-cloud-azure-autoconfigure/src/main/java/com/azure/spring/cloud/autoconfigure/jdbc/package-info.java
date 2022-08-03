@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring Boot Kafka.
+ * Spring Cloud Azure's auto-configuration for Spring Boot Jdbc.
  */
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
