@@ -19,11 +19,11 @@ public class PersistentTokenCacheDemo {
     public static void main(String[] args) {
         // Wrote to AZURE_USERNAME env variable.
         SharedTokenCacheCredential defaultCredential = new SharedTokenCacheCredentialBuilder()
-            .clientId("<YOUR_CLIENT_ID>")
+            .clientId("<your-client-id>")
             .build();
 
         SecretClient client = new SecretClientBuilder()
-            .vaultUrl("<YOUR_KEY_VAULT_URL>")
+            .vaultUrl("<your-key-vault-url>")
             .credential(defaultCredential)
             .buildClient();
 
