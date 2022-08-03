@@ -11,9 +11,9 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
-import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
@@ -34,7 +34,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
@@ -42,20 +41,20 @@ import com.azure.security.keyvault.keys.implementation.models.DeletedKeyPage;
 import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
 import com.azure.security.keyvault.keys.implementation.models.KeyPropertiesPage;
 import com.azure.security.keyvault.keys.implementation.models.RandomBytes;
-import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
-import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
+import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
@@ -90,16 +89,16 @@ public class KeyClientImpl {
      *
      * @param vaultUrl URL for the Azure Key Vault service.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses will flow through.
-     * @param version {@link KeyServiceVersion} of the service to be used when making requests.
+     * @param keyServiceVersion {@link KeyServiceVersion} of the service to be used when making requests.
      */
-    public KeyClientImpl(String vaultUrl, HttpPipeline pipeline, KeyServiceVersion version) {
+    public KeyClientImpl(String vaultUrl, HttpPipeline pipeline, KeyServiceVersion keyServiceVersion) {
         Objects.requireNonNull(vaultUrl,
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
 
         this.vaultUrl = vaultUrl;
         this.service = RestProxy.create(KeyService.class, pipeline);
         this.pipeline = pipeline;
-        this.keyServiceVersion = version;
+        this.keyServiceVersion = keyServiceVersion;
     }
 
     /**
@@ -148,24 +147,11 @@ public class KeyClientImpl {
     @Host("{url}")
     @ServiceInterface(name = "KeyVault")
     public interface KeyService {
-
         @Post("keys/{key-name}/create")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyVaultKey>> createKeyAsync(@HostParam("url") String url,
-                                              @PathParam("key-name") String keyName,
-                                              @QueryParam("api-version") String apiVersion,
-                                              @HeaderParam("accept-language") String acceptLanguage,
-                                              @BodyParam("application/json") KeyRequestParameters parameters,
-                                              @HeaderParam("Content-Type") String type,
-                                              Context context);
-
-        @Post("keys/{key-name}/create")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> createKey(@HostParam("url") String url,
                                                    @PathParam("key-name") String keyName,
                                                    @QueryParam("api-version") String apiVersion,
                                                    @HeaderParam("accept-language") String acceptLanguage,
@@ -173,25 +159,24 @@ public class KeyClientImpl {
                                                    @HeaderParam("Content-Type") String type,
                                                    Context context);
 
-        @Get("keys/{key-name}/{key-version}")
+        @Post("keys/{key-name}/create")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultKey>> getKeyAsync(@HostParam("url") String url,
-                                           @PathParam("key-name") String keyName,
-                                           @PathParam("key-version") String keyVersion,
-                                           @QueryParam("api-version") String apiVersion,
-                                           @HeaderParam("accept-language") String acceptLanguage,
-                                           @HeaderParam("Content-Type") String type,
-                                           Context context);
+        Response<KeyVaultKey> createKey(@HostParam("url") String url,
+                                        @PathParam("key-name") String keyName,
+                                        @QueryParam("api-version") String apiVersion,
+                                        @HeaderParam("accept-language") String acceptLanguage,
+                                        @BodyParam("application/json") KeyRequestParameters parameters,
+                                        @HeaderParam("Content-Type") String type,
+                                        Context context);
 
         @Get("keys/{key-name}/{key-version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> getKey(@HostParam("url") String url,
+        Mono<Response<KeyVaultKey>> getKeyAsync(@HostParam("url") String url,
                                                 @PathParam("key-name") String keyName,
                                                 @PathParam("key-version") String keyVersion,
                                                 @QueryParam("api-version") String apiVersion,
@@ -200,22 +185,23 @@ public class KeyClientImpl {
                                                 Context context);
 
         @Get("keys/{key-name}/{key-version}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultKey>> getKeyPollerAsync(@HostParam("url") String url,
-                                                 @PathParam("key-name") String keyName,
-                                                 @PathParam("key-version") String keyVersion,
-                                                 @QueryParam("api-version") String apiVersion,
-                                                 @HeaderParam("accept-language") String acceptLanguage,
-                                                 @HeaderParam("Content-Type") String type,
-                                                 Context context);
+        Response<KeyVaultKey> getKey(@HostParam("url") String url,
+                                     @PathParam("key-name") String keyName,
+                                     @PathParam("key-version") String keyVersion,
+                                     @QueryParam("api-version") String apiVersion,
+                                     @HeaderParam("accept-language") String acceptLanguage,
+                                     @HeaderParam("Content-Type") String type,
+                                     Context context);
 
         @Get("keys/{key-name}/{key-version}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> getKeyPoller(@HostParam("url") String url,
+        Mono<Response<KeyVaultKey>> getKeyPollerAsync(@HostParam("url") String url,
                                                       @PathParam("key-name") String keyName,
                                                       @PathParam("key-version") String keyVersion,
                                                       @QueryParam("api-version") String apiVersion,
@@ -223,21 +209,22 @@ public class KeyClientImpl {
                                                       @HeaderParam("Content-Type") String type,
                                                       Context context);
 
-        @Put("keys/{key-name}")
-        @ExpectedResponses({200})
+        @Get("keys/{key-name}/{key-version}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultKey>> importKeyAsync(@HostParam("url") String url,
-                                              @PathParam("key-name") String keyName,
-                                              @QueryParam("api-version") String apiVersion,
-                                              @HeaderParam("accept-language") String acceptLanguage,
-                                              @BodyParam("application/json") KeyImportRequestParameters parameters,
-                                              @HeaderParam("Content-Type") String type,
-                                              Context context);
+        Response<KeyVaultKey> getKeyPoller(@HostParam("url") String url,
+                                           @PathParam("key-name") String keyName,
+                                           @PathParam("key-version") String keyVersion,
+                                           @QueryParam("api-version") String apiVersion,
+                                           @HeaderParam("accept-language") String acceptLanguage,
+                                           @HeaderParam("Content-Type") String type,
+                                           Context context);
 
         @Put("keys/{key-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> importKey(@HostParam("url") String url,
+        Mono<Response<KeyVaultKey>> importKeyAsync(@HostParam("url") String url,
                                                    @PathParam("key-name") String keyName,
                                                    @QueryParam("api-version") String apiVersion,
                                                    @HeaderParam("accept-language") String acceptLanguage,
@@ -245,44 +232,43 @@ public class KeyClientImpl {
                                                    @HeaderParam("Content-Type") String type,
                                                    Context context);
 
-        @Delete("keys/{key-name}")
+        @Put("keys/{key-name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<DeletedKey>> deleteKeyAsync(@HostParam("url") String url,
-                                             @PathParam("key-name") String keyName,
-                                             @QueryParam("api-version") String apiVersion,
-                                             @HeaderParam("accept-language") String acceptLanguage,
-                                             @HeaderParam("Content-Type") String type,
-                                             Context context);
+        Response<KeyVaultKey> importKey(@HostParam("url") String url,
+                                        @PathParam("key-name") String keyName,
+                                        @QueryParam("api-version") String apiVersion,
+                                        @HeaderParam("accept-language") String acceptLanguage,
+                                        @BodyParam("application/json") KeyImportRequestParameters parameters,
+                                        @HeaderParam("Content-Type") String type,
+                                        Context context);
 
         @Delete("keys/{key-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<DeletedKey> deleteKey(@HostParam("url") String url,
+        Mono<Response<DeletedKey>> deleteKeyAsync(@HostParam("url") String url,
                                                   @PathParam("key-name") String keyName,
                                                   @QueryParam("api-version") String apiVersion,
                                                   @HeaderParam("accept-language") String acceptLanguage,
                                                   @HeaderParam("Content-Type") String type,
                                                   Context context);
 
-        @Patch("keys/{key-name}/{key-version}")
+        @Delete("keys/{key-name}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultKey>> updateKeyAsync(@HostParam("url") String url,
-                                              @PathParam("key-name") String keyName,
-                                              @PathParam("key-version") String keyVersion,
-                                              @QueryParam("api-version") String apiVersion,
-                                              @HeaderParam("accept-language") String acceptLanguage,
-                                              @BodyParam("application/json") KeyRequestParameters parameters,
-                                              @HeaderParam("Content-Type") String type,
-                                              Context context);
+        Response<DeletedKey> deleteKey(@HostParam("url") String url,
+                                       @PathParam("key-name") String keyName,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
 
         @Patch("keys/{key-name}/{key-version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> updateKey(@HostParam("url") String url,
+        Mono<Response<KeyVaultKey>> updateKeyAsync(@HostParam("url") String url,
                                                    @PathParam("key-name") String keyName,
                                                    @PathParam("key-version") String keyVersion,
                                                    @QueryParam("api-version") String apiVersion,
@@ -291,25 +277,24 @@ public class KeyClientImpl {
                                                    @HeaderParam("Content-Type") String type,
                                                    Context context);
 
-        @Get("keys/{key-name}/versions")
+        @Patch("keys/{key-name}/{key-version}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(KeyPropertiesPage.class)
-        Mono<PagedResponse<KeyProperties>> getKeyVersionsAsync(@HostParam("url") String url,
-                                                          @PathParam("key-name") String keyName,
-                                                          @QueryParam("maxresults") Integer maxresults,
-                                                          @QueryParam("api-version") String apiVersion,
-                                                          @HeaderParam("accept-language") String acceptLanguage,
-                                                          @HeaderParam("Content-Type") String type,
-                                                          Context context);
+        Response<KeyVaultKey> updateKey(@HostParam("url") String url,
+                                        @PathParam("key-name") String keyName,
+                                        @PathParam("key-version") String keyVersion,
+                                        @QueryParam("api-version") String apiVersion,
+                                        @HeaderParam("accept-language") String acceptLanguage,
+                                        @BodyParam("application/json") KeyRequestParameters parameters,
+                                        @HeaderParam("Content-Type") String type,
+                                        Context context);
 
         @Get("keys/{key-name}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(KeyPropertiesPage.class)
-        PagedResponse<KeyProperties> getKeyVersions(@HostParam("url") String url,
+        Mono<PagedResponse<KeyProperties>> getKeyVersionsAsync(@HostParam("url") String url,
                                                                @PathParam("key-name") String keyName,
                                                                @QueryParam("maxresults") Integer maxresults,
                                                                @QueryParam("api-version") String apiVersion,
@@ -317,146 +302,143 @@ public class KeyClientImpl {
                                                                @HeaderParam("Content-Type") String type,
                                                                Context context);
 
+        @Get("keys/{key-name}/versions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(KeyPropertiesPage.class)
+        PagedResponse<KeyProperties> getKeyVersions(@HostParam("url") String url,
+                                                    @PathParam("key-name") String keyName,
+                                                    @QueryParam("maxresults") Integer maxresults,
+                                                    @QueryParam("api-version") String apiVersion,
+                                                    @HeaderParam("accept-language") String acceptLanguage,
+                                                    @HeaderParam("Content-Type") String type,
+                                                    Context context);
+
         @Post("keys/{key-name}/backup")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyBackup>> backupKeyAsync(@HostParam("url") String url,
-                                            @PathParam("key-name") String keyName,
-                                            @QueryParam("api-version") String apiVersion,
-                                            @HeaderParam("accept-language") String acceptLanguage,
-                                            @HeaderParam("Content-Type") String type,
-                                            Context context);
+                                                 @PathParam("key-name") String keyName,
+                                                 @QueryParam("api-version") String apiVersion,
+                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                 @HeaderParam("Content-Type") String type,
+                                                 Context context);
 
         @Post("keys/{key-name}/backup")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyBackup> backupKey(@HostParam("url") String url,
-                                                 @PathParam("key-name") String keyName,
-                                                 @QueryParam("api-version") String apiVersion,
-                                                 @HeaderParam("accept-language") String acceptLanguage,
-                                                 @HeaderParam("Content-Type") String type,
-                                                 Context context);
-
+                                      @PathParam("key-name") String keyName,
+                                      @QueryParam("api-version") String apiVersion,
+                                      @HeaderParam("accept-language") String acceptLanguage,
+                                      @HeaderParam("Content-Type") String type,
+                                      Context context);
 
         @Post("keys/restore")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyVaultKey>> restoreKeyAsync(@HostParam("url") String url,
-                                               @QueryParam("api-version") String apiVersion,
-                                               @BodyParam("application/json") KeyRestoreRequestParameters parameters,
-                                               @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type,
-                                               Context context);
-
-        @Post("keys/restore")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> restoreKey(@HostParam("url") String url,
                                                     @QueryParam("api-version") String apiVersion,
                                                     @BodyParam("application/json") KeyRestoreRequestParameters parameters,
                                                     @HeaderParam("accept-language") String acceptLanguage,
                                                     @HeaderParam("Content-Type") String type,
                                                     Context context);
 
+        @Post("keys/restore")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<KeyVaultKey> restoreKey(@HostParam("url") String url,
+                                         @QueryParam("api-version") String apiVersion,
+                                         @BodyParam("application/json") KeyRestoreRequestParameters parameters,
+                                         @HeaderParam("accept-language") String acceptLanguage,
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
         @Get("keys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(KeyPropertiesPage.class)
         Mono<PagedResponse<KeyProperties>> getKeysAsync(@HostParam("url") String url,
-                                                   @QueryParam("maxresults") Integer maxresults,
-                                                   @QueryParam("api-version") String apiVersion,
-                                                   @HeaderParam("accept-language") String acceptLanguage,
-                                                   @HeaderParam("Content-Type") String type,
-                                                   Context context);
-
-        @Get("keys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(KeyPropertiesPage.class)
-        PagedResponse<KeyProperties> getKeys(@HostParam("url") String url,
                                                         @QueryParam("maxresults") Integer maxresults,
                                                         @QueryParam("api-version") String apiVersion,
                                                         @HeaderParam("accept-language") String acceptLanguage,
                                                         @HeaderParam("Content-Type") String type,
                                                         Context context);
 
+        @Get("keys")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(KeyPropertiesPage.class)
+        PagedResponse<KeyProperties> getKeys(@HostParam("url") String url,
+                                             @QueryParam("maxresults") Integer maxresults,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 
         @Get("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(KeyPropertiesPage.class)
         Mono<PagedResponse<KeyProperties>> getKeysAsync(@HostParam("url") String url,
-                                                   @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                   @HeaderParam("accept-language") String acceptLanguage,
-                                                   @HeaderParam("Content-Type") String type,
-                                                   Context context);
-
+                                                        @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                        @HeaderParam("accept-language") String acceptLanguage,
+                                                        @HeaderParam("Content-Type") String type,
+                                                        Context context);
 
         @Get("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(KeyPropertiesPage.class)
         PagedResponse<KeyProperties> getKeys(@HostParam("url") String url,
-                                                        @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                        @HeaderParam("accept-language") String acceptLanguage,
-                                                        @HeaderParam("Content-Type") String type,
-                                                        Context context);
-
+                                             @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 
         @Get("deletedkeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(DeletedKeyPage.class)
         Mono<PagedResponse<DeletedKey>> getDeletedKeysAsync(@HostParam("url") String url,
-                                                       @QueryParam("maxresults") Integer maxresults,
-                                                       @QueryParam("api-version") String apiVersion,
-                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                       @HeaderParam("Content-Type") String type,
-                                                       Context context);
-
-        @Get("deletedkeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(DeletedKeyPage.class)
-        PagedResponse<DeletedKey> getDeletedKeys(@HostParam("url") String url,
                                                             @QueryParam("maxresults") Integer maxresults,
                                                             @QueryParam("api-version") String apiVersion,
                                                             @HeaderParam("accept-language") String acceptLanguage,
                                                             @HeaderParam("Content-Type") String type,
                                                             Context context);
 
+        @Get("deletedkeys")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(DeletedKeyPage.class)
+        PagedResponse<DeletedKey> getDeletedKeys(@HostParam("url") String url,
+                                                 @QueryParam("maxresults") Integer maxresults,
+                                                 @QueryParam("api-version") String apiVersion,
+                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                 @HeaderParam("Content-Type") String type,
+                                                 Context context);
+
         @Get("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(DeletedKeyPage.class)
         Mono<PagedResponse<DeletedKey>> getDeletedKeysAsync(@HostParam("url") String url,
-                                                       @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                       @HeaderParam("Content-Type") String type,
-                                                       Context context);
+                                                            @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                            @HeaderParam("accept-language") String acceptLanguage,
+                                                            @HeaderParam("Content-Type") String type,
+                                                            Context context);
 
         @Get("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(DeletedKeyPage.class)
         PagedResponse<DeletedKey> getDeletedKeys(@HostParam("url") String url,
-                                                            @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                            @HeaderParam("accept-language") String acceptLanguage,
-                                                            @HeaderParam("Content-Type") String type,
-                                                            Context context);
-
-        @Get("deletedkeys/{key-name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<DeletedKey>> getDeletedKeyAsync(@HostParam("url") String url,
-                                                 @PathParam("key-name") String keyName,
-                                                 @QueryParam("api-version") String apiVersion,
+                                                 @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                  @HeaderParam("accept-language") String acceptLanguage,
                                                  @HeaderParam("Content-Type") String type,
                                                  Context context);
@@ -465,7 +447,7 @@ public class KeyClientImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<DeletedKey> getDeletedKey(@HostParam("url") String url,
+        Mono<Response<DeletedKey>> getDeletedKeyAsync(@HostParam("url") String url,
                                                       @PathParam("key-name") String keyName,
                                                       @QueryParam("api-version") String apiVersion,
                                                       @HeaderParam("accept-language") String acceptLanguage,
@@ -473,182 +455,190 @@ public class KeyClientImpl {
                                                       Context context);
 
         @Get("deletedkeys/{key-name}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<DeletedKey>> getDeletedKeyPollerAsync(@HostParam("url") String url,
-                                                       @PathParam("key-name") String keyName,
-                                                       @QueryParam("api-version") String apiVersion,
-                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                       @HeaderParam("Content-Type") String type,
-                                                       Context context);
+        Response<DeletedKey> getDeletedKey(@HostParam("url") String url,
+                                           @PathParam("key-name") String keyName,
+                                           @QueryParam("api-version") String apiVersion,
+                                           @HeaderParam("accept-language") String acceptLanguage,
+                                           @HeaderParam("Content-Type") String type,
+                                           Context context);
 
         @Get("deletedkeys/{key-name}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<DeletedKey> getDeletedKeyPoller(@HostParam("url") String url,
+        Mono<Response<DeletedKey>> getDeletedKeyPollerAsync(@HostParam("url") String url,
                                                             @PathParam("key-name") String keyName,
                                                             @QueryParam("api-version") String apiVersion,
                                                             @HeaderParam("accept-language") String acceptLanguage,
                                                             @HeaderParam("Content-Type") String type,
                                                             Context context);
 
-
+        @Get("deletedkeys/{key-name}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<DeletedKey> getDeletedKeyPoller(@HostParam("url") String url,
+                                                 @PathParam("key-name") String keyName,
+                                                 @QueryParam("api-version") String apiVersion,
+                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                 @HeaderParam("Content-Type") String type,
+                                                 Context context);
 
         @Delete("deletedkeys/{key-name}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedKeyAsync(@HostParam("url") String url,
-                                             @PathParam("key-name") String keyName,
-                                             @QueryParam("api-version") String apiVersion,
-                                             @HeaderParam("accept-language") String acceptLanguage,
-                                             @HeaderParam("Content-Type") String type,
-                                             Context context);
-
-        @Delete("deletedkeys/{key-name}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> purgeDeletedKey(@HostParam("url") String url,
                                                   @PathParam("key-name") String keyName,
                                                   @QueryParam("api-version") String apiVersion,
                                                   @HeaderParam("accept-language") String acceptLanguage,
                                                   @HeaderParam("Content-Type") String type,
                                                   Context context);
 
+        @Delete("deletedkeys/{key-name}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> purgeDeletedKey(@HostParam("url") String url,
+                                       @PathParam("key-name") String keyName,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
 
         @Post("deletedkeys/{key-name}/recover")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyVaultKey>> recoverDeletedKeyAsync(@HostParam("url") String url,
-                                                      @PathParam("key-name") String keyName,
-                                                      @QueryParam("api-version") String apiVersion,
-                                                      @HeaderParam("accept-language") String acceptLanguage,
-                                                      @HeaderParam("Content-Type") String type,
-                                                      Context context);
-
-        @Post("deletedkeys/{key-name}/recover")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<KeyVaultKey> recoverDeletedKey(@HostParam("url") String url,
                                                            @PathParam("key-name") String keyName,
                                                            @QueryParam("api-version") String apiVersion,
                                                            @HeaderParam("accept-language") String acceptLanguage,
                                                            @HeaderParam("Content-Type") String type,
                                                            Context context);
 
+        @Post("deletedkeys/{key-name}/recover")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<KeyVaultKey> recoverDeletedKey(@HostParam("url") String url,
+                                                @PathParam("key-name") String keyName,
+                                                @QueryParam("api-version") String apiVersion,
+                                                @HeaderParam("accept-language") String acceptLanguage,
+                                                @HeaderParam("Content-Type") String type,
+                                                Context context);
+
         @Post("rng")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<RandomBytes>> getRandomBytesAsync(@HostParam("url") String url,
-                                                   @QueryParam("api-version") String apiVersion,
-                                                   @BodyParam("application/json") GetRandomBytesRequest parameters,
-                                                   @HeaderParam("Accept") String accept,
-                                                   Context context);
+                                                        @QueryParam("api-version") String apiVersion,
+                                                        @BodyParam("application/json") GetRandomBytesRequest parameters,
+                                                        @HeaderParam("Accept") String accept,
+                                                        Context context);
 
         @Post("rng")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<RandomBytes> getRandomBytes(@HostParam("url") String url,
-                                                   @QueryParam("api-version") String apiVersion,
-                                                   @BodyParam("application/json") GetRandomBytesRequest parameters,
-                                                   @HeaderParam("Accept") String accept,
-                                                   Context context);
+                                             @QueryParam("api-version") String apiVersion,
+                                             @BodyParam("application/json") GetRandomBytesRequest parameters,
+                                             @HeaderParam("Accept") String accept,
+                                             Context context);
 
         @Post("keys/{key-name}/{key-version}/release")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<ReleaseKeyResult>> releaseAsync(@HostParam("url") String url,
-                                                 @PathParam("key-name") String keyName,
-                                                 @PathParam("key-version") String keyVersion,
-                                                 @QueryParam("api-version") String apiVersion,
-                                                 @BodyParam("application/json") KeyReleaseParameters parameters,
-                                                 @HeaderParam("Accept") String accept,
-                                                 Context context);
+                                                      @PathParam("key-name") String keyName,
+                                                      @PathParam("key-version") String keyVersion,
+                                                      @QueryParam("api-version") String apiVersion,
+                                                      @BodyParam("application/json") KeyReleaseParameters parameters,
+                                                      @HeaderParam("Accept") String accept,
+                                                      Context context);
 
         @Post("keys/{key-name}/{key-version}/release")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<ReleaseKeyResult> release(@HostParam("url") String url,
-                                                 @PathParam("key-name") String keyName,
-                                                 @PathParam("key-version") String keyVersion,
-                                                 @QueryParam("api-version") String apiVersion,
-                                                 @BodyParam("application/json") KeyReleaseParameters parameters,
-                                                 @HeaderParam("Accept") String accept,
-                                                 Context context);
+                                           @PathParam("key-name") String keyName,
+                                           @PathParam("key-version") String keyVersion,
+                                           @QueryParam("api-version") String apiVersion,
+                                           @BodyParam("application/json") KeyReleaseParameters parameters,
+                                           @HeaderParam("Accept") String accept,
+                                           Context context);
 
         @Post("/keys/{key-name}/rotate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyVaultKey>> rotateKeyAsync(@HostParam("url") String url,
-                                              @PathParam("key-name") String keyName,
-                                              @QueryParam("api-version") String apiVersion,
-                                              @HeaderParam("Accept") String accept,
-                                              Context context);
+                                                   @PathParam("key-name") String keyName,
+                                                   @QueryParam("api-version") String apiVersion,
+                                                   @HeaderParam("Accept") String accept,
+                                                   Context context);
 
         @Post("/keys/{key-name}/rotate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyVaultKey> rotateKey(@HostParam("url") String url,
-                                                   @PathParam("key-name") String keyName,
-                                                   @QueryParam("api-version") String apiVersion,
-                                                   @HeaderParam("Accept") String accept,
-                                                   Context context);
+                                        @PathParam("key-name") String keyName,
+                                        @QueryParam("api-version") String apiVersion,
+                                        @HeaderParam("Accept") String accept,
+                                        Context context);
 
         @Get("/keys/{key-name}/rotationpolicy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyAsync(@HostParam("url") String url,
-                                                               @PathParam("key-name") String keyName,
-                                                               @QueryParam("api-version") String apiVersion,
-                                                               @HeaderParam("Accept") String accept,
-                                                               Context context);
+                                                                    @PathParam("key-name") String keyName,
+                                                                    @QueryParam("api-version") String apiVersion,
+                                                                    @HeaderParam("Accept") String accept,
+                                                                    Context context);
 
         @Get("/keys/{key-name}/rotationpolicy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyRotationPolicy> getKeyRotationPolicy(@HostParam("url") String url,
-                                                                    @PathParam("key-name") String keyName,
-                                                                    @QueryParam("api-version") String apiVersion,
-                                                                    @HeaderParam("Accept") String accept,
-                                                                    Context context);
+                                                         @PathParam("key-name") String keyName,
+                                                         @QueryParam("api-version") String apiVersion,
+                                                         @HeaderParam("Accept") String accept,
+                                                         Context context);
 
         @Put("/keys/{key-name}/rotationpolicy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyAsync(@HostParam("url") String url,
-                                                                  @PathParam("key-name") String keyName,
-                                                                  @QueryParam("api-version") String apiVersion,
-                                                                  @BodyParam("application/json") KeyRotationPolicy keyRotationPolicy,
-                                                                  @HeaderParam("Accept") String accept,
-                                                                  Context context);
+                                                                       @PathParam("key-name") String keyName,
+                                                                       @QueryParam("api-version") String apiVersion,
+                                                                       @BodyParam("application/json") KeyRotationPolicy keyRotationPolicy,
+                                                                       @HeaderParam("Accept") String accept,
+                                                                       Context context);
 
         @Put("/keys/{key-name}/rotationpolicy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyRotationPolicy> updateKeyRotationPolicy(@HostParam("url") String url,
-                                                                  @PathParam("key-name") String keyName,
-                                                                  @QueryParam("api-version") String apiVersion,
-                                                                  @BodyParam("application/json") KeyRotationPolicy keyRotationPolicy,
-                                                                  @HeaderParam("Accept") String accept,
-                                                                  Context context);
+                                                            @PathParam("key-name") String keyName,
+                                                            @QueryParam("api-version") String apiVersion,
+                                                            @BodyParam("application/json") KeyRotationPolicy keyRotationPolicy,
+                                                            @HeaderParam("Accept") String accept,
+                                                            Context context);
     }
 
     public Mono<Response<KeyVaultKey>> createKeyWithResponseAsync(String name, KeyType keyType, Context context) {
         KeyRequestParameters parameters = new KeyRequestParameters().setKty(keyType);
+
         return service.createKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating key - {}", name))
             .doOnSuccess(response -> logger.verbose("Created key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to create key - {}", name, error));
@@ -658,16 +648,16 @@ public class KeyClientImpl {
         KeyRequestParameters parameters = new KeyRequestParameters().setKty(keyType);
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.createKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     public Mono<Response<KeyVaultKey>> createKeyWithResponseAsync(CreateKeyOptions createKeyOptions, Context context) {
         KeyRequestParameters parameters = validateAndCreateKeyRequestParameters(createKeyOptions);
 
-        return service.createKeyAsync(vaultUrl, createKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+        return service.createKeyAsync(vaultUrl, createKeyOptions.getName(), keyServiceVersion.getVersion(),
+                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
                     KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Creating key - {}", createKeyOptions.getName()))
             .doOnSuccess(response -> logger.verbose("Created key - {}", response.getValue().getName()))
@@ -675,17 +665,18 @@ public class KeyClientImpl {
     }
 
     public Response<KeyVaultKey> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateKeyRequestParameters(createKeyOptions);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.createKey(vaultUrl, createKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+            parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     private KeyRequestParameters validateAndCreateKeyRequestParameters(CreateKeyOptions createKeyOptions) {
         Objects.requireNonNull(createKeyOptions, "The key create options parameter cannot be null.");
+
         return new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
@@ -707,10 +698,9 @@ public class KeyClientImpl {
             .doOnError(error -> logger.warning("Failed to create RSA key - {}", createRsaKeyOptions.getName(), error));
     }
 
-    public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions,
-                                                                     Context context) {
-        context = context == null ? Context.NONE : context;
+    public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
         KeyRequestParameters parameters = validateAndCreateRsaKeyRequestParameters(createRsaKeyOptions);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.createKey(vaultUrl, createRsaKeyOptions.getName(), keyServiceVersion.getVersion(),
@@ -719,7 +709,8 @@ public class KeyClientImpl {
     }
 
     private KeyRequestParameters validateAndCreateRsaKeyRequestParameters(CreateRsaKeyOptions createRsaKeyOptions) {
-        Objects.requireNonNull(createRsaKeyOptions, "The Rsa key options parameter cannot be null.");
+        Objects.requireNonNull(createRsaKeyOptions, "The RSA key options parameter cannot be null.");
+
         return new KeyRequestParameters()
             .setKty(createRsaKeyOptions.getKeyType())
             .setKeySize(createRsaKeyOptions.getKeySize())
@@ -730,29 +721,31 @@ public class KeyClientImpl {
             .setReleasePolicy(createRsaKeyOptions.getReleasePolicy());
     }
 
-    public Mono<Response<KeyVaultKey>> createEcKeyWithResponseAsync(CreateEcKeyOptions createEcKeyOptions, Context context) {
+    public Mono<Response<KeyVaultKey>> createEcKeyWithResponseAsync(CreateEcKeyOptions createEcKeyOptions,
+                                                                    Context context) {
         KeyRequestParameters parameters = validateAndCreateEcKeyRequestParameters(createEcKeyOptions);
 
         return service.createKeyAsync(vaultUrl, createEcKeyOptions.getName(), keyServiceVersion.getVersion(),
                 ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
                     KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating Ec key - {}", createEcKeyOptions.getName()))
-            .doOnSuccess(response -> logger.verbose("Created Ec key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create Ec key - {}", createEcKeyOptions.getName(), error));
+            .doOnRequest(ignored -> logger.verbose("Creating EC key - {}", createEcKeyOptions.getName()))
+            .doOnSuccess(response -> logger.verbose("Created EC key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to create EC key - {}", createEcKeyOptions.getName(), error));
     }
 
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateEcKeyRequestParameters(createEcKeyOptions);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.createKey(vaultUrl, createEcKeyOptions.getName(), keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+            ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     private KeyRequestParameters validateAndCreateEcKeyRequestParameters(CreateEcKeyOptions createEcKeyOptions) {
-        Objects.requireNonNull(createEcKeyOptions, "The Ec key options cannot be null.");
+        Objects.requireNonNull(createEcKeyOptions, "The EC key options cannot be null.");
+
         return new KeyRequestParameters()
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurveName())
@@ -762,7 +755,8 @@ public class KeyClientImpl {
             .setReleasePolicy(createEcKeyOptions.getReleasePolicy());
     }
 
-    public Mono<Response<KeyVaultKey>> createOctKeyWithResponseAsync(CreateOctKeyOptions createOctKeyOptions, Context context) {
+    public Mono<Response<KeyVaultKey>> createOctKeyWithResponseAsync(CreateOctKeyOptions createOctKeyOptions,
+                                                                     Context context) {
         KeyRequestParameters parameters = validateAndCreateOctKeyRequestParameters(createOctKeyOptions);
 
         return service.createKeyAsync(vaultUrl, createOctKeyOptions.getName(), keyServiceVersion.getVersion(),
@@ -775,17 +769,18 @@ public class KeyClientImpl {
     }
 
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = validateAndCreateOctKeyRequestParameters(createOctKeyOptions);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.createKey(vaultUrl, createOctKeyOptions.getName(), keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+            ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     private KeyRequestParameters validateAndCreateOctKeyRequestParameters(CreateOctKeyOptions createOctKeyOptions) {
         Objects.requireNonNull(createOctKeyOptions, "The create key options cannot be null.");
+
         return new KeyRequestParameters()
             .setKty(createOctKeyOptions.getKeyType())
             .setKeySize(createOctKeyOptions.getKeySize())
@@ -795,7 +790,8 @@ public class KeyClientImpl {
             .setReleasePolicy(createOctKeyOptions.getReleasePolicy());
     }
 
-    public Mono<Response<KeyVaultKey>> importKeyWithResponseAsync(String name, JsonWebKey keyMaterial, Context context) {
+    public Mono<Response<KeyVaultKey>> importKeyWithResponseAsync(String name, JsonWebKey keyMaterial,
+                                                                  Context context) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().setKey(keyMaterial);
 
         return service.importKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
@@ -817,8 +813,8 @@ public class KeyClientImpl {
     public Mono<Response<KeyVaultKey>> importKeyWithResponseAsync(ImportKeyOptions importKeyOptions, Context context) {
         KeyImportRequestParameters parameters = validateAndCreateKeyImportRequestParameters(importKeyOptions);
 
-        return service.importKeyAsync(vaultUrl, importKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+        return service.importKeyAsync(vaultUrl, importKeyOptions.getName(), keyServiceVersion.getVersion(),
+                ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
                     KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Importing key - {}", importKeyOptions.getName()))
             .doOnSuccess(response -> logger.verbose("Imported key - {}", response.getValue().getName()))
@@ -826,17 +822,18 @@ public class KeyClientImpl {
     }
 
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
-        context = context == null ? Context.NONE : context;
         KeyImportRequestParameters parameters = validateAndCreateKeyImportRequestParameters(importKeyOptions);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.importKey(vaultUrl, importKeyOptions.getName(), keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE));
+            parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     private KeyImportRequestParameters validateAndCreateKeyImportRequestParameters(ImportKeyOptions importKeyOptions) {
         Objects.requireNonNull(importKeyOptions, "The key import configuration parameter cannot be null.");
+
         return new KeyImportRequestParameters()
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
@@ -851,7 +848,7 @@ public class KeyClientImpl {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Retrieving key - {}", name))
             .doOnSuccess(response -> logger.verbose("Retrieved key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to retrieve key - {}", name, error));
     }
 
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
@@ -859,11 +856,12 @@ public class KeyClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.getKey(vaultUrl, name, version, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
-    public Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponseAsync(KeyProperties keyProperties, Context context,
-                                                                KeyOperation... keyOperations) {
+    public Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponseAsync(KeyProperties keyProperties,
+                                                                            Context context,
+                                                                            KeyOperation... keyOperations) {
         KeyRequestParameters parameters = validateAndCreateUpdateKeyRequestParameters(keyProperties, keyOperations);
 
         return service.updateKeyAsync(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
@@ -875,19 +873,20 @@ public class KeyClientImpl {
     }
 
     public Response<KeyVaultKey> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context,
-                                                                       KeyOperation... keyOperations) {
-        context = context == null ? Context.NONE : context;
+                                                                 KeyOperation... keyOperations) {
         KeyRequestParameters parameters = validateAndCreateUpdateKeyRequestParameters(keyProperties, keyOperations);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.updateKey(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
-                keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            keyServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     private KeyRequestParameters validateAndCreateUpdateKeyRequestParameters(KeyProperties keyProperties,
-                                                                       KeyOperation... keyOperations) {
+                                                                             KeyOperation... keyOperations) {
         Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
+
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
             .setKeyAttributes(new KeyRequestAttributes(keyProperties))
@@ -896,6 +895,7 @@ public class KeyClientImpl {
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }
+
         return parameters;
     }
 
@@ -918,13 +918,14 @@ public class KeyClientImpl {
     private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
         return pollingContext ->
             withContext(context -> service.getDeletedKeyPollerAsync(vaultUrl, keyName, keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
+                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                    KEYVAULT_TRACING_NAMESPACE_VALUE)))
                 .flatMap(deletedKeyResponse -> {
                     if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                             pollingContext.getLatestResponse().getValue())));
                     }
+
                     return Mono.defer(() ->
                         Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                             deletedKeyResponse.getValue())));
@@ -937,7 +938,6 @@ public class KeyClientImpl {
     }
 
     private Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
-        context = enableSyncRestProxy(context);
         return service.deleteKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Deleting key - {}", name))
@@ -950,14 +950,15 @@ public class KeyClientImpl {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Retrieving deleted key - {}", name))
             .doOnSuccess(response -> logger.verbose("Retrieved deleted key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
+            .doOnError(error -> logger.warning("Failed to retrieve deleted key - {}", name, error));
     }
 
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.getDeletedKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     public Mono<Response<Void>> purgeDeletedKeyWithResponseAsync(String name, Context context) {
@@ -971,8 +972,9 @@ public class KeyClientImpl {
     public Response<Void> purgeDeletedKeyWithResponse(String name, Context context) {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
+
         return service.purgeDeletedKey(vaultUrl, name, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKeyAsync(String name) {
@@ -993,14 +995,16 @@ public class KeyClientImpl {
      */
     private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
         return pollingContext ->
-            withContext(context -> service.getKeyPollerAsync(vaultUrl, keyName, "", keyServiceVersion.getVersion(),
-                ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                    KEYVAULT_TRACING_NAMESPACE_VALUE)))
+            withContext(context ->
+                service.getKeyPollerAsync(vaultUrl, keyName, "", keyServiceVersion.getVersion(),
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE)))
                 .flatMap(keyResponse -> {
                     if (keyResponse.getStatusCode() == 404) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                             pollingContext.getLatestResponse().getValue())));
                     }
+
                     return Mono.defer(() -> Mono.just(
                         new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, keyResponse.getValue())));
                 })
@@ -1023,7 +1027,7 @@ public class KeyClientImpl {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Backing up key - {}", name))
             .doOnSuccess(response -> logger.verbose("Backed up key - {}", name))
-            .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
+            .doOnError(error -> logger.warning("Failed to back up key - {}", name, error))
             .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<>(base64URLResponse.getRequest(),
                 base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(),
                 base64URLResponse.getValue().getValue())));
@@ -1032,36 +1036,36 @@ public class KeyClientImpl {
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
-        Response<KeyBackup> backupResponse =  service.backupKey(vaultUrl, name, keyServiceVersion.getVersion(),
-            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+        Response<KeyBackup> backupResponse = service.backupKey(vaultUrl, name, keyServiceVersion.getVersion(),
+            ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE));
 
-        return new SimpleResponse<>(backupResponse.getRequest(),
-            backupResponse.getStatusCode(), backupResponse.getHeaders(),
-            backupResponse.getValue().getValue());
+        return new SimpleResponse<>(backupResponse.getRequest(), backupResponse.getStatusCode(),
+            backupResponse.getHeaders(), backupResponse.getValue().getValue());
     }
 
     public Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponseAsync(byte[] backup, Context context) {
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
+
         return service.restoreKeyAsync(vaultUrl, keyServiceVersion.getVersion(), parameters, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Attempting to restore key"))
-            .doOnSuccess(response -> logger.verbose("Restored Key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to restore key - {}", error));
+            .doOnRequest(ignored -> logger.verbose("Restoring key"))
+            .doOnSuccess(response -> logger.verbose("Restored key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to restore key", error));
     }
 
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, Context context) {
+        KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
-        KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
+
         return service.restoreKey(vaultUrl, keyServiceVersion.getVersion(), parameters, ACCEPT_LANGUAGE,
-                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     public PagedFlux<KeyProperties> listPropertiesOfKeys() {
         try {
-            return new PagedFlux<>(
-                () -> withContext(this::listKeysFirstPage),
+            return new PagedFlux<>(() -> withContext(this::listKeysFirstPage),
                 continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -1069,9 +1073,30 @@ public class KeyClientImpl {
     }
 
     public PagedFlux<KeyProperties> listPropertiesOfKeys(Context context) {
-        return new PagedFlux<>(
-            () -> listKeysFirstPage(context),
+        return new PagedFlux<>(() -> listKeysFirstPage(context),
             continuationToken -> listKeysNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 keys that can be found on a given key vault.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
+     * results.
+     */
+    private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
+        try {
+            return service.getKeysAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Listing keys"))
+                .doOnSuccess(response -> logger.verbose("Listed keys"))
+                .doOnError(error -> logger.warning("Failed to list keys", error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1097,26 +1122,9 @@ public class KeyClientImpl {
         }
     }
 
-    /**
-     * Calls the service and retrieve first page result. It makes one call and retrieve
-     */
-    private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
-        try {
-            return service.getKeysAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(), ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing keys"))
-                .doOnSuccess(response -> logger.verbose("Listed keys"))
-                .doOnError(error -> logger.warning("Failed to list keys", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
     public PagedFlux<DeletedKey> listDeletedKeys() {
         try {
-            return new PagedFlux<>(
-                () -> withContext(this::listDeletedKeysFirstPage),
+            return new PagedFlux<>(() -> withContext(this::listDeletedKeysFirstPage),
                 continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -1124,9 +1132,30 @@ public class KeyClientImpl {
     }
 
     public PagedFlux<DeletedKey> listDeletedKeys(Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedKeysFirstPage(context),
+        return new PagedFlux<>(() -> listDeletedKeysFirstPage(context),
             continuationToken -> listDeletedKeysNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets attributes of the first 25 deleted keys that can be found on a given key vault.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
+     * results.
+     */
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
+        try {
+            return service.getDeletedKeysAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
+                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Listing deleted keys"))
+                .doOnSuccess(response -> logger.verbose("Listed deleted keys"))
+                .doOnError(error -> logger.warning("Failed to list deleted keys", error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1152,26 +1181,9 @@ public class KeyClientImpl {
         }
     }
 
-    /**
-     * Calls the service and retrieve first page result. It makes one call and retrieve
-     */
-    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
-        try {
-            return service.getDeletedKeysAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
-                    ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
-                        KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing deleted keys"))
-                .doOnSuccess(response -> logger.verbose("Listed deleted keys"))
-                .doOnError(error -> logger.warning("Failed to list deleted keys", error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> listKeyVersionsFirstPage(name, context)),
+            return new PagedFlux<>(() -> withContext(context -> listKeyVersionsFirstPage(name, context)),
                 continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -1179,11 +1191,19 @@ public class KeyClientImpl {
     }
 
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return new PagedFlux<>(
-            () -> listKeyVersionsFirstPage(name, context),
+        return new PagedFlux<>(() -> listKeyVersionsFirstPage(name, context),
             continuationToken -> listKeyVersionsNextPage(continuationToken, context));
     }
 
+    /**
+     * Gets attributes of the first 25 versions of a key.
+     *
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link KeyProperties} instances from the next page of
+     * results.
+     */
     private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPage(String name, Context context) {
         try {
             return service.getKeyVersionsAsync(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, keyServiceVersion.getVersion(),
@@ -1198,7 +1218,7 @@ public class KeyClientImpl {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
      * {@link KeyClientImpl#listPropertiesOfKeyVersions(String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
@@ -1223,7 +1243,7 @@ public class KeyClientImpl {
     public Mono<Response<byte[]>> getRandomBytesWithResponseAsync(int count, Context context) {
         try {
             return service.getRandomBytesAsync(vaultUrl, keyServiceVersion.getVersion(),
-                    new GetRandomBytesRequest().setCount(count), "application/json",
+                    new GetRandomBytesRequest().setCount(count), CONTENT_TYPE_HEADER_VALUE,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
                 .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
@@ -1238,20 +1258,23 @@ public class KeyClientImpl {
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
         Response<RandomBytes> randomBytesResponse = service.getRandomBytes(vaultUrl, keyServiceVersion.getVersion(),
-                new GetRandomBytesRequest().setCount(count), "application/json",
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+            new GetRandomBytesRequest().setCount(count), CONTENT_TYPE_HEADER_VALUE,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+
         return new SimpleResponse<>(randomBytesResponse, randomBytesResponse.getValue().getBytes());
     }
 
     public Mono<Response<ReleaseKeyResult>> releaseKeyWithResponseAsync(String name, String version,
-                                                    String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions,
+                                                                        String targetAttestationToken,
+                                                                        ReleaseKeyOptions releaseKeyOptions,
                                                                         Context context) {
         try {
             KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name,
                 targetAttestationToken, releaseKeyOptions);
 
             return service.releaseAsync(vaultUrl, name, version, keyServiceVersion.getVersion(), keyReleaseParameters,
-                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Releasing key with name %s and version %s.", name, version))
                 .doOnSuccess(response -> logger.verbose("Released key with name %s and version %s.", name, version))
                 .doOnError(error -> logger.warning("Failed to release key - {}", error));
@@ -1261,7 +1284,8 @@ public class KeyClientImpl {
     }
 
     public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version,
-                             String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions, Context context) {
+                                                             String targetAttestationToken,
+                                                             ReleaseKeyOptions releaseKeyOptions, Context context) {
         try {
             KeyReleaseParameters keyReleaseParameters = validateAndCreateKeyReleaseParameters(name,
                 targetAttestationToken, releaseKeyOptions);
@@ -1269,20 +1293,21 @@ public class KeyClientImpl {
             context = enableSyncRestProxy(context);
 
             return service.release(vaultUrl, name, version, keyServiceVersion.getVersion(), keyReleaseParameters,
-                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
         }
     }
 
-    private KeyReleaseParameters validateAndCreateKeyReleaseParameters(String name,
-                                               String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions) {
+    private KeyReleaseParameters validateAndCreateKeyReleaseParameters(String name, String targetAttestationToken,
+                                                                       ReleaseKeyOptions releaseKeyOptions) {
         if (CoreUtils.isNullOrEmpty(name)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty"));
         }
 
         if (CoreUtils.isNullOrEmpty(targetAttestationToken)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'targetAttestationToken' cannot be null or empty"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'targetAttestationToken' cannot be null or empty"));
         }
 
         releaseKeyOptions = releaseKeyOptions == null ? new ReleaseKeyOptions() : releaseKeyOptions;
@@ -1299,7 +1324,7 @@ public class KeyClientImpl {
                 return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
             }
 
-            return service.rotateKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), "application/json",
+            return service.rotateKeyAsync(vaultUrl, name, keyServiceVersion.getVersion(), CONTENT_TYPE_HEADER_VALUE,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Rotating key with name %s.", name))
                 .doOnSuccess(response -> logger.verbose("Rotated key with name %s.", name))
@@ -1317,8 +1342,9 @@ public class KeyClientImpl {
 
             context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
-            return service.rotateKey(vaultUrl, name, keyServiceVersion.getVersion(), "application/json",
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+
+            return service.rotateKey(vaultUrl, name, keyServiceVersion.getVersion(), CONTENT_TYPE_HEADER_VALUE,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -1330,8 +1356,9 @@ public class KeyClientImpl {
                 return monoError(logger, new IllegalArgumentException("'keyName' cannot be null or empty"));
             }
 
-            return service.getKeyRotationPolicyAsync(vaultUrl, keyName, keyServiceVersion.getVersion(), "application/json",
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            return service.getKeyRotationPolicyAsync(vaultUrl, keyName, keyServiceVersion.getVersion(),
+                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Retrieving key rotation policy for key with name.", keyName))
                 .doOnSuccess(response -> logger.verbose("Retrieved key rotation policy for key with name.", keyName))
                 .doOnError(error -> logger.warning("Failed to retrieve key rotation policy - {}", error));
@@ -1348,8 +1375,9 @@ public class KeyClientImpl {
 
             context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
-            return service.getKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(), "application/json",
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+
+            return service.getKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(),
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -1357,15 +1385,16 @@ public class KeyClientImpl {
 
 
     public Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponseAsync(String keyName,
-                                                                          KeyRotationPolicy keyRotationPolicy,
-                                                                          Context context) {
+                                                                                      KeyRotationPolicy keyRotationPolicy,
+                                                                                      Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(keyName)) {
                 return monoError(logger, new IllegalArgumentException("'keyName' cannot be null or empty"));
             }
 
-            return service.updateKeyRotationPolicyAsync(vaultUrl, keyName, keyServiceVersion.getVersion(), keyRotationPolicy,
-                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            return service.updateKeyRotationPolicyAsync(vaultUrl, keyName, keyServiceVersion.getVersion(),
+                    keyRotationPolicy, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Updating key rotation policy for key with name.", keyName))
                 .doOnSuccess(response -> logger.verbose("Updated key rotation policy for key with name.", keyName))
                 .doOnError(error -> logger.warning("Failed to retrieve key rotation policy - {}", error));
@@ -1375,8 +1404,8 @@ public class KeyClientImpl {
     }
 
     public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String keyName,
-                                                                                      KeyRotationPolicy keyRotationPolicy,
-                                                                                      Context context) {
+                                                                           KeyRotationPolicy keyRotationPolicy,
+                                                                           Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(keyName)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'keyName' cannot be null or empty"));
@@ -1384,8 +1413,9 @@ public class KeyClientImpl {
 
             context = context == null ? Context.NONE : context;
             context = enableSyncRestProxy(context);
+
             return service.updateKeyRotationPolicy(vaultUrl, keyName, keyServiceVersion.getVersion(), keyRotationPolicy,
-                    "application/json", context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
         }
