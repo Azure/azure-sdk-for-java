@@ -11,14 +11,15 @@ import java.util.Arrays;
 /** Samples for CloudServices DeleteInstances. */
 public final class CloudServicesDeleteInstancesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/DeleteCloudServiceRoleInstances.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Delete_ByCloudService.json
      */
     /**
-     * Sample code: Delete Cloud Service Role Instances.
+     * Sample code: Delete Cloud Service Role Instances in a Cloud Service.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deleteCloudServiceRoleInstances(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void deleteCloudServiceRoleInstancesInACloudService(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

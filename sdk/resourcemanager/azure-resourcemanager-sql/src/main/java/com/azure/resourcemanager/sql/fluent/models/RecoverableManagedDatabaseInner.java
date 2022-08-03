@@ -4,24 +4,27 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A recoverable managed database resource. */
-@JsonFlatten
-@Immutable
-public class RecoverableManagedDatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableManagedDatabaseInner.class);
-
+@Fluent
+public final class RecoverableManagedDatabaseInner extends ProxyResource {
     /*
-     * The last available backup date.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastAvailableBackupDate;
+    @JsonProperty(value = "properties")
+    private RecoverableManagedDatabaseProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private RecoverableManagedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the lastAvailableBackupDate property: The last available backup date.
@@ -29,7 +32,7 @@ public class RecoverableManagedDatabaseInner extends ProxyResource {
      * @return the lastAvailableBackupDate value.
      */
     public String lastAvailableBackupDate() {
-        return this.lastAvailableBackupDate;
+        return this.innerProperties() == null ? null : this.innerProperties().lastAvailableBackupDate();
     }
 
     /**
@@ -38,5 +41,8 @@ public class RecoverableManagedDatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

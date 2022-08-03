@@ -160,7 +160,7 @@ public interface MobileNetworksClient {
         String resourceGroupName, String mobileNetworkName, MobileNetworkInner parameters, Context context);
 
     /**
-     * Updates a mobile network update tags.
+     * Updates mobile network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -174,7 +174,7 @@ public interface MobileNetworksClient {
     MobileNetworkInner updateTags(String resourceGroupName, String mobileNetworkName, TagsObject parameters);
 
     /**
-     * Updates a mobile network update tags.
+     * Updates mobile network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -237,21 +237,21 @@ public interface MobileNetworksClient {
     PagedIterable<MobileNetworkInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for list sim ids API service call.
+     * @return the {@link SyncPoller} for polling of response for list SIM IDs API service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SimIdListResultInner>, SimIdListResultInner> beginListSimIds(
         String resourceGroupName, String mobileNetworkName);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -259,27 +259,27 @@ public interface MobileNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for list sim ids API service call.
+     * @return the {@link SyncPoller} for polling of response for list SIM IDs API service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SimIdListResultInner>, SimIdListResultInner> beginListSimIds(
         String resourceGroupName, String mobileNetworkName, Context context);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list sim ids API service call.
+     * @return response for list SIM IDs API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SimIdListResultInner listSimIds(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * List sim ids under a mobile network.
+     * Lists the IDs of all provisioned SIMs in a mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -287,7 +287,7 @@ public interface MobileNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list sim ids API service call.
+     * @return response for list SIM IDs API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SimIdListResultInner listSimIds(String resourceGroupName, String mobileNetworkName, Context context);

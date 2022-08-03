@@ -560,14 +560,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     private Mono<PacketCoreDataPlaneInner> getAsync(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
         return getWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName)
-            .flatMap(
-                (Response<PacketCoreDataPlaneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -607,7 +600,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -675,7 +668,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -742,7 +735,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -773,7 +766,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -807,7 +800,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -830,7 +823,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -855,7 +848,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -879,7 +872,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -905,7 +898,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -927,7 +920,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Creates or updates a PacketCoreDataPlane.
+     * Creates or updates a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -952,12 +945,12 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Updates a PacketCoreDataPlane update tags.
+     * Updates packet core data planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param parameters Parameters supplied to update PacketCoreDataPlane tags.
+     * @param parameters Parameters supplied to update packet core data plane tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1020,12 +1013,12 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Updates a PacketCoreDataPlane update tags.
+     * Updates packet core data planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param parameters Parameters supplied to update PacketCoreDataPlane tags.
+     * @param parameters Parameters supplied to update packet core data plane tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1087,12 +1080,12 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Updates a PacketCoreDataPlane update tags.
+     * Updates packet core data planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param parameters Parameters supplied to update PacketCoreDataPlane tags.
+     * @param parameters Parameters supplied to update packet core data plane tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1106,23 +1099,16 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
         TagsObject parameters) {
         return updateTagsWithResponseAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters)
-            .flatMap(
-                (Response<PacketCoreDataPlaneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates a PacketCoreDataPlane update tags.
+     * Updates packet core data planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param parameters Parameters supplied to update PacketCoreDataPlane tags.
+     * @param parameters Parameters supplied to update packet core data plane tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1139,12 +1125,12 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Updates a PacketCoreDataPlane update tags.
+     * Updates packet core data planes tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param parameters Parameters supplied to update PacketCoreDataPlane tags.
+     * @param parameters Parameters supplied to update packet core data plane tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,7 +1150,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1225,7 +1211,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1284,7 +1270,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1302,7 +1288,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1321,7 +1307,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -1337,7 +1323,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     }
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.

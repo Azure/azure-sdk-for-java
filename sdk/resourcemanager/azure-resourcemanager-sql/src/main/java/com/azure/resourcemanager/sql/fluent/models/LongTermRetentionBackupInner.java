@@ -4,55 +4,28 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A long term retention backup. */
-@JsonFlatten
-@Immutable
-public class LongTermRetentionBackupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LongTermRetentionBackupInner.class);
-
+@Fluent
+public final class LongTermRetentionBackupInner extends ProxyResource {
     /*
-     * The server name that the backup database belong to.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
-    private String serverName;
+    @JsonProperty(value = "properties")
+    private LongTermRetentionBackupProperties innerProperties;
 
-    /*
-     * The create time of the server.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.serverCreateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime serverCreateTime;
-
-    /*
-     * The name of the database the backup belong to
-     */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
-
-    /*
-     * The delete time of the database
-     */
-    @JsonProperty(value = "properties.databaseDeletionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime databaseDeletionTime;
-
-    /*
-     * The time the backup was taken
-     */
-    @JsonProperty(value = "properties.backupTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime backupTime;
-
-    /*
-     * The time the long term retention backup will expire.
-     */
-    @JsonProperty(value = "properties.backupExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime backupExpirationTime;
+    private LongTermRetentionBackupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the serverName property: The server name that the backup database belong to.
@@ -60,7 +33,7 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @return the serverName value.
      */
     public String serverName() {
-        return this.serverName;
+        return this.innerProperties() == null ? null : this.innerProperties().serverName();
     }
 
     /**
@@ -69,7 +42,7 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @return the serverCreateTime value.
      */
     public OffsetDateTime serverCreateTime() {
-        return this.serverCreateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().serverCreateTime();
     }
 
     /**
@@ -78,7 +51,7 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -87,7 +60,7 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
-        return this.databaseDeletionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseDeletionTime();
     }
 
     /**
@@ -96,7 +69,7 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
-        return this.backupTime;
+        return this.innerProperties() == null ? null : this.innerProperties().backupTime();
     }
 
     /**
@@ -105,7 +78,7 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
-        return this.backupExpirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().backupExpirationTime();
     }
 
     /**
@@ -114,5 +87,8 @@ public class LongTermRetentionBackupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

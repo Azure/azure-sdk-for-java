@@ -39,11 +39,18 @@ pr:
       - sdk/template/azure-sdk-template-three/pom.xml
       - sdk/template/azure-template-perf/pom.xml
 
+parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: template
     EnableBatchRelease: true
+    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
     TestPipeline: true
     Artifacts:
@@ -62,3 +69,11 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+        parameters:
+          ServiceDirectory: template
+          Artifacts:
+            - name: azure-sdk-template
+              groupId: com.azure
+              safeName: azuresdktemplate

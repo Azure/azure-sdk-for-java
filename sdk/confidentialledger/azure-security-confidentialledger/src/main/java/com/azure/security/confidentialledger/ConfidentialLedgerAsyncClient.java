@@ -41,8 +41,8 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     digest: String
-     *     script: String
+     *     digest: String (Required)
+     *     script: String (Required)
      * }
      * }</pre>
      *
@@ -67,12 +67,13 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     members: [
-     *         {
-     *             certificate: String
-     *             id: String
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -81,12 +82,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of members in the consortium along with {@link Response} on successful completion of {@link Mono}.
+     * @return list of members in the consortium as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConsortiumMembersWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getConsortiumMembersWithResponseAsync(requestOptions);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listConsortiumMembers(RequestOptions requestOptions) {
+        return this.serviceClient.listConsortiumMembersAsync(requestOptions);
     }
 
     /**
@@ -96,13 +97,13 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     currentNodeId: String
-     *     enclaveQuotes: {
-     *         String: {
-     *             nodeId: String
-     *             mrenclave: String
-     *             quoteVersion: String
-     *             raw: String
+     *     currentNodeId: String (Required)
+     *     enclaveQuotes (Required): {
+     *         String (Required): {
+     *             nodeId: String (Required)
+     *             mrenclave: String (Optional)
+     *             quoteVersion: String (Required)
+     *             raw: String (Required)
      *         }
      *     }
      * }
@@ -129,11 +130,12 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     collections: [
-     *         {
-     *             collectionId: String
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
      *         }
      *     ]
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -142,12 +144,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a group of ledger collections along with {@link Response} on successful completion of {@link Mono}.
+     * @return paginated collections returned in response to a query as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCollectionsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listCollectionsWithResponseAsync(requestOptions);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCollections(RequestOptions requestOptions) {
+        return this.serviceClient.listCollectionsAsync(requestOptions);
     }
 
     /**
@@ -164,17 +166,19 @@ public final class ConfidentialLedgerAsyncClient {
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     nextLink: String
-     *     entries: [
-     *         {
-     *             contents: String
-     *             collectionId: String
-     *             transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
      * }
@@ -204,13 +208,15 @@ public final class ConfidentialLedgerAsyncClient {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -218,7 +224,7 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     collectionId: String
+     *     collectionId: String (Required)
      * }
      * }</pre>
      *
@@ -233,8 +239,8 @@ public final class ConfidentialLedgerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> postLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
-        return this.serviceClient.postLedgerEntryWithResponseAsync(entry, requestOptions);
+    public Mono<Response<BinaryData>> createLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
+        return this.serviceClient.createLedgerEntryWithResponseAsync(entry, requestOptions);
     }
 
     /**
@@ -250,15 +256,17 @@ public final class ConfidentialLedgerAsyncClient {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     state: String(Loading/Ready)
-     *     entry: {
-     *         contents: String
-     *         collectionId: String
-     *         transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     entry (Optional): {
+     *         contents: String (Required)
+     *         collectionId: String (Optional)
+     *         transactionId: String (Optional)
      *     }
      * }
      * }</pre>
@@ -285,29 +293,29 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     receipt: {
-     *         cert: String
-     *         leaf: String
-     *         leafComponents: {
-     *             claimsDigest: String
-     *             commitEvidence: String
-     *             writeSetDigest: String
+     *     receipt (Optional): {
+     *         cert: String (Optional)
+     *         leaf: String (Optional)
+     *         leafComponents (Optional): {
+     *             claimsDigest: String (Optional)
+     *             commitEvidence: String (Optional)
+     *             writeSetDigest: String (Optional)
      *         }
-     *         nodeId: String
-     *         proof: [
-     *             {
-     *                 left: String
-     *                 right: String
+     *         nodeId: String (Required)
+     *         proof (Required): [
+     *              (Required){
+     *                 left: String (Optional)
+     *                 right: String (Optional)
      *             }
      *         ]
-     *         root: String
-     *         serviceEndorsements: [
-     *             String
+     *         root: String (Optional)
+     *         serviceEndorsements (Optional): [
+     *             String (Optional)
      *         ]
-     *         signature: String
+     *         signature: String (Required)
      *     }
-     *     state: String(Loading/Ready)
-     *     transactionId: String
+     *     state: String(Loading/Ready) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -333,8 +341,8 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     state: String(Committed/Pending)
-     *     transactionId: String
+     *     state: String(Committed/Pending) (Required)
+     *     transactionId: String (Required)
      * }
      * }</pre>
      *
@@ -365,13 +373,15 @@ public final class ConfidentialLedgerAsyncClient {
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     contents: String
-     *     collectionId: String
-     *     transactionId: String
+     *     contents: String (Required)
+     *     collectionId: String (Optional)
+     *     transactionId: String (Optional)
      * }
      * }</pre>
      *
@@ -412,8 +422,8 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -438,8 +448,8 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *
@@ -447,8 +457,8 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     assignedRole: String(Administrator/Contributor/Reader)
-     *     userId: String
+     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
+     *     userId: String (Optional)
      * }
      * }</pre>
      *

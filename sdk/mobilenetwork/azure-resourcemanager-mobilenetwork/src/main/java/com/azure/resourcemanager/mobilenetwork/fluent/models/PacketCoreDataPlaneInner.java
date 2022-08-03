@@ -71,8 +71,8 @@ public final class PacketCoreDataPlaneInner extends Resource {
     }
 
     /**
-     * Get the userPlaneAccessInterface property: The user plane interface on the access network. In 5G networks this is
-     * called as N3 interface whereas in 4G networks this is called the S1-U interface.
+     * Get the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
+     * is the N3 interface. For 4G networks, this is the S1-U interface.
      *
      * @return the userPlaneAccessInterface value.
      */
@@ -81,8 +81,8 @@ public final class PacketCoreDataPlaneInner extends Resource {
     }
 
     /**
-     * Set the userPlaneAccessInterface property: The user plane interface on the access network. In 5G networks this is
-     * called as N3 interface whereas in 4G networks this is called the S1-U interface.
+     * Set the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
+     * is the N3 interface. For 4G networks, this is the S1-U interface.
      *
      * @param userPlaneAccessInterface the userPlaneAccessInterface value to set.
      * @return the PacketCoreDataPlaneInner object itself.

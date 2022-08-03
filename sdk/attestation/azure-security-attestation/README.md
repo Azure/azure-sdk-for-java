@@ -67,7 +67,7 @@ add the direct dependency to your project as follows.
 - An existing [Azure Attestation instance][azure_attestation]. If you need to create an attestation instance, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-instance-name>` with your own, unique names:
 
 ```bash
-az attestation create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+az attestation create --resource-group <your-resource-group-name> --name <your-instance-name>
 ```
 
 ### Authenticate the client

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.RestorePointsClient;
@@ -41,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorePointsClient. */
 public final class RestorePointsClientImpl implements RestorePointsClient {
-    private final ClientLogger logger = new ClientLogger(RestorePointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorePointsService service;
 
@@ -67,7 +65,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
     private interface RestorePointsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/restorePoints")
@@ -80,9 +78,10 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/restorePoints")
@@ -96,9 +95,10 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateDatabaseRestorePointDefinition parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
@@ -112,6 +112,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
             @PathParam("restorePointName") String restorePointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -141,7 +142,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database restore points.
+     * @return a list of database restore points along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listByDatabaseSinglePageAsync(
@@ -169,6 +171,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -180,12 +183,13 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<RestorePointInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -199,7 +203,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database restore points.
+     * @return a list of database restore points along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listByDatabaseSinglePageAsync(
@@ -227,6 +232,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -236,6 +242,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -253,7 +260,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database restore points.
+     * @return a list of database restore points as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorePointInner> listByDatabaseAsync(
@@ -272,7 +279,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database restore points.
+     * @return a list of database restore points as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorePointInner> listByDatabaseAsync(
@@ -291,7 +298,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database restore points.
+     * @return a list of database restore points as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorePointInner> listByDatabase(
@@ -310,7 +317,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database restore points.
+     * @return a list of database restore points as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorePointInner> listByDatabase(
@@ -325,15 +332,18 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -356,13 +366,13 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (restorePointLabel == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restorePointLabel is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
-        CreateDatabaseRestorePointDefinition parameters = new CreateDatabaseRestorePointDefinition();
-        parameters.withRestorePointLabel(restorePointLabel);
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -375,8 +385,9 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -386,16 +397,20 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -418,13 +433,13 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (restorePointLabel == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restorePointLabel is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
-        CreateDatabaseRestorePointDefinition parameters = new CreateDatabaseRestorePointDefinition();
-        parameters.withRestorePointLabel(restorePointLabel);
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -435,6 +450,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -445,17 +461,20 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return the {@link PollerFlux} for polling of database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointLabel);
+            createWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
         return this
             .client
             .<RestorePointInner, RestorePointInner>getLroResult(
@@ -473,19 +492,23 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return the {@link PollerFlux} for polling of database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context);
+            createWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context);
         return this
             .client
             .<RestorePointInner, RestorePointInner>getLroResult(
@@ -499,16 +522,19 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return the {@link SyncPoller} for polling of database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel).getSyncPoller();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters) {
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
@@ -518,18 +544,21 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return the {@link SyncPoller} for polling of database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context)
-            .getSyncPoller();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -539,16 +568,19 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorePointInner> createAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters) {
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -560,17 +592,21 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> createAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -582,7 +618,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -590,8 +626,11 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorePointInner create(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel) {
-        return createAsync(resourceGroupName, serverName, databaseName, restorePointLabel).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters) {
+        return createAsync(resourceGroupName, serverName, databaseName, parameters).block();
     }
 
     /**
@@ -601,7 +640,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @param restorePointLabel The restore point label to apply.
+     * @param parameters The definition for creating the restore point of this database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -610,8 +649,12 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorePointInner create(
-        String resourceGroupName, String serverName, String databaseName, String restorePointLabel, Context context) {
-        return createAsync(resourceGroupName, serverName, databaseName, restorePointLabel, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        CreateDatabaseRestorePointDefinition parameters,
+        Context context) {
+        return createAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
     }
 
     /**
@@ -625,7 +668,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorePointInner>> getWithResponseAsync(
@@ -657,6 +700,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -669,8 +713,9 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                             restorePointName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -685,7 +730,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorePointInner>> getWithResponseAsync(
@@ -717,6 +762,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -727,6 +773,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                 restorePointName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -741,20 +788,13 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorePointInner> getAsync(
         String resourceGroupName, String serverName, String databaseName, String restorePointName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointName)
-            .flatMap(
-                (Response<RestorePointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -788,7 +828,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorePointInner> getWithResponse(
@@ -807,7 +847,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -852,7 +892,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -867,7 +907,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -923,13 +963,13 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String serverName, String databaseName, String restorePointName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, databaseName, restorePointName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -961,7 +1001,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

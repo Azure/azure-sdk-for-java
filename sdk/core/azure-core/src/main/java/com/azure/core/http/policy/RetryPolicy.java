@@ -6,18 +6,21 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
+import com.azure.core.util.logging.LoggingEventBuilder;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -116,11 +119,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptAsync(context, next, context.getHttpRequest(), 0);
+        return attemptAsync(context, next, context.getHttpRequest(), 0, null);
     }
 
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return attemptSync(context, next, context.getHttpRequest(), 0, null);
+    }
+
+
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-        final HttpRequest originalHttpRequest, final int tryCount) {
+        final HttpRequest originalHttpRequest, final int tryCount, final List<Throwable> suppressed) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         return next.clone().process()
@@ -128,52 +137,111 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                         retryAfterHeader, retryAfterTimeUnit);
-                    LOGGER.atVerbose()
-                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                        .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
-                        .log("Retrying.");
+                    logRetry(tryCount, delayDuration);
 
-                    Flux<ByteBuffer> responseBody = httpResponse.getBody();
-                    if (responseBody == null) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                            .delaySubscription(delayDuration);
-                    } else {
-                        return httpResponse.getBody()
-                            .ignoreElements()
-                            .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                                .delaySubscription(delayDuration));
-                    }
+                    httpResponse.close();
+
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressed)
+                        .delaySubscription(delayDuration);
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        LOGGER.atInfo()
-                            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                            .log("Retry attempts have been exhausted.");
+                        logRetryExhausted(tryCount);
                     }
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(Exception.class, err -> {
                 if (shouldRetryException(err, tryCount)) {
-                    LOGGER.atVerbose()
-                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                            .log("Error resume.", err);
-                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                    logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
+                    List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+                    suppressedLocal.add(err);
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    LOGGER.atError()
-                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                        .log("Retry attempts have been exhausted.", err);
+                    logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
+                    if (suppressed != null) {
+                        suppressed.forEach(err::addSuppressed);
+                    }
                     return Mono.error(err);
                 }
             });
     }
 
+    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextSyncPolicy next,
+                                     final HttpRequest originalHttpRequest, final int tryCount,
+                                     final List<Throwable> suppressed) {
+        context.setHttpRequest(originalHttpRequest.copy());
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+        HttpResponse httpResponse;
+        try {
+            httpResponse = next.clone().processSync();
+        } catch (RuntimeException err) {
+            Throwable throwable = Exceptions.unwrap(err);
+            Throwable cause = throwable.getCause();
+            if (shouldRetryException(throwable, tryCount) || shouldRetryException(cause, tryCount)) {
+                logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", throwable);
+                try {
+                    Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
+                } catch (InterruptedException ie) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                }
+                List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+                suppressedLocal.add(throwable);
+                return attemptSync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal);
+            } else {
+                logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", throwable);
+                if (suppressed != null) {
+                    suppressed.forEach(err::addSuppressed);
+                }
+                throw LOGGER.logExceptionAsError(err);
+            }
+        }
+        if (shouldRetry(httpResponse, tryCount)) {
+            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+                retryAfterHeader, retryAfterTimeUnit);
+            logRetry(tryCount, delayDuration);
+
+            httpResponse.close();
+
+            try {
+                Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
+            } catch (InterruptedException ie) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+            }
+            return attemptSync(context, next, originalHttpRequest, tryCount + 1, suppressed);
+        } else {
+            if (tryCount >= retryStrategy.getMaxRetries()) {
+                logRetryExhausted(tryCount);
+            }
+            return httpResponse;
+        }
+    }
     private boolean shouldRetry(HttpResponse response, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
     }
 
     private boolean shouldRetryException(Throwable throwable, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetryException(throwable);
+    }
+
+    private void logRetry(int tryCount, Duration delayDuration) {
+        LOGGER.atVerbose()
+            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+            .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+            .log("Retrying.");
+    }
+
+    private void logRetryExhausted(int tryCount) {
+        LOGGER.atInfo()
+            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+            .log("Retry attempts have been exhausted.");
+    }
+
+    private void logRetryWithError(LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
+        Throwable throwable) {
+        loggingEventBuilder
+            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+            .log(format, throwable);
     }
 
     /*

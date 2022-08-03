@@ -163,7 +163,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -226,7 +226,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -502,7 +502,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -558,7 +558,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -590,7 +590,14 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     public Mono<UpdateDomainInner> getUpdateDomainAsync(
         String resourceGroupName, String cloudServiceName, int updateDomain) {
         return getUpdateDomainWithResponseAsync(resourceGroupName, cloudServiceName, updateDomain)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<UpdateDomainInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -665,7 +672,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -726,7 +733,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2022-04-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -824,7 +831,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateDomainInner>> listUpdateDomainsNextSinglePageAsync(String nextLink) {
@@ -860,7 +867,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list operation result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UpdateDomainInner>> listUpdateDomainsNextSinglePageAsync(

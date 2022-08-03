@@ -8,7 +8,7 @@ import com.azure.identity.SharedTokenCacheCredential;
 import com.azure.identity.SharedTokenCacheCredentialBuilder;
 
 /**
- * Sample showing how to authenticate to key vault with a shared token cache credential.
+ * Sample showing how to authenticate to Key Vault with a shared token cache credential.
  */
 public class PersistentTokenCacheDemo {
     /**
@@ -17,7 +17,7 @@ public class PersistentTokenCacheDemo {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        // Wrote to AZURE_USERNAME env variable
+        // Wrote to AZURE_USERNAME env variable.
         SharedTokenCacheCredential defaultCredential = new SharedTokenCacheCredentialBuilder()
             .clientId("<your-client-id>")
             .build();
