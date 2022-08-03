@@ -118,7 +118,9 @@ public abstract class RestProxyBase {
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser, HttpRequest request, Context context);
+    protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
+        HttpRequest request, Context context);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException;
 
