@@ -7,7 +7,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ChangeFeedOperationType;
 import com.azure.cosmos.models.ChangeFeedPolicy;
@@ -35,7 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-//  TODO: (kuthapar) - to be removed after testing.
+//  TODO:(kuthapar) - to be removed after testing.
 public class ChangeFeedProcessorFullFidelityTest {
 
     private static final String databaseId = "SampleDatabase";
@@ -159,11 +161,25 @@ public class ChangeFeedProcessorFullFidelityTest {
 
         logger.info("Deleting feed container");
         feedContainer = testDatabase.getContainer(feedContainerId);
-        feedContainer.delete().block();
+        try {
+            feedContainer.delete().block();
+        } catch (CosmosException cosmosException) {
+            logger.error("Error occurred while deleting feed container", cosmosException);
+            if (!Exceptions.isNotFound(cosmosException)) {
+                throw cosmosException;
+            }
+        }
 
         logger.info("Deleting lease container");
         leaseContainer = testDatabase.getContainer(leaseContainerId);
-        leaseContainer.delete().block();
+        try {
+            leaseContainer.delete().block();
+        } catch (CosmosException cosmosException) {
+            logger.error("Error occurred while deleting lease container", cosmosException);
+            if (!Exceptions.isNotFound(cosmosException)) {
+                throw cosmosException;
+            }
+        }
 
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
             feedContainerPartitionKeyPath);

@@ -227,12 +227,12 @@ public class ServiceItemLease implements Lease {
 
     @Override
     public void setVersion(LeaseVersion leaseVersion) {
-        //  TODO: (kuthapar) - should be a no-op
+        //  TODO:(kuthapar) - should be a no-op
     }
 
     @Override
     public void setFeedRange(FeedRangeInternal feedRangeInternal) {
-        //  TODO: (kuthapar) - should be a no-op
+        //  TODO:(kuthapar) - should be a no-op
     }
 
     public static ServiceItemLease fromDocument(InternalObjectNode document) {

@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-//  TODO: (kuthapar) - to be removed after testing.
+//  TODO:(kuthapar) - to be removed after testing.
 public class ChangeFeedFullFidelityTest {
     private static final String databaseId = "SampleDatabase";
     private static final String containerId = "GreenTaxiRecords";

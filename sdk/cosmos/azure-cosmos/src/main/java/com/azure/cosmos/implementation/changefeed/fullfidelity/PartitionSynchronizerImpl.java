@@ -169,7 +169,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                // that cover the rest the full partition range
                                // based on the fact that the lease store was always
                                // initialized for the full collection
-                               // TODO: Annie: what if some epkRange did not create successfully?
+                               // TODO:(kuthapar) what if some epkRange did not create successfully?
                                boolean anyMatch = leaseList.stream().anyMatch(lease -> {
                                    Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
                                    //   TODO:(kuthapar) - check this logic

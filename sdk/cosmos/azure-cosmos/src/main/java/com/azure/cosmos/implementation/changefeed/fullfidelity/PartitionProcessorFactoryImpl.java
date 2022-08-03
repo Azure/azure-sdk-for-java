@@ -69,7 +69,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         FeedRangeInternal feedRange,
         ChangeFeedProcessorOptions processorOptions) {
 
-        //  TODO: (kuthapar) - how will customers use this? given now the continuation token in the lease will be the full json.
+        //  TODO:(kuthapar) - how will customers use this? given now the continuation token in the lease will be the full json.
         if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
             return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
                 processorOptions.getStartContinuation(),
