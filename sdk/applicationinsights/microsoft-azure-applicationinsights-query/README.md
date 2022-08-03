@@ -6,9 +6,9 @@
 > Read the [migration guide](https://aka.ms/azsdk/java/migrate/monitorquery) for more details.
 
 
-This project provides client tools or utilities in Java that make it easy to query data in [Azure Application Insights](https://azure.microsoft.com/en-us/services/application-insights/). For reference documentation on classes and models, please see the [Azure SDK for Java reference](https://docs.microsoft.com/en-us/java/api/overview/azure/?view=azure-java-stable). 
+This project provides client tools or utilities in Java that make it easy to query data in [Azure Application Insights](https://azure.microsoft.com/services/application-insights/). For reference documentation on classes and models, please see the [Azure SDK for Java reference](https://docs.microsoft.com/java/api/overview/azure/?view=azure-java-stable). 
 
-Azure Application Insights provides SDKs for telemtry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This SDK provides query access to data already stored in Application Insights. To start monitoring a Java application, take a look at the [quickstart](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-java-quick-start). 
+Azure Application Insights provides SDKs for telemtry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This SDK provides query access to data already stored in Application Insights. To start monitoring a Java application, take a look at the [quickstart](https://docs.microsoft.com/azure/application-insights/app-insights-java-quick-start). 
 
 ## Examples
 
@@ -37,11 +37,11 @@ To get the binaries of the official Microsoft Azure Log Analytics SDK as distrib
 
 ## Help and Issues
 
-If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Contribute Code
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -51,7 +51,7 @@ If you would like to become an active contributor to this project please follow 
 
 ## More information
 - [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
-- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
 ---
 
