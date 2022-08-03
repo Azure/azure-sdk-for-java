@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -25,25 +26,27 @@ import com.azure.resourcemanager.automanage.fluent.AutomanageClient;
 import com.azure.resourcemanager.automanage.fluent.BestPracticesClient;
 import com.azure.resourcemanager.automanage.fluent.BestPracticesVersionsClient;
 import com.azure.resourcemanager.automanage.fluent.ConfigurationProfileAssignmentsClient;
+import com.azure.resourcemanager.automanage.fluent.ConfigurationProfileHciAssignmentsClient;
+import com.azure.resourcemanager.automanage.fluent.ConfigurationProfileHcrpAssignmentsClient;
 import com.azure.resourcemanager.automanage.fluent.ConfigurationProfilesClient;
 import com.azure.resourcemanager.automanage.fluent.ConfigurationProfilesVersionsClient;
+import com.azure.resourcemanager.automanage.fluent.HciReportsClient;
+import com.azure.resourcemanager.automanage.fluent.HcrpReportsClient;
 import com.azure.resourcemanager.automanage.fluent.OperationsClient;
 import com.azure.resourcemanager.automanage.fluent.ReportsClient;
+import com.azure.resourcemanager.automanage.fluent.ServicePrincipalsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the AutomanageClientImpl type. */
 @ServiceClient(builder = AutomanageClientBuilder.class)
 public final class AutomanageClientImpl implements AutomanageClient {
-    private final ClientLogger logger = new ClientLogger(AutomanageClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -200,6 +203,66 @@ public final class AutomanageClientImpl implements AutomanageClient {
         return this.reports;
     }
 
+    /** The ServicePrincipalsClient object to access its operations. */
+    private final ServicePrincipalsClient servicePrincipals;
+
+    /**
+     * Gets the ServicePrincipalsClient object to access its operations.
+     *
+     * @return the ServicePrincipalsClient object.
+     */
+    public ServicePrincipalsClient getServicePrincipals() {
+        return this.servicePrincipals;
+    }
+
+    /** The ConfigurationProfileHcrpAssignmentsClient object to access its operations. */
+    private final ConfigurationProfileHcrpAssignmentsClient configurationProfileHcrpAssignments;
+
+    /**
+     * Gets the ConfigurationProfileHcrpAssignmentsClient object to access its operations.
+     *
+     * @return the ConfigurationProfileHcrpAssignmentsClient object.
+     */
+    public ConfigurationProfileHcrpAssignmentsClient getConfigurationProfileHcrpAssignments() {
+        return this.configurationProfileHcrpAssignments;
+    }
+
+    /** The HcrpReportsClient object to access its operations. */
+    private final HcrpReportsClient hcrpReports;
+
+    /**
+     * Gets the HcrpReportsClient object to access its operations.
+     *
+     * @return the HcrpReportsClient object.
+     */
+    public HcrpReportsClient getHcrpReports() {
+        return this.hcrpReports;
+    }
+
+    /** The ConfigurationProfileHciAssignmentsClient object to access its operations. */
+    private final ConfigurationProfileHciAssignmentsClient configurationProfileHciAssignments;
+
+    /**
+     * Gets the ConfigurationProfileHciAssignmentsClient object to access its operations.
+     *
+     * @return the ConfigurationProfileHciAssignmentsClient object.
+     */
+    public ConfigurationProfileHciAssignmentsClient getConfigurationProfileHciAssignments() {
+        return this.configurationProfileHciAssignments;
+    }
+
+    /** The HciReportsClient object to access its operations. */
+    private final HciReportsClient hciReports;
+
+    /**
+     * Gets the HciReportsClient object to access its operations.
+     *
+     * @return the HciReportsClient object.
+     */
+    public HciReportsClient getHciReports() {
+        return this.hciReports;
+    }
+
     /**
      * Initializes an instance of AutomanageClient client.
      *
@@ -222,7 +285,7 @@ public final class AutomanageClientImpl implements AutomanageClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-30-preview";
+        this.apiVersion = "2022-05-04";
         this.bestPractices = new BestPracticesClientImpl(this);
         this.bestPracticesVersions = new BestPracticesVersionsClientImpl(this);
         this.configurationProfiles = new ConfigurationProfilesClientImpl(this);
@@ -230,6 +293,11 @@ public final class AutomanageClientImpl implements AutomanageClient {
         this.configurationProfileAssignments = new ConfigurationProfileAssignmentsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.reports = new ReportsClientImpl(this);
+        this.servicePrincipals = new ServicePrincipalsClientImpl(this);
+        this.configurationProfileHcrpAssignments = new ConfigurationProfileHcrpAssignmentsClientImpl(this);
+        this.hcrpReports = new HcrpReportsClientImpl(this);
+        this.configurationProfileHciAssignments = new ConfigurationProfileHciAssignmentsClientImpl(this);
+        this.hciReports = new HciReportsClientImpl(this);
     }
 
     /**
@@ -248,10 +316,7 @@ public final class AutomanageClientImpl implements AutomanageClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -315,7 +380,7 @@ public final class AutomanageClientImpl implements AutomanageClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -374,4 +439,6 @@ public final class AutomanageClientImpl implements AutomanageClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutomanageClientImpl.class);
 }
