@@ -42,9 +42,18 @@ public class NativeQueryGenerator {
         if (sort == null || sort.isUnsorted()) {
             return querySpec;
         } else {
-            Matcher matcher = Pattern.compile("\\sfrom\\s").matcher(querySpec.getQueryText());
-            matcher.find();
-            String tableName = querySpec.getQueryText().substring(matcher.start(0)+6);
+            Pattern pattern1 = Pattern.compile("\\s(?i)from root\\s");
+            Pattern pattern2 = Pattern.compile("\\s(?i)from\\s");
+            Matcher matcher = pattern1.matcher(querySpec.getQueryText());
+            int beginIndex = 0;
+            if (matcher.find()) {
+                beginIndex = matcher.start(0) + 11;
+            } else {
+                matcher = pattern2.matcher(querySpec.getQueryText());
+                matcher.find();
+                beginIndex = matcher.start(0) + 6;
+            }
+            String tableName = querySpec.getQueryText().substring(beginIndex);
             tableName = tableName.substring(0, tableName.indexOf(" "));
 
             String querySort = AbstractQueryGenerator.generateQuerySort(sort, tableName);
