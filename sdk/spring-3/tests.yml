@@ -20,6 +20,6 @@ stages:
       TestGoals: 'verify'
       TestOptions: '-DskipSpringITs=false'
       BuildProfile: spring3
-    MatrixFilters:
-      - JavaTestVersion=^(?!1.8|1.11).*
+      MatrixFilters:
+        - JavaTestVersion=^(?!1.8|1.11).*
 # test pipeline test
