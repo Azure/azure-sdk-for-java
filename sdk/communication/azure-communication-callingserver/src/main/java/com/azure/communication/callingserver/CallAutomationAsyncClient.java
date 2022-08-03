@@ -48,12 +48,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating a asynchronous CallingServer client</strong></p>
  *
- * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link CallAutomationClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see CallingServerClientBuilder
+ * @see CallAutomationClientBuilder
  */
-@ServiceClient(builder = CallingServerClientBuilder.class, isAsync = true)
-public final class CallingServerAsyncClient {
+@ServiceClient(builder = CallAutomationClientBuilder.class, isAsync = true)
+public final class CallAutomationAsyncClient {
     private final CallConnectionsImpl callConnectionInternal;
     private final ServerCallingsImpl serverCallingInternal;
     private final ServerCallsImpl serverCallsInternal;
@@ -63,12 +63,12 @@ public final class CallingServerAsyncClient {
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
-    CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
+    CallAutomationAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
         this.callConnectionInternal = callServiceClient.getCallConnections();
         this.serverCallingInternal = callServiceClient.getServerCallings();
         this.serverCallsInternal = callServiceClient.getServerCalls();
         this.contentsInternal = callServiceClient.getContents();
-        this.logger = new ClientLogger(CallingServerAsyncClient.class);
+        this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(
             callServiceClient.getEndpoint(),
             callServiceClient.getHttpPipeline());
@@ -286,7 +286,6 @@ public final class CallingServerAsyncClient {
      * @param callConnectionId the id of the call connection
      * @return a CallContentAsync.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
         return new CallConnectionAsync(callConnectionId, callConnectionInternal, contentsInternal);
     }
@@ -298,7 +297,6 @@ public final class CallingServerAsyncClient {
      *
      * @return a CallRecordingAsync.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public CallRecordingAsync getCallRecordingAsync() {
         return new CallRecordingAsync(serverCallsInternal, contentsInternal,
             contentDownloader, httpPipelineInternal, resourceEndpoint);

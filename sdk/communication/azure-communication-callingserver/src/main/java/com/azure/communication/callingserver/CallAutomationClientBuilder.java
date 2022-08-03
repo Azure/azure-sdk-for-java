@@ -52,24 +52,24 @@ import java.util.Properties;
 
 
 /**
- * Client builder that creates CallingServerAsyncClient and CallingServerClient.
+ * Client builder that creates CallAutomationAsyncClient and CallAutomationClient.
  *
  * <p><strong>Instantiating synchronous and asynchronous Calling Server Clients</strong></p>
  */
 
-@ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
-public final class CallingServerClientBuilder implements
-    AzureKeyCredentialTrait<CallingServerClientBuilder>,
-    ConfigurationTrait<CallingServerClientBuilder>,
-    ConnectionStringTrait<CallingServerClientBuilder>,
-    EndpointTrait<CallingServerClientBuilder>,
-    HttpTrait<CallingServerClientBuilder>,
-    TokenCredentialTrait<CallingServerClientBuilder> {
+@ServiceClientBuilder(serviceClients = { CallAutomationClient.class, CallAutomationAsyncClient.class })
+public final class CallAutomationClientBuilder implements
+    AzureKeyCredentialTrait<CallAutomationClientBuilder>,
+    ConfigurationTrait<CallAutomationClientBuilder>,
+    ConnectionStringTrait<CallAutomationClientBuilder>,
+    EndpointTrait<CallAutomationClientBuilder>,
+    HttpTrait<CallAutomationClientBuilder>,
+    TokenCredentialTrait<CallAutomationClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callingserver.properties";
 
-    private final ClientLogger logger = new ClientLogger(CallingServerClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(CallAutomationClientBuilder.class);
     private String connectionString;
     private String endpoint;
     private String hostName;
@@ -88,7 +88,7 @@ public final class CallingServerClientBuilder implements
     /**
      * Public default constructor
      */
-    public CallingServerClientBuilder() {
+    public CallAutomationClientBuilder() {
 
     }
 
@@ -96,10 +96,10 @@ public final class CallingServerClientBuilder implements
      * Set endpoint of the service.
      *
      * @param endpoint url of the service.
-     * @return CallingServerClientBuilder object.
+     * @return CallAutomationClientBuilder object.
      */
     @Override
-    public CallingServerClientBuilder endpoint(String endpoint) {
+    public CallAutomationClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
@@ -117,10 +117,10 @@ public final class CallingServerClientBuilder implements
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses,
      * if a pipeline is not supplied, the
      * credential and httpClient fields must be set.
-     * @return CallingServerClientBuilder object.
+     * @return CallAutomationClientBuilder object.
      */
     @Override
-    public CallingServerClientBuilder pipeline(HttpPipeline pipeline) {
+    public CallAutomationClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
     }
@@ -131,11 +131,11 @@ public final class CallingServerClientBuilder implements
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     @Override
-    public CallingServerClientBuilder credential(TokenCredential tokenCredential) {
+    public CallAutomationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
@@ -145,11 +145,11 @@ public final class CallingServerClientBuilder implements
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP
      *                      requests.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public CallingServerClientBuilder credential(AzureKeyCredential keyCredential) {
+    public CallAutomationClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -158,10 +158,10 @@ public final class CallingServerClientBuilder implements
      * Set connectionString to use.
      *
      * @param connectionString connection string to set.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      */
     @Override
-    public CallingServerClientBuilder connectionString(String connectionString) {
+    public CallAutomationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         this.connectionString = connectionString;
         return this;
@@ -173,9 +173,9 @@ public final class CallingServerClientBuilder implements
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy object to be applied
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      */
-    public CallingServerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public CallAutomationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
@@ -193,10 +193,10 @@ public final class CallingServerClientBuilder implements
      * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      */
     @Override
-    public CallingServerClientBuilder retryOptions(RetryOptions retryOptions) {
+    public CallAutomationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -207,10 +207,10 @@ public final class CallingServerClientBuilder implements
      *
      * @param configuration Configuration store used to retrieve environment
      * configurations.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      */
     @Override
-    public CallingServerClientBuilder configuration(Configuration configuration) {
+    public CallAutomationClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
@@ -228,10 +228,10 @@ public final class CallingServerClientBuilder implements
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return The updated {@link CallAutomationClientBuilder} object.
      */
     @Override
-    public CallingServerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public CallAutomationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
@@ -246,9 +246,9 @@ public final class CallingServerClientBuilder implements
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link CallingServerServiceVersion} of the service to be used when making requests.
-     * @return Updated CallingServerClientBuilder object
+     * @return Updated CallAutomationClientBuilder object
      */
-    public CallingServerClientBuilder serviceVersion(CallingServerServiceVersion version) {
+    public CallAutomationClientBuilder serviceVersion(CallingServerServiceVersion version) {
         return this;
     }
 
@@ -263,10 +263,10 @@ public final class CallingServerClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param httpClient The {@link HttpClient} to use for requests.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      */
     @Override
-    public CallingServerClientBuilder httpClient(HttpClient httpClient) {
+    public CallAutomationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
     }
@@ -282,11 +282,11 @@ public final class CallingServerClientBuilder implements
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param customPolicy A {@link HttpPipelinePolicy pipeline policy}.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     @Override
-    public CallingServerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public CallAutomationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
@@ -296,12 +296,12 @@ public final class CallingServerClientBuilder implements
      * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
      * specified by additionalPolicies will be applied after them
      *
-     * @return The updated {@link CallingServerClientBuilder} object.
+     * @return The updated {@link CallAutomationClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerAsyncClient buildAsyncClient() {
-        return new CallingServerAsyncClient(createServiceImpl());
+    public CallAutomationAsyncClient buildAsyncClient() {
+        return new CallAutomationAsyncClient(createServiceImpl());
     }
 
     /**
@@ -309,12 +309,12 @@ public final class CallingServerClientBuilder implements
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
      * additionalPolicies will be applied after them.
      *
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerClient buildClient() {
-        return new CallingServerClient(buildAsyncClient());
+    public CallAutomationClient buildClient() {
+        return new CallAutomationClient(buildAsyncClient());
     }
 
     private AzureCommunicationCallingServerServiceImpl createServiceImpl() {
@@ -394,9 +394,9 @@ public final class CallingServerClientBuilder implements
      * user-agent string, headers, etc.
      *
      * @param clientOptions object to be applied.
-     * @return Updated {@link CallingServerClientBuilder} object.
+     * @return Updated {@link CallAutomationClientBuilder} object.
      */
-    public CallingServerClientBuilder clientOptions(ClientOptions clientOptions) {
+    public CallAutomationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }

@@ -27,8 +27,8 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
 
     @BeforeEach
     public void setup() {
-        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<>());
-        callRecording = callingServerClient.getCallRecording();
+        CallAutomationClient callAutomationClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<>());
+        callRecording = callAutomationClient.getCallRecording();
     }
     @Test
     public void startRecordingRelativeUriFails() {
@@ -62,10 +62,10 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
     @Test
     public void recordingOperationsTest() {
 
-        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(
+        CallAutomationClient callAutomationClient = CallingServerResponseMocker.getCallingServerClient(
             recordingOperationsResponses
         );
-        callRecording = callingServerClient.getCallRecording();
+        callRecording = callAutomationClient.getCallRecording();
 
         RecordingStatusResponse recordingState = callRecording.startRecording(
             new ServerCallLocator(SERVER_CALL_ID),

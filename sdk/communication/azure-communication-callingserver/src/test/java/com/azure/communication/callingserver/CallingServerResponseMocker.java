@@ -24,20 +24,20 @@ public class CallingServerResponseMocker {
         return content;
     }
 
-    public static CallingServerAsyncClient getCallingServerAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
+    public static CallAutomationAsyncClient getCallingServerAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
         HttpClient mockHttpClient = new MockHttpClient(responses);
 
-        return new CallingServerClientBuilder()
+        return new CallAutomationClientBuilder()
             .httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
             .endpoint(MOCK_ENDPOINT)
             .buildAsyncClient();
     }
 
-    public static CallingServerClient getCallingServerClient(ArrayList<SimpleEntry<String, Integer>> responses) {
+    public static CallAutomationClient getCallingServerClient(ArrayList<SimpleEntry<String, Integer>> responses) {
         HttpClient mockHttpClient = new MockHttpClient(responses);
 
-        return new CallingServerClientBuilder()
+        return new CallAutomationClientBuilder()
             .httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
             .endpoint(MOCK_ENDPOINT)
@@ -45,12 +45,12 @@ public class CallingServerResponseMocker {
     }
 
     public static CallConnection getCallConnection(ArrayList<SimpleEntry<String, Integer>> responses) {
-        CallingServerClient callingServerClient = getCallingServerClient(responses);
-        return callingServerClient.getCallConnection("callConnectionId");
+        CallAutomationClient callAutomationClient = getCallingServerClient(responses);
+        return callAutomationClient.getCallConnection("callConnectionId");
     }
 
     public static CallConnectionAsync getCallConnectionAsync(ArrayList<SimpleEntry<String, Integer>> responses) {
-        CallingServerAsyncClient callingServerClient = getCallingServerAsyncClient(responses);
+        CallAutomationAsyncClient callingServerClient = getCallingServerAsyncClient(responses);
         return callingServerClient.getCallConnectionAsync("callConnectionId");
     }
 
