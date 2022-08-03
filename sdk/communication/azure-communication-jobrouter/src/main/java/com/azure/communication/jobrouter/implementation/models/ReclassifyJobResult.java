@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models;
+package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 
 /**
- * Response object for close job request.
+ * Result object for reclassify job.
  */
 @Fluent
-public class CloseJobResult {
+public class ReclassifyJobResult {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
      */
-    public CloseJobResult() {
+    public ReclassifyJobResult() {
     }
 }

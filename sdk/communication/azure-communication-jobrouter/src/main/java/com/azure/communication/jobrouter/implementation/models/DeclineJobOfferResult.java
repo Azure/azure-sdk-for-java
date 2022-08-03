@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.jobrouter.models;
+package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 
 /**
- * Result object for reclassify job.
+ * Response object for decline job offer request.
  */
 @Fluent
-public class ReclassifyJobResult {
+public class DeclineJobOfferResult {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
      */
-    public ReclassifyJobResult() {
+    public DeclineJobOfferResult() {
     }
 }

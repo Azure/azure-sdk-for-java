@@ -7,14 +7,10 @@ import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CancelJobResult;
-import com.azure.communication.jobrouter.models.CloseJobResult;
-import com.azure.communication.jobrouter.models.CompleteJobResult;
-import com.azure.communication.jobrouter.models.DeclineJobOfferResult;
 import com.azure.communication.jobrouter.models.JobPositionDetails;
 import com.azure.communication.jobrouter.models.JobStateSelector;
 import com.azure.communication.jobrouter.models.QueueStatistics;
-import com.azure.communication.jobrouter.models.ReclassifyJobResult;
+import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResult;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterWorker;
@@ -187,14 +183,13 @@ public final class RouterClient {
      * Reclassify a job.
      *
      * @param jobId Id of the job.
-     * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReclassifyJobResult reclassifyJob(String jobId) {
-        return this.client.reclassifyJob(jobId).block();
+    public void reclassifyJob(String jobId) {
+        this.client.reclassifyJob(jobId).block();
     }
 
     /**
@@ -202,13 +197,12 @@ public final class RouterClient {
      *
      * @param jobId Id of the job.
      * @param context The context to associate with this operation.
-     * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReclassifyJobResult> reclassifyJobWithResponse(String jobId, Context context) {
+    public Response<Void> reclassifyJobWithResponse(String jobId, Context context) {
         return this.client.reclassifyJobWithResponse(jobId, context).block();
     }
 
@@ -219,14 +213,13 @@ public final class RouterClient {
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
-     * @return CancelJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelJobResult cancelJob(String jobId, String note, String dispositionCode) {
-        return this.client.cancelJob(jobId, note, dispositionCode).block();
+    public void cancelJob(String jobId, String note, String dispositionCode) {
+        this.client.cancelJob(jobId, note, dispositionCode).block();
     }
 
     /**
@@ -237,13 +230,12 @@ public final class RouterClient {
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
      * @param context The context to associate with this operation.
-     * @return CancelJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelJobResult> cancelJobWithResponse(String jobId, String note, String dispositionCode, Context context) {
+    public Response<Void> cancelJobWithResponse(String jobId, String note, String dispositionCode, Context context) {
         return this.client.cancelJobWithResponse(jobId, note, dispositionCode, context).block();
     }
 
@@ -253,14 +245,13 @@ public final class RouterClient {
      * @param jobId Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @return CompleteJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CompleteJobResult completeJob(String jobId, String assignmentId, String note) {
-        return this.client.completeJob(jobId, assignmentId, note).block();
+    public void completeJob(String jobId, String assignmentId, String note) {
+        this.client.completeJob(jobId, assignmentId, note).block();
     }
 
     /**
@@ -276,7 +267,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CompleteJobResult> completeJobWithResponse(String jobId, String assignmentId, String note, Context context) {
+    public Response<Void> completeJobWithResponse(String jobId, String assignmentId, String note, Context context) {
         return this.client.completeJobWithResponse(jobId, assignmentId, note, context).block();
     }
 
@@ -284,14 +275,13 @@ public final class RouterClient {
      * Closes a completed job.
      *
      * @param closeJobOptions Options object for close job operation.
-     * @return CloseJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloseJobResult closeJob(CloseJobOptions closeJobOptions) {
-        return this.client.closeJob(closeJobOptions).block();
+    public void closeJob(CloseJobOptions closeJobOptions) {
+        this.client.closeJob(closeJobOptions).block();
     }
 
     /**
@@ -305,7 +295,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CloseJobResult> closeJobWithResponse(CloseJobOptions closeJobOptions, Context context) {
+    public Response<Void> closeJobWithResponse(CloseJobOptions closeJobOptions, Context context) {
         return this.client.closeJobWithResponse(closeJobOptions, context).block();
     }
 
@@ -404,14 +394,13 @@ public final class RouterClient {
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @return DeclineJobOfferResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeclineJobOfferResult declineJobOffer(String workerId, String offerId) {
-        return this.client.declineJobOffer(workerId, offerId).block();
+    public void declineJobOffer(String workerId, String offerId) {
+        this.client.declineJobOffer(workerId, offerId).block();
     }
 
     /**
@@ -420,13 +409,12 @@ public final class RouterClient {
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
-     * @return DeclineJobOfferResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeclineJobOfferResult> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
+    public Response<Void> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
         return this.client.declineJobOfferWithResponse(workerId, offerId, context).block();
     }
 

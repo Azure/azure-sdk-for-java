@@ -37,7 +37,7 @@ import java.util.Objects;
  * Client builder for sync and async job router clients.
  */
 @ServiceClientBuilder(serviceClients = {RouterAsyncClient.class, RouterClient.class})
-public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuilder>,
+public final class RouterClientBuilder implements ConfigurationTrait<RouterClientBuilder>,
     EndpointTrait<RouterClientBuilder>,
     HttpTrait<RouterClientBuilder>,
     ConnectionStringTrait<RouterClientBuilder>,

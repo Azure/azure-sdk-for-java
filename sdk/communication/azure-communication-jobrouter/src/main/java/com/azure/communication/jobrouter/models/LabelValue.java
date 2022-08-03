@@ -6,7 +6,7 @@ package com.azure.communication.jobrouter.models;
 /**
  * Wrapper class for labels. Supports double, String and boolean types.
  */
-public class LabelValue {
+public final class LabelValue {
 
     /**
      * Value to pass to server.

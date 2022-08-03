@@ -37,7 +37,7 @@ import java.util.Objects;
  * Client builder for sync and async job router administration clients.
  */
 @ServiceClientBuilder(serviceClients = {RouterAdministrationAsyncClient.class, RouterAdministrationClient.class})
-public class RouterAdministrationClientBuilder implements ConfigurationTrait<RouterAdministrationClientBuilder>,
+public final class RouterAdministrationClientBuilder implements ConfigurationTrait<RouterAdministrationClientBuilder>,
     EndpointTrait<RouterAdministrationClientBuilder>,
     HttpTrait<RouterAdministrationClientBuilder>,
     ConnectionStringTrait<RouterAdministrationClientBuilder>,

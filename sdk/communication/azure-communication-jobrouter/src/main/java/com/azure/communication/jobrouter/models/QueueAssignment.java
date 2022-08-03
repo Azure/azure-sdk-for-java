@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * QueueAssignment Placeholder object.
  */
 @Fluent
-public class QueueAssignment {
+public final class QueueAssignment {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
