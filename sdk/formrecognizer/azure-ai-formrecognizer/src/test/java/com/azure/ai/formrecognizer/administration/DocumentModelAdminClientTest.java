@@ -220,7 +220,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.beginBuildModel(null, DocumentModelBuildMode.TEMPLATE));
-        assertEquals("'trainingFilesUrl' cannot be null.", exception.getMessage());
+        assertEquals("'blobContainerUrl' cannot be null.", exception.getMessage());
     }
 
     /**
@@ -308,8 +308,11 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "invalidPrefix"
-                        , null, Context.NONE)
+                client.beginBuildModel(trainingFilesUrl,
+                        DocumentModelBuildMode.TEMPLATE,
+                        "invalidPrefix",
+                        null,
+                        Context.NONE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError  = (ResponseError) exception.getValue();
