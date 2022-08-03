@@ -25,7 +25,8 @@ public class KeyWrapUnwrapOperationsAsync {
         default Azure credentials. For more information on this and other types of credentials, see this document:
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
-        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+        To get started, you'll need a key identifier for a key stored in a key vault. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
         for links and instructions. */
         CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())

@@ -37,10 +37,11 @@ public class HelloWorld {
         default Azure credentials. For more information on this and other types of credentials, see this document:
         https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
-        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        To get started, you'll need a URL to an Azure Key Vault. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
         for links and instructions. */
         CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
