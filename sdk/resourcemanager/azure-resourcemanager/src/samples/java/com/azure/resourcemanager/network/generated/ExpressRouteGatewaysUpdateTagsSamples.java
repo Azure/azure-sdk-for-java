@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ExpressRouteGateways UpdateTags. */
 public final class ExpressRouteGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteGatewayUpdateTags.json
      */
     /**
      * Sample code: ExpressRouteGatewayUpdate.

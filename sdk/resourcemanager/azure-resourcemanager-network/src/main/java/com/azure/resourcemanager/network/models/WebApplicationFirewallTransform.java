@@ -39,7 +39,11 @@ public final class WebApplicationFirewallTransform extends ExpandableStringEnum<
         return fromString(name, WebApplicationFirewallTransform.class);
     }
 
-    /** @return known WebApplicationFirewallTransform values. */
+    /**
+     * Gets known WebApplicationFirewallTransform values.
+     *
+     * @return known WebApplicationFirewallTransform values.
+     */
     public static Collection<WebApplicationFirewallTransform> values() {
         return values(WebApplicationFirewallTransform.class);
     }

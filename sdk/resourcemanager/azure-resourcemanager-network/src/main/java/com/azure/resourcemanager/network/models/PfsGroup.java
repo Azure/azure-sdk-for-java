@@ -48,7 +48,11 @@ public final class PfsGroup extends ExpandableStringEnum<PfsGroup> {
         return fromString(name, PfsGroup.class);
     }
 
-    /** @return known PfsGroup values. */
+    /**
+     * Gets known PfsGroup values.
+     *
+     * @return known PfsGroup values.
+     */
     public static Collection<PfsGroup> values() {
         return values(PfsGroup.class);
     }

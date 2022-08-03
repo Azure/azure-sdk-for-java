@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkVirtualAppliances ListByResourceGroup. */
 public final class NetworkVirtualAppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualApplianceListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualApplianceListByResourceGroup.json
      */
     /**
      * Sample code: List all Network Virtual Appliance for a given resource group.

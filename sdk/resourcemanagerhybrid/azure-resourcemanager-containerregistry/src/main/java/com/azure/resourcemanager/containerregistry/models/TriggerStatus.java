@@ -27,7 +27,11 @@ public final class TriggerStatus extends ExpandableStringEnum<TriggerStatus> {
         return fromString(name, TriggerStatus.class);
     }
 
-    /** @return known TriggerStatus values. */
+    /**
+     * Gets known TriggerStatus values.
+     *
+     * @return known TriggerStatus values.
+     */
     public static Collection<TriggerStatus> values() {
         return values(TriggerStatus.class);
     }

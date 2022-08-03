@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageTargets Delete. */
 public final class StorageTargetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Delete.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_Delete.json
      */
     /**
      * Sample code: StorageTargets_Delete.

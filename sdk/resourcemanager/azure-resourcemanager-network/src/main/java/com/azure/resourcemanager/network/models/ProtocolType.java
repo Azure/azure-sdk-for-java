@@ -48,7 +48,11 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
         return fromString(name, ProtocolType.class);
     }
 
-    /** @return known ProtocolType values. */
+    /**
+     * Gets known ProtocolType values.
+     *
+     * @return known ProtocolType values.
+     */
     public static Collection<ProtocolType> values() {
         return values(ProtocolType.class);
     }

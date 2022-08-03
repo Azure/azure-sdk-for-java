@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CORS policy for the Cosmos DB database account. */
 @Fluent
 public final class CorsPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsPolicy.class);
-
     /*
      * The origin domains that are permitted to make a request against the
      * service via CORS.
@@ -164,9 +161,11 @@ public final class CorsPolicy {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CorsPolicy.class);
 }

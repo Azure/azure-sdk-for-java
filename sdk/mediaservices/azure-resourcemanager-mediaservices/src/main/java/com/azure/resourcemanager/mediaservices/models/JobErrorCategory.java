@@ -36,7 +36,11 @@ public final class JobErrorCategory extends ExpandableStringEnum<JobErrorCategor
         return fromString(name, JobErrorCategory.class);
     }
 
-    /** @return known JobErrorCategory values. */
+    /**
+     * Gets known JobErrorCategory values.
+     *
+     * @return known JobErrorCategory values.
+     */
     public static Collection<JobErrorCategory> values() {
         return values(JobErrorCategory.class);
     }

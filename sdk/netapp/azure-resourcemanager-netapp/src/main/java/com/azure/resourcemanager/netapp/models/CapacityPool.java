@@ -55,7 +55,7 @@ public interface CapacityPool {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -91,14 +91,14 @@ public interface CapacityPool {
     String provisioningState();
 
     /**
-     * Gets the totalThroughputMibps property: Total throughput of pool in Mibps.
+     * Gets the totalThroughputMibps property: Total throughput of pool in MiB/s.
      *
      * @return the totalThroughputMibps value.
      */
     Float totalThroughputMibps();
 
     /**
-     * Gets the utilizedThroughputMibps property: Utilized throughput of pool in Mibps.
+     * Gets the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
      *
      * @return the utilizedThroughputMibps value.
      */
@@ -139,6 +139,13 @@ public interface CapacityPool {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner object.
@@ -288,7 +295,8 @@ public interface CapacityPool {
     CapacityPool.Update update();
 
     /** The template for CapacityPool update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType, UpdateStages.WithCoolAccess {
         /**
          * Executes the update request.
          *
@@ -337,6 +345,16 @@ public interface CapacityPool {
              * @return the next definition stage.
              */
             Update withQosType(QosType qosType);
+        }
+        /** The stage of the CapacityPool update allowing to specify coolAccess. */
+        interface WithCoolAccess {
+            /**
+             * Specifies the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes..
+             *
+             * @param coolAccess If enabled (true) the pool can contain cool Access enabled volumes.
+             * @return the next definition stage.
+             */
+            Update withCoolAccess(Boolean coolAccess);
         }
     }
     /**

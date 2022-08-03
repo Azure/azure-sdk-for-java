@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ScalingPlanList List of scaling plan definitions. */
 @Fluent
 public final class ScalingPlanList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalingPlanList.class);
-
     /*
      * List of scaling plan definitions.
      */

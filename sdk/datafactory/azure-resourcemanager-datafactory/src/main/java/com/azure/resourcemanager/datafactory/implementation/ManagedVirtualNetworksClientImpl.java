@@ -470,14 +470,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         String ifMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .flatMap(
-                (Response<ManagedVirtualNetworkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -501,14 +494,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .flatMap(
-                (Response<ManagedVirtualNetworkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -700,14 +686,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
     private Mono<ManagedVirtualNetworkResourceInner> getAsync(
         String resourceGroupName, String factoryName, String managedVirtualNetworkName, String ifNoneMatch) {
         return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch)
-            .flatMap(
-                (Response<ManagedVirtualNetworkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -726,14 +705,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch)
-            .flatMap(
-                (Response<ManagedVirtualNetworkResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

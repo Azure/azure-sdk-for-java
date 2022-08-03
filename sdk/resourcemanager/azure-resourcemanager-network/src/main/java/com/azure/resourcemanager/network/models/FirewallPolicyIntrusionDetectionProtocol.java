@@ -34,7 +34,11 @@ public final class FirewallPolicyIntrusionDetectionProtocol
         return fromString(name, FirewallPolicyIntrusionDetectionProtocol.class);
     }
 
-    /** @return known FirewallPolicyIntrusionDetectionProtocol values. */
+    /**
+     * Gets known FirewallPolicyIntrusionDetectionProtocol values.
+     *
+     * @return known FirewallPolicyIntrusionDetectionProtocol values.
+     */
     public static Collection<FirewallPolicyIntrusionDetectionProtocol> values() {
         return values(FirewallPolicyIntrusionDetectionProtocol.class);
     }

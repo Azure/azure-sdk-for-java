@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AppServicePlans GetByResourceGroup. */
 public final class AppServicePlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetAppServicePlan.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetAppServicePlan.json
      */
     /**
      * Sample code: Get App Service plan.

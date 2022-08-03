@@ -453,7 +453,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private EntitiesTaskParameters getEntitiesTaskParameters(RecognizeEntitiesAction action) {
-        return (EntitiesTaskParameters) new EntitiesTaskParameters()
+        return new EntitiesTaskParameters()
                                          .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                          .setModelVersion(action.getModelVersion())
                                          .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -482,7 +482,7 @@ class AnalyzeActionsAsyncClient {
     }
 
     private PiiTaskParameters getPiiTaskParameters(RecognizePiiEntitiesAction action) {
-        return (PiiTaskParameters) new PiiTaskParameters()
+        return new PiiTaskParameters()
                                        .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                        .setDomain(PiiDomain.fromString(
                                            action.getDomainFilter() == null
@@ -502,10 +502,10 @@ class AnalyzeActionsAsyncClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
-        return (HealthcareTaskParameters) new HealthcareTaskParameters()
-                                              .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                              .setModelVersion(action.getModelVersion())
-                                              .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new HealthcareTaskParameters()
+            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private KeyPhraseLROTask toKeyPhraseLROTask(ExtractKeyPhrasesAction action) {
@@ -531,9 +531,9 @@ class AnalyzeActionsAsyncClient {
     }
 
     private KeyPhraseTaskParameters getKeyPhraseTaskParameters(ExtractKeyPhrasesAction action) {
-        return (KeyPhraseTaskParameters) new KeyPhraseTaskParameters()
-                                             .setModelVersion(action.getModelVersion())
-                                             .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new KeyPhraseTaskParameters()
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private EntityLinkingLROTask toEntityLinkingLROTask(RecognizeLinkedEntitiesAction action) {
@@ -559,10 +559,10 @@ class AnalyzeActionsAsyncClient {
     }
 
     private EntityLinkingTaskParameters getEntityLinkingTaskParameters(RecognizeLinkedEntitiesAction action) {
-        return (EntityLinkingTaskParameters) new EntityLinkingTaskParameters()
-                                                 .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                                 .setModelVersion(action.getModelVersion())
-                                                 .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new EntityLinkingTaskParameters()
+            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private SentimentAnalysisLROTask toSentimentAnalysisLROTask(AnalyzeSentimentAction action) {
@@ -588,11 +588,11 @@ class AnalyzeActionsAsyncClient {
     }
 
     private SentimentAnalysisTaskParameters getSentimentAnalysisTaskParameters(AnalyzeSentimentAction action) {
-        return (SentimentAnalysisTaskParameters) new SentimentAnalysisTaskParameters()
-                                                     .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                                     .setOpinionMining(action.isIncludeOpinionMining())
-                                                     .setModelVersion(action.getModelVersion())
-                                                     .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new SentimentAnalysisTaskParameters()
+            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setOpinionMining(action.isIncludeOpinionMining())
+            .setModelVersion(action.getModelVersion())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private CustomEntitiesLROTask toCustomEntitiesLROTask(RecognizeCustomEntitiesAction action) {
@@ -618,12 +618,11 @@ class AnalyzeActionsAsyncClient {
     }
 
     private CustomEntitiesTaskParameters getCustomEntitiesTaskParameters(RecognizeCustomEntitiesAction action) {
-        return (CustomEntitiesTaskParameters)
-                   new CustomEntitiesTaskParameters()
-                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                       .setProjectName(action.getProjectName())
-                       .setDeploymentName(action.getDeploymentName())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new CustomEntitiesTaskParameters()
+            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+            .setProjectName(action.getProjectName())
+            .setDeploymentName(action.getDeploymentName())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private CustomSingleLabelClassificationLROTask toCustomSingleLabelClassificationLROTask(
@@ -651,11 +650,10 @@ class AnalyzeActionsAsyncClient {
 
     private CustomSingleLabelClassificationTaskParameters getCustomSingleClassificationTaskParameters(
         SingleCategoryClassifyAction action) {
-        return (CustomSingleLabelClassificationTaskParameters)
-                   new CustomSingleLabelClassificationTaskParameters()
-                       .setProjectName(action.getProjectName())
-                       .setDeploymentName(action.getDeploymentName())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new CustomSingleLabelClassificationTaskParameters()
+            .setProjectName(action.getProjectName())
+            .setDeploymentName(action.getDeploymentName())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private CustomMultiLabelClassificationLROTask toCustomMultiLabelClassificationLROTask(
@@ -683,11 +681,10 @@ class AnalyzeActionsAsyncClient {
 
     private CustomMultiLabelClassificationTaskParameters getCustomMultiLabelClassificationTaskParameters(
         MultiCategoryClassifyAction action) {
-        return (CustomMultiLabelClassificationTaskParameters)
-                   new CustomMultiLabelClassificationTaskParameters()
-                       .setProjectName(action.getProjectName())
-                       .setDeploymentName(action.getDeploymentName())
-                       .setLoggingOptOut(action.isServiceLogsDisabled());
+        return new CustomMultiLabelClassificationTaskParameters()
+            .setProjectName(action.getProjectName())
+            .setDeploymentName(action.getDeploymentName())
+            .setLoggingOptOut(action.isServiceLogsDisabled());
     }
 
     private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsOperationDetail>>

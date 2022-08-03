@@ -27,7 +27,11 @@ public final class ExpressRouteLinkConnectorType extends ExpandableStringEnum<Ex
         return fromString(name, ExpressRouteLinkConnectorType.class);
     }
 
-    /** @return known ExpressRouteLinkConnectorType values. */
+    /**
+     * Gets known ExpressRouteLinkConnectorType values.
+     *
+     * @return known ExpressRouteLinkConnectorType values.
+     */
     public static Collection<ExpressRouteLinkConnectorType> values() {
         return values(ExpressRouteLinkConnectorType.class);
     }

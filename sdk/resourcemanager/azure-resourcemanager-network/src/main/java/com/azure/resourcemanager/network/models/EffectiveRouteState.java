@@ -27,7 +27,11 @@ public final class EffectiveRouteState extends ExpandableStringEnum<EffectiveRou
         return fromString(name, EffectiveRouteState.class);
     }
 
-    /** @return known EffectiveRouteState values. */
+    /**
+     * Gets known EffectiveRouteState values.
+     *
+     * @return known EffectiveRouteState values.
+     */
     public static Collection<EffectiveRouteState> values() {
         return values(EffectiveRouteState.class);
     }

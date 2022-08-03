@@ -30,7 +30,11 @@ public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile>
         return fromString(name, AacAudioProfile.class);
     }
 
-    /** @return known AacAudioProfile values. */
+    /**
+     * Gets known AacAudioProfile values.
+     *
+     * @return known AacAudioProfile values.
+     */
     public static Collection<AacAudioProfile> values() {
         return values(AacAudioProfile.class);
     }

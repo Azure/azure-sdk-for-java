@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
 /** Samples for CustomIpPrefixes CreateOrUpdate. */
 public final class CustomIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CustomIpPrefixCreateCustomizedValues.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/CustomIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create custom IP prefix allocation method.

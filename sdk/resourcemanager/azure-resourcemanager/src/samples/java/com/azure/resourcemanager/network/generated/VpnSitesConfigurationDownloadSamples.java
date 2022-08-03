@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VpnSitesConfiguration Download. */
 public final class VpnSitesConfigurationDownloadSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnSitesConfigurationDownload.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnSitesConfigurationDownload.json
      */
     /**
      * Sample code: VpnSitesConfigurationDownload.

@@ -126,6 +126,10 @@ public final class LiveEventImpl implements LiveEvent, LiveEvent.Definition, Liv
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LiveEventInner innerModel() {
         return this.innerObject;
     }

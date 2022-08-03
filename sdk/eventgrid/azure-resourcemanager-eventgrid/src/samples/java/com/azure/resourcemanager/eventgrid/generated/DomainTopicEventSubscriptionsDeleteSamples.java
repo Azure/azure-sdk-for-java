@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopicEventSubscriptions Delete. */
 public final class DomainTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_Delete.

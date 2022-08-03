@@ -742,14 +742,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     private Mono<AddDataFlowToDebugSessionResponseInner> addDataFlowAsync(
         String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
         return addDataFlowWithResponseAsync(resourceGroupName, factoryName, request)
-            .flatMap(
-                (Response<AddDataFlowToDebugSessionResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -909,8 +902,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, request)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, factoryName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**

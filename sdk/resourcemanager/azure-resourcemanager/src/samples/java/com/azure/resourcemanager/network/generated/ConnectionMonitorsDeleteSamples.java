@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConnectionMonitors Delete. */
 public final class ConnectionMonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherConnectionMonitorDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherConnectionMonitorDelete.json
      */
     /**
      * Sample code: Delete connection monitor.

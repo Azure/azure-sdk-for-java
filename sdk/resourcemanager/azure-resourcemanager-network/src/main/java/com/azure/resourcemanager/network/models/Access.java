@@ -27,7 +27,11 @@ public final class Access extends ExpandableStringEnum<Access> {
         return fromString(name, Access.class);
     }
 
-    /** @return known Access values. */
+    /**
+     * Gets known Access values.
+     *
+     * @return known Access values.
+     */
     public static Collection<Access> values() {
         return values(Access.class);
     }

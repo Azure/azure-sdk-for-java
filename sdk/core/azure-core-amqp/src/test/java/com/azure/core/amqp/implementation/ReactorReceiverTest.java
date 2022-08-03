@@ -55,7 +55,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -557,54 +556,6 @@ class ReactorReceiverTest {
                 .expectNext(AmqpEndpointState.CLOSED)
                 .expectComplete()
                 .verify(VERIFY_TIMEOUT);
-
-        assertTrue(reactorReceiver.isDisposed());
-
-        verify(receiver).setCondition(condition);
-        verify(receiver).close();
-
-        shutdownSignals.assertNoSubscribers();
-    }
-
-    /**
-     * Tests the completion of {@link ReactorReceiver#getEndpointStates()}
-     * when there is no link remote-close frame.
-     */
-    @Test
-    void endpointStateCompletesOnNoRemoteCloseAck() throws IOException {
-        // Arrange
-        final String message = "some-message";
-        final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
-        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
-            "Test-users");
-
-        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
-
-        doAnswer(invocation -> {
-            // The ReactorDispatcher running localClose() work scheduled by beginClose(...).
-            final Runnable work = invocation.getArgument(0);
-            work.run();
-            return null;
-        }).when(reactorDispatcher).invoke(any(Runnable.class));
-
-        // The localClose() initiated local-close via receiver.close(), here we mock scenario where
-        // there is no remote-close ack from the broker for the local-close, hence do nothing i.e. no
-        // call to receiverHandler.onLinkRemoteClose(event)
-        doNothing().when(receiver).close();
-
-        // Act
-        StepVerifier.withVirtualTime(() -> reactorReceiver.closeAsync(message, condition))
-            // Advance virtual time beyond the default timeout of 60 sec, so endpoint state
-            // completion timeout kicks in.
-            .thenAwait(Duration.ofSeconds(100))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
-
-        // Assert
-        StepVerifier.create(reactorReceiver.getEndpointStates())
-            // Assert endpoint state completes (via timeout) when there is no broker remote-close ack.
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorReceiver.isDisposed());
 

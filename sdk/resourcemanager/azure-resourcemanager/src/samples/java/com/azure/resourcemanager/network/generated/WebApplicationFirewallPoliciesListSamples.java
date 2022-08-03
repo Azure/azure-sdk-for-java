@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApplicationFirewallPolicies List. */
 public final class WebApplicationFirewallPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/WafListAllPolicies.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/WafListAllPolicies.json
      */
     /**
      * Sample code: Lists all WAF policies in a subscription.

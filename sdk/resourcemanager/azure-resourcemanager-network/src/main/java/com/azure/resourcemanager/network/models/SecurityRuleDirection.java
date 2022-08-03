@@ -27,7 +27,11 @@ public final class SecurityRuleDirection extends ExpandableStringEnum<SecurityRu
         return fromString(name, SecurityRuleDirection.class);
     }
 
-    /** @return known SecurityRuleDirection values. */
+    /**
+     * Gets known SecurityRuleDirection values.
+     *
+     * @return known SecurityRuleDirection values.
+     */
     public static Collection<SecurityRuleDirection> values() {
         return values(SecurityRuleDirection.class);
     }

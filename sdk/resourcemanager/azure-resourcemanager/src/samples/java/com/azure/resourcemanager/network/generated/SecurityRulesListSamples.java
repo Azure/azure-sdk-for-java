@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SecurityRules List. */
 public final class SecurityRulesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupRuleList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupRuleList.json
      */
     /**
      * Sample code: List network security rules in network security group.

@@ -27,7 +27,11 @@ public final class TrackPropertyCompareOperation extends ExpandableStringEnum<Tr
         return fromString(name, TrackPropertyCompareOperation.class);
     }
 
-    /** @return known TrackPropertyCompareOperation values. */
+    /**
+     * Gets known TrackPropertyCompareOperation values.
+     *
+     * @return known TrackPropertyCompareOperation values.
+     */
     public static Collection<TrackPropertyCompareOperation> values() {
         return values(TrackPropertyCompareOperation.class);
     }

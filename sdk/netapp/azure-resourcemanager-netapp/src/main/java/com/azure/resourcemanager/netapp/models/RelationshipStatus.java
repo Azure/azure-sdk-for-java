@@ -27,7 +27,11 @@ public final class RelationshipStatus extends ExpandableStringEnum<RelationshipS
         return fromString(name, RelationshipStatus.class);
     }
 
-    /** @return known RelationshipStatus values. */
+    /**
+     * Gets known RelationshipStatus values.
+     *
+     * @return known RelationshipStatus values.
+     */
     public static Collection<RelationshipStatus> values() {
         return values(RelationshipStatus.class);
     }

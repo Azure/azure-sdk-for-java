@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.compute.models.CloudServiceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -18,6 +19,12 @@ public final class CloudServiceInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private CloudServiceProperties properties;
+
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData")
+    private SystemData systemData;
 
     /**
      * Get the properties property: Cloud service properties.
@@ -36,6 +43,26 @@ public final class CloudServiceInner extends Resource {
      */
     public CloudServiceInner withProperties(CloudServiceProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: The system meta data relating to this resource.
+     *
+     * @param systemData the systemData value to set.
+     * @return the CloudServiceInner object itself.
+     */
+    public CloudServiceInner withSystemData(SystemData systemData) {
+        this.systemData = systemData;
         return this;
     }
 

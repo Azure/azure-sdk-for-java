@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServiceTagInformation List. */
 public final class ServiceTagInformationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceTagInformationListResultWithNoAddressPrefixes.json
      */
     /**
      * Sample code: Get list of service tags with no address prefixes.
@@ -26,7 +26,7 @@ public final class ServiceTagInformationListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceTagInformationListResult.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceTagInformationListResult.json
      */
     /**
      * Sample code: Get list of service tags.
@@ -43,7 +43,7 @@ public final class ServiceTagInformationListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceTagInformationListResultWithTagname.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceTagInformationListResultWithTagname.json
      */
     /**
      * Sample code: Get list of service tags with tag name.

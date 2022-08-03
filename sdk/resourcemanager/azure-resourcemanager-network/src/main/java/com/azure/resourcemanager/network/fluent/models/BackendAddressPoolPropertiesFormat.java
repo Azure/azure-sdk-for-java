@@ -72,6 +72,13 @@ public final class BackendAddressPoolPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     */
+    @JsonProperty(value = "drainPeriodInSeconds")
+    private Integer drainPeriodInSeconds;
+
     /**
      * Get the location property: The location of the backend address pool.
      *
@@ -187,6 +194,28 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @return the drainPeriodInSeconds value.
+     */
+    public Integer drainPeriodInSeconds() {
+        return this.drainPeriodInSeconds;
+    }
+
+    /**
+     * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withDrainPeriodInSeconds(Integer drainPeriodInSeconds) {
+        this.drainPeriodInSeconds = drainPeriodInSeconds;
+        return this;
     }
 
     /**

@@ -1070,11 +1070,11 @@ class FileAPITests extends APISpec {
         .setSmbProperties(smbProperties)
             .setFilePermission(setFilePermission ? filePermission : null)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setPermissionCopyModeType(permissionType)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
 
@@ -1096,10 +1096,10 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
         def options = new ShareFileCopyOptions()
             .setIgnoreReadOnly(true)
-            .setSetArchiveAttribute(true)
+            .setArchiveAttribute(true)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
 
@@ -1127,7 +1127,7 @@ class FileAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
         def properties = primaryFileClient.getProperties().getSmbProperties()
@@ -1154,7 +1154,7 @@ class FileAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
 
@@ -1183,7 +1183,7 @@ class FileAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
         def properties = primaryFileClient.getProperties().getSmbProperties()
@@ -1207,7 +1207,7 @@ class FileAPITests extends APISpec {
             .setDestinationRequestConditions(conditions)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
 
@@ -1227,7 +1227,7 @@ class FileAPITests extends APISpec {
             .setDestinationRequestConditions(conditions)
 
         when:
-        primaryFileClient.beginCopy(sourceURL, null, options)
+        primaryFileClient.beginCopy(sourceURL, options, null)
 
         then:
         // exception: LeaseNotPresentWithFileOperation
@@ -1242,7 +1242,7 @@ class FileAPITests extends APISpec {
             .setMetadata(testMetadata)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
         def pollResponse = poller.poll()
 
         then:
@@ -1274,7 +1274,7 @@ class FileAPITests extends APISpec {
             .setSmbPropertiesToCopy(list)
 
         when:
-        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, null, options)
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null)
 
         def pollResponse = poller.poll()
         def resultProperties = primaryFileClient.getProperties()
@@ -1313,7 +1313,7 @@ class FileAPITests extends APISpec {
             .setSmbPropertiesToCopy(list)
 
         when:
-        primaryFileClient.beginCopy(sourceURL, null, options)
+        primaryFileClient.beginCopy(sourceURL, options, null)
 
         then:
         thrown(IllegalArgumentException)

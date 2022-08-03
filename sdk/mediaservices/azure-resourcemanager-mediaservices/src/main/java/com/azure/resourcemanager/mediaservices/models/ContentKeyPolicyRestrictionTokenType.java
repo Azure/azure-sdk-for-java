@@ -31,7 +31,11 @@ public final class ContentKeyPolicyRestrictionTokenType
         return fromString(name, ContentKeyPolicyRestrictionTokenType.class);
     }
 
-    /** @return known ContentKeyPolicyRestrictionTokenType values. */
+    /**
+     * Gets known ContentKeyPolicyRestrictionTokenType values.
+     *
+     * @return known ContentKeyPolicyRestrictionTokenType values.
+     */
     public static Collection<ContentKeyPolicyRestrictionTokenType> values() {
         return values(ContentKeyPolicyRestrictionTokenType.class);
     }

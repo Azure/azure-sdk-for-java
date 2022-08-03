@@ -27,7 +27,11 @@ public final class StorageInsightState extends ExpandableStringEnum<StorageInsig
         return fromString(name, StorageInsightState.class);
     }
 
-    /** @return known StorageInsightState values. */
+    /**
+     * Gets known StorageInsightState values.
+     *
+     * @return known StorageInsightState values.
+     */
     public static Collection<StorageInsightState> values() {
         return values(StorageInsightState.class);
     }

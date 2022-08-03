@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkTapInner;
 /** Samples for VirtualNetworkTaps CreateOrUpdate. */
 public final class VirtualNetworkTapsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkTapCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkTapCreate.json
      */
     /**
      * Sample code: Create Virtual Network Tap.

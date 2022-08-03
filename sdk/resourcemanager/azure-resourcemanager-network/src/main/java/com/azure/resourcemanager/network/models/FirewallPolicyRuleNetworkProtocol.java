@@ -33,7 +33,11 @@ public final class FirewallPolicyRuleNetworkProtocol extends ExpandableStringEnu
         return fromString(name, FirewallPolicyRuleNetworkProtocol.class);
     }
 
-    /** @return known FirewallPolicyRuleNetworkProtocol values. */
+    /**
+     * Gets known FirewallPolicyRuleNetworkProtocol values.
+     *
+     * @return known FirewallPolicyRuleNetworkProtocol values.
+     */
     public static Collection<FirewallPolicyRuleNetworkProtocol> values() {
         return values(FirewallPolicyRuleNetworkProtocol.class);
     }

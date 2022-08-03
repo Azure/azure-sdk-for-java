@@ -194,7 +194,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (assetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter assetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -206,7 +205,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             resourceGroupName,
                             accountName,
                             assetName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<AssetFilterInner>>map(
@@ -259,7 +258,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (assetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter assetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -269,7 +267,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 resourceGroupName,
                 accountName,
                 assetName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -396,7 +394,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -409,7 +406,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -457,7 +454,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -468,7 +464,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -490,14 +486,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     private Mono<AssetFilterInner> getAsync(
         String resourceGroupName, String accountName, String assetName, String filterName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, filterName)
-            .flatMap(
-                (Response<AssetFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -586,7 +575,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -599,7 +587,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -658,7 +646,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -669,7 +656,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -696,14 +683,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         String filterName,
         AssetFilterInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters)
-            .flatMap(
-                (Response<AssetFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -796,7 +776,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -809,7 +788,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -856,7 +835,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         if (filterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter filterName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -867,7 +845,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -887,7 +865,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String assetName, String filterName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, assetName, filterName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -975,7 +953,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -988,7 +965,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                             accountName,
                             assetName,
                             filterName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1047,7 +1024,6 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1058,7 +1034,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
                 accountName,
                 assetName,
                 filterName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -1085,14 +1061,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         String filterName,
         AssetFilterInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters)
-            .flatMap(
-                (Response<AssetFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

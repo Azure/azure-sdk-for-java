@@ -70,6 +70,10 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
         return this.innerModel().storageEncryptionFormat();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AssetInner innerModel() {
         return this.innerObject;
     }

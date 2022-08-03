@@ -37,6 +37,10 @@ public final class ManagedVirtualNetworkResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ManagedVirtualNetworkResourceInner innerModel() {
         return this.innerObject;
     }

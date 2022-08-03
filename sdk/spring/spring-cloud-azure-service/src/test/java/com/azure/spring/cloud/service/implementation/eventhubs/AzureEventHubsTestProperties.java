@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.eventhubs;
 
 import com.azure.spring.cloud.service.eventhubs.properties.EventBatchProperties;
 import com.azure.spring.cloud.service.eventhubs.properties.LoadBalancingProperties;
+import com.azure.spring.cloud.service.eventhubs.properties.StartPositionProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
@@ -61,10 +62,10 @@ class AzureEventHubsTestProperties extends AzureEventHubsCommonTestProperties im
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends AzureEventHubsConsumerTestProperties implements EventProcessorClientProperties {
+    public static class Processor extends Consumer implements EventProcessorClientProperties {
 
         private Boolean trackLastEnqueuedEventProperties;
-        private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
+        private Map<String, StartPositionProperties> initialPartitionEventPosition = new HashMap<>();
         private final EventBatchProperties batch = new EventBatchProperties();
         private final LoadBalancingProperties loadBalancing = new LoadBalancingProperties();
         private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
@@ -77,11 +78,11 @@ class AzureEventHubsTestProperties extends AzureEventHubsCommonTestProperties im
             this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         }
 
-        public Map<String, StartPosition> getInitialPartitionEventPosition() {
+        public Map<String, StartPositionProperties> getInitialPartitionEventPosition() {
             return initialPartitionEventPosition;
         }
 
-        public void setInitialPartitionEventPosition(Map<String, StartPosition> initialPartitionEventPosition) {
+        public void setInitialPartitionEventPosition(Map<String, StartPositionProperties> initialPartitionEventPosition) {
             this.initialPartitionEventPosition = initialPartitionEventPosition;
         }
 

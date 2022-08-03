@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VpnConnections StartPacketCapture. */
 public final class VpnConnectionsStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStartPacketCaptureFilterData.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnConnectionStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on vpn connection with filter.
@@ -40,7 +40,7 @@ public final class VpnConnectionsStartPacketCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStartPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnConnectionStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn connection without filter.

@@ -55,7 +55,11 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
         return fromString(name, AnalyzeTextLROResultsKind.class);
     }
 
-    /** @return known AnalyzeTextLROResultsKind values. */
+    /**
+     * Gets known AnalyzeTextLROResultsKind values.
+     *
+     * @return known AnalyzeTextLROResultsKind values.
+     */
     public static Collection<AnalyzeTextLROResultsKind> values() {
         return values(AnalyzeTextLROResultsKind.class);
     }

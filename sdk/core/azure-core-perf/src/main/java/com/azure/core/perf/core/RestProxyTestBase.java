@@ -24,6 +24,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -69,9 +71,16 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
             wireMockServer = createWireMockServer(mockResponseSupplier);
             endpoint = wireMockServer.baseUrl();
+        } else if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
+            String containerSASUrl = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONTAINER_SAS_URL");
+            if (CoreUtils.isNullOrEmpty(containerSASUrl)) {
+                throw new IllegalStateException("Environment variable AZURE_STORAGE_CONTAINER_SAS_URL must be set");
+            }
+            wireMockServer = null;
+            endpoint= containerSASUrl;
         } else {
             wireMockServer = null;
-            endpoint = Objects.requireNonNull(options.getEndpoint(), "endpoint must not be null");
+            endpoint = "http://unused";
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
         httpPipeline = new HttpPipelineBuilder()
@@ -95,7 +104,10 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
-            policies.add(new AddHeadersPolicy(new HttpHeaders().add("x-ms-blob-type", "BlockBlob")));
+            policies.add(new AddHeadersPolicy(
+                new HttpHeaders()
+                    .add("x-ms-blob-type", "BlockBlob")
+                    .add("x-ms-version", "2021-08-06")));
         }
 
         if (options.isIncludePipelinePolicies()) {
@@ -165,9 +177,10 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static Supplier<BinaryData> createBinaryDataSupplier(CorePerfStressOptions options) {
+        long size = options.getSize();
         switch (options.getBinaryDataSource()) {
             case BYTES:
-                byte[] bytes = new byte[(int) options.getSize()];
+                byte[] bytes = new byte[(int) size];
                 new Random().nextBytes(bytes);
                 return  () -> BinaryData.fromBytes(bytes);
             case FILE:
@@ -175,14 +188,17 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
                     Path tempFile = Files.createTempFile("binarydataforperftest", null);
                     tempFile.toFile().deleteOnExit();
                     String tempFilePath = tempFile.toString();
-                    TestDataCreationHelper.writeToFile(tempFilePath, options.getSize(), 8192);
+                    TestDataCreationHelper.writeToFile(tempFilePath, size, 8192);
                     return () -> BinaryData.fromFile(tempFile);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            case FLUX:
+                return () -> BinaryData.fromFlux(
+                    TestDataCreationHelper.createRandomByteBufferFlux(size), size, false).block();
             case STREAM:
                 RepeatingInputStream inputStream =
-                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(size);
                 inputStream.mark(Long.MAX_VALUE);
                 return () -> {
                     inputStream.reset();

@@ -81,6 +81,16 @@ public final class SerializableContent extends BinaryDataContent {
         return true;
     }
 
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.just(this);
+    }
+
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
     }

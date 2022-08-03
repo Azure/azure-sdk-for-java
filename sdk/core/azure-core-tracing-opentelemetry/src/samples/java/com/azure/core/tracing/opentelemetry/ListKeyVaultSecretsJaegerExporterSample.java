@@ -22,7 +22,6 @@ import java.time.Duration;
  * and listing secrets from a Key Vault using the {@link SecretClient}.
  */
 public class ListKeyVaultSecretsJaegerExporterSample {
-
     private static final Tracer TRACER = configureJaegerExporter();
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
 
@@ -32,7 +31,12 @@ public class ListKeyVaultSecretsJaegerExporterSample {
      * @param args Ignored args.
      */
     public static void main(String[] args) {
-        doClientWork();
+        SecretClient secretClient = new SecretClientBuilder()
+            .vaultUrl(VAULT_URL)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        doClientWork(secretClient);
     }
 
     /**
@@ -49,36 +53,31 @@ public class ListKeyVaultSecretsJaegerExporterSample {
                 .build();
 
         // Set to process the spans by the Jaeger Exporter
-        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
+        return OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(jaegerExporter)).build())
-            .build();
-        return openTelemetry.getSdkTracerProvider().get("List-KV-Secrets-Sample");
+            .buildAndRegisterGlobal()
+            .getTracer("List-KV-Secrets-Sample");
     }
 
     /**
      * Create a secret and list all the secrets for a Key Vault using the
      * {@link SecretClient} with distributed tracing enabled and using the Jaeger exporter to export telemetry events.
      */
-    private static void doClientWork() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(VAULT_URL)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+    @SuppressWarnings("try")
+    private static void doClientWork(SecretClient secretClient) {
 
-        Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-
-        final Scope scope = userParentSpan.makeCurrent();
-        try {
+        Span span = TRACER.spanBuilder("my-span").startSpan();
+        try (Scope s = span.makeCurrent()) {
+            // current span propagates into synchronous calls automatically. ApplicationInsights or OpenTelemetry agent
+            // also propagate context through async reactor calls.
             secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
             secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
-                // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
                 KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
                 System.out.printf("Retrieved Secret with name: %s%n", secret.getName());
             });
         } finally {
-            userParentSpan.end();
-            scope.close();
+            span.end();
         }
     }
 }

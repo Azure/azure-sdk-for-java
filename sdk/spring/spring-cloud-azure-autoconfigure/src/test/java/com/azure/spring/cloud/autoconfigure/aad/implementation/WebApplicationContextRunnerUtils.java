@@ -51,6 +51,13 @@ public class WebApplicationContextRunnerUtils {
             .withPropertyValues(withResourceServerPropertyValues());
     }
 
+    public static WebApplicationContextRunner webApplicationAndResourceServerContextRunner() {
+        return oauthClientAndResourceServerRunner()
+            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues())
+            .withPropertyValues(withResourceServerPropertyValues())
+            .withPropertyValues(withPropertyValueWebApplicationAndResourceServer());
+    }
+
     @SuppressWarnings("unchecked")
     public static MultiValueMap<String, String> toMultiValueMap(RequestEntity<?> entity) {
         return (MultiValueMap<String, String>) Optional.ofNullable(entity)
@@ -68,7 +75,14 @@ public class WebApplicationContextRunnerUtils {
 
     public static String[] withResourceServerPropertyValues() {
         return new String[] {
+            "spring.cloud.azure.active-directory.enabled = true",
             "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
             "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri"};
+    }
+
+    public static String[] withPropertyValueWebApplicationAndResourceServer() {
+        return new String[] {
+            "spring.cloud.azure.active-directory.application-type = web_application_and_resource_server"
+        };
     }
 }

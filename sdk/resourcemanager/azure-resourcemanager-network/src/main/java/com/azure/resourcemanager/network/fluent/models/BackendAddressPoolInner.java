@@ -223,6 +223,31 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
+     * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @return the drainPeriodInSeconds value.
+     */
+    public Integer drainPeriodInSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().drainPeriodInSeconds();
+    }
+
+    /**
+     * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
+     * and backend address.
+     *
+     * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withDrainPeriodInSeconds(Integer drainPeriodInSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withDrainPeriodInSeconds(drainPeriodInSeconds);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

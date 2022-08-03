@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailableServiceAliases List. */
 public final class AvailableServiceAliasesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AvailableServiceAliasesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AvailableServiceAliasesList.json
      */
     /**
      * Sample code: Get available service aliases.

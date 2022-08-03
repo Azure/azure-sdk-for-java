@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.ImageDescriptor;
 import com.azure.resourcemanager.containerregistry.models.ImageUpdateTrigger;
@@ -17,134 +15,27 @@ import com.azure.resourcemanager.containerregistry.models.RunStatus;
 import com.azure.resourcemanager.containerregistry.models.RunType;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerDescriptor;
 import com.azure.resourcemanager.containerregistry.models.TimerTriggerDescriptor;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Run resource properties. */
-@JsonFlatten
 @Fluent
-public class RunInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunInner.class);
-
+public final class RunInner extends ProxyResource {
     /*
-     * The unique identifier for the run.
+     * The properties of a run.
      */
-    @JsonProperty(value = "properties.runId")
-    private String runId;
+    @JsonProperty(value = "properties")
+    private RunProperties innerProperties;
 
-    /*
-     * The current status of the run.
+    /**
+     * Get the innerProperties property: The properties of a run.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status")
-    private RunStatus status;
-
-    /*
-     * The last updated time for the run.
-     */
-    @JsonProperty(value = "properties.lastUpdatedTime")
-    private OffsetDateTime lastUpdatedTime;
-
-    /*
-     * The type of run.
-     */
-    @JsonProperty(value = "properties.runType")
-    private RunType runType;
-
-    /*
-     * The time the run was scheduled.
-     */
-    @JsonProperty(value = "properties.createTime")
-    private OffsetDateTime createTime;
-
-    /*
-     * The time the run started.
-     */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
-
-    /*
-     * The time the run finished.
-     */
-    @JsonProperty(value = "properties.finishTime")
-    private OffsetDateTime finishTime;
-
-    /*
-     * The list of all images that were generated from the run. This is
-     * applicable if the run generates base image dependencies.
-     */
-    @JsonProperty(value = "properties.outputImages")
-    private List<ImageDescriptor> outputImages;
-
-    /*
-     * The task against which run was scheduled.
-     */
-    @JsonProperty(value = "properties.task")
-    private String task;
-
-    /*
-     * The image update trigger that caused the run. This is applicable if the
-     * task has base image trigger configured.
-     */
-    @JsonProperty(value = "properties.imageUpdateTrigger")
-    private ImageUpdateTrigger imageUpdateTrigger;
-
-    /*
-     * The source trigger that caused the run.
-     */
-    @JsonProperty(value = "properties.sourceTrigger")
-    private SourceTriggerDescriptor sourceTrigger;
-
-    /*
-     * The platform properties against which the run will happen.
-     */
-    @JsonProperty(value = "properties.platform")
-    private PlatformProperties platform;
-
-    /*
-     * The machine configuration of the run agent.
-     */
-    @JsonProperty(value = "properties.agentConfiguration")
-    private AgentProperties agentConfiguration;
-
-    /*
-     * The scope of the credentials that were used to login to the source
-     * registry during this run.
-     */
-    @JsonProperty(value = "properties.sourceRegistryAuth")
-    private String sourceRegistryAuth;
-
-    /*
-     * The list of custom registries that were logged in during this run.
-     */
-    @JsonProperty(value = "properties.customRegistries")
-    private List<String> customRegistries;
-
-    /*
-     * The error message received from backend systems after the run is
-     * scheduled.
-     */
-    @JsonProperty(value = "properties.runErrorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String runErrorMessage;
-
-    /*
-     * The provisioning state of a run.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private ProvisioningState provisioningState;
-
-    /*
-     * The value that indicates whether archiving is enabled or not.
-     */
-    @JsonProperty(value = "properties.isArchiveEnabled")
-    private Boolean isArchiveEnabled;
-
-    /*
-     * The timer trigger that caused the run.
-     */
-    @JsonProperty(value = "properties.timerTrigger")
-    private TimerTriggerDescriptor timerTrigger;
+    private RunProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the runId property: The unique identifier for the run.
@@ -152,7 +43,7 @@ public class RunInner extends ProxyResource {
      * @return the runId value.
      */
     public String runId() {
-        return this.runId;
+        return this.innerProperties() == null ? null : this.innerProperties().runId();
     }
 
     /**
@@ -162,7 +53,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withRunId(String runId) {
-        this.runId = runId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withRunId(runId);
         return this;
     }
 
@@ -172,7 +66,7 @@ public class RunInner extends ProxyResource {
      * @return the status value.
      */
     public RunStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -182,7 +76,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withStatus(RunStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -192,7 +89,7 @@ public class RunInner extends ProxyResource {
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
-        return this.lastUpdatedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedTime();
     }
 
     /**
@@ -202,7 +99,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withLastUpdatedTime(OffsetDateTime lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withLastUpdatedTime(lastUpdatedTime);
         return this;
     }
 
@@ -212,7 +112,7 @@ public class RunInner extends ProxyResource {
      * @return the runType value.
      */
     public RunType runType() {
-        return this.runType;
+        return this.innerProperties() == null ? null : this.innerProperties().runType();
     }
 
     /**
@@ -222,7 +122,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withRunType(RunType runType) {
-        this.runType = runType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withRunType(runType);
         return this;
     }
 
@@ -232,7 +135,7 @@ public class RunInner extends ProxyResource {
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
-        return this.createTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createTime();
     }
 
     /**
@@ -242,7 +145,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withCreateTime(OffsetDateTime createTime) {
-        this.createTime = createTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withCreateTime(createTime);
         return this;
     }
 
@@ -252,7 +158,7 @@ public class RunInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -262,7 +168,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -272,7 +181,7 @@ public class RunInner extends ProxyResource {
      * @return the finishTime value.
      */
     public OffsetDateTime finishTime() {
-        return this.finishTime;
+        return this.innerProperties() == null ? null : this.innerProperties().finishTime();
     }
 
     /**
@@ -282,7 +191,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withFinishTime(OffsetDateTime finishTime) {
-        this.finishTime = finishTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withFinishTime(finishTime);
         return this;
     }
 
@@ -293,7 +205,7 @@ public class RunInner extends ProxyResource {
      * @return the outputImages value.
      */
     public List<ImageDescriptor> outputImages() {
-        return this.outputImages;
+        return this.innerProperties() == null ? null : this.innerProperties().outputImages();
     }
 
     /**
@@ -304,7 +216,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withOutputImages(List<ImageDescriptor> outputImages) {
-        this.outputImages = outputImages;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withOutputImages(outputImages);
         return this;
     }
 
@@ -314,7 +229,7 @@ public class RunInner extends ProxyResource {
      * @return the task value.
      */
     public String task() {
-        return this.task;
+        return this.innerProperties() == null ? null : this.innerProperties().task();
     }
 
     /**
@@ -324,7 +239,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withTask(String task) {
-        this.task = task;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withTask(task);
         return this;
     }
 
@@ -335,7 +253,7 @@ public class RunInner extends ProxyResource {
      * @return the imageUpdateTrigger value.
      */
     public ImageUpdateTrigger imageUpdateTrigger() {
-        return this.imageUpdateTrigger;
+        return this.innerProperties() == null ? null : this.innerProperties().imageUpdateTrigger();
     }
 
     /**
@@ -346,7 +264,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withImageUpdateTrigger(ImageUpdateTrigger imageUpdateTrigger) {
-        this.imageUpdateTrigger = imageUpdateTrigger;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withImageUpdateTrigger(imageUpdateTrigger);
         return this;
     }
 
@@ -356,7 +277,7 @@ public class RunInner extends ProxyResource {
      * @return the sourceTrigger value.
      */
     public SourceTriggerDescriptor sourceTrigger() {
-        return this.sourceTrigger;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceTrigger();
     }
 
     /**
@@ -366,7 +287,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withSourceTrigger(SourceTriggerDescriptor sourceTrigger) {
-        this.sourceTrigger = sourceTrigger;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withSourceTrigger(sourceTrigger);
         return this;
     }
 
@@ -376,7 +300,7 @@ public class RunInner extends ProxyResource {
      * @return the platform value.
      */
     public PlatformProperties platform() {
-        return this.platform;
+        return this.innerProperties() == null ? null : this.innerProperties().platform();
     }
 
     /**
@@ -386,7 +310,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withPlatform(PlatformProperties platform) {
-        this.platform = platform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withPlatform(platform);
         return this;
     }
 
@@ -396,7 +323,7 @@ public class RunInner extends ProxyResource {
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
-        return this.agentConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().agentConfiguration();
     }
 
     /**
@@ -406,7 +333,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withAgentConfiguration(AgentProperties agentConfiguration) {
-        this.agentConfiguration = agentConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withAgentConfiguration(agentConfiguration);
         return this;
     }
 
@@ -417,7 +347,7 @@ public class RunInner extends ProxyResource {
      * @return the sourceRegistryAuth value.
      */
     public String sourceRegistryAuth() {
-        return this.sourceRegistryAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceRegistryAuth();
     }
 
     /**
@@ -428,7 +358,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withSourceRegistryAuth(String sourceRegistryAuth) {
-        this.sourceRegistryAuth = sourceRegistryAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withSourceRegistryAuth(sourceRegistryAuth);
         return this;
     }
 
@@ -438,7 +371,7 @@ public class RunInner extends ProxyResource {
      * @return the customRegistries value.
      */
     public List<String> customRegistries() {
-        return this.customRegistries;
+        return this.innerProperties() == null ? null : this.innerProperties().customRegistries();
     }
 
     /**
@@ -448,7 +381,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withCustomRegistries(List<String> customRegistries) {
-        this.customRegistries = customRegistries;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withCustomRegistries(customRegistries);
         return this;
     }
 
@@ -458,7 +394,7 @@ public class RunInner extends ProxyResource {
      * @return the runErrorMessage value.
      */
     public String runErrorMessage() {
-        return this.runErrorMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().runErrorMessage();
     }
 
     /**
@@ -467,7 +403,7 @@ public class RunInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -477,7 +413,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -487,7 +426,7 @@ public class RunInner extends ProxyResource {
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
-        return this.isArchiveEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isArchiveEnabled();
     }
 
     /**
@@ -497,7 +436,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withIsArchiveEnabled(Boolean isArchiveEnabled) {
-        this.isArchiveEnabled = isArchiveEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
@@ -507,7 +449,7 @@ public class RunInner extends ProxyResource {
      * @return the timerTrigger value.
      */
     public TimerTriggerDescriptor timerTrigger() {
-        return this.timerTrigger;
+        return this.innerProperties() == null ? null : this.innerProperties().timerTrigger();
     }
 
     /**
@@ -517,7 +459,10 @@ public class RunInner extends ProxyResource {
      * @return the RunInner object itself.
      */
     public RunInner withTimerTrigger(TimerTriggerDescriptor timerTrigger) {
-        this.timerTrigger = timerTrigger;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunProperties();
+        }
+        this.innerProperties().withTimerTrigger(timerTrigger);
         return this;
     }
 
@@ -527,23 +472,8 @@ public class RunInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (outputImages() != null) {
-            outputImages().forEach(e -> e.validate());
-        }
-        if (imageUpdateTrigger() != null) {
-            imageUpdateTrigger().validate();
-        }
-        if (sourceTrigger() != null) {
-            sourceTrigger().validate();
-        }
-        if (platform() != null) {
-            platform().validate();
-        }
-        if (agentConfiguration() != null) {
-            agentConfiguration().validate();
-        }
-        if (timerTrigger() != null) {
-            timerTrigger().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

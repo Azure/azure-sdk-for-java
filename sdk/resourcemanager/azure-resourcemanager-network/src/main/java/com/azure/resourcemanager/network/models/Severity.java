@@ -27,7 +27,11 @@ public final class Severity extends ExpandableStringEnum<Severity> {
         return fromString(name, Severity.class);
     }
 
-    /** @return known Severity values. */
+    /**
+     * Gets known Severity values.
+     *
+     * @return known Severity values.
+     */
     public static Collection<Severity> values() {
         return values(Severity.class);
     }

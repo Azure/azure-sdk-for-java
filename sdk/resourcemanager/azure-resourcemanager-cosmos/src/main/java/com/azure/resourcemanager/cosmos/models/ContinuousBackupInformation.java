@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the status of continuous backups. */
 @Fluent
 public final class ContinuousBackupInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinuousBackupInformation.class);
-
     /*
      * The latest restorable timestamp for a resource.
      */

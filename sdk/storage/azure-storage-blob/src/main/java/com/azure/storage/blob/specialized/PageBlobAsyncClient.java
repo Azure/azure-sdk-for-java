@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -24,8 +25,8 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesResponse;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsResizeHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
@@ -43,15 +44,15 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.PageRangeItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.PageRangeItem;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
-import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -1004,7 +1005,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         };
     }
 
-    private Mono<PageBlobsGetPageRangesResponse> getPageRangesSegment(String marker,
+    private Mono<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> getPageRangesSegment(String marker,
         ListPageRangesOptions options, Duration timeout, Context context) {
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
@@ -1325,7 +1326,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         };
     }
 
-    private Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffSegment(String marker,
+    private Mono<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> getPageRangesDiffSegment(String marker,
         ListPageRangesDiffOptions options, Duration timeout, Context context) {
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();

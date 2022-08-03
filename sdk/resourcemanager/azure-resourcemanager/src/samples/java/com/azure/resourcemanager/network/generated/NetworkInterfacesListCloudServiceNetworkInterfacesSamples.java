@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkInterfaces ListCloudServiceNetworkInterfaces. */
 public final class NetworkInterfacesListCloudServiceNetworkInterfacesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CloudServiceNetworkInterfaceList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/CloudServiceNetworkInterfaceList.json
      */
     /**
      * Sample code: List cloud service network interfaces.

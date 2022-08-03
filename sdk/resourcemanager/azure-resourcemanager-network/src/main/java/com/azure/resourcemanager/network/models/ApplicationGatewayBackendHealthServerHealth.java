@@ -37,7 +37,11 @@ public final class ApplicationGatewayBackendHealthServerHealth
         return fromString(name, ApplicationGatewayBackendHealthServerHealth.class);
     }
 
-    /** @return known ApplicationGatewayBackendHealthServerHealth values. */
+    /**
+     * Gets known ApplicationGatewayBackendHealthServerHealth values.
+     *
+     * @return known ApplicationGatewayBackendHealthServerHealth values.
+     */
     public static Collection<ApplicationGatewayBackendHealthServerHealth> values() {
         return values(ApplicationGatewayBackendHealthServerHealth.class);
     }

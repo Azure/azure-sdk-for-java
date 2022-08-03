@@ -6,9 +6,7 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.AccountProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** NetApp account patch resource. */
 @Fluent
 public final class NetAppAccountPatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppAccountPatch.class);
-
     /*
      * NetApp Account properties
      */

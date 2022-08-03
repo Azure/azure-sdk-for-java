@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for NatGateways UpdateTags. */
 public final class NatGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NatGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NatGatewayUpdateTags.json
      */
     /**
      * Sample code: Update nat gateway tags.

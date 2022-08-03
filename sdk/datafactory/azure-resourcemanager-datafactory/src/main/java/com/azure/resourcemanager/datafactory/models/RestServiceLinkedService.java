@@ -375,6 +375,129 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
+     * Get the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param clientId the clientId value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withClientId(Object clientId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret associated with your application.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase clientSecret() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientSecret();
+    }
+
+    /**
+     * Set the clientSecret property: The client secret associated with your application.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withClientSecret(SecretBase clientSecret) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the tokenEndpoint value.
+     */
+    public Object tokenEndpoint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tokenEndpoint();
+    }
+
+    /**
+     * Set the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param tokenEndpoint the tokenEndpoint value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withTokenEndpoint(Object tokenEndpoint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTokenEndpoint(tokenEndpoint);
+        return this;
+    }
+
+    /**
+     * Get the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the resource value.
+     */
+    public Object resource() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param resource the resource value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withResource(Object resource) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the scope value.
+     */
+    public Object scope() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scope();
+    }
+
+    /**
+     * Set the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param scope the scope value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService withScope(Object scope) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withScope(scope);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

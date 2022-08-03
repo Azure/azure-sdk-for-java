@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.2.19 (2022-06-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded Jackson from `2.13.2` to `2.13.3`.
+
 ## 1.2.18 (2022-06-03)
 
 ### Other Changes

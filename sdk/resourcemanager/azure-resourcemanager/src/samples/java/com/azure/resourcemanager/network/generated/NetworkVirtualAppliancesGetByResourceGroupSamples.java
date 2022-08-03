@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkVirtualAppliances GetByResourceGroup. */
 public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualApplianceGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualApplianceGet.json
      */
     /**
      * Sample code: Get NetworkVirtualAppliance.

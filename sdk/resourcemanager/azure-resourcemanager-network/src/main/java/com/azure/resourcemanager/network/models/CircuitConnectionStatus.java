@@ -30,7 +30,11 @@ public final class CircuitConnectionStatus extends ExpandableStringEnum<CircuitC
         return fromString(name, CircuitConnectionStatus.class);
     }
 
-    /** @return known CircuitConnectionStatus values. */
+    /**
+     * Gets known CircuitConnectionStatus values.
+     *
+     * @return known CircuitConnectionStatus values.
+     */
     public static Collection<CircuitConnectionStatus> values() {
         return values(CircuitConnectionStatus.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RouteFilters GetByResourceGroup. */
 public final class RouteFiltersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/RouteFilterGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/RouteFilterGet.json
      */
     /**
      * Sample code: RouteFilterGet.

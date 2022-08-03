@@ -30,7 +30,11 @@ public final class VpnAuthenticationType extends ExpandableStringEnum<VpnAuthent
         return fromString(name, VpnAuthenticationType.class);
     }
 
-    /** @return known VpnAuthenticationType values. */
+    /**
+     * Gets known VpnAuthenticationType values.
+     *
+     * @return known VpnAuthenticationType values.
+     */
     public static Collection<VpnAuthenticationType> values() {
         return values(VpnAuthenticationType.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServiceEndpointPolicyDefinitions ListByResourceGroup. */
 public final class ServiceEndpointPolicyDefinitionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDefinitionList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyDefinitionList.json
      */
     /**
      * Sample code: List service endpoint definitions in service end point policy.

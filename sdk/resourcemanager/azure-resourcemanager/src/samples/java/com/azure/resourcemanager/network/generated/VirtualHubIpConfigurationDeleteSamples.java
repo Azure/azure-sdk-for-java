@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualHubIpConfiguration Delete. */
 public final class VirtualHubIpConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubIpConfigurationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubIpConfigurationDelete.json
      */
     /**
      * Sample code: VirtualHubIpConfigurationDelete.

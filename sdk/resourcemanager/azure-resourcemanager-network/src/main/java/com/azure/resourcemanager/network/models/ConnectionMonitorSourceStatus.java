@@ -30,7 +30,11 @@ public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<Co
         return fromString(name, ConnectionMonitorSourceStatus.class);
     }
 
-    /** @return known ConnectionMonitorSourceStatus values. */
+    /**
+     * Gets known ConnectionMonitorSourceStatus values.
+     *
+     * @return known ConnectionMonitorSourceStatus values.
+     */
     public static Collection<ConnectionMonitorSourceStatus> values() {
         return values(ConnectionMonitorSourceStatus.class);
     }

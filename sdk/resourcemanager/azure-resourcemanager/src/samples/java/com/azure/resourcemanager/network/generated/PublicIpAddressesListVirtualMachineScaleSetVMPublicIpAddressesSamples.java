@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PublicIpAddresses ListVirtualMachineScaleSetVMPublicIpAddresses. */
 public final class PublicIpAddressesListVirtualMachineScaleSetVMPublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VmssVmPublicIpList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VmssVmPublicIpList.json
      */
     /**
      * Sample code: ListVMSSVMPublicIP.

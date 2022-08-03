@@ -42,7 +42,11 @@ public final class ApplicationGatewaySkuName extends ExpandableStringEnum<Applic
         return fromString(name, ApplicationGatewaySkuName.class);
     }
 
-    /** @return known ApplicationGatewaySkuName values. */
+    /**
+     * Gets known ApplicationGatewaySkuName values.
+     *
+     * @return known ApplicationGatewaySkuName values.
+     */
     public static Collection<ApplicationGatewaySkuName> values() {
         return values(ApplicationGatewaySkuName.class);
     }

@@ -52,7 +52,7 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
-        azureProperties.getClient().setApplicationId("global-application-id");
+        azureProperties.getClient().setApplicationId("app");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
         azureProperties.getClient().getHttp().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
@@ -82,7 +82,7 @@ class AzureServiceConfigurationBaseTests {
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
-                assertThat(properties).extracting("client.applicationId").isEqualTo("global-application-id");
+                assertThat(properties).extracting("client.applicationId").isEqualTo("app");
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
                 assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("localhost");
 
@@ -159,7 +159,7 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
-        azureProperties.getClient().setApplicationId("global-application-id");
+        azureProperties.getClient().setApplicationId("app");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
@@ -188,7 +188,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
 
-                assertThat(properties).extracting("client.applicationId").isEqualTo("global-application-id");
+                assertThat(properties).extracting("client.applicationId").isEqualTo("app");
                 assertThat(properties).extracting("client.transportType").isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
 
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
@@ -229,7 +229,7 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
-        azureProperties.getClient().setApplicationId("global-application-id");
+        azureProperties.getClient().setApplicationId("app");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
@@ -259,7 +259,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
 
-                assertThat(properties).extracting("client.applicationId").isEqualTo("global-application-id");
+                assertThat(properties).extracting("client.applicationId").isEqualTo("app");
                 assertThat(properties).extracting("client.connectTimeout").isEqualTo(Duration.ofMinutes(1));
                 assertThat(properties).extracting("client.logging.level").isEqualTo(HttpLogDetailLevel.HEADERS);
                 Set<String> allowedHeaderNames = new HashSet<>();

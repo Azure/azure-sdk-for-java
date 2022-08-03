@@ -19,7 +19,7 @@ import java.util.Map;
 /** Samples for P2SVpnGateways CreateOrUpdate. */
 public final class P2SVpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/P2SVpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/P2SVpnGatewayPut.json
      */
     /**
      * Sample code: P2SVpnGatewayPut.

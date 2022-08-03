@@ -39,7 +39,11 @@ public final class DataIngestionStatus extends ExpandableStringEnum<DataIngestio
         return fromString(name, DataIngestionStatus.class);
     }
 
-    /** @return known DataIngestionStatus values. */
+    /**
+     * Gets known DataIngestionStatus values.
+     *
+     * @return known DataIngestionStatus values.
+     */
     public static Collection<DataIngestionStatus> values() {
         return values(DataIngestionStatus.class);
     }

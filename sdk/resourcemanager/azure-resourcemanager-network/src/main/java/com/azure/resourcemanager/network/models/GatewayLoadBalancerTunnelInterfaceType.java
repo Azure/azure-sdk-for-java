@@ -31,7 +31,11 @@ public final class GatewayLoadBalancerTunnelInterfaceType
         return fromString(name, GatewayLoadBalancerTunnelInterfaceType.class);
     }
 
-    /** @return known GatewayLoadBalancerTunnelInterfaceType values. */
+    /**
+     * Gets known GatewayLoadBalancerTunnelInterfaceType values.
+     *
+     * @return known GatewayLoadBalancerTunnelInterfaceType values.
+     */
     public static Collection<GatewayLoadBalancerTunnelInterfaceType> values() {
         return values(GatewayLoadBalancerTunnelInterfaceType.class);
     }

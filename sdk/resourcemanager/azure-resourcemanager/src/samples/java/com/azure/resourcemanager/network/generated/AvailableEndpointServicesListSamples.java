@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailableEndpointServices List. */
 public final class AvailableEndpointServicesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/EndpointServicesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/EndpointServicesList.json
      */
     /**
      * Sample code: EndpointServicesList.

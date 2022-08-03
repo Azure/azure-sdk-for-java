@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.1.9 (2022-07-12)
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-mixedreality-authentication` to `1.2.4`.
+
+## 1.1.8 (2022-07-05)
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-mixedreality-authentication` to `1.2.3`.
+
 ## 1.1.7 (2022-06-07)
 - Updated `azure-core` to `1.28.0`.
 - Updated `azure-mixedreality-authentication` to `1.2.2`.

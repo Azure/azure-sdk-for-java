@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Collection ListMetrics. */
 public final class CollectionListMetricsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCollectionGetMetrics.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCollectionGetMetrics.json
      */
     /**
      * Sample code: CosmosDBCollectionGetMetrics.

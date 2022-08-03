@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopicEventSubscriptions GetFullUrl. */
 public final class DomainTopicEventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_GetFullUrl.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainTopicEventSubscriptions_GetFullUrl.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_GetFullUrl.

@@ -4,10 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -23,10 +25,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AzureEventHubsAutoConfigurationTests {
-
+class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
+    EventHubClientBuilderFactory, AzureEventHubsProperties> {
+    private static final String CONNECTION_STRING = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getMinimalContextRunner() {
+        return this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub"
+                );
+    }
+
+    @Override
+    protected String getPropertyPrefix() {
+        return AzureEventHubsProperties.PREFIX;
+    }
+
+    @Override
+    protected Class<EventHubClientBuilderFactory> getBuilderFactoryType() {
+        return EventHubClientBuilderFactory.class;
+    }
+
+    @Override
+    protected Class<AzureEventHubsProperties> getConfigurationPropertiesType() {
+        return AzureEventHubsProperties.class;
+    }
 
     @Test
     void configureWithoutEventHubClientBuilder() {
@@ -60,7 +87,7 @@ class AzureEventHubsAutoConfigurationTests {
     @Test
     void configureWithConnectionString() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=test-connection-string")
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubsProperties.class));
     }
@@ -78,7 +105,7 @@ class AzureEventHubsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
                 "spring.cloud.azure.eventhubs.retry.exponential.base-delay=2m",
-                "spring.cloud.azure.eventhubs.connection-string=test-connection-string"
+                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -87,7 +114,7 @@ class AzureEventHubsAutoConfigurationTests {
                 assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
                 assertThat(properties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
                 assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
-                assertThat(properties.getConnectionString()).isEqualTo("test-connection-string");
+                assertThat(properties.getConnectionString()).isEqualTo(CONNECTION_STRING);
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });

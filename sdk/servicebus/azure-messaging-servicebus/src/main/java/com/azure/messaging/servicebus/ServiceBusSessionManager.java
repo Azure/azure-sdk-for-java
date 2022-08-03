@@ -324,8 +324,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
                 }
-            }))
-            .publishOn(scheduler, 1);
+            }));
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {

@@ -33,6 +33,34 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
         this.serviceManager = serviceManager;
     }
 
+    public DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String domainName, String eventSubscriptionName) {
+        DeliveryAttributeListResultInner inner =
+            this.serviceClient().getDeliveryAttributes(resourceGroupName, domainName, eventSubscriptionName);
+        if (inner != null) {
+            return new DeliveryAttributeListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
+        String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {
+        Response<DeliveryAttributeListResultInner> inner =
+            this
+                .serviceClient()
+                .getDeliveryAttributesWithResponse(resourceGroupName, domainName, eventSubscriptionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new DeliveryAttributeListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public EventSubscription get(String resourceGroupName, String domainName, String eventSubscriptionName) {
         EventSubscriptionInner inner = this.serviceClient().get(resourceGroupName, domainName, eventSubscriptionName);
         if (inner != null) {
@@ -168,34 +196,6 @@ public final class DomainEventSubscriptionsImpl implements DomainEventSubscripti
         PagedIterable<EventSubscriptionInner> inner =
             this.serviceClient().list(resourceGroupName, domainName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new EventSubscriptionImpl(inner1, this.manager()));
-    }
-
-    public DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String domainName, String eventSubscriptionName) {
-        DeliveryAttributeListResultInner inner =
-            this.serviceClient().getDeliveryAttributes(resourceGroupName, domainName, eventSubscriptionName);
-        if (inner != null) {
-            return new DeliveryAttributeListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {
-        Response<DeliveryAttributeListResultInner> inner =
-            this
-                .serviceClient()
-                .getDeliveryAttributesWithResponse(resourceGroupName, domainName, eventSubscriptionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DeliveryAttributeListResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
     }
 
     private DomainEventSubscriptionsClient serviceClient() {

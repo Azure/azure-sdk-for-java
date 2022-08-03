@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.CLIENT_CREDENTIALS;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -143,7 +143,7 @@ public class AadB2cProperties implements InitializingBean {
         long credentialCount = authorizationClients.values()
                                                    .stream()
                                                    .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                                                   .filter(client -> CLIENT_CREDENTIALS == client)
+                                                   .filter(client -> CLIENT_CREDENTIALS.equals(client))
                                                    .count();
         if (credentialCount > 0 && !StringUtils.hasText(profile.getTenantId())) {
             throw new AadB2cConfigurationException("'tenant-id' must be configured "

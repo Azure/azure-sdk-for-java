@@ -18,7 +18,7 @@ import java.util.Map;
 /** Samples for NetworkVirtualAppliances CreateOrUpdate. */
 public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualAppliancePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualAppliancePut.json
      */
     /**
      * Sample code: Create NetworkVirtualAppliance.

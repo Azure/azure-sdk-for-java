@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServices List. */
 public final class CloudServicesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/ListCloudServicesInSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_List_BySubscription.json
      */
     /**
      * Sample code: List Cloud Services in a Subscription.

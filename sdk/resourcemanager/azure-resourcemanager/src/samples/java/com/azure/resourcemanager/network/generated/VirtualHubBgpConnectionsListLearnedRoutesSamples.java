@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualHubBgpConnections ListLearnedRoutes. */
 public final class VirtualHubBgpConnectionsListLearnedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterPeerListLearnedRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterPeerListLearnedRoute.json
      */
     /**
      * Sample code: VirtualRouterPeerListLearnedRoutes.

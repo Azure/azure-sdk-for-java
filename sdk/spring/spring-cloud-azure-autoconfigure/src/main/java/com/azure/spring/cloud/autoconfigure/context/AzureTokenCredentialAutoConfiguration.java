@@ -100,11 +100,13 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
             final String tenantId = azureProperties.getProfile().getTenantId();
             final String clientId = properties.getClientId();
             final boolean isClientIdSet = StringUtils.hasText(clientId);
+            final String authorityHost = azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
 
             if (StringUtils.hasText(tenantId)) {
 
                 if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                     return clientSecretCredentialBuilderFactory.build()
+                                                               .authorityHost(authorityHost)
                                                                .clientId(clientId)
                                                                .clientSecret(properties.getClientSecret())
                                                                .tenantId(tenantId)
@@ -115,6 +117,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 if (StringUtils.hasText(clientCertificatePath)) {
                     ClientCertificateCredentialBuilder builder = clientCertificateCredentialBuilderFactory
                         .build()
+                        .authorityHost(authorityHost)
                         .tenantId(tenantId)
                         .clientId(clientId);
 
@@ -131,6 +134,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
             if (isClientIdSet && StringUtils.hasText(properties.getUsername())
                 && StringUtils.hasText(properties.getPassword())) {
                 return usernamePasswordCredentialBuilderFactory.build()
+                                                               .authorityHost(authorityHost)
                                                                .username(properties.getUsername())
                                                                .password(properties.getPassword())
                                                                .clientId(clientId)

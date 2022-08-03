@@ -33,7 +33,11 @@ public final class VpnConnectionStatus extends ExpandableStringEnum<VpnConnectio
         return fromString(name, VpnConnectionStatus.class);
     }
 
-    /** @return known VpnConnectionStatus values. */
+    /**
+     * Gets known VpnConnectionStatus values.
+     *
+     * @return known VpnConnectionStatus values.
+     */
     public static Collection<VpnConnectionStatus> values() {
         return values(VpnConnectionStatus.class);
     }

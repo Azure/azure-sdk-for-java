@@ -699,8 +699,6 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         doAnswer(invocation -> {
-            System.out.println("Running send timeout work.");
-
             final Runnable argument = invocation.getArgument(0);
             argument.run();
             return null;

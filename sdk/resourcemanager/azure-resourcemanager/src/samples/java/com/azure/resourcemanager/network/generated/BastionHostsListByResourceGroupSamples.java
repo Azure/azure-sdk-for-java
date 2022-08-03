@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BastionHosts ListByResourceGroup. */
 public final class BastionHostsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionHostListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionHostListByResourceGroup.json
      */
     /**
      * Sample code: List all Bastion Hosts for a given resource group.

@@ -43,6 +43,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: servicebus
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-servicebus
         groupId: com.azure

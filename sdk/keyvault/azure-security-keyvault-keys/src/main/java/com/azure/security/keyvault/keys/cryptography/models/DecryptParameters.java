@@ -40,7 +40,9 @@ public final class DecryptParameters {
      * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example. See
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param iv Initialization vector for the decryption operation.
      *
      * @return The {@link DecryptParameters}.
@@ -53,7 +55,9 @@ public final class DecryptParameters {
      * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBCPAD}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example. See
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param iv Initialization vector for the decryption operation.
      *
      * @return The {@link DecryptParameters}.
@@ -97,7 +101,9 @@ public final class DecryptParameters {
      * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBC}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example. See
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param iv Initialization vector for the decryption operation.
      *
      * @return The {@link DecryptParameters}.
@@ -110,7 +116,9 @@ public final class DecryptParameters {
      * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBCPAD}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example. See
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param iv Initialization vector for the decryption operation.
      *
      * @return The {@link DecryptParameters}.
@@ -154,7 +162,9 @@ public final class DecryptParameters {
      * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBC}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example. See
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param iv Initialization vector for the decryption operation.
      *
      * @return The {@link DecryptParameters}.
@@ -167,7 +177,9 @@ public final class DecryptParameters {
      * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBCPAD}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example. See
+     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param iv Initialization vector for the decryption operation.
      *
      * @return The {@link DecryptParameters}.

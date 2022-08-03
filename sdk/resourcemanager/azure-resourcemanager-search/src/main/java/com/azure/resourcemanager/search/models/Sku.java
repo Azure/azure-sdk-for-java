@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The SKU of the search service. Valid values include: 'free': Shared
      * service. 'basic': Dedicated service with up to 3 replicas. 'standard':

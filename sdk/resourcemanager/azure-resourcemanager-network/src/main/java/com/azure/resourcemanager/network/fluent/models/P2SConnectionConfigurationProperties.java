@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Parameters for P2SConnectionConfiguration. */
 @Fluent
@@ -33,6 +35,20 @@ public final class P2SConnectionConfigurationProperties {
      */
     @JsonProperty(value = "enableInternetSecurity")
     private Boolean enableInternetSecurity;
+
+    /*
+     * List of Configuration Policy Groups that this P2SConnectionConfiguration
+     * is attached to.
+     */
+    @JsonProperty(value = "configurationPolicyGroupAssociations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> configurationPolicyGroupAssociations;
+
+    /*
+     * List of previous Configuration Policy Groups that this
+     * P2SConnectionConfiguration was attached to.
+     */
+    @JsonProperty(value = "previousConfigurationPolicyGroupAssociations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations;
 
     /*
      * The provisioning state of the P2SConnectionConfiguration resource.
@@ -107,6 +123,26 @@ public final class P2SConnectionConfigurationProperties {
     }
 
     /**
+     * Get the configurationPolicyGroupAssociations property: List of Configuration Policy Groups that this
+     * P2SConnectionConfiguration is attached to.
+     *
+     * @return the configurationPolicyGroupAssociations value.
+     */
+    public List<SubResource> configurationPolicyGroupAssociations() {
+        return this.configurationPolicyGroupAssociations;
+    }
+
+    /**
+     * Get the previousConfigurationPolicyGroupAssociations property: List of previous Configuration Policy Groups that
+     * this P2SConnectionConfiguration was attached to.
+     *
+     * @return the previousConfigurationPolicyGroupAssociations value.
+     */
+    public List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations() {
+        return this.previousConfigurationPolicyGroupAssociations;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the P2SConnectionConfiguration resource.
      *
      * @return the provisioningState value.
@@ -126,6 +162,9 @@ public final class P2SConnectionConfigurationProperties {
         }
         if (routingConfiguration() != null) {
             routingConfiguration().validate();
+        }
+        if (previousConfigurationPolicyGroupAssociations() != null) {
+            previousConfigurationPolicyGroupAssociations().forEach(e -> e.validate());
         }
     }
 }

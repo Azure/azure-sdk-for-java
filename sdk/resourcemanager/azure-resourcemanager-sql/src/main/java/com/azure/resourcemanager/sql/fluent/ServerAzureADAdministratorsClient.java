@@ -31,7 +31,8 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
+     * @return a Azure Active Directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerAzureADAdministratorInner>> getWithResponseAsync(
@@ -47,7 +48,7 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
+     * @return a Azure Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerAzureADAdministratorInner> getAsync(
@@ -80,7 +81,7 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
+     * @return a Azure Active Directory administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerAzureADAdministratorInner> getWithResponse(
@@ -93,11 +94,12 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return azure Active Directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -113,13 +115,13 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return the {@link PollerFlux} for polling of azure Active Directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -133,13 +135,13 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of azure Active Directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -153,14 +155,14 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of azure Active Directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -175,11 +177,11 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return azure Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerAzureADAdministratorInner> createOrUpdateAsync(
@@ -195,7 +197,7 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -215,7 +217,7 @@ public interface ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
+     * @param parameters The required parameters for creating or updating an Active Directory Administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -240,7 +242,7 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -256,9 +258,9 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, AdministratorName administratorName);
 
@@ -272,9 +274,9 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AdministratorName administratorName);
 
@@ -289,9 +291,9 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
 
@@ -305,7 +307,7 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, AdministratorName administratorName);
@@ -348,7 +350,7 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -362,7 +364,8 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName);
@@ -377,7 +380,8 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
+     * @return a list of Azure Active Directory administrators in a server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerAzureADAdministratorInner> listByServer(
@@ -392,7 +396,8 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return azure Active Directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> disableAzureADOnlyAuthenticationWithResponseAsync(
@@ -407,9 +412,9 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return the {@link PollerFlux} for polling of azure Active Directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
         beginDisableAzureADOnlyAuthenticationAsync(String resourceGroupName, String serverName);
 
@@ -422,9 +427,9 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of azure Active Directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
         beginDisableAzureADOnlyAuthentication(String resourceGroupName, String serverName);
 
@@ -438,9 +443,9 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return the {@link SyncPoller} for polling of azure Active Directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
         beginDisableAzureADOnlyAuthentication(String resourceGroupName, String serverName, Context context);
 
@@ -453,7 +458,7 @@ public interface ServerAzureADAdministratorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
+     * @return azure Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerAzureADAdministratorInner> disableAzureADOnlyAuthenticationAsync(

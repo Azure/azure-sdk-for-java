@@ -34,7 +34,11 @@ public final class SecurityPartnerProviderConnectionStatus
         return fromString(name, SecurityPartnerProviderConnectionStatus.class);
     }
 
-    /** @return known SecurityPartnerProviderConnectionStatus values. */
+    /**
+     * Gets known SecurityPartnerProviderConnectionStatus values.
+     *
+     * @return known SecurityPartnerProviderConnectionStatus values.
+     */
     public static Collection<SecurityPartnerProviderConnectionStatus> values() {
         return values(SecurityPartnerProviderConnectionStatus.class);
     }

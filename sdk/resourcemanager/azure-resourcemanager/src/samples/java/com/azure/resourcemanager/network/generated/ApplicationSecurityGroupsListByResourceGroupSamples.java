@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationSecurityGroups ListByResourceGroup. */
 public final class ApplicationSecurityGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationSecurityGroupList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationSecurityGroupList.json
      */
     /**
      * Sample code: List load balancers in resource group.

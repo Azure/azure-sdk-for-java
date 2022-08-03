@@ -110,6 +110,10 @@ public final class PipelineResourceImpl
         return this.innerModel().policy();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PipelineResourceInner innerModel() {
         return this.innerObject;
     }

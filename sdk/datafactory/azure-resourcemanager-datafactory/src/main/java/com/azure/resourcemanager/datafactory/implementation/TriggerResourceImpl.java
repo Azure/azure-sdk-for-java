@@ -36,6 +36,10 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TriggerResourceInner innerModel() {
         return this.innerObject;
     }

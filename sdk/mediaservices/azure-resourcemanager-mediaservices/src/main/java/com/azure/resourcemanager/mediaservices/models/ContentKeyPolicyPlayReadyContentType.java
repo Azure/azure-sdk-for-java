@@ -35,7 +35,11 @@ public final class ContentKeyPolicyPlayReadyContentType
         return fromString(name, ContentKeyPolicyPlayReadyContentType.class);
     }
 
-    /** @return known ContentKeyPolicyPlayReadyContentType values. */
+    /**
+     * Gets known ContentKeyPolicyPlayReadyContentType values.
+     *
+     * @return known ContentKeyPolicyPlayReadyContentType values.
+     */
     public static Collection<ContentKeyPolicyPlayReadyContentType> values() {
         return values(ContentKeyPolicyPlayReadyContentType.class);
     }

@@ -24,7 +24,7 @@ public final class ExpressRouteGatewayProperties {
     /*
      * List of ExpressRoute connections to the ExpressRoute gateway.
      */
-    @JsonProperty(value = "expressRouteConnections", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "expressRouteConnections")
     private List<ExpressRouteConnectionInner> expressRouteConnections;
 
     /*
@@ -67,6 +67,18 @@ public final class ExpressRouteGatewayProperties {
      */
     public List<ExpressRouteConnectionInner> expressRouteConnections() {
         return this.expressRouteConnections;
+    }
+
+    /**
+     * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
+     *
+     * @param expressRouteConnections the expressRouteConnections value to set.
+     * @return the ExpressRouteGatewayProperties object itself.
+     */
+    public ExpressRouteGatewayProperties withExpressRouteConnections(
+        List<ExpressRouteConnectionInner> expressRouteConnections) {
+        this.expressRouteConnections = expressRouteConnections;
+        return this;
     }
 
     /**

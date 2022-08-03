@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of DeviceUpdate. */
 public enum DeviceUpdateServiceVersion implements ServiceVersion {
-    /** Enum value 2021-06-01-preview. */
-    V2021_06_01_PREVIEW("2021-06-01-preview");
+    /** Enum value 2022-07-01-preview. */
+    V2022_07_01_PREVIEW("2022-07-01-preview");
 
     private final String version;
 
@@ -28,6 +28,6 @@ public enum DeviceUpdateServiceVersion implements ServiceVersion {
      * @return The latest {@link DeviceUpdateServiceVersion}.
      */
     public static DeviceUpdateServiceVersion getLatest() {
-        return V2021_06_01_PREVIEW;
+        return V2022_07_01_PREVIEW;
     }
 }

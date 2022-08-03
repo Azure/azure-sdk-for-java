@@ -90,6 +90,10 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this.innerModel().iconContent();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationInner innerModel() {
         return this.innerObject;
     }

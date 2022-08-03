@@ -145,7 +145,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     protected void configureCore(T builder) {
         configureApplicationId(builder);
-        configureAzureEnvironment(builder);
         configureConfiguration(builder);
         configureRetry(builder);
         configureProxy(builder);
@@ -163,15 +162,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     protected void configureApplicationId(T builder) {
         String applicationId = getApplicationId() + (this.springIdentifier == null ? "" : this.springIdentifier);
         consumeApplicationId().accept(builder, applicationId);
-    }
-
-    /**
-     * Configure Azure environment, such as Azure Global or Azure China, to the builder.
-     * @param builder The service client builder.
-     */
-    protected void configureAzureEnvironment(T builder) {
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
-            getAzureProperties().getProfile().getEnvironment().getActiveDirectoryEndpoint());
     }
 
     /**

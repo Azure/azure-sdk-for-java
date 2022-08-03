@@ -30,7 +30,11 @@ public final class VirtualNetworkPeeringState extends ExpandableStringEnum<Virtu
         return fromString(name, VirtualNetworkPeeringState.class);
     }
 
-    /** @return known VirtualNetworkPeeringState values. */
+    /**
+     * Gets known VirtualNetworkPeeringState values.
+     *
+     * @return known VirtualNetworkPeeringState values.
+     */
     public static Collection<VirtualNetworkPeeringState> values() {
         return values(VirtualNetworkPeeringState.class);
     }

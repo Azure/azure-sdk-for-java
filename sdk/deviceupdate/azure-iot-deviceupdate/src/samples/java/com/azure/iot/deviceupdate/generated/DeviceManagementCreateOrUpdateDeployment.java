@@ -13,22 +13,20 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementCreateOrUpdateDeployment {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
         BinaryData deployment =
                 BinaryData.fromString(
-                        "{\"deploymentId\":\"deploymentId\",\"groupId\":\"TestGroup\",\"startDateTime\":\"2020-04-22T12:12:12.0000000+00:00\",\"updateId\":{\"name\":\"name\",\"provider\":\"provider\",\"version\":\"1.2.3.4\"}}");
+                        "{\"deploymentId\":\"deploymentId\",\"groupId\":\"TestGroup\",\"rollbackPolicy\":{\"failure\":{\"devicesFailedCount\":100,\"devicesFailedPercentage\":50},\"update\":{\"updateId\":{\"name\":\"name\",\"provider\":\"provider\",\"version\":\"1.2.3.3\"}}},\"startDateTime\":\"2020-04-22T12:12:12.0000000+00:00\",\"update\":{\"updateId\":{\"name\":\"name\",\"provider\":\"provider\",\"version\":\"1.2.3.4\"}}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 deviceManagementClient.createOrUpdateDeploymentWithResponse(
-                        "deploymentId", "TestGroup", deployment, requestOptions);
-        // END:
-        // com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
+                        "TestGroup", "deploymentId", deployment, requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
     }
 }

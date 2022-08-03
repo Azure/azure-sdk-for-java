@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins Delete. */
 public final class DigitalTwinsDeleteSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsDelete_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsDelete_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance resource.
@@ -22,7 +22,7 @@ public final class DigitalTwinsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsDelete_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsDelete_WithIdentity_example.json
      */
     /**
      * Sample code: Delete a DigitalTwinsInstance resource with identity.

@@ -27,7 +27,11 @@ public final class ApplicationGroupType extends ExpandableStringEnum<Application
         return fromString(name, ApplicationGroupType.class);
     }
 
-    /** @return known ApplicationGroupType values. */
+    /**
+     * Gets known ApplicationGroupType values.
+     *
+     * @return known ApplicationGroupType values.
+     */
     public static Collection<ApplicationGroupType> values() {
         return values(ApplicationGroupType.class);
     }

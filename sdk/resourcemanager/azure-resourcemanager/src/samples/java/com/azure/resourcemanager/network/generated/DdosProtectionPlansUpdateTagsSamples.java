@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DdosProtectionPlans UpdateTags. */
 public final class DdosProtectionPlansUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DdosProtectionPlanUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/DdosProtectionPlanUpdateTags.json
      */
     /**
      * Sample code: DDoS protection plan Update tags.

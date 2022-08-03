@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for HubVirtualNetworkConnections Delete. */
 public final class HubVirtualNetworkConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubVirtualNetworkConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/HubVirtualNetworkConnectionDelete.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionDelete.

@@ -35,7 +35,11 @@ public final class ContentKeyPolicyPlayReadyUnknownOutputPassingOption
         return fromString(name, ContentKeyPolicyPlayReadyUnknownOutputPassingOption.class);
     }
 
-    /** @return known ContentKeyPolicyPlayReadyUnknownOutputPassingOption values. */
+    /**
+     * Gets known ContentKeyPolicyPlayReadyUnknownOutputPassingOption values.
+     *
+     * @return known ContentKeyPolicyPlayReadyUnknownOutputPassingOption values.
+     */
     public static Collection<ContentKeyPolicyPlayReadyUnknownOutputPassingOption> values() {
         return values(ContentKeyPolicyPlayReadyUnknownOutputPassingOption.class);
     }

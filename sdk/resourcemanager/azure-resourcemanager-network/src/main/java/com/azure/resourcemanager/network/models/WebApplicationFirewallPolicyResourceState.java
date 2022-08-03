@@ -40,7 +40,11 @@ public final class WebApplicationFirewallPolicyResourceState
         return fromString(name, WebApplicationFirewallPolicyResourceState.class);
     }
 
-    /** @return known WebApplicationFirewallPolicyResourceState values. */
+    /**
+     * Gets known WebApplicationFirewallPolicyResourceState values.
+     *
+     * @return known WebApplicationFirewallPolicyResourceState values.
+     */
     public static Collection<WebApplicationFirewallPolicyResourceState> values() {
         return values(WebApplicationFirewallPolicyResourceState.class);
     }

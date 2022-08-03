@@ -123,7 +123,7 @@ public class AnnotatedQueryIT {
         final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
         cosmosPageRequest);
 
-        assertAddressPostalCodes(postalCodes.getContent(), addresses);
+        assertAddressPostalCodesUnordered(postalCodes.getContent(), addresses);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class AnnotatedQueryIT {
 
         final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
 
-        assertAddressPostalCodes(postalCodes, addresses);
+        assertAddressPostalCodesUnordered(postalCodes, addresses);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class AnnotatedQueryIT {
                                                           .stream()
                                                           .map(jsonNode -> jsonNode.get("postalCode").asText())
                                                           .collect(Collectors.toList());
-        assertAddressPostalCodes(actualPostalCodes, addresses);
+        assertAddressPostalCodesUnordered(actualPostalCodes, addresses);
     }
 
     @Test
@@ -163,14 +163,15 @@ public class AnnotatedQueryIT {
             .stream()
             .map(jsonNode -> jsonNode.get("postalCode").asText())
             .collect(Collectors.toList());
-        assertAddressPostalCodes(actualPostalCodes, addresses);
+        assertAddressPostalCodesUnordered(actualPostalCodes, addresses);
     }
 
-    private void assertAddressPostalCodes(List<String> postalCodes, List<Address> expectedResults) {
+    private void assertAddressPostalCodesUnordered(List<String> postalCodes, List<Address> expectedResults) {
         List<String> expectedPostalCodes = expectedResults.stream()
                                                           .map(Address::getPostalCode)
                                                           .collect(Collectors.toList());
-        assertThat(postalCodes).isEqualTo(expectedPostalCodes);
+
+        assertThat(postalCodes).hasSize(expectedPostalCodes.size()).hasSameElementsAs(expectedPostalCodes);
     }
 
     private void assertAddressOrder(List<Address> actualResults, Address ... expectedResults) {

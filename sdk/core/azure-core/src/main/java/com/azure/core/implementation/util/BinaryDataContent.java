@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -18,7 +19,7 @@ import java.nio.ReadOnlyBufferException;
  */
 public abstract class BinaryDataContent {
 
-    public static final int STREAM_READ_SIZE = 8092;
+    public static final int STREAM_READ_SIZE = 8192;
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it is able to be calculated.
@@ -78,7 +79,44 @@ public abstract class BinaryDataContent {
     /**
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
      * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     *
+     * <p>
+     * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously.
+     * </p>
+     *
      * @return a flag indicating whether the content can be repeatedly consumed.
      */
     public abstract boolean isReplayable();
+
+    /**
+     * Converts the {@link BinaryDataContent} into a {@link BinaryDataContent} that is replayable, i.e. content
+     * can be consumed repeatedly using all accessors.
+     *
+     * <p>
+     * A {@link BinaryDataContent} that is already replayable is returned as is. Otherwise techniques like
+     * marking and resetting a stream or buffering in memory are employed to assure replayability.
+     * </p>
+     *
+     * <p>
+     * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously.
+     * </p>
+     * @return Replayable {@link BinaryDataContent}.
+     */
+    public abstract BinaryDataContent toReplayableContent();
+
+    /**
+     * Converts the {@link BinaryDataContent} into a {@link BinaryDataContent} that is replayable, i.e. content
+     * can be consumed repeatedly using all accessors.
+     *
+     * <p>
+     * A {@link BinaryDataContent} that is already replayable is returned as is. Otherwise techniques like
+     * marking and resetting a stream or buffering in memory are employed to assure replayability.
+     * </p>
+     *
+     * <p>
+     * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously.
+     * </p>
+     * @return Mono that emits replayable {@link BinaryDataContent}.
+     */
+    public abstract Mono<BinaryDataContent> toReplayableContentAsync();
 }

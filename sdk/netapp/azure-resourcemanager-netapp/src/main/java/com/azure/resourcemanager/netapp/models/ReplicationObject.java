@@ -6,14 +6,11 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Replication properties. */
 @Fluent
 public final class ReplicationObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationObject.class);
-
     /*
      * Id
      */
@@ -154,10 +151,12 @@ public final class ReplicationObject {
      */
     public void validate() {
         if (remoteVolumeResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property remoteVolumeResourceId in model ReplicationObject"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReplicationObject.class);
 }

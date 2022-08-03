@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for IpAllocations UpdateTags. */
 public final class IpAllocationsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/IpAllocationUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/IpAllocationUpdateTags.json
      */
     /**
      * Sample code: Update virtual network tags.

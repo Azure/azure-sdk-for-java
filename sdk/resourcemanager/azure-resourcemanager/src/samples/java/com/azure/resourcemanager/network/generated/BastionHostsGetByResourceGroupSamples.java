@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BastionHosts GetByResourceGroup. */
 public final class BastionHostsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionHostGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionHostGet.json
      */
     /**
      * Sample code: Get Bastion Host.

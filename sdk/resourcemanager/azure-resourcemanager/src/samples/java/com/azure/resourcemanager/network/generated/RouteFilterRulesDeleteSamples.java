@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RouteFilterRules Delete. */
 public final class RouteFilterRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/RouteFilterRuleDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/RouteFilterRuleDelete.json
      */
     /**
      * Sample code: RouteFilterRuleDelete.

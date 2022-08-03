@@ -98,9 +98,17 @@ class APISpec extends StorageSpec {
                                                          AsyncKeyEncryptionKeyResolver keyResolver,
                                                          StorageSharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
+        return getEncryptedClientBuilder(key, keyResolver, credential, endpoint, EncryptionVersion.V1, policies)
+    }
+
+    EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
+                                                         AsyncKeyEncryptionKeyResolver keyResolver,
+                                                         StorageSharedKeyCredential credential, String endpoint,
+                                                         EncryptionVersion version,
+                                                         HttpPipelinePolicy... policies) {
 
         KeyWrapAlgorithm algorithm = key != null && key.getKeyId().block() == "local" ? KeyWrapAlgorithm.A256KW : KeyWrapAlgorithm.RSA_OAEP_256
-        EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
+        EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
             .key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint)

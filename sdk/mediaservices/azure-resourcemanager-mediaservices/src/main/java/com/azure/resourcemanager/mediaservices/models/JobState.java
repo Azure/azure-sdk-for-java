@@ -42,7 +42,11 @@ public final class JobState extends ExpandableStringEnum<JobState> {
         return fromString(name, JobState.class);
     }
 
-    /** @return known JobState values. */
+    /**
+     * Gets known JobState values.
+     *
+     * @return known JobState values.
+     */
     public static Collection<JobState> values() {
         return values(JobState.class);
     }

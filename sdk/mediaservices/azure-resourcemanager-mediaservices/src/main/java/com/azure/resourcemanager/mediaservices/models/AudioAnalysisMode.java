@@ -27,7 +27,11 @@ public final class AudioAnalysisMode extends ExpandableStringEnum<AudioAnalysisM
         return fromString(name, AudioAnalysisMode.class);
     }
 
-    /** @return known AudioAnalysisMode values. */
+    /**
+     * Gets known AudioAnalysisMode values.
+     *
+     * @return known AudioAnalysisMode values.
+     */
     public static Collection<AudioAnalysisMode> values() {
         return values(AudioAnalysisMode.class);
     }

@@ -22,10 +22,12 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
             throw new IllegalArgumentException("The initialization parameter [id] cannot be null or empty.");
         }
         this.id = id;
+        this.rawId = id;
     }
 
     /**
      * Get id of this identifier
+     *
      * @return id of this identifier
      */
     public String getId() {
@@ -43,11 +45,11 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
         }
 
         UnknownIdentifier thatId = (UnknownIdentifier) that;
-        return this.id.equals(thatId.id);
+        return this.getRawId().equals(thatId.getRawId());
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return getRawId().hashCode();
     }
 }

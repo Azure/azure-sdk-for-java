@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters with which a subvolume can be updated. */
 @Fluent
 public final class SubvolumePatchParams {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumePatchParams.class);
-
     /*
      * size Truncate subvolume to the provided size in bytes
      */

@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
-import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobResponse;
-import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobResponse;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -23,6 +23,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import java.util.UUID;
@@ -34,22 +35,22 @@ public final class AnalyzeTextsImpl {
     private final AnalyzeTextsService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftCognitiveLanguageServiceImpl client;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl client;
 
     /**
      * Initializes an instance of AnalyzeTextsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public AnalyzeTextsImpl(MicrosoftCognitiveLanguageServiceImpl client) {
+    AnalyzeTextsImpl(MicrosoftCognitiveLanguageServiceTextAnalysisImpl client) {
         this.service =
                 RestProxy.create(AnalyzeTextsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftCognitiveLanguageServiceAnalyzeTexts to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for MicrosoftCognitiveLanguageServiceTextAnalysisAnalyzeTexts to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{Endpoint}/language")
     @ServiceInterface(name = "MicrosoftCognitiveLa")
@@ -57,7 +58,7 @@ public final class AnalyzeTextsImpl {
         @Post("/analyze-text/jobs")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeTextsSubmitJobResponse> submitJob(
+        Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJob(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") AnalyzeTextJobsInput body,
@@ -80,7 +81,7 @@ public final class AnalyzeTextsImpl {
         @Post("/analyze-text/jobs/{jobId}:cancel")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeTextsCancelJobResponse> cancelJob(
+        Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJob(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobId") UUID jobId,
@@ -89,7 +90,9 @@ public final class AnalyzeTextsImpl {
     }
 
     /**
-     * Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
+     * Submit text analysis job
+     *
+     * <p>Submit a collection of text documents for analysis. Specify one or more unique tasks to be executed as a
      * long-running operation.
      *
      * @param body Collection of documents to analyze and one or more tasks to execute.
@@ -97,17 +100,20 @@ public final class AnalyzeTextsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeTextsSubmitJobResponse> submitJobWithResponseAsync(AnalyzeTextJobsInput body, Context context) {
+    public Mono<ResponseBase<AnalyzeTextsSubmitJobHeaders, Void>> submitJobWithResponseAsync(
+            AnalyzeTextJobsInput body, Context context) {
         final String accept = "application/json";
         return service.submitJob(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
-     * Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the job
-     * will transition to the succeeded state and results will be available for each task.
+     * Get analysis status and results
+     *
+     * <p>Get the status of an analysis job. A job may consist of one or more tasks. Once all tasks are succeeded, the
+     * job will transition to the succeeded state and results will be available for each task.
      *
      * @param jobId Job ID.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -117,7 +123,7 @@ public final class AnalyzeTextsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an analysis job.
+     * @return the status of an analysis job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeTextJobState>> jobStatusWithResponseAsync(
@@ -128,17 +134,20 @@ public final class AnalyzeTextsImpl {
     }
 
     /**
-     * Cancel a long-running Text Analysis job.
+     * Cancel a long-running Text Analysis job
+     *
+     * <p>Cancel a long-running Text Analysis job.
      *
      * @param jobId Job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeTextsCancelJobResponse> cancelJobWithResponseAsync(UUID jobId, Context context) {
+    public Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelJobWithResponseAsync(
+            UUID jobId, Context context) {
         final String accept = "application/json";
         return service.cancelJob(this.client.getEndpoint(), this.client.getApiVersion(), jobId, accept, context);
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Volume group properties. */
 @Fluent
 public final class VolumeGroupMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupMetadata.class);
-
     /*
      * Group Description
      */

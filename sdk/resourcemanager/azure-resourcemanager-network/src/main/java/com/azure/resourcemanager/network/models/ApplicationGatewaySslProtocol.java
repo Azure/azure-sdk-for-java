@@ -30,7 +30,11 @@ public final class ApplicationGatewaySslProtocol extends ExpandableStringEnum<Ap
         return fromString(name, ApplicationGatewaySslProtocol.class);
     }
 
-    /** @return known ApplicationGatewaySslProtocol values. */
+    /**
+     * Gets known ApplicationGatewaySslProtocol values.
+     *
+     * @return known ApplicationGatewaySslProtocol values.
+     */
     public static Collection<ApplicationGatewaySslProtocol> values() {
         return values(ApplicationGatewaySslProtocol.class);
     }

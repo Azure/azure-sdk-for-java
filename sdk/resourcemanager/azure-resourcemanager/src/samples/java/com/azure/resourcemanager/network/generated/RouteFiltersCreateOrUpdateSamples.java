@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for RouteFilters CreateOrUpdate. */
 public final class RouteFiltersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/RouteFilterCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/RouteFilterCreate.json
      */
     /**
      * Sample code: RouteFilterCreate.

@@ -30,7 +30,11 @@ public final class Complexity extends ExpandableStringEnum<Complexity> {
         return fromString(name, Complexity.class);
     }
 
-    /** @return known Complexity values. */
+    /**
+     * Gets known Complexity values.
+     *
+     * @return known Complexity values.
+     */
     public static Collection<Complexity> values() {
         return values(Complexity.class);
     }

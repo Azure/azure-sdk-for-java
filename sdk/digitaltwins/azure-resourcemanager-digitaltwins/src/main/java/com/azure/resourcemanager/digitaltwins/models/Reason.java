@@ -27,7 +27,11 @@ public final class Reason extends ExpandableStringEnum<Reason> {
         return fromString(name, Reason.class);
     }
 
-    /** @return known Reason values. */
+    /**
+     * Gets known Reason values.
+     *
+     * @return known Reason values.
+     */
     public static Collection<Reason> values() {
         return values(Reason.class);
     }

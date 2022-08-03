@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for RouteFilterRules CreateOrUpdate. */
 public final class RouteFilterRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/RouteFilterRuleCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/RouteFilterRuleCreate.json
      */
     /**
      * Sample code: RouteFilterRuleCreate.

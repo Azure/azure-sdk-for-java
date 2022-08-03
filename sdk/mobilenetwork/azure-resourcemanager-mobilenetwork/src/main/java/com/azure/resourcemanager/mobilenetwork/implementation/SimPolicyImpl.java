@@ -89,6 +89,10 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SimPolicyInner innerModel() {
         return this.innerObject;
     }

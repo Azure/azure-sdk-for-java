@@ -28,7 +28,11 @@ public final class AssetStorageEncryptionFormat extends ExpandableStringEnum<Ass
         return fromString(name, AssetStorageEncryptionFormat.class);
     }
 
-    /** @return known AssetStorageEncryptionFormat values. */
+    /**
+     * Gets known AssetStorageEncryptionFormat values.
+     *
+     * @return known AssetStorageEncryptionFormat values.
+     */
     public static Collection<AssetStorageEncryptionFormat> values() {
         return values(AssetStorageEncryptionFormat.class);
     }

@@ -27,7 +27,11 @@ public final class SyncMemberDbType extends ExpandableStringEnum<SyncMemberDbTyp
         return fromString(name, SyncMemberDbType.class);
     }
 
-    /** @return known SyncMemberDbType values. */
+    /**
+     * Gets known SyncMemberDbType values.
+     *
+     * @return known SyncMemberDbType values.
+     */
     public static Collection<SyncMemberDbType> values() {
         return values(SyncMemberDbType.class);
     }

@@ -30,7 +30,11 @@ public final class SecurityProviderName extends ExpandableStringEnum<SecurityPro
         return fromString(name, SecurityProviderName.class);
     }
 
-    /** @return known SecurityProviderName values. */
+    /**
+     * Gets known SecurityProviderName values.
+     *
+     * @return known SecurityProviderName values.
+     */
     public static Collection<SecurityProviderName> values() {
         return values(SecurityProviderName.class);
     }

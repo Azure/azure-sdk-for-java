@@ -30,7 +30,11 @@ public final class StretchMode extends ExpandableStringEnum<StretchMode> {
         return fromString(name, StretchMode.class);
     }
 
-    /** @return known StretchMode values. */
+    /**
+     * Gets known StretchMode values.
+     *
+     * @return known StretchMode values.
+     */
     public static Collection<StretchMode> values() {
         return values(StretchMode.class);
     }

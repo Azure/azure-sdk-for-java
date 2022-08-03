@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadBalancerOutboundRules List. */
 public final class LoadBalancerOutboundRulesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerOutboundRuleList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerOutboundRuleList.json
      */
     /**
      * Sample code: LoadBalancerOutboundRuleList.

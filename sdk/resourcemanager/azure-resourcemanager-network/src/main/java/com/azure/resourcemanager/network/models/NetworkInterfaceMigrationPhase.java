@@ -36,7 +36,11 @@ public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<N
         return fromString(name, NetworkInterfaceMigrationPhase.class);
     }
 
-    /** @return known NetworkInterfaceMigrationPhase values. */
+    /**
+     * Gets known NetworkInterfaceMigrationPhase values.
+     *
+     * @return known NetworkInterfaceMigrationPhase values.
+     */
     public static Collection<NetworkInterfaceMigrationPhase> values() {
         return values(NetworkInterfaceMigrationPhase.class);
     }

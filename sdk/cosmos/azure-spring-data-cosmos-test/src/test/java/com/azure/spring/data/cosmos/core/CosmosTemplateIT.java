@@ -413,6 +413,42 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testFindAllPageableMultiPagesPageSizeTwo() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
+
+        final List<Person> resultPage1 = TestUtils.toList(page1);
+        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2);
+        assertThat(resultPage1.size()).isEqualTo(expected.size());
+        assertThat(resultPage1).containsAll(expected);
+        PageTestUtils.validateNonLastPage(page1, PAGE_SIZE_2);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
+
+        final List<Person> resultPage2 = TestUtils.toList(page2);
+        final List<Person> expected2 = Lists.newArrayList(TEST_PERSON_3);
+        assertThat(resultPage2.size()).isEqualTo(expected2.size());
+        assertThat(resultPage2).containsAll(expected2);
+        PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
     public void testPaginationQuery() {
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
@@ -468,10 +504,40 @@ public class CosmosTemplateIT {
         assertThat(result.get(1).getFirstName()).isEqualTo("fred");
         assertThat(result.get(2).getFirstName()).isEqualTo("george");
 
-        query.setLimit(1);
+        query.withLimit(1);
         final List<Person> resultWithLimit = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
         assertThat(resultWithLimit.size()).isEqualTo(1);
         assertThat(resultWithLimit.get(0).getFirstName()).isEqualTo("barney");
+    }
+
+    @Test
+    public void testFindWithOffsetAndLimit() {
+        final Person testPerson4 = new Person("id_4", "fred", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        final Person testPerson5 = new Person("id_5", "barney", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        final Person testPerson6 = new Person("id_6", "george", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+        insertPerson(testPerson4);
+        insertPerson(testPerson5);
+        insertPerson(testPerson6);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "lastName",
+            Collections.singletonList(NEW_LAST_NAME), Part.IgnoreCaseType.ALWAYS);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        query.with(Sort.by(Sort.Direction.ASC, "firstName"));
+
+        final List<Person> result = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getFirstName()).isEqualTo("barney");
+        assertThat(result.get(1).getFirstName()).isEqualTo("fred");
+        assertThat(result.get(2).getFirstName()).isEqualTo("george");
+
+        query.withOffsetAndLimit(1, 1);
+        final List<Person> resultWithLimit = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(resultWithLimit.size()).isEqualTo(1);
+        assertThat(resultWithLimit.get(0).getFirstName()).isEqualTo("fred");
     }
 
     @Test
@@ -569,6 +635,50 @@ public class CosmosTemplateIT {
             Collections.singletonList(HOBBY1), Part.IgnoreCaseType.NEVER);
         List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(hasHobby), Person.class,
             containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testIsNotNullCriteriaCaseSensitive() {
+        Criteria hasLastName = Criteria.getInstance(CriteriaType.IS_NOT_NULL, "lastName",
+            Collections.emptyList(),
+            Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(hasLastName), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testStartsWithCriteriaCaseSensitive() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STARTS_WITH, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
+            Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testIsEqualCriteriaCaseSensitive() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
+            Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testStringEqualsCriteriaCaseSensitive() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STRING_EQUALS, "firstName",
+                Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
+                Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,
+                containerName));
 
         assertThat(people).containsExactly(TEST_PERSON);
     }

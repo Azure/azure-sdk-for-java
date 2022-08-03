@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
 /** Samples for VirtualNetworkGatewayConnections StartPacketCapture. */
 public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewayConnectionStartPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayConnectionStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on virtual network gateway connection without filter.
@@ -28,7 +28,7 @@ public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on virtual network gateway connection with filter.

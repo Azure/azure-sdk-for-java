@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.digitaltwins.fluent.DigitalTwinsClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DigitalTwinsClient. */
 public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
-    private final ClientLogger logger = new ClientLogger(DigitalTwinsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DigitalTwinsService service;
 
@@ -302,14 +299,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DigitalTwinsDescriptionInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<DigitalTwinsDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1621,14 +1611,7 @@ public final class DigitalTwinsClientImpl implements DigitalTwinsClient {
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
         String location, CheckNameRequest digitalTwinsInstanceCheckName) {
         return checkNameAvailabilityWithResponseAsync(location, digitalTwinsInstanceCheckName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

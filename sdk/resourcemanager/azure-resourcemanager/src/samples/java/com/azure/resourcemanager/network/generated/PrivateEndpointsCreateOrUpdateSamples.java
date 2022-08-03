@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for PrivateEndpoints CreateOrUpdate. */
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateEndpointCreateWithASG.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointCreateWithASG.json
      */
     /**
      * Sample code: Create private endpoint with application security groups.
@@ -56,7 +56,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateEndpointCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointCreate.json
      */
     /**
      * Sample code: Create private endpoint.
@@ -99,7 +99,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateEndpointCreateForManualApproval.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointCreateForManualApproval.json
      */
     /**
      * Sample code: Create private endpoint with manual approval connection.

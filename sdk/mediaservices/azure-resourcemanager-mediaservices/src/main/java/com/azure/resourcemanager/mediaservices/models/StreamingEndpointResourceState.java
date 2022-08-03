@@ -39,7 +39,11 @@ public final class StreamingEndpointResourceState extends ExpandableStringEnum<S
         return fromString(name, StreamingEndpointResourceState.class);
     }
 
-    /** @return known StreamingEndpointResourceState values. */
+    /**
+     * Gets known StreamingEndpointResourceState values.
+     *
+     * @return known StreamingEndpointResourceState values.
+     */
     public static Collection<StreamingEndpointResourceState> values() {
         return values(StreamingEndpointResourceState.class);
     }

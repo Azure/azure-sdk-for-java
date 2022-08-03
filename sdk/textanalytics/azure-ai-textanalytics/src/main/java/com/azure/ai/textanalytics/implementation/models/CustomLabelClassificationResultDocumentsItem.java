@@ -4,10 +4,37 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import java.util.List;
 
 /** The CustomLabelClassificationResultDocumentsItem model. */
-@Immutable
+@Fluent
 public final class CustomLabelClassificationResultDocumentsItem extends ClassificationDocumentResult {
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResultDocumentsItem setClassProperty(List<ClassificationResult> classProperty) {
+        super.setClassProperty(classProperty);
+        return this;
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResultDocumentsItem setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResultDocumentsItem setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

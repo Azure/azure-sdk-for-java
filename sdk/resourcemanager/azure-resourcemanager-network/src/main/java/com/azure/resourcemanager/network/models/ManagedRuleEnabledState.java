@@ -24,7 +24,11 @@ public final class ManagedRuleEnabledState extends ExpandableStringEnum<ManagedR
         return fromString(name, ManagedRuleEnabledState.class);
     }
 
-    /** @return known ManagedRuleEnabledState values. */
+    /**
+     * Gets known ManagedRuleEnabledState values.
+     *
+     * @return known ManagedRuleEnabledState values.
+     */
     public static Collection<ManagedRuleEnabledState> values() {
         return values(ManagedRuleEnabledState.class);
     }

@@ -27,7 +27,11 @@ public final class Direction extends ExpandableStringEnum<Direction> {
         return fromString(name, Direction.class);
     }
 
-    /** @return known Direction values. */
+    /**
+     * Gets known Direction values.
+     *
+     * @return known Direction values.
+     */
     public static Collection<Direction> values() {
         return values(Direction.class);
     }

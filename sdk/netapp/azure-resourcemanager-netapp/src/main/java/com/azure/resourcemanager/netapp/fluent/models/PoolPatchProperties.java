@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.QosType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Patchable pool properties. */
 @Fluent
 public final class PoolPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolPatchProperties.class);
-
     /*
      * size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
      * chunks (value must be multiply of 4398046511104).
@@ -27,6 +23,12 @@ public final class PoolPatchProperties {
      */
     @JsonProperty(value = "qosType")
     private QosType qosType;
+
+    /*
+     * If enabled (true) the pool can contain cool Access enabled volumes.
+     */
+    @JsonProperty(value = "coolAccess")
+    private Boolean coolAccess;
 
     /**
      * Get the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
@@ -67,6 +69,26 @@ public final class PoolPatchProperties {
      */
     public PoolPatchProperties withQosType(QosType qosType) {
         this.qosType = qosType;
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.coolAccess;
+    }
+
+    /**
+     * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the PoolPatchProperties object itself.
+     */
+    public PoolPatchProperties withCoolAccess(Boolean coolAccess) {
+        this.coolAccess = coolAccess;
         return this;
     }
 

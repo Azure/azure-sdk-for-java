@@ -33,7 +33,11 @@ public final class EffectiveRouteSource extends ExpandableStringEnum<EffectiveRo
         return fromString(name, EffectiveRouteSource.class);
     }
 
-    /** @return known EffectiveRouteSource values. */
+    /**
+     * Gets known EffectiveRouteSource values.
+     *
+     * @return known EffectiveRouteSource values.
+     */
     public static Collection<EffectiveRouteSource> values() {
         return values(EffectiveRouteSource.class);
     }

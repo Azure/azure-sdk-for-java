@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualApplianceSkus Get. */
 public final class VirtualApplianceSkusGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualApplianceSkuGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualApplianceSkuGet.json
      */
     /**
      * Sample code: NetworkVirtualApplianceSkuGet.

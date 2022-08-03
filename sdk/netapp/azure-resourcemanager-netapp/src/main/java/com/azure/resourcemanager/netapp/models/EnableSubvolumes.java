@@ -27,7 +27,11 @@ public final class EnableSubvolumes extends ExpandableStringEnum<EnableSubvolume
         return fromString(name, EnableSubvolumes.class);
     }
 
-    /** @return known EnableSubvolumes values. */
+    /**
+     * Gets known EnableSubvolumes values.
+     *
+     * @return known EnableSubvolumes values.
+     */
     public static Collection<EnableSubvolumes> values() {
         return values(EnableSubvolumes.class);
     }

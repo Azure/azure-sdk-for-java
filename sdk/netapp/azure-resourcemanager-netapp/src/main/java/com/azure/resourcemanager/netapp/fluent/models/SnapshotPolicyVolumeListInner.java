@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Volumes associated with snapshot policy. */
 @Fluent
 public final class SnapshotPolicyVolumeListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPolicyVolumeListInner.class);
-
     /*
      * List of volumes
      */

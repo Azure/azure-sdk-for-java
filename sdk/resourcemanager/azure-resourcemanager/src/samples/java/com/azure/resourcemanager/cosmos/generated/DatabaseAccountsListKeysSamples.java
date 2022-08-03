@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DatabaseAccounts ListKeys. */
 public final class DatabaseAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountListKeys.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountListKeys.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListKeys.
