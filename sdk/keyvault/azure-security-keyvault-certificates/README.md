@@ -54,10 +54,12 @@ If you want to take dependency on a particular version of the library that is no
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the steps in [this document][azure_keyvault_cli].
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you will need to create an instance of the [`CertificateClient`](#create-certificate-client) class. You need a **vault url** and a credential object. The examples shown in this document use one named  [`DefaultAzureCredential`][default_azure_credential], which is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. You can find more ways to authenticate with [azure-identity][azure_identity].
+In order to interact with the Azure Key Vault service, you will need to create an instance of the [`CertificateClient`](#create-certificate-client) class, a **vault url** and a credential object. The examples shown in this document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is appropriate for most scenarios, including local development and production environments. Additionally, we recommend using a [managed identity][managed_identity] for authentication in production environments.
+
+You can find more information on different ways of authenticating and their corresponding credential types in the [Azure Identity documentation][azure_identity].
 
 #### Create certificate client
-Once you perform [the `DefaultAzureCredential` set up that suits you best][default_azure_credential] and replaced **your-key-vault-url** with the URL for your key vault, you can create the `CertificateClient`:
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced **your-key-vault-url** with the URL for your key vault, you can create the `CertificateClient`:
 
 ```java readme-sample-createCertificateClient
 CertificateClient certificateClient = new CertificateClientBuilder()
