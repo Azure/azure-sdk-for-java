@@ -34,6 +34,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_USE_SSL;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_POSTGRESQL_SSL_MODE;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
  */
@@ -117,6 +118,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             LOGGER.info("Add SpringTokenCredentialProvider as the default token credential provider.");
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER);
         }
+
+        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), properties.getProfile());
+        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), properties.getCredential());
 
         AuthProperty.CACHE_ENABLED.setProperty(result, "true");
         AuthProperty.CLIENT_ID.setProperty(result, properties.getCredential().getClientId());
