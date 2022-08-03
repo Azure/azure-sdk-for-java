@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorableSqlDatabases List. */
 public final class RestorableSqlDatabasesListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBRestorableSqlDatabaseList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBRestorableSqlDatabaseList.json
      */
     /**
      * Sample code: CosmosDBRestorableSqlDatabaseList.

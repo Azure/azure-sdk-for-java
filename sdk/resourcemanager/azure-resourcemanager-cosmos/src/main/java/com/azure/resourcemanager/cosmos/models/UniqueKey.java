@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,8 +13,6 @@ import java.util.List;
  */
 @Fluent
 public final class UniqueKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UniqueKey.class);
-
     /*
      * List of paths must be unique for each document in the Azure Cosmos DB
      * service

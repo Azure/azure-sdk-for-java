@@ -128,7 +128,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private endpoint connections in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -160,7 +162,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -178,7 +180,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private endpoint connections in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -211,7 +215,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -226,7 +230,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private endpoint connections in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -241,7 +247,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private endpoint connections in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -256,7 +264,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private endpoint connections in the specified managed cluster.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -273,7 +283,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets the specified private endpoint connection.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -311,7 +323,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -330,7 +342,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets the specified private endpoint connection.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -369,7 +383,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -385,7 +399,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets the specified private endpoint connection.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -403,7 +419,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets the specified private endpoint connection.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -420,7 +438,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets the specified private endpoint connection.
+     *
+     * <p>To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -485,7 +505,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -554,7 +574,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -677,7 +697,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -735,7 +755,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

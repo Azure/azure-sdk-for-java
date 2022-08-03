@@ -69,6 +69,10 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
         return this.innerModel().status();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public StorageInsightInner innerModel() {
         return this.innerObject;
     }

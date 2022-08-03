@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a name availability check. */
 @Immutable
 public final class CheckNameAvailabilityResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResponseInner.class);
-
     /*
      * The name whose availability was checked.
      */

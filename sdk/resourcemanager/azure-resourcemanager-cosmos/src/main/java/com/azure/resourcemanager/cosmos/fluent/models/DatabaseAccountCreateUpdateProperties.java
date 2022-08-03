@@ -21,15 +21,12 @@ import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties to create and update Azure Cosmos DB database accounts. */
 @Fluent
 public final class DatabaseAccountCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountCreateUpdateProperties.class);
-
     /*
      * The consistency policy for the Cosmos DB account.
      */
@@ -784,7 +781,7 @@ public final class DatabaseAccountCreateUpdateProperties {
             consistencyPolicy().validate();
         }
         if (locations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property locations in model DatabaseAccountCreateUpdateProperties"));
@@ -819,4 +816,6 @@ public final class DatabaseAccountCreateUpdateProperties {
             capacity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountCreateUpdateProperties.class);
 }

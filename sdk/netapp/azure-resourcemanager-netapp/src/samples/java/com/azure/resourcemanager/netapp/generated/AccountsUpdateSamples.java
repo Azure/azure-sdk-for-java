@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Accounts_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.

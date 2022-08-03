@@ -27,7 +27,11 @@ public final class ServerPublicNetworkAccess extends ExpandableStringEnum<Server
         return fromString(name, ServerPublicNetworkAccess.class);
     }
 
-    /** @return known ServerPublicNetworkAccess values. */
+    /**
+     * Gets known ServerPublicNetworkAccess values.
+     *
+     * @return known ServerPublicNetworkAccess values.
+     */
     public static Collection<ServerPublicNetworkAccess> values() {
         return values(ServerPublicNetworkAccess.class);
     }

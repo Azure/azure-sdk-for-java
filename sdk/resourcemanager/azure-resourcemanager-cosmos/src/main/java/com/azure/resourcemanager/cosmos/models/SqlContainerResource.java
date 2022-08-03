@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB SQL container resource object. */
 @Fluent
 public class SqlContainerResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlContainerResource.class);
-
     /*
      * Name of the Cosmos DB SQL container
      */
@@ -213,7 +210,7 @@ public class SqlContainerResource {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
@@ -230,4 +227,6 @@ public class SqlContainerResource {
             conflictResolutionPolicy().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlContainerResource.class);
 }

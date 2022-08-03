@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 /** Samples for Volumes CreateOrUpdate. */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -29,7 +29,7 @@ public final class VolumesCreateOrUpdateSamples {
                 "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
             .withServiceLevel(ServiceLevel.PREMIUM)
             .withThroughputMibps(128.0f)
-            .withEncryptionKeySource(EncryptionKeySource.fromString("Microsoft.KeyVault"))
+            .withEncryptionKeySource(EncryptionKeySource.MICROSOFT_KEY_VAULT)
             .create();
     }
 }

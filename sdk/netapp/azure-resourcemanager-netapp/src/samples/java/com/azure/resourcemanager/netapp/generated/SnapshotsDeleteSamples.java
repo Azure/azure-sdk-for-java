@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Snapshots Delete. */
 public final class SnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Snapshots_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Snapshots_Delete.json
      */
     /**
      * Sample code: Snapshots_Delete.

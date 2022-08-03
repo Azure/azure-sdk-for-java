@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-storagecache</artifactId>
-  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storagecache;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storagecache;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for StorageCache Management</name>
-  <description>This package contains Microsoft Azure SDK for StorageCache Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2022-01.</description>
+  <description>This package contains Microsoft Azure SDK for StorageCache Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2022-05.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

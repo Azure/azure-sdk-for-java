@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CompositePath model. */
 @Fluent
 public final class CompositePath {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CompositePath.class);
-
     /*
      * The path for which the indexing behavior applies to. Index paths
      * typically start with root and end with wildcard (/path/*)

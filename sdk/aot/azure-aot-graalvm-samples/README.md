@@ -16,6 +16,8 @@
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
+
 ## Key concepts
 
 ## Examples

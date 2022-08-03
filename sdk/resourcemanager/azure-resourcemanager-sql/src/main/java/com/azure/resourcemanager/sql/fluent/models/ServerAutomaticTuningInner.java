@@ -5,38 +5,29 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningServerOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Server-level Automatic Tuning. */
-@JsonFlatten
 @Fluent
-public class ServerAutomaticTuningInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAutomaticTuningInner.class);
-
+public final class ServerAutomaticTuningInner extends ProxyResource {
     /*
-     * Automatic tuning desired state.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.desiredState")
-    private AutomaticTuningServerMode desiredState;
+    @JsonProperty(value = "properties")
+    private AutomaticTuningServerProperties innerProperties;
 
-    /*
-     * Automatic tuning actual state.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.actualState", access = JsonProperty.Access.WRITE_ONLY)
-    private AutomaticTuningServerMode actualState;
-
-    /*
-     * Automatic tuning options definition.
-     */
-    @JsonProperty(value = "properties.options")
-    private Map<String, AutomaticTuningServerOptions> options;
+    private AutomaticTuningServerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the desiredState property: Automatic tuning desired state.
@@ -44,7 +35,7 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      * @return the desiredState value.
      */
     public AutomaticTuningServerMode desiredState() {
-        return this.desiredState;
+        return this.innerProperties() == null ? null : this.innerProperties().desiredState();
     }
 
     /**
@@ -54,7 +45,10 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      * @return the ServerAutomaticTuningInner object itself.
      */
     public ServerAutomaticTuningInner withDesiredState(AutomaticTuningServerMode desiredState) {
-        this.desiredState = desiredState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomaticTuningServerProperties();
+        }
+        this.innerProperties().withDesiredState(desiredState);
         return this;
     }
 
@@ -64,7 +58,7 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      * @return the actualState value.
      */
     public AutomaticTuningServerMode actualState() {
-        return this.actualState;
+        return this.innerProperties() == null ? null : this.innerProperties().actualState();
     }
 
     /**
@@ -73,7 +67,7 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      * @return the options value.
      */
     public Map<String, AutomaticTuningServerOptions> options() {
-        return this.options;
+        return this.innerProperties() == null ? null : this.innerProperties().options();
     }
 
     /**
@@ -83,7 +77,10 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      * @return the ServerAutomaticTuningInner object itself.
      */
     public ServerAutomaticTuningInner withOptions(Map<String, AutomaticTuningServerOptions> options) {
-        this.options = options;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutomaticTuningServerProperties();
+        }
+        this.innerProperties().withOptions(options);
         return this;
     }
 
@@ -93,15 +90,8 @@ public class ServerAutomaticTuningInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (options() != null) {
-            options()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

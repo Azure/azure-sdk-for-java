@@ -27,7 +27,11 @@ public final class CompositePathSortOrder extends ExpandableStringEnum<Composite
         return fromString(name, CompositePathSortOrder.class);
     }
 
-    /** @return known CompositePathSortOrder values. */
+    /**
+     * Gets known CompositePathSortOrder values.
+     *
+     * @return known CompositePathSortOrder values.
+     */
     public static Collection<CompositePathSortOrder> values() {
         return values(CompositePathSortOrder.class);
     }

@@ -20,7 +20,7 @@ parameters:
   BuildParallelization: '2C'
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
-  AdditionalBuildOptions: $(AdditionalBuildOptions)
+  AdditionalBuildOptions: ''
   TestParallelization: '1'
 
 jobs:

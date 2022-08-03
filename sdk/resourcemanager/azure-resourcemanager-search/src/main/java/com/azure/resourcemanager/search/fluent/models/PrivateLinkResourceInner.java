@@ -6,16 +6,12 @@ package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a supported private link resource for the Azure Cognitive Search service. */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
-
     /*
      * Describes the properties of a supported private link resource for the
      * Azure Cognitive Search service.

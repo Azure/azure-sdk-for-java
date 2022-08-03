@@ -39,7 +39,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByAgentAsync(
@@ -64,10 +64,25 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByAgentAsync(String resourceGroupName, String serverName, String jobAgentName);
+
+    /**
+     * Lists all executions in a job agent.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobExecutionInner> listByAgent(String resourceGroupName, String serverName, String jobAgentName);
 
     /**
      * Lists all executions in a job agent.
@@ -87,7 +102,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobExecutionInner> listByAgent(
@@ -104,21 +119,6 @@ public interface JobExecutionsClient {
         Context context);
 
     /**
-     * Lists all executions in a job agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByAgent(String resourceGroupName, String serverName, String jobAgentName);
-
-    /**
      * Requests cancellation of a job execution.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -130,7 +130,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> cancelWithResponseAsync(
@@ -148,7 +148,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> cancelAsync(
@@ -183,7 +183,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelWithResponse(
@@ -205,7 +205,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -222,9 +222,9 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName);
 
@@ -239,9 +239,9 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName);
 
@@ -257,9 +257,9 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context);
 
@@ -274,7 +274,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobExecutionInner> createAsync(
@@ -332,7 +332,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByJobAsync(
@@ -359,10 +359,27 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobExecutionInner> listByJobAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Lists a job's executions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobExecutionInner> listByJob(
         String resourceGroupName, String serverName, String jobAgentName, String jobName);
 
     /**
@@ -384,7 +401,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobExecutionInner> listByJob(
@@ -402,23 +419,6 @@ public interface JobExecutionsClient {
         Context context);
 
     /**
-     * Lists a job's executions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName);
-
-    /**
      * Gets a job execution.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -430,7 +430,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobExecutionInner>> getWithResponseAsync(
@@ -448,7 +448,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobExecutionInner> getAsync(
@@ -485,7 +485,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobExecutionInner> getWithResponse(
@@ -508,7 +508,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -526,9 +526,9 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
 
@@ -544,9 +544,9 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
 
@@ -563,9 +563,9 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -586,7 +586,7 @@ public interface JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobExecutionInner> createOrUpdateAsync(

@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TableResourcesClient. */
 public final class TableResourcesClientImpl implements TableResourcesClient {
-    private final ClientLogger logger = new ClientLogger(TableResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TableResourcesService service;
 
@@ -209,7 +206,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties.
+     * @return the List operation response, that contains the Table and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TableGetResultsInner>> listTablesSinglePageAsync(
@@ -262,7 +260,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties.
+     * @return the List operation response, that contains the Table and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TableGetResultsInner>> listTablesSinglePageAsync(
@@ -311,7 +310,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties.
+     * @return the List operation response, that contains the Table and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableGetResultsInner> listTablesAsync(String resourceGroupName, String accountName) {
@@ -327,7 +327,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties.
+     * @return the List operation response, that contains the Table and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TableGetResultsInner> listTablesAsync(
@@ -343,7 +344,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties.
+     * @return the List operation response, that contains the Table and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableGetResultsInner> listTables(String resourceGroupName, String accountName) {
@@ -359,7 +361,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties.
+     * @return the List operation response, that contains the Table and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableGetResultsInner> listTables(
@@ -376,7 +379,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(
@@ -430,7 +434,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(
@@ -480,19 +485,13 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableGetResultsInner> getTableAsync(String resourceGroupName, String accountName, String tableName) {
         return getTableWithResponseAsync(resourceGroupName, accountName, tableName)
-            .flatMap(
-                (Response<TableGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -521,7 +520,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableGetResultsInner> getTableWithResponse(
@@ -539,7 +539,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return an Azure Cosmos DB Table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(
@@ -606,7 +606,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return an Azure Cosmos DB Table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(
@@ -670,7 +670,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(
@@ -701,7 +701,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(
@@ -730,7 +730,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
@@ -753,7 +753,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
@@ -777,7 +777,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return an Azure Cosmos DB Table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableGetResultsInner> createUpdateTableAsync(
@@ -801,7 +801,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Table.
+     * @return an Azure Cosmos DB Table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TableGetResultsInner> createUpdateTableAsync(
@@ -870,7 +870,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(
@@ -922,7 +922,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(
@@ -970,7 +970,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(
@@ -992,7 +992,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(
@@ -1014,7 +1014,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(
@@ -1032,7 +1032,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(
@@ -1049,7 +1049,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableName) {
@@ -1068,7 +1068,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteTableAsync(
@@ -1118,8 +1118,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     *     name.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
@@ -1173,8 +1173,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     *     name.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
@@ -1224,21 +1224,14 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     *     name.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> getTableThroughputAsync(
         String resourceGroupName, String accountName, String tableName) {
         return getTableThroughputWithResponseAsync(resourceGroupName, accountName, tableName)
-            .flatMap(
-                (Response<ThroughputSettingsGetResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1269,8 +1262,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     *     name.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThroughputSettingsGetResultsInner> getTableThroughputWithResponse(
@@ -1288,7 +1281,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(
@@ -1355,7 +1349,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(
@@ -1419,7 +1414,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1452,7 +1447,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1486,7 +1481,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1510,7 +1505,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1535,7 +1530,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(
@@ -1559,7 +1554,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(
@@ -1630,7 +1625,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(
@@ -1684,7 +1680,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(
@@ -1734,7 +1731,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1761,7 +1758,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1789,7 +1786,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1807,7 +1804,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1824,7 +1821,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(
@@ -1844,7 +1841,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(
@@ -1898,7 +1895,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(
@@ -1952,7 +1950,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(
@@ -2002,7 +2001,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2029,7 +2028,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2057,7 +2056,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2075,7 +2074,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -2094,7 +2093,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(
@@ -2114,7 +2113,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(

@@ -5,126 +5,31 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vault extended information. */
-@JsonFlatten
 @Fluent
-public class VaultExtendedInfoResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultExtendedInfoResourceInner.class);
-
+public final class VaultExtendedInfoResourceInner extends ProxyResource {
     /*
-     * Integrity key.
+     * Vault extended information.
      */
-    @JsonProperty(value = "properties.integrityKey")
-    private String integrityKey;
-
-    /*
-     * Encryption key.
-     */
-    @JsonProperty(value = "properties.encryptionKey")
-    private String encryptionKey;
-
-    /*
-     * Encryption key thumbprint.
-     */
-    @JsonProperty(value = "properties.encryptionKeyThumbprint")
-    private String encryptionKeyThumbprint;
-
-    /*
-     * Algorithm for Vault ExtendedInfo
-     */
-    @JsonProperty(value = "properties.algorithm")
-    private String algorithm;
+    @JsonProperty(value = "properties")
+    private VaultExtendedInfo innerProperties;
 
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "eTag")
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
-     * Get the integrityKey property: Integrity key.
+     * Get the innerProperties property: Vault extended information.
      *
-     * @return the integrityKey value.
+     * @return the innerProperties value.
      */
-    public String integrityKey() {
-        return this.integrityKey;
-    }
-
-    /**
-     * Set the integrityKey property: Integrity key.
-     *
-     * @param integrityKey the integrityKey value to set.
-     * @return the VaultExtendedInfoResourceInner object itself.
-     */
-    public VaultExtendedInfoResourceInner withIntegrityKey(String integrityKey) {
-        this.integrityKey = integrityKey;
-        return this;
-    }
-
-    /**
-     * Get the encryptionKey property: Encryption key.
-     *
-     * @return the encryptionKey value.
-     */
-    public String encryptionKey() {
-        return this.encryptionKey;
-    }
-
-    /**
-     * Set the encryptionKey property: Encryption key.
-     *
-     * @param encryptionKey the encryptionKey value to set.
-     * @return the VaultExtendedInfoResourceInner object itself.
-     */
-    public VaultExtendedInfoResourceInner withEncryptionKey(String encryptionKey) {
-        this.encryptionKey = encryptionKey;
-        return this;
-    }
-
-    /**
-     * Get the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
-     * @return the encryptionKeyThumbprint value.
-     */
-    public String encryptionKeyThumbprint() {
-        return this.encryptionKeyThumbprint;
-    }
-
-    /**
-     * Set the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
-     * @param encryptionKeyThumbprint the encryptionKeyThumbprint value to set.
-     * @return the VaultExtendedInfoResourceInner object itself.
-     */
-    public VaultExtendedInfoResourceInner withEncryptionKeyThumbprint(String encryptionKeyThumbprint) {
-        this.encryptionKeyThumbprint = encryptionKeyThumbprint;
-        return this;
-    }
-
-    /**
-     * Get the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
-     * @return the algorithm value.
-     */
-    public String algorithm() {
-        return this.algorithm;
-    }
-
-    /**
-     * Set the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
-     * @param algorithm the algorithm value to set.
-     * @return the VaultExtendedInfoResourceInner object itself.
-     */
-    public VaultExtendedInfoResourceInner withAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
-        return this;
+    private VaultExtendedInfo innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -148,10 +53,105 @@ public class VaultExtendedInfoResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the integrityKey property: Integrity key.
+     *
+     * @return the integrityKey value.
+     */
+    public String integrityKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().integrityKey();
+    }
+
+    /**
+     * Set the integrityKey property: Integrity key.
+     *
+     * @param integrityKey the integrityKey value to set.
+     * @return the VaultExtendedInfoResourceInner object itself.
+     */
+    public VaultExtendedInfoResourceInner withIntegrityKey(String integrityKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VaultExtendedInfo();
+        }
+        this.innerProperties().withIntegrityKey(integrityKey);
+        return this;
+    }
+
+    /**
+     * Get the encryptionKey property: Encryption key.
+     *
+     * @return the encryptionKey value.
+     */
+    public String encryptionKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionKey();
+    }
+
+    /**
+     * Set the encryptionKey property: Encryption key.
+     *
+     * @param encryptionKey the encryptionKey value to set.
+     * @return the VaultExtendedInfoResourceInner object itself.
+     */
+    public VaultExtendedInfoResourceInner withEncryptionKey(String encryptionKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VaultExtendedInfo();
+        }
+        this.innerProperties().withEncryptionKey(encryptionKey);
+        return this;
+    }
+
+    /**
+     * Get the encryptionKeyThumbprint property: Encryption key thumbprint.
+     *
+     * @return the encryptionKeyThumbprint value.
+     */
+    public String encryptionKeyThumbprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionKeyThumbprint();
+    }
+
+    /**
+     * Set the encryptionKeyThumbprint property: Encryption key thumbprint.
+     *
+     * @param encryptionKeyThumbprint the encryptionKeyThumbprint value to set.
+     * @return the VaultExtendedInfoResourceInner object itself.
+     */
+    public VaultExtendedInfoResourceInner withEncryptionKeyThumbprint(String encryptionKeyThumbprint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VaultExtendedInfo();
+        }
+        this.innerProperties().withEncryptionKeyThumbprint(encryptionKeyThumbprint);
+        return this;
+    }
+
+    /**
+     * Get the algorithm property: Algorithm for Vault ExtendedInfo.
+     *
+     * @return the algorithm value.
+     */
+    public String algorithm() {
+        return this.innerProperties() == null ? null : this.innerProperties().algorithm();
+    }
+
+    /**
+     * Set the algorithm property: Algorithm for Vault ExtendedInfo.
+     *
+     * @param algorithm the algorithm value to set.
+     * @return the VaultExtendedInfoResourceInner object itself.
+     */
+    public VaultExtendedInfoResourceInner withAlgorithm(String algorithm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VaultExtendedInfo();
+        }
+        this.innerProperties().withAlgorithm(algorithm);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

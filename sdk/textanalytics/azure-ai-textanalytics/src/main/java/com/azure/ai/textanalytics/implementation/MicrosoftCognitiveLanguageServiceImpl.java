@@ -165,7 +165,9 @@ public final class MicrosoftCognitiveLanguageServiceImpl {
     }
 
     /**
-     * Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
+     * Request text analysis over a collection of documents.
+     *
+     * <p>Submit a collection of text documents for analysis. Specify a single unique task to be executed immediately.
      *
      * @param body Collection of documents to analyze and a single task to execute.
      * @param showStats (Optional) if set to true, response will contain request and document level statistics.
@@ -173,7 +175,7 @@ public final class MicrosoftCognitiveLanguageServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeTextTaskResult>> analyzeTextWithResponseAsync(

@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for TableResources CreateUpdateTable. */
 public final class TableResourcesCreateUpdateTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBTableCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBTableReplace.

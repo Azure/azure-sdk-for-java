@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB MongoDB collection. */
 @Fluent
 public final class MongoDBCollectionCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a MongoDB collection
      */
@@ -78,7 +75,7 @@ public final class MongoDBCollectionCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model MongoDBCollectionCreateUpdateProperties"));
@@ -89,4 +86,6 @@ public final class MongoDBCollectionCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDBCollectionCreateUpdateProperties.class);
 }

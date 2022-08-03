@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request that generated the event. */
 @Fluent
 public final class Request {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Request.class);
-
     /*
      * The ID of the request that initiated the event.
      */

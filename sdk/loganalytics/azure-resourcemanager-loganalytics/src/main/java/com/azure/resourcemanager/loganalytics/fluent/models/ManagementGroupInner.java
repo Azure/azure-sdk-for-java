@@ -5,66 +5,26 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A management group that is connected to a workspace. */
-@JsonFlatten
 @Fluent
-public class ManagementGroupInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementGroupInner.class);
-
+public final class ManagementGroupInner {
     /*
-     * The number of servers connected to the management group.
+     * The properties of the management group.
      */
-    @JsonProperty(value = "properties.serverCount")
-    private Integer serverCount;
+    @JsonProperty(value = "properties")
+    private ManagementGroupProperties innerProperties;
 
-    /*
-     * Gets or sets a value indicating whether the management group is a
-     * gateway.
+    /**
+     * Get the innerProperties property: The properties of the management group.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.isGateway")
-    private Boolean isGateway;
-
-    /*
-     * The name of the management group.
-     */
-    @JsonProperty(value = "properties.name")
-    private String name;
-
-    /*
-     * The unique ID of the management group.
-     */
-    @JsonProperty(value = "properties.id")
-    private String id;
-
-    /*
-     * The datetime that the management group was created.
-     */
-    @JsonProperty(value = "properties.created")
-    private OffsetDateTime created;
-
-    /*
-     * The last datetime that the management group received data.
-     */
-    @JsonProperty(value = "properties.dataReceived")
-    private OffsetDateTime dataReceived;
-
-    /*
-     * The version of System Center that is managing the management group.
-     */
-    @JsonProperty(value = "properties.version")
-    private String version;
-
-    /*
-     * The SKU of System Center that is managing the management group.
-     */
-    @JsonProperty(value = "properties.sku")
-    private String sku;
+    private ManagementGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the serverCount property: The number of servers connected to the management group.
@@ -72,7 +32,7 @@ public class ManagementGroupInner {
      * @return the serverCount value.
      */
     public Integer serverCount() {
-        return this.serverCount;
+        return this.innerProperties() == null ? null : this.innerProperties().serverCount();
     }
 
     /**
@@ -82,7 +42,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withServerCount(Integer serverCount) {
-        this.serverCount = serverCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withServerCount(serverCount);
         return this;
     }
 
@@ -92,7 +55,7 @@ public class ManagementGroupInner {
      * @return the isGateway value.
      */
     public Boolean isGateway() {
-        return this.isGateway;
+        return this.innerProperties() == null ? null : this.innerProperties().isGateway();
     }
 
     /**
@@ -102,7 +65,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withIsGateway(Boolean isGateway) {
-        this.isGateway = isGateway;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withIsGateway(isGateway);
         return this;
     }
 
@@ -112,7 +78,7 @@ public class ManagementGroupInner {
      * @return the name value.
      */
     public String name() {
-        return this.name;
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
@@ -122,7 +88,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withName(String name) {
-        this.name = name;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withName(name);
         return this;
     }
 
@@ -132,7 +101,7 @@ public class ManagementGroupInner {
      * @return the id value.
      */
     public String id() {
-        return this.id;
+        return this.innerProperties() == null ? null : this.innerProperties().id();
     }
 
     /**
@@ -142,7 +111,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withId(String id) {
-        this.id = id;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withId(id);
         return this;
     }
 
@@ -152,7 +124,7 @@ public class ManagementGroupInner {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -162,7 +134,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withCreated(OffsetDateTime created) {
-        this.created = created;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withCreated(created);
         return this;
     }
 
@@ -172,7 +147,7 @@ public class ManagementGroupInner {
      * @return the dataReceived value.
      */
     public OffsetDateTime dataReceived() {
-        return this.dataReceived;
+        return this.innerProperties() == null ? null : this.innerProperties().dataReceived();
     }
 
     /**
@@ -182,7 +157,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withDataReceived(OffsetDateTime dataReceived) {
-        this.dataReceived = dataReceived;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withDataReceived(dataReceived);
         return this;
     }
 
@@ -192,7 +170,7 @@ public class ManagementGroupInner {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -202,7 +180,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withVersion(String version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -212,7 +193,7 @@ public class ManagementGroupInner {
      * @return the sku value.
      */
     public String sku() {
-        return this.sku;
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
     /**
@@ -222,7 +203,10 @@ public class ManagementGroupInner {
      * @return the ManagementGroupInner object itself.
      */
     public ManagementGroupInner withSku(String sku) {
-        this.sku = sku;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementGroupProperties();
+        }
+        this.innerProperties().withSku(sku);
         return this;
     }
 
@@ -232,5 +216,8 @@ public class ManagementGroupInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

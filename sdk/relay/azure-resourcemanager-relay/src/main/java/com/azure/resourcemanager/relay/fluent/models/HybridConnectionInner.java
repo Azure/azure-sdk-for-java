@@ -5,53 +5,27 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Description of hybrid connection resource. */
-@JsonFlatten
 @Fluent
-public class HybridConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridConnectionInner.class);
-
+public final class HybridConnectionInner extends ProxyResource {
     /*
-     * The time the hybrid connection was created.
+     * Properties of the HybridConnection.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "properties")
+    private HybridConnectionProperties innerProperties;
 
-    /*
-     * The time the namespace was updated.
+    /**
+     * Get the innerProperties property: Properties of the HybridConnection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * The number of listeners for this hybrid connection. Note that min : 1
-     * and max:25 are supported.
-     */
-    @JsonProperty(value = "properties.listenerCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer listenerCount;
-
-    /*
-     * Returns true if client authorization is needed for this hybrid
-     * connection; otherwise, false.
-     */
-    @JsonProperty(value = "properties.requiresClientAuthorization")
-    private Boolean requiresClientAuthorization;
-
-    /*
-     * The usermetadata is a placeholder to store user-defined string data for
-     * the hybrid connection endpoint. For example, it can be used to store
-     * descriptive data, such as a list of teams and their contact information.
-     * Also, user-defined configuration settings can be stored.
-     */
-    @JsonProperty(value = "properties.userMetadata")
-    private String userMetadata;
+    private HybridConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the createdAt property: The time the hybrid connection was created.
@@ -59,7 +33,7 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -68,7 +42,7 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -78,7 +52,7 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the listenerCount value.
      */
     public Integer listenerCount() {
-        return this.listenerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().listenerCount();
     }
 
     /**
@@ -88,7 +62,7 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the requiresClientAuthorization value.
      */
     public Boolean requiresClientAuthorization() {
-        return this.requiresClientAuthorization;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresClientAuthorization();
     }
 
     /**
@@ -99,7 +73,10 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withRequiresClientAuthorization(Boolean requiresClientAuthorization) {
-        this.requiresClientAuthorization = requiresClientAuthorization;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withRequiresClientAuthorization(requiresClientAuthorization);
         return this;
     }
 
@@ -111,7 +88,7 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the userMetadata value.
      */
     public String userMetadata() {
-        return this.userMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().userMetadata();
     }
 
     /**
@@ -123,7 +100,10 @@ public class HybridConnectionInner extends ProxyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withUserMetadata(String userMetadata) {
-        this.userMetadata = userMetadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withUserMetadata(userMetadata);
         return this;
     }
 
@@ -133,5 +113,8 @@ public class HybridConnectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

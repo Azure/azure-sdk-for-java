@@ -30,7 +30,11 @@ public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
         return fromString(name, PartitionKind.class);
     }
 
-    /** @return known PartitionKind values. */
+    /**
+     * Gets known PartitionKind values.
+     *
+     * @return known PartitionKind values.
+     */
     public static Collection<PartitionKind> values() {
         return values(PartitionKind.class);
     }

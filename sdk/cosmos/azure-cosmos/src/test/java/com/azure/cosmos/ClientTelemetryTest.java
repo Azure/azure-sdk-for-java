@@ -3,11 +3,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.HttpClientUnderTestWrapper;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -228,6 +230,25 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("MB");
             }
         }
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
+    public void httpClientTests(CosmosClient cosmosClient) throws Exception {
+        // Test using different http client for client telemetry requests and metaRequests
+        ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
+        HttpClient clientTelemetryHttpClient = ReflectionUtils.getClientTelemetryMetadataHttpClient(clientTelemetry);
+        HttpClient clientTelemetryMetadataHttpClient = ReflectionUtils.getClientTelemetryHttpClint(clientTelemetry);
+
+        assertThat(clientTelemetryHttpClient).isNotSameAs(clientTelemetryMetadataHttpClient);
+
+        // Test metadataHttpClient is used for IMDS requests
+        HttpClientUnderTestWrapper clientTelemetryMetadataHttpClientWrapper = new HttpClientUnderTestWrapper(clientTelemetryHttpClient);
+        ReflectionUtils.setClientTelemetryMetadataHttpClient(clientTelemetry, clientTelemetryMetadataHttpClientWrapper.getSpyHttpClient());
+        AtomicReference<AzureVMMetadata> vmMetadata = ReflectionUtils.getAzureVMMetadata(clientTelemetry);
+        vmMetadata.set(null);
+
+        clientTelemetry.init();
+        assertThat(clientTelemetryMetadataHttpClientWrapper.capturedRequests.size()).isEqualTo(1);
     }
 
     @Test(groups = {"unit"})

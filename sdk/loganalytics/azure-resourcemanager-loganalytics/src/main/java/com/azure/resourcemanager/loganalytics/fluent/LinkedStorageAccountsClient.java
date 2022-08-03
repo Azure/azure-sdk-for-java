@@ -46,7 +46,7 @@ public interface LinkedStorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked storage accounts top level resource container.
+     * @return linked storage accounts top level resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedStorageAccountsResourceInner> createOrUpdateWithResponse(
@@ -79,7 +79,7 @@ public interface LinkedStorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -110,7 +110,8 @@ public interface LinkedStorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all linked storage account of a specific data source type associated with the specified workspace.
+     * @return all linked storage account of a specific data source type associated with the specified workspace along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedStorageAccountsResourceInner> getWithResponse(
@@ -126,7 +127,7 @@ public interface LinkedStorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
-     *     their data source type.
+     *     their data source type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkedStorageAccountsResourceInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -142,7 +143,7 @@ public interface LinkedStorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all linked storage accounts associated with the specified workspace, storage accounts will be sorted by
-     *     their data source type.
+     *     their data source type as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkedStorageAccountsResourceInner> listByWorkspace(

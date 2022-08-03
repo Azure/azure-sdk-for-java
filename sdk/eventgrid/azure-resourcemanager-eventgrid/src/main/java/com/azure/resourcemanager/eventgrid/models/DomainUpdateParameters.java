@@ -33,12 +33,6 @@ public final class DomainUpdateParameters {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /*
-     * The Sku pricing tier for the domain.
-     */
-    @JsonProperty(value = "sku")
-    private ResourceSku sku;
-
     /**
      * Get the tags property: Tags of the domains resource.
      *
@@ -85,26 +79,6 @@ public final class DomainUpdateParameters {
      */
     public DomainUpdateParameters withIdentity(IdentityInfo identity) {
         this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The Sku pricing tier for the domain.
-     *
-     * @return the sku value.
-     */
-    public ResourceSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Sku pricing tier for the domain.
-     *
-     * @param sku the sku value to set.
-     * @return the DomainUpdateParameters object itself.
-     */
-    public DomainUpdateParameters withSku(ResourceSku sku) {
-        this.sku = sku;
         return this;
     }
 
@@ -302,9 +276,6 @@ public final class DomainUpdateParameters {
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (sku() != null) {
-            sku().validate();
         }
     }
 }

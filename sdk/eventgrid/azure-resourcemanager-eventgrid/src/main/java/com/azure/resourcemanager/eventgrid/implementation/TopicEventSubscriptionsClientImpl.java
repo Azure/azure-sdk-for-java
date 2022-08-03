@@ -71,6 +71,22 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     @ServiceInterface(name = "EventGridManagementC")
     private interface TopicEventSubscriptionsService {
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
+                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("topicName") String topicName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
                 + "/{topicName}/eventSubscriptions/{eventSubscriptionName}")
@@ -169,22 +185,6 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
-                + "/{topicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("topicName") String topicName,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -193,6 +193,168 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
+
+    /**
+     * Get all delivery attributes for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for topic along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getDeliveryAttributes(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            topicName,
+                            eventSubscriptionName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get all delivery attributes for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for topic along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
+        String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getDeliveryAttributes(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                topicName,
+                eventSubscriptionName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get all delivery attributes for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for topic on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get all delivery attributes for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(
+        String resourceGroupName, String topicName, String eventSubscriptionName) {
+        return getDeliveryAttributesAsync(resourceGroupName, topicName, eventSubscriptionName).block();
+    }
+
+    /**
+     * Get all delivery attributes for an event subscription for topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
+        String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
+        return getDeliveryAttributesWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName, context)
+            .block();
     }
 
     /**
@@ -1713,168 +1875,6 @@ public final class TopicEventSubscriptionsClientImpl implements TopicEventSubscr
     public PagedIterable<EventSubscriptionInner> list(
         String resourceGroupName, String topicName, String filter, Integer top, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, topicName, filter, top, context));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeliveryAttributes(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            topicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeliveryAttributes(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                topicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        return getDeliveryAttributesWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryAttributeListResultInner getDeliveryAttributes(
-        String resourceGroupName, String topicName, String eventSubscriptionName) {
-        return getDeliveryAttributesAsync(resourceGroupName, topicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription for topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for topic along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String topicName, String eventSubscriptionName, Context context) {
-        return getDeliveryAttributesWithResponseAsync(resourceGroupName, topicName, eventSubscriptionName, context)
-            .block();
     }
 
     /**

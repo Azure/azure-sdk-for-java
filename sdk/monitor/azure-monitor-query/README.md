@@ -20,6 +20,7 @@ The Azure Monitor Query client library is used to execute read-only queries agai
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later
 - An [Azure subscription][azure_subscription]
+- A [TokenCredential](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementation, such as an [Azure Identity library credential type](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#credential-classes).
 - To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal].
 - To query Metrics, you need an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 
@@ -55,6 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
+
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
@@ -64,7 +66,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 
@@ -85,9 +87,10 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
 </dependency>
 ```
+
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 #### Synchronous clients

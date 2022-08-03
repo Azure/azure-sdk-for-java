@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -21,7 +21,7 @@ private class ChangeFeedMicroBatchStream
   val session: SparkSession,
   val schema: StructType,
   val config: Map[String, String],
-  val cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  val cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
   val checkpointLocation: String,
   diagnosticsConfig: DiagnosticsConfig
 ) extends MicroBatchStream
@@ -41,9 +41,17 @@ private class ChangeFeedMicroBatchStream
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
   private val clientCacheItem = CosmosClientCache(
     clientConfiguration,
-    Some(cosmosClientStateHandle),
+    Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedMicroBatchStream(streamId $streamId)")
-  private val container = ThroughputControlHelper.getContainer(config, containerConfig, clientCacheItem.client)
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config, clientCacheItem.context, Some(cosmosClientStateHandles))
+  private val container =
+    ThroughputControlHelper.getContainer(
+      config,
+      containerConfig,
+      clientCacheItem,
+      throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
@@ -106,7 +114,7 @@ private class ChangeFeedMicroBatchStream
       config,
       schema,
       DiagnosticsContext(correlationActivityId, checkpointLocation),
-      cosmosClientStateHandle,
+      cosmosClientStateHandles,
       diagnosticsConfig)
   }
 
@@ -136,7 +144,7 @@ private class ChangeFeedMicroBatchStream
       readLimit,
       Duration.ZERO,
       this.clientConfiguration,
-      this.cosmosClientStateHandle,
+      this.cosmosClientStateHandles,
       this.containerConfig,
       this.partitioningConfig,
       this.defaultParallelism,
@@ -225,6 +233,9 @@ private class ChangeFeedMicroBatchStream
    */
   override def stop(): Unit = {
     clientCacheItem.close()
+    if (throughputControlClientCacheItemOpt.isDefined)  {
+      throughputControlClientCacheItemOpt.get.close()
+    }
     log.logDebug(s"MicroBatch stream $streamId: stopped.")
   }
 }

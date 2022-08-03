@@ -324,7 +324,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
 
-    // indexPolicyJson will be normalized by teh backend - so not be the same as the input json
+    // indexPolicyJson will be normalized by the backend - so not be the same as the input json
     // for the purpose of this test I just want to make sure that the custom indexing options
     // are included - correctness of json serialization of indexing policy is tested elsewhere
     tblProperties("IndexingPolicy").contains("helloWorld") shouldEqual true

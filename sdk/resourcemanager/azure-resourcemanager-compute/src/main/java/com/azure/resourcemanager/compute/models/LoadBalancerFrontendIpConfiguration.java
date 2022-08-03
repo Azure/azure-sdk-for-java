@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LoadBalancerFrontendIpConfiguration model. */
+/**
+ * Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each load
+ * balancer configuration must have exactly one frontend IP configuration.
+ */
 @Fluent
 public final class LoadBalancerFrontendIpConfiguration {
     /*

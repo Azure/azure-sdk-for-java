@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServices GetInstanceView. */
 public final class CloudServicesGetInstanceViewSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/GetCloudServiceInstanceViewWithMultiRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Get_InstanceViewWithMultiRole.json
      */
     /**
      * Sample code: Get Cloud Service Instance View with Multiple Roles.

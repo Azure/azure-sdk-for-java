@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB trigger. */
 @Fluent
 public final class SqlTriggerCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTriggerCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a trigger
      */
@@ -78,7 +75,7 @@ public final class SqlTriggerCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model SqlTriggerCreateUpdateProperties"));
@@ -89,4 +86,6 @@ public final class SqlTriggerCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlTriggerCreateUpdateProperties.class);
 }

@@ -380,7 +380,7 @@ public final class BlobBatch {
             BlobBatchOperation<?> batchOperation = operations.pop();
 
             batchOperationResponses.add(batchOperation.getResponse()
-                .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
+                .contextWrite(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
                     BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
                     BATCH_OPERATION_INFO, operationInfo)));
         }

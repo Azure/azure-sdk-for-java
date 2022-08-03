@@ -27,7 +27,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobStepInner> listByVersionAsync(
@@ -45,7 +45,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobStepInner> listByVersion(
@@ -64,7 +64,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobStepInner> listByVersion(
@@ -88,7 +88,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobStepInner>> getByVersionWithResponseAsync(
@@ -112,7 +112,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobStepInner> getByVersionAsync(
@@ -161,7 +161,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobStepInner> getByVersionWithResponse(
@@ -184,7 +184,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<JobStepInner> listByJobAsync(
@@ -201,7 +201,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobStepInner> listByJob(
@@ -219,7 +219,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobStepInner> listByJob(
@@ -237,7 +237,8 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobStepInner>> getWithResponseAsync(
@@ -255,7 +256,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobStepInner> getAsync(
@@ -291,7 +292,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobStepInner> getWithResponse(
@@ -311,11 +312,11 @@ public interface JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<JobStepInner>> createOrUpdateWithResponseAsync(
@@ -335,11 +336,11 @@ public interface JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<JobStepInner> createOrUpdateAsync(
@@ -359,7 +360,7 @@ public interface JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -383,12 +384,12 @@ public interface JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobStepInner> createOrUpdateWithResponse(
@@ -412,7 +413,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(
@@ -430,7 +431,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(
@@ -465,7 +466,7 @@ public interface JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

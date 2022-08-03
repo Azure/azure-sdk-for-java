@@ -28,8 +28,10 @@ public interface OpenShiftManagedClustersClient
         InnerSupportsListing<OpenShiftManagedClusterInner>,
         InnerSupportsDelete<Void> {
     /**
-     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
-     * OpenShift managed cluster.
+     * Gets a list of OpenShift managed clusters in the specified subscription.
+     *
+     * <p>Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of
+     * each OpenShift managed cluster.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -40,8 +42,10 @@ public interface OpenShiftManagedClustersClient
     PagedFlux<OpenShiftManagedClusterInner> listAsync();
 
     /**
-     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
-     * OpenShift managed cluster.
+     * Gets a list of OpenShift managed clusters in the specified subscription.
+     *
+     * <p>Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of
+     * each OpenShift managed cluster.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,8 +56,10 @@ public interface OpenShiftManagedClustersClient
     PagedIterable<OpenShiftManagedClusterInner> list();
 
     /**
-     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
-     * OpenShift managed cluster.
+     * Gets a list of OpenShift managed clusters in the specified subscription.
+     *
+     * <p>Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of
+     * each OpenShift managed cluster.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +72,9 @@ public interface OpenShiftManagedClustersClient
     PagedIterable<OpenShiftManagedClusterInner> list(Context context);
 
     /**
-     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
+     * Lists OpenShift managed clusters in the specified subscription and resource group.
+     *
+     * <p>Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
@@ -80,7 +88,9 @@ public interface OpenShiftManagedClustersClient
     PagedFlux<OpenShiftManagedClusterInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
+     * Lists OpenShift managed clusters in the specified subscription and resource group.
+     *
+     * <p>Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
@@ -94,7 +104,9 @@ public interface OpenShiftManagedClustersClient
     PagedIterable<OpenShiftManagedClusterInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
+     * Lists OpenShift managed clusters in the specified subscription and resource group.
+     *
+     * <p>Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
      * properties of each OpenShift managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
@@ -109,7 +121,9 @@ public interface OpenShiftManagedClustersClient
     PagedIterable<OpenShiftManagedClusterInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -124,7 +138,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName);
 
     /**
-     * Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -138,7 +154,9 @@ public interface OpenShiftManagedClustersClient
     Mono<OpenShiftManagedClusterInner> getByResourceGroupAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -151,7 +169,9 @@ public interface OpenShiftManagedClustersClient
     OpenShiftManagedClusterInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Gets the details of the managed OpenShift cluster with a specified resource group and name.
+     * Gets a OpenShift managed cluster.
+     *
+     * <p>Gets the details of the managed OpenShift cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -167,7 +187,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -182,7 +205,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -197,7 +223,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -212,7 +241,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -228,7 +260,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters, Context context);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -243,7 +278,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -258,7 +296,10 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters);
 
     /**
-     * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
+     * Creates or updates an OpenShift managed cluster.
+     *
+     * <p>Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift
+     * version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -274,7 +315,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters, Context context);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -289,7 +332,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -304,7 +349,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -319,7 +366,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -335,7 +384,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, TagsObject parameters, Context context);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -350,7 +401,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -364,7 +417,9 @@ public interface OpenShiftManagedClustersClient
     OpenShiftManagedClusterInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters);
 
     /**
-     * Updates an OpenShift managed cluster with the specified tags.
+     * Updates tags on an OpenShift managed cluster.
+     *
+     * <p>Updates an OpenShift managed cluster with the specified tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -380,7 +435,9 @@ public interface OpenShiftManagedClustersClient
         String resourceGroupName, String resourceName, TagsObject parameters, Context context);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -393,7 +450,9 @@ public interface OpenShiftManagedClustersClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -406,7 +465,9 @@ public interface OpenShiftManagedClustersClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -419,7 +480,9 @@ public interface OpenShiftManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -433,7 +496,9 @@ public interface OpenShiftManagedClustersClient
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -446,7 +511,9 @@ public interface OpenShiftManagedClustersClient
     Mono<Void> deleteAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
@@ -458,7 +525,9 @@ public interface OpenShiftManagedClustersClient
     void delete(String resourceGroupName, String resourceName);
 
     /**
-     * Deletes the OpenShift managed cluster with a specified resource group and name.
+     * Deletes an OpenShift managed cluster.
+     *
+     * <p>Deletes the OpenShift managed cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.

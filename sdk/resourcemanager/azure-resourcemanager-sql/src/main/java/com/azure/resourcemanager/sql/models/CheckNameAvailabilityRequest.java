@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A request to check whether the specified name for a resource is available. */
 @Fluent
 public final class CheckNameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);
-
     /*
      * The name property.
      */
@@ -24,7 +21,7 @@ public final class CheckNameAvailabilityRequest {
      * The type property.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Sql/servers";
 
     /** Creates an instance of CheckNameAvailabilityRequest class. */
     public CheckNameAvailabilityRequest() {
@@ -78,10 +75,12 @@ public final class CheckNameAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CheckNameAvailabilityRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityRequest.class);
 }

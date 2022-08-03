@@ -30,7 +30,11 @@ public final class ProviderStackOsType extends ExpandableStringEnum<ProviderStac
         return fromString(name, ProviderStackOsType.class);
     }
 
-    /** @return known ProviderStackOsType values. */
+    /**
+     * Gets known ProviderStackOsType values.
+     *
+     * @return known ProviderStackOsType values.
+     */
     public static Collection<ProviderStackOsType> values() {
         return values(ProviderStackOsType.class);
     }
