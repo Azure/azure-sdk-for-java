@@ -20,3 +20,4 @@ stages:
       TestGoals: 'verify'
       TestOptions: '-DskipSpringITs=false'
       BuildProfile: spring3
+
