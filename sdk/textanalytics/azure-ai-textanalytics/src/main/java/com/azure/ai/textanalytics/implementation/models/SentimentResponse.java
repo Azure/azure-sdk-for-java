@@ -36,4 +36,25 @@ public final class SentimentResponse extends PreBuiltResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponse setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponse setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SentimentResponse setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
 }

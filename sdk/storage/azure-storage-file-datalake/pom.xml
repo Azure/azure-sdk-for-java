@@ -51,8 +51,6 @@
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.models=ALL-UNNAMED
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.specialized=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.amqp=ALL-UNNAMED
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.blob=ALL-UNNAMED
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
@@ -123,7 +121,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -210,7 +208,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertyVariables>
                 <AZURE_STORAGE_SAS_SERVICE_VERSION>${AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
@@ -229,7 +227,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-          <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+          <version>2.2-M3-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -238,7 +236,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-testCompile</id>
@@ -279,7 +277,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-          <version>2.0-groovy-3.0</version> <!-- {x-version-update;groovy3_org.spockframework:spock-core;external_dependency} -->
+          <version>2.2-M3-groovy-4.0</version> <!-- {x-version-update;groovy4_org.spockframework:spock-core;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -288,7 +286,7 @@
           <plugin>
             <groupId>org.codehaus.gmavenplus</groupId>
             <artifactId>gmavenplus-plugin</artifactId>
-            <version>1.13.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
+            <version>1.13.1</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
             <executions>
               <execution>
                 <goals>
@@ -297,6 +295,7 @@
                   <goal>compileTests</goal>
                   <goal>removeTestStubs</goal>
                 </goals>
+                <phase>test-compile</phase>
               </execution>
             </executions>
             <configuration>
@@ -314,7 +313,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-testCompile</id>

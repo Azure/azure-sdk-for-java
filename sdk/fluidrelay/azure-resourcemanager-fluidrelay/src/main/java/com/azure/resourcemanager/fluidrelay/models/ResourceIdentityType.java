@@ -36,6 +36,9 @@ public enum ResourceIdentityType {
      */
     @JsonCreator
     public static ResourceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceIdentityType[] items = ResourceIdentityType.values();
         for (ResourceIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

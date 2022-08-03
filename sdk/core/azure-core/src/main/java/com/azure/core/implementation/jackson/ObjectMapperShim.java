@@ -6,7 +6,7 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.ReflectionUtilsApi;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.JavaType;
@@ -431,7 +431,7 @@ public final class ObjectMapperShim {
         return TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.computeIfAbsent(key, type -> {
             try {
                 Class<?> headersClass = TypeUtil.getRawClass(type);
-                MethodHandles.Lookup lookup = ReflectionUtilsApi.INSTANCE.getLookupToUse(headersClass);
+                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(headersClass);
                 return lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class));
             } catch (Throwable throwable) {
                 if (throwable instanceof Error) {
