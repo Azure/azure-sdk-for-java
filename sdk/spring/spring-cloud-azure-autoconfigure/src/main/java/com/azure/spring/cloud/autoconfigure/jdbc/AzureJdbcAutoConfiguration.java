@@ -8,7 +8,6 @@ import com.azure.spring.cloud.service.implementation.identity.impl.credential.pr
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 
 /**
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Import;
  * @since 4.4.0
  */
 @Configuration(proxyBeanMethods = false)
-@Import(AzureGlobalPropertiesAutoConfiguration.class)
 public class AzureJdbcAutoConfiguration {
 
     @Bean

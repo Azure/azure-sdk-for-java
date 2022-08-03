@@ -41,7 +41,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
-    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER = "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider";
+    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider";
 
     private final AzureGlobalProperties azureGlobalProperties;
 
@@ -116,7 +116,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
         if (globalTokenCredential != null && credentialFreeTokenCredential == null) {
             LOGGER.info("Add SpringTokenCredentialProvider as the default token credential provider.");
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER);
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         }
 
         copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), properties.getProfile());

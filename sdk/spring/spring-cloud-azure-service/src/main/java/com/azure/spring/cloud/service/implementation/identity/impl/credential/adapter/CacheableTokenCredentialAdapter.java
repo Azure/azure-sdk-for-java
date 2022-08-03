@@ -54,7 +54,8 @@ public abstract class CacheableTokenCredentialAdapter<T extends TokenCredential>
         CLIENT_CERTIFICATE_PASSWORD(TokenCredentialProviderOptions::getClientCertificatePassword),
         TENANT_ID(TokenCredentialProviderOptions::getTenantId),
         USERNAME(TokenCredentialProviderOptions::getUsername),
-        PASSWORD(TokenCredentialProviderOptions::getPassword)
+        PASSWORD(TokenCredentialProviderOptions::getPassword),
+        TOKEN_CREDENTIAL_BEAN_NAME(TokenCredentialProviderOptions::getTokenCredentialBeanName)
         ;
         Function<TokenCredentialProviderOptions, String> getter;
 

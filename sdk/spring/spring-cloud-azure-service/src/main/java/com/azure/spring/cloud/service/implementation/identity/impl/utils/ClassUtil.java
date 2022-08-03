@@ -2,7 +2,6 @@ package com.azure.spring.cloud.service.implementation.identity.impl.utils;
 
 import com.azure.core.exception.AzureException;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
-import org.springframework.beans.BeanInstantiationException;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Constructor;
@@ -48,11 +47,11 @@ public class ClassUtil {
         primitiveWrapperTypeMap.put(Long.class, Long.TYPE);
         primitiveWrapperTypeMap.put(Short.class, Short.TYPE);
         primitiveWrapperTypeMap.put(Void.class, Void.TYPE);
-        Iterator var0 = primitiveWrapperTypeMap.entrySet().iterator();
+        Iterator iterator = primitiveWrapperTypeMap.entrySet().iterator();
 
 
-        while(var0.hasNext()) {
-            Map.Entry<Class<?>, Class<?>> entry = (Map.Entry)var0.next();
+        while(iterator.hasNext()) {
+            Map.Entry<Class<?>, Class<?>> entry = (Map.Entry)iterator.next();
             primitiveTypeToWrapperMap.put(entry.getValue(), entry.getKey());
         }
     }
@@ -145,16 +144,16 @@ public class ClassUtil {
             return ctor.newInstance(argsWithDefaultValues);
         }
         catch (InstantiationException ex) {
-            throw new BeanInstantiationException(ctor, "Is it an abstract class?", ex);
+            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Is it an abstract class?", ex);
         }
         catch (IllegalAccessException ex) {
-            throw new BeanInstantiationException(ctor, "Is the constructor accessible?", ex);
+            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Is the constructor accessible?", ex);
         }
         catch (IllegalArgumentException ex) {
-            throw new BeanInstantiationException(ctor, "Illegal arguments for constructor", ex);
+            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Illegal arguments for constructor", ex);
         }
         catch (InvocationTargetException ex) {
-            throw new BeanInstantiationException(ctor, "Constructor threw exception", ex.getTargetException());
+            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Constructor threw exception", ex);
         }
     }
 
