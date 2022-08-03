@@ -71,7 +71,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
-            DataSourceProperties dataSourceProperties = Binder.get(environment).bindOrCreate("spring.datasource", DataSourceProperties.class);
+            DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
 
             if (isPasswordProvided) {

@@ -3,12 +3,9 @@ package com.azure.spring.cloud.service.implementation.identity.api.token;
 import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
- * TODO use this or use {@link com.azure.core.credential.TokenRequestContext} instead
- * this is better because it can construct using {@link Configuration}
+ * This is better because it can construct using {@link Configuration}
  */
 public class AccessTokenResolverOptions {
 
@@ -62,18 +59,4 @@ public class AccessTokenResolverOptions {
         this.cacheAccessToken = cacheAccessToken;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccessTokenResolverOptions)) return false;
-        AccessTokenResolverOptions that = (AccessTokenResolverOptions) o;
-        return cacheAccessToken == that.cacheAccessToken && Objects.equals(claims, that.claims) && Objects.equals(tenantId, that.tenantId) && Arrays.equals(scopes, that.scopes);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(claims, tenantId, cacheAccessToken);
-        result = 31 * result + Arrays.hashCode(scopes);
-        return result;
-    }
 }

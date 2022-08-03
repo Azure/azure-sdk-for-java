@@ -26,6 +26,7 @@ class AzureCredentialFreePropertiesUtilsTest {
         configs.put(managedIdentityEnabled.getAuthProperty().getPropertyKey(), "true");
         return configs;
     }
+
     @Test
     void testConvertConfigMapToAzureProperties() {
         AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();

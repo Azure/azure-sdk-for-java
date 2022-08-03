@@ -1,6 +1,5 @@
 package com.azure.spring.cloud.service.implementation.identity.impl.credential.provider;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
 import com.azure.spring.cloud.service.implementation.identity.impl.utils.ClassUtil;

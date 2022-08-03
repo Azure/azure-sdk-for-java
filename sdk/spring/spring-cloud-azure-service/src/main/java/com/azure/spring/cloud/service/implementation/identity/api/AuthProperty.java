@@ -8,36 +8,46 @@ import java.util.Properties;
 
 public enum AuthProperty {
 
-    CLIENT_ID("azure.clientId"),
-    CLIENT_SECRET("azure.clientSecret"),
-    CLIENT_CERTIFICATE_PATH("azure.clientCertificatePath"),
-    CLIENT_CERTIFICATE_PASSWORD("azure.clientCertificatePassword"),
-    USERNAME("azure.username"),
-    PASSWORD("azure.password"),
-    MANAGED_IDENTITY_ENABLED("azure.managedIdentityEnabled"),
-    AUTHORITY_HOST("azure.authorityHost", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD),
+    CLIENT_ID("azure.clientId", "Client ID to use when performing service principal authentication with Azure.", false),
+    CLIENT_SECRET("azure.clientSecret", "lient secret to use when performing service principal authentication with Azure.", false),
+    CLIENT_CERTIFICATE_PATH("azure.clientCertificatePath", "Path of a PEM certificate file to use when performing service principal authentication with Azure.", false),
+    CLIENT_CERTIFICATE_PASSWORD("azure.clientCertificatePassword","Password of the certificate file.",false),
+    USERNAME("azure.username", "Username to use when performing username/password authentication with Azure.", false),
+    PASSWORD("azure.password", "Password to use when performing username/password authentication with Azure.", false),
+    MANAGED_IDENTITY_ENABLED("azure.managedIdentityEnabled", "Whether to enable managed identity to authenticate with Azure.", false),
+    AUTHORITY_HOST("azure.authorityHost", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, "AzureAuthority Host", true),
 
-    TENANT_ID("azure.tenantId"),
-    CLAIMS("azure.claims"),
-    SCOPES("azure.scopes"),
+    TENANT_ID("azure.tenantId", "Tenant ID for Azure resources.", true),
+    CLAIMS("azure.claims", "Claims for Azure resources.", false),
+    SCOPES("azure.scopes", "Scopes for Azure resources.", false),
 
-    // TODO define this here?,
-    GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds"),
-    TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME("azure.tokenCredentialProviderClassName"),
-    TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName"),
-    CACHE_ENABLED("azure.cacheEnabled")
+    GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds", "Max time to get AccessToken", false),
+    TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME("azure.tokenCredentialProviderClassName", "TokenCredentialProvider class name contains full path.", false),
+
+    TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName", "The bean name of tokenCredentialBean in spring context", false),
+    CACHE_ENABLED("azure.cacheEnabled", "Whether to cache accessToken.", false),
     ;
 
     String propertyKey;
     String defaultValue;
+    String description;
+    boolean required;
 
     AuthProperty(String propertyKey) {
         this.propertyKey = propertyKey;
     }
 
-    AuthProperty(String propertyKey, String defaultValue) {
+    AuthProperty(String propertyKey, String description, boolean required) {
+        this.propertyKey = propertyKey;
+        this.description = description;
+        this.required = required;
+    }
+
+    AuthProperty(String propertyKey, String defaultValue, String description, boolean required) {
         this.propertyKey = propertyKey;
         this.defaultValue = defaultValue;
+        this.description = description;
+        this.required = required;
     }
 
     public String get(Configuration configuration) {

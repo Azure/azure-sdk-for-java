@@ -3,11 +3,22 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
+
+/**
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Identify JDBC support.
+ * Provide Azure AD based authentication with Azure managed MySql and Postgresql services.
+ *
+ * @since 4.4.0
+ */
 @Configuration(proxyBeanMethods = false)
+@Import(AzureGlobalPropertiesAutoConfiguration.class)
 public class AzureJdbcAutoConfiguration {
 
     @Bean
