@@ -10,8 +10,11 @@ import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -373,6 +376,64 @@ public class ClientMetricsTest extends BatchTestBase {
                 assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+            }
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Batch")
+            );
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void batchMultipleItemExecution() {
+        this.beforeTest();
+        try {
+            TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
+            TestDoc replaceDoc = this.getTestDocCopy(firstDoc);
+            replaceDoc.setCost(replaceDoc.getCost() + 1);
+
+            EventDoc eventDoc1 = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", this.partitionKey1);
+            EventDoc readEventDoc = new EventDoc(UUID.randomUUID().toString(), 6, 14, "type2", this.partitionKey1);
+            CosmosItemResponse<EventDoc> createResponse = container.createItem(readEventDoc, this.getPartitionKey(this.partitionKey1), null);
+            assertThat(createResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
+            batch.createItemOperation(firstDoc);
+            batch.createItemOperation(eventDoc1);
+            batch.replaceItemOperation(replaceDoc.getId(), replaceDoc);
+            batch.readItemOperation(readEventDoc.getId());
+
+            CosmosBatchResponse batchResponse = container.executeCosmosBatch(batch);
+
+            this.verifyBatchProcessed(batchResponse, 4);
+
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.getResults().get(0).getItem(TestDoc.class)).isEqualTo(firstDoc);
+
+            assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.getResults().get(1).getItem(EventDoc.class)).isEqualTo(eventDoc1);
+
+            assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.getResults().get(2).getItem(TestDoc.class)).isEqualTo(replaceDoc);
+
+            assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(batchResponse.getResults().get(3).getItem(EventDoc.class)).isEqualTo(readEventDoc);
+
+            // Ensure that the replace overwrote the doc from the first operation
+            this.verifyByRead(container, replaceDoc);
+
+            List<CosmosItemOperation> batchOperations = batch.getOperations();
+            for (int index = 0; index < batchOperations.size(); index++) {
+                assertThat(batchResponse.getResults().get(index).getOperation()).isEqualTo(batchOperations.get(index));
             }
 
             this.validateMetrics(
