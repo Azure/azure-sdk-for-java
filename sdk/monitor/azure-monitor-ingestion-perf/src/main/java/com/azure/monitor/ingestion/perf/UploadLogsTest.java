@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.ingestion.perf;
 
 import com.azure.core.util.Configuration;
@@ -19,7 +22,7 @@ public class UploadLogsTest extends ServiceTest<PerfStressOptions> {
     private final List<Object> logs;
 
     /**
-     * The base class for Azure Monitor Query performance tests.
+     * The base class for Azure Monitor Ingestion performance tests.
      * @param options the configurable options for performing perf testing on this class.
      */
     public UploadLogsTest(PerfStressOptions options) {

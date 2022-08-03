@@ -6,12 +6,11 @@ package com.azure.monitor.ingestion.perf;
 import com.azure.perf.test.core.PerfStressProgram;
 
 /**
- * Runs Azure Monitor Query performance tests.
+ * Runs Azure Monitor Ingestion performance tests.
  * <p>
  * Test scenarios:
  * <ul>
- *     <li>Query logs from Azure Monitor Log Analytics workspace</li>
- *     <li>Query metrics from Azure Monitor for an Azure resource</li>
+ *     <li>Upload logs to Azure Monitor Log Analytics workspace</li>
  * </ul>
  * To run performance tests from the command line, package the project into an uber jar using {@code mvn clean
  * package}. Then run the program using {@code java -jar compiled-jar-with-dependencies-path}
