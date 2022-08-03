@@ -99,7 +99,11 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
         return fromString(name, HealthcareEntityCategory.class);
     }
 
-    /** @return known HealthcareEntityCategory values. */
+    /**
+     * Gets known HealthcareEntityCategory values.
+     *
+     * @return known HealthcareEntityCategory values.
+     */
     public static Collection<HealthcareEntityCategory> values() {
         return values(HealthcareEntityCategory.class);
     }

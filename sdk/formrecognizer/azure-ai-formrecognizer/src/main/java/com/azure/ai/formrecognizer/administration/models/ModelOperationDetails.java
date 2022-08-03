@@ -29,7 +29,7 @@ public final class ModelOperationDetails extends ModelOperationSummary {
      */
     private OffsetDateTime createdOn;
 
-    private Map<String, DocTypeInfo> docTypes;
+    private Map<String, DocumentTypeDetails> docTypes;
 
     private DocumentModelOperationError error;
 
@@ -79,12 +79,12 @@ public final class ModelOperationDetails extends ModelOperationSummary {
      *
      * @return the docTypes value.
      */
-    public Map<String, DocTypeInfo> getDocTypes() {
+    public Map<String, DocumentTypeDetails> getDocTypes() {
         return docTypes;
     }
 
     void setDocTypes(
-        Map<String, DocTypeInfo> docTypes) {
+        Map<String, DocumentTypeDetails> docTypes) {
         this.docTypes = docTypes;
     }
 
@@ -179,7 +179,7 @@ public final class ModelOperationDetails extends ModelOperationSummary {
             }
 
             @Override
-            public void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes) {
+            public void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocumentTypeDetails> docTypes) {
                 modelOperationDetails.setDocTypes(docTypes);
             }
 

@@ -5,7 +5,7 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.ReflectionUtilsApi;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.lang.invoke.MethodHandle;
@@ -35,7 +35,7 @@ public final class ResponseExceptionConstructorCache {
     private static MethodHandle locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
         Class<?> exceptionBodyType) {
         try {
-            MethodHandles.Lookup lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(exceptionClass);
+            MethodHandles.Lookup lookupToUse = ReflectionUtils.getLookupToUse(exceptionClass);
             Constructor<?> constructor = exceptionClass.getConstructor(String.class, HttpResponse.class,
                 exceptionBodyType);
 

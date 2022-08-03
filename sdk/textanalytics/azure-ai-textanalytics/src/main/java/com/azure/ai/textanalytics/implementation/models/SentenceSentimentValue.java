@@ -33,6 +33,9 @@ public enum SentenceSentimentValue {
      */
     @JsonCreator
     public static SentenceSentimentValue fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SentenceSentimentValue[] items = SentenceSentimentValue.values();
         for (SentenceSentimentValue item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
