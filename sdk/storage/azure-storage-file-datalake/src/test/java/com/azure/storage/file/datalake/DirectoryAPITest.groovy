@@ -5,7 +5,9 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.HttpClientOptions
@@ -18,6 +20,7 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
@@ -32,6 +35,7 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -4039,6 +4043,7 @@ class DirectoryAPITest extends APISpec {
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create file system with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()
@@ -4051,6 +4056,7 @@ class DirectoryAPITest extends APISpec {
         def clientBuilder = new DataLakeServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()
