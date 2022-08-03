@@ -5,6 +5,7 @@ package com.azure.xml;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
@@ -112,10 +113,61 @@ public final class DefaultXmlReader extends XmlReader {
     @Override
     public String getElementStringValue() {
         try {
-            String text = reader.getElementText();
+            // The default getElementText implementation in the JDK uses an internal buffer as the API handles merging
+            // multiple text states, characters, CDATA, space, and entity reference, into a single String. This
+            // generally results in overhead as most cases will only have a single read performed but that read will
+            // be buffered into the buffer and then returned as-is. So instead, a custom implementation will be used
+            // where a small String buffer will be used to contain the intermediate reads and when the terminal state
+            // is reached if only a single read was performed the String can be return, and if the unlikely multiple
+            // read scenario is triggered those Strings can be concatenated.
+            //
+            // This logic continues to work even if the underlying XMLStreamReader implementation, such as the one
+            // used in Jackson XML through Woodstox, handles this already.
 
-            // Treat empty string as null.
-            return "".equals(text) ? null : text;
+            int readCount = 0;
+            String firstRead = null;
+            String[] buffer = null;
+            int nextEvent = reader.next();
+
+            // Continue reading until the next event is the end of the element or an exception state.
+            while (nextEvent != XMLStreamConstants.END_ELEMENT) {
+                if (nextEvent == XMLStreamConstants.CHARACTERS
+                    || nextEvent == XMLStreamConstants.CDATA
+                    || nextEvent == XMLStreamConstants.SPACE
+                    || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
+                    readCount++;
+                    if (readCount == 1) {
+                        firstRead = reader.getText();
+                    } else {
+                        if (readCount == 2) {
+                            buffer = new String[4];
+                            buffer[0] = firstRead;
+                        }
+
+                        if (readCount > buffer.length - 1) {
+                            String[] newBuffer = new String[buffer.length * 2];
+                            System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+                            buffer = newBuffer;
+                        }
+
+                        buffer[readCount - 1] = reader.getText();
+                    }
+                } else if (nextEvent != XMLStreamConstants.PROCESSING_INSTRUCTION
+                    && nextEvent != XMLStreamConstants.COMMENT) {
+                    // Processing instructions and comments are ignored but anything else is unexpected.
+                    throw new XMLStreamException("Unexpected event type while reading element value " + nextEvent);
+                }
+
+                nextEvent = reader.next();
+            }
+
+            if (readCount == 0) {
+                return null;
+            } else if (readCount == 1) {
+                return firstRead;
+            } else {
+                return String.join("", buffer);
+            }
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         }
