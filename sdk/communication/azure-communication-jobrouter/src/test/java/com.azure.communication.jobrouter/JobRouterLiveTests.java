@@ -38,6 +38,7 @@ import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +75,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             bestWorkerModeDistributionPolicyId,
-            10.0,
+            Duration.ofSeconds(10),
             new BestWorkerMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
@@ -106,7 +107,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             bestWorkerModeDistributionPolicyId,
-            10.0,
+            Duration.ofSeconds(10),
             new BestWorkerMode()
                 .setScoringRule(azureFunctionRule)
                 .setMinConcurrentOffers(1)
@@ -133,7 +134,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             longestIdleModeDistributionPolicyId,
-            10.0,
+            Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
@@ -159,7 +160,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             roundRobinModeDistributionPolicyId,
-            10.0,
+            Duration.ofSeconds(10),
             new RoundRobinMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
@@ -354,7 +355,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             id,
-            10.0,
+            Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)

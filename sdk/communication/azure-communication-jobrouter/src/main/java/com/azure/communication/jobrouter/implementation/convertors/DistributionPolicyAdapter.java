@@ -19,7 +19,7 @@ public class DistributionPolicyAdapter {
     public static DistributionPolicy convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         return new DistributionPolicy()
             .setMode(createDistributionPolicyOptions.getMode())
-            .setOfferTtlSeconds(createDistributionPolicyOptions.getOfferTtlSeconds())
+            .setOfferTtlSeconds(Long.valueOf(createDistributionPolicyOptions.getOfferTtl().toSeconds()).doubleValue())
             .setName(createDistributionPolicyOptions.getName());
     }
 
@@ -32,6 +32,6 @@ public class DistributionPolicyAdapter {
         return new DistributionPolicy()
             .setMode(updateDistributionPolicyOptions.getMode())
             .setName(updateDistributionPolicyOptions.getName())
-            .setOfferTtlSeconds(updateDistributionPolicyOptions.getOfferTtlSeconds());
+            .setOfferTtlSeconds(Long.valueOf(updateDistributionPolicyOptions.getOfferTtl().toSeconds()).doubleValue());
     }
 }

@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter.models.options;
 import com.azure.communication.jobrouter.models.DistributionMode;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Duration;
+
 /**
  *  Request options to create a DistributionPolicy.
  *  DistributionPolicy: Policy governing how jobs are distributed to workers.
@@ -26,7 +28,7 @@ public final class CreateDistributionPolicyOptions {
      * The expiry time of any offers created under this policy will be governed
      * by the offer time to live.
      */
-    private final Double offerTtlSeconds;
+    private final Duration offerTtl;
 
     /**
      * Abstract base class for defining a distribution mode
@@ -36,13 +38,13 @@ public final class CreateDistributionPolicyOptions {
     /**
      * Constructor for CreateDistributionPolicyOptions.
      * @param id The unique identifier of the policy.
-     * @param offerTtlSeconds The expiry time of any offers created under this policy will be governed
+     * @param offerTtl The expiry time of any offers created under this policy will be governed
      *   by the offer time to live.
      * @param mode Abstract base class for defining a distribution mode.
      */
-    public CreateDistributionPolicyOptions(String id, Double offerTtlSeconds, DistributionMode mode) {
+    public CreateDistributionPolicyOptions(String id, Duration offerTtl, DistributionMode mode) {
         this.id = id;
-        this.offerTtlSeconds = offerTtlSeconds;
+        this.offerTtl = offerTtl;
         this.mode = mode;
     }
 
@@ -75,8 +77,8 @@ public final class CreateDistributionPolicyOptions {
      * Get the offer time to live of offers created under this policy.
      * @return offerTtlSeconds
      */
-    public Double getOfferTtlSeconds() {
-        return this.offerTtlSeconds;
+    public Duration getOfferTtl() {
+        return this.offerTtl;
     }
 
     /**
