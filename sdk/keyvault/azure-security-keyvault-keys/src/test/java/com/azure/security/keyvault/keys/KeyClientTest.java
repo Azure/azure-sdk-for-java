@@ -65,18 +65,13 @@ public class KeyClientTest extends KeyClientTestBase {
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
         HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(httpPipeline)
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+        KeyClientImpl implClient = spy(new KeyClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        keyClient = new KeyClient(new KeyClientImpl(asyncClient.getVaultUrl(), asyncClient.getHttpPipeline(),
-            serviceVersion));
+        keyClient = new KeyClient(implClient);
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {

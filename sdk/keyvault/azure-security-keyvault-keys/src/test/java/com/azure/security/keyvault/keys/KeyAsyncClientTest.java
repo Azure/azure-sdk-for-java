@@ -19,6 +19,7 @@ import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
@@ -67,15 +68,13 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
         HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        keyAsyncClient = spy(new KeyClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(httpPipeline)
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+        KeyClientImpl implClient = spy(new KeyClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
-            when(keyAsyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
+
+        keyAsyncClient = new KeyAsyncClient(implClient);
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
