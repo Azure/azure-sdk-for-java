@@ -99,7 +99,7 @@ public class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAllMediaOperationsWithResponse(Context context) {
-        return callMediaAsync.cancelAllMediaOperationsWithResponse(context).block();
+        return callMediaAsync.cancelAllMediaOperationsWithResponseInternal(context).block();
     }
 
 }

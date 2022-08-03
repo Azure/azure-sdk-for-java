@@ -66,7 +66,7 @@ public class CallRecording {
         URI recordingStateCallbackUri,
         StartRecordingOptions options,
         Context context) {
-        return callRecordingAsync.startRecordingWithResponse(
+        return callRecordingAsync.startRecordingWithResponseInternal(
             callLocator,
             recordingStateCallbackUri,
             options,
@@ -96,7 +96,7 @@ public class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
-        return callRecordingAsync.stopRecordingWithResponse(recordingId, context).block();
+        return callRecordingAsync.stopRecordingWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -122,7 +122,7 @@ public class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
-        return callRecordingAsync.pauseRecordingWithResponse(recordingId, context).block();
+        return callRecordingAsync.pauseRecordingWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -148,7 +148,7 @@ public class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resumeRecordingWithResponse(String recordingId, final Context context) {
-        return callRecordingAsync.resumeRecordingWithResponse(recordingId, context).block();
+        return callRecordingAsync.resumeRecordingWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -175,7 +175,7 @@ public class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStatusResponse> getRecordingStateWithResponse(String recordingId, Context context) {
-        return callRecordingAsync.getRecordingStateWithResponse(recordingId, context).block();
+        return callRecordingAsync.getRecordingStateWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -237,7 +237,7 @@ public class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> downloadContentWithResponse(String sourceEndpoint, HttpRange range, Context context) {
-        return callRecordingAsync.downloadContentWithResponse(sourceEndpoint, range, context).block();
+        return callRecordingAsync.downloadContentWithResponseInternal(sourceEndpoint, range, context).block();
     }
 
     /**
@@ -270,7 +270,7 @@ public class CallRecording {
                                                  final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-        return callRecordingAsync.downloadToWithResponse(sourceEndpoint, destinationPath,
+        return callRecordingAsync.downloadToWithResponseInternal(sourceEndpoint, destinationPath,
             options, context).block();
     }
 
@@ -293,7 +293,7 @@ public class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
-        return callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
+        return callRecordingAsync.deleteRecordingWithResponseInternal(deleteEndpoint, context).block();
     }
 
 }

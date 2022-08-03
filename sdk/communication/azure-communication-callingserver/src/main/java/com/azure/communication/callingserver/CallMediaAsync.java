@@ -57,7 +57,7 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return playWithResponse(playSource, playTo, null, null).flatMap(FluxUtil::toMono);
+        return playWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -70,7 +70,7 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playAll(PlaySource playSource) {
-        return playAllWithResponse(playSource, null, null).flatMap(FluxUtil::toMono);
+        return playAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -79,18 +79,14 @@ public class CallMediaAsync {
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to
      * @param options play options.
-     * @param context A {@link Context} representing the request context.
      * @return Response for successful play request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                 PlayOptions options, Context context) {
-        return withContext(contextValue -> {
-            contextValue = context == null ? contextValue : context;
-            return playWithResponseInternal(playSource, playTo, options, contextValue);
-        });
+                                                 PlayOptions options) {
+        return playWithResponseInternal(playSource, playTo, options, null);
     }
 
     /**
@@ -98,17 +94,13 @@ public class CallMediaAsync {
      *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param options play options.
-     * @param context A {@link Context} representing the request context.
      * @return Response for successful playAll request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
-        return withContext(contextValue -> {
-            contextValue = context == null ? contextValue : context;
-            return playWithResponseInternal(playSource, Collections.emptyList(), options, contextValue);
-        });
+    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource, PlayOptions options) {
+        return playWithResponseInternal(playSource, Collections.emptyList(), options, null);
     }
 
     /**
@@ -117,21 +109,26 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAllMediaOperations() {
-        return cancelAllMediaOperationsWithResponse(null).then();
+        return cancelAllMediaOperationsWithResponse().then();
     }
 
     /**
      * Cancels all the queued media operations
-     * @param context A {@link Context} representing the request context.
      * @return Response for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelAllMediaOperationsWithResponse(Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponse() {
+        return cancelAllMediaOperationsWithResponseInternal(null);
+    }
 
-            return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+    Mono<Response<Void>> cancelAllMediaOperationsWithResponseInternal(Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue)
+                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+            });
+
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -140,11 +137,13 @@ public class CallMediaAsync {
     Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
                                                   PlayOptions options, Context context) {
         try {
-            context = context == null ? Context.NONE : context;
-            PlayRequest request = getPlayRequest(playSource, playTo, options);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                PlayRequest request = getPlayRequest(playSource, playTo, options);
+                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+            });
 
-            return contentsInternal.playWithResponseAsync(callConnectionId, request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

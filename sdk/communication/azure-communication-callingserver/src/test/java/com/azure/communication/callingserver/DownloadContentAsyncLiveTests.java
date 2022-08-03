@@ -96,7 +96,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
         try {
             StepVerifier.create(conversationAsyncClient.getCallRecordingAsync()
-                    .downloadStreamWithResponse(VIDEO_URL, null, Context.NONE))
+                    .downloadStreamWithResponse(VIDEO_URL, null))
                     .consumeNextWith(response -> StepVerifier.create(response.getValue())
                         .consumeNextWith(byteBuffer ->
                             assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
@@ -196,7 +196,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
         StepVerifier.create(conversationAsyncClient
                 .getCallRecordingAsync()
-                .downloadStreamWithResponse(CONTENT_URL_404, null, Context.NONE))
+                .downloadStreamWithResponse(CONTENT_URL_404, null))
             .consumeNextWith(response -> {
                 assertThat(response.getStatusCode(), is(equalTo(404)));
                 StepVerifier.create(response.getValue()).verifyError(CallingServerErrorException.class);

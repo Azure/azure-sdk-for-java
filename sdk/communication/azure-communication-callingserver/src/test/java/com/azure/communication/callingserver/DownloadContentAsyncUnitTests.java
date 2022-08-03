@@ -23,7 +23,6 @@ import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpRange;
 
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,8 +61,7 @@ public class DownloadContentAsyncUnitTests {
         StepVerifier.create(
             callRecording.downloadStreamWithResponse(
                 AMS_ENDPOINT,
-                new HttpRange(CONTENTS.length()),
-                Context.NONE)
+                new HttpRange(CONTENTS.length()))
         ).consumeNextWith(response -> {
             assertEquals(200, response.getStatusCode());
             verifyContents(response.getValue());
@@ -80,7 +78,7 @@ public class DownloadContentAsyncUnitTests {
         callRecording = callingServerClient.getCallRecordingAsync();
 
         StepVerifier.create(
-            callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length()), Context.NONE)
+            callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length()))
         ).consumeNextWith(response ->
             StepVerifier.create(response.getValue()).verifyError(NullPointerException.class));
     }
@@ -94,7 +92,7 @@ public class DownloadContentAsyncUnitTests {
         File file = null;
 
         try {
-            StepVerifier.create(callRecording.downloadToWithResponse(AMS_ENDPOINT, path, options, Context.NONE))
+            StepVerifier.create(callRecording.downloadToWithResponse(AMS_ENDPOINT, path, options))
                 .consumeNextWith(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
 
             file = path.toFile();

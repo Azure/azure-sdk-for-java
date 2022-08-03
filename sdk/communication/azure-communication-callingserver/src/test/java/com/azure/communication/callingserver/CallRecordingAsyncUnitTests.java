@@ -11,7 +11,6 @@ import com.azure.communication.callingserver.models.RecordingStatus;
 import com.azure.communication.callingserver.models.RecordingStatusResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
@@ -51,8 +50,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
         validateError(InvalidParameterException.class, callRecording.startRecordingWithResponse(
             new ServerCallLocator(SERVER_CALL_ID),
             URI.create("/not/absolute/uri"),
-            startRecordingOptions,
-            Context.NONE
+            startRecordingOptions
         ));
     }
 
