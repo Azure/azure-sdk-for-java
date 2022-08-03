@@ -9,27 +9,32 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClientMetricsTest extends TestSuiteBase {
+public class ClientMetricsTest extends BatchTestBase {
 
     private CosmosClient client;
     private CosmosContainer container;
@@ -129,7 +134,7 @@ public class ClientMetricsTest extends TestSuiteBase {
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
-            this.assertMetrics("cosmos.client.req.gw" , false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
             this.afterTest();
@@ -218,12 +223,12 @@ public class ClientMetricsTest extends TestSuiteBase {
 
             this.validateMetrics(
                 Tag.of(
-                    TagName.Operation.toString(),  "Document/ReadFeed"),
+                    TagName.Operation.toString(), "Document/ReadFeed"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
-            this.assertMetrics("cosmos.client.req.gw" , true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
         } finally {
             this.afterTest();
@@ -258,13 +263,128 @@ public class ClientMetricsTest extends TestSuiteBase {
 
             this.validateMetrics(
                 Tag.of(
-                    TagName.Operation.toString(),  "Document/Query"),
+                    TagName.Operation.toString(), "Document/Query"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
-            this.assertMetrics("cosmos.client.req.gw" , true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
+    public void itemPatchSuccess() {
+        this.beforeTest();
+        try {
+            PatchTest.ToDoActivity testItem = PatchTest.ToDoActivity.createRandomItem(this.container);
+            PatchTest.ToDoActivity testItem1 = PatchTest.ToDoActivity.createRandomItem(this.container);
+            PatchTest.ToDoActivity testItem2 = PatchTest.ToDoActivity.createRandomItem(this.container);
+
+            int originalTaskNum = testItem.taskNum;
+            int newTaskNum = originalTaskNum + 1;
+
+            assertThat(testItem.children[1].status).isNull();
+
+            com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+            cosmosPatchOperations.add("/children/0/CamelCase", "patched");
+            cosmosPatchOperations.remove("/description");
+            cosmosPatchOperations.replace("/taskNum", newTaskNum);
+            cosmosPatchOperations.replace("/children/1", testItem1);
+            cosmosPatchOperations.replace("/nestedChild", testItem2);
+            cosmosPatchOperations.set("/valid", false);
+
+            CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+            CosmosItemResponse<PatchTest.ToDoActivity> response = this.container.patchItem(
+                testItem.id,
+                new PartitionKey(testItem.status),
+                cosmosPatchOperations,
+                options,
+                PatchTest.ToDoActivity.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+            PatchTest.ToDoActivity patchedItem = response.getItem();
+            assertThat(patchedItem).isNotNull();
+
+            assertThat(patchedItem.children[0].camelCase).isEqualTo("patched");
+            assertThat(patchedItem.description).isNull();
+            assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
+            assertThat(patchedItem.valid).isEqualTo(false);
+            assertThat(patchedItem.children[1].id).isEqualTo(testItem1.id);
+            assertThat(patchedItem.nestedChild.id).isEqualTo(testItem2.id);
+
+            // read resource to validate the patch operation
+            response = this.container.readItem(
+                testItem.id,
+                new PartitionKey(testItem.status),
+                options, PatchTest.ToDoActivity.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+            assertThat(response.getItem()).isEqualTo(patchedItem);
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Patch"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Patch")
+            );
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createItem_withBulk() {
+        this.beforeTest();
+        try {
+            int totalRequest = 5;
+
+            List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            for (int i = 0; i < totalRequest; i++) {
+                String partitionKey = UUID.randomUUID().toString();
+                BatchTestBase.TestDoc testDoc = this.populateTestDoc(partitionKey);
+                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+
+                partitionKey = UUID.randomUUID().toString();
+                BatchTestBase.EventDoc eventDoc = new BatchTestBase.EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
+                cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey)));
+            }
+
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+
+            List<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> bulkResponse = Lists.newArrayList(this.container
+                .executeBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions));
+
+            assertThat(bulkResponse.size()).isEqualTo(totalRequest * 2);
+
+            for (com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse : bulkResponse) {
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+            }
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Batch"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Batch")
+            );
         } finally {
             this.afterTest();
         }
@@ -326,16 +446,16 @@ public class ClientMetricsTest extends TestSuiteBase {
         List<Meter> meterMatches = meters
             .stream()
             .filter(meter -> meter.getId().getName().startsWith(prefix) &&
-                    (withTag == null || meter.getId().getTags().contains(withTag)) &&
-                    meter.measure().iterator().next().getValue() > 0)
+                (withTag == null || meter.getId().getTags().contains(withTag)) &&
+                meter.measure().iterator().next().getValue() > 0)
             .collect(Collectors.toList());
 
         if (expectedToFind) {
             assertThat(meterMatches.size()).isGreaterThan(0);
         } else {
             if (meterMatches.size() > 0) {
-                meterMatches.forEach( m ->
-                logger.error("Found unexpected meter {}", m.getId().getName()));
+                meterMatches.forEach(m ->
+                    logger.error("Found unexpected meter {}", m.getId().getName()));
             }
             assertThat(meterMatches.size()).isEqualTo(0);
         }
