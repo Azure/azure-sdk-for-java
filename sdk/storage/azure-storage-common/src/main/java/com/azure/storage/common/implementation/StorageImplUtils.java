@@ -367,7 +367,6 @@ public class StorageImplUtils {
         if (context != null && Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false))) {
             logger.info(STRING_TO_SIGN_LOG_INFO_MESSAGE, stringToSign, System.lineSeparator());
             logger.warning(STRING_TO_SIGN_LOG_WARNING_MESSAGE, Constants.STORAGE_LOG_STRING_TO_SIGN);
-            System.out.println("String to sign: " + stringToSign);
         }
     }
 

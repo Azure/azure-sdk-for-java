@@ -334,10 +334,10 @@ class DirectoryAPITest extends APISpec {
 
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
 
-        def sas = getServiceClientBuilder(environment.primaryAccount.credential, environment.primaryAccount.dataLakeEndpoint)
+        def sas = getServiceClientBuilder(environment.dataLakeAccount.credential, environment.dataLakeAccount.dataLakeEndpoint)
             .encryptionScope(encryptionScopeString)
             .buildClient()
-            .generateAccountSas(sasValues, new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true))
+            .generateAccountSas(sasValues)
 
         def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
 
