@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 import org.slf4j.Logger;
@@ -39,6 +41,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
+    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER = "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider";
 
     private final AzureGlobalProperties azureGlobalProperties;
 
@@ -108,12 +111,13 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         return bean;
     }
 
-    private static Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {
+    private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {
         Map<String, String> result = new HashMap<>();
-
-        // TODO TOKEN_CREDENTIAL_BEAN_NAME, TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME
-        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider");
-        // TODO CACHE_ENABLED, can we do this?
+        TokenCredential tokenCredential = new AzureTokenCredentialResolver().resolve(azureGlobalProperties);
+        if (tokenCredential != null) {
+            LOGGER.info("Add SpringTokenCredentialProvider as the default token credential provider.");
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER);
+        }
         AuthProperty.CACHE_ENABLED.setProperty(result, "true");
         AuthProperty.CLIENT_ID.setProperty(result, properties.getCredential().getClientId());
         AuthProperty.CLIENT_SECRET.setProperty(result, properties.getCredential().getClientSecret());

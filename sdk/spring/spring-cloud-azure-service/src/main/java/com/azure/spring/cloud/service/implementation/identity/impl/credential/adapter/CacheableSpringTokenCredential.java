@@ -1,0 +1,22 @@
+package com.azure.spring.cloud.service.implementation.identity.impl.credential.adapter;
+
+import com.azure.core.credential.TokenCredential;
+import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
+
+public class CacheableSpringTokenCredential extends CacheableTokenCredentialAdapter<TokenCredential> {
+
+    public CacheableSpringTokenCredential(TokenCredentialProviderOptions options,
+                                          TokenCredential delegate) {
+        super(options, delegate);
+    }
+
+    @Override
+    protected Descriptor[] getTokenCredentialKeyDescriptors() {
+        return new Descriptor[] {
+                Descriptor.AUTHORITY_HOST,
+                Descriptor.TENANT_ID,
+                Descriptor.CLIENT_ID
+        };
+    }
+
+}
