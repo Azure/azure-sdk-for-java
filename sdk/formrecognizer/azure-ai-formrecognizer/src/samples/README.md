@@ -44,7 +44,7 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 | [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]                                             | Manage the custom models in your account                                                                                         |
 | [CopyModel][copy_model] and [CopyModelAsync][copy_model_async]                                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
 | [ComposeModel][compose_model] and [ComposeModelAsync][compose_model_async]                                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
-| GetOperation and GetOperationAsync                                                                                                               | Get/list all document model associated with the Form Recognizer resource                                                         |
+| [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Form Recognizer resource                                                         |
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -101,5 +101,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java
 [copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModelAsync.java
+[get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummary.java
+[get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummaryAsync.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2FREADME.png)

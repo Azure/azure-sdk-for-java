@@ -3,11 +3,11 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -44,7 +44,7 @@ public class AnalyzeLayoutAsync {
 
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                Utility.toFluxByteBuffer(targetStream),
+                BinaryData.fromStream(targetStream),
                 sourceFile.length());
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
@@ -84,7 +84,7 @@ public class AnalyzeLayoutAsync {
                 // selection marks
                 documentPage.getSelectionMarks().forEach(documentSelectionMark ->
                     System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-                        documentSelectionMark.getState().toString(),
+                        documentSelectionMark.getSelectionMarkState().toString(),
                         documentSelectionMark.getBoundingPolygon().toString(),
                         documentSelectionMark.getConfidence()));
             });

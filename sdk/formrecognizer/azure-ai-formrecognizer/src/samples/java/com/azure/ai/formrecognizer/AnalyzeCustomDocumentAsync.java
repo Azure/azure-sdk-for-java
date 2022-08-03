@@ -3,12 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +47,7 @@ public class AnalyzeCustomDocumentAsync {
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
-                Utility.toFluxByteBuffer(targetStream),
+                BinaryData.fromStream(targetStream),
                 sourceFile.length());
         }
 

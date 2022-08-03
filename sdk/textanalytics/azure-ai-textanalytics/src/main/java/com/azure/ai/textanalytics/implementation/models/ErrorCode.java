@@ -65,7 +65,11 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
         return fromString(name, ErrorCode.class);
     }
 
-    /** @return known ErrorCode values. */
+    /**
+     * Gets known ErrorCode values.
+     *
+     * @return known ErrorCode values.
+     */
     public static Collection<ErrorCode> values() {
         return values(ErrorCode.class);
     }
