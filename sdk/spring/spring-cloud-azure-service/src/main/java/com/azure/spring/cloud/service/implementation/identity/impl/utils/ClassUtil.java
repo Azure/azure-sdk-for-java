@@ -13,7 +13,6 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
@@ -26,11 +25,8 @@ import java.util.stream.Collectors;
 public class ClassUtil {
 
     private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
-    @SuppressWarnings("unchecked")
-    private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new IdentityHashMap(9);
-    @SuppressWarnings("unchecked")
-    private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new IdentityHashMap(9);
-
+    private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap =  new HashMap<>();
     static {
         Map<Class<?>, Object> values = new HashMap<>();
         values.put(boolean.class, false);
@@ -52,12 +48,10 @@ public class ClassUtil {
         primitiveWrapperTypeMap.put(Long.class, Long.TYPE);
         primitiveWrapperTypeMap.put(Short.class, Short.TYPE);
         primitiveWrapperTypeMap.put(Void.class, Void.TYPE);
-        @SuppressWarnings("unchecked")
-        Iterator iterator = primitiveWrapperTypeMap.entrySet().iterator();
-
+        Iterator<Map.Entry<Class<?>, Class<?>>> iterator = primitiveWrapperTypeMap.entrySet().iterator();
 
         while(iterator.hasNext()) {
-            Map.Entry<Class<?>, Class<?>> entry = (Map.Entry)iterator.next();
+            Map.Entry<Class<?>, Class<?>> entry = iterator.next();
             primitiveTypeToWrapperMap.put(entry.getValue(), entry.getKey());
         }
     }
@@ -196,12 +190,11 @@ public class ClassUtil {
         if (lhsType.isAssignableFrom(rhsType)) {
             return true;
         } else {
-            Class resolvedWrapper;
             if (lhsType.isPrimitive()) {
-                resolvedWrapper = primitiveWrapperTypeMap.get(rhsType);
+                Class<?> resolvedWrapper = primitiveWrapperTypeMap.get(rhsType);
                 return lhsType == resolvedWrapper;
             } else {
-                resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
+                Class<?> resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
                 return resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper);
             }
         }
