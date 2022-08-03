@@ -161,11 +161,11 @@ public final class DocumentModelAdministrationAsyncClient {
      *     .subscribe&#40;documentModel -&gt; &#123;
      *         System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
-     *         documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *             docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         documentModel.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *             documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *                 System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *                 System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *             &#125;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
@@ -221,11 +221,11 @@ public final class DocumentModelAdministrationAsyncClient {
      *         System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModel.getTags&#40;&#41;&#41;;
-     *         documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *             docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         documentModel.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *             documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *                 System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *                 System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *             &#125;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
@@ -485,11 +485,11 @@ public final class DocumentModelAdministrationAsyncClient {
      *     .subscribe&#40;documentModel -&gt; &#123;
      *         System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
-     *         documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *             docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         documentModel.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *             documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *                 System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *                 System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *             &#125;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
@@ -539,11 +539,11 @@ public final class DocumentModelAdministrationAsyncClient {
      *         System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModel.getTags&#40;&#41;&#41;;
-     *         documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *             docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *         documentModel.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *             documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *                 System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *                 System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *                 System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *             &#125;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
@@ -632,7 +632,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the source model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()}
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
@@ -641,16 +641,16 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
                                                                                    CopyAuthorization target) {
-        return beginCopyModelTo(modelId, target, null);
+        return beginCopyModelTo(sourceModelId, target, null);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
                                                                             CopyAuthorization target, Context context) {
         return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
-            getCopyActivationOperation(modelId, target, context),
+            getCopyActivationOperation(sourceModelId, target, context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
@@ -719,11 +719,11 @@ public final class DocumentModelAdministrationAsyncClient {
      *     System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      *     System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      *     System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
-     *     documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *         docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *     documentModel.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *         documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *             System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *             System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *             System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *             System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
@@ -752,11 +752,11 @@ public final class DocumentModelAdministrationAsyncClient {
      *     System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
      *     System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
      *     System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     *     documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *         docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     *     documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *         documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *             System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *             System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *             System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *             System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *         &#125;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;

@@ -50,6 +50,9 @@ parameters:
 - name: AdditionalLintingOptions
   type: string
   default: ''
+- name: AdditionalBuildOptions
+  type: string
+  default: ''
 - name: AdditionalStagesAfterBuild
   type: object
   default: []
@@ -100,6 +103,7 @@ stages:
             - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
         ${{ if eq(parameters.SDKType, 'data') }}:
           TestGoals: 'verify'
           TestOptions: '-am'

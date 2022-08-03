@@ -72,7 +72,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
  * <pre>
  * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>

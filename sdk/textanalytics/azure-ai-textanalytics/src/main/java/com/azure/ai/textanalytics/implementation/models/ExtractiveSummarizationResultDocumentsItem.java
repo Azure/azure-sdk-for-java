@@ -4,10 +4,37 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import java.util.List;
 
 /** The ExtractiveSummarizationResultDocumentsItem model. */
-@Immutable
+@Fluent
 public final class ExtractiveSummarizationResultDocumentsItem extends ExtractedSummaryDocumentResult {
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResultDocumentsItem setSentences(List<ExtractedSummarySentence> sentences) {
+        super.setSentences(sentences);
+        return this;
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResultDocumentsItem setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractiveSummarizationResultDocumentsItem setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }
