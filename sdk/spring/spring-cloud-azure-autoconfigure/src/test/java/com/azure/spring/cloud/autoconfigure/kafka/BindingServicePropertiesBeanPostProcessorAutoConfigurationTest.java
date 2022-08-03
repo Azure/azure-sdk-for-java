@@ -31,7 +31,9 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
 
     @Test
     void shouldNotConfigureWithoutKafkaBinderConfigurationClass() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(KafkaBinderConfiguration.class))
+        new ApplicationContextRunner()
+                .withConfiguration(AutoConfigurations.of(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class))
+                .withClassLoader(new FilteredClassLoader(KafkaBinderConfiguration.class))
                 .run(context -> {
                     assertThat(context).doesNotHaveBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
                     assertThat(context).doesNotHaveBean(BindingServicePropertiesBeanPostProcessor.class);
@@ -104,11 +106,11 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
                 .withBean(IntegrationUtils.INTEGRATION_CONVERSION_SERVICE_BEAN_NAME, ConversionServiceFactoryBean.class,
                         ConversionServiceFactoryBean::new)
                 .withBean(BindingServiceProperties.class, () -> {
-                        BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
-                        BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                        kafkaBinderSourceProperty.getEnvironment().put(SPRING_MAIN_SOURCES_PROPERTY, "test");
-                        bindingServiceProperties.getBinders().put("kafka", kafkaBinderSourceProperty);
-                        return bindingServiceProperties;
+                    BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
+                    BinderProperties kafkaBinderSourceProperty = new BinderProperties();
+                    kafkaBinderSourceProperty.getEnvironment().put(SPRING_MAIN_SOURCES_PROPERTY, "test");
+                    bindingServiceProperties.getBinders().put("kafka", kafkaBinderSourceProperty);
+                    return bindingServiceProperties;
                 })
                 .run(context -> {
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
