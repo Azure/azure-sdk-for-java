@@ -50,7 +50,7 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
  * <pre>
  * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -62,7 +62,7 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
  * <pre>
  * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
@@ -74,17 +74,17 @@ import java.util.Map;
  * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
  * and {@link KeyClient}</p>
  *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline -->
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline -->
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline -->
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
@@ -92,7 +92,7 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <pre>
  * KeyClient keyClient = new KeyClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
