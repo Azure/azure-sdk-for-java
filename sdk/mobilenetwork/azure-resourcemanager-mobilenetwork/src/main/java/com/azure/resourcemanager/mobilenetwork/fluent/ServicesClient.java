@@ -111,7 +111,7 @@ public interface ServicesClient {
         String resourceGroupName, String mobileNetworkName, String serviceName, Context context);
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -128,7 +128,7 @@ public interface ServicesClient {
         String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters);
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -150,7 +150,7 @@ public interface ServicesClient {
         Context context);
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -167,7 +167,7 @@ public interface ServicesClient {
         String resourceGroupName, String mobileNetworkName, String serviceName, ServiceInner parameters);
 
     /**
-     * Creates or updates a Service.
+     * Creates or updates a service.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -189,7 +189,7 @@ public interface ServicesClient {
         Context context);
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -206,7 +206,7 @@ public interface ServicesClient {
         String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters);
 
     /**
-     * Update service tags.
+     * Updates service tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.

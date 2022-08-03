@@ -119,7 +119,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         "ParallelDocumentQueryExecutioncontext, but not used";
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
-    private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
     private final ConnectionPolicy connectionPolicy;
@@ -138,7 +138,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private SessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
-    private RxStoreModel gatewayProxy;
+    private RxGatewayStoreModel gatewayProxy;
     private RxStoreModel storeModel;
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -453,10 +453,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void updateGatewayProxy() {
-        ((RxGatewayStoreModel)this.gatewayProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
-        ((RxGatewayStoreModel)this.gatewayProxy).setCollectionCache(this.collectionCache);
-        ((RxGatewayStoreModel)this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
-        ((RxGatewayStoreModel)this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.gatewayProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
+        (this.gatewayProxy).setCollectionCache(this.collectionCache);
+        (this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
+        (this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
     }
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
@@ -1584,8 +1584,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
 
+            if (this.getStoreProxy(request) == this.gatewayProxy) {
+                this.gatewayProxy.prepareRequestForAuth(request, resourceName);
+            }
+
             String authorization = this.getUserAuthorizationToken(
-                    resourceName, request.getResourceType(), httpMethod, request.getHeaders(),
+                resourceName, request.getResourceType(), httpMethod, request.getHeaders(),
                     AuthorizationTokenType.PrimaryMasterKey, request.properties);
             try {
                 authorization = URLEncoder.encode(authorization, "UTF-8");
@@ -4074,7 +4078,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
-        if (request.UseGatewayMode) {
+        if (request.useGatewayMode) {
             return this.gatewayProxy;
         }
 

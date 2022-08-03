@@ -22,7 +22,7 @@ import java.util.Map;
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class BasicDigitalTwinMetadata {
-
+    
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
     private String modelId;
 

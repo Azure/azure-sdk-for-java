@@ -30,7 +30,11 @@ public final class StepType extends ExpandableStringEnum<StepType> {
         return fromString(name, StepType.class);
     }
 
-    /** @return known StepType values. */
+    /**
+     * Gets known StepType values.
+     *
+     * @return known StepType values.
+     */
     public static Collection<StepType> values() {
         return values(StepType.class);
     }

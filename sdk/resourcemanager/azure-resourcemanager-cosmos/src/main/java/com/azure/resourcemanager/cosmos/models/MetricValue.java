@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents metrics values. */
 @Immutable
 public class MetricValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricValue.class);
-
     /*
      * The number of values for the metric.
      */

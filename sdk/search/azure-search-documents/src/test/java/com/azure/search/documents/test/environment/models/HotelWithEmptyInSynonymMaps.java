@@ -5,6 +5,7 @@ package com.azure.search.documents.test.environment.models;
 
 import com.azure.search.documents.indexes.SearchableField;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class HotelWithEmptyInSynonymMaps {
      */
     @SearchableField(synonymMapNames = {"asynonymMaps", "", "  ", "maps"})
     public List<String> getTags() {
-        return tags;
+        return (tags == null) ? null : new ArrayList<>(tags);
     }
 
     /**
@@ -30,7 +31,7 @@ public class HotelWithEmptyInSynonymMaps {
      * @return The {@link HotelWithEmptyInSynonymMaps} object itself.
      */
     public HotelWithEmptyInSynonymMaps setTags(List<String> tags) {
-        this.tags = tags;
+        this.tags = (tags == null) ? null : new ArrayList<>(tags);
         return this;
     }
 }

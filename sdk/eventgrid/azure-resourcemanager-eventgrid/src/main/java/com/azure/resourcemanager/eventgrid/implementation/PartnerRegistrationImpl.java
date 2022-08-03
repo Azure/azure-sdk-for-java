@@ -11,9 +11,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInne
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
-import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationVisibilityState;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -58,59 +56,6 @@ public final class PartnerRegistrationImpl
 
     public UUID partnerRegistrationImmutableId() {
         return this.innerModel().partnerRegistrationImmutableId();
-    }
-
-    public String partnerName() {
-        return this.innerModel().partnerName();
-    }
-
-    public String partnerResourceTypeName() {
-        return this.innerModel().partnerResourceTypeName();
-    }
-
-    public String partnerResourceTypeDisplayName() {
-        return this.innerModel().partnerResourceTypeDisplayName();
-    }
-
-    public String partnerResourceTypeDescription() {
-        return this.innerModel().partnerResourceTypeDescription();
-    }
-
-    public String longDescription() {
-        return this.innerModel().longDescription();
-    }
-
-    public String partnerCustomerServiceNumber() {
-        return this.innerModel().partnerCustomerServiceNumber();
-    }
-
-    public String partnerCustomerServiceExtension() {
-        return this.innerModel().partnerCustomerServiceExtension();
-    }
-
-    public String customerServiceUri() {
-        return this.innerModel().customerServiceUri();
-    }
-
-    public String setupUri() {
-        return this.innerModel().setupUri();
-    }
-
-    public String logoUri() {
-        return this.innerModel().logoUri();
-    }
-
-    public PartnerRegistrationVisibilityState visibilityState() {
-        return this.innerModel().visibilityState();
-    }
-
-    public List<String> authorizedAzureSubscriptionIds() {
-        List<String> inner = this.innerModel().authorizedAzureSubscriptionIds();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public Region region() {
@@ -245,98 +190,6 @@ public final class PartnerRegistrationImpl
 
     public PartnerRegistrationImpl withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
         this.innerModel().withPartnerRegistrationImmutableId(partnerRegistrationImmutableId);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerName(String partnerName) {
-        this.innerModel().withPartnerName(partnerName);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerResourceTypeName(String partnerResourceTypeName) {
-        this.innerModel().withPartnerResourceTypeName(partnerResourceTypeName);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerResourceTypeDisplayName(String partnerResourceTypeDisplayName) {
-        this.innerModel().withPartnerResourceTypeDisplayName(partnerResourceTypeDisplayName);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerResourceTypeDescription(String partnerResourceTypeDescription) {
-        this.innerModel().withPartnerResourceTypeDescription(partnerResourceTypeDescription);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withLongDescription(String longDescription) {
-        this.innerModel().withLongDescription(longDescription);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerCustomerServiceNumber(String partnerCustomerServiceNumber) {
-        this.innerModel().withPartnerCustomerServiceNumber(partnerCustomerServiceNumber);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerCustomerServiceExtension(String partnerCustomerServiceExtension) {
-        this.innerModel().withPartnerCustomerServiceExtension(partnerCustomerServiceExtension);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withCustomerServiceUri(String customerServiceUri) {
-        this.innerModel().withCustomerServiceUri(customerServiceUri);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withSetupUri(String setupUri) {
-        if (isInCreateMode()) {
-            this.innerModel().withSetupUri(setupUri);
-            return this;
-        } else {
-            this.updatePartnerRegistrationUpdateParameters.withSetupUri(setupUri);
-            return this;
-        }
-    }
-
-    public PartnerRegistrationImpl withLogoUri(String logoUri) {
-        if (isInCreateMode()) {
-            this.innerModel().withLogoUri(logoUri);
-            return this;
-        } else {
-            this.updatePartnerRegistrationUpdateParameters.withLogoUri(logoUri);
-            return this;
-        }
-    }
-
-    public PartnerRegistrationImpl withVisibilityState(PartnerRegistrationVisibilityState visibilityState) {
-        this.innerModel().withVisibilityState(visibilityState);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withAuthorizedAzureSubscriptionIds(List<String> authorizedAzureSubscriptionIds) {
-        if (isInCreateMode()) {
-            this.innerModel().withAuthorizedAzureSubscriptionIds(authorizedAzureSubscriptionIds);
-            return this;
-        } else {
-            this
-                .updatePartnerRegistrationUpdateParameters
-                .withAuthorizedAzureSubscriptionIds(authorizedAzureSubscriptionIds);
-            return this;
-        }
-    }
-
-    public PartnerRegistrationImpl withPartnerTopicTypeName(String partnerTopicTypeName) {
-        this.updatePartnerRegistrationUpdateParameters.withPartnerTopicTypeName(partnerTopicTypeName);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerTopicTypeDisplayName(String partnerTopicTypeDisplayName) {
-        this.updatePartnerRegistrationUpdateParameters.withPartnerTopicTypeDisplayName(partnerTopicTypeDisplayName);
-        return this;
-    }
-
-    public PartnerRegistrationImpl withPartnerTopicTypeDescription(String partnerTopicTypeDescription) {
-        this.updatePartnerRegistrationUpdateParameters.withPartnerTopicTypeDescription(partnerTopicTypeDescription);
         return this;
     }
 

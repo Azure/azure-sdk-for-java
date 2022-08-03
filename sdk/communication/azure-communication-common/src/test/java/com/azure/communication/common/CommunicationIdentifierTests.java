@@ -71,8 +71,7 @@ public class CommunicationIdentifierTests {
     }
 
     @Test
-    public void getRawIdOfIdentifier()
-    {
+    public void getRawIdOfIdentifier() {
         assertRawId(new CommunicationUserIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"), "8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new CommunicationUserIdentifier("8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"), "8:gcch-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRawId(new CommunicationUserIdentifier("someFutureFormat"), "someFutureFormat");
@@ -90,8 +89,7 @@ public class CommunicationIdentifierTests {
     }
 
     @Test
-    public void createIdentifierFromRawId()
-    {
+    public void createIdentifierFromRawId() {
         assertIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130", new CommunicationUserIdentifier("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertIdentifier("8:spool:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130", new CommunicationUserIdentifier("8:spool:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
         assertIdentifier("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130", new CommunicationUserIdentifier("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130"));
@@ -111,8 +109,7 @@ public class CommunicationIdentifierTests {
     }
 
     @Test
-    public void rawIdStaysTheSameAfterConversionToIdentifierAndBack()
-    {
+    public void rawIdStaysTheSameAfterConversionToIdentifierAndBack() {
         assertRoundTrip("8:acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRoundTrip("8:spool:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
         assertRoundTrip("8:dod-acs:bbbcbc1e-9f06-482a-b5d8-20e3f26ef0cd_45ab2481-1c1c-4005-be24-0ffb879b1130");
@@ -132,14 +129,12 @@ public class CommunicationIdentifierTests {
         assertEquals(identifier.rawId, expectedRawId);
     }
 
-    private void assertIdentifier(String rawId, CommunicationIdentifier expectedIdentifier)
-    {
+    private void assertIdentifier(String rawId, CommunicationIdentifier expectedIdentifier) {
         assertEquals(CommunicationIdentifier.fromRawId(rawId), expectedIdentifier);
         assertEquals(CommunicationIdentifier.fromRawId(rawId).hashCode(), expectedIdentifier.hashCode());
     }
 
-    private void assertRoundTrip(String rawId)
-    {
+    private void assertRoundTrip(String rawId) {
         assertEquals(CommunicationIdentifier.fromRawId(rawId).getRawId(), rawId);
     }
 }

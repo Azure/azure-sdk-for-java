@@ -154,6 +154,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final int prefetchCount;
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
+    private final String identifier;
     /**
      * Keeps track of the open partition consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
@@ -163,7 +164,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
@@ -172,6 +173,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.prefetchCount = prefetchCount;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
+        this.identifier = identifier;
     }
 
     /**
@@ -448,7 +450,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
                     .addKeyValue(PARTITION_ID_KEY, partitionId)
                     .addKeyValue(CONNECTION_ID_KEY, connection.getId())
                     .log("Creating receive consumer for partition.");
-                return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
+                return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions, identifier);
             });
 
         // A Mono that resubscribes to 'receiveLinkMono' to retry the creation of AmqpReceiveLink.
@@ -489,5 +491,14 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     boolean isConnectionClosed() {
         return this.connectionProcessor.isChannelClosed();
+    }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getIdentifier() {
+        return identifier;
     }
 }

@@ -179,18 +179,27 @@ public final class VolumeProperties {
     private Boolean smbContinuouslyAvailable;
 
     /*
-     * Maximum throughput in Mibps that can be achieved by this volume and this
+     * Maximum throughput in MiB/s that can be achieved by this volume and this
      * will be accepted as input only for manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
 
     /*
-     * Source of key used to encrypt data in volume. Possible values
-     * (case-insensitive) are: 'Microsoft.NetApp'
+     * Source of key used to encrypt data in volume. Applicable if NetApp
+     * account has encryption.keySource = 'Microsoft.KeyVault'. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
      */
     @JsonProperty(value = "encryptionKeySource")
     private EncryptionKeySource encryptionKeySource;
+
+    /*
+     * The resource ID of private endpoint for KeyVault. It must reside in the
+     * same VNET as the volume. Only applicable if encryptionKeySource =
+     * 'Microsoft.KeyVault'.
+     */
+    @JsonProperty(value = "keyVaultPrivateEndpointResourceId")
+    private String keyVaultPrivateEndpointResourceId;
 
     /*
      * Specifies whether LDAP is enabled or not for a given NFS volume.
@@ -734,7 +743,7 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
@@ -744,7 +753,7 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Set the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
@@ -756,8 +765,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
-     * (case-insensitive) are: 'Microsoft.NetApp'.
+     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
+     * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
+     * Microsoft.KeyVault'.
      *
      * @return the encryptionKeySource value.
      */
@@ -766,14 +776,37 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
-     * (case-insensitive) are: 'Microsoft.NetApp'.
+     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
+     * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
+     * Microsoft.KeyVault'.
      *
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeProperties object itself.
      */
     public VolumeProperties withEncryptionKeySource(EncryptionKeySource encryptionKeySource) {
         this.encryptionKeySource = encryptionKeySource;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
+     * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
+     *
+     * @return the keyVaultPrivateEndpointResourceId value.
+     */
+    public String keyVaultPrivateEndpointResourceId() {
+        return this.keyVaultPrivateEndpointResourceId;
+    }
+
+    /**
+     * Set the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
+     * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
+     *
+     * @param keyVaultPrivateEndpointResourceId the keyVaultPrivateEndpointResourceId value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId) {
+        this.keyVaultPrivateEndpointResourceId = keyVaultPrivateEndpointResourceId;
         return this;
     }
 

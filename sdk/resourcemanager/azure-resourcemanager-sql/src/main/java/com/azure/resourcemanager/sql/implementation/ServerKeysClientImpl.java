@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ServerKeysClient;
@@ -40,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerKeysClient. */
 public final class ServerKeysClientImpl implements ServerKeysClient {
-    private final ClientLogger logger = new ClientLogger(ServerKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServerKeysService service;
 
@@ -66,7 +64,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     private interface ServerKeysService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/keys")
@@ -78,9 +76,10 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             @PathParam("serverName") String serverName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/keys/{keyName}")
@@ -93,9 +92,10 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             @PathParam("keyName") String keyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/keys/{keyName}")
@@ -109,6 +109,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ServerKeyInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -126,12 +127,15 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerKeyListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -143,7 +147,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerKeyInner>> listByServerSinglePageAsync(
@@ -168,6 +172,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -178,6 +183,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             serverName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<ServerKeyInner>>map(
                 res ->
@@ -188,7 +194,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -201,7 +207,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerKeyInner>> listByServerSinglePageAsync(
@@ -226,6 +232,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -234,6 +241,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 serverName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -255,7 +263,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerKeyInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -274,7 +282,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerKeyInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
@@ -292,7 +300,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerKeyInner> listByServer(String resourceGroupName, String serverName) {
@@ -309,7 +317,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerKeyInner> listByServer(String resourceGroupName, String serverName, Context context) {
@@ -326,7 +334,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerKeyInner>> getWithResponseAsync(
@@ -354,6 +362,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -365,8 +374,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             keyName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -380,7 +390,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerKeyInner>> getWithResponseAsync(
@@ -408,6 +418,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -417,6 +428,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 keyName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -430,19 +442,12 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerKeyInner> getAsync(String resourceGroupName, String serverName, String keyName) {
         return getWithResponseAsync(resourceGroupName, serverName, keyName)
-            .flatMap(
-                (Response<ServerKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -473,7 +478,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerKeyInner> getWithResponse(
@@ -491,11 +496,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -528,6 +533,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -540,8 +546,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -554,12 +561,12 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -592,6 +599,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -602,6 +610,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -615,13 +624,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link PollerFlux} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -646,14 +655,14 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link PollerFlux} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -675,13 +684,13 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link SyncPoller} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, keyName, parameters).getSyncPoller();
@@ -697,14 +706,14 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return the {@link SyncPoller} for polling of a server key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String keyName, ServerKeyInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, keyName, parameters, context).getSyncPoller();
@@ -720,11 +729,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerKeyInner> createOrUpdateAsync(
@@ -744,12 +753,12 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server key.
+     * @return a server key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerKeyInner> createOrUpdateAsync(
@@ -769,7 +778,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -791,7 +800,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      *     in the format of 'vault_key_version'. For example, if the keyId is
      *     https://YourVaultName.vault.azure.net/keys/YourKeyName/01234567890123456789012345678901, then the server key
      *     name should be formatted as: YourVaultName_YourKeyName_01234567890123456789012345678901.
-     * @param parameters A server key.
+     * @param parameters The requested server key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -814,7 +823,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -854,7 +863,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -868,7 +877,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -918,9 +927,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String keyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, keyName);
@@ -941,9 +950,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String keyName, Context context) {
         context = this.client.mergeContext(context);
@@ -964,9 +973,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String keyName) {
         return beginDeleteAsync(resourceGroupName, serverName, keyName).getSyncPoller();
     }
@@ -982,9 +991,9 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String keyName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, keyName, context).getSyncPoller();
@@ -1000,7 +1009,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String keyName) {
@@ -1020,7 +1029,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String keyName, Context context) {
@@ -1069,15 +1078,22 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerKeyInner>> listByServerNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, context))
+            .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServerKeyInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1087,7 +1103,7 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1098,16 +1114,23 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server keys.
+     * @return a list of server keys along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerKeyInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServerNext(nextLink, context)
+            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

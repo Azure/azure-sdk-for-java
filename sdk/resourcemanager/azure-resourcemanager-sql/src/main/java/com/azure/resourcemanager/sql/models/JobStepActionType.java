@@ -24,7 +24,11 @@ public final class JobStepActionType extends ExpandableStringEnum<JobStepActionT
         return fromString(name, JobStepActionType.class);
     }
 
-    /** @return known JobStepActionType values. */
+    /**
+     * Gets known JobStepActionType values.
+     *
+     * @return known JobStepActionType values.
+     */
     public static Collection<JobStepActionType> values() {
         return values(JobStepActionType.class);
     }

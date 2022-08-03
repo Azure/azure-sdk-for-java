@@ -76,7 +76,7 @@
       "elapsed-time" : "89",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"Rating\":5,\"Count\":3,\"IsEnabled\":true,\"Ratio\":3.14,\"StartDate\":\"2010-05-31T23:00:00Z\",\"EndDate\":\"2010-05-31T23:00:00Z\",\"TopLevelBucket\":{\"BucketName\":\"A\",\"Count\":12},\"Buckets\":[{\"BucketName\":\"B\",\"Count\":20},{\"BucketName\":\"C\",\"Count\":7}]},{\"@search.score\":1.0,\"Key\":\"456\",\"Rating\":0,\"Count\":0,\"IsEnabled\":false,\"Ratio\":0.0,\"StartDate\":null,\"EndDate\":null,\"TopLevelBucket\":null,\"Buckets\":[]}]}",
+      "Body" : "{\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"Rating\":5,\"Count\":3,\"IsEnabled\":true,\"Ratio\":3.25,\"StartDate\":\"2010-05-31T23:00:00Z\",\"EndDate\":\"2010-05-31T23:00:00Z\",\"TopLevelBucket\":{\"BucketName\":\"A\",\"Count\":12},\"Buckets\":[{\"BucketName\":\"B\",\"Count\":20},{\"BucketName\":\"C\",\"Count\":7}]},{\"@search.score\":1.0,\"Key\":\"456\",\"Rating\":0,\"Count\":0,\"IsEnabled\":false,\"Ratio\":0.0,\"StartDate\":null,\"EndDate\":null,\"TopLevelBucket\":null,\"Buckets\":[]}]}",
       "x-ms-client-request-id" : "ece8a1a3-5123-4e36-b6b5-f87635289767",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"

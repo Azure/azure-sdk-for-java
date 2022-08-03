@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The elastic pool edition capability. */
 @Fluent
 public final class ElasticPoolEditionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolEditionCapability.class);
-
     /*
      * The elastic pool edition name.
      */

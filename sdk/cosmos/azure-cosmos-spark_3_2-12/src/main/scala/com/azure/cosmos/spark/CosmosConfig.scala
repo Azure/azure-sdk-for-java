@@ -78,7 +78,13 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
   val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
+  val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
+  val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
+  val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
+  val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
+  val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
+  val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
@@ -135,7 +141,13 @@ private[spark] object CosmosConfigNames {
     ChangeFeedStartFrom,
     ChangeFeedMode,
     ChangeFeedItemCountPerTriggerHint,
+    ChangeFeedBatchCheckpointLocation,
     ThroughputControlEnabled,
+    ThroughputControlAccountEndpoint,
+    ThroughputControlAccountKey,
+    ThroughputControlPreferredRegionsList,
+    ThroughputControlDisableTcpConnectionEndpointRediscovery,
+    ThroughputControlUseGatewayMode,
     ThroughputControlName,
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
@@ -242,8 +254,7 @@ private object CosmosConfig {
 private case class CosmosAccountConfig(endpoint: String,
                                        key: String,
                                        accountName: String,
-                                       applicationName:
-                                       Option[String],
+                                       applicationName: Option[String],
                                        useGatewayMode: Boolean,
                                        disableTcpConnectionEndpointRediscovery: Boolean,
                                        preferredRegionsList: Option[Array[String]])
@@ -811,7 +822,10 @@ private object SerializationDateTimeConversionModes extends Enumeration {
   type SerializationDateTimeConversionMode = Value
 
   val Default: SerializationDateTimeConversionModes.Value = Value("Default")
-  val AlwaysEpochMilliseconds: SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMilliseconds")
+  val AlwaysEpochMillisecondsWithUtcTimezone:
+    SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMilliseconds")
+  val AlwaysEpochMillisecondsWithSystemDefaultTimezone:
+    SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMillisecondsWithSystemDefaultTimezone")
 }
 
 private case class CosmosSerializationConfig
@@ -835,12 +849,16 @@ private object CosmosSerializationConfig {
     mandatory = false,
     defaultValue = Some(SerializationDateTimeConversionModes.Default),
     parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SerializationDateTimeConversionModes),
-    helpMessage = "The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`). " +
+    helpMessage = "The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`, " +
+      "`AlwaysEpochMillisecondsWithSystemDefaultTimezone`). " +
       "With `Default` the standard Spark 3.* behavior is used (`java.sql.Date`/`java.time.LocalDate` are converted " +
       "to EpochDay, `java.sql.Timestamp`/`java.time.Instant` are converted to MicrosecondsFromEpoch). With " +
       "`AlwaysEpochMilliseconds` the same behavior the Cosmos DB connector for Spark 2.4 used is applied - " +
       "`java.sql.Date`, `java.time.LocalDate`, `java.sql.Timestamp` and `java.time.Instant` are converted " +
-      "to MillisecondsFromEpoch.")
+      "to MillisecondsFromEpoch. The behavior for `AlwaysEpochMillisecondsWithSystemDefaultTimezone` is identical " +
+      "with `AlwaysEpochMilliseconds` except that it will assume System default time zone / Spark session time zone " +
+      "(specified via `spark.sql.session.time zone`) instead of UTC when the date/time to be parsed has no explicit " +
+      "time zone.")
 
   def parseSerializationConfig(cfg: Map[String, String]): CosmosSerializationConfig = {
     val inclusionModeOpt = CosmosConfigEntry.parse(cfg, inclusionMode)
@@ -1055,7 +1073,8 @@ private case class CosmosChangeFeedConfig
   changeFeedMode: ChangeFeedMode,
   startFrom: ChangeFeedStartFromMode,
   startFromPointInTime: Option[Instant],
-  maxItemCountPerTrigger: Option[Long]
+  maxItemCountPerTrigger: Option[Long],
+  batchCheckpointLocation: Option[String]
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -1117,6 +1136,16 @@ private object CosmosChangeFeedConfig {
     parseFromStringFunction = maxItemCount => maxItemCount.toInt,
     helpMessage = "Approximate maximum number of items read from change feed for each trigger")
 
+  private val batchCheckpointLocation = CosmosConfigEntry[String](
+    key = CosmosConfigNames.ChangeFeedBatchCheckpointLocation,
+    mandatory = false,
+    parseFromStringFunction = location => location,
+    helpMessage = "Location of the checkpoint file used for a change feed query via batch. In Spark streaming the " +
+      "`checkpointLocation` is used (independent of which Spark connector gets used) - but for Batch this " +
+      "proprietary property needs to be used. If no file exists at the location the StartFrom settings are applied " +
+      "instead. If this config is set and a file exists the StartFrom settings are ignored and instead the change " +
+      "feed will be processed from the previous position.")
+
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
       val trimmed = sf.trim
@@ -1139,16 +1168,19 @@ private object CosmosChangeFeedConfig {
       case Some(PointInTime) => CosmosConfigEntry.parse(cfg, startFromPointInTime)
       case _ => None
     }
+    val batchCheckpointLocationParsed = CosmosConfigEntry.parse(cfg, batchCheckpointLocation)
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
       startFromModeParsed.getOrElse(DefaultStartFromMode),
       startFromPointInTimeParsed,
-      maxItemCountPerTriggerHintParsed)
+      maxItemCountPerTriggerHintParsed,
+      batchCheckpointLocationParsed)
   }
 }
 
-private case class CosmosThroughputControlConfig(groupName: String,
+private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAccountConfig,
+                                                 groupName: String,
                                                  targetThroughput: Option[Int],
                                                  targetThroughputThreshold: Option[Double],
                                                  globalControlDatabase: String,
@@ -1163,6 +1195,23 @@ private object CosmosThroughputControlConfig {
         defaultValue = Some(false),
         parseFromStringFunction = enableThroughputControl => enableThroughputControl.toBoolean,
         helpMessage = "A flag to indicate whether throughput control is enabled.")
+
+    private val throughputControlAccountEndpointUriSupplier = CosmosConfigEntry[String](
+      key = CosmosConfigNames.ThroughputControlAccountEndpoint,
+      mandatory = false,
+      defaultValue = None,
+      parseFromStringFunction = throughputControlAccountUriString => {
+        new URL(throughputControlAccountUriString)
+        throughputControlAccountUriString
+      },
+      helpMessage = "Cosmos DB Throughput Control Account Endpoint Uri.")
+
+    private val throughputControlAccountKeySupplier = CosmosConfigEntry[String](
+      key = CosmosConfigNames.ThroughputControlAccountKey,
+      mandatory = false,
+      defaultValue = None,
+      parseFromStringFunction = throughputControlAccountKey => throughputControlAccountKey,
+      helpMessage = "Cosmos DB Throughput Control Account Key.")
 
     private val groupNameSupplier = CosmosConfigEntry[String](
         key = CosmosConfigNames.ThroughputControlName,
@@ -1215,6 +1264,13 @@ private object CosmosThroughputControlConfig {
         val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
         if (throughputControlEnabled) {
+            // we will allow the customer to provide a different database account for throughput control
+            val throughputControlCosmosAccountConfig =
+              CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
+                case Some(_) => parseThroughputControlAccountConfig(cfg)
+                case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
+              }
+
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
             val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
@@ -1228,6 +1284,7 @@ private object CosmosThroughputControlConfig {
             assert(globalControlContainer.isDefined)
 
             Some(CosmosThroughputControlConfig(
+                throughputControlCosmosAccountConfig,
                 groupName.get,
                 targetThroughput,
                 targetThroughputThreshold,
@@ -1239,8 +1296,67 @@ private object CosmosThroughputControlConfig {
             None
         }
     }
-}
 
+  def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+    val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
+    val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
+    assert(throughputControlAccountEndpoint.isDefined)
+    assert(throughputControlAccountKey.isDefined)
+
+    // use customized throughput control database account
+    val throughputControlAccountConfigMap = mutable.Map[String, String]()
+    val loweredCaseConfiguration = cfg
+     .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }
+
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlAccountEndpoint,
+      CosmosConfigNames.AccountEndpoint)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlAccountKey,
+      CosmosConfigNames.AccountKey)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlUseGatewayMode,
+      CosmosConfigNames.UseGatewayMode)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlDisableTcpConnectionEndpointRediscovery,
+      CosmosConfigNames.DisableTcpConnectionEndpointRediscovery)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ThroughputControlPreferredRegionsList,
+      CosmosConfigNames.PreferredRegionsList)
+    addNonNullConfig(
+      loweredCaseConfiguration,
+      throughputControlAccountConfigMap,
+      CosmosConfigNames.ApplicationName,
+      CosmosConfigNames.ApplicationName)
+
+    CosmosAccountConfig.parseCosmosAccountConfig(throughputControlAccountConfigMap.toMap)
+  }
+
+  def addNonNullConfig(
+                       originalLowercaseCfg: Map[String, String],
+                       newCfg: mutable.Map[String, String],
+                       originalConfigName: String,
+                       newConfigName: String): Unit = {
+
+    // Convert all config name to lower case
+    val originalLowercaseCfgName = originalConfigName.toLowerCase(Locale.ROOT)
+    val newLowercaseCfgName = newConfigName.toLowerCase(Locale.ROOT)
+
+    if (originalLowercaseCfg.get(originalLowercaseCfgName).isDefined) {
+      newCfg += (newLowercaseCfgName -> originalLowercaseCfg.get(originalLowercaseCfgName).get)
+    }
+  }
+}
 
 private case class CosmosConfigEntry[T](key: String,
                                         keyAlias: Option[String] = Option.empty,

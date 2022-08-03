@@ -5,43 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.VirtualClusterProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** An update request for an Azure SQL Database virtual cluster. */
-@JsonFlatten
 @Fluent
-public class VirtualClusterUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualClusterUpdate.class);
+public final class VirtualClusterUpdate {
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualClusterProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Subnet resource ID for the virtual cluster.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.subnetId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subnetId;
-
-    /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here.
-     */
-    @JsonProperty(value = "properties.family")
-    private String family;
-
-    /*
-     * List of resources in this virtual cluster.
-     */
-    @JsonProperty(value = "properties.childResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> childResources;
+    private VirtualClusterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -69,7 +62,7 @@ public class VirtualClusterUpdate {
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -79,7 +72,7 @@ public class VirtualClusterUpdate {
      * @return the family value.
      */
     public String family() {
-        return this.family;
+        return this.innerProperties() == null ? null : this.innerProperties().family();
     }
 
     /**
@@ -90,7 +83,10 @@ public class VirtualClusterUpdate {
      * @return the VirtualClusterUpdate object itself.
      */
     public VirtualClusterUpdate withFamily(String family) {
-        this.family = family;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualClusterProperties();
+        }
+        this.innerProperties().withFamily(family);
         return this;
     }
 
@@ -100,7 +96,7 @@ public class VirtualClusterUpdate {
      * @return the childResources value.
      */
     public List<String> childResources() {
-        return this.childResources;
+        return this.innerProperties() == null ? null : this.innerProperties().childResources();
     }
 
     /**
@@ -109,5 +105,8 @@ public class VirtualClusterUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

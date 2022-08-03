@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites GetPrivateEndpointConnectionList. */
 public final class StaticSitesGetPrivateEndpointConnectionListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnectionList.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSitePrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Get a list of private endpoint connections associated with a site.

@@ -75,7 +75,7 @@
       "elapsed-time" : "82",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"Key\":\"1\",\"Bools\":[true,false],\"Dates\":[\"2019-04-14T14:24:00Z\",\"1999-12-31T23:59:59Z\"],\"Doubles\":[\"-INF\",0.0,2.78,\"NaN\",3.14,\"INF\"],\"Points\":[{\"type\":\"Point\",\"coordinates\":[-67.0,49.0],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},{\"type\":\"Point\",\"coordinates\":[21.0,47.0],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}}],\"Ints\":[1,2,3,4,-13,5,0],\"Longs\":[-9999999999999999,832372345832523],\"Strings\":[\"hello\",\"2019-04-14T14:56:00-07:00\"]}",
+      "Body" : "{\"Key\":\"1\",\"Bools\":[true,false],\"Dates\":[\"2019-04-14T14:24:00Z\",\"1999-12-31T23:59:59Z\"],\"Doubles\":[\"-INF\",0.0,2.78,\"NaN\",3.25,\"INF\"],\"Points\":[{\"type\":\"Point\",\"coordinates\":[-67.0,49.0],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},{\"type\":\"Point\",\"coordinates\":[21.0,47.0],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}}],\"Ints\":[1,2,3,4,-13,5,0],\"Longs\":[-9999999999999999,832372345832523],\"Strings\":[\"hello\",\"2019-04-14T14:56:00-07:00\"]}",
       "x-ms-client-request-id" : "c5061891-c437-4740-aefc-67e69ebbd720",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"

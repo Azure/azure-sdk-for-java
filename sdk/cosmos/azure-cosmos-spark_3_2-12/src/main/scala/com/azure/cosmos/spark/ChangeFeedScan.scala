@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
@@ -15,7 +14,7 @@ private case class ChangeFeedScan
   session: SparkSession,
   schema: StructType,
   config: Map[String, String],
-  cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
   diagnosticsConfig: DiagnosticsConfig
 )
   extends Scan {
@@ -47,7 +46,7 @@ private case class ChangeFeedScan
    *                                       `TableCapability.BATCH_READ`
    */
   override def toBatch: Batch = {
-    new ChangeFeedBatch(session, schema, config, cosmosClientStateHandle, diagnosticsConfig)
+    new ChangeFeedBatch(session, schema, config, cosmosClientStateHandles, diagnosticsConfig)
   }
 
   /**
@@ -63,6 +62,6 @@ private case class ChangeFeedScan
    *                                       `TableCapability.MICRO_BATCH_READ`
    */
   override def toMicroBatchStream(checkpointLocation: String): MicroBatchStream = {
-    new ChangeFeedMicroBatchStream(session, schema, config, cosmosClientStateHandle, checkpointLocation: String, diagnosticsConfig)
+    new ChangeFeedMicroBatchStream(session, schema, config, cosmosClientStateHandles, checkpointLocation: String, diagnosticsConfig)
   }
 }

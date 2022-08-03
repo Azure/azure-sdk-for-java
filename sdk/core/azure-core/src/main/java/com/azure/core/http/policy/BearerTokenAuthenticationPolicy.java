@@ -19,8 +19,7 @@ import java.util.Objects;
 import static com.azure.core.util.AuthorizationChallengeHandler.WWW_AUTHENTICATE;
 
 /**
- * The pipeline policy that applies a token credential to an HTTP request
- * with "Bearer" scheme.
+ * The pipeline policy that applies a token credential to an HTTP request with "Bearer" scheme.
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
@@ -61,13 +60,13 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-        setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes), false);
+        setAuthorizationHeaderHelperSync(context, new TokenRequestContext().addScopes(scopes), false);
     }
 
     /**
-     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
-     * challenge header is received after the initial request and returns appropriate {@link TokenRequestContext} to
-     * be used for re-authentication.
+     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
+     * header is received after the initial request and returns appropriate {@link TokenRequestContext} to be used for
+     * re-authentication.
      *
      * @param context The request context.
      * @param response The Http Response containing the authentication challenge header.
@@ -78,9 +77,9 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
-     * challenge header is received after the initial request and returns appropriate {@link TokenRequestContext} to
-     * be used for re-authentication.
+     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
+     * header is received after the initial request and returns appropriate {@link TokenRequestContext} to be used for
+     * re-authentication.
      *
      * @param context The request context.
      * @param response The Http Response containing the authentication challenge header.
@@ -161,9 +160,18 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         return setAuthorizationHeaderHelper(context, tokenRequestContext, true);
     }
 
+    /**
+     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
+     *
+     * @param context the HTTP pipeline context.
+     * @param tokenRequestContext the token request context to be used for token acquisition.
+     */
+    public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+        setAuthorizationHeaderHelperSync(context, tokenRequestContext, true);
+    }
+
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
-                                                    TokenRequestContext tokenRequestContext,
-                                                    boolean checkToForceFetchToken) {
+        TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         return cache.getToken(tokenRequestContext, checkToForceFetchToken)
             .flatMap(token -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
@@ -171,8 +179,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
             });
     }
 
-    private void setAuthorizationHeaderSync(HttpPipelineCallContext context,
-                                            TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+    private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
+        TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
         context.getHttpRequest().getHeaders().set(AUTHORIZATION_HEADER, BEARER + " " + token.getToken());
     }

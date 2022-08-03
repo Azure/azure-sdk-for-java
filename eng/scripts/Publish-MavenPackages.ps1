@@ -192,7 +192,7 @@ foreach ($packageDetail in $packageDetails) {
 
     Write-Information "Release attempt $attemt exited with code $LASTEXITCODE"
     Write-Information "Checking Azure DevOps to see if release was successful"
-    if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+    if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail -BearerToken $RepositoryPassword) {
       Write-Information "Package $($packageDetail.FullyQualifiedName) deployed despite non-zero exit code."
       continue
     }

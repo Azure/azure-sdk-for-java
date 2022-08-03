@@ -30,7 +30,11 @@ public final class DatabaseAccountKind extends ExpandableStringEnum<DatabaseAcco
         return fromString(name, DatabaseAccountKind.class);
     }
 
-    /** @return known DatabaseAccountKind values. */
+    /**
+     * Gets known DatabaseAccountKind values.
+     *
+     * @return known DatabaseAccountKind values.
+     */
     public static Collection<DatabaseAccountKind> values() {
         return values(DatabaseAccountKind.class);
     }

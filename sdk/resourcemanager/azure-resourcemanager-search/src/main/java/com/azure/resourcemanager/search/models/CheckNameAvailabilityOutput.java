@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Output of check name availability API. */
 @Immutable
 public final class CheckNameAvailabilityOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityOutput.class);
-
     /*
      * A value indicating whether the name is available.
      */

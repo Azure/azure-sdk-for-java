@@ -53,7 +53,11 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
         return fromString(name, AnalyzeTextLROTaskKind.class);
     }
 
-    /** @return known AnalyzeTextLROTaskKind values. */
+    /**
+     * Gets known AnalyzeTextLROTaskKind values.
+     *
+     * @return known AnalyzeTextLROTaskKind values.
+     */
     public static Collection<AnalyzeTextLROTaskKind> values() {
         return values(AnalyzeTextLROTaskKind.class);
     }

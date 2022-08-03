@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.test.environment.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HotelWithUnsupportedField {
@@ -21,6 +22,6 @@ public class HotelWithUnsupportedField {
     }
 
     public List<Byte> getSomeListBytes() {
-        return someListBytes;
+        return (someListBytes == null) ? null : new ArrayList<>(someListBytes);
     }
 }

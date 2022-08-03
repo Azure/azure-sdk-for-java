@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB resource auto-upgrade policy. */
 @Fluent
 public final class AutoUpgradePolicyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoUpgradePolicyResource.class);
-
     /*
      * Represents throughput policy which service must adhere to for
      * auto-upgrade

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A notebook workspace resource. */
 @Fluent
 public final class NotebookWorkspaceInner extends ArmProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceInner.class);
-
     /*
      * Resource properties.
      */

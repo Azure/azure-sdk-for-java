@@ -11,14 +11,15 @@ import java.util.Arrays;
 /** Samples for CloudServices Rebuild. */
 public final class CloudServicesRebuildSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/RebuildCloudServiceRoleInstances.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Rebuild_ByCloudService.json
      */
     /**
-     * Sample code: Rebuild Cloud Service Role Instances.
+     * Sample code: Rebuild Cloud Service Role Instances in a Cloud Service.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void rebuildCloudServiceRoleInstances(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void rebuildCloudServiceRoleInstancesInACloudService(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryDisplay;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Available operation details. */
 @Fluent
 public final class ClientDiscoveryValueForSingleApiInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryValueForSingleApiInner.class);
-
     /*
      * Name of the Operation.
      */

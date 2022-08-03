@@ -5,6 +5,7 @@ package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import okhttp3.Response;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,6 +23,11 @@ public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
     public OkHttpAsyncBufferedResponse(Response response, HttpRequest request, byte[] body) {
         super(response, request);
         this.body = body;
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromBytes(body);
     }
 
     @Override

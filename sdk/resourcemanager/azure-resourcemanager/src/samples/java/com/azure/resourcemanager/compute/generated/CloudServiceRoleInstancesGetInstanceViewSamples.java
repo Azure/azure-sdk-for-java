@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServiceRoleInstances GetInstanceView. */
 public final class CloudServiceRoleInstancesGetInstanceViewSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/GetInstanceViewOfCloudServiceRoleInstance.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Get_InstanceView.json
      */
     /**
      * Sample code: Get Instance View of Cloud Service Role Instance.

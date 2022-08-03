@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The display information for a container registry operation. */
 @Fluent
 public final class OperationDisplayDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplayDefinition.class);
-
     /*
      * The resource provider name: Microsoft.ContainerRegistry.
      */

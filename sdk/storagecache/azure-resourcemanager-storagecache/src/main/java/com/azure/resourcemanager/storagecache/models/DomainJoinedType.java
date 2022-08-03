@@ -30,7 +30,11 @@ public final class DomainJoinedType extends ExpandableStringEnum<DomainJoinedTyp
         return fromString(name, DomainJoinedType.class);
     }
 
-    /** @return known DomainJoinedType values. */
+    /**
+     * Gets known DomainJoinedType values.
+     *
+     * @return known DomainJoinedType values.
+     */
     public static Collection<DomainJoinedType> values() {
         return values(DomainJoinedType.class);
     }
