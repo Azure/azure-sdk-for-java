@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -27,19 +27,14 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -63,26 +58,10 @@ public final class Utility {
     private Utility() {
     }
 
-    /**
-     * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given
-     * InputStream.
-     *
-     * @param inputStream InputStream to back the Flux
-     * @return Flux of ByteBuffer backed by the InputStream
-     * @throws NullPointerException If {@code inputStream} is null.
-     */
-    public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
-        Objects.requireNonNull(inputStream, "'inputStream' is required and cannot be null.");
-        return FluxUtil
-            .toFluxByteBuffer(inputStream)
-            .cache()
-            .map(ByteBuffer::duplicate);
-    }
-
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
                                                  Configuration configuration, RetryPolicy retryPolicy,
                                                  RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
-                                                 TokenCredential tokenCredential, FormRecognizerAudience audience,
+                                                 TokenCredential tokenCredential, DocumentAnalysisAudience audience,
                                                  List<HttpPipelinePolicy> perCallPolicies,
                                                  List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
 
@@ -111,7 +90,7 @@ public final class Utility {
         // Authentications
         if (tokenCredential != null) {
             if (audience == null) {
-                audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
             }
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience + DEFAULT_SCOPE));

@@ -17,15 +17,14 @@ public final class ExtractedSummarySentence {
     private String text;
 
     /*
-     * A double value representing the relevance of the sentence within the
-     * summary. Higher values indicate higher importance.
+     * A double value representing the relevance of the sentence within the summary. Higher values indicate higher
+     * importance.
      */
     @JsonProperty(value = "rankScore", required = true)
     private double rankScore;
 
     /*
-     * The sentence offset from the start of the document, based on the value
-     * of the parameter StringIndexType.
+     * The sentence offset from the start of the document, based on the value of the parameter StringIndexType.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;

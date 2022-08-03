@@ -6,15 +6,14 @@ import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, Cosm
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
-import org.apache.spark.{SparkContext, TaskContext}
-import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.{SparkContext, TaskContext}
 
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException
-import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
@@ -45,7 +44,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     TimeUnit.SECONDS)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+            cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
             calledFrom: String): CosmosClientCacheItem = {
 
     if (isOnSparkDriver()) {
@@ -119,7 +118,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
-                               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+                               cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
                                ownerInfo: OwnerInfo)
   : CosmosClientCacheItem = synchronized {
     val clientConfigWrapper = ClientConfigurationWrapper(cosmosClientConfiguration)
@@ -208,7 +207,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
         effectiveClientStateHandle match {
           case Some(handle) =>
-            val metadataCache = handle.value
+            val metadataCache = handle
             SparkBridgeImplementationInternal.setMetadataCacheSnapshot(builder, metadataCache)
           case None =>
         }

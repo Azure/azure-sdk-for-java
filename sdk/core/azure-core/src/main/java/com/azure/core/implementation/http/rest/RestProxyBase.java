@@ -107,9 +107,7 @@ public abstract class RestProxyBase {
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", methodParser.isResponseEagerlyRead());
 
-
-            return invoke(proxy, method, options, errorOptions != null ? errorOptions : null,
-                requestCallback != null ? requestCallback : null, methodParser, request, context);
+            return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
         } catch (IOException e) {
             if (isAsync) {
@@ -176,7 +174,7 @@ public abstract class RestProxyBase {
      * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
-    Context startTracingSpan(Method method, Context context) {
+    static Context startTracingSpan(SwaggerMethodParser method, Context context) {
         // First check if tracing is enabled. This is an optimized operation, so it is done first.
         if (!TracerProxy.isTracingEnabled()) {
             return context;
@@ -187,7 +185,7 @@ public abstract class RestProxyBase {
             return context;
         }
 
-        String spanName = interfaceParser.getServiceName() + "." + method.getName();
+        String spanName = method.getSpanName();
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
     }
@@ -238,7 +236,7 @@ public abstract class RestProxyBase {
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
-        final String path = methodParser.setPath(args);
+        final String path = methodParser.setPath(args, serializer);
         final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
 
         final UrlBuilder urlBuilder;
@@ -247,7 +245,7 @@ public abstract class RestProxyBase {
         } else {
             urlBuilder = new UrlBuilder();
 
-            methodParser.setSchemeAndHost(args, urlBuilder);
+            methodParser.setSchemeAndHost(args, urlBuilder, serializer);
 
             // Set the path after host, concatenating the path
             // segment in the host.
@@ -265,7 +263,7 @@ public abstract class RestProxyBase {
             }
         }
 
-        methodParser.setEncodedQueryParameters(args, urlBuilder);
+        methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
 
         final URL url = urlBuilder.toUrl();
         final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
@@ -273,7 +271,7 @@ public abstract class RestProxyBase {
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
-        methodParser.setHeaders(args, httpHeaders);
+        methodParser.setHeaders(args, httpHeaders, serializer);
 
         return request;
     }
@@ -281,7 +279,7 @@ public abstract class RestProxyBase {
     @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
                                       SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
-        final Object bodyContentObject = methodParser.setBody(args);
+        final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
             request.getHeaders().set("Content-Length", "0");
         } else {

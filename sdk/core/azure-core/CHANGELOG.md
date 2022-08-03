@@ -28,6 +28,8 @@
 - Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
   - Added ability to get and set `ProgressReporter` on `Context`.
 - Added `HttpPipelineCallContext.getContext()`.
+- Added `com.azure.core.util.metrics` package and metrics abstractions (intended for client libraries):
+  `MeterProvider`, `Meter`, `LongCounter` and `DoubleHistogram`.
 
 ### Bugs Fixed
 
