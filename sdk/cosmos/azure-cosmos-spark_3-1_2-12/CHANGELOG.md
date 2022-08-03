@@ -3,6 +3,7 @@
 ### 4.13.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
 
 #### Breaking Changes
 
