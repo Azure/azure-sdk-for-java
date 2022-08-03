@@ -12,7 +12,6 @@ import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.JobPositionDetails;
 import com.azure.communication.jobrouter.models.JobStateSelector;
 import com.azure.communication.jobrouter.models.QueueStatistics;
-import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResult;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobItem;
 import com.azure.communication.jobrouter.models.RouterWorker;
