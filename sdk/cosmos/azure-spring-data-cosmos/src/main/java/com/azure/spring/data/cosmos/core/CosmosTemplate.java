@@ -756,8 +756,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * so we do not need to apply the offset as the continuation token handles the pages.
          */
         int feedResponseContentSize = pageable.getPageSize();
-        if (!pageable.hasPrevious()) {
-            feedResponseContentSize = (int) (feedResponseContentSize + pageable.getOffset());
+        if (((CosmosPageRequest) pageable).getRequestContinuation() == null) {
+            feedResponseContentSize = (int) (feedResponseContentSize
+                + (feedResponseContentSize * pageable.getPageNumber()) + pageable.getOffset());
         }
         if (pageable instanceof CosmosPageRequest) {
             feedResponseFlux = container
@@ -789,8 +790,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * up the second and future pages at the correct index.
          */
         int offsetForFirstPageResults = 0;
-        if (!pageable.hasPrevious()) {
-            offsetForFirstPageResults = (int) pageable.getOffset();
+        if (((CosmosPageRequest) pageable).getRequestContinuation() == null) {
+            offsetForFirstPageResults = (pageable.getPageNumber() * pageable.getPageSize())
+                + (int) pageable.getOffset();
         }
 
         final List<T> result = new ArrayList<>();
