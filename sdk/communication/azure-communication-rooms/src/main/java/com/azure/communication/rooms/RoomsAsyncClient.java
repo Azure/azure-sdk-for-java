@@ -102,10 +102,6 @@ public final class RoomsAsyncClient {
             .createRoomWithResponseAsync(toCreateRoomRequest(validFrom, validUntil, roomJoinPolicy, participants), context)
             .flatMap((Response<RoomModel> response) -> {
                 CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
-                //System.out.println("created room: " + communicationRoom.getRoomId());
-                //System.out.println("created room: " + communicationRoom.getParticipants());
-                //System.out.println("created room: " + communicationRoom.getValidFrom());
-                //System.out.println("created room: " + communicationRoom.getRoomJoinPolicy());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
             });
         } catch (RuntimeException ex) {
@@ -139,7 +135,6 @@ public final class RoomsAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-
     }
 
     /**
@@ -169,7 +164,6 @@ public final class RoomsAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-
     }
 
     /**
@@ -196,7 +190,6 @@ public final class RoomsAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-
     }
 
     /**
