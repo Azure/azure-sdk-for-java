@@ -222,7 +222,7 @@ public final class RouterAsyncClient {
      * Deletes a job and all of its traces.
      *
      * @param jobId Id of the job.
-     * @return the completion.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,7 +248,7 @@ public final class RouterAsyncClient {
      * Deletes a job and all of its traces.
      *
      * @param jobId Id of the job.
-     * @return the completion.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,6 +274,7 @@ public final class RouterAsyncClient {
      * Reclassify a job.
      *
      * @param jobId Id of the job.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -299,6 +300,7 @@ public final class RouterAsyncClient {
      * Reclassify a job.
      *
      * @param jobId Id of the job.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,6 +331,7 @@ public final class RouterAsyncClient {
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -357,6 +360,7 @@ public final class RouterAsyncClient {
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -386,6 +390,7 @@ public final class RouterAsyncClient {
      * @param jobId Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,6 +418,7 @@ public final class RouterAsyncClient {
      * @param jobId Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -440,6 +446,7 @@ public final class RouterAsyncClient {
      * Closes a completed job.
      *
      * @param closeJobOptions Options object for close job operation.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -465,6 +472,7 @@ public final class RouterAsyncClient {
      * Closes a completed job.
      *
      * @param closeJobOptions Options object for close job operation.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -644,7 +652,7 @@ public final class RouterAsyncClient {
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @return DeclineJobOfferResult.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -671,6 +679,7 @@ public final class RouterAsyncClient {
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -902,7 +911,7 @@ public final class RouterAsyncClient {
      * Deletes a worker and all of its traces.
      *
      * @param workerId Id of the worker to delete.
-     * @return the completion.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -928,7 +937,7 @@ public final class RouterAsyncClient {
      * Deletes a worker and all of its traces.
      *
      * @param workerId Id of the worker to delete.
-     * @return the completion.
+     * @return void.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
