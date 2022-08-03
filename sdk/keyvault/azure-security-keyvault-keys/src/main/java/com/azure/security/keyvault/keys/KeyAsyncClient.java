@@ -63,7 +63,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyAsyncClient {
-    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
     private final KeyClientImpl implClient;
 
@@ -92,24 +91,6 @@ public final class KeyAsyncClient {
      */
     HttpPipeline getHttpPipeline() {
         return implClient.getHttpPipeline();
-    }
-
-    /**
-     * Gets this client's {@link ClientLogger logger}.
-     *
-     * @return The {@link ClientLogger logger}.
-     */
-    ClientLogger getLogger() {
-        return this.logger;
-    }
-
-    /**
-     * Gets the default polling interval for long running operations.
-     *
-     * @return The default polling interval for long running operations
-     */
-    Duration getDefaultPollingInterval() {
-        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
@@ -186,8 +167,8 @@ public final class KeyAsyncClient {
         try {
             return withContext(context ->
                 implClient.createKeyWithResponseAsync(name, keyType, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -233,8 +214,8 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> createKeyWithResponse(CreateKeyOptions createKeyOptions) {
         try {
             return withContext(context -> implClient.createKeyWithResponseAsync(createKeyOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -284,8 +265,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> createKey(CreateKeyOptions createKeyOptions) {
         try {
             return createKeyWithResponse(createKeyOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -337,8 +318,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> createRsaKey(CreateRsaKeyOptions createRsaKeyOptions) {
         try {
             return createRsaKeyWithResponse(createRsaKeyOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -390,8 +371,8 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions) {
         try {
             return withContext(context -> implClient.createRsaKeyWithResponseAsync(createRsaKeyOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -443,8 +424,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> createEcKey(CreateEcKeyOptions createEcKeyOptions) {
         try {
             return createEcKeyWithResponse(createEcKeyOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -498,8 +479,8 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions) {
         try {
             return withContext(context -> implClient.createEcKeyWithResponseAsync(createEcKeyOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -547,8 +528,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> createOctKey(CreateOctKeyOptions createOctKeyOptions) {
         try {
             return createOctKeyWithResponse(createOctKeyOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -597,8 +578,8 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions) {
         try {
             return withContext(context -> implClient.createOctKeyWithResponseAsync(createOctKeyOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -633,8 +614,8 @@ public final class KeyAsyncClient {
         try {
             return withContext(context ->
                 implClient.importKeyWithResponseAsync(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -678,8 +659,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> importKey(ImportKeyOptions importKeyOptions) {
         try {
             return importKeyWithResponse(importKeyOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -724,8 +705,8 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> importKeyWithResponse(ImportKeyOptions importKeyOptions) {
         try {
             return withContext(context -> implClient.importKeyWithResponseAsync(importKeyOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -764,8 +745,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> getKey(String name, String version) {
         try {
             return getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -805,8 +786,8 @@ public final class KeyAsyncClient {
         try {
             return withContext(context ->
                 implClient.getKeyWithResponseAsync(name, version == null ? "" : version, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -840,8 +821,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> getKey(String name) {
         try {
             return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -892,8 +873,8 @@ public final class KeyAsyncClient {
         try {
             return withContext(context ->
                 implClient.updateKeyPropertiesWithResponseAsync(keyProperties, context, keyOperations));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -941,8 +922,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
         try {
             return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1009,8 +990,8 @@ public final class KeyAsyncClient {
     public Mono<DeletedKey> getDeletedKey(String name) {
         try {
             return getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1042,8 +1023,8 @@ public final class KeyAsyncClient {
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
         try {
             return withContext(context -> implClient.getDeletedKeyWithResponseAsync(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1074,8 +1055,8 @@ public final class KeyAsyncClient {
     public Mono<Void> purgeDeletedKey(String name) {
         try {
             return purgeDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1107,8 +1088,8 @@ public final class KeyAsyncClient {
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
         try {
             return withContext(context -> implClient.purgeDeletedKeyWithResponseAsync(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1180,8 +1161,8 @@ public final class KeyAsyncClient {
     public Mono<byte[]> backupKey(String name) {
         try {
             return backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1222,8 +1203,8 @@ public final class KeyAsyncClient {
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
         try {
             return withContext(context -> implClient.backupKeyWithResponseAsync(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1264,8 +1245,8 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> restoreKeyBackup(byte[] backup) {
         try {
             return restoreKeyBackupWithResponse(backup).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
@@ -1307,8 +1288,8 @@ public final class KeyAsyncClient {
     public Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponse(byte[] backup) {
         try {
             return withContext(context -> implClient.restoreKeyBackupWithResponseAsync(backup, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
         }
     }
 
