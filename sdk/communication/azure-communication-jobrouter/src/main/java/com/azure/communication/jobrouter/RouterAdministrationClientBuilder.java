@@ -70,7 +70,7 @@ public class RouterAdministrationClientBuilder implements ConfigurationTrait<Rou
      * @return the updated RouterAdministrationClientBuilder object
      */
     public RouterAdministrationClientBuilder serviceVersion(JobRouterServiceVersion version) {
-        this.serviceVersion = serviceVersion;
+        this.serviceVersion = version;
         return this;
     }
 
