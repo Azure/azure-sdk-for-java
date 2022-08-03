@@ -68,6 +68,9 @@ class AppConfigurationRefreshUtil {
                             } catch (AppConfigurationStatusException e) {
                                 LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
                                     + " durring refresh check.");
+
+                                clientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
+                                continue;
                             }
                         }
                     } else {
@@ -93,6 +96,9 @@ class AppConfigurationRefreshUtil {
                             } catch (AppConfigurationStatusException e) {
                                 LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
                                     + " durring refresh check.");
+
+                                clientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
+                                continue;
                             }
                         }
                     } else {

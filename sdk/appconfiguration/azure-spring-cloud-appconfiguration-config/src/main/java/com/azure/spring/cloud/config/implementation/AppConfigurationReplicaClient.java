@@ -60,14 +60,6 @@ class AppConfigurationReplicaClient {
     }
 
     /**
-     * Sets the number of failed attempts to 0.
-     */
-    void resetFailedAttempts() {
-        // TODO (mametcal) this is never used ...
-        this.failedAttempts = 0;
-    }
-
-    /**
      * @return endpoint
      */
     String getEndpoint() {
@@ -95,6 +87,7 @@ class AppConfigurationReplicaClient {
         try {
             ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(client.getConfigurationSetting(key, label));
+            this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
@@ -117,6 +110,7 @@ class AppConfigurationReplicaClient {
         throws HttpResponseException, AppConfigurationStatusException {
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
+            this.failedAttempts = 0;
             return settings;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
