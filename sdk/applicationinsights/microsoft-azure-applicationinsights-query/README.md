@@ -1,6 +1,6 @@
 # Azure Application Insights
 
-> Please note, a newer package [com.azure:azure-monitor-query](https://search.maven.org/artifact/com.azure/azure-monitor-query)
+> A newer package [com.azure:azure-monitor-query](https://search.maven.org/artifact/com.azure/azure-monitor-query)
 > for [Azure Application Insights Query](https://azure.microsoft.com/services/monitor/) is available as of October 2021. While this
 > package will continue to receive critical bug fixes and security fixes, we strongly encourage you to upgrade to the new package.
 > Read the [migration guide](https://aka.ms/azsdk/java/migrate/monitorquery) for more details.
