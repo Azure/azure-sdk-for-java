@@ -22,17 +22,16 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * The SecretAsyncClient provides asynchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The
- * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the {@link
- * KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled
- * Azure Key Vault.
+ * The SecretAsyncClient provides asynchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault.
+ * The client supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the
+ * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
+ * soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Construct the async client</strong></p>
  * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
@@ -48,19 +47,19 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see SecretClientBuilder
  * @see PagedFlux
  */
-@ServiceClient(builder = SecretClientBuilder.class, isAsync = true)
+@ServiceClient(builder = SecretClientBuilder.class, isAsync = true,
+    serviceInterfaces = SecretClientImpl.SecretService.class)
 public final class SecretAsyncClient {
-    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
-    private final SecretClientImpl secretClient;
+    private final SecretClientImpl implClient;
 
     /**
      * Creates a SecretAsyncClient to service requests
      *
-     * @param secretClient the implementation client.
+     * @param implClient the implementation client.
      */
-    SecretAsyncClient(SecretClientImpl secretClient) {
-        this.secretClient = secretClient;
+    SecretAsyncClient(SecretClientImpl implClient) {
+        this.implClient = implClient;
     }
 
     /**
@@ -68,7 +67,7 @@ public final class SecretAsyncClient {
      * @return the vault endpoint url.
      */
     public String getVaultUrl() {
-        return secretClient.getVaultUrl();
+        return implClient.getVaultUrl();
     }
 
     /**
@@ -77,11 +76,7 @@ public final class SecretAsyncClient {
      * @return The pipeline.
      */
     HttpPipeline getHttpPipeline() {
-        return secretClient.getHttpPipeline();
-    }
-
-    Duration getDefaultPollingInterval() {
-        return DEFAULT_POLLING_INTERVAL;
+        return implClient.getHttpPipeline();
     }
 
     /**
@@ -111,60 +106,17 @@ public final class SecretAsyncClient {
      * <!-- end com.azure.keyvault.secrets.SecretClient.setSecret#secret -->
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties
-     *     {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be
-     *     null.
+     * {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be null.
      * @return A {@link Mono} containing the {@link KeyVaultSecret created secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpResponseException if {@link KeyVaultSecret#getName()  name} or {@link KeyVaultSecret#getValue() value}
-     *      is an empty string.
+     * @throws HttpResponseException if {@link KeyVaultSecret#getName() name} or {@link KeyVaultSecret#getValue() value}
+     * is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(KeyVaultSecret secret) {
         try {
             return setSecretWithResponse(secret).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Adds a secret to the key vault if it does not exist. If the named secret exists, a new version of the secret is
-     * created. This operation requires the {@code secrets/set} permission.
-     *
-     * <p>The {@link SecretProperties#getExpiresOn() expires}, {@link SecretProperties#getContentType() contentType},
-     * and {@link SecretProperties#getNotBefore() notBefore} values in {@code secret} are optional.
-     * If not specified, {@link SecretProperties#isEnabled() enabled} is set to true by key vault.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Creates a new secret which activates in one day and expires in one year. Subscribes to the call asynchronously
-     * and prints out the newly created secret details when a response is received.</p>
-     *
-     * <!-- src_embed com.azure.keyvault.secrets.SecretClient.setSecretWithResponse#secret -->
-     * <pre>
-     * KeyVaultSecret newSecret = new KeyVaultSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;.
-     *     setProperties&#40;new SecretProperties&#40;&#41;.setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;60&#41;&#41;&#41;;
-     * secretAsyncClient.setSecretWithResponse&#40;newSecret&#41;
-     *     .subscribe&#40;secretResponse -&gt;
-     *         System.out.printf&#40;&quot;Secret is created with name %s and value %s %n&quot;,
-     *             secretResponse.getValue&#40;&#41;.getName&#40;&#41;, secretResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.keyvault.secrets.SecretClient.setSecretWithResponse#secret -->
-     *
-     * @param secret The Secret object containing information about the secret and its properties. The properties
-     *     {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be
-     *     null.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     KeyVaultSecret created secret}.
-     * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceModifiedException if {@code secret} is malformed.
-     * @throws HttpResponseException if {@link KeyVaultSecret#getName() name} or {@link KeyVaultSecret#getValue() value}
-     *      is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret) {
-        try {
-            return withContext(context -> secretClient.setSecretWithResponseAsync(secret, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -195,86 +147,49 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(String name, String value) {
         try {
-            return withContext(context -> secretClient.setSecretWithResponseAsync(name, value, context))
-                .flatMap(FluxUtil::toMono);
+            return withContext(context ->
+                implClient.setSecretWithResponseAsync(name, value, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Gets the specified secret with specified version from the key vault. This operation requires the
-     * {@code secrets/get} permission.
+     * Adds a secret to the key vault if it does not exist. If the named secret exists, a new version of the secret is
+     * created. This operation requires the {@code secrets/set} permission.
+     *
+     * <p>The {@link SecretProperties#getExpiresOn() expires}, {@link SecretProperties#getContentType() contentType},
+     * and {@link SecretProperties#getNotBefore() notBefore} values in {@code secret} are optional.
+     * If not specified, {@link SecretProperties#isEnabled() enabled} is set to true by key vault.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
-     * asynchronously and prints out the returned secret details when a response is received.</p>
+     * <p>Creates a new secret which activates in one day and expires in one year. Subscribes to the call asynchronously
+     * and prints out the newly created secret details when a response is received.</p>
      *
-     * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string-string -->
+     * <!-- src_embed com.azure.keyvault.secrets.SecretClient.setSecretWithResponse#secret -->
      * <pre>
-     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
-     * secretAsyncClient.getSecret&#40;&quot;secretName&quot;, secretVersion&#41;
-     *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
-     *     &#47;&#47; Otherwise, the line below can be removed.
-     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
-     *     .subscribe&#40;secretWithVersion -&gt;
-     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
-     *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
+     * KeyVaultSecret newSecret = new KeyVaultSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;.
+     *     setProperties&#40;new SecretProperties&#40;&#41;.setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;60&#41;&#41;&#41;;
+     * secretAsyncClient.setSecretWithResponse&#40;newSecret&#41;
+     *     .subscribe&#40;secretResponse -&gt;
+     *         System.out.printf&#40;&quot;Secret is created with name %s and value %s %n&quot;,
+     *             secretResponse.getValue&#40;&#41;.getName&#40;&#41;, secretResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.keyvault.secrets.SecretClient.getSecret#string-string -->
+     * <!-- end com.azure.keyvault.secrets.SecretClient.setSecretWithResponse#secret -->
      *
-     * @param name The name of the secret, cannot be null.
-     * @param version The version of the secret to retrieve. If this is an empty string or null, this
-     *     call is equivalent to calling {@link #getSecret(String)}, with the latest version being
-     *     retrieved.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
-     *     contains the requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't
-     *     exist in the key vault.
-     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultSecret> getSecret(String name, String version) {
-        try {
-            return getSecretWithResponse(name, version).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets the specified secret with specified version from the key vault. This operation requires the
-     * {@code secrets/get} permission.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call asynchronously and prints out
-     * the returned secret details when a response is received.</p>
-     * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecretWithResponse#string-string -->
-     * <pre>
-     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
-     * secretAsyncClient.getSecretWithResponse&#40;&quot;secretName&quot;, secretVersion&#41;
-     *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
-     *     &#47;&#47; Otherwise, the line below can be removed.
-     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
-     *     .subscribe&#40;secretWithVersion -&gt;
-     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
-     *             secretWithVersion.getValue&#40;&#41;.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.keyvault.secrets.SecretClient.getSecretWithResponse#string-string -->
-     *
-     * @param name The name of the secret, cannot be null.
-     * @param version The version of the secret to retrieve. If this is an empty string or null, this call is equivalent
-     *     to calling {@link #getSecret(String)}, with the latest version being retrieved.
+     * @param secret The Secret object containing information about the secret and its properties. The properties
+     * {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be null.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     *     requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     *     vault.
-     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     * {@link KeyVaultSecret created secret}.
+     * @throws NullPointerException if {@code secret} is {@code null}.
+     * @throws ResourceModifiedException if {@code secret} is malformed.
+     * @throws HttpResponseException if {@link KeyVaultSecret#getName() name} or {@link KeyVaultSecret#getValue() value}
+     * is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
+    public Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret) {
         try {
-            return withContext(context -> secretClient.getSecretWithResponseAsync(name, version, context));
+            return withContext(context -> implClient.setSecretWithResponseAsync(secret, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -311,6 +226,83 @@ public final class SecretAsyncClient {
     }
 
     /**
+     * Gets the specified secret with specified version from the key vault. This operation requires the
+     * {@code secrets/get} permission.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
+     * asynchronously and prints out the returned secret details when a response is received.</p>
+     *
+     * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string-string -->
+     * <pre>
+     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * secretAsyncClient.getSecret&#40;&quot;secretName&quot;, secretVersion&#41;
+     *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
+     *     &#47;&#47; Otherwise, the line below can be removed.
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;secretWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+     *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.SecretClient.getSecret#string-string -->
+     *
+     * @param name The name of the secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, this
+     * call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * requested {@link KeyVaultSecret secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
+     * vault.
+     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultSecret> getSecret(String name, String version) {
+        try {
+            return getSecretWithResponse(name, version).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets the specified secret with specified version from the key vault. This operation requires the
+     * {@code secrets/get} permission.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call asynchronously and prints out
+     * the returned secret details when a response is received.</p>
+     * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecretWithResponse#string-string -->
+     * <pre>
+     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * secretAsyncClient.getSecretWithResponse&#40;&quot;secretName&quot;, secretVersion&#41;
+     *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
+     *     &#47;&#47; Otherwise, the line below can be removed.
+     *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;secretWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+     *             secretWithVersion.getValue&#40;&#41;.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.SecretClient.getSecretWithResponse#string-string -->
+     *
+     * @param name The name of the secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, this call is equivalent
+     * to calling {@link #getSecret(String)}, with the latest version being retrieved.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * requested {@link KeyVaultSecret secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
+     * vault.
+     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
+        try {
+            return withContext(context -> implClient.getSecretWithResponseAsync(name, version, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Updates the attributes associated with the secret. The value of the secret in the key vault cannot be changed.
      * Only attributes populated in {@code secretProperties} are changed. Attributes not specified in the request are
      * not changed. This operation requires the {@code secrets/set} permission.
@@ -341,10 +333,10 @@ public final class SecretAsyncClient {
      * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
      * @return A {@link Mono} containing the {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
-     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and
+     * {@link SecretProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpResponseException if {@link SecretProperties#getName() name} or
-     *     {@link SecretProperties#getVersion() version} is an empty string.
+     * {@link SecretProperties#getVersion() version} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretProperties> updateSecretProperties(SecretProperties secretProperties) {
@@ -384,19 +376,19 @@ public final class SecretAsyncClient {
      * {@link SecretProperties#getVersion() version} cannot be null.</p>
      *
      * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     SecretProperties updated secret}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
-     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and
+     * {@link SecretProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpResponseException if {@link SecretProperties#getName() name} or
-     *     {@link SecretProperties#getVersion() version} is empty string.
+     * {@link SecretProperties#getVersion() version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
-            return withContext(context -> secretClient
-                .updateSecretPropertiesWithResponseAsync(secretProperties, context));
+            return withContext(context ->
+                implClient.updateSecretPropertiesWithResponseAsync(secretProperties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -429,7 +421,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return secretClient.beginDeleteSecretAsync(name);
+        return implClient.beginDeleteSecretAsync(name);
     }
 
     /**
@@ -481,14 +473,14 @@ public final class SecretAsyncClient {
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     *     {@link DeletedSecret deleted secret}.
+     * {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name) {
         try {
-            return withContext(context -> secretClient.getDeletedSecretWithResponseAsync(name, context));
+            return withContext(context -> implClient.getDeletedSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -549,7 +541,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponse(String name) {
         try {
-            return withContext(context -> secretClient.purgeDeletedSecretWithResponseAsync(name, context));
+            return withContext(context -> implClient.purgeDeletedSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -581,7 +573,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return secretClient.beginRecoverDeletedSecretAsync(name);
+        return implClient.beginRecoverDeletedSecretAsync(name);
     }
 
     /**
@@ -631,16 +623,15 @@ public final class SecretAsyncClient {
      * <!-- end com.azure.keyvault.secrets.SecretClient.backupSecretWithResponse#string -->
      *
      * @param name The name of the secret.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
-     *     contains the backed up secret blob.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key
-     *     vault.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * backed up secret blob.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupSecretWithResponse(String name) {
         try {
-            return withContext(context -> secretClient.backupSecretWithResponseAsync(name, context));
+            return withContext(context -> implClient.backupSecretWithResponseAsync(name, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -696,14 +687,14 @@ public final class SecretAsyncClient {
      * <!-- end com.azure.keyvault.secrets.SecretClient.restoreSecretWithResponse#byte -->
      *
      * @param backup The backup blob associated with the secret.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
-     *     contains the {@link KeyVaultSecret restored secret}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultSecret restored secret}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponse(byte[] backup) {
         try {
-            return withContext(context -> secretClient.restoreSecretBackupWithResponseAsync(backup, context));
+            return withContext(context -> implClient.restoreSecretBackupWithResponseAsync(backup, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -737,7 +728,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
-        return secretClient.listPropertiesOfSecretsAsync();
+        return implClient.listPropertiesOfSecrets();
     }
 
     /**
@@ -760,7 +751,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
-        return secretClient.listDeletedSecretsAsync();
+        return implClient.listDeletedSecrets();
     }
 
     /**
@@ -770,7 +761,8 @@ public final class SecretAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p>The sample below fetches the all the versions of the given secret. For each version retrieved, makes a call
-     * to {@link #getSecret(String, String) getSecret(String, String)} to get the version's value, and then prints it out.</p>
+     * to {@link #getSecret(String, String) getSecret(String, String)} to get the version's value, and then prints it
+     * out.</p>
      *
      * <!-- src_embed com.azure.keyvault.secrets.SecretClient.listSecretVersions#string -->
      * <pre>
@@ -786,11 +778,11 @@ public final class SecretAsyncClient {
      *
      * @param name The name of the secret.
      * @return A {@link PagedFlux} containing {@link SecretProperties properties} of all the versions of the specified
-     *     secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
+     * secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
-        return secretClient.listPropertiesOfSecretVersionsAsync(name);
+        return implClient.listPropertiesOfSecretVersions(name);
     }
 }

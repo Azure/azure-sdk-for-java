@@ -11,9 +11,9 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
-import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
@@ -22,19 +22,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -68,7 +67,7 @@ public class SecretClientImpl {
     private final SecretServiceVersion secretServiceVersion;
 
     /**
-     * Creates a SecretAsyncClient that uses {@code pipeline} to service requests
+     * Creates a {@link SecretClientImpl} that uses an {@link HttpPipeline} to service requests.
      *
      * @param vaultUrl URL for the Azure KeyVault service.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
@@ -77,6 +76,7 @@ public class SecretClientImpl {
     public SecretClientImpl(String vaultUrl, HttpPipeline pipeline, SecretServiceVersion secretServiceVersion) {
         Objects.requireNonNull(vaultUrl,
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+
         this.vaultUrl = vaultUrl;
         this.service = RestProxy.create(SecretService.class, pipeline);
         this.pipeline = pipeline;
@@ -84,8 +84,9 @@ public class SecretClientImpl {
     }
 
     /**
-     * Gets the vault endpoint url to which service requests are sent to.
-     * @return the vault endpoint url.
+     * Gets the vault endpoint URL to which service requests are sent to.
+     *
+     * @return The vault endpoint URL.
      */
     public String getVaultUrl() {
         return vaultUrl;
@@ -94,26 +95,30 @@ public class SecretClientImpl {
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
-     * @return The pipeline.
+     * @return The {@link HttpPipeline pipeline}.
      */
     public HttpPipeline getHttpPipeline() {
         return this.pipeline;
     }
 
+    /**
+     * Gets the default polling interval for long running operations.
+     *
+     * @return The default polling interval for long running operations
+     */
     public Duration getDefaultPollingInterval() {
         return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
-     * The interface defining all the services for {@link SecretAsyncClient} to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for {@link SecretClientImpl} to be used by the proxy service to perform
+     * REST calls.
      *
      * This is package-private so that these REST calls are transparent to the user.
      */
     @Host("{url}")
-    @ServiceInterface(name = "KeyVaultSecrets")
+    @ServiceInterface(name = "KeyVault")
     public interface SecretService {
-
         @Put("secrets/{secret-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
@@ -125,184 +130,6 @@ public class SecretClientImpl {
                                                       @BodyParam("application/json") SecretRequestParameters parameters,
                                                       @HeaderParam("Content-Type") String type,
                                                       Context context);
-
-        @Get("secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultSecret>> getSecretAsync(@HostParam("url") String url,
-                                                      @PathParam("secret-name") String secretName,
-                                                      @PathParam("secret-version") String secretVersion,
-                                                      @QueryParam("api-version") String apiVersion,
-                                                      @HeaderParam("accept-language") String acceptLanguage,
-                                                      @HeaderParam("Content-Type") String type,
-                                                      Context context);
-
-        @Get("secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultSecret>> getSecretPollerAsync(@HostParam("url") String url,
-                                                            @PathParam("secret-name") String secretName,
-                                                            @PathParam("secret-version") String secretVersion,
-                                                            @QueryParam("api-version") String apiVersion,
-                                                            @HeaderParam("accept-language") String acceptLanguage,
-                                                            @HeaderParam("Content-Type") String type,
-                                                            Context context);
-
-
-        @Patch("secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SecretProperties>> updateSecretAsync(@HostParam("url") String url,
-                                                           @PathParam("secret-name") String secretName,
-                                                           @PathParam("secret-version") String secretVersion,
-                                                           @QueryParam("api-version") String apiVersion,
-                                                           @HeaderParam("accept-language") String acceptLanguage,
-                                                           @BodyParam("application/json") SecretRequestParameters parameters,
-                                                           @HeaderParam("Content-Type") String type,
-                                                           Context context);
-
-
-        @Delete("secrets/{secret-name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<DeletedSecret>> deleteSecretAsync(@HostParam("url") String url,
-                                                        @PathParam("secret-name") String secretName,
-                                                        @QueryParam("api-version") String apiVersion,
-                                                        @HeaderParam("accept-language") String acceptLanguage,
-                                                        @HeaderParam("Content-Type") String type,
-                                                        Context context);
-
-
-        @Get("deletedsecrets/{secret-name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<DeletedSecret>> getDeletedSecretAsync(@HostParam("url") String url,
-                                                            @PathParam("secret-name") String secretName,
-                                                            @QueryParam("api-version") String apiVersion,
-                                                            @HeaderParam("accept-language") String acceptLanguage,
-                                                            @HeaderParam("Content-Type") String type,
-                                                            Context context);
-
-        @Get("deletedsecrets/{secret-name}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<DeletedSecret>> getDeletedSecretPollerAsync(@HostParam("url") String url,
-                                                                  @PathParam("secret-name") String secretName,
-                                                                  @QueryParam("api-version") String apiVersion,
-                                                                  @HeaderParam("accept-language") String acceptLanguage,
-                                                                  @HeaderParam("Content-Type") String type,
-                                                                  Context context);
-
-        @Delete("deletedsecrets/{secret-name}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> purgeDeletedSecretAsync(@HostParam("url") String url,
-                                                     @PathParam("secret-name") String secretName,
-                                                     @QueryParam("api-version") String apiVersion,
-                                                     @HeaderParam("accept-language") String acceptLanguage,
-                                                     @HeaderParam("Content-Type") String type,
-                                                     Context context);
-
-
-        @Post("deletedsecrets/{secret-name}/recover")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultSecret>> recoverDeletedSecretAsync(@HostParam("url") String url,
-                                                                 @PathParam("secret-name") String secretName,
-                                                                 @QueryParam("api-version") String apiVersion,
-                                                                 @HeaderParam("accept-language") String acceptLanguage,
-                                                                 @HeaderParam("Content-Type") String type,
-                                                                 Context context);
-
-
-        @Post("secrets/{secret-name}/backup")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SecretBackup>> backupSecretAsync(@HostParam("url") String url,
-                                                       @PathParam("secret-name") String secretName,
-                                                       @QueryParam("api-version") String apiVersion,
-                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                       @HeaderParam("Content-Type") String type,
-                                                       Context context);
-
-
-
-        @Post("secrets/restore")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<KeyVaultSecret>> restoreSecretAsync(@HostParam("url") String url,
-                                                          @QueryParam("api-version") String apiVersion,
-                                                          @HeaderParam("accept-language") String acceptLanguage,
-                                                          @BodyParam("application/json") SecretRestoreRequestParameters parameters,
-                                                          @HeaderParam("Content-Type") String type,
-                                                          Context context);
-
-
-        @Get("secrets")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(SecretPropertiesPage.class)
-        Mono<PagedResponse<SecretProperties>> getSecretsAsync(@HostParam("url") String url,
-                                                              @QueryParam("maxresults") Integer maxresults,
-                                                              @QueryParam("api-version") String apiVersion,
-                                                              @HeaderParam("accept-language") String acceptLanguage,
-                                                              @HeaderParam("Content-Type") String type,
-                                                              Context context);
-
-
-        @Get("secrets/{secret-name}/versions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(SecretPropertiesPage.class)
-        Mono<PagedResponse<SecretProperties>> getSecretVersionsAsync(@HostParam("url") String url,
-                                                                     @PathParam("secret-name") String secretName,
-                                                                     @QueryParam("maxresults") Integer maxresults,
-                                                                     @QueryParam("api-version") String apiVersion,
-                                                                     @HeaderParam("accept-language") String acceptLanguage,
-                                                                     @HeaderParam("Content-Type") String type,
-                                                                     Context context);
-
-
-        @Get("{nextUrl}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(SecretPropertiesPage.class)
-        Mono<PagedResponse<SecretProperties>> getSecretsAsync(@HostParam("url") String url,
-                                                              @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                              @HeaderParam("accept-language") String acceptLanguage,
-                                                              @HeaderParam("Content-Type") String type,
-                                                              Context context);
-
-
-        @Get("deletedsecrets")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(DeletedSecretPage.class)
-        Mono<PagedResponse<DeletedSecret>> getDeletedSecretsAsync(@HostParam("url") String url,
-                                                                  @QueryParam("maxresults") Integer maxresults,
-                                                                  @QueryParam("api-version") String apiVersion,
-                                                                  @HeaderParam("accept-language") String acceptLanguage,
-                                                                  @HeaderParam("Content-Type") String type,
-                                                                  Context context);
-
-        @Get("{nextUrl}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        @ReturnValueWireType(DeletedSecretPage.class)
-        Mono<PagedResponse<DeletedSecret>> getDeletedSecretsAsync(@HostParam("url") String url,
-                                                                  @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                                  @HeaderParam("accept-language") String acceptLanguage,
-                                                                  @HeaderParam("Content-Type") String type,
-                                                                  Context context);
 
         @Put("secrets/{secret-name}")
         @ExpectedResponses({200})
@@ -321,6 +148,19 @@ public class SecretClientImpl {
         @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<KeyVaultSecret>> getSecretAsync(@HostParam("url") String url,
+                                                      @PathParam("secret-name") String secretName,
+                                                      @PathParam("secret-version") String secretVersion,
+                                                      @QueryParam("api-version") String apiVersion,
+                                                      @HeaderParam("accept-language") String acceptLanguage,
+                                                      @HeaderParam("Content-Type") String type,
+                                                      Context context);
+
+        @Get("secrets/{secret-name}/{secret-version}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyVaultSecret> getSecret(@HostParam("url") String url,
                                            @PathParam("secret-name") String secretName,
                                            @PathParam("secret-version") String secretVersion,
@@ -328,6 +168,18 @@ public class SecretClientImpl {
                                            @HeaderParam("accept-language") String acceptLanguage,
                                            @HeaderParam("Content-Type") String type,
                                            Context context);
+
+        @Get("secrets/{secret-name}/{secret-version}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<KeyVaultSecret>> getSecretPollerAsync(@HostParam("url") String url,
+                                                            @PathParam("secret-name") String secretName,
+                                                            @PathParam("secret-version") String secretVersion,
+                                                            @QueryParam("api-version") String apiVersion,
+                                                            @HeaderParam("accept-language") String acceptLanguage,
+                                                            @HeaderParam("Content-Type") String type,
+                                                            Context context);
 
         @Get("secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({200, 404})
@@ -341,6 +193,17 @@ public class SecretClientImpl {
                                                  @HeaderParam("Content-Type") String type,
                                                  Context context);
 
+        @Patch("secrets/{secret-name}/{secret-version}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<SecretProperties>> updateSecretAsync(@HostParam("url") String url,
+                                                           @PathParam("secret-name") String secretName,
+                                                           @PathParam("secret-version") String secretVersion,
+                                                           @QueryParam("api-version") String apiVersion,
+                                                           @HeaderParam("accept-language") String acceptLanguage,
+                                                           @BodyParam("application/json") SecretRequestParameters parameters,
+                                                           @HeaderParam("Content-Type") String type,
+                                                           Context context);
 
         @Patch("secrets/{secret-name}/{secret-version}")
         @ExpectedResponses({200})
@@ -354,6 +217,16 @@ public class SecretClientImpl {
                                                 @HeaderParam("Content-Type") String type,
                                                 Context context);
 
+        @Delete("secrets/{secret-name}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<DeletedSecret>> deleteSecretAsync(@HostParam("url") String url,
+                                                        @PathParam("secret-name") String secretName,
+                                                        @QueryParam("api-version") String apiVersion,
+                                                        @HeaderParam("accept-language") String acceptLanguage,
+                                                        @HeaderParam("Content-Type") String type,
+                                                        Context context);
 
         @Delete("secrets/{secret-name}")
         @ExpectedResponses({200})
@@ -366,6 +239,16 @@ public class SecretClientImpl {
                                              @HeaderParam("Content-Type") String type,
                                              Context context);
 
+        @Get("deletedsecrets/{secret-name}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<DeletedSecret>> getDeletedSecretAsync(@HostParam("url") String url,
+                                                            @PathParam("secret-name") String secretName,
+                                                            @QueryParam("api-version") String apiVersion,
+                                                            @HeaderParam("accept-language") String acceptLanguage,
+                                                            @HeaderParam("Content-Type") String type,
+                                                            Context context);
 
         @Get("deletedsecrets/{secret-name}")
         @ExpectedResponses({200})
@@ -381,12 +264,33 @@ public class SecretClientImpl {
         @Get("deletedsecrets/{secret-name}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<DeletedSecret>> getDeletedSecretPollerAsync(@HostParam("url") String url,
+                                                                  @PathParam("secret-name") String secretName,
+                                                                  @QueryParam("api-version") String apiVersion,
+                                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                                  @HeaderParam("Content-Type") String type,
+                                                                  Context context);
+
+        @Get("deletedsecrets/{secret-name}")
+        @ExpectedResponses({200, 404})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<DeletedSecret> getDeletedSecretPoller(@HostParam("url") String url,
                                                        @PathParam("secret-name") String secretName,
                                                        @QueryParam("api-version") String apiVersion,
                                                        @HeaderParam("accept-language") String acceptLanguage,
                                                        @HeaderParam("Content-Type") String type,
                                                        Context context);
+
+        @Delete("deletedsecrets/{secret-name}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> purgeDeletedSecretAsync(@HostParam("url") String url,
+                                                     @PathParam("secret-name") String secretName,
+                                                     @QueryParam("api-version") String apiVersion,
+                                                     @HeaderParam("accept-language") String acceptLanguage,
+                                                     @HeaderParam("Content-Type") String type,
+                                                     Context context);
 
         @Delete("deletedsecrets/{secret-name}")
         @ExpectedResponses({204})
@@ -399,6 +303,16 @@ public class SecretClientImpl {
                                           @HeaderParam("Content-Type") String type,
                                           Context context);
 
+        @Post("deletedsecrets/{secret-name}/recover")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<KeyVaultSecret>> recoverDeletedSecretAsync(@HostParam("url") String url,
+                                                                 @PathParam("secret-name") String secretName,
+                                                                 @QueryParam("api-version") String apiVersion,
+                                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                                 @HeaderParam("Content-Type") String type,
+                                                                 Context context);
 
         @Post("deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({200})
@@ -411,6 +325,16 @@ public class SecretClientImpl {
                                                       @HeaderParam("Content-Type") String type,
                                                       Context context);
 
+        @Post("secrets/{secret-name}/backup")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<SecretBackup>> backupSecretAsync(@HostParam("url") String url,
+                                                       @PathParam("secret-name") String secretName,
+                                                       @QueryParam("api-version") String apiVersion,
+                                                       @HeaderParam("accept-language") String acceptLanguage,
+                                                       @HeaderParam("Content-Type") String type,
+                                                       Context context);
 
         @Post("secrets/{secret-name}/backup")
         @ExpectedResponses({200})
@@ -423,7 +347,16 @@ public class SecretClientImpl {
                                             @HeaderParam("Content-Type") String type,
                                             Context context);
 
-
+        @Post("secrets/restore")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<KeyVaultSecret>> restoreSecretAsync(@HostParam("url") String url,
+                                                          @QueryParam("api-version") String apiVersion,
+                                                          @HeaderParam("accept-language") String acceptLanguage,
+                                                          @BodyParam("application/json") SecretRestoreRequestParameters parameters,
+                                                          @HeaderParam("Content-Type") String type,
+                                                          Context context);
 
         @Post("secrets/restore")
         @ExpectedResponses({200})
@@ -436,6 +369,16 @@ public class SecretClientImpl {
                                                @HeaderParam("Content-Type") String type,
                                                Context context);
 
+        @Get("secrets")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(SecretPropertiesPage.class)
+        Mono<PagedResponse<SecretProperties>> getSecretsAsync(@HostParam("url") String url,
+                                                              @QueryParam("maxresults") Integer maxresults,
+                                                              @QueryParam("api-version") String apiVersion,
+                                                              @HeaderParam("accept-language") String acceptLanguage,
+                                                              @HeaderParam("Content-Type") String type,
+                                                              Context context);
 
         @Get("secrets")
         @ExpectedResponses({200})
@@ -448,6 +391,17 @@ public class SecretClientImpl {
                                                    @HeaderParam("Content-Type") String type,
                                                    Context context);
 
+        @Get("secrets/{secret-name}/versions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(SecretPropertiesPage.class)
+        Mono<PagedResponse<SecretProperties>> getSecretVersionsAsync(@HostParam("url") String url,
+                                                                     @PathParam("secret-name") String secretName,
+                                                                     @QueryParam("maxresults") Integer maxresults,
+                                                                     @QueryParam("api-version") String apiVersion,
+                                                                     @HeaderParam("accept-language") String acceptLanguage,
+                                                                     @HeaderParam("Content-Type") String type,
+                                                                     Context context);
 
         @Get("secrets/{secret-name}/versions")
         @ExpectedResponses({200})
@@ -461,6 +415,15 @@ public class SecretClientImpl {
                                                           @HeaderParam("Content-Type") String type,
                                                           Context context);
 
+        @Get("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(SecretPropertiesPage.class)
+        Mono<PagedResponse<SecretProperties>> getSecretsAsync(@HostParam("url") String url,
+                                                              @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                              @HeaderParam("accept-language") String acceptLanguage,
+                                                              @HeaderParam("Content-Type") String type,
+                                                              Context context);
 
         @Get("{nextUrl}")
         @ExpectedResponses({200})
@@ -472,6 +435,16 @@ public class SecretClientImpl {
                                                    @HeaderParam("Content-Type") String type,
                                                    Context context);
 
+        @Get("deletedsecrets")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(DeletedSecretPage.class)
+        Mono<PagedResponse<DeletedSecret>> getDeletedSecretsAsync(@HostParam("url") String url,
+                                                                  @QueryParam("maxresults") Integer maxresults,
+                                                                  @QueryParam("api-version") String apiVersion,
+                                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                                  @HeaderParam("Content-Type") String type,
+                                                                  Context context);
 
         @Get("deletedsecrets")
         @ExpectedResponses({200})
@@ -488,6 +461,16 @@ public class SecretClientImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         @ReturnValueWireType(DeletedSecretPage.class)
+        Mono<PagedResponse<DeletedSecret>> getDeletedSecretsAsync(@HostParam("url") String url,
+                                                                  @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                                  @HeaderParam("Content-Type") String type,
+                                                                  Context context);
+
+        @Get("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ReturnValueWireType(DeletedSecretPage.class)
         PagedResponse<DeletedSecret> getDeletedSecrets(@HostParam("url") String url,
                                                        @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                        @HeaderParam("accept-language") String acceptLanguage,
@@ -495,15 +478,8 @@ public class SecretClientImpl {
                                                        Context context);
     }
 
-    /**
-     * Creates a new secret in the key vault.
-     * @param secret the secret to create.
-     * @param context the context to use while executing request.
-     * @return A {@link Mono} containing the Response with created secret.
-     */
     public Mono<Response<KeyVaultSecret>> setSecretWithResponseAsync(KeyVaultSecret secret, Context context) {
         SecretRequestParameters parameters = validateAndCreateSetSecretParameters(secret);
-        context = context == null ? Context.NONE : context;
 
         return service.setSecretAsync(vaultUrl, secret.getName(), secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
@@ -513,12 +489,6 @@ public class SecretClientImpl {
             .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
-    /**
-     * Creates a new secret in the key vault.
-     * @param secret the secret to create.
-     * @param context the context to use while executing request.
-     * @return the Response with created secret.
-     */
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, Context context) {
         SecretRequestParameters parameters = validateAndCreateSetSecretParameters(secret);
         context = context == null ? Context.NONE : context;
@@ -531,21 +501,14 @@ public class SecretClientImpl {
 
     private SecretRequestParameters validateAndCreateSetSecretParameters(KeyVaultSecret secret) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
-        SecretRequestParameters parameters = new SecretRequestParameters()
+
+        return new SecretRequestParameters()
             .setValue(secret.getValue())
             .setTags(secret.getProperties().getTags())
             .setContentType(secret.getProperties().getContentType())
             .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
-        return parameters;
     }
 
-    /**
-     * Creates a new secret in the key vault asynchronously.
-     * @param name the secret of the secret.
-     * @param value the value of the secret.
-     * @param context the context to use while executing request.
-     * @return A {@link Mono} containing the Response with created secret.
-     */
     public Mono<Response<KeyVaultSecret>> setSecretWithResponseAsync(String name, String value, Context context) {
         SecretRequestParameters parameters = new SecretRequestParameters().setValue(value);
 
@@ -556,15 +519,9 @@ public class SecretClientImpl {
             .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
     }
 
-    /**
-     * Creates a new secret in the key vault.
-     * @param name the secret of the secret.
-     * @param value the value of the secret.
-     * @param context the context to use while executing request.
-     * @return the Response with created secret.
-     */
     public Response<KeyVaultSecret> setSecretWithResponse(String name, String value, Context context) {
         SecretRequestParameters parameters = new SecretRequestParameters().setValue(value);
+        context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
         return service.setSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
@@ -589,9 +546,9 @@ public class SecretClientImpl {
                 KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
-    public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponseAsync(SecretProperties secretProperties, Context context) {
+    public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponseAsync(SecretProperties secretProperties,
+                                                                                    Context context) {
         SecretRequestParameters parameters = validateAndCreateUpdateSecretRequestParameters(secretProperties);
-        context = context == null ? Context.NONE : context;
 
         return service.updateSecretAsync(vaultUrl, secretProperties.getName(), secretProperties.getVersion(),
                 secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
@@ -601,7 +558,8 @@ public class SecretClientImpl {
             .doOnError(error -> logger.warning("Failed to update secret - {}", secretProperties.getName(), error));
     }
 
-    public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
+    public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
+                                                                         Context context) {
         SecretRequestParameters parameters = validateAndCreateUpdateSecretRequestParameters(secretProperties);
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
@@ -613,6 +571,7 @@ public class SecretClientImpl {
 
     private SecretRequestParameters validateAndCreateUpdateSecretRequestParameters(SecretProperties secretProperties) {
         Objects.requireNonNull(secretProperties, "The secret properties input parameter cannot be null.");
+
         return new SecretRequestParameters()
             .setTags(secretProperties.getTags())
             .setContentType(secretProperties.getContentType())
@@ -628,11 +587,12 @@ public class SecretClientImpl {
     }
 
     private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> activationOperation(String name) {
-        return (pollingContext) -> withContext(context -> deleteSecretWithResponseAsync(name, context)).flatMap(deletedSecretResponse -> Mono.just(deletedSecretResponse.getValue()));
+        return (pollingContext) -> withContext(context -> deleteSecretWithResponseAsync(name, context)).
+            flatMap(deletedSecretResponse -> Mono.just(deletedSecretResponse.getValue()));
     }
 
     /**
-     * Polling operation to poll on create delete key operation status
+     * Polling operation to poll on the delete secret operation status.
      */
     private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperation(String keyName) {
         return pollingContext ->
@@ -641,14 +601,18 @@ public class SecretClientImpl {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
                 .flatMap(deletedSecretResponse -> {
                     if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<DeletedSecret>(LongRunningOperationStatus.IN_PROGRESS,
-                            pollingContext.getLatestResponse().getValue())));
+                        return Mono.defer(() ->
+                            Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                pollingContext.getLatestResponse().getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                        deletedSecretResponse.getValue())));
+
+                    return Mono.defer(() ->
+                        Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            deletedSecretResponse.getValue())));
                 })
-                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
-                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
+                // operation. In both cases deletion operation was successful when activation operation succeeded before
+                // reaching here.
                 .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     pollingContext.getLatestResponse().getValue()));
     }
@@ -707,8 +671,8 @@ public class SecretClientImpl {
     }
 
     /*
-    Polling operation to poll on create delete key operation status.
-    */
+     * Polling operation to poll on the recover deleted secret operation status.
+     */
     private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperation(String secretName) {
         return pollingContext ->
             withContext(context ->
@@ -716,15 +680,20 @@ public class SecretClientImpl {
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
                         KEYVAULT_TRACING_NAMESPACE_VALUE)))
                 .flatMap(secretResponse -> {
-                    PollResponse<KeyVaultSecret> prePollResponse = pollingContext.getLatestResponse();
                     if (secretResponse.getStatusCode() == 404) {
-                        return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                        return Mono.defer(() ->
+                            Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                                pollingContext.getLatestResponse().getValue())));
                     }
-                    return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, secretResponse.getValue())));
+
+                    return Mono.defer(() ->
+                        Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                            secretResponse.getValue())));
                 })
-                // This means permission is not granted for the get deleted key operation.
-                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
-                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollingContext.getLatestResponse().getValue()));
+                // This means permission is not granted for the get deleted key operation. In both cases the deletion
+                // operation was successful when activation operation succeeded before reaching here.
+                .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue()));
     }
 
     private Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponseAsync(String name, Context context) {
@@ -741,8 +710,9 @@ public class SecretClientImpl {
             .doOnRequest(ignored -> logger.verbose("Backing up secret - {}", name))
             .doOnSuccess(response -> logger.verbose("Backed up secret - {}", name))
             .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
-            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
-                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().getValue())));
+            .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<>(base64URLResponse.getRequest(),
+                base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(),
+                base64URLResponse.getValue().getValue())));
     }
 
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
@@ -752,13 +722,11 @@ public class SecretClientImpl {
             backupSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
 
-        return new SimpleResponse<>(secretBackupResponse.getRequest(),
-            secretBackupResponse.getStatusCode(), secretBackupResponse.getHeaders(),
-            secretBackupResponse.getValue().getValue());
+        return new SimpleResponse<>(secretBackupResponse.getRequest(), secretBackupResponse.getStatusCode(),
+            secretBackupResponse.getHeaders(), secretBackupResponse.getValue().getValue());
     }
 
     public Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponseAsync(byte[] backup, Context context) {
-        context = context == null ? Context.NONE : context;
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
 
         return service.restoreSecretAsync(vaultUrl, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
@@ -769,6 +737,7 @@ public class SecretClientImpl {
     }
 
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, Context context) {
+        SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
@@ -776,46 +745,30 @@ public class SecretClientImpl {
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
-    public PagedFlux<SecretProperties> listPropertiesOfSecretsAsync() {
+    public PagedFlux<SecretProperties> listPropertiesOfSecrets() {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listSecretsFirstPage(context)),
+                () -> withContext(this::listSecretsFirstPage),
                 continuationToken -> withContext(context -> listSecretsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
-    public PagedFlux<SecretProperties> listPropertiesOfSecretsAsync(Context context) {
+    public PagedFlux<SecretProperties> listPropertiesOfSecrets(Context context) {
         return new PagedFlux<>(
             () -> listSecretsFirstPage(context),
             continuationToken -> listSecretsNextPage(continuationToken, context));
     }
 
-    /*
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecrets()}.
+    /**
+     * Gets attributes of the first 25 secrets that can be found on a given key vault.
      *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
-     * list operations.
-     * @return A {@link Mono} of {@link PagedResponse<SecretProperties>} from the next page of results.
-     */
-    private Mono<PagedResponse<SecretProperties>> listSecretsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next secrets page - Page {}", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets page - Page {}", continuationToken))
-                .doOnError(error -> logger.warning("Failed to retrieve the next secrets page - Page {}",
-                    continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code
-     * DEFAULT_MAX_PAGE_RESULTS} values.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
+     * of results.
      */
     private Mono<PagedResponse<SecretProperties>> listSecretsFirstPage(Context context) {
         try {
@@ -830,49 +783,54 @@ public class SecretClientImpl {
         }
     }
 
-    public PagedFlux<DeletedSecret> listDeletedSecretsAsync() {
+    /**
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClientImpl#listPropertiesOfSecrets()}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
+     * of results.
+     */
+    private Mono<PagedResponse<SecretProperties>> listSecretsNextPage(String continuationToken, Context context) {
+        try {
+            return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignoredValue ->
+                    logger.verbose("Retrieving the next secrets page - Page {}", continuationToken))
+                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets page - Page {}", continuationToken))
+                .doOnError(error ->
+                    logger.warning("Failed to retrieve the next secrets page - Page {}", continuationToken, error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    public PagedFlux<DeletedSecret> listDeletedSecrets() {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> listDeletedSecretsFirstPage(context)),
+                () -> withContext(this::listDeletedSecretsFirstPage),
                 continuationToken -> withContext(context -> listDeletedSecretsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
-    public PagedFlux<DeletedSecret> listDeletedSecretsAsync(Context context) {
+    public PagedFlux<DeletedSecret> listDeletedSecrets(Context context) {
         return new PagedFlux<>(
             () -> listDeletedSecretsFirstPage(context),
             continuationToken -> listDeletedSecretsNextPage(continuationToken, context));
     }
 
     /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listDeletedSecrets()}.
+     * Gets attributes of the first 25 deleted secrets that can be found on a given key vault.
      *
-     * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
-     *     list operations.
-     * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of
-     * results.
-     */
-    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
-        try {
-            return service.getDeletedSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next deleted secrets page - Page {}",
-                    continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next deleted secrets page - Page {}",
-                    continuationToken))
-                .doOnError(error -> logger.warning("Failed to retrieve the next deleted secrets page - Page {}",
-                    continuationToken, error));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code
-     * DEFAULT_MAX_PAGE_RESULTS} values.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
+     * of results.
      */
     private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage(Context context) {
         try {
@@ -887,7 +845,34 @@ public class SecretClientImpl {
         }
     }
 
-    public PagedFlux<SecretProperties> listPropertiesOfSecretVersionsAsync(String name) {
+    /**
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClientImpl#listDeletedSecrets()}.
+     *
+     * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
+     * list operations.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of
+     * results.
+     */
+    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
+        try {
+            return service.getDeletedSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
+                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                        KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignoredValue ->
+                    logger.verbose("Retrieving the next deleted secrets page - Page {}", continuationToken))
+                .doOnSuccess(response ->
+                    logger.verbose("Retrieved the next deleted secrets page - Page {}", continuationToken))
+                .doOnError(error ->
+                    logger.warning("Failed to retrieve the next deleted secrets page - Page {}", continuationToken,
+                        error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name) {
         try {
             return new PagedFlux<>(
                 () -> withContext(context -> listSecretVersionsFirstPage(name, context)),
@@ -897,48 +882,55 @@ public class SecretClientImpl {
         }
     }
 
-    public PagedFlux<SecretProperties> listPropertiesOfSecretVersionsAsync(String name, Context context) {
+    public PagedFlux<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
         return new PagedFlux<>(
             () -> listSecretVersionsFirstPage(name, context),
             continuationToken -> listSecretVersionsNextPage(continuationToken, context));
     }
 
-    /*
-     * Gets attributes of all the secrets versions given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecretVersions()}.
+    /**
+     * Gets attributes of the first 25 versions of a secret.
      *
-     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
-     * list operations.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
      *
-     * @return A {@link Mono} of {@link PagedResponse<SecretProperties>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
+     * of results.
      */
-    private Mono<PagedResponse<SecretProperties>> listSecretVersionsNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<SecretProperties>> listSecretVersionsFirstPage(String name, Context context) {
         try {
             return service.getSecretVersionsAsync(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS,
                     secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next secrets versions page - Page {}",
-                    continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets versions page - Page {}",
-                    continuationToken))
-                .doOnError(error -> logger.warning("Failed to retrieve the next secrets versions page - Page {}",
-                    continuationToken, error));
+                .doOnRequest(ignored -> logger.verbose("Listing secret versions - {}", name))
+                .doOnSuccess(response -> logger.verbose("Listed secret versions - {}", name))
+                .doOnError(error -> logger.warning("Failed to list secret versions - {}", name, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    /*
-     * Calls the service and retrieve first page result. It makes one call and retrieve {@code
-     * DEFAULT_MAX_PAGE_RESULTS} values.
+    /**
+     * Gets attributes of versions of a key given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretClientImpl#listPropertiesOfSecretVersions(String)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken()} from a previous, successful call to one
+     * of the list operations.
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing {@link SecretProperties} instances from the next page
+     * of results.
      */
-    private Mono<PagedResponse<SecretProperties>> listSecretVersionsFirstPage(String name, Context context) {
+    private Mono<PagedResponse<SecretProperties>> listSecretVersionsNextPage(String continuationToken, Context context) {
         try {
-            return service.getSecretVersionsAsync(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
-                    CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing secret versions - {}", name))
-                .doOnSuccess(response -> logger.verbose("Listed secret versions - {}", name))
-                .doOnError(error -> logger.warning("Failed to list secret versions - {}", name, error));
+            return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignoredValue ->
+                    logger.verbose("Retrieving the next secrets versions page - Page {}", continuationToken))
+                .doOnSuccess(response ->
+                    logger.verbose("Retrieved the next secrets versions page - Page {}", continuationToken))
+                .doOnError(error ->
+                    logger.warning("Failed to retrieve the next secrets versions page - Page {}", continuationToken,
+                        error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
