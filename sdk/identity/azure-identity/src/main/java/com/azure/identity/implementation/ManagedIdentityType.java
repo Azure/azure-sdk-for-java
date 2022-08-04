@@ -1,5 +1,5 @@
 package com.azure.identity.implementation;
 
 public enum ManagedIdentityType {
-    VM, NONE;
+    VM, APP_SERVICE, SERVICE_FABRIC, ARC, AKS, NONE;
 }

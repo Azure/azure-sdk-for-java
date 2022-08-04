@@ -121,6 +121,7 @@ public class IdentityClient {
     private HttpPipelineAdapter httpPipelineAdapter;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
+    private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
 
@@ -165,6 +166,9 @@ public class IdentityClient {
 
         this.confidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getConfidentialClientApplication());
+
+        this.managedIdentityConfidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
+            getManagedIdentityConfidentialClient());
 
         this.clientAssertionAccessor = clientAssertionTimeout == null
             ? new SynchronizedAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
@@ -225,14 +229,17 @@ public class IdentityClient {
 
             applicationBuilder.sendX5c(options.isIncludeX5c());
 
-            if (options.getManagedIdentityType().equals(ManagedIdentityType.VM)) {
+
+            if (!options.getManagedIdentityType().equals(ManagedIdentityType.NONE)) {
                 applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
                     TokenRequestContext trc = new TokenRequestContext()
                         .setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
                         .setClaims(appTokenProviderParameters.claims)
                         .setTenantId(appTokenProviderParameters.tenantId);
 
-                    return authenticateToIMDSEndpoint(trc).toFuture().thenApply(accessToken -> {
+                    Mono<AccessToken> accessTokenMono = getTokenFromTargetManagedIdentity(options.getManagedIdentityType(), trc);
+
+                    return accessTokenMono.toFuture().thenApply(accessToken -> {
                         TokenProviderResult result =  new TokenProviderResult();
                         result.setAccessToken(accessToken.getToken());
                         result.setTenantId(trc.getTenantId());
@@ -276,6 +283,74 @@ public class IdentityClient {
             return tokenCache != null ? tokenCache.registerCache()
                 .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
         });
+    }
+
+    private Mono<ConfidentialClientApplication> getManagedIdentityConfidentialClient() {
+        return Mono.defer(() -> {
+            String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
+                + "/" + tenantId;
+
+            // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
+            IClientCredential credential = ClientCredentialFactory.createFromSecret("dummy-secret");
+            ConfidentialClientApplication.Builder applicationBuilder =
+                ConfidentialClientApplication.builder(clientId == null ? IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID
+                    : clientId, credential);
+            try {
+                applicationBuilder = applicationBuilder.authority(authorityUrl);
+            } catch (MalformedURLException e) {
+                return Mono.error(LOGGER.logExceptionAsWarning(new IllegalStateException(e)));
+            }
+
+            applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
+                TokenRequestContext trc = new TokenRequestContext()
+                    .setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
+                    .setClaims(appTokenProviderParameters.claims)
+                    .setTenantId(appTokenProviderParameters.tenantId);
+
+                Mono<AccessToken> accessTokenMono = getTokenFromTargetManagedIdentity(options.getManagedIdentityType(), trc);
+
+                return accessTokenMono.toFuture().thenApply(accessToken -> {
+                    TokenProviderResult result =  new TokenProviderResult();
+                    result.setAccessToken(accessToken.getToken());
+                    result.setTenantId(trc.getTenantId());
+                    result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                    return result;
+                });
+            });
+
+
+            initializeHttpPipelineAdapter();
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+
+            ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
+            return Mono.just(confidentialClientApplication);
+        });
+    }
+
+    private Mono<AccessToken> getTokenFromTargetManagedIdentity(ManagedIdentityType managedIdentityType, TokenRequestContext trc) {
+        ManagedIdentityParameters parameters = options.getManagedIdentityParameters();
+        switch (managedIdentityType) {
+            case APP_SERVICE:
+                return authenticateToManagedIdentityEndpoint(parameters.getIdentityEndpoint(),
+                    parameters.getIdentityHeader(), parameters.getMsiEndpoint(), parameters.getMsiSecret(), trc);
+            case SERVICE_FABRIC:
+                return authenticateToServiceFabricManagedIdentityEndpoint(parameters.getIdentityEndpoint(),
+                    parameters.getIdentityHeader(), parameters.getIdentityServerThumbprint(), trc);
+            case ARC:
+                return authenticateToArcManagedIdentityEndpoint(parameters.getIdentityEndpoint(), trc);
+            case AKS:
+                return authenticateWithExchangeToken(trc);
+            default:
+                return authenticateToIMDSEndpoint(trc);
+        }
     }
 
     private Mono<String> parseClientAssertion() {
@@ -633,7 +708,6 @@ public class IdentityClient {
                 .map(MsalToken::new));
     }
 
-
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
         return powershellManager.initSession()
@@ -704,6 +778,18 @@ public class IdentityClient {
                 return confidentialClient.acquireToken(builder.build());
             }
         )).map(MsalToken::new);
+    }
+
+    public Mono<AccessToken> authenticateWithManagedIdentityConfidentialClient(TokenRequestContext request) {
+        return managedIdentityConfidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> {
+                    ClientCredentialParameters.ClientCredentialParametersBuilder builder =
+                        ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                            .tenant(IdentityUtil
+                                .resolveTenantId(tenantId, request, options));
+                    return confidentialClient.acquireToken(builder.build());
+                }
+            )).map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {

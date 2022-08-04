@@ -51,6 +51,7 @@ public final class IdentityClientOptions {
     private IdentityLogOptionsImpl identityLogOptionsImpl;
     private boolean accountIdentifierLogging;
     private ManagedIdentityType managedIdentityType;
+    private ManagedIdentityParameters managedIdentityParameters;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -428,6 +429,21 @@ public final class IdentityClientOptions {
 
     public IdentityClientOptions setManagedIdentityType(ManagedIdentityType managedIdentityType) {
         this.managedIdentityType = managedIdentityType;
+        return this;
+    }
+
+    public ManagedIdentityParameters getManagedIdentityParameters() {
+        return managedIdentityParameters;
+    }
+
+    /**
+     * Configure the managed identity parameters.
+     *
+     * @param managedIdentityParameters the managed identity parameters to use for authentication.
+     * @return the identity log options.
+     */
+    public IdentityClientOptions setManagedIdentityParameters(ManagedIdentityParameters managedIdentityParameters) {
+        this.managedIdentityParameters = managedIdentityParameters;
         return this;
     }
 
