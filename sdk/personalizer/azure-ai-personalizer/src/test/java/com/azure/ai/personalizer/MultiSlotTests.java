@@ -92,13 +92,7 @@ public class MultiSlotTests extends PersonalizerTestBase {
     private void reward(PersonalizerClient client)
     {
         SlotReward slotReward = new SlotReward().setSlotId("testSlot1").setValue(1);
-        MultiSlotRewardRequest rewardRequest = new MultiSlotRewardRequest().setReward(
-            new ArrayList<SlotReward>() {
-                {
-                    add(slotReward);
-                }
-            });
-        client.rewardMultiSlot("123456789", rewardRequest);
+        client.rewardMultiSlot("123456789", "testSlot1", 1);
     }
 
     private void rewardForOneSlot(PersonalizerClient client)
@@ -115,15 +109,15 @@ public class MultiSlotTests extends PersonalizerTestBase {
         ArrayList<RankableAction> actions = new ArrayList<>();
         ArrayList<Object> newsFeatures = new ArrayList<Object>();
         newsFeatures.add(new Object() {
-            Object Type = "News";
+            Object type = "News";
         });
         ArrayList<Object> sportsFeatures = new ArrayList<Object>();
         sportsFeatures.add(new Object() {
-            Object Type = "News";
+            final Object type = "News";
         });
         ArrayList<Object> entertainmentFeatures = new ArrayList<Object>();
         entertainmentFeatures.add(new Object() {
-            Object Type = "News";
+            Object type = "News";
         });
         actions.add(new RankableAction().setId("NewsArticle").setFeatures(newsFeatures));
         actions.add(new RankableAction().setId("SportsArticle").setFeatures(sportsFeatures));
@@ -134,8 +128,8 @@ public class MultiSlotTests extends PersonalizerTestBase {
     private static SlotRequest getSlot1() {
         ArrayList<Object> positionFeatures = new ArrayList<Object>();
         positionFeatures.add(new Object() {
-            Object Size = "Large";
-            Object Position = "Top Middle";
+            Object size = "Large";
+            Object position = "Top Middle";
         });
         ArrayList<String> excludedActions = new ArrayList<String>() {
             {
@@ -149,8 +143,8 @@ public class MultiSlotTests extends PersonalizerTestBase {
     private static SlotRequest getSlot2() {
         ArrayList<Object> positionFeatures = new ArrayList<Object>();
         positionFeatures.add(new Object() {
-            Object Size = "Small";
-            Object Position = "Bottom Right";
+            Object size = "Small";
+            Object position = "Bottom Right";
         });
         ArrayList<String> excludedActions = new ArrayList<String>() {
             {
@@ -172,10 +166,10 @@ public class MultiSlotTests extends PersonalizerTestBase {
     private static List<Object> getContextFeatures() {
         return new ArrayList<Object>() {
             {
-                add(new Object() { Object User = new Object() { String ProfileType = "AnonymousUser"; String LatLong = "47.6,-122.1"; };});
-                add(new Object() { Object Environment = new Object() { String DayOfMonth = "28"; String MonthOfYear = "8"; String Weather = "Sunny"; };});
-                add(new Object() { Object Device = new Object() { boolean Mobile = true; boolean Windows = true; };});
-                add(new Object() { Object RecentActivity = new Object() { Integer ItemsInCart = 3; };});
+                add(new Object() { Object user = new Object() { String profileType = "AnonymousUser"; String latLong = "47.6,-122.1"; }; });
+                add(new Object() { Object environment = new Object() { String dayOfMonth = "28"; String monthOfYear = "8"; String weather = "Sunny"; }; });
+                add(new Object() { Object device = new Object() { boolean mobile = true; boolean windows = true; }; });
+                add(new Object() { Object recentActivity = new Object() { Integer itemsInCart = 3; }; });
             }
         };
     }

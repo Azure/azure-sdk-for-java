@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ *
+ */
 @ServiceClientBuilder(serviceClients = {PersonalizerAsyncClient.class, PersonalizerClient.class})
 public final class PersonalizerClientBuilder implements
     AzureKeyCredentialTrait<PersonalizerClientBuilder>,
@@ -55,23 +58,39 @@ public final class PersonalizerClientBuilder implements
     private PersonalizerServiceVersion version;
     private PersonalizerAudience audience;
 
+    /**
+     * Create a {@link PersonalizerClient} object to invoke the Personalizer service.
+     * @return the PersonalizerClient object.
+     */
     public PersonalizerClient buildClient() {
         return new PersonalizerClient(buildAsyncClient());
     }
 
+    /**
+     * Create a {@link PersonalizerAsyncClient} object to invoke the Personalizer service in an asynchronous manner.
+     * @return the created object.
+     */
     public PersonalizerAsyncClient buildAsyncClient() {
-        return new PersonalizerAsyncClient(GetService());
+        return new PersonalizerAsyncClient(getService());
     }
 
+    /**
+     * Create a {@link PersonalizerAdminClient} object to invoke the administrative functions of Personalizer service.
+     * @return the created object.
+     */
     public PersonalizerAdminClient buildAdminClient() {
         return new PersonalizerAdminClient(buildAdminAsyncClient());
     }
 
+    /**
+     * Create a {@link PersonalizerAdminAsyncClient} object to invoke the administrative functions of Personalizer service in an asynchronous manner.
+     * @return the created object.
+     */
     public PersonalizerAdminAsyncClient buildAdminAsyncClient() {
-        return new PersonalizerAdminAsyncClient(GetService());
+        return new PersonalizerAdminAsyncClient(getService());
     }
 
-    public PersonalizerClientV1Preview3Impl GetService() {
+    PersonalizerClientV1Preview3Impl getService() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
@@ -189,6 +208,11 @@ public final class PersonalizerClientBuilder implements
         return this;
     }
 
+    /**
+     * Set the retry policy to be used by the clients that are returned by this builder.
+     * @param retryPolicy The retry policy to be used when making network calls.
+     * @return the PersonalizerClientBuilder object itself.
+     */
     public PersonalizerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
@@ -200,11 +224,21 @@ public final class PersonalizerClientBuilder implements
         return this;
     }
 
+    /**
+     * Set the service version to be used by the clients that are returned by this builder.
+     * @param version The service version to be used when calling Personalizer service.
+     * @return the PersonalizerClientBuilder object itself.
+     */
     public PersonalizerClientBuilder serviceVersion(PersonalizerServiceVersion version) {
         this.version = version;
         return this;
     }
 
+    /**
+     * Set the azure cloud to be used by the clients that are returned by this builder.
+     * @param audience The azure cloud that the Personalizer instance belongs to.
+     * @return the PersonalizerClientBuilder object itself.
+     */
     public PersonalizerClientBuilder audience(PersonalizerAudience audience) {
         Objects.requireNonNull(audience, "'audience' is required and can not be null");
         this.audience = audience;

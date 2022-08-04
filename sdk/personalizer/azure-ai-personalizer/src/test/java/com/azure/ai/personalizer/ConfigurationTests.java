@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.models.PolicyContract;
@@ -23,7 +26,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         ServiceConfiguration properties = new ServiceConfiguration()
             .setRewardAggregation(newRewardFunction)
             .setModelExportFrequency(modelExportFrequency)
-            .setDefaultReward((float)newDefaultReward)
+            .setDefaultReward((float) newDefaultReward)
             .setRewardWaitTime(newExperimentalUnitDuration)
             .setExplorationPercentage(newExplorationPercentage)
             .setLogRetentionDays(Integer.MAX_VALUE);
@@ -64,7 +67,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(newPolicy.getArguments(), updatedPolicy.getArguments());
         PolicyContract policy = client.getPolicy();
         // Only checking the first 190 chars because the epsilon has a float rounding addition when applied
-        assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0,190));
+        assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0, 190));
     }
 
     private void resetPolicy(PersonalizerAdminClient client)

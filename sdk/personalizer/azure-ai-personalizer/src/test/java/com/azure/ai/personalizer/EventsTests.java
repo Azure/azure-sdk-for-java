@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.personalizer;
 
 import com.azure.core.http.HttpClient;
@@ -17,7 +20,7 @@ public class EventsTests extends PersonalizerTestBase {
 
     private void reward(PersonalizerClient client)
     {
-        client.reward("123456789", (float)0.5);
+        client.reward("123456789", (float) 0.5);
     }
 
     private void activate(PersonalizerClient client)

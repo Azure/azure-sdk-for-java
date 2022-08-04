@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.models.RankRequest;
@@ -32,8 +35,8 @@ public class RankTests extends PersonalizerTestBase {
     {
         List<Object> features = new ArrayList<Object>() {
             {
-                add(new Object() { String VideoType = "documentary"; Integer VideoLength = 35; String Director = "CarlSagan"; });
-                add(new Object() { String MostWatchedByAge = "30-35"; });
+                add(new Object() { String videoType = "documentary"; Integer videoLength = 35; String director = "CarlSagan"; });
+                add(new Object() { String mostWatchedByAge = "30-35"; });
             }};
         List<RankableAction> actions = new ArrayList<>();
         actions.add(new RankableAction().setId("Person").setFeatures(features));
@@ -52,8 +55,8 @@ public class RankTests extends PersonalizerTestBase {
     {
         List<Object> contextFeatures = new ArrayList<>() {
             {
-                add(new Object() { Object Features = new Object() { String Day = "Tuesday"; String Time = "Night"; String Weather = "rainy";};});
-                add(new Object() { Object Features = new Object() { String userId = "1234"; boolean payingUser = true; String FavoriteGenre = "rainy"; double HoursOnSite = 0.12; String LastWatchedType = "movie"; };});
+                add(new Object() { Object features = new Object() { String day = "Tuesday"; String time = "Night"; String weather = "rainy"; }; });
+                add(new Object() { Object features = new Object() { String userId = "1234"; boolean payingUser = true; String favoriteGenre = "rainy"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });
             }
         };
 
@@ -61,12 +64,12 @@ public class RankTests extends PersonalizerTestBase {
         List<Object> features1 = new ArrayList<>() {
             {
                 add(new Object() {
-                    String VideoType = "documentary";
-                    Integer VideoLength = 35;
-                    String Director = "CarlSagan";
+                    String videoType = "documentary";
+                    Integer videoLength = 35;
+                    String director = "CarlSagan";
                 });
                 add(new Object() {
-                    String MostWatchedByAge = "30-35";
+                    String mostWatchedByAge = "30-35";
                 });
             }
         };
@@ -75,12 +78,12 @@ public class RankTests extends PersonalizerTestBase {
         List<Object> features2 = new ArrayList<>() {
             {
                 add(new Object() {
-                    String VideoType = "documentary";
-                    Integer VideoLength = 35;
-                    String Director = "CarlSagan";
+                    String videoType = "documentary";
+                    Integer videoLength = 35;
+                    String director = "CarlSagan";
                 });
                 add(new Object() {
-                    String MostWatchedByAge = "40-45";
+                    String mostWatchedByAge = "40-45";
                 });
             }
         };
@@ -88,8 +91,9 @@ public class RankTests extends PersonalizerTestBase {
 
         List<String> excludeActions = new ArrayList<>() {
             {
-                 add("Person1");
-            } };
+                add("Person1");
+            }
+        };
         String eventId = "123456789";
         RankRequest request = new RankRequest().setActions(actions).setContextFeatures(contextFeatures).setExcludedActions(excludeActions).setEventId(eventId);
         // Action
@@ -107,22 +111,22 @@ public class RankTests extends PersonalizerTestBase {
     {
         List<Object> contextFeatures = new ArrayList<Object>() {
             {
-                add(new Object() { Object Features = new Object() { String Day = "tuesday"; String Time = "night"; String Weather = "rainy";};});
-                add(new Object() { Object Features = new Object() { String UserId = "tuesday"; boolean PayingUser = true; String FavoriteGenre = "documentary"; double HoursOnSite = 0.12; String LastWatchedType = "movie";};});
+                add(new Object() { Object features = new Object() { String day = "tuesday"; String time = "night"; String weather = "rainy"; }; });
+                add(new Object() { Object features = new Object() { String userId = "tuesday"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });
             }
         };
 
         List<Object> features1 = new ArrayList<Object>() {
             {
-                add(new Object() { String VideoType = "documentary"; Integer VideoLength = 35; String Director = "CarlSagan";});
-                add(new Object() { Object MostWatchedByAge = "30-35";});
+                add(new Object() { String videoType = "documentary"; Integer videoLength = 35; String director = "CarlSagan"; });
+                add(new Object() { Object mostWatchedByAge = "30-35"; });
             }
         };
 
         List<Object> features2 = new ArrayList<Object>() {
             {
-                add(new Object() { String VideoType = "documentary"; Integer VideoLength = 35; String Director = "CarlSagan";});
-                add(new Object() { Object MostWatchedByAge = "40-45";});
+                add(new Object() { String videoType = "documentary"; Integer videoLength = 35; String director = "CarlSagan"; });
+                add(new Object() { Object mostWatchedByAge = "40-45"; });
             }
         };
 
@@ -130,7 +134,7 @@ public class RankTests extends PersonalizerTestBase {
         actions.add(new RankableAction().setId("Person1").setFeatures(features1));
         actions.add(new RankableAction().setId("Person2").setFeatures(features2));
         // Action
-        RankResponse response = client.rank(actions, contextFeatures);
+        RankResponse response = client.rank(new RankRequest().setActions(actions).setContextFeatures(contextFeatures));
         assertEquals(actions.size(), response.getRanking().size());
     }
 }
