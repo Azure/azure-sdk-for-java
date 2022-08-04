@@ -18,7 +18,7 @@ Please see [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appl
 
 ### Latest release
 
-To get the binaries of the official Microsoft Azure Log Analytics SDK as distributed by Microsoft, reade for use within your project, you can use Maven.
+To get the binaries of the official Microsoft Azure Log Analytics SDK as distributed by Microsoft, ready for use within your project, you can use Maven.
 
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-applicationinsights-query;current})
 ```xml
