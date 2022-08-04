@@ -384,4 +384,9 @@ public class ReflectionUtils {
     public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
         return get(AtomicReference.class, uri, "healthStatus");
     }
+
+    @SuppressWarnings("unchecked")
+    public static List<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
+        return get(List.class, gatewayAddressCache, "replicaValidationScopes");
+    }
 }

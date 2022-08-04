@@ -195,10 +195,10 @@ public class Uri {
      * </p>
      */
     public enum HealthStatus {
-        Connected(0),
-        Unknown(1),
-        UnhealthyPending(2),
-        Unhealthy(3);
+        Connected(100),
+        Unknown(200),
+        UnhealthyPending(300),
+        Unhealthy(400);
 
         private int priority;
         HealthStatus(int priority) {

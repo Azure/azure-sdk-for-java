@@ -50,7 +50,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -61,6 +60,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +106,7 @@ public class GatewayAddressCache implements IAddressCache {
     private IOpenConnectionsHandler openConnectionsHandler;
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
+    private final List<Uri.HealthStatus> replicaValidationScopes;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -164,6 +165,10 @@ public class GatewayAddressCache implements IAddressCache {
         this.openConnectionsHandler = openConnectionsHandler;
         this.connectionPolicy = connectionPolicy;
         this.replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+        this.replicaValidationScopes = new ArrayList<>();
+        if (this.replicaAddressValidationEnabled) {
+            this.replicaValidationScopes.add(Uri.HealthStatus.UnhealthyPending);
+        }
     }
 
     public GatewayAddressCache(
@@ -898,7 +903,15 @@ public class GatewayAddressCache implements IAddressCache {
                 Arrays
                     .stream(addresses)
                     .map(address -> address.getPhysicalUri())
-                    .filter(addressUri -> addressUri.getHealthStatus() == Uri.HealthStatus.UnhealthyPending)
+                    .filter(addressUri -> this.replicaValidationScopes.contains(addressUri.getHealthStatus()))
+                    .sorted(new Comparator<Uri>() {
+                        @Override
+                        public int compare(Uri o1, Uri o2) {
+                            // Generally, an unhealthyPending replica has more chances to fail the request compared to unknown replica
+                            // and we will want to validate replicas with the highest chance to fail the request first
+                            return o2.getHealthStatus().getPriority() - o1.getHealthStatus().getPriority();
+                        }
+                    })
                     .collect(Collectors.toList());
 
         if (addressesNeedToValidation.size() > 0) {
@@ -963,6 +976,10 @@ public class GatewayAddressCache implements IAddressCache {
                     "openConnectionsAndInitCaches collection: {}, partitionKeyRangeIdentities: {}",
                     collection.getResourceId(),
                     JavaStreamUtils.toString(partitionKeyRangeIdentities, ","));
+        }
+
+        if (this.replicaAddressValidationEnabled) {
+            this.replicaValidationScopes.add(Uri.HealthStatus.Unknown);
         }
 
         List<Flux<List<Address>>> tasks = new ArrayList<>();
