@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,7 +42,7 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
     private void deleteRecording(CallAutomationAsyncClient callAutomationAsyncClient) {
         StepVerifier.create(callAutomationAsyncClient
             .getCallRecordingAsync()
-            .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE))
+            .deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(200))))
             .verifyComplete();
     }
@@ -59,7 +58,7 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
         StepVerifier.create(callAutomationAsyncClient
                 .getCallRecordingAsync()
-                .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE))
+                .deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(401))))
             .verifyComplete();
     }
@@ -75,7 +74,7 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
         StepVerifier.create(callAutomationAsyncClient
                 .getCallRecordingAsync()
-                .deleteRecordingWithResponse(RECORDING_DELETE_URL_404, Context.NONE))
+                .deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(404))))
             .verifyComplete();
     }

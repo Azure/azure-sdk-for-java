@@ -6,7 +6,6 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.FileSource;
 import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -45,7 +44,7 @@ public class CallMediaAsyncUnitTests {
     public void playFileWithResponseTest() {
         StepVerifier.create(
             callMedia.playWithResponse(playSource,
-                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE))
+                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -53,7 +52,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playAllWithResponse(playSource, playOptions, Context.NONE))
+                callMedia.playAllWithResponse(playSource, playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -61,7 +60,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void cancelAllOperationsWithResponse() {
         StepVerifier.create(
-                callMedia.cancelAllMediaOperationsWithResponse(Context.NONE))
+                callMedia.cancelAllMediaOperationsWithResponse())
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
