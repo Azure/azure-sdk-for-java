@@ -17,6 +17,7 @@ import com.azure.communication.callingserver.models.events.SubscriptionValidatio
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventgrid.EventGridEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -122,7 +123,9 @@ public final class EventHandler {
             }
 
             return ret;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (JsonProcessingException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
@@ -154,7 +157,9 @@ public final class EventHandler {
             }
 
             return ret;
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (JsonProcessingException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
