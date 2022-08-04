@@ -365,7 +365,7 @@ private[cosmos] class CosmosRowConverter(
             case SerializationDateTimeConversionModes.Default =>
               convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Integer])
             case SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone |
-                 SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone =>
+                 SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone =>
               val microsSinceEpoch = rowData.asInstanceOf[java.lang.Integer].longValue()
               convertToJsonNodeConditionally(
                 Instant.ofEpochSecond(

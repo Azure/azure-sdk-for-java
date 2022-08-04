@@ -488,6 +488,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
     val colName1 = "testCol1"
     val colName2 = "testCol2"
+    val colName3 = "testCol3"
 
     val testDate = LocalDate.of(1945, 12, 12)
     val testTimestamp = new java.sql.Timestamp(
@@ -511,18 +512,36 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     colVal2 shouldEqual -727530468000000L
     colVal2 shouldEqual ChronoUnit.MICROS.between(Instant.EPOCH, testTimestamp)
 
+    val testTimestampCol3 = new java.sql.Timestamp(
+      100, 11, 12, 12, 12, 12, 0)
+      .toLocalDateTime.toInstant(ZoneOffset.UTC)
+
+    val testDateCol3 = LocalDate.of(2000, 12, 12)
+    val colVal3Raw = new Date(100, 11, 12)
+    convertToCatalyst(colVal3Raw).isInstanceOf[Int] shouldEqual true
+    val colVal3= convertToCatalyst(colVal3Raw).asInstanceOf[Int]
+    colVal3 shouldEqual 11303
+    colVal3 shouldEqual testDateCol3.toEpochDay
+    val testDateCol3Timestamp = Timestamp.valueOf(new java.sql.Timestamp(
+      100, 11, 12, 0, 0, 0, 0)
+      .toLocalDateTime)
+    val testDateCol3LocalInstant = testDateCol3Timestamp.toInstant
+
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2),
+      Array(colVal1, colVal2, Seq(colVal3)),
       StructType(Seq(StructField(colName1, DateType),
-        StructField(colName2, TimestampType))))
+        StructField(colName2, TimestampType),
+        StructField(colName3, ArrayType(DateType)))))
 
     var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual colVal1
     objectNode.get(colName2).asLong() shouldEqual colVal2
+    objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual colVal3
 
     objectNode = alwaysEpochMsRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
     objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+    objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual testDateCol3.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
 
     val originalDefaultTimezone = java.time.ZoneId.systemDefault
     try {
@@ -535,6 +554,11 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
         .toEpochMilli
       objectNode.get(colName1).asLong() shouldEqual -759081600000L
       objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual testDateCol3
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateCol3LocalInstant))
+        .toEpochMilli
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual 976608000000L
     } finally {
       TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
     }
@@ -542,6 +566,8 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode = alwaysEpochMsRowConverterNonNull.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
     objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+    objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual
+      testDateCol3.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
 
     try {
       TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"))
@@ -554,6 +580,12 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
       objectNode.get(colName1).asLong() shouldEqual -759081600000L
       objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual testDateCol3
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateCol3LocalInstant))
+        .toEpochMilli
+      objectNode.get(colName3).asInstanceOf[ArrayNode].get(0).asLong() shouldEqual 976608000000L
     } finally {
       TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
     }
