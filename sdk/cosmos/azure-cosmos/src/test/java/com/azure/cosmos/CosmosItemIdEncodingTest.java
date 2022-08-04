@@ -578,7 +578,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     private void executeTestCase(TestScenario scenario) {
         TestScenarioExpectations expected =
             this.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT ?
-                scenario.Direct : this.getClientBuilder().getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORTY) ?
+                scenario.Direct : this.getClientBuilder().getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORT) ?
                     scenario.ComputeGateway : scenario.Gateway;
 
         logger.info("Scenario: {}, Id: \"{}\"", scenario.Name, scenario.Id);

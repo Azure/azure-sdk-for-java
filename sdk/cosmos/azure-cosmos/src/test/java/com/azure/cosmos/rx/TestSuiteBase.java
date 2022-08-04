@@ -1110,7 +1110,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<Object[]> providers = new ArrayList<>(Arrays.asList(originalProviders));
         Object[] injectedProviderParameters = new Object[1];
         CosmosClientBuilder builder = createGatewayRxDocumentClient(
-            TestConfigurations.HOST.replace(":8081", ":8903"),
+            TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
             ConsistencyLevel.SESSION,
             false,
             null,
