@@ -1,5 +1,7 @@
-package com.azure.spring.cloud.service.implementation.identity.providers.mysql;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.spring.cloud.service.implementation.identity.providers.mysql;
 
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
@@ -7,13 +9,12 @@ import com.azure.spring.cloud.service.implementation.identity.impl.credential.Ca
 import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.DefaultTokenCredentialProvider;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
+import com.mysql.cj.protocol.a.NativePacketPayload;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
-
-
 import java.util.Properties;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,17 +29,22 @@ class AzureIdentityMysqlAuthenticationPluginTest {
     private static final String CLEAR_PASSWORD = "mysql_clear_password";
     private static final String PROPERTIES = "properties";
 
+    Protocol<NativePacketPayload> protocol;
+    Properties properties = new Properties();
+
+    @BeforeEach
+    @SuppressWarnings("unchecked")
+    void setUp() {
+        protocol = mock(Protocol.class);
+        PropertySet propertySet = mock(PropertySet.class);
+        when(protocol.getPropertySet()).thenReturn(propertySet);
+        when(propertySet.exposeAsProperties()).thenReturn(properties);
+    }
 
     @Test
     void testNoCache() {
-        Properties properties = new Properties();
-        Protocol localProtocol = mock(Protocol.class);
-        PropertySet propertySet = mock(PropertySet.class);
-        when(localProtocol.getPropertySet()).thenReturn(propertySet);
-        when(propertySet.exposeAsProperties()).thenReturn(properties);
-
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
-        plugin.init(localProtocol);
+        plugin.init(protocol);
         assertNull(properties.get(AuthProperty.CACHE_ENABLED.getPropertyKey()));
         Mono<String> getTokenAsPasswordAsync = ReflectionTestUtils.invokeMethod(plugin, "getTokenAsPasswordAsync");
         TokenCredentialProvider tokenCredentialProvider
@@ -51,16 +57,11 @@ class AzureIdentityMysqlAuthenticationPluginTest {
 
     @Test
     void testCache() {
-        Properties properties = new Properties();
-        Protocol localProtocol = mock(Protocol.class);
-        PropertySet propertySet = mock(PropertySet.class);
-        when(localProtocol.getPropertySet()).thenReturn(propertySet);
-        when(propertySet.exposeAsProperties()).thenReturn(properties);
         properties.setProperty(AuthProperty.CACHE_ENABLED.getPropertyKey(), "true");
         assertEquals("true", properties.get(AuthProperty.CACHE_ENABLED.getPropertyKey()));
 
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
-        plugin.init(localProtocol);
+        plugin.init(protocol);
         Mono<String> getTokenAsPasswordAsync = ReflectionTestUtils.invokeMethod(plugin, "getTokenAsPasswordAsync");
         TokenCredentialProvider tokenCredentialProvider
             = (TokenCredentialProvider) ReflectionTestUtils.getField(plugin, "tokenCredentialProvider");
@@ -73,11 +74,6 @@ class AzureIdentityMysqlAuthenticationPluginTest {
 
     @Test
     void testDefaultTokenCredentialProvider() {
-        Properties properties = new Properties();
-        Protocol protocol = mock(Protocol.class);
-        PropertySet propertySet = mock(PropertySet.class);
-        when(protocol.getPropertySet()).thenReturn(propertySet);
-        when(propertySet.exposeAsProperties()).thenReturn(properties);
 
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
         TokenCredentialProvider tokenCredentialProviderBeforeInit
@@ -91,14 +87,8 @@ class AzureIdentityMysqlAuthenticationPluginTest {
         assertTrue(tokenCredentialProviderAfterInit instanceof DefaultTokenCredentialProvider);
     }
 
-
     @Test
     void testTokenAudienceShouldConfig() {
-        Properties properties = new Properties();
-        Protocol protocol = mock(Protocol.class);
-        PropertySet propertySet = mock(PropertySet.class);
-        when(protocol.getPropertySet()).thenReturn(propertySet);
-        when(propertySet.exposeAsProperties()).thenReturn(properties);
 
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
         plugin.init(protocol);

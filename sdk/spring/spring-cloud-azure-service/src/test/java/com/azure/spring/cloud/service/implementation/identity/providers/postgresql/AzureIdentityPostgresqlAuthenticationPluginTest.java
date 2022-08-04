@@ -1,5 +1,7 @@
-package com.azure.spring.cloud.service.implementation.identity.providers.postgresql;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.spring.cloud.service.implementation.identity.providers.postgresql;
 
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
@@ -8,9 +10,7 @@ import com.azure.spring.cloud.service.implementation.identity.impl.credential.pr
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
-
 import java.util.Properties;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
