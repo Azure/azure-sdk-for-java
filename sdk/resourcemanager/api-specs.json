@@ -235,7 +235,7 @@
     "dir": "azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
-    "args": "--tag=package-2017-04",
+    "args": "--tag=package-2021-11",
     "note": "Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInner', 'SBQueueInner', 'SBSubscriptionInner'"
   },
   "sql": {
