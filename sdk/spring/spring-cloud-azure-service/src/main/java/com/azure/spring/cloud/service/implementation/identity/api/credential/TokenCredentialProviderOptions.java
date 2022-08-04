@@ -3,9 +3,10 @@
 
 package com.azure.spring.cloud.service.implementation.identity.api.credential;
 
-import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
+
+import java.util.Properties;
 
 public class TokenCredentialProviderOptions {
 
@@ -26,19 +27,19 @@ public class TokenCredentialProviderOptions {
 
     }
 
-    public TokenCredentialProviderOptions(Configuration configuration) {
-        this.tenantId = AuthProperty.TENANT_ID.get(configuration);
-        this.clientId = AuthProperty.CLIENT_ID.get(configuration);
-        this.clientSecret = AuthProperty.CLIENT_SECRET.get(configuration);
-        this.clientCertificatePath = AuthProperty.CLIENT_CERTIFICATE_PATH.get(configuration);
-        this.clientCertificatePassword = AuthProperty.CLIENT_CERTIFICATE_PASSWORD.get(configuration);
-        this.username = AuthProperty.USERNAME.get(configuration);
-        this.password = AuthProperty.PASSWORD.get(configuration);
-        this.managedIdentityEnabled = Boolean.TRUE.equals(AuthProperty.MANAGED_IDENTITY_ENABLED.getBoolean(configuration));
-        this.tokenCredentialProviderClassName = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.get(configuration);
-        this.tokenCredentialBeanName = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.get(configuration);
-        this.cachedEnabled = Boolean.TRUE.equals(AuthProperty.CACHE_ENABLED.getBoolean(configuration));
-        this.authorityHost = AuthProperty.AUTHORITY_HOST.get(configuration);
+    public TokenCredentialProviderOptions(Properties properties) {
+        this.tenantId = AuthProperty.TENANT_ID.get(properties);
+        this.clientId = AuthProperty.CLIENT_ID.get(properties);
+        this.clientSecret = AuthProperty.CLIENT_SECRET.get(properties);
+        this.clientCertificatePath = AuthProperty.CLIENT_CERTIFICATE_PATH.get(properties);
+        this.clientCertificatePassword = AuthProperty.CLIENT_CERTIFICATE_PASSWORD.get(properties);
+        this.username = AuthProperty.USERNAME.get(properties);
+        this.password = AuthProperty.PASSWORD.get(properties);
+        this.managedIdentityEnabled = Boolean.TRUE.equals(AuthProperty.MANAGED_IDENTITY_ENABLED.getBoolean(properties));
+        this.tokenCredentialProviderClassName = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.get(properties);
+        this.tokenCredentialBeanName = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.get(properties);
+        this.cachedEnabled = Boolean.TRUE.equals(AuthProperty.CACHE_ENABLED.getBoolean(properties));
+        this.authorityHost = AuthProperty.AUTHORITY_HOST.get(properties);
     }
 
     public String getTenantId() {

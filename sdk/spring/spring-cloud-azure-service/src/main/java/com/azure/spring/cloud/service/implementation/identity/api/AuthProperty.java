@@ -3,12 +3,15 @@
 
 package com.azure.spring.cloud.service.implementation.identity.api;
 
-import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider;
 
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Contains authentication property used to resolve token credential.
+ */
 public enum AuthProperty {
 
     CLIENT_ID("azure.clientId",
@@ -55,6 +58,7 @@ public enum AuthProperty {
         false),
 
     TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName",
+        SpringTokenCredentialProvider.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME,
         "The given bean name of a TokenCredential bean in the Spring context.",
         false),
     CACHE_ENABLED("azure.cacheEnabled",
@@ -84,28 +88,20 @@ public enum AuthProperty {
         this.required = required;
     }
 
-    public String get(Configuration configuration) {
-        return configuration.get(this.propertyKey, defaultValue);
+    public String get(Properties properties) {
+        return properties.getProperty(this.propertyKey, defaultValue);
     }
 
-    public Boolean getBoolean(Configuration configuration) {
-        return Boolean.parseBoolean(get(configuration));
+    public Boolean getBoolean(Properties properties) {
+        return Boolean.parseBoolean(get(properties));
     }
 
     public String getPropertyKey() {
         return propertyKey;
     }
 
-    public Integer getInteger(Configuration configuration) {
-        return Integer.parseInt(get(configuration));
-    }
-
-    public void setProperty(Configuration configuration, String value) {
-        if (value == null) {
-            configuration.remove(this.propertyKey);
-        } else {
-            configuration.put(this.propertyKey, value);
-        }
+    public Integer getInteger(Properties properties) {
+        return Integer.parseInt(get(properties));
     }
 
     public void setProperty(Properties properties, String value) {

@@ -17,12 +17,11 @@ import java.util.Objects;
 
 public class SpringTokenCredentialProvider implements TokenCredentialProvider, ApplicationContextAware {
 
-    private static String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
+    public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
     private static ApplicationContext globalApplicationContext;
     private ApplicationContext applicationContext;
     private TokenCredentialProviderOptions options;
     private final StaticAccessTokenCache cache = new StaticAccessTokenCache();
-
     private String tokenCredentialBeanName = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
     public SpringTokenCredentialProvider() {

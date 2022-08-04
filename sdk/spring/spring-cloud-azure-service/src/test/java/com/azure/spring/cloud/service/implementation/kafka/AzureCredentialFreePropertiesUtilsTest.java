@@ -36,7 +36,7 @@ class AzureCredentialFreePropertiesUtilsTest {
             if (mapping == managedIdentityEnabled) {
                 assertTrue(Boolean.valueOf(mapping.getGetter().apply(properties)));
             } else {
-                assertEquals(mapping.getAuthProperty().getPropertyKey()+ ".test", mapping.getGetter().apply(properties));
+                assertEquals(mapping.getAuthProperty().getPropertyKey() + ".test", mapping.getGetter().apply(properties));
             }
         });
     }
@@ -55,7 +55,7 @@ class AzureCredentialFreePropertiesUtilsTest {
         Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertFalse(Boolean.valueOf(customKafkaConfigs.get(mapping.getAuthProperty().getPropertyKey())));
-            }  else {
+            } else {
                 assertEquals(mapping.getAuthProperty().getPropertyKey() + ".override", customKafkaConfigs.get(mapping.getAuthProperty().getPropertyKey()));
             }
         });
@@ -72,7 +72,7 @@ class AzureCredentialFreePropertiesUtilsTest {
         Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertTrue(Boolean.valueOf(customKafkaConfigs.get(mapping.getAuthProperty().getPropertyKey())));
-            }  else {
+            } else {
                 assertEquals(mapping.getAuthProperty().getPropertyKey() + ".test", customKafkaConfigs.get(mapping.getAuthProperty().getPropertyKey()));
             }
         });

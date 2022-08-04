@@ -15,9 +15,9 @@ public class CacheableManageIdentityCredential extends CacheableTokenCredentialA
 
     @Override
     protected Descriptor[] getTokenCredentialKeyDescriptors() {
-        return new Descriptor[] {
-                Descriptor.AUTHORITY_HOST,
-                Descriptor.CLIENT_ID
+        return new Descriptor[]{
+            Descriptor.AUTHORITY_HOST,
+            Descriptor.CLIENT_ID
         };
     }
 }

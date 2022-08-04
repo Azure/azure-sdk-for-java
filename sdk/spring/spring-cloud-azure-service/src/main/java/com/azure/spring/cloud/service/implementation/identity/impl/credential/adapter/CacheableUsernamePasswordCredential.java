@@ -15,11 +15,11 @@ public class CacheableUsernamePasswordCredential extends CacheableTokenCredentia
 
     @Override
     protected Descriptor[] getTokenCredentialKeyDescriptors() {
-        return new Descriptor[] {
-                Descriptor.AUTHORITY_HOST,
-                Descriptor.TENANT_ID,
-                Descriptor.USERNAME,
-                Descriptor.PASSWORD
+        return new Descriptor[]{
+            Descriptor.AUTHORITY_HOST,
+            Descriptor.TENANT_ID,
+            Descriptor.USERNAME,
+            Descriptor.PASSWORD
         };
     }
 }

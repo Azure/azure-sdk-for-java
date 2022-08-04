@@ -15,11 +15,11 @@ public class CacheableClientCertificateCredential extends CacheableTokenCredenti
 
     @Override
     protected Descriptor[] getTokenCredentialKeyDescriptors() {
-        return new Descriptor[] {
-                Descriptor.AUTHORITY_HOST,
-                Descriptor.TENANT_ID,
-                Descriptor.CLIENT_CERTIFICATE_PATH,
-                Descriptor.CLIENT_CERTIFICATE_PASSWORD
+        return new Descriptor[]{
+            Descriptor.AUTHORITY_HOST,
+            Descriptor.TENANT_ID,
+            Descriptor.CLIENT_CERTIFICATE_PATH,
+            Descriptor.CLIENT_CERTIFICATE_PASSWORD
         };
     }
 }

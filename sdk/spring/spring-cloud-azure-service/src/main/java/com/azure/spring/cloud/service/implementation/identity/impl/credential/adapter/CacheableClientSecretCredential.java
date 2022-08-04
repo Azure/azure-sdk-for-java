@@ -15,11 +15,11 @@ public class CacheableClientSecretCredential extends CacheableTokenCredentialAda
 
     @Override
     protected Descriptor[] getTokenCredentialKeyDescriptors() {
-        return new Descriptor[] {
-                Descriptor.AUTHORITY_HOST,
-                Descriptor.TENANT_ID,
-                Descriptor.CLIENT_ID,
-                Descriptor.CLIENT_SECRET
+        return new Descriptor[]{
+            Descriptor.AUTHORITY_HOST,
+            Descriptor.TENANT_ID,
+            Descriptor.CLIENT_ID,
+            Descriptor.CLIENT_SECRET
         };
     }
 

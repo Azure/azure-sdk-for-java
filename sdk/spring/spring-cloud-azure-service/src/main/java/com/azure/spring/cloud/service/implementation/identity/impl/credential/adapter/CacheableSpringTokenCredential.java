@@ -15,8 +15,8 @@ public class CacheableSpringTokenCredential extends CacheableTokenCredentialAdap
 
     @Override
     protected Descriptor[] getTokenCredentialKeyDescriptors() {
-        return new Descriptor[] {
-                Descriptor.TOKEN_CREDENTIAL_BEAN_NAME
+        return new Descriptor[]{
+            Descriptor.TOKEN_CREDENTIAL_BEAN_NAME
         };
     }
 

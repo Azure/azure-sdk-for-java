@@ -15,10 +15,10 @@ public class CacheableDefaultAzureCredential extends CacheableTokenCredentialAda
 
     @Override
     protected Descriptor[] getTokenCredentialKeyDescriptors() {
-        return new Descriptor[] {
-                Descriptor.AUTHORITY_HOST,
-                Descriptor.TENANT_ID,
-                Descriptor.CLIENT_ID
+        return new Descriptor[]{
+            Descriptor.AUTHORITY_HOST,
+            Descriptor.TENANT_ID,
+            Descriptor.CLIENT_ID
         };
     }
 }

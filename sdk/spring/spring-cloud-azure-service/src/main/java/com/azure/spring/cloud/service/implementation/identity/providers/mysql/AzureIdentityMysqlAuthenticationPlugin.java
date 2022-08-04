@@ -6,7 +6,6 @@ package com.azure.spring.cloud.service.implementation.identity.providers.mysql;/
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.api.AzureAuthenticationTemplate;
 import com.mysql.cj.callback.MysqlCallbackHandler;
-import com.mysql.cj.log.LogFactory;
 import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativeConstants;
@@ -23,8 +22,9 @@ import java.util.Properties;
 public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationTemplate implements AuthenticationPlugin<NativePacketPayload> {
     // TODO log type
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
+    public static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
-    private static String PLUGIN_NAME = "mysql_clear_password";
+    private static final String PLUGIN_NAME = "mysql_clear_password";
 
     /**
      * Stores the callback handler.
@@ -51,7 +51,7 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
         Properties properties = protocol.getPropertySet().exposeAsProperties();
-        AuthProperty.SCOPES.setProperty(properties, "https://ossrdbms-aad.database.windows.net/.default");
+        AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         init(properties);
     }
 

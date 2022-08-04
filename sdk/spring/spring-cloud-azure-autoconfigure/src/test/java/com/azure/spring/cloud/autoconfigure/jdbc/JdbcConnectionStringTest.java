@@ -1,6 +1,5 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureUnsupportedDatabaseTypeException;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import org.junit.jupiter.api.Assertions;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString.INVALID_CONNECTION_STRING_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.NONE_VALUE;

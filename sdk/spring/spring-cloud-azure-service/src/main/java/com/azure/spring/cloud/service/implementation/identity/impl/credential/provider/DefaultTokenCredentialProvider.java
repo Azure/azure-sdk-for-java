@@ -25,7 +25,7 @@ import com.azure.spring.cloud.service.implementation.identity.impl.credential.ad
 import com.azure.spring.cloud.service.implementation.identity.impl.credential.adapter.CacheableUsernamePasswordCredential;
 import org.springframework.util.StringUtils;
 
-class DefaultTokenCredentialProvider implements TokenCredentialProvider {
+public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private TokenCredentialProviderOptions options;
     private final StaticAccessTokenCache cache = new StaticAccessTokenCache();

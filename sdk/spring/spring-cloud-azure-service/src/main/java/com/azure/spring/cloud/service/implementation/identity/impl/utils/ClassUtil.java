@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.identity.impl.utils;
 
 import com.azure.core.exception.AzureException;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
+import com.azure.spring.cloud.service.implementation.identity.api.exception.AzureInstantiateException;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Constructor;
@@ -22,11 +23,12 @@ import java.util.stream.Collectors;
  * {@code java.lang.Class} utility methods.
  * Mainly for internal use.
  */
-public class ClassUtil {
+public final class ClassUtil {
 
     private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
-    private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new HashMap<>();
-    private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap =  new HashMap<>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPER_TYPE_MAP = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_TO_WRAPPER_MAP = new HashMap<>();
+
     static {
         Map<Class<?>, Object> values = new HashMap<>();
         values.put(boolean.class, false);
@@ -39,20 +41,20 @@ public class ClassUtil {
         values.put(char.class, '\0');
         DEFAULT_TYPE_VALUES = Collections.unmodifiableMap(values);
 
-        primitiveWrapperTypeMap.put(Boolean.class, Boolean.TYPE);
-        primitiveWrapperTypeMap.put(Byte.class, Byte.TYPE);
-        primitiveWrapperTypeMap.put(Character.class, Character.TYPE);
-        primitiveWrapperTypeMap.put(Double.class, Double.TYPE);
-        primitiveWrapperTypeMap.put(Float.class, Float.TYPE);
-        primitiveWrapperTypeMap.put(Integer.class, Integer.TYPE);
-        primitiveWrapperTypeMap.put(Long.class, Long.TYPE);
-        primitiveWrapperTypeMap.put(Short.class, Short.TYPE);
-        primitiveWrapperTypeMap.put(Void.class, Void.TYPE);
-        Iterator<Map.Entry<Class<?>, Class<?>>> iterator = primitiveWrapperTypeMap.entrySet().iterator();
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Boolean.class, Boolean.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Byte.class, Byte.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Character.class, Character.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Double.class, Double.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Float.class, Float.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Integer.class, Integer.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Long.class, Long.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Short.class, Short.TYPE);
+        PRIMITIVE_WRAPPER_TYPE_MAP.put(Void.class, Void.TYPE);
+        Iterator<Map.Entry<Class<?>, Class<?>>> iterator = PRIMITIVE_WRAPPER_TYPE_MAP.entrySet().iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Map.Entry<Class<?>, Class<?>> entry = iterator.next();
-            primitiveTypeToWrapperMap.put(entry.getValue(), entry.getKey());
+            PRIMITIVE_TYPE_TO_WRAPPER_MAP.put(entry.getValue(), entry.getKey());
         }
     }
 
@@ -91,8 +93,8 @@ public class ClassUtil {
         notNull(type, "Target type must not be null");
         notNull(constructorArguments, "Constructor arguments must not be null");
 
-        return Arrays.stream(type.getDeclaredConstructors())//
-            .filter(constructor -> argumentsMatch(constructor.getParameterTypes(), constructorArguments))//
+        return Arrays.stream(type.getDeclaredConstructors())
+            .filter(constructor -> argumentsMatch(constructor.getParameterTypes(), constructorArguments))
             .findFirst();
     }
 
@@ -124,40 +126,40 @@ public class ClassUtil {
         return true;
     }
 
-    private static  <T> T instantiateClass(Constructor<T> ctor, Object... args)  {
+    private static <T> T instantiateClass(Constructor<T> ctor, Object... args) {
         notNull(ctor, "Constructor must not be null");
         try {
             makeAccessible(ctor);
             Class<?>[] parameterTypes = ctor.getParameterTypes();
             isTrue(args.length <= parameterTypes.length, "Can't specify more arguments than constructor parameters");
             Object[] argsWithDefaultValues = new Object[args.length];
-            for (int i = 0 ; i < args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 if (args[i] == null) {
                     Class<?> parameterType = parameterTypes[i];
                     argsWithDefaultValues[i] = (parameterType.isPrimitive() ? DEFAULT_TYPE_VALUES.get(parameterType) : null);
-                }
-                else {
+                } else {
                     argsWithDefaultValues[i] = args[i];
                 }
             }
             return ctor.newInstance(argsWithDefaultValues);
-        }
-        catch (InstantiationException ex) {
-            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Is it an abstract class?", ex);
-        }
-        catch (IllegalAccessException ex) {
-            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Is the constructor accessible?", ex);
-        }
-        catch (IllegalArgumentException ex) {
-            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Illegal arguments for constructor", ex);
-        }
-        catch (InvocationTargetException ex) {
-            throw new AzureException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Constructor threw exception", ex);
+        } catch (InstantiationException ex) {
+            throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
+                + "Is it an abstract class?", ex);
+        } catch (IllegalAccessException ex) {
+            throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
+                + "Is the constructor accessible?", ex);
+        } catch (IllegalArgumentException ex) {
+            throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
+                + "Illegal arguments for constructor", ex);
+        } catch (InvocationTargetException ex) {
+            throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
+                + "Constructor threw exception", ex);
         }
     }
 
     private static void makeAccessible(Constructor<?> ctor) {
-        if ((!Modifier.isPublic(ctor.getModifiers()) || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {
+        if ((!Modifier.isPublic(ctor.getModifiers())
+            || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {
             ctor.setAccessible(true);
         }
     }
@@ -191,10 +193,10 @@ public class ClassUtil {
             return true;
         } else {
             if (lhsType.isPrimitive()) {
-                Class<?> resolvedWrapper = primitiveWrapperTypeMap.get(rhsType);
+                Class<?> resolvedWrapper = PRIMITIVE_WRAPPER_TYPE_MAP.get(rhsType);
                 return lhsType == resolvedWrapper;
             } else {
-                Class<?> resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
+                Class<?> resolvedWrapper = PRIMITIVE_TYPE_TO_WRAPPER_MAP.get(rhsType);
                 return resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper);
             }
         }

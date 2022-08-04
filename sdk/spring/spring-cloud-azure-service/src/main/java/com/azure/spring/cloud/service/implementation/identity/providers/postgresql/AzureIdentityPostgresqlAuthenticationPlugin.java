@@ -19,13 +19,15 @@ import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
  */
 public class AzureIdentityPostgresqlAuthenticationPlugin extends AzureAuthenticationTemplate implements AuthenticationPlugin {
 
+    private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
+
     /**
      * Constructor with properties.
      *
      * @param properties the properties.
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
-        AuthProperty.SCOPES.setProperty(properties, "https://ossrdbms-aad.database.windows.net/.default");
+        AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         init(properties);
     }
 
@@ -41,7 +43,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin extends AzureAuthentica
         String password = getTokenAsPassword();
         if (password != null) {
             return password.toCharArray();
-        }else {
+        } else {
             throw new PSQLException("Unable to acquire access token", INVALID_PASSWORD);
         }
     }

@@ -9,7 +9,10 @@ import com.azure.spring.cloud.service.implementation.identity.impl.utils.ClassUt
 
 import static com.azure.spring.cloud.service.implementation.identity.impl.utils.ClassUtil.instantiateClass;
 
-public class TokenCredentialProviders {
+/**
+ * Util class to provide TokenCredentialProvider.
+ */
+public final class TokenCredentialProviders {
 
     private static Class<? extends TokenCredentialProvider> defaultProviderClass = DefaultTokenCredentialProvider.class;
 
@@ -33,7 +36,8 @@ public class TokenCredentialProviders {
             options = new TokenCredentialProviderOptions();
         }
 
-        Class<? extends TokenCredentialProvider> clazz = ClassUtil.getClass(options.getTokenCredentialProviderClassName(), TokenCredentialProvider.class);
+        Class<? extends TokenCredentialProvider> clazz
+            = ClassUtil.getClass(options.getTokenCredentialProviderClassName(), TokenCredentialProvider.class);
         if (clazz == null) {
             clazz = defaultProviderClass;
         }

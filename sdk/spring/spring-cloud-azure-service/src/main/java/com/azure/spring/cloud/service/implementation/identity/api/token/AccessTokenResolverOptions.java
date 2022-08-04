@@ -6,6 +6,8 @@ package com.azure.spring.cloud.service.implementation.identity.api.token;
 import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 
+import java.util.Properties;
+
 
 /**
  * This is better because it can construct using {@link Configuration}
@@ -21,13 +23,13 @@ public class AccessTokenResolverOptions {
 
     }
 
-    public AccessTokenResolverOptions(Configuration configuration) {
-        this.tenantId = AuthProperty.TENANT_ID.get(configuration);
-        this.claims = AuthProperty.CLAIMS.get(configuration);
+    public AccessTokenResolverOptions(Properties properties) {
+        this.tenantId = AuthProperty.TENANT_ID.get(properties);
+        this.claims = AuthProperty.CLAIMS.get(properties);
 
-        String scopeProperty = AuthProperty.SCOPES.get(configuration);
+        String scopeProperty = AuthProperty.SCOPES.get(properties);
         this.scopes = scopeProperty == null ?  new String[0] : scopeProperty.split(",");
-        this.cacheAccessToken = Boolean.TRUE.equals(AuthProperty.CACHE_ENABLED.getBoolean(configuration));
+        this.cacheAccessToken = Boolean.TRUE.equals(AuthProperty.CACHE_ENABLED.getBoolean(properties));
     }
 
     public String getClaims() {

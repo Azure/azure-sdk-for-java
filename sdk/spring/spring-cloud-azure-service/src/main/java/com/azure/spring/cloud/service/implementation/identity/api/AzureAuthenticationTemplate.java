@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.service.implementation.identity.api;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
@@ -19,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
+ * Template class can be extended to get password from access token.
  */
 public class AzureAuthenticationTemplate {
 
@@ -30,12 +30,12 @@ public class AzureAuthenticationTemplate {
 
     private AccessTokenResolver accessTokenResolver;
 
-    private Configuration configuration;
+    private Properties properties;
 
     public AzureAuthenticationTemplate() {
         this.tokenCredentialProvider = null;
         this.accessTokenResolver = null;
-        this.configuration = new ConfigurationBuilder().build();
+        this.properties = new Properties();
     }
 
     public AzureAuthenticationTemplate(TokenCredentialProvider tokenCredentialProvider,
@@ -44,9 +44,9 @@ public class AzureAuthenticationTemplate {
         this.accessTokenResolver = accessTokenResolver;
     }
 
-    public AzureAuthenticationTemplate(Configuration configuration) {
+    public AzureAuthenticationTemplate(Properties properties) {
         this();
-        this.configuration = configuration;
+        this.properties = this.properties;
     }
 
     protected AccessTokenResolver getAccessTokenResolver() {
@@ -61,15 +61,16 @@ public class AzureAuthenticationTemplate {
         if (isInitialized.compareAndSet(false, true)) {
             LOGGER.info("Initializing AzureAuthenticationTemplate.");
 
-            properties.entrySet().forEach(entry ->
-                    configuration.put(entry.getKey().toString(), entry.getValue().toString()));
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+
+            this.properties.putAll(properties);
 
             if (getTokenCredentialProvider() == null) {
-                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(this.configuration));
+                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(this.properties));
             }
 
             if (getAccessTokenResolver() == null) {
-                this.accessTokenResolver = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(this.configuration));
+                this.accessTokenResolver = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(this.properties));
             }
             LOGGER.info("Initialized AzureAuthenticationTemplate.");
         } else {
@@ -77,21 +78,21 @@ public class AzureAuthenticationTemplate {
         }
     }
 
-    protected Mono<String> getTokenAsPasswordAsync(){
+    protected Mono<String> getTokenAsPasswordAsync() {
         if (!isInitialized.get()) {
             throw new IllegalStateException("must call init() first");
         }
         return Mono.fromSupplier(getTokenCredentialProvider())
-                   .flatMap(getAccessTokenResolver())
-                   .filter(token -> !token.isExpired())
-                   .map(AccessToken::getToken);
+            .flatMap(getAccessTokenResolver())
+            .filter(token -> !token.isExpired())
+            .map(AccessToken::getToken);
     }
 
     protected String getTokenAsPassword() {
         return getTokenAsPasswordAsync().block(getBlockTimeout());
     }
 
-    protected Duration getBlockTimeout(){
+    protected Duration getBlockTimeout() {
         return Duration.ofSeconds(30);
     }
 
