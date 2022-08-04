@@ -93,12 +93,14 @@ public final class DefaultXmlReader extends XmlReader {
     @Override
     public XmlToken nextElement() {
         try {
-            XmlToken next = convertEventToToken(reader.next());
-            while (next != XmlToken.START_ELEMENT && next != XmlToken.END_ELEMENT && next != XmlToken.END_DOCUMENT) {
-                next = convertEventToToken(reader.next());
+            int next = reader.next();
+            while (next != XMLStreamConstants.START_ELEMENT
+                && next != XMLStreamConstants.END_ELEMENT
+                && next != XMLStreamConstants.END_DOCUMENT) {
+                next = reader.next();
             }
 
-            currentToken = next;
+            currentToken = convertEventToToken(next);
             return currentToken;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
@@ -127,6 +129,7 @@ public final class DefaultXmlReader extends XmlReader {
             int readCount = 0;
             String firstRead = null;
             String[] buffer = null;
+            int stringBufferSize = 0;
             int nextEvent = reader.next();
 
             // Continue reading until the next event is the end of the element or an exception state.
@@ -138,6 +141,7 @@ public final class DefaultXmlReader extends XmlReader {
                     readCount++;
                     if (readCount == 1) {
                         firstRead = reader.getText();
+                        stringBufferSize = firstRead.length();
                     } else {
                         if (readCount == 2) {
                             buffer = new String[4];
@@ -150,7 +154,9 @@ public final class DefaultXmlReader extends XmlReader {
                             buffer = newBuffer;
                         }
 
-                        buffer[readCount - 1] = reader.getText();
+                        String readText = reader.getText();
+                        buffer[readCount - 1] = readText;
+                        stringBufferSize += readText.length();
                     }
                 } else if (nextEvent != XMLStreamConstants.PROCESSING_INSTRUCTION
                     && nextEvent != XMLStreamConstants.COMMENT) {
@@ -166,7 +172,12 @@ public final class DefaultXmlReader extends XmlReader {
             } else if (readCount == 1) {
                 return firstRead;
             } else {
-                return String.join("", buffer);
+                StringBuilder finalText = new StringBuilder(stringBufferSize);
+                for (int i = 0; i < readCount; i++) {
+                    finalText.append(buffer[i]);
+                }
+
+                return finalText.toString();
             }
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
