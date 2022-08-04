@@ -33,10 +33,9 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
-# JRS this is here for testing purposes only since I'm using template to test
 - name: TestPipeline
   type: boolean
-  default: true
+  default: false
 
 
 stages:
@@ -232,6 +231,17 @@ stages:
             Paths: $(SparseCheckoutDirectories)
             SkipDefaultCheckout: true
 
+        # Save the Package Properties
+        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is
+        # output by the generate_from_source_pom script above.
+        - pwsh: |
+            $ServiceDirs = $(ServiceDirectories)
+            foreach($ServiceDir in $ServiceDirs.Split(',')) {
+              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+            }
+          workingDirectory: $(Pipeline.Workspace)
+          displayName: "Save Package Properties"
+
         - template: /eng/common/pipelines/templates/steps/check-spelling.yml
           parameters:
             CspellConfigPath: .vscode/cspell.json
@@ -262,7 +272,6 @@ stages:
         - pwsh: |
             $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, ServiceDirectory, uberJar | Where-Object -Not "uberJar")
             $ArtifactsList | Format-Table -Property GroupId, Name, ServiceDirectory | Out-String | Write-Host
-            python --version
             foreach($artifact in $ArtifactsList) {
               $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/$($artifact.ServiceDirectory)
             }
