@@ -6,17 +6,13 @@ package com.azure.resourcemanager.automanage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.models.ReportResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Data related to the report detail. */
 @Fluent
 public final class AssignmentReportProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssignmentReportProperties.class);
-
     /*
      * Start time of the configuration profile assignment processing.
      */
@@ -42,8 +38,7 @@ public final class AssignmentReportProperties {
     private String duration;
 
     /*
-     * Type of the configuration profile assignment processing
-     * (Initial/Consistency).
+     * Type of the configuration profile assignment processing (Initial/Consistency).
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
@@ -67,8 +62,7 @@ public final class AssignmentReportProperties {
     private List<ReportResource> resources;
 
     /*
-     * Error message, if any, returned by the configuration profile assignment
-     * processing.
+     * Error message, if any, returned by the configuration profile assignment processing.
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;

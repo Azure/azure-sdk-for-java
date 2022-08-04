@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed issues with pagination when an offset is passed in with the pageable object. - See [PR 29462](https://github.com/Azure/azure-sdk-for-java/pull/29462)
+* Fixed an issue with @Query annotation using IN queries in `azure-spring-data-cosmos` which were not working - See [PR 30123](https://github.com/Azure/azure-sdk-for-java/pull/30123)
 * Fixed issues with pagination when accessing a page other than the first page. - See [PR 30276](https://github.com/Azure/azure-sdk-for-java/pull/30276)
 
 #### Other Changes
