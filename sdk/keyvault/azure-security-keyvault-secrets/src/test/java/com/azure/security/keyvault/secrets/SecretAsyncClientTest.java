@@ -15,6 +15,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -51,15 +52,13 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                                          String testTenantId) {
         HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        secretAsyncClient = spy(new SecretClientBuilder()
-            .pipeline(httpPipeline)
-            .vaultUrl(getEndpoint())
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+        SecretClientImpl implClient = spy(new SecretClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
-            when(secretAsyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
+
+        secretAsyncClient = new SecretAsyncClient(implClient);
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
