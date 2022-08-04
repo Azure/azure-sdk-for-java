@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.13.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.12.2 (2022-08-04)
 
 #### Bugs Fixed
 * Fixed the SerializationDateTimeConversionMode `AlwaysEpochMillisecdsWithSystemDefaultTimezone` where ZoneOffset calculation could be wrong especially for dates in the 19xx years. - See [PR 30266](https://github.com/Azure/azure-sdk-for-java/pull/30266)
