@@ -119,7 +119,7 @@ public final class SecretClientBuilder implements
     private final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL vaultUrl;
+    private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
@@ -186,8 +186,7 @@ public final class SecretClientBuilder implements
     private SecretClientImpl buildInnerClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-
-        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
+        String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
             throw logger.logExceptionAsError(
@@ -198,7 +197,7 @@ public final class SecretClientBuilder implements
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
+            return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -266,7 +265,8 @@ public final class SecretClientBuilder implements
         }
 
         try {
-            this.vaultUrl = new URL(vaultUrl);
+            URL url = new URL(vaultUrl);
+            this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "The Azure Key Vault url is malformed.", e));
@@ -488,7 +488,7 @@ public final class SecretClientBuilder implements
         return this;
     }
 
-    private URL getBuildEndpoint(Configuration configuration) {
+    private String getBuildEndpoint(Configuration configuration) {
         if (vaultUrl != null) {
             return vaultUrl;
         }
@@ -499,7 +499,8 @@ public final class SecretClientBuilder implements
         }
 
         try {
-            return new URL(configEndpoint);
+            URL url =  new URL(configEndpoint);
+            return url.toString();
         } catch (MalformedURLException ex) {
             return null;
         }
