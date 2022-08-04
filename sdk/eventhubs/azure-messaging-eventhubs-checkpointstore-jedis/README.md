@@ -79,7 +79,7 @@ Key concepts are explained in detail [here][key_concepts].
 
 ### Create an instance of JedisPool with Azure Redis Cache
 
-```java readme-sample-createJedisPool
+```java
 String hostname = "yourHostName.redis.cache.windows.net";
 
 String password = "<PRIMARY KEY FOR AZURE REDIS CACHE>";
@@ -103,7 +103,7 @@ In our example, we will focus on building the [`EventProcessor`][source_eventpro
 [`JedisRedisCheckpointStore`][source_jedisredischeckpointstore], and a simple callback function to process the events
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
-```java readme-sample-consumeEventsUsingEventProcessor
+```java
 JedisPool jedisPool = new JedisPool(poolConfig, hostname, port, 1000, 1000, password, Protocol.DEFAULT_DATABASE, name, true, null, null, null);
 
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
