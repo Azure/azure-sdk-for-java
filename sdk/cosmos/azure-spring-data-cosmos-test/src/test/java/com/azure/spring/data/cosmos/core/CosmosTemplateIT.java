@@ -786,26 +786,6 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testRunSliceQueryWithSort() {
-        cosmosTemplate.insert(TEST_PERSON_2,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
-
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
-        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null, Sort.by(ASC, "id"));
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(criteria));
-        final Slice<Person> slice = cosmosTemplate.runSliceQuery(sqlQuerySpec, pageRequest, Person.class, Person.class);
-        assertThat(slice.getContent().size()).isEqualTo(1);
-
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
-    }
-
-    @Test
     public void createWithAutoscale() throws ClassNotFoundException {
         final CosmosEntityInformation<AutoScaleSample, String> autoScaleSampleInfo =
             new CosmosEntityInformation<>(AutoScaleSample.class);
