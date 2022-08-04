@@ -53,6 +53,7 @@
 
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
+      --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
