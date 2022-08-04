@@ -1,14 +1,16 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.11.0 (2022-08-04)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added `AssertingClient` which asserts whether asynchronous or synchronous APIs are called.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
 
 ## 1.10.0 (2022-06-30)
 
