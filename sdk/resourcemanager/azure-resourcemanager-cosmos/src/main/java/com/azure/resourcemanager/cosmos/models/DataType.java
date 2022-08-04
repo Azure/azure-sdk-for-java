@@ -39,7 +39,11 @@ public final class DataType extends ExpandableStringEnum<DataType> {
         return fromString(name, DataType.class);
     }
 
-    /** @return known DataType values. */
+    /**
+     * Gets known DataType values.
+     *
+     * @return known DataType values.
+     */
     public static Collection<DataType> values() {
         return values(DataType.class);
     }

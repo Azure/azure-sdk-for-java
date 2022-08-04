@@ -5,73 +5,28 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relay.models.Relaytype;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Description of the WCF relay resource. */
-@JsonFlatten
 @Fluent
-public class WcfRelayInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WcfRelayInner.class);
-
+public final class WcfRelayInner extends ProxyResource {
     /*
-     * Returns true if the relay is dynamic; otherwise, false.
+     * Properties of the WCF relay.
      */
-    @JsonProperty(value = "properties.isDynamic", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isDynamic;
+    @JsonProperty(value = "properties")
+    private WcfRelayProperties innerProperties;
 
-    /*
-     * The time the WCF relay was created.
+    /**
+     * Get the innerProperties property: Properties of the WCF relay.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
-
-    /*
-     * The time the namespace was updated.
-     */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * The number of listeners for this relay. Note that min :1 and max:25 are
-     * supported.
-     */
-    @JsonProperty(value = "properties.listenerCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer listenerCount;
-
-    /*
-     * WCF relay type.
-     */
-    @JsonProperty(value = "properties.relayType")
-    private Relaytype relayType;
-
-    /*
-     * Returns true if client authorization is needed for this relay;
-     * otherwise, false.
-     */
-    @JsonProperty(value = "properties.requiresClientAuthorization")
-    private Boolean requiresClientAuthorization;
-
-    /*
-     * Returns true if transport security is needed for this relay; otherwise,
-     * false.
-     */
-    @JsonProperty(value = "properties.requiresTransportSecurity")
-    private Boolean requiresTransportSecurity;
-
-    /*
-     * The usermetadata is a placeholder to store user-defined string data for
-     * the WCF Relay endpoint. For example, it can be used to store descriptive
-     * data, such as list of teams and their contact information. Also,
-     * user-defined configuration settings can be stored.
-     */
-    @JsonProperty(value = "properties.userMetadata")
-    private String userMetadata;
+    private WcfRelayProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the isDynamic property: Returns true if the relay is dynamic; otherwise, false.
@@ -79,7 +34,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
-        return this.isDynamic;
+        return this.innerProperties() == null ? null : this.innerProperties().isDynamic();
     }
 
     /**
@@ -88,7 +43,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -97,7 +52,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -107,7 +62,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the listenerCount value.
      */
     public Integer listenerCount() {
-        return this.listenerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().listenerCount();
     }
 
     /**
@@ -116,7 +71,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the relayType value.
      */
     public Relaytype relayType() {
-        return this.relayType;
+        return this.innerProperties() == null ? null : this.innerProperties().relayType();
     }
 
     /**
@@ -126,7 +81,10 @@ public class WcfRelayInner extends ProxyResource {
      * @return the WcfRelayInner object itself.
      */
     public WcfRelayInner withRelayType(Relaytype relayType) {
-        this.relayType = relayType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WcfRelayProperties();
+        }
+        this.innerProperties().withRelayType(relayType);
         return this;
     }
 
@@ -137,7 +95,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the requiresClientAuthorization value.
      */
     public Boolean requiresClientAuthorization() {
-        return this.requiresClientAuthorization;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresClientAuthorization();
     }
 
     /**
@@ -148,7 +106,10 @@ public class WcfRelayInner extends ProxyResource {
      * @return the WcfRelayInner object itself.
      */
     public WcfRelayInner withRequiresClientAuthorization(Boolean requiresClientAuthorization) {
-        this.requiresClientAuthorization = requiresClientAuthorization;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WcfRelayProperties();
+        }
+        this.innerProperties().withRequiresClientAuthorization(requiresClientAuthorization);
         return this;
     }
 
@@ -159,7 +120,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the requiresTransportSecurity value.
      */
     public Boolean requiresTransportSecurity() {
-        return this.requiresTransportSecurity;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresTransportSecurity();
     }
 
     /**
@@ -170,7 +131,10 @@ public class WcfRelayInner extends ProxyResource {
      * @return the WcfRelayInner object itself.
      */
     public WcfRelayInner withRequiresTransportSecurity(Boolean requiresTransportSecurity) {
-        this.requiresTransportSecurity = requiresTransportSecurity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WcfRelayProperties();
+        }
+        this.innerProperties().withRequiresTransportSecurity(requiresTransportSecurity);
         return this;
     }
 
@@ -182,7 +146,7 @@ public class WcfRelayInner extends ProxyResource {
      * @return the userMetadata value.
      */
     public String userMetadata() {
-        return this.userMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().userMetadata();
     }
 
     /**
@@ -194,7 +158,10 @@ public class WcfRelayInner extends ProxyResource {
      * @return the WcfRelayInner object itself.
      */
     public WcfRelayInner withUserMetadata(String userMetadata) {
-        this.userMetadata = userMetadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WcfRelayProperties();
+        }
+        this.innerProperties().withUserMetadata(userMetadata);
         return this;
     }
 
@@ -204,5 +171,8 @@ public class WcfRelayInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

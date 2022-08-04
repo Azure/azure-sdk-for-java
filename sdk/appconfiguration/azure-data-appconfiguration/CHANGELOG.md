@@ -3,12 +3,21 @@
 ## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
+- Integrate synchronous workflow for sync clients so that they do not block on async client APIs.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.5 (2022-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
 
 ## 1.3.4 (2022-06-08)
 

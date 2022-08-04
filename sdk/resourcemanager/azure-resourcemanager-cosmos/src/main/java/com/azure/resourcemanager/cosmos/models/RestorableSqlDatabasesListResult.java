@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlDatabaseGetResultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List operation response, that contains the SQL database events and their properties. */
 @Immutable
 public final class RestorableSqlDatabasesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableSqlDatabasesListResult.class);
-
     /*
      * List of SQL database events and their properties.
      */

@@ -27,7 +27,11 @@ public final class PreemptionCapability extends ExpandableStringEnum<PreemptionC
         return fromString(name, PreemptionCapability.class);
     }
 
-    /** @return known PreemptionCapability values. */
+    /**
+     * Gets known PreemptionCapability values.
+     *
+     * @return known PreemptionCapability values.
+     */
     public static Collection<PreemptionCapability> values() {
         return values(PreemptionCapability.class);
     }

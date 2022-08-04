@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -27,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.JobExecutionsClient;
@@ -41,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobExecutionsClient. */
 public final class JobExecutionsClientImpl implements JobExecutionsClient {
-    private final ClientLogger logger = new ClientLogger(JobExecutionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobExecutionsService service;
 
@@ -67,7 +65,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
     private interface JobExecutionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/executions")
@@ -87,6 +85,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @QueryParam("$top") Integer top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -106,7 +105,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start")
@@ -120,9 +119,10 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @PathParam("jobName") String jobName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions")
@@ -143,9 +143,10 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @QueryParam("$top") Integer top,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
@@ -160,9 +161,10 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @PathParam("jobExecutionId") UUID jobExecutionId,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}")
@@ -177,21 +179,28 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
             @PathParam("jobExecutionId") UUID jobExecutionId,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByAgentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobExecutionListResult>> listByJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -211,7 +220,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByAgentSinglePageAsync(
@@ -248,6 +257,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -266,6 +276,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             top,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
@@ -276,7 +287,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -297,7 +308,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByAgentSinglePageAsync(
@@ -335,6 +346,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByAgent(
@@ -351,6 +363,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 top,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -380,7 +393,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByAgentAsync(
@@ -420,7 +433,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByAgentAsync(
@@ -466,7 +479,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobExecutionInner> listByAgentAsync(
@@ -505,6 +518,42 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobExecutionInner> listByAgent(
+        String resourceGroupName, String serverName, String jobAgentName) {
+        final OffsetDateTime createTimeMin = null;
+        final OffsetDateTime createTimeMax = null;
+        final OffsetDateTime endTimeMin = null;
+        final OffsetDateTime endTimeMax = null;
+        final Boolean isActive = null;
+        final Integer skip = null;
+        final Integer top = null;
+        return new PagedIterable<>(
+            listByAgentAsync(
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top));
+    }
+
+    /**
+     * Lists all executions in a job agent.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
      * @param createTimeMax If specified, only job executions created before the specified time are included.
      * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
@@ -516,7 +565,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> listByAgent(
@@ -547,42 +596,6 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     }
 
     /**
-     * Lists all executions in a job agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByAgent(
-        String resourceGroupName, String serverName, String jobAgentName) {
-        final OffsetDateTime createTimeMin = null;
-        final OffsetDateTime createTimeMax = null;
-        final OffsetDateTime endTimeMin = null;
-        final OffsetDateTime endTimeMax = null;
-        final Boolean isActive = null;
-        final Integer skip = null;
-        final Integer top = null;
-        return new PagedIterable<>(
-            listByAgentAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top));
-    }
-
-    /**
      * Requests cancellation of a job execution.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -594,7 +607,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(
@@ -642,7 +655,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -658,7 +671,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> cancelWithResponseAsync(
@@ -723,13 +736,13 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
         return cancelWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -764,7 +777,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(
@@ -789,7 +802,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -820,6 +833,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -832,8 +846,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             jobName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -848,7 +863,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -879,6 +894,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -889,6 +905,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 jobName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -903,9 +920,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -932,9 +949,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
         context = this.client.mergeContext(context);
@@ -957,9 +974,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName) {
         return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName).getSyncPoller();
@@ -977,9 +994,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
         return beginCreateAsync(resourceGroupName, serverName, jobAgentName, jobName, context).getSyncPoller();
@@ -996,7 +1013,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobExecutionInner> createAsync(
@@ -1018,7 +1035,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobExecutionInner> createAsync(
@@ -1084,7 +1101,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobSinglePageAsync(
@@ -1125,6 +1142,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1144,6 +1162,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             top,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
@@ -1154,7 +1173,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1176,7 +1195,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobSinglePageAsync(
@@ -1218,6 +1237,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByJob(
@@ -1235,6 +1255,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 top,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1265,7 +1286,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByJobAsync(
@@ -1308,7 +1329,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobExecutionInner> listByJobAsync(
@@ -1356,7 +1377,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobExecutionInner> listByJobAsync(
@@ -1398,6 +1419,44 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<JobExecutionInner> listByJob(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
+        final OffsetDateTime createTimeMin = null;
+        final OffsetDateTime createTimeMax = null;
+        final OffsetDateTime endTimeMin = null;
+        final OffsetDateTime endTimeMax = null;
+        final Boolean isActive = null;
+        final Integer skip = null;
+        final Integer top = null;
+        return new PagedIterable<>(
+            listByJobAsync(
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                jobName,
+                createTimeMin,
+                createTimeMax,
+                endTimeMin,
+                endTimeMax,
+                isActive,
+                skip,
+                top));
+    }
+
+    /**
+     * Lists a job's executions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
      * @param createTimeMin If specified, only job executions created at or after the specified time are included.
      * @param createTimeMax If specified, only job executions created before the specified time are included.
      * @param endTimeMin If specified, only job executions completed at or after the specified time are included.
@@ -1409,7 +1468,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> listByJob(
@@ -1442,44 +1501,6 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
     }
 
     /**
-     * Lists a job's executions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobExecutionInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        final OffsetDateTime createTimeMin = null;
-        final OffsetDateTime createTimeMax = null;
-        final OffsetDateTime endTimeMin = null;
-        final OffsetDateTime endTimeMax = null;
-        final Boolean isActive = null;
-        final Integer skip = null;
-        final Integer top = null;
-        return new PagedIterable<>(
-            listByJobAsync(
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                createTimeMin,
-                createTimeMax,
-                endTimeMin,
-                endTimeMax,
-                isActive,
-                skip,
-                top));
-    }
-
-    /**
      * Gets a job execution.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -1491,7 +1512,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobExecutionInner>> getWithResponseAsync(
@@ -1525,6 +1546,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1538,8 +1560,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             jobExecutionId,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1555,7 +1578,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobExecutionInner>> getWithResponseAsync(
@@ -1594,6 +1617,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1605,6 +1629,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 jobExecutionId,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1620,20 +1645,13 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobExecutionInner> getAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
-            .flatMap(
-                (Response<JobExecutionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1669,7 +1687,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job execution.
+     * @return a job execution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobExecutionInner> getWithResponse(
@@ -1695,7 +1713,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1729,6 +1747,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1742,8 +1761,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                             jobExecutionId,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1759,7 +1779,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1798,6 +1818,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -1809,6 +1830,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                 jobExecutionId,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1824,9 +1846,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1854,9 +1876,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link PollerFlux} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -1886,9 +1908,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId)
@@ -1908,9 +1930,9 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return the {@link SyncPoller} for polling of an execution of a job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<JobExecutionInner>, JobExecutionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -1934,7 +1956,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobExecutionInner> createOrUpdateAsync(
@@ -1957,7 +1979,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an execution of a job.
+     * @return an execution of a job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobExecutionInner> createOrUpdateAsync(
@@ -2026,15 +2048,22 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByAgentNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByAgentNext(nextLink, context))
+            .withContext(context -> service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2044,7 +2073,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2055,16 +2084,23 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByAgentNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAgentNext(nextLink, context)
+            .listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2083,15 +2119,22 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByJobNext(nextLink, context))
+            .withContext(context -> service.listByJobNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobExecutionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2101,7 +2144,7 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2112,16 +2155,23 @@ public final class JobExecutionsClientImpl implements JobExecutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job executions.
+     * @return a list of job executions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobExecutionInner>> listByJobNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJobNext(nextLink, context)
+            .listByJobNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

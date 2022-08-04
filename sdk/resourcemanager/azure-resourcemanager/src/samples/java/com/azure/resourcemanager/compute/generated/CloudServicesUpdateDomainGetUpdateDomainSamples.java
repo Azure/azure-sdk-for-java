@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServicesUpdateDomain GetUpdateDomain. */
 public final class CloudServicesUpdateDomainGetUpdateDomainSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/GetCloudServiceUpdateDomain.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceUpdateDomain_Get.json
      */
     /**
      * Sample code: Get Cloud Service Update Domain.

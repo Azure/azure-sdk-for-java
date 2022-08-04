@@ -41,7 +41,7 @@ public abstract class ContainerTest<TOptions extends PerfStressOptions> extends 
     @Override
     public Mono<Void> globalCleanupAsync() {
         return Mono.empty()
-            .publishOn(Schedulers.elastic())
+            .publishOn(Schedulers.boundedElastic())
             .then(Mono.fromCallable(() -> {
                 cloudBlobContainer.delete();
                 return 1;

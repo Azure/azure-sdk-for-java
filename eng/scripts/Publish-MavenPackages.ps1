@@ -216,9 +216,18 @@ foreach ($packageDetail in $packageDetails) {
     $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
     Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
+    $nexusPluginVersion = . $PSScriptRoot\Get-ExternalDependencyVersion.ps1 -GroupId 'org.sonatype.plugins' -ArtifactId 'nexus-staging-maven-plugin'
+    if ($LASTEXITCODE) {
+      Write-Information "##vso[task.logissue type=error]Unable to resolve version of external dependency 'org.sonatype.plugins:nexus-staging-maven-plugin'"
+      exit $LASTEXITCODE
+    }
+
+    $stagingGoal = "org.sonatype.plugins:nexus-staging-maven-plugin:$nexusPluginVersion`:deploy-staged-repository"
+    $releaseGoal = "org.sonatype.plugins:nexus-staging-maven-plugin:$nexusPluginVersion`:rc-release"
+
     Write-Information "Staging package to Maven Central"
-    Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:deploy-staged-repository `"--batch-mode`" `"-DnexusUrl=https://oss.sonatype.org`" `"$repositoryDirectoryOption`" `"$stagingProfileIdOption`" `"$stagingDescriptionOption`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"[redacted]`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-    mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:deploy-staged-repository "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+    Write-Information "mvn $stagingGoal `"--batch-mode`" `"-DnexusUrl=https://oss.sonatype.org`" `"$repositoryDirectoryOption`" `"$stagingProfileIdOption`" `"$stagingDescriptionOption`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"[redacted]`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+    mvn $stagingGoal "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
     if ($LASTEXITCODE) {
       Write-Information '##vso[task.logissue type=error]Staging to Maven Central failed. For troubleshooting, see https://aka.ms/azsdk/maven-central-tsg'
@@ -244,8 +253,8 @@ foreach ($packageDetail in $packageDetails) {
 
     while ($attempt++ -lt 3) {
       Write-Information "Releasing staging repostiory $stagedRepositoryId, attempt $attempt"
-      Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-      mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+      Write-Information "mvn $releaseGoal `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+      mvn $releaseGoal "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
       if ($LASTEXITCODE -eq 0) {
         Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"

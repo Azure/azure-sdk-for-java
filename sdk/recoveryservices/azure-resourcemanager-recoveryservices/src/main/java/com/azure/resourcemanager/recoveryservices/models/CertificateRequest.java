@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the certificate to be uploaded to the vault. */
 @Fluent
 public final class CertificateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateRequest.class);
-
     /*
      * Raw certificate data.
      */

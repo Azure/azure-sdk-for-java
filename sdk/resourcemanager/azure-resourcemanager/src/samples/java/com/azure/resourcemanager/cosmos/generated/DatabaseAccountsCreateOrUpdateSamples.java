@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageSchemaType;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
@@ -17,6 +16,7 @@ import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
+import com.azure.resourcemanager.cosmos.models.DatabaseRestoreResource;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -39,7 +39,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts CreateOrUpdate. */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
@@ -87,17 +87,17 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                             .withDatabasesToRestore(
                                 Arrays
                                     .asList(
-                                        new DatabaseRestoreResourceInner()
+                                        new DatabaseRestoreResource()
                                             .withDatabaseName("db1")
                                             .withCollectionNames(Arrays.asList("collection1", "collection2")),
-                                        new DatabaseRestoreResourceInner()
+                                        new DatabaseRestoreResource()
                                             .withDatabaseName("db2")
                                             .withCollectionNames(Arrays.asList("collection3", "collection4"))))),
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountCreateMax.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountCreateMax.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
@@ -180,7 +180,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountCreateMin.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountCreateMin.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.

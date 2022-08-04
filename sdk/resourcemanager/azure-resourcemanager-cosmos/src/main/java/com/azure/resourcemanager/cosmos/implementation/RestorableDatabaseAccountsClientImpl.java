@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.RestorableDatabaseAccountsClient;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableDatabaseAccountGetResultInner;
 import com.azure.resourcemanager.cosmos.models.RestorableDatabaseAccountsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableDatabaseAccountsClient. */
 public final class RestorableDatabaseAccountsClientImpl implements RestorableDatabaseAccountsClient {
-    private final ClientLogger logger = new ClientLogger(RestorableDatabaseAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableDatabaseAccountsService service;
 
@@ -110,7 +107,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDatabaseAccountGetResultInner>> listByLocationSinglePageAsync(
@@ -158,7 +156,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDatabaseAccountGetResultInner>> listByLocationSinglePageAsync(
@@ -202,7 +201,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDatabaseAccountGetResultInner> listByLocationAsync(String location) {
@@ -218,7 +218,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableDatabaseAccountGetResultInner> listByLocationAsync(String location, Context context) {
@@ -233,7 +234,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> listByLocation(String location) {
@@ -249,7 +251,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> listByLocation(String location, Context context) {
@@ -262,7 +265,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDatabaseAccountGetResultInner>> listSinglePageAsync() {
@@ -304,7 +308,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDatabaseAccountGetResultInner>> listSinglePageAsync(Context context) {
@@ -341,7 +346,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDatabaseAccountGetResultInner> listAsync() {
@@ -356,7 +362,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableDatabaseAccountGetResultInner> listAsync(Context context) {
@@ -369,7 +376,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> list() {
@@ -384,7 +392,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties.
+     * @return the List operation response, that contains the restorable database accounts and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> list(Context context) {
@@ -400,7 +409,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
+     * @return a Azure Cosmos DB restorable database account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorableDatabaseAccountGetResultInner>> getByLocationWithResponseAsync(
@@ -449,7 +459,8 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
+     * @return a Azure Cosmos DB restorable database account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDatabaseAccountGetResultInner>> getByLocationWithResponseAsync(
@@ -494,19 +505,11 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
+     * @return a Azure Cosmos DB restorable database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorableDatabaseAccountGetResultInner> getByLocationAsync(String location, String instanceId) {
-        return getByLocationWithResponseAsync(location, instanceId)
-            .flatMap(
-                (Response<RestorableDatabaseAccountGetResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByLocationWithResponseAsync(location, instanceId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -535,7 +538,7 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
+     * @return a Azure Cosmos DB restorable database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDatabaseAccountGetResultInner> getByLocationWithResponse(

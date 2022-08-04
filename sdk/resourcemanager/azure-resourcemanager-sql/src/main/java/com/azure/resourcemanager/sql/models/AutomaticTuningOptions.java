@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Automatic tuning properties for individual advisors. */
 @Fluent
 public final class AutomaticTuningOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticTuningOptions.class);
-
     /*
      * Automatic tuning option desired state.
      */

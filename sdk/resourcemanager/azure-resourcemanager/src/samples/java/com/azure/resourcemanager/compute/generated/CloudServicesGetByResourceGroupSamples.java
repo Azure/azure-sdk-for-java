@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServices GetByResourceGroup. */
 public final class CloudServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/GetCloudServiceWithMultiRoleAndRDP.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Get_WithMultiRoleAndRDP.json
      */
     /**
      * Sample code: Get Cloud Service with Multiple Roles and RDP Extension.

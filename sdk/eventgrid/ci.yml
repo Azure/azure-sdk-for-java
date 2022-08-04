@@ -49,7 +49,7 @@ parameters:
 - name: release_azureresourcemanagereventgrid
   displayName: 'azure-resourcemanager-eventgrid'
   type: boolean
-  default: true
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

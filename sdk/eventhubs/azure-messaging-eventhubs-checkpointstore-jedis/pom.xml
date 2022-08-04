@@ -65,7 +65,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -73,6 +73,11 @@
       <artifactId>mockito-core</artifactId>
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-inline</artifactId>
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -87,6 +92,7 @@
           <bannedDependencies>
             <includes>
               <include>redis.clients:jedis:[4.2.3]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
+              <include>org.mockito:mockito-inline:[4.5.1]</include> <!-- {x-include-update;org.mockito:mockito-inline;external_dependency} -->
             </includes>
           </bannedDependencies>
         </rules>

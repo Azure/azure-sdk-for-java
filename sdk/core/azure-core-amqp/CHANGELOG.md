@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `AmqpClientOptions` to enable set identifier for AMQP client and link. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
+
 ### Breaking Changes
 
 ### Bugs Fixed

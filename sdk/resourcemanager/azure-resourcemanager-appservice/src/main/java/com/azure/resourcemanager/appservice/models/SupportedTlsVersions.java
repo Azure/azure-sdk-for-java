@@ -30,7 +30,11 @@ public final class SupportedTlsVersions extends ExpandableStringEnum<SupportedTl
         return fromString(name, SupportedTlsVersions.class);
     }
 
-    /** @return known SupportedTlsVersions values. */
+    /**
+     * Gets known SupportedTlsVersions values.
+     *
+     * @return known SupportedTlsVersions values.
+     */
     public static Collection<SupportedTlsVersions> values() {
         return values(SupportedTlsVersions.class);
     }

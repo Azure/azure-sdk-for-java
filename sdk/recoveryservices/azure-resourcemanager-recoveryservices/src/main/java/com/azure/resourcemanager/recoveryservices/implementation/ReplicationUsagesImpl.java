@@ -7,40 +7,40 @@ package com.azure.resourcemanager.recoveryservices.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.ReplicationUsagesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.ReplicationUsageInner;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsage;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReplicationUsagesImpl implements ReplicationUsages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationUsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReplicationUsagesImpl.class);
 
     private final ReplicationUsagesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public ReplicationUsagesImpl(ReplicationUsagesClient innerClient, RecoveryServicesManager serviceManager) {
+    public ReplicationUsagesImpl(
+        ReplicationUsagesClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName) {
         PagedIterable<ReplicationUsageInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return inner.mapPage(inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReplicationUsage> list(String resourceGroupName, String vaultName, Context context) {
         PagedIterable<ReplicationUsageInner> inner = this.serviceClient().list(resourceGroupName, vaultName, context);
-        return inner.mapPage(inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new ReplicationUsageImpl(inner1, this.manager()));
     }
 
     private ReplicationUsagesClient serviceClient() {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

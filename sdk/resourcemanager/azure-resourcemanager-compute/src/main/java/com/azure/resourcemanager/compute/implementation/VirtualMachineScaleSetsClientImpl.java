@@ -1611,7 +1611,14 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<VirtualMachineScaleSetInner> getByResourceGroupAsync(
         String resourceGroupName, String vmScaleSetName, ExpandTypesForGetVMScaleSets expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmScaleSetName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineScaleSetInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1628,7 +1635,14 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<VirtualMachineScaleSetInner> getByResourceGroupAsync(String resourceGroupName, String vmScaleSetName) {
         final ExpandTypesForGetVMScaleSets expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmScaleSetName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineScaleSetInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2454,7 +2468,14 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<VirtualMachineScaleSetInstanceViewInner> getInstanceViewAsync(
         String resourceGroupName, String vmScaleSetName) {
         return getInstanceViewWithResponseAsync(resourceGroupName, vmScaleSetName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineScaleSetInstanceViewInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -5897,7 +5918,14 @@ public final class VirtualMachineScaleSetsClientImpl
         String placementGroupId) {
         return forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponseAsync(
                 resourceGroupName, vmScaleSetName, platformUpdateDomain, zone, placementGroupId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RecoveryWalkResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -5918,7 +5946,14 @@ public final class VirtualMachineScaleSetsClientImpl
         final String placementGroupId = null;
         return forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponseAsync(
                 resourceGroupName, vmScaleSetName, platformUpdateDomain, zone, placementGroupId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RecoveryWalkResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -6097,7 +6132,7 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<Void> convertToSinglePlacementGroupAsync(
         String resourceGroupName, String vmScaleSetName, VMScaleSetConvertToSinglePlacementGroupInput parameters) {
         return convertToSinglePlacementGroupWithResponseAsync(resourceGroupName, vmScaleSetName, parameters)
-            .flatMap(ignored -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**

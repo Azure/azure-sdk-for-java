@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB storedProcedure. */
 @Fluent
 public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStoredProcedureGetResultsInner.class);
-
     /*
      * The properties of an Azure Cosmos DB storedProcedure
      */

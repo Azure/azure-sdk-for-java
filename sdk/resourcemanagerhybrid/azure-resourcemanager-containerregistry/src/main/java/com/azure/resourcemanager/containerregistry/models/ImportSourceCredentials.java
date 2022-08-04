@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImportSourceCredentials model. */
 @Fluent
 public final class ImportSourceCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportSourceCredentials.class);
-
     /*
      * The username to authenticate with the source registry.
      */
@@ -73,10 +70,12 @@ public final class ImportSourceCredentials {
      */
     public void validate() {
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model ImportSourceCredentials"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportSourceCredentials.class);
 }

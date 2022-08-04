@@ -27,7 +27,11 @@ public final class ServerKeyType extends ExpandableStringEnum<ServerKeyType> {
         return fromString(name, ServerKeyType.class);
     }
 
-    /** @return known ServerKeyType values. */
+    /**
+     * Gets known ServerKeyType values.
+     *
+     * @return known ServerKeyType values.
+     */
     public static Collection<ServerKeyType> values() {
         return values(ServerKeyType.class);
     }
