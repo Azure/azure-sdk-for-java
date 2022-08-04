@@ -62,6 +62,10 @@ public class AppConfigurationReplicaClientFactoryTest {
 
         properties = new AppConfigurationProperties();
         properties.setStores(stores);
+        
+        clientProperties = new AppConfigurationProviderProperties();
+        clientProperties.setDefaultMaxBackoff((long) 600);
+        clientProperties.setDefaultMinBackoff((long) 30);
 
         HashMap<String, ConnectionManager> connections = new HashMap<>();
         connections.put(originEndpoint, connectionManagerMock);
