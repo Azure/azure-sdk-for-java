@@ -46,5 +46,5 @@ service-versions:
 polling:
     default:
         strategy: >-
-                  new OperationResourcePollingStrategyWithEndpoint<>({httpPipeline}, {endpoint}, null, null, {context})
+                  new OperationResourcePollingStrategyWithEndpoint<>({httpPipeline}, "https://" + this.client.getEndpoint(), null, null, {context})
 ```

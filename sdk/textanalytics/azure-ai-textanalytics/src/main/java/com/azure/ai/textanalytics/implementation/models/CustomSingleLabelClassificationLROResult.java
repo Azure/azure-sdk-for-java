@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The CustomSingleLabelClassificationLROResult model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
@@ -37,6 +38,27 @@ public final class CustomSingleLabelClassificationLROResult extends AnalyzeTextL
      */
     public CustomSingleLabelClassificationLROResult setResults(CustomSingleLabelClassificationResult results) {
         this.results = results;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROResult setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

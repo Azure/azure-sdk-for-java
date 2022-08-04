@@ -39,4 +39,11 @@ public final class EntityLinkingLROTask extends AnalyzeTextLROTask {
         this.parameters = parameters;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

@@ -85,12 +85,17 @@ final class JacksonVersion {
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {
-            LOGGER.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`)"
-                + ", please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
+            LOGGER.warning("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`)."
+                + " It may result in runtime exceptions during serialization. Please consider updating Jackson to one of the supported versions {}",
+                version.getVersionString(),
+                packageName,
+                MIN_SUPPORTED_VERSION,
+                TROUBLESHOOTING_DOCS_LINK);
         }
 
         if (version.getMajorVersion() > MAX_SUPPORTED_MAJOR_VERSION) {
-            LOGGER.error("Major version '{}' of package '{}' is newer than latest supported version - '{}'.",
+            LOGGER.warning("Major version '{}' of package '{}' is newer than latest supported version - '{}'."
+                + " It may result in runtime exceptions during serialization.",
                 version.getVersionString(),
                 packageName,
                 MAX_SUPPORTED_MAJOR_VERSION);

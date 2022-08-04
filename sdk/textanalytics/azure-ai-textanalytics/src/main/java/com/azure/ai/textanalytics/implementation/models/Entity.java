@@ -29,15 +29,13 @@ public final class Entity {
     private String subcategory;
 
     /*
-     * Start position for the entity text. Use of different 'stringIndexType'
-     * values can affect the offset returned.
+     * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
-     * Length for the entity text. Use of different 'stringIndexType' values
-     * can affect the length returned.
+     * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
