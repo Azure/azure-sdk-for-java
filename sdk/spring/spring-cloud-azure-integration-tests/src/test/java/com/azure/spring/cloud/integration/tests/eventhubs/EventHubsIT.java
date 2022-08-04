@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
+import java.util.concurrent.Exchanger;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -49,9 +51,19 @@ public class EventHubsIT {
 
     @TestConfiguration
     static class TestConfig {
+
+        static final Exchanger<String> EXCHANGER = new Exchanger<>();
         @Bean
         EventHubsRecordMessageListener messageListener() {
-            return message -> {};
+            return message -> {
+                System.out.println("listener get message:");
+                System.out.println(message.getEventData().getBodyAsString());
+                try {
+                    EXCHANGER.exchange(message.getEventData().getBodyAsString());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            };
         }
         @Bean
         EventHubsErrorHandler errorHandler() {
@@ -59,20 +71,21 @@ public class EventHubsIT {
         }
     }
     @Test
-    public void testEventHubOperation() {
+    public void testEventHubOperation() throws InterruptedException {
         LOGGER.info("EventHubsIT begin.");
+        processorClient.start();
+        Assertions.assertTrue(processorClient.isRunning());
         producerClient.send(Arrays.asList(new EventData(data)));
-        producerClient.close();
         IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("0", 1, EventPosition.earliest());
         for (PartitionEvent event : events) {
             Assertions.assertEquals(data, event.getData().getBodyAsString());
         }
-        processorClient.start();
-        Assertions.assertTrue(processorClient.isRunning());
-        //TODO
-        processorClient.stop();
-        Assertions.assertFalse(processorClient.isRunning());
+        TimeUnit.SECONDS.sleep(10);
+        producerClient.send(Arrays.asList(new EventData(data)));
+        System.out.println("producer send message");
+        producerClient.close();
+        String msg = TestConfig.EXCHANGER.exchange(null);
+        Assertions.assertEquals(msg, data);
         LOGGER.info("EventHubsIT end.");
     }
-
 }
