@@ -28,7 +28,9 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  */
 public abstract class AbstractQueryGenerator {
 
-    private static String tableName = "r";
+    private static String tableName = "";
+
+    private static final String CONSTANT_TABLE_NAME = "r";
 
     /**
      * Initialization
@@ -258,7 +260,7 @@ public abstract class AbstractQueryGenerator {
     private String generateQueryTail(@NonNull CosmosQuery query) {
         final List<String> queryTails = new ArrayList<>();
 
-        queryTails.add(generateQuerySort(query.getSort(), "r"));
+        queryTails.add(generateQuerySort(query.getSort(), CONSTANT_TABLE_NAME));
 
         return String.join(" ", queryTails.stream().filter(StringUtils::hasText).collect(Collectors.toList()));
     }

@@ -797,7 +797,6 @@ public class CosmosTemplateIT {
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null, Sort.by(ASC, "id"));
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(criteria));
-        assertThat(sqlQuerySpec.getQueryText()).isEqualTo("SELECT * FROM ROOT r WHERE r.firstName = @firstName0 ");
         final Slice<Person> slice = cosmosTemplate.runSliceQuery(sqlQuerySpec, pageRequest, Person.class, Person.class);
         assertThat(slice.getContent().size()).isEqualTo(1);
 

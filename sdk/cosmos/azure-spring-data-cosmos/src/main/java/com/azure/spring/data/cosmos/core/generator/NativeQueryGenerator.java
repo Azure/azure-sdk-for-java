@@ -37,22 +37,16 @@ public class NativeQueryGenerator {
      * @param querySpec SQL query spec
      * @param sort Sort
      * @return sorted query
+     *
+     * WARNING: This function is only to be used with @Query annotations
      */
     public SqlQuerySpec generateSortedQuery(SqlQuerySpec querySpec, Sort sort) {
         if (sort == null || sort.isUnsorted()) {
             return querySpec;
         } else {
-            Pattern pattern1 = Pattern.compile("\\s(?i)from root\\s");
-            Pattern pattern2 = Pattern.compile("\\s(?i)from\\s");
-            Matcher matcher = pattern1.matcher(querySpec.getQueryText());
-            int beginIndex = 0;
-            if (matcher.find()) {
-                beginIndex = matcher.start(0) + 11;
-            } else {
-                matcher = pattern2.matcher(querySpec.getQueryText());
-                matcher.find();
-                beginIndex = matcher.start(0) + 6;
-            }
+            Matcher matcher = Pattern.compile("\\s(?i)from\\s").matcher(querySpec.getQueryText());
+            matcher.find();
+            int beginIndex = matcher.start(0) + 6;
             String tableName = querySpec.getQueryText().substring(beginIndex);
             tableName = tableName.substring(0, tableName.indexOf(" "));
 
@@ -67,6 +61,8 @@ public class NativeQueryGenerator {
      *
      * @param querySpec SQL query spec.
      * @return count query
+     *
+     * WARNING: This function is only to be used with @Query annotations
      */
     public SqlQuerySpec generateCountQuery(SqlQuerySpec querySpec) {
         String queryText = querySpec.getQueryText();
