@@ -4,8 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.Constants;
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImplBuilder;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -262,8 +262,8 @@ public final class TextAnalyticsClientBuilder implements
 
             return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
         } else {
-            final MicrosoftCognitiveLanguageServiceImpl batchApiTextAnalyticsClient =
-                new MicrosoftCognitiveLanguageServiceImplBuilder()
+            final MicrosoftCognitiveLanguageServiceTextAnalysisImpl batchApiTextAnalyticsClient =
+                new MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder()
                     .endpoint(endpoint)
                     .apiVersion(serviceVersion.getVersion())
                     .pipeline(pipeline)

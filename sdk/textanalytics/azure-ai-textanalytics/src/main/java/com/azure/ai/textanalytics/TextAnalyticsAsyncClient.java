@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -77,7 +77,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
-    private final MicrosoftCognitiveLanguageServiceImpl service;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
@@ -120,8 +120,8 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService);
     }
 
-    TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceImpl service, TextAnalyticsServiceVersion serviceVersion,
-        String defaultCountryHint, String defaultLanguage) {
+    TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion, String defaultCountryHint, String defaultLanguage) {
         this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
