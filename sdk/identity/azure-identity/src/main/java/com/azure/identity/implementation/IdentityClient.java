@@ -30,7 +30,24 @@ import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -228,26 +245,6 @@ public class IdentityClient {
             }
 
             applicationBuilder.sendX5c(options.isIncludeX5c());
-
-
-            if (!options.getManagedIdentityType().equals(ManagedIdentityType.NONE)) {
-                applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
-                    TokenRequestContext trc = new TokenRequestContext()
-                        .setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
-                        .setClaims(appTokenProviderParameters.claims)
-                        .setTenantId(appTokenProviderParameters.tenantId);
-
-                    Mono<AccessToken> accessTokenMono = getTokenFromTargetManagedIdentity(options.getManagedIdentityType(), trc);
-
-                    return accessTokenMono.toFuture().thenApply(accessToken -> {
-                        TokenProviderResult result =  new TokenProviderResult();
-                        result.setAccessToken(accessToken.getToken());
-                        result.setTenantId(trc.getTenantId());
-                        result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                        return result;
-                    });
-                });
-            }
 
             initializeHttpPipelineAdapter();
             if (httpPipelineAdapter != null) {
