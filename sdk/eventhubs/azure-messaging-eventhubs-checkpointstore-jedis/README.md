@@ -151,7 +151,7 @@ Get started by exploring the samples [here][samples_readme].
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
-Guidelines](https://github.com/Azure/azure-sdk-for-java/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/CONTRIBUTING.md) for more information.
+Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
