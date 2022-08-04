@@ -1325,13 +1325,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentModelOperationException fields re serializable -->
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
-    <Field name="documentModelOperationError"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
   <!-- TextAnalyticsException fields re serializable -->
   <Match>
     <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException"/>
