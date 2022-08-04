@@ -6,21 +6,15 @@ package com.azure.spring.data.cosmos.core.generator;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
-import com.azure.spring.data.cosmos.core.query.Criteria;
-import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.springframework.data.domain.*;
-import org.springframework.data.repository.query.parser.Part;
+import org.springframework.data.domain.Sort;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 
 public class NativeQueryGeneratorTest {
