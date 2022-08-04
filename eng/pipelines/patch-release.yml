@@ -4,6 +4,9 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     SkipAggregateReports: true
+    # This comment and the line below will be removed prior to the final check-in.
+    # This needs to be here now since I'm using template libraries to test everything.
+    TestPipeline: true
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
