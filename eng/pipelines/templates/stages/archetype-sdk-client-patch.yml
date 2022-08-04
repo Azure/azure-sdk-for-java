@@ -308,12 +308,6 @@ stages:
                   # changelog since the only time this pipeline should run is for a patch release.
                   ForRelease: true
 
-        # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-        # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-        - template: ../steps/install-reporting-tools.yml
-          parameters:
-            JdkVersion: ${{ parameters.JavaBuildVersion }}
-
         - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   # This pipeline should never get kicked off outside of an internal, manual run. Put the checks here

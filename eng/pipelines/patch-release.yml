@@ -18,8 +18,4 @@ extends:
       groupId: com.azure
       safeName: azuresdktemplatethree
       ServiceDirectory: template
-    - name: azure-identity
-      groupId: com.azure
-      safeName: azureidentity
-      ServiceDirectory: identity
 
