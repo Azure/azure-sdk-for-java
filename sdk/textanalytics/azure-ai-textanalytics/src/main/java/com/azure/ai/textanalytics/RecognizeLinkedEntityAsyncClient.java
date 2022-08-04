@@ -148,7 +148,7 @@ class RecognizeLinkedEntityAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextEntityLinkingInput()
                                .setParameters(
-                                   (EntityLinkingTaskParameters) new EntityLinkingTaskParameters()
+                                   new EntityLinkingTaskParameters()
                                                                      .setStringIndexType(finalStringIndexType)
                                                                      .setModelVersion(finalModelVersion)
                                                                      .setLoggingOptOut(finalLoggingOptOut))

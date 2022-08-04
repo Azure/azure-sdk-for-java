@@ -112,12 +112,11 @@ class AnalyzeSentimentAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextSentimentAnalysisInput()
                                .setParameters(
-                                   (SentimentAnalysisTaskParameters)
-                                       new SentimentAnalysisTaskParameters()
-                                           .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                           .setOpinionMining(options.isIncludeOpinionMining())
-                                           .setModelVersion(options.getModelVersion())
-                                           .setLoggingOptOut(options.isServiceLogsDisabled()))
+                                   new SentimentAnalysisTaskParameters()
+                                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                       .setOpinionMining(options.isIncludeOpinionMining())
+                                       .setModelVersion(options.getModelVersion())
+                                       .setLoggingOptOut(options.isServiceLogsDisabled()))
                                .setAnalysisInput(
                                    new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                            options.isIncludeStatistics(),

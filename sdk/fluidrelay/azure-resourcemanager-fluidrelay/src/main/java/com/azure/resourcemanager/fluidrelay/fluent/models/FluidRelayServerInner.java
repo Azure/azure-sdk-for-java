@@ -25,8 +25,7 @@ public final class FluidRelayServerInner extends Resource {
     private FluidRelayServerProperties innerProperties;
 
     /*
-     * System meta data for this resource, including creation and modification
-     * information.
+     * System meta data for this resource, including creation and modification information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -154,7 +153,9 @@ public final class FluidRelayServerInner extends Resource {
     }
 
     /**
-     * Get the storagesku property: StorageSKU Sku of the storage associated with the resource.
+     * Get the storagesku property: StorageSKU
+     *
+     * <p>Sku of the storage associated with the resource.
      *
      * @return the storagesku value.
      */
@@ -163,7 +164,9 @@ public final class FluidRelayServerInner extends Resource {
     }
 
     /**
-     * Set the storagesku property: StorageSKU Sku of the storage associated with the resource.
+     * Set the storagesku property: StorageSKU
+     *
+     * <p>Sku of the storage associated with the resource.
      *
      * @param storagesku the storagesku value to set.
      * @return the FluidRelayServerInner object itself.

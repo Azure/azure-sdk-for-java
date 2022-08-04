@@ -25,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -194,4 +195,20 @@ public class AnnotatedQueryIT {
         assertAddressOrder(descPage.getContent(), Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
     }
 
+    @Test
+    public void testAnnotatedQueryWithMultipleCities() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        List<String> cities = new ArrayList<>();
+        cities.add(TestConstants.CITY);
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCityIn(cities, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+
+        List<String> cities2 = new ArrayList<>();
+        cities2.add(TestConstants.CITY);
+        cities2.add(TestConstants.CITY_0);
+        final List<Address> resultsAsc2 = addressRepository.annotatedFindByCityIn(cities2, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
 }

@@ -1311,8 +1311,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 .getFinalResult();
 
             AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(0);
-            DocumentField itemFieldList = analyzedDocument.getFields().get("Items").getValueList().get(0);
-            Map<String, DocumentField> documentFieldMap = itemFieldList.getValueMap();
+            DocumentField itemFieldList = analyzedDocument.getFields().get("Items").getValueAsList().get(0);
+            Map<String, DocumentField> documentFieldMap = itemFieldList.getValueAsMap();
 
             Assertions.assertNull(documentFieldMap);
             Assertions.assertEquals(String.valueOf(1), itemFieldList.getContent());

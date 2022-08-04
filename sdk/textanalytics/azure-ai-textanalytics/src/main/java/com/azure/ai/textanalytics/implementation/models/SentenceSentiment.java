@@ -24,8 +24,7 @@ public final class SentenceSentiment {
     private SentenceSentimentValue sentiment;
 
     /*
-     * The sentiment confidence score between 0 and 1 for the sentence for all
-     * classes.
+     * The sentiment confidence score between 0 and 1 for the sentence for all classes.
      */
     @JsonProperty(value = "confidenceScores", required = true)
     private SentimentConfidenceScorePerLabel confidenceScores;

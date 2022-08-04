@@ -49,6 +49,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
 
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
+      --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
@@ -108,7 +109,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
 

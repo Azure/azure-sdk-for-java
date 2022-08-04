@@ -210,8 +210,6 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <source>11</source>
-              <target>11</target>
               <failOnWarning>false</failOnWarning>
             </configuration>
           </plugin>
@@ -236,6 +234,13 @@
                 </goals>
                 <configuration>
                   <skip>true</skip>
+                  <additionalDependencies>
+                    <additionalDependency>
+                      <groupId>org.projectlombok</groupId>
+                      <artifactId>lombok</artifactId>
+                      <version>1.18.6</version>
+                    </additionalDependency>
+                  </additionalDependencies>
                 </configuration>
               </execution>
             </executions>
@@ -301,20 +306,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <configuration>
-              <additionalDependencies>
-                <additionalDependency>
-                  <groupId>org.projectlombok</groupId>
-                  <artifactId>lombok</artifactId>
-                  <version>1.18.6</version>
-                </additionalDependency>
-              </additionalDependencies>
-            </configuration>
           </plugin>
           <plugin>
             <groupId>org.scalastyle</groupId>
@@ -769,9 +760,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <configuration>
-              <testRelease>11</testRelease>
-            </configuration>
             <executions>
               <execution>
                 <id>default-compile</id>
@@ -791,6 +779,16 @@
                 </goals>
                 <configuration combine.self="override">
                   <release>11</release>
+                </configuration>
+              </execution>
+              <execution>
+                <id>default-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <testRelease>11</testRelease>
                 </configuration>
               </execution>
               <execution>

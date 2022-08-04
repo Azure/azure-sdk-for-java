@@ -372,7 +372,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             assertNotNull(composedModel.getModelId());
             assertEquals("test desc", composedModel.getDescription());
             assertEquals(2, composedModel.getDocTypes().size());
-            composedModel.getDocTypes().forEach((key, docTypeInfo) -> {
+            composedModel.getDocTypes().forEach((key, documentTypeDetails) -> {
                 if (key.contains("sync_component_model_1") || key.contains("sync_component_model_2")) {
                     assert true;
                 } else {
