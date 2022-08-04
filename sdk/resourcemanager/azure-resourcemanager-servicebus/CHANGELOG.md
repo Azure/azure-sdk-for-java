@@ -2,6 +2,19 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Removed class `CaptureDescription`.
+- Removed class `Destination`.
+- Removed class `EncodingCaptureDescription`.
+- Removed class `EventHubListResult`.
+- Removed class `NameSpaceType`.
+- Removed class `PremiumMessagingRegionProperties`.
+- Removed class `PremiumMessagingRegionsListResult`.
+- Removed class `SBNamespaceMigrate`.
+- Changed class `SBNamespaceUpdateParameters` to be `final`.
+- Class `SBNamespaceUpdateParameters` is no longer annotated with `JsonFlatten`.
+
 ### Other Changes
 
 #### Dependency Updates

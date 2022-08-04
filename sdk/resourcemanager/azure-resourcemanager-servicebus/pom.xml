@@ -43,6 +43,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.servicebus/com.azure.resourcemanager.servicebus=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
