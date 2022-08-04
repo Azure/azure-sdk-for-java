@@ -229,7 +229,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="TypecastParenPad"/>
     <module name="WhitespaceAfter"/>
     <module name="WhitespaceAround">
+      <!-- Common for Autorest to generate empty constructors, methods, and types. -->
       <property name="allowEmptyConstructors" value="true"/>
+      <property name="allowEmptyMethods" value="true"/>
       <property name="allowEmptyTypes" value="true"/>
     </module>
 
