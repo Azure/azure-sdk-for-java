@@ -46,7 +46,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
         if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.configs() != null) {
             String connectionMode = this.clientBuilder.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT
                     ? "Direct " + this.clientBuilder.configs().getProtocol()
-                    : "Gateway";
+                    : this.clientBuilder.getEndpoint().contains(":8903") ? "ComputeGW" : "Gateway";
 
             String template = clientBuilder.isContentResponseOnWriteEnabled() ?
                 "%s[%s with %s consistency]" :
