@@ -8,6 +8,9 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.netty.implementation.CallMetadata;
+import com.azure.core.http.netty.implementation.ChallengeHolder;
+import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
@@ -22,6 +25,7 @@ import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -44,25 +48,30 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.transport.AddressUtils;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
+import java.util.regex.Pattern;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
  * class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API for
- * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling}, {@link
- * NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping}, {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions)
- * setProxy configuration}, and much more.
+ * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
@@ -79,6 +88,12 @@ class NettyAsyncHttpClient implements HttpClient {
     final long writeTimeout;
     final long responseTimeout;
 
+    final boolean addProxyHandler;
+    final ProxyOptions proxyOptions;
+    final Pattern nonProxyHostsPattern;
+    final AuthorizationChallengeHandler handler;
+    final AtomicReference<ChallengeHolder> proxyChallengeHolder;
+
     final reactor.netty.http.client.HttpClient nettyClient;
 
     /**
@@ -88,12 +103,19 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-        long readTimeout, long writeTimeout, long responseTimeout) {
+        long readTimeout, long writeTimeout, long responseTimeout, boolean addProxyHandler, ProxyOptions proxyOptions,
+        Pattern nonProxyHostsPattern, AuthorizationChallengeHandler handler,
+        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
         this.readTimeout = readTimeout;
         this.writeTimeout = writeTimeout;
         this.responseTimeout = responseTimeout;
+        this.addProxyHandler = addProxyHandler;
+        this.proxyOptions = proxyOptions;
+        this.nonProxyHostsPattern = nonProxyHostsPattern;
+        this.handler = handler;
+        this.proxyChallengeHolder = proxyChallengeHolder;
     }
 
     /**
@@ -116,7 +138,27 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
+        CallMetadata callMetadata = new CallMetadata();
+
         return nettyClient
+            .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+                /*
+                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                 * before any request data is sent.
+                 *
+                 * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
+                 */
+                if (addProxyHandler && shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
+                    if (callMetadata.compareAndSetFirstCall(true, false)) {
+                        callMetadata.setFirstCallWithProxy(true);
+                    }
+
+                    channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
+                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder,
+                        callMetadata));
+                }
+            })
             .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
             .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
@@ -126,13 +168,15 @@ class NettyAsyncHttpClient implements HttpClient {
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse))
             .single()
+            .flatMap(response -> callMetadata.compareAndSetFirstCallWithProxy(true, false)
+                && response.getStatusCode() == 407
+                ? Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."))
+                : Mono.just(response))
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
                 // Extract the inner ProxyConnectException and propagate that instead.
-                if (throwable instanceof SSLException) {
-                    if (throwable.getCause() instanceof ProxyConnectException) {
-                        return throwable.getCause();
-                    }
+                if (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException) {
+                    return throwable.getCause();
                 }
 
                 return throwable;
@@ -273,8 +317,8 @@ class NettyAsyncHttpClient implements HttpClient {
             if (eagerlyReadResponse) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return FluxUtil.collectBytesFromNetworkResponse(
-                    reactorNettyConnection.inbound().receive().asByteBuffer(),
-                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                        reactorNettyConnection.inbound().receive().asByteBuffer(),
+                        new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
             } else {
@@ -325,5 +369,19 @@ class NettyAsyncHttpClient implements HttpClient {
      */
     private static void removeReadTimeoutHandler(Connection connection) {
         connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
+    }
+
+    private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {
+        if (nonProxyHostsPattern == null) {
+            return true;
+        }
+
+        if (!(socketAddress instanceof InetSocketAddress)) {
+            return true;
+        }
+
+        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
+
+        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
     }
 }
