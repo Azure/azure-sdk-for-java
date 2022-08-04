@@ -108,6 +108,17 @@ stages:
             pip install markdown2 BeautifulSoup4
           displayName: 'pip install markdown2 and BeautifulSoup4'
 
+        # Save the Package Properties
+        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is
+        # output by the generate_from_source_pom script above.
+        - pwsh: |
+            $ServiceDirs = '$(ServiceDirectories)'
+            foreach($ServiceDir in $ServiceDirs.Split(',')) {
+              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+            }
+          workingDirectory: $(Pipeline.Workspace)
+          displayName: "Save Package Properties"
+
         # Why is this necessary? Normal build and release jobs don't install reporting tools prior
         # to building however they're still able to find the the build tools through the root aggregate
         # pom file. The ClientFromSourcePom only contains what is necessary for the list of libraries
@@ -230,17 +241,6 @@ stages:
           parameters:
             Paths: $(SparseCheckoutDirectories)
             SkipDefaultCheckout: true
-
-        # Save the Package Properties
-        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is
-        # output by the generate_from_source_pom script above.
-        - pwsh: |
-            $ServiceDirs = $(ServiceDirectories)
-            foreach($ServiceDir in $ServiceDirs.Split(',')) {
-              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
-            }
-          workingDirectory: $(Pipeline.Workspace)
-          displayName: "Save Package Properties"
 
         - template: /eng/common/pipelines/templates/steps/check-spelling.yml
           parameters:
