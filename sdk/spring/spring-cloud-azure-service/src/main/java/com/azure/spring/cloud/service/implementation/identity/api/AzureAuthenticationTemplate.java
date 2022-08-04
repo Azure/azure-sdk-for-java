@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.service.implementation.identity.api;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
@@ -46,7 +45,7 @@ public class AzureAuthenticationTemplate {
 
     public AzureAuthenticationTemplate(Properties properties) {
         this();
-        this.properties = this.properties;
+        this.properties = properties;
     }
 
     protected AccessTokenResolver getAccessTokenResolver() {
@@ -60,8 +59,6 @@ public class AzureAuthenticationTemplate {
     protected void init(Properties properties) {
         if (isInitialized.compareAndSet(false, true)) {
             LOGGER.info("Initializing AzureAuthenticationTemplate.");
-
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 
             this.properties.putAll(properties);
 

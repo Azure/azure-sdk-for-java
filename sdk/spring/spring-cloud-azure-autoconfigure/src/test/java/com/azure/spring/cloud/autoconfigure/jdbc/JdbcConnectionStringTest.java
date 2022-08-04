@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JdbcConnectionStringTest {
     private static final String MYSQL_AUTH_PLUGIN_PROPERTY = PROPERTY_NAME_MYSQL_AUTHENTICATION_PLUGINS + "=" + MYSQL_AUTH_PLUGIN_CLASS_NAME;
@@ -62,7 +62,7 @@ class JdbcConnectionStringTest {
     @Test
     void connectionStringWittInvalidProperties() {
         String connectionString = "jdbc:mysql://host/database?=";
-        assertThrowsExactly(IllegalArgumentException.class, () -> JdbcConnectionString.resolve(connectionString), String.format(INVALID_PROPERTY_PAIR_FORMAT, connectionString));
+        assertThrows(IllegalArgumentException.class, () -> JdbcConnectionString.resolve(connectionString), String.format(INVALID_PROPERTY_PAIR_FORMAT, connectionString));
     }
 
     @Test
@@ -71,7 +71,7 @@ class JdbcConnectionStringTest {
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
         configMap.putAll(DEFAULT_ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
-        assertThrowsExactly(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceConnectionString(configMap));
+        assertThrows(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceConnectionString(configMap));
     }
 
     @Test
