@@ -228,7 +228,7 @@ stages:
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          timeoutInMinutes: 120
+          timeoutInMinutes: 180
           environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
 
