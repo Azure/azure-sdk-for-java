@@ -1825,7 +1825,6 @@ class FileAPITests extends APISpec {
     }
 
     def "Rename sas token"() {
-        // return back to this test: pass sas into the builder and see if you can repro the test from datalake
         setup:
         def permissions = new ShareFileSasPermission()
             .setReadPermission(true)
@@ -1839,13 +1838,16 @@ class FileAPITests extends APISpec {
 
         def sas = shareClient.generateSas(sasValues)
         def client = getFileClient(sas, primaryFileClient.getFileUrl())
+        primaryFileClient.create(1024)
 
         when:
-        def destClient = client.rename(generatePathName())
+        def fileName = generatePathName()
+        def destClient = client.rename(fileName)
 
         then:
         notThrown(ShareStorageException)
         destClient.getProperties()
+        destClient.getFilePath() == fileName
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

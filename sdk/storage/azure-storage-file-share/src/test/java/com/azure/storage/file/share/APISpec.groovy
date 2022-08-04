@@ -168,18 +168,15 @@ class APISpec extends StorageSpec {
     }
 
     ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        ShareFileClientBuilder builder = new ShareFileClientBuilder()
-            .endpoint(endpoint)
+        ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies)
+            .credential(credential)
 
-        for (HttpPipelinePolicy policy : policies) {
-            builder.addPolicy(policy)
-        }
+        return builder.buildDirectoryClient()
+    }
 
-        instrument(builder)
-
-        if (credential != null) {
-            builder.credential(credential)
-        }
+    ShareDirectoryClient getDirectoryClient(String sasToken, String endpoint, HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies)
+            .sasToken(sasToken)
 
         return builder.buildDirectoryClient()
     }

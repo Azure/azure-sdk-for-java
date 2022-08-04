@@ -1228,9 +1228,8 @@ public class ShareDirectoryAsyncClient {
             getDirectoryAsyncClient(options.getDestinationPath());
 
         String renameSource = this.getDirectoryUrl();
-        // TODO (rickle-msft): when support added to core
-//        String sasToken = this.extractSasToken();
-//        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
+
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,

@@ -19,6 +19,8 @@ import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
+import com.azure.storage.file.share.sas.ShareFileSasPermission
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -1038,6 +1040,32 @@ class DirectoryAPITests extends APISpec {
         where:
         leaseID        | _
         garbageLeaseID | _
+    }
+
+    def "rename sas token"() {
+        setup:
+        def permissions = new ShareFileSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+
+        def sas = shareClient.generateSas(sasValues)
+        def client = getDirectoryClient(sas, primaryDirectoryClient.getDirectoryUrl())
+        primaryDirectoryClient.create()
+
+        when:
+        def directoryName = generatePathName()
+        def destClient = client.rename(directoryName)
+
+        then:
+        notThrown(ShareStorageException)
+        destClient.getProperties()
+        destClient.getDirectoryPath() == directoryName
     }
 
     def "Create sub directory"() {
