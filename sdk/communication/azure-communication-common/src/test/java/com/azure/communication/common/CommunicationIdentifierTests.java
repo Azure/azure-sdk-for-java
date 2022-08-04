@@ -126,7 +126,7 @@ public class CommunicationIdentifierTests {
     }
 
     private void assertRawId(CommunicationIdentifier identifier, String expectedRawId)  {
-        assertEquals(identifier.rawId, expectedRawId);
+        assertEquals(identifier.getRawId(), expectedRawId);
     }
 
     private void assertIdentifier(String rawId, CommunicationIdentifier expectedIdentifier) {

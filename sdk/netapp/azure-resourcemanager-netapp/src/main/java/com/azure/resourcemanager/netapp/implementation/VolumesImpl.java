@@ -16,6 +16,7 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
+import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.ReplicationStatus;
 import com.azure.resourcemanager.netapp.models.Volume;
@@ -132,6 +133,27 @@ public final class VolumesImpl implements Volumes {
         BreakReplicationRequest body,
         Context context) {
         this.serviceClient().breakReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public void reestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body) {
+        this.serviceClient().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public void reestablishReplication(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        ReestablishReplicationRequest body,
+        Context context) {
+        this
+            .serviceClient()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public ReplicationStatus replicationStatus(

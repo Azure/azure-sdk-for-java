@@ -7,15 +7,14 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 /** Samples for DataNetworks CreateOrUpdate. */
 public final class DataNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/DataNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/DataNetworkCreate.json
      */
     /**
-     * Sample code: Create mobile network dataNetwork.
+     * Sample code: Create data network.
      *
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void createMobileNetworkDataNetwork(
-        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void createDataNetwork(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager
             .dataNetworks()
             .define("testDataNetwork")

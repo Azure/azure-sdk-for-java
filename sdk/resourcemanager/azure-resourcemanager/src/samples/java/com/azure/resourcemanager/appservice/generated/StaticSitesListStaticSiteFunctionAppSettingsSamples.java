@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites ListStaticSiteFunctionAppSettings. */
 public final class StaticSitesListStaticSiteFunctionAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ListStaticSiteFunctionAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListStaticSiteFunctionAppSettings.json
      */
     /**
      * Sample code: Get function app settings of a static site.

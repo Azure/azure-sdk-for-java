@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -43,6 +44,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -441,6 +444,36 @@ public class RetryPolicyTests {
         );
 
         Mockito.verify(httpCloseableResponse, times(2)).close();
+    }
+
+    @SyncAsyncTest
+    public void propagatingExceptionHasOtherErrorsAsSuppressedExceptions() {
+        AtomicInteger count = new AtomicInteger();
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
+            .httpClient(new NoOpHttpClient() {
+
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    throw new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet()));
+                }
+
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.error(new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet())));
+                }
+            })
+            .build();
+        try {
+            SyncAsyncExtension.execute(
+                () -> sendRequestSync(pipeline),
+                () -> sendRequest(pipeline)
+            );
+            fail("Should throw");
+        } catch (Exception e) {
+            assertTrue(Stream.of(e.getSuppressed()).anyMatch(ex -> ex.getMessage().contains("Attempt 1")));
+            assertTrue(Stream.of(e.getSuppressed()).anyMatch(ex -> ex.getMessage().contains("Attempt 2")));
+        }
     }
 
     @ParameterizedTest

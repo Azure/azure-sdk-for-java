@@ -4078,7 +4078,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
-        if (request.UseGatewayMode) {
+        if (request.useGatewayMode) {
             return this.gatewayProxy;
         }
 

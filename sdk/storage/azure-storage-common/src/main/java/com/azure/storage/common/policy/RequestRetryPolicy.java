@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
@@ -50,7 +52,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
             || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
-        return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
+        return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1, null);
     }
 
     /**
@@ -69,12 +71,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * @param considerSecondary Before each try, we'll select either the primary or secondary URL if appropriate.
      * @param primaryTry Number of attempts against the primary DC.
      * @param attempt This indicates the total number of attempts to send the request.
+     * @param suppressed The list of throwables that has been suppressed.
      * @return A single containing either the successful response or an error that was not retryable because either the
      * {@code maxTries} was exceeded or retries will not mitigate the issue.
      */
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
-                                            final int primaryTry, final int attempt) {
+                                            final int primaryTry, final int attempt,
+                                            final List<Throwable> suppressed) {
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
@@ -166,12 +170,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     Flux<ByteBuffer> responseBody = response.getBody();
                     if (responseBody == null) {
                         return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                            attempt + 1);
+                            attempt + 1, suppressed);
                     } else {
-                        return response.getBody()
+                        return responseBody
                             .ignoreElements()
                             .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                                attempt + 1));
+                                attempt + 1, suppressed));
                     }
 
                 }
@@ -215,7 +219,13 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1);
+                    List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+                    suppressedLocal.add(unwrappedThrowable);
+                    return attemptAsync(context, next, originalRequest,
+                        considerSecondary, newPrimaryTry, attempt + 1, suppressedLocal);
+                }
+                if (suppressed != null) {
+                    suppressed.forEach(throwable::addSuppressed);
                 }
                 return Mono.error(throwable);
             });

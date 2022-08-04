@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains Renew. */
 public final class DomainsRenewSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/RenewDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/RenewDomain.json
      */
     /**
      * Sample code: Renew an existing domain.

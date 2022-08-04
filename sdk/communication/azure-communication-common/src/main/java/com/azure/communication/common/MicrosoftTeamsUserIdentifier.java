@@ -81,12 +81,14 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
 
     /**
      * Set full id of the identifier
+     * RawId is the encoded format for identifiers to store in databases or as stable keys in general.
      *
      * @param rawId full id of the identifier
-     * @return CommunicationIdentifier object itself
+     * @return MicrosoftTeamsUserIdentifier object itself
      */
+    @Override
     public MicrosoftTeamsUserIdentifier setRawId(String rawId) {
-        this.rawId = rawId;
+        super.setRawId(rawId);
         rawIdSet = true;
         return this;
     }
@@ -124,13 +126,13 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
     private void generateRawId() {
         if (!rawIdSet) {
             if (this.isAnonymous) {
-                this.rawId = "8:teamsvisitor:" + this.userId;
+                super.setRawId("8:teamsvisitor:" + this.userId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.DOD)) {
-                this.rawId = "8:dod:" + this.userId;
+                super.setRawId("8:dod:" + this.userId);
             } else if (cloudEnvironment.equals(CommunicationCloudEnvironment.GCCH)) {
-                this.rawId = "8:gcch:" + this.userId;
+                super.setRawId("8:gcch:" + this.userId);
             } else {
-                this.rawId = "8:orgid:" + this.userId;
+                super.setRawId("8:orgid:" + this.userId);
             }
         }
     }

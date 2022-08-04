@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
 import java.time.Instant;
@@ -42,7 +42,11 @@ public interface Lease {
      */
     String getTimestamp();
 
-    ChangeFeedState getContinuationState(
+    ChangeFeedState getIncrementalContinuationState(
+        String containerRid,
+        FeedRangeInternal feedRange);
+
+    ChangeFeedState getFullFidelityContinuationState(
         String containerRid,
         FeedRangeInternal feedRange);
 
