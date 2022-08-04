@@ -3,8 +3,6 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.CopyAuthorizationHelper;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -14,33 +12,53 @@ public final class CopyAuthorization {
     /*
      * Id of the target Azure resource where the model should be copied to.
      */
-    private String targetResourceId;
+    private final String targetResourceId;
 
     /*
      * Location of the target Azure resource where the model should be copied
      * to.
      */
-    private String targetResourceRegion;
+    private final String targetResourceRegion;
 
     /*
      * Identifier of the target model.
      */
-    private String targetModelId;
+    private final String targetModelId;
 
     /*
      * URL of the copied model in the target account.
      */
-    private String targetModelLocation;
+    private final String targetModelLocation;
 
     /*
      * Token used to authorize the request.
      */
-    private String accessToken;
+    private final String accessToken;
 
     /*
      * Date/time when the access token expires.
      */
-    private OffsetDateTime expirationDateTime;
+    private final OffsetDateTime expiresOn;
+
+    /**
+     * Creates an instance of a {@link CopyAuthorization} model.
+     *
+     * @param targetResourceId the identifier of the target Azure resource where the model should be copied to.
+     * @param targetResourceRegion the location of the target Azure resource where the model should be copied to.
+     * @param targetModelId the identifier of the target model.
+     * @param targetModelLocation the URL of the copied model in the target account.
+     * @param accessToken the token used to authorize the request.
+     * @param expiresOn the Date/time when the access token expires.
+     */
+    public CopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
+                             String targetModelLocation, String accessToken, OffsetDateTime expiresOn) {
+        this.targetResourceId = targetResourceId;
+        this.targetResourceRegion = targetResourceRegion;
+        this.targetModelId = targetModelId;
+        this.targetModelLocation = targetModelLocation;
+        this.accessToken = accessToken;
+        this.expiresOn = expiresOn;
+    }
 
     /**
      * Get the identifier of the target Azure resource where the model should be copied to.
@@ -52,17 +70,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the identifier of the target Azure resource where the model should be copied to.
-     *
-     * @param targetResourceId the targetResourceId value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    void setTargetResourceId(String targetResourceId) {
-        this.targetResourceId = targetResourceId;
-    }
-
-    /**
-     * Get the targetResourceRegion property: Location of the target Azure resource where the model should be copied to.
+     * Get the location of the target Azure resource where the model should be copied to.
      *
      * @return the targetResourceRegion value.
      */
@@ -71,17 +79,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetResourceRegion property: Location of the target Azure resource where the model should be copied to.
-     *
-     * @param targetResourceRegion the targetResourceRegion value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    void setTargetResourceRegion(String targetResourceRegion) {
-        this.targetResourceRegion = targetResourceRegion;
-    }
-
-    /**
-     * Get the targetModelId property: Identifier of the target model.
+     * Get the identifier of the target model.
      *
      * @return the targetModelId value.
      */
@@ -90,17 +88,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetModelId property: Identifier of the target model.
-     *
-     * @param targetModelId the targetModelId value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    void setTargetModelId(String targetModelId) {
-        this.targetModelId = targetModelId;
-    }
-
-    /**
-     * Get the targetModelLocation property: URL of the copied model in the target account.
+     * Get the URL of the copied model in the target account.
      *
      * @return the targetModelLocation value.
      */
@@ -109,17 +97,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetModelLocation property: URL of the copied model in the target account.
-     *
-     * @param targetModelLocation the targetModelLocation value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    void setTargetModelLocation(String targetModelLocation) {
-        this.targetModelLocation = targetModelLocation;
-    }
-
-    /**
-     * Get the accessToken property: Token used to authorize the request.
+     * Get the token used to authorize the request.
      *
      * @return the accessToken value.
      */
@@ -128,66 +106,11 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the accessToken property: Token used to authorize the request.
+     * Get the Date/time when the access token expires.
      *
-     * @param accessToken the accessToken value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * Get the expirationDateTime property: Date/time when the access token expires.
-     *
-     * @return the expirationDateTime value.
+     * @return the expiresOn value.
      */
     public OffsetDateTime getExpiresOn() {
-        return this.expirationDateTime;
-    }
-
-    /**
-     * Set the expirationDateTime property: Date/time when the access token expires.
-     *
-     * @param expirationDateTime the expirationDateTime value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    void setExpirationDateTime(OffsetDateTime expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
-    }
-
-    static {
-        CopyAuthorizationHelper.setAccessor(new CopyAuthorizationHelper.CopyAuthorizationAccessor() {
-            @Override
-            public void setTargetResourceId(CopyAuthorization copyAuthorization, String targetResourceId) {
-                copyAuthorization.setTargetResourceId(targetResourceId);
-            }
-
-            @Override
-            public void setTargetResourceRegion(CopyAuthorization copyAuthorization, String targetResourceRegion) {
-                copyAuthorization.setTargetResourceRegion(targetResourceRegion);
-            }
-
-            @Override
-            public void setTargetModelId(CopyAuthorization copyAuthorization, String targetModelId) {
-                copyAuthorization.setTargetModelId(targetModelId);
-            }
-
-            @Override
-            public void setTargetModelLocation(CopyAuthorization copyAuthorization, String targetModelLocation) {
-                copyAuthorization.setTargetModelLocation(targetModelLocation);
-            }
-
-            @Override
-            public void setAccessToken(CopyAuthorization copyAuthorization, String accessToken) {
-                copyAuthorization.setAccessToken(accessToken);
-            }
-
-            @Override
-            public void setExpirationDateTime(CopyAuthorization copyAuthorization, OffsetDateTime expirationDateTime) {
-                copyAuthorization.setExpirationDateTime(expirationDateTime
-                );
-            }
-        });
+        return this.expiresOn;
     }
 }

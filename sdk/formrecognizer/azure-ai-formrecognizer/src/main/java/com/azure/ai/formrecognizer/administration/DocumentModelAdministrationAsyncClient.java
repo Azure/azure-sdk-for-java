@@ -632,7 +632,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the source model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()}
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
@@ -641,16 +641,16 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
                                                                                    CopyAuthorization target) {
-        return beginCopyModelTo(modelId, target, null);
+        return beginCopyModelTo(sourceModelId, target, null);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
                                                                             CopyAuthorization target, Context context) {
         return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
-            getCopyActivationOperation(modelId, target, context),
+            getCopyActivationOperation(sourceModelId, target, context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
