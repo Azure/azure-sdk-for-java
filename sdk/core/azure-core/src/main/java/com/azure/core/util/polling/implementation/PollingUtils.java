@@ -94,7 +94,7 @@ public final class PollingUtils {
             if (!uri.isAbsolute()) {
                 if (CoreUtils.isNullOrEmpty(endpoint)) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Relative path requires endpoint to be non-null or non-empty to create an absolute path."));
+                        "Relative path requires endpoint to be non-null and non-empty to create an absolute path."));
                 }
                 return endpoint + path;
             }
