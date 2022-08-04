@@ -244,7 +244,7 @@ public final class SecretClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new SecretClientImpl(vaultUrl.toString(), pipeline, serviceVersion);
+        return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
