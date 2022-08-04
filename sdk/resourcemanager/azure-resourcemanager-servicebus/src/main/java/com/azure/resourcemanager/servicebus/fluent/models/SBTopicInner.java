@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 
 /** Description of topic resource. */
 @Fluent
-public final class SBTopicInner extends ProxyResource {
+public final class SBTopicInner extends Resource {
     /*
      * Properties of topic resource.
      */

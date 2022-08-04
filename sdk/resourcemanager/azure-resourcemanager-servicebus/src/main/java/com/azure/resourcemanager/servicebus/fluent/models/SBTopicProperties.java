@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -56,6 +59,7 @@ public final class SBTopicProperties {
      * message itself.
      */
     @JsonProperty(value = "defaultMessageTimeToLive")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration defaultMessageTimeToLive;
 
     /*
@@ -83,6 +87,7 @@ public final class SBTopicProperties {
      * minutes.
      */
     @JsonProperty(value = "duplicateDetectionHistoryTimeWindow")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
@@ -108,6 +113,7 @@ public final class SBTopicProperties {
      * minutes.
      */
     @JsonProperty(value = "autoDeleteOnIdle")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration autoDeleteOnIdle;
 
     /*

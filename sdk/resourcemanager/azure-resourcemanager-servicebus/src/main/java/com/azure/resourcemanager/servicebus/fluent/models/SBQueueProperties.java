@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -55,6 +58,7 @@ public final class SBQueueProperties {
      * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
      */
     @JsonProperty(value = "lockDuration")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration lockDuration;
 
     /*
@@ -89,6 +93,7 @@ public final class SBQueueProperties {
      * message itself.
      */
     @JsonProperty(value = "defaultMessageTimeToLive")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration defaultMessageTimeToLive;
 
     /*
@@ -102,6 +107,7 @@ public final class SBQueueProperties {
      * 10 minutes.
      */
     @JsonProperty(value = "duplicateDetectionHistoryTimeWindow")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
@@ -128,6 +134,7 @@ public final class SBQueueProperties {
      * minutes.
      */
     @JsonProperty(value = "autoDeleteOnIdle")
+    @JsonSerialize(using = DurationSerializer.class)
     private Duration autoDeleteOnIdle;
 
     /*
