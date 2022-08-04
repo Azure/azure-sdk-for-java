@@ -45,7 +45,7 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
 
         boolean cachedEnabled = options.isCachedEnabled();
         if (cachedEnabled) {
-            return new CacheableTokenCredential(cache, options, delegate);
+            return new CacheableTokenCredential(cache, delegate);
         } else {
             return tokenCredential;
         }

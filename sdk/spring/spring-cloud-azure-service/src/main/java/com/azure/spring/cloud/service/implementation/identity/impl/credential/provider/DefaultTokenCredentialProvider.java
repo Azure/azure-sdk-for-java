@@ -47,7 +47,7 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
         TokenCredential tokenCredential = resolveTokenCredential(options);
         boolean cachedEnabled = options.isCachedEnabled();
         if (cachedEnabled) {
-            return new CacheableTokenCredential(cache, options, tokenCredential);
+            return new CacheableTokenCredential(cache, tokenCredential);
         } else {
             return tokenCredential;
         }

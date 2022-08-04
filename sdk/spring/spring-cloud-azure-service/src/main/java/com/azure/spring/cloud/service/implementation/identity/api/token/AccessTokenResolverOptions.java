@@ -49,11 +49,11 @@ public class AccessTokenResolverOptions {
     }
 
     public String[] getScopes() {
-        return scopes;
+        return scopes.clone();
     }
 
     public void setScopes(String[] scopes) {
-        this.scopes = scopes;
+        this.scopes = scopes.clone();
     }
 
     public boolean isCacheAccessToken() {
