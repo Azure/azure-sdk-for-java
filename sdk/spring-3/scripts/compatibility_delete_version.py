@@ -50,6 +50,7 @@ def delete_dependency_version(file_path):
             elif line.split(";")[1] in IGNORED_ARTIFACTS:
                 new_pom_file.write(line)
             elif line.split(";")[1] not in external_dependencies_managed_list():
+                print("moary****", line)
                 # listed in external-dependencies.txt but not managed by spring
                 new_pom_file.write(line)
 
@@ -67,7 +68,7 @@ def get_managed_file_name():
     with open("./eng/versioning/external_dependencies.txt", "r", encoding = 'utf-8') as external_file:
         lines = external_file.readlines()
         for line in lines:
-            if "org.springframework.boot:spring-boot-dependencies;" in line:
+            if "spring3_org.springframework.boot:spring-boot-dependencies;" in line:
                 return "sdk/spring-3/scripts/spring_boot_{}_managed_external_dependencies.txt".format(line.split(";")[1].replace("\n", ""))
 
 
