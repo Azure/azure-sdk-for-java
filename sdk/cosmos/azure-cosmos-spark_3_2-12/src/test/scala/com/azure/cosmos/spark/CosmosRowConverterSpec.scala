@@ -500,6 +500,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colVal1= convertToCatalyst(colVal1Raw).asInstanceOf[Int]
     colVal1 shouldEqual -8786
     colVal1 shouldEqual testDate.toEpochDay
+    val testDateLocalInstant = Timestamp.valueOf(new java.sql.Timestamp(
+      45, 11, 12, 0, 0, 0, 0)
+      .toLocalDateTime).toInstant
 
     // Catalyst optimizer will convert java.sql.Timestamp into epoch Microseconds
     val colVal2Raw = Timestamp.from(testTimestamp)
@@ -528,8 +531,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       objectNode = alwaysEpochMsRowConverterWithSystemDefaultTimezone.fromRowToObjectNode(row)
       objectNode.get(colName1).asLong() shouldEqual testDate
         .atStartOfDay()
-        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(Instant.now))
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateLocalInstant))
         .toEpochMilli
+      objectNode.get(colName1).asLong() shouldEqual -759081600000L
       objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
     } finally {
       TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
@@ -545,8 +549,10 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       objectNode = alwaysEpochMsRowConverterNonNullWithSystemDefaultTimezone.fromRowToObjectNode(row)
       objectNode.get(colName1).asLong() shouldEqual testDate
         .atStartOfDay()
-        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(Instant.now))
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(testDateLocalInstant))
         .toEpochMilli
+
+      objectNode.get(colName1).asLong() shouldEqual -759081600000L
       objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
     } finally {
       TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
