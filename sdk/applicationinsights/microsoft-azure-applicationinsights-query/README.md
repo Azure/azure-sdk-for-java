@@ -37,7 +37,7 @@ To get the binaries of the official Microsoft Azure Log Analytics SDK as distrib
 
 ## Help and Issues
 
-If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs with this library, open an issue via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or see [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Contribute Code
 
