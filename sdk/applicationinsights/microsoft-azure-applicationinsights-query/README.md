@@ -1,4 +1,4 @@
-# Azure Application Insights
+# Azure Application Insights Query client library for Java
 
 > A newer package [com.azure:azure-monitor-query](https://search.maven.org/artifact/com.azure/azure-monitor-query)
 > for [Azure Application Insights Query](https://azure.microsoft.com/services/monitor/) is available as of October 2021. While this
