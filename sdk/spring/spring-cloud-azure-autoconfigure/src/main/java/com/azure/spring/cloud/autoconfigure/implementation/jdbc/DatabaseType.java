@@ -65,11 +65,13 @@ public enum DatabaseType {
 
     private static boolean isPostgresqlPluginEnabled() {
         return isOnClasspath(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME)
+            && isOnClasspath(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.POSTGRES_DRIVER_CLASS_NAME);
     }
 
     private static boolean isMySqlPluginEnabled() {
         return isOnClasspath(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME)
+            && isOnClasspath(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_INTERFACE_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.MYSQL_DRIVER_CLASS_NAME);
     }
 

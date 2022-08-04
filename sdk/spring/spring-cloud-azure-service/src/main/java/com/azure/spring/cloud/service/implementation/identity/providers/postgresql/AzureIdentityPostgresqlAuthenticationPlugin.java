@@ -13,7 +13,6 @@ import java.util.Properties;
 
 import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 
-
 /**
  * The Authentication plugin that enables Azure AD managed identity support.
  */
