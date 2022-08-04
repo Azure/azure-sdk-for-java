@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a file share/directory share while authenticating with a sas.
 
 ### Other Changes
 
