@@ -10,10 +10,10 @@ import com.beust.jcommander.Parameter;
  */
 public class EventProcessorJedisOptions extends PerfStressOptions {
     @Parameter(names = {"-hn", "--hostName"}, description = "Host name of Azure Redis cache.")
-    private String hostName = "$Default";
+    private String hostName;
 
     @Parameter(names = {"-pw", "--password"}, description = "The primary key for Azure Redis Cache.")
-    private String password = "$Default";
+    private String password;
 
     @Parameter(names = {"-u", "--userName"}, description = "The username required to configure a JedisPool object.")
     private String userName = "$Default";
@@ -25,16 +25,64 @@ public class EventProcessorJedisOptions extends PerfStressOptions {
     private int errorAfterInSeconds = 0;
 
     @Parameter(names = {"-pt", "--partitions"}, description = "Number of Partitions.")
-    private int partitions = 1;
+    private int partitions;
 
     @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
     private String consumerGroup = "$Default";
 
     @Parameter(names = {"-cs", "--connectionString"}, description = "The EventHub namespace connection string")
-    private String connectionString = "$Default";
+    private String connectionString;
 
     @Parameter(names = {"-ehn", "--eventHubName"}, description = "Name of the event hub.")
-    private String eventHubName = "$Default";
+    private String eventHubName;
+
+    /**
+     *
+     * @return the number of seconds after which the error was thrown
+     */
+    public int getErrorAfterInSeconds() {
+        return errorAfterInSeconds;
+    }
+
+    /**
+     *
+     * @return the maximum number of events to be processed by the event hub
+     */
+    public int getMaxEventsPerSecond() {
+        return maxEventsPerSecond;
+    }
+
+    /**
+     *
+     * @return the number of partitions
+     */
+    public int getPartitions() {
+        return partitions;
+    }
+
+    /**
+     *
+     * @return the name of the consumer group
+     */
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     *
+     * @return the connection string required for the event hub
+     */
+    public String getConnectionString() {
+        return connectionString;
+    }
+
+    /**
+     *
+     * @return the name of the eventhub
+     */
+    public String getEventHubName() {
+        return eventHubName;
+    }
 
     /**
      * Gets the host name of the Azure Redis Cache to connect to.
@@ -63,38 +111,4 @@ public class EventProcessorJedisOptions extends PerfStressOptions {
         return userName;
     }
 
-    /**
-     * Get Error after duration in seconds.
-     *
-     * @return the error after duration in seconds.
-     */
-    public int getErrorAfterInSeconds() {
-        return errorAfterInSeconds;
-    }
-
-    /**
-     * Get Maximum events per second.
-     *
-     * @return the max events per second.
-     */
-    public int getMaxEventsPerSecond() {
-        return maxEventsPerSecond;
-    }
-
-
-    public int getPartitions() {
-        return partitions;
-    }
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public String getEventHubName() {
-        return eventHubName;
-    }
-
-    public String getConnectionString() {
-        return connectionString;
-    }
 }

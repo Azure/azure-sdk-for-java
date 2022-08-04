@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOptions> {
 
-    private EventProcessorClient eventProcessorClient;
+    private final EventProcessorClient eventProcessorClient;
 
     /**
      * Creates an instance of performance test.
