@@ -470,7 +470,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the source model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}
      *
@@ -478,9 +478,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
         CopyAuthorization target) {
-        return beginCopyModelTo(modelId, target, Context.NONE);
+        return beginCopyModelTo(sourceModelId, target, Context.NONE);
     }
 
     /**
@@ -509,7 +509,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -518,9 +518,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
         CopyAuthorization target, Context context) {
-        return client.beginCopyModelTo(modelId, target, context).getSyncPoller();
+        return client.beginCopyModelTo(sourceModelId, target, context).getSyncPoller();
     }
 
     /**
