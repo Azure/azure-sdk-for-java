@@ -272,17 +272,12 @@ public class Transforms {
 
     public static CopyAuthorization toCopyAuthorization(
         com.azure.ai.formrecognizer.implementation.models.CopyAuthorization innerCopyAuthorization) {
-        CopyAuthorization copyAuthorization = new CopyAuthorization();
-        CopyAuthorizationHelper.setTargetModelId(copyAuthorization, innerCopyAuthorization.getTargetModelId());
-        CopyAuthorizationHelper.setAccessToken(copyAuthorization, innerCopyAuthorization.getAccessToken());
-        CopyAuthorizationHelper.setExpirationDateTime(copyAuthorization,
+        return new CopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
+            innerCopyAuthorization.getTargetResourceRegion(),
+            innerCopyAuthorization.getTargetModelId(),
+            innerCopyAuthorization.getTargetModelLocation(),
+            innerCopyAuthorization.getAccessToken(),
             innerCopyAuthorization.getExpirationDateTime());
-        CopyAuthorizationHelper.setTargetModelLocation(copyAuthorization,
-            innerCopyAuthorization.getTargetModelLocation());
-        CopyAuthorizationHelper.setTargetResourceId(copyAuthorization, innerCopyAuthorization.getTargetResourceId());
-        CopyAuthorizationHelper.setTargetResourceRegion(copyAuthorization,
-            innerCopyAuthorization.getTargetResourceRegion());
-        return copyAuthorization;
     }
 
     public static ResourceDetails toAccountProperties(GetInfoResponse getInfoResponse) {

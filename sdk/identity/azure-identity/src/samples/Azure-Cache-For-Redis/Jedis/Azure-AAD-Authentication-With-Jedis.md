@@ -12,7 +12,7 @@
 
 #### Prerequisites
  - Configuration of Role and Role Assignments is required before using the sample code in this document.
- - Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
+ - Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
  - **Dependency Requirements:**
     ```xml
     <dependency>
@@ -29,9 +29,6 @@
     ```
 
 #### Samples Guidance
-
-Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
-
 * [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world):
     This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
