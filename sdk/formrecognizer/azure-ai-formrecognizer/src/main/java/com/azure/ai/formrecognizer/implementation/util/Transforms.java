@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentTypeDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
@@ -272,17 +272,12 @@ public class Transforms {
 
     public static CopyAuthorization toCopyAuthorization(
         com.azure.ai.formrecognizer.implementation.models.CopyAuthorization innerCopyAuthorization) {
-        CopyAuthorization copyAuthorization = new CopyAuthorization();
-        CopyAuthorizationHelper.setTargetModelId(copyAuthorization, innerCopyAuthorization.getTargetModelId());
-        CopyAuthorizationHelper.setAccessToken(copyAuthorization, innerCopyAuthorization.getAccessToken());
-        CopyAuthorizationHelper.setExpirationDateTime(copyAuthorization,
+        return new CopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
+            innerCopyAuthorization.getTargetResourceRegion(),
+            innerCopyAuthorization.getTargetModelId(),
+            innerCopyAuthorization.getTargetModelLocation(),
+            innerCopyAuthorization.getAccessToken(),
             innerCopyAuthorization.getExpirationDateTime());
-        CopyAuthorizationHelper.setTargetModelLocation(copyAuthorization,
-            innerCopyAuthorization.getTargetModelLocation());
-        CopyAuthorizationHelper.setTargetResourceId(copyAuthorization, innerCopyAuthorization.getTargetResourceId());
-        CopyAuthorizationHelper.setTargetResourceRegion(copyAuthorization,
-            innerCopyAuthorization.getTargetResourceRegion());
-        return copyAuthorization;
     }
 
     public static ResourceDetails toAccountProperties(GetInfoResponse getInfoResponse) {
@@ -298,26 +293,26 @@ public class Transforms {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
         DocumentModelDetailsHelper.setModelId(documentModelDetails, modelInfo.getModelId());
         DocumentModelDetailsHelper.setDescription(documentModelDetails, modelInfo.getDescription());
-        Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
+        Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelInfo);
         DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
         DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelInfo.getCreatedDateTime());
         DocumentModelDetailsHelper.setTags(documentModelDetails, modelInfo.getTags());
         return documentModelDetails;
     }
 
-    private static Map<String, DocTypeInfo> getStringDocTypeInfoMap(ModelInfo modelInfo) {
+    private static Map<String, DocumentTypeDetails> getStringDocTypeInfoMap(ModelInfo modelInfo) {
         if (!CoreUtils.isNullOrEmpty(modelInfo.getDocTypes())) {
-            Map<String, DocTypeInfo> docTypeMap = new HashMap<>();
+            Map<String, DocumentTypeDetails> docTypeMap = new HashMap<>();
             modelInfo.getDocTypes().forEach((key, innerDocTypeInfo) -> {
-                DocTypeInfo docTypeInfo = new DocTypeInfo();
-                DocTypeInfoHelper.setDescription(docTypeInfo, innerDocTypeInfo.getDescription());
+                DocumentTypeDetails documentTypeDetails = new DocumentTypeDetails();
+                DocumentTypeDetailsHelper.setDescription(documentTypeDetails, innerDocTypeInfo.getDescription());
                 Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
                 innerDocTypeInfo.getFieldSchema().forEach((schemaKey, innerDocSchema)
                     -> schemaMap.put(schemaKey, toDocumentFieldSchema(innerDocSchema)));
-                DocTypeInfoHelper.setFieldSchema(docTypeInfo, schemaMap);
-                DocTypeInfoHelper.setFieldConfidence(docTypeInfo, innerDocTypeInfo.getFieldConfidence());
-                docTypeMap.put(key, docTypeInfo);
-                DocTypeInfoHelper.setBuildMode(docTypeInfo,
+                DocumentTypeDetailsHelper.setFieldSchema(documentTypeDetails, schemaMap);
+                DocumentTypeDetailsHelper.setFieldConfidence(documentTypeDetails, innerDocTypeInfo.getFieldConfidence());
+                docTypeMap.put(key, documentTypeDetails);
+                DocumentTypeDetailsHelper.setBuildMode(documentTypeDetails,
                     innerDocTypeInfo.getBuildMode() != null
                         ? DocumentModelBuildMode.fromString(innerDocTypeInfo.getBuildMode().toString())
                         : null);
@@ -557,7 +552,7 @@ public class Transforms {
             ModelOperationDetailsHelper.setModelId(modelOperationDetails, modelInfo.getModelId());
             ModelOperationDetailsHelper.setDescription(modelOperationDetails, modelInfo.getDescription());
             ModelOperationDetailsHelper.setCreatedOn(modelOperationDetails, modelInfo.getCreatedDateTime());
-            Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
+            Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelInfo);
             ModelOperationDetailsHelper.setDocTypes(modelOperationDetails, docTypeMap);
         }
         ModelOperationDetailsHelper.setOperationId(modelOperationDetails, getOperationResponse.getOperationId());

@@ -148,7 +148,7 @@ class RecognizeEntityAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextEntityRecognitionInput()
                                .setParameters(
-                                   (EntitiesTaskParameters) new EntitiesTaskParameters()
+                                   new EntitiesTaskParameters()
                                                                 .setStringIndexType(finalStringIndexType)
                                                                 .setModelVersion(finalModelVersion)
                                                                 .setLoggingOptOut(finalLoggingOptOut))

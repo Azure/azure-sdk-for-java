@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -214,8 +214,8 @@ public class JacksonAdapterTests {
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {
-            assertTrue(ex.getCause() instanceof JacksonException, "Exception cause type was "
-                + ex.getCause().getClass().getName() + " instead of the expected JacksonException type.");
+            assertTrue(ex.getCause() instanceof JsonProcessingException, "Exception cause type was "
+                + ex.getCause().getClass().getName() + " instead of the expected JsonProcessingException type.");
         }
     }
 

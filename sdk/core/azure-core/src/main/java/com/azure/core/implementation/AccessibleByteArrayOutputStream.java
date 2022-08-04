@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 
 /**
  * This class is an extension of {@link ByteArrayOutputStream} which allows access to the backing {@code byte[]} without
@@ -40,5 +41,15 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
      */
     public int count() {
         return count;
+    }
+
+    /**
+     * Gets the string representation of the stream.
+     *
+     * @param charset The {@link Charset} used to encode the String.
+     * @return A string representation of the stream.
+     */
+    public String toString(Charset charset) {
+        return new String(buf, 0, count, charset);
     }
 }
