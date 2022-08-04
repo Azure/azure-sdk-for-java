@@ -10,7 +10,7 @@ stages:
         - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
 #        - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
         - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
-#        - spring/spring-cloud-azure-integration-tests/test-resources/storage
+        - spring/spring-cloud-azure-integration-tests/test-resources/storage
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
