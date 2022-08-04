@@ -1,5 +1,14 @@
-# Release H
-Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3istory
+# Release History
+
+## 4.4.0-beta.1 (Unreleased)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.10, 2.7.0-2.7.2. (Note: 2.5.x (x>14), 2.6.y (y>10) and 2.7.z (z>2) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>6) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Starter
+This section includes changes in `spring-cloud-azure-starter` module.
+#### Features Added
+- Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976].
+
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
