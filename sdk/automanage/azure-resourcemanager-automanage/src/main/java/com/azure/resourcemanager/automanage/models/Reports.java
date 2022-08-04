@@ -35,7 +35,8 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run.
+     * @return information about a report associated with a configuration profile assignment run along with {@link
+     *     Response}.
      */
     Response<Report> getWithResponse(
         String resourceGroupName,
@@ -53,7 +54,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Report> listByConfigurationProfileAssignments(
         String resourceGroupName, String configurationProfileAssignmentName, String vmName);
@@ -68,7 +69,7 @@ public interface Reports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Report> listByConfigurationProfileAssignments(
         String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context);

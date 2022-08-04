@@ -11,16 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
     /*
-     * The FHIR Spec version that the result will use to format the fhirBundle.
-     * For additional information see https://www.hl7.org/fhir/overview.html.
+     * The FHIR Spec version that the result will use to format the fhirBundle. For additional information see
+     * https://www.hl7.org/fhir/overview.html.
      */
     @JsonProperty(value = "fhirVersion")
     private FhirVersion fhirVersion;
 
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text
-     * Elements (Graphemes) according to Unicode v8.0.0. For additional
-     * information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
@@ -68,6 +67,20 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      */
     public HealthcareTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 }

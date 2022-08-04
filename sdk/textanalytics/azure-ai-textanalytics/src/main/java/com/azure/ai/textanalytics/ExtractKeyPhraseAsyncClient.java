@@ -142,7 +142,7 @@ class ExtractKeyPhraseAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextKeyPhraseExtractionInput()
                                .setParameters(
-                                   (KeyPhraseTaskParameters) new KeyPhraseTaskParameters()
+                                   new KeyPhraseTaskParameters()
                                                                  .setModelVersion(options.getModelVersion())
                                                                  .setLoggingOptOut(options.isServiceLogsDisabled()))
                                .setAnalysisInput(

@@ -4,9 +4,9 @@ package com.azure.communication.identity;
 
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -191,7 +191,7 @@ public class ReadmeSamples {
     public void getTokenForTeamsUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
+            String teamsUserAadToken = getTeamsUserAadToken();
             // BEGIN: readme-sample-getTokenForTeamsUser
             String clientId = "<Client ID of an Azure AD application>";
             String userObjectId = "<Object ID of an Azure AD user (Teams User)>";
@@ -206,20 +206,25 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for generating an Azure AD access token of a Teams User
+     * Sample code for getting an Azure AD access token of a Teams User
      */
-    private static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
+    private static String getTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
         String teamsUserAadToken = "";
         try {
             IPublicClientApplication publicClientApplication = PublicClientApplication.builder("<M365_APP_ID>")
                 .authority("<M365_AAD_AUTHORITY>" + "/" + "<M365_AAD_TENANT>")
                 .build();
-            //M365 scopes
-            Set<String> scopes = Collections.singleton("https://auth.msft.communication.azure.com/VoIP");
+
+            // Create request parameters object for acquiring the AAD token and object ID of a Teams user
+            Set<String> scopes = new HashSet<String>(Arrays.asList(
+                    "https://auth.msft.communication.azure.com/Teams.ManageCalls",
+                    "https://auth.msft.communication.azure.com/Teams.ManageChats"
+            ));
             char[] password = "<MSAL_PASSWORD>".toCharArray();
             UserNamePasswordParameters userNamePasswordParameters =  UserNamePasswordParameters.builder(scopes, "<MSAL_USERNAME>", password)
                 .build();
             Arrays.fill(password, '0');
+            // Retrieve the AAD token and object ID of a Teams user
             IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
             teamsUserAadToken = result.accessToken();
         } catch (Exception e) {

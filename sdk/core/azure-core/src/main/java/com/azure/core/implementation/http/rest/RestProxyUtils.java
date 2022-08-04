@@ -41,7 +41,6 @@ public final class RestProxyUtils {
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
     public static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
 
-
     private RestProxyUtils() {
     }
 
@@ -219,5 +218,4 @@ public final class RestProxyUtils {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
-
 }

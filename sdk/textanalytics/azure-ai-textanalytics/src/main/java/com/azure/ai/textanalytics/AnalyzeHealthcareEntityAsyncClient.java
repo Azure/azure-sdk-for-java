@@ -12,8 +12,8 @@ import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
-import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobResponse;
-import com.azure.ai.textanalytics.implementation.models.CancelHealthJobResponse;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
+import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
@@ -36,6 +36,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -105,7 +106,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
-                                        (HealthcareTaskParameters) new HealthcareTaskParameters()
+                                        new HealthcareTaskParameters()
                                                                        .setFhirVersion(finalFhirVersion)
                                                                        .setStringIndexType(finalStringIndexType)
                                                                        .setModelVersion(finalModelVersion)
@@ -180,7 +181,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
-                                        (HealthcareTaskParameters) new HealthcareTaskParameters()
+                                        new HealthcareTaskParameters()
                                                                        .setFhirVersion(finalFhirVersion)
                                                                        .setStringIndexType(finalStringIndexType)
                                                                        .setModelVersion(finalModelVersion)
@@ -433,7 +434,7 @@ class AnalyzeHealthcareEntityAsyncClient {
     private BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
                           PollResponse<AnalyzeHealthcareEntitiesOperationDetail>,
                           Mono<AnalyzeHealthcareEntitiesOperationDetail>> cancelOperation(
-                              Function<UUID, Mono<CancelHealthJobResponse>> cancelFunction) {
+                              Function<UUID, Mono<ResponseBase<CancelHealthJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
@@ -454,7 +455,7 @@ class AnalyzeHealthcareEntityAsyncClient {
     private BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
                           PollResponse<AnalyzeHealthcareEntitiesOperationDetail>,
                           Mono<AnalyzeHealthcareEntitiesOperationDetail>> cancelOperationTextJob(
-        Function<UUID, Mono<AnalyzeTextsCancelJobResponse>> cancelFunction) {
+        Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
