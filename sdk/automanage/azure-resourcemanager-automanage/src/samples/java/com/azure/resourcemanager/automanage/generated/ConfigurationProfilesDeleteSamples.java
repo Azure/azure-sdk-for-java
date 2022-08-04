@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationProfiles Delete. */
 public final class ConfigurationProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/deleteConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfile.json
      */
     /**
      * Sample code: Delete a configuration profile.

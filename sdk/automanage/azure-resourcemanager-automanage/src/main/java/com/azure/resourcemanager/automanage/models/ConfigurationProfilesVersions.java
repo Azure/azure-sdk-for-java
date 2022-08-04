@@ -40,7 +40,7 @@ public interface ConfigurationProfilesVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
+     * @return definition of the configuration profile along with {@link Response}.
      */
     Response<ConfigurationProfile> createOrUpdateWithResponse(
         String configurationProfileName,
@@ -72,7 +72,7 @@ public interface ConfigurationProfilesVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile version.
+     * @return information about a configuration profile version along with {@link Response}.
      */
     Response<ConfigurationProfile> getWithResponse(
         String configurationProfileName, String versionName, String resourceGroupName, Context context);
@@ -99,48 +99,10 @@ public interface ConfigurationProfilesVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String configurationProfileName, String versionName, Context context);
-
-    /**
-     * Updates a configuration profile version.
-     *
-     * @param configurationProfileName Name of the configuration profile.
-     * @param versionName The configuration profile version name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Parameters supplied to update configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
-     */
-    ConfigurationProfile update(
-        String configurationProfileName,
-        String versionName,
-        String resourceGroupName,
-        ConfigurationProfileUpdate parameters);
-
-    /**
-     * Updates a configuration profile version.
-     *
-     * @param configurationProfileName Name of the configuration profile.
-     * @param versionName The configuration profile version name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Parameters supplied to update configuration profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration profile.
-     */
-    Response<ConfigurationProfile> updateWithResponse(
-        String configurationProfileName,
-        String versionName,
-        String resourceGroupName,
-        ConfigurationProfileUpdate parameters,
-        Context context);
 
     /**
      * Retrieve a list of configuration profile version for a configuration profile.
@@ -150,7 +112,8 @@ public interface ConfigurationProfilesVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ConfigurationProfile> listChildResources(String configurationProfileName, String resourceGroupName);
 
@@ -163,7 +126,8 @@ public interface ConfigurationProfilesVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list configuration profile operation.
+     * @return the response of the list configuration profile operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ConfigurationProfile> listChildResources(
         String configurationProfileName, String resourceGroupName, Context context);
