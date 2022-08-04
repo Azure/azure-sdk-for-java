@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
+public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
     @Before
@@ -27,21 +27,21 @@ public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
 
     @Override
     protected String getPackageLocation() {
-        return "com/azure/tools/checkstyle/checks/BlacklistedWordsChecks";
+        return "com/azure/tools/checkstyle/checks/DenyListedWordsChecks";
     }
 
     @Test
-    public void blacklistedWordsTestData() throws Exception {
+    public void denyListedWordsTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(3, 5, String.format(BlacklistedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "XML, HTTP, URL")),
-            expectedErrorMessage(9, 5, String.format(BlacklistedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "XML, HTTP, URL"))
+            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "XML, HTTP, URL")),
+            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "XML, HTTP, URL"))
         };
-        verify(checker, getPath("BlacklistedWordsTestData.java"), expected);
+        verify(checker, getPath("DenyListedWordsTestData.java"), expected);
     }
 
     @Test
-    public void blacklistedWordsInterface() throws Exception {
-        verify(checker, getPath("BlacklistedWordsInterface.java"));
+    public void denyListedWordsInterface() throws Exception {
+        verify(checker, getPath("DenyListedWordsInterface.java"));
     }
 
     private String expectedErrorMessage(int line, int column, String errorMessage) {
@@ -58,10 +58,10 @@ public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
     private DefaultConfiguration prepareConfiguration() {
         DefaultConfiguration checks = new DefaultConfiguration("Checks");
         DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
-        DefaultConfiguration blacklistedWordsCheck = new DefaultConfiguration(BlacklistedWordsCheck.class.getCanonicalName());
-        blacklistedWordsCheck.addProperty("blacklistedWords", "URL, HTTP, XML");
+        DefaultConfiguration denyListedWordsCheck = new DefaultConfiguration(DenyListedWordsCheck.class.getCanonicalName());
+        denyListedWordsCheck.addProperty("denyListedWords", "URL, HTTP, XML");
         checks.addChild(treeWalker);
-        treeWalker.addChild(blacklistedWordsCheck);
+        treeWalker.addChild(denyListedWordsCheck);
         return checks;
     }
 }

@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.tools.checkstyle.checks;
 
-import java.net.HttpURLConnection;
 import java.time.Duration;
 
 /**
  * Tests for variables in an interface.
  */
-public interface BlacklistedWordsInterface {
+public interface DenyListedWordsInterface {
 
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
