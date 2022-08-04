@@ -2212,7 +2212,7 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
-        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength());
+        ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
 
         Flux<ByteBuffer> data = options.getDataFlux() == null
