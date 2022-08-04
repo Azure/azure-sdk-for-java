@@ -127,6 +127,25 @@ public class AnnotatedQueryIT {
     }
 
     @Test
+    public void testAnnotatedQueryWithValueAsPageTwoPages() {
+        Address testAddress = new Address(TestConstants.POSTAL_CODE_1, TestConstants.STREET_0, TestConstants.CITY);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
+            Address.TEST_ADDRESS2_PARTITION1, testAddress);
+        addressRepository.saveAll(addresses);
+
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 2);
+        final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest);
+        assertAddressPostalCodesUnordered(postalCodes.getContent(),
+            Arrays.asList(Address.TEST_ADDRESS2_PARTITION1, testAddress));
+
+        final PageRequest cosmosPageRequest2 = CosmosPageRequest.of(1, 2);
+        final Page<String> postalCodes2 = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest2);
+        assertAddressPostalCodesUnordered(postalCodes2.getContent(), Arrays.asList(Address.TEST_ADDRESS1_PARTITION1));
+    }
+
+    @Test
     public void testAnnotatedQueryWithValueAsList() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
         addressRepository.saveAll(addresses);
