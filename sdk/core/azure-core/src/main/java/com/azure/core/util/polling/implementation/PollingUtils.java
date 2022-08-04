@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
  * Utility class for handling polling responses.
  */
 public final class PollingUtils {
+    private static final String FORWARD_SLASH = "/";
     /**
      * Serialize a response to a {@link BinaryData}. If the response is already a {@link BinaryData}, return as is.
      *
@@ -96,7 +97,14 @@ public final class PollingUtils {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
                         "Relative path requires endpoint to be non-null and non-empty to create an absolute path."));
                 }
-                return endpoint + path;
+
+                if (endpoint.endsWith(FORWARD_SLASH) && path.startsWith(FORWARD_SLASH)) {
+                    return endpoint + path.substring(1);
+                } else if (!endpoint.endsWith(FORWARD_SLASH) && !path.startsWith(FORWARD_SLASH)) {
+                    return endpoint + FORWARD_SLASH + path;
+                } else {
+                    return endpoint + path;
+                }
             }
         } catch (URISyntaxException ex) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'path' must be a valid URI.", ex));
