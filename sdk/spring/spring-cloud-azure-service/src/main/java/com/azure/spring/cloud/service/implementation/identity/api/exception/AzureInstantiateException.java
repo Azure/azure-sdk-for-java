@@ -6,13 +6,13 @@ package com.azure.spring.cloud.service.implementation.identity.api.exception;
 /**
  * The exception when instantiating a class fails.
  */
-public class AzureInstantiateException extends RuntimeException{
+public class AzureInstantiateException extends RuntimeException {
 
     /**
      * Initializes a new instance of the AzureInstantiateException class.
      *
      * @param message The exception message.
-     * @param cause The {@link Throwable} which caused the creation of this AzureException.
+     * @param cause   The {@link Throwable} which caused the creation of this AzureException.
      */
     public AzureInstantiateException(final String message, final Throwable cause) {
         super(message, cause);

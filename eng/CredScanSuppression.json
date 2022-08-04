@@ -44,6 +44,10 @@
             "_justification": "Javadoc in azure-resourcemanager-datafactory"
         },
         {
+            "placeholder": "CacheableManageIdentityCredential",
+            "_justification": "Java class in spring-cloud-azure-service."
+        },
+        {
             "file":[
                 "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",

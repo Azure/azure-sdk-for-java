@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.service.implementation.identity.providers.mysql;// Copyright (c) Microsoft Corporation. All rights reserved.
+package com.azure.spring.cloud.service.implementation.identity.providers.mysql;
 
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.api.AzureAuthenticationTemplate;
@@ -20,7 +20,6 @@ import java.util.Properties;
  * The Authentication plugin that enables Azure AD managed identity support.
  */
 public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationTemplate implements AuthenticationPlugin<NativePacketPayload> {
-    // TODO log type
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
     public static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 

@@ -63,8 +63,7 @@ public enum AuthProperty {
         false),
     CACHE_ENABLED("azure.cacheEnabled",
         "Whether to cache an accessToken.",
-        false),
-    ;
+        false);
 
     String propertyKey;
     String defaultValue;
