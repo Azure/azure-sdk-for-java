@@ -275,7 +275,7 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20220804T075207Z:43ca59d7-f2c1-4edf-b178-113f3a1b153f",
       "Expires" : "-1",
       "x-ms-request-id" : "78e3e117-9448-406a-9357-6a239ace206b_M10SN1_M10SN1",
-      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=O+EGv+vn9fF+ejdEKRBb1WB4KJuAf7p2+6OjjcEDGMc=\",\"secondaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=0ODRpLOjF284xw/pFQ+sL0QdPaqcbJU0LMhjtvNnslc=\",\"primaryKey\":\"O+EGv+vn9fF+ejdEKRBb1WB4KJuAf7p2+6OjjcEDGMc=\",\"secondaryKey\":\"0ODRpLOjF284xw/pFQ+sL0QdPaqcbJU0LMhjtvNnslc=\",\"keyName\":\"nsrule1-950796\"}",
+      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=***REMOVED***\",\"secondaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=***REMOVED***\",\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\",\"keyName\":\"nsrule1-950796\"}",
       "x-ms-client-request-id" : "fb363ef7-0e74-4b8e-83bc-18f17dfe521b",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -304,7 +304,7 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20220804T075215Z:a93c8293-09f9-4955-b52b-67afa0a164a0",
       "Expires" : "-1",
       "x-ms-request-id" : "a4a6882a-5dd3-4a68-a6a0-39b31efa55ee_M11CH3_M11CH3",
-      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=K/KffYEJiMaR8RtdYtZzYol6pgSQ2fJngH9lqG6DyTg=\",\"secondaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=0ODRpLOjF284xw/pFQ+sL0QdPaqcbJU0LMhjtvNnslc=\",\"primaryKey\":\"K/KffYEJiMaR8RtdYtZzYol6pgSQ2fJngH9lqG6DyTg=\",\"secondaryKey\":\"0ODRpLOjF284xw/pFQ+sL0QdPaqcbJU0LMhjtvNnslc=\",\"keyName\":\"nsrule1-950796\"}",
+      "Body" : "{\"primaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=***REMOVED***\",\"secondaryConnectionString\":\"Endpoint=sb://jvsbns8797045.servicebus.windows.net/;SharedAccessKeyName=nsrule1-950796;SharedAccessKey=***REMOVED***\",\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\",\"keyName\":\"nsrule1-950796\"}",
       "x-ms-client-request-id" : "18774cc5-d09e-448b-b3bd-21b4677fd267",
       "Content-Type" : "application/json; charset=utf-8"
     },
