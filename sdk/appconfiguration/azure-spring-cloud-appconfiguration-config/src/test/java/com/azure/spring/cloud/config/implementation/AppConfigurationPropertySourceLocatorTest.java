@@ -183,7 +183,8 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
 
-        when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true)))
+            .thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         when(replicaClientMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
@@ -213,7 +214,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             tokenCredentialProvider, null, null);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
-            System.out.println(stateHolderMock);
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
             PropertySource<?> source = locator.locate(emptyEnvironment);
 
             assertTrue(source instanceof CompositePropertySource);

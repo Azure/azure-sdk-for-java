@@ -26,7 +26,7 @@ public class AppConfigurationReplicaClientFactory {
      * @param properties client properties
      * @param appProperties library properties  
      */
-    public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientBuilder clientBuilder,
+    public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
         this.configStores = properties.getStores();
         if (CONNECTIONS.size() == 0) {

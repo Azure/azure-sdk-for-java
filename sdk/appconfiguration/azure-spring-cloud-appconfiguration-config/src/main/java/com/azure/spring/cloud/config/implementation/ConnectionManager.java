@@ -38,7 +38,7 @@ public class ConnectionManager {
 
     private AppConfigurationStoreHealth health;
 
-    private final AppConfigurationReplicaClientBuilder clientBuilder;
+    private final AppConfigurationReplicaClientsBuilder clientBuilder;
 
     private final ConfigStore configStore;
 
@@ -52,7 +52,7 @@ public class ConnectionManager {
      * @param isKeyVaultConfigured is key vault configured
      * @param clientId Client Id for Managed Identity
      */
-    ConnectionManager(AppConfigurationReplicaClientBuilder clientBuilder, ConfigStore configStore,
+    ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore,
         AppConfigurationProviderProperties appProperties) {
         this.clientBuilder = clientBuilder;
         this.defaultMaxBackoff = appProperties.getDefaultMaxBackoff();

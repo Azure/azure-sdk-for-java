@@ -27,7 +27,7 @@ public class AppConfigurationReplicaClientFactoryTest {
     private ConnectionManager connectionManagerMock;
 
     @Mock
-    private AppConfigurationReplicaClientBuilder clientBuilderMock;
+    private AppConfigurationReplicaClientsBuilder clientBuilderMock;
 
     private AppConfigurationProperties properties;
 

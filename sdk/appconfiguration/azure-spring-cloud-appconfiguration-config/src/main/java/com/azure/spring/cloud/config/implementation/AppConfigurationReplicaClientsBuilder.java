@@ -25,9 +25,9 @@ import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
-public class AppConfigurationReplicaClientBuilder implements EnvironmentAware {
+public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationReplicaClientBuilder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationReplicaClientsBuilder.class);
 
     /**
      * Invalid Connection String error message
@@ -59,7 +59,7 @@ public class AppConfigurationReplicaClientBuilder implements EnvironmentAware {
 
     private final int maxRetries;
 
-    public AppConfigurationReplicaClientBuilder(AppConfigurationCredentialProvider tokenCredentialProvider,
+    public AppConfigurationReplicaClientsBuilder(AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider, Boolean isKeyVaultConfigured, String clientId,
         int maxRetries) {
         this.tokenCredentialProvider = tokenCredentialProvider;

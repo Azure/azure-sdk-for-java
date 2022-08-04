@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientBuilder;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientsBuilder;
 
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.
@@ -179,7 +179,7 @@ public final class ConfigStore {
         }
 
         if (StringUtils.hasText(connectionString)) {
-            String endpoint = (AppConfigurationReplicaClientBuilder.getEndpointFromConnectionString(connectionString));
+            String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString));
             try {
                 // new URI is used to validate the endpoint as a valid URI
                 new URI(endpoint);
@@ -190,7 +190,7 @@ public final class ConfigStore {
         } else if (connectionStrings.size() > 0) {
             for (String connection : connectionStrings) {
 
-                String endpoint = (AppConfigurationReplicaClientBuilder.getEndpointFromConnectionString(connection));
+                String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connection));
                 try {
                     // new URI is used to validate the endpoint as a valid URI
                     new URI(endpoint);

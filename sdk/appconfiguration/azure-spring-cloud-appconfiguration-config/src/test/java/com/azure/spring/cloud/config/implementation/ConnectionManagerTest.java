@@ -42,7 +42,7 @@ public class ConnectionManagerTest {
     private ConfigurationClientBuilderSetup modifierMock;
 
     @Mock
-    private AppConfigurationReplicaClientBuilder clientBuilderMock;
+    private AppConfigurationReplicaClientsBuilder clientBuilderMock;
 
     @Mock
     private AppConfigurationReplicaClient replicaClient1;
@@ -115,7 +115,7 @@ public class ConnectionManagerTest {
         when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
 
         String originEndpoint = configStore.getEndpoint();
-        String replicaEndpoint = AppConfigurationReplicaClientBuilder
+        String replicaEndpoint = AppConfigurationReplicaClientsBuilder
             .getEndpointFromConnectionString(configStore.getConnectionStrings().get(1));
 
         when(replicaClient1.getEndpoint()).thenReturn(originEndpoint);

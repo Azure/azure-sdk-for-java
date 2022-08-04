@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
-import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientBuilder;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientsBuilder;
 import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
@@ -90,7 +90,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientBuilder clientBuilder,
+    AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
         return new AppConfigurationReplicaClientFactory(clientBuilder, properties, appProperties);
     }
@@ -110,7 +110,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    AppConfigurationReplicaClientBuilder replicaClientBuilder(AppConfigurationProperties properties,
+    AppConfigurationReplicaClientsBuilder replicaClientBuilder(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
@@ -145,7 +145,7 @@ public class AppConfigurationBootstrapConfiguration {
             clientId = properties.getManagedIdentity().getClientId();
         }
 
-        return new AppConfigurationReplicaClientBuilder(tokenCredentialProvider, clientProvider, isKeyVaultConfigured,
+        return new AppConfigurationReplicaClientsBuilder(tokenCredentialProvider, clientProvider, isKeyVaultConfigured,
             clientId, appProperties.getMaxRetries());
     }
 }
