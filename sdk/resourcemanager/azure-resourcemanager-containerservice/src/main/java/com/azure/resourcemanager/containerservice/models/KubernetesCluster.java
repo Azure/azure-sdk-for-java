@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.core.management.Region;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /** A client-side representation for a managed Kubernetes cluster. */
+@Fluent
 public interface KubernetesCluster
     extends GroupableResource<ContainerServiceManager, ManagedClusterInner>,
     Refreshable<KubernetesCluster>,
