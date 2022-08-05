@@ -5,6 +5,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Provide applicationContext for SpringTokenCredentialProvider.
+ */
 public final class SpringTokenCredentialProviderContextProvider implements ApplicationContextAware {
 
     @Override
