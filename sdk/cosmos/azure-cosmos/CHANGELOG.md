@@ -4,6 +4,7 @@
 
 #### Features Added
 * GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
+* //TODO:(kuthapar) - add changelog for FFCF CFP
 
 #### Breaking Changes
 
