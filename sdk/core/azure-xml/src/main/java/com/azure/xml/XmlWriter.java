@@ -666,7 +666,7 @@ public abstract class XmlWriter implements Closeable {
     }
 
     /**
-     * Writes a null element that has a prefix ({@code <tag>nulltag}).
+     * Writes a null element that has a prefix ({@code <tag>null</tag>}).
      *
      * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
