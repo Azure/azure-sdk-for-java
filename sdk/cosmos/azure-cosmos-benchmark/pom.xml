@@ -14,7 +14,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-benchmark</artifactId>
-  <version>4.0.2-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-benchmark;current} -->
+  <version>4.0.1-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-benchmark;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - Benchmarking tool</name>
   <description>This package contains Benchmarking tool for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
