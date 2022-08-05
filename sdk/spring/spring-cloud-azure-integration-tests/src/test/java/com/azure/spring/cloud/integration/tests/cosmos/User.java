@@ -4,6 +4,8 @@ package com.azure.spring.cloud.integration.tests.cosmos;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
 
+import java.util.Objects;
+
 @Container(containerName = "Users")
 public class User {
     private String id;
@@ -57,5 +59,23 @@ public class User {
     @Override
     public String toString() {
         return String.format("%s %s, %s", firstName, lastName, address);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName,
+            user.lastName) && Objects.equals(address, user.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, address);
     }
 }

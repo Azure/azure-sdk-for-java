@@ -41,13 +41,13 @@ public class CosmosIT {
             User.class);
         if (users.stream().iterator().hasNext()) {
             User user = users.stream().iterator().next();
-            Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line two");
+            Assertions.assertEquals(testUser, user);
         }
         container.deleteItem(testUser, new CosmosItemRequestOptions());
-        CosmosPagedIterable<User> usersDelete = container.queryItems("SELECT * FROM c WHERE c.id = 'testCosmos'",
+        CosmosPagedIterable<User> usersAfterDeletion = container.queryItems("SELECT * FROM c WHERE c.id = 'testCosmos'",
             new CosmosQueryRequestOptions(),
             User.class);
-        Assertions.assertFalse(usersDelete.iterator().hasNext());
+        Assertions.assertFalse(usersAfterDeletion.iterator().hasNext());
         LOGGER.info("CosmosIT end.");
     }
 

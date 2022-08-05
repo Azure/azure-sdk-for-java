@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("cosmos-springdata")
 public class SpringDataCosmosIT {
@@ -24,11 +26,11 @@ public class SpringDataCosmosIT {
     public void testSpringDataCosmosOperation() {
         LOGGER.info("SpringDataCosmosIT begin.");
         User testUser = new User(userId, "testFirstName", "testLastName", "test address line one");
-        userRepository.save(testUser).block();
-        User user = userRepository.findById(userId).block();
-        Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line one");
-        userRepository.delete(testUser).block();
-        Assertions.assertNull(userRepository.findById(userId).block());
+        userRepository.save(testUser);
+        Optional<User> user = userRepository.findById(userId);
+        Assertions.assertEquals(Optional.of(testUser), user);
+        userRepository.delete(testUser);
+        Assertions.assertFalse(userRepository.findById(userId).isPresent());
         LOGGER.info("SpringDataCosmosIT end.");
     }
 }
