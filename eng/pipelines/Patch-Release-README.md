@@ -38,6 +38,11 @@ The patch-release pipeline utilizes the same tools that the From Source runs use
 
 **Testing is not done in the patch-release pipeline.** Unlike service directory pipelines, there are no tests being run. We have a highly customizable test matrix which many service directories have made changes to. Because of this, it's nearly impossible to rectify a test matrix for a set of artifacts that spans the entire repository. There is a mitigation for this; as part of the preparation for patch release versions, poms, CHANGELOG and README files all need to be updated. These updates will cause each individual service directory pipeline to get run as part of the process for the update PR. In between the update PR and kicking off the patch-release pipeline, there should be no outside changes that aren't related to the aforementioned update. The matrix of FromSource and non-FromSource runs should provide enough verification. We already make the same assumptions when we release service directory, update the dependency version and then release a service directory that depends on what was previously released.
 
+## Testing changes/updates to the patch-release pipeline
+
+The easiest way to test the patch release pipeline is to use the example above which sets the Artifacts list to the
+list of template libraries. After running, add the following parameter **TestPipeline**: **true**. This will allow the release of the template libraries without any version preparation, just run and release. The parameter will cause the test pipeline version code, which sets template libraries to a new beta version, based upon the buildId, for release and then auto closes the version increment PR.
+
 <!-- LINKS -->
 [java_patch_release]: https://dev.azure.com/azure-sdk/internal/_build?definitionId=5015&_a=summary
 [update_for_release_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/scripts/Update-Artifacts-List-For-Patch-Release.ps1
