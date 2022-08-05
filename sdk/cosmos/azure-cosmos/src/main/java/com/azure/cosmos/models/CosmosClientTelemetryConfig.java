@@ -37,6 +37,15 @@ public class CosmosClientTelemetryConfig {
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
+    private static EnumSet<TagName> DEFAULT_TAGS = EnumSet.of(
+        TagName.Container,
+        TagName.Operation,
+        TagName.OperationStatusCode,
+        TagName.ClientCorrelationId,
+        TagName.RequestStatusCode,
+        TagName.RequestOperationType,
+        TagName.ServiceAddress
+    );
 
     private boolean clientTelemetryEnabled;
     private final Duration httpNetworkRequestTimeout;
@@ -44,7 +53,7 @@ public class CosmosClientTelemetryConfig {
     private final Duration idleHttpConnectionTimeout;
     private final ProxyOptions proxy;
     private String clientCorrelationId = null;
-    private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
+    private EnumSet<TagName> metricTagNames = DEFAULT_TAGS;
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
     private CosmosClientBuilder owner = null;
@@ -120,7 +129,7 @@ public class CosmosClientTelemetryConfig {
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder metricTagNames(String tagNames) {
         if (Strings.isNullOrWhiteSpace(tagNames)) {
-            this.metricTagNames = EnumSet.allOf(TagName.class);
+            this.metricTagNames = DEFAULT_TAGS;
         }
 
         Map<String, TagName> tagNameMap = new HashMap<>();
