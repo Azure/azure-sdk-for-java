@@ -19,8 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("cosmos")
 public class CosmosIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosIT.class);
-    private final String databaseName = "TestDB";
-    private final String containerName = "Users";
+    private static final String DATABASE_NAME = "TestDB";
+    private static final String CONTAINER_NAME = "Users";
 
     @Autowired
     private CosmosClient client;
@@ -34,7 +34,7 @@ public class CosmosIT {
             "testLastName",
             "test address line two"
         );
-        CosmosContainer container = client.getDatabase(databaseName).getContainer(containerName);
+        CosmosContainer container = client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME);
         container.createItem(testUser);
         CosmosPagedIterable<User> users = container.queryItems("SELECT * FROM c WHERE c.id = 'testCosmos'",
             new CosmosQueryRequestOptions(),

@@ -16,9 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("appconfiguration")
 public class AppConfigurationIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationIT.class);
-    private final String sampleKey = "sample-key";
-    private final String sampleLabel = "sample-label";
-    private final String sampleValue = "sample-value";
+    private static final String SAMPLE_KEY = "sample-key";
+    private static final String SAMPLE_LABEL = "sample-label";
+    private static final String SAMPLE_VALUE = "sample-value";
 
     @Autowired
     private ConfigurationClient client;
@@ -26,9 +26,9 @@ public class AppConfigurationIT {
     @Test
     public void testAppConfigurationOperation() {
         LOGGER.info("AppConfigurationIT begin.");
-        client.addConfigurationSetting(sampleKey, sampleLabel, sampleValue);
-        ConfigurationSetting configurationSetting = client.getConfigurationSetting(sampleKey, sampleLabel);
-        Assertions.assertEquals(sampleValue, configurationSetting.getValue());
+        client.addConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL, SAMPLE_VALUE);
+        ConfigurationSetting configurationSetting = client.getConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL);
+        Assertions.assertEquals(SAMPLE_VALUE, configurationSetting.getValue());
         LOGGER.info("AppConfigurationIT end.");
     }
 

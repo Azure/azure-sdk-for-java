@@ -16,8 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("keyvault-secret")
 public class KeyVaultSecretIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretIT.class);
-    private final String name = "sample-key";
-    private final String value = "sample-value";
+    private static final String NAME = "sample-key";
+    private static final String VALUE = "sample-value";
 
     @Autowired
     private SecretClient client;
@@ -25,9 +25,9 @@ public class KeyVaultSecretIT {
     @Test
     public void testKeyVaultSecretOperation() {
         LOGGER.info("KeyVaultSecretIT begin.");
-        client.setSecret(name, value);
-        KeyVaultSecret secret = client.getSecret(name);
-        Assertions.assertEquals(secret.getValue(), value);
+        client.setSecret(NAME, VALUE);
+        KeyVaultSecret secret = client.getSecret(NAME);
+        Assertions.assertEquals(VALUE, secret.getValue());
         LOGGER.info("KeyVaultSecretIT end.");
     }
 }

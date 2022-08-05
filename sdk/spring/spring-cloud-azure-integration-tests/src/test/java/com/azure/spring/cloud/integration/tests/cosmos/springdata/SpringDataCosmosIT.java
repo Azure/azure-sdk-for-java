@@ -17,7 +17,7 @@ import java.util.Optional;
 @ActiveProfiles("cosmos-springdata")
 public class SpringDataCosmosIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringDataCosmosIT.class);
-    private final String userId = "testSpringDataCosmos";
+    private static final String USER_ID = "testSpringDataCosmos";
 
     @Autowired
     private UserRepository userRepository;
@@ -25,12 +25,12 @@ public class SpringDataCosmosIT {
     @Test
     public void testSpringDataCosmosOperation() {
         LOGGER.info("SpringDataCosmosIT begin.");
-        User testUser = new User(userId, "testFirstName", "testLastName", "test address line one");
+        User testUser = new User(USER_ID, "testFirstName", "testLastName", "test address line one");
         userRepository.save(testUser);
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(USER_ID);
         Assertions.assertEquals(Optional.of(testUser), user);
         userRepository.delete(testUser);
-        Assertions.assertFalse(userRepository.findById(userId).isPresent());
+        Assertions.assertFalse(userRepository.findById(USER_ID).isPresent());
         LOGGER.info("SpringDataCosmosIT end.");
     }
 }
