@@ -24,13 +24,6 @@ public interface OperationalInsightsManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -43,6 +36,20 @@ public interface OperationalInsightsManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the QueryPacksClient object to access its operations.
+     *
+     * @return the QueryPacksClient object.
+     */
+    QueryPacksClient getQueryPacks();
+
+    /**
+     * Gets the QueriesClient object to access its operations.
+     *
+     * @return the QueriesClient object.
+     */
+    QueriesClient getQueries();
 
     /**
      * Gets the DataExportsClient object to access its operations.
@@ -87,13 +94,6 @@ public interface OperationalInsightsManagementClient {
     ManagementGroupsClient getManagementGroups();
 
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
      * Gets the OperationStatusesClient object to access its operations.
      *
      * @return the OperationStatusesClient object.
@@ -113,27 +113,6 @@ public interface OperationalInsightsManagementClient {
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
-
-    /**
-     * Gets the WorkspacesClient object to access its operations.
-     *
-     * @return the WorkspacesClient object.
-     */
-    WorkspacesClient getWorkspaces();
-
-    /**
-     * Gets the DeletedWorkspacesClient object to access its operations.
-     *
-     * @return the DeletedWorkspacesClient object.
-     */
-    DeletedWorkspacesClient getDeletedWorkspaces();
-
-    /**
-     * Gets the ClustersClient object to access its operations.
-     *
-     * @return the ClustersClient object.
-     */
-    ClustersClient getClusters();
 
     /**
      * Gets the StorageInsightConfigsClient object to access its operations.
@@ -176,6 +155,34 @@ public interface OperationalInsightsManagementClient {
      * @return the WorkspacePurgesClient object.
      */
     WorkspacePurgesClient getWorkspacePurges();
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     *
+     * @return the ClustersClient object.
+     */
+    ClustersClient getClusters();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the WorkspacesClient object to access its operations.
+     *
+     * @return the WorkspacesClient object.
+     */
+    WorkspacesClient getWorkspaces();
+
+    /**
+     * Gets the DeletedWorkspacesClient object to access its operations.
+     *
+     * @return the DeletedWorkspacesClient object.
+     */
+    DeletedWorkspacesClient getDeletedWorkspaces();
 
     /**
      * Gets the TablesClient object to access its operations.

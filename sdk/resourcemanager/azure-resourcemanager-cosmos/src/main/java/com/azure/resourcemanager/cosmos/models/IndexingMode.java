@@ -30,7 +30,11 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
         return fromString(name, IndexingMode.class);
     }
 
-    /** @return known IndexingMode values. */
+    /**
+     * Gets known IndexingMode values.
+     *
+     * @return known IndexingMode values.
+     */
     public static Collection<IndexingMode> values() {
         return values(IndexingMode.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExtensionTopics Get. */
 public final class ExtensionTopicsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/ExtensionTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/ExtensionTopics_Get.json
      */
     /**
      * Sample code: ExtensionTopics_Get.

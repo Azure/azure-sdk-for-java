@@ -9,13 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Service data flow (SDF) template. */
+/** Data flow template. */
 @Fluent
 public final class ServiceDataFlowTemplate {
     /*
-     * The name of the SDF template. This must be unique within the parent
-     * PccRuleConfiguration. You must not use any of the following reserved
-     * strings - `default`, `requested` or `service`.
+     * The name of the data flow template. This must be unique within the
+     * parent data flow policy rule. You must not use any of the following
+     * reserved strings - `default`, `requested` or `service`.
      */
     @JsonProperty(value = "templateName", required = true)
     private String templateName;
@@ -42,9 +42,10 @@ public final class ServiceDataFlowTemplate {
     /*
      * The remote IP address(es) to which UEs will connect for this flow. If
      * you want to allow connections on any IP address, use the value `any`.
-     * Otherwise, you must provide each of the remote IP addresses to which
-     * Fusion Core will connect for this flow. You must provide each IP address
-     * in CIDR notation, including the netmask (for example, 192.0.2.54/24).
+     * Otherwise, you must provide each of the remote IP addresses to which the
+     * packet core instance will connect for this flow. You must provide each
+     * IP address in CIDR notation, including the netmask (for example,
+     * 192.0.2.54/24).
      */
     @JsonProperty(value = "remoteIpList", required = true)
     private List<String> remoteIpList;
@@ -61,9 +62,8 @@ public final class ServiceDataFlowTemplate {
     private List<String> ports;
 
     /**
-     * Get the templateName property: The name of the SDF template. This must be unique within the parent
-     * PccRuleConfiguration. You must not use any of the following reserved strings - `default`, `requested` or
-     * `service`.
+     * Get the templateName property: The name of the data flow template. This must be unique within the parent data
+     * flow policy rule. You must not use any of the following reserved strings - `default`, `requested` or `service`.
      *
      * @return the templateName value.
      */
@@ -72,9 +72,8 @@ public final class ServiceDataFlowTemplate {
     }
 
     /**
-     * Set the templateName property: The name of the SDF template. This must be unique within the parent
-     * PccRuleConfiguration. You must not use any of the following reserved strings - `default`, `requested` or
-     * `service`.
+     * Set the templateName property: The name of the data flow template. This must be unique within the parent data
+     * flow policy rule. You must not use any of the following reserved strings - `default`, `requested` or `service`.
      *
      * @param templateName the templateName value to set.
      * @return the ServiceDataFlowTemplate object itself.
@@ -135,8 +134,8 @@ public final class ServiceDataFlowTemplate {
     /**
      * Get the remoteIpList property: The remote IP address(es) to which UEs will connect for this flow. If you want to
      * allow connections on any IP address, use the value `any`. Otherwise, you must provide each of the remote IP
-     * addresses to which Fusion Core will connect for this flow. You must provide each IP address in CIDR notation,
-     * including the netmask (for example, 192.0.2.54/24).
+     * addresses to which the packet core instance will connect for this flow. You must provide each IP address in CIDR
+     * notation, including the netmask (for example, 192.0.2.54/24).
      *
      * @return the remoteIpList value.
      */
@@ -147,8 +146,8 @@ public final class ServiceDataFlowTemplate {
     /**
      * Set the remoteIpList property: The remote IP address(es) to which UEs will connect for this flow. If you want to
      * allow connections on any IP address, use the value `any`. Otherwise, you must provide each of the remote IP
-     * addresses to which Fusion Core will connect for this flow. You must provide each IP address in CIDR notation,
-     * including the netmask (for example, 192.0.2.54/24).
+     * addresses to which the packet core instance will connect for this flow. You must provide each IP address in CIDR
+     * notation, including the netmask (for example, 192.0.2.54/24).
      *
      * @param remoteIpList the remoteIpList value to set.
      * @return the ServiceDataFlowTemplate object itself.

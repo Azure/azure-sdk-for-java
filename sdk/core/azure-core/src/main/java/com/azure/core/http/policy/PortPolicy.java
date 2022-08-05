@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
@@ -23,6 +24,23 @@ public class PortPolicy implements HttpPipelinePolicy {
     private final int port;
     private final boolean overwrite;
 
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            if (overwrite || urlBuilder.getPort() == null) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
+                } catch (MalformedURLException e) {
+                    throw LOGGER.logExceptionAsError(new
+                        RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
+                }
+            }
+        }
+    };
+
     /**
      * Creates a new PortPolicy object.
      *
@@ -36,16 +54,11 @@ public class PortPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-        if (overwrite || urlBuilder.getPort() == null) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+        return inner.process(context, next);
+    }
 
-            try {
-                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
-            } catch (MalformedURLException e) {
-                return Mono.error(new RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
-            }
-        }
-        return next.process();
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }

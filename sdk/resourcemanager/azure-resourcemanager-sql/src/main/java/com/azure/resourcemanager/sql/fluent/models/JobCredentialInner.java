@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A stored credential that can be used by a job to connect to target databases. */
-@JsonFlatten
 @Fluent
-public class JobCredentialInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobCredentialInner.class);
-
+public final class JobCredentialInner extends ProxyResource {
     /*
-     * The credential user name.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.username")
-    private String username;
+    @JsonProperty(value = "properties")
+    private JobCredentialProperties innerProperties;
 
-    /*
-     * The credential password.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.password")
-    private String password;
+    private JobCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the username property: The credential user name.
@@ -35,7 +32,7 @@ public class JobCredentialInner extends ProxyResource {
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -45,7 +42,10 @@ public class JobCredentialInner extends ProxyResource {
      * @return the JobCredentialInner object itself.
      */
     public JobCredentialInner withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobCredentialProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
@@ -55,7 +55,7 @@ public class JobCredentialInner extends ProxyResource {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -65,7 +65,10 @@ public class JobCredentialInner extends ProxyResource {
      * @return the JobCredentialInner object itself.
      */
     public JobCredentialInner withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobCredentialProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -75,5 +78,8 @@ public class JobCredentialInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

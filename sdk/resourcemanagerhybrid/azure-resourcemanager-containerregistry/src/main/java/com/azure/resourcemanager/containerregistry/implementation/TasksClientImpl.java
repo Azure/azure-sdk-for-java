@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -30,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
@@ -43,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TasksClient. */
 public final class TasksClientImpl implements TasksClient {
-    private final ClientLogger logger = new ClientLogger(TasksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TasksService service;
 
@@ -68,7 +66,7 @@ public final class TasksClientImpl implements TasksClient {
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
     private interface TasksService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/tasks")
@@ -80,9 +78,10 @@ public final class TasksClientImpl implements TasksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/tasks/{taskName}")
@@ -95,9 +94,10 @@ public final class TasksClientImpl implements TasksClient {
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("taskName") String taskName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/tasks/{taskName}")
@@ -111,6 +111,7 @@ public final class TasksClientImpl implements TasksClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("taskName") String taskName,
             @BodyParam("application/json") TaskInner taskCreateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -128,7 +129,7 @@ public final class TasksClientImpl implements TasksClient {
             @PathParam("taskName") String taskName,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/tasks/{taskName}")
@@ -142,9 +143,10 @@ public final class TasksClientImpl implements TasksClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("taskName") String taskName,
             @BodyParam("application/json") TaskUpdateParameters taskUpdateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
                 + "/registries/{registryName}/tasks/{taskName}/listDetails")
@@ -157,15 +159,17 @@ public final class TasksClientImpl implements TasksClient {
             @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("taskName") String taskName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TaskListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -177,7 +181,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TaskInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
@@ -201,6 +205,7 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -211,6 +216,7 @@ public final class TasksClientImpl implements TasksClient {
                             resourceGroupName,
                             registryName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<TaskInner>>map(
                 res ->
@@ -221,7 +227,7 @@ public final class TasksClientImpl implements TasksClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -233,7 +239,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TaskInner>> listSinglePageAsync(
@@ -258,6 +264,7 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -266,6 +273,7 @@ public final class TasksClientImpl implements TasksClient {
                 resourceGroupName,
                 registryName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -286,7 +294,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TaskInner> listAsync(String resourceGroupName, String registryName) {
@@ -303,7 +311,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TaskInner> listAsync(String resourceGroupName, String registryName, Context context) {
@@ -320,7 +328,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TaskInner> list(String resourceGroupName, String registryName) {
@@ -336,7 +344,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TaskInner> list(String resourceGroupName, String registryName, Context context) {
@@ -352,7 +360,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specified task.
+     * @return the properties of a specified task along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TaskInner>> getWithResponseAsync(
@@ -380,6 +388,7 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -391,8 +400,9 @@ public final class TasksClientImpl implements TasksClient {
                             registryName,
                             apiVersion,
                             taskName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -405,7 +415,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specified task.
+     * @return the properties of a specified task along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TaskInner>> getWithResponseAsync(
@@ -433,6 +443,7 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -442,6 +453,7 @@ public final class TasksClientImpl implements TasksClient {
                 registryName,
                 apiVersion,
                 taskName,
+                accept,
                 context);
     }
 
@@ -454,19 +466,12 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specified task.
+     * @return the properties of a specified task on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskInner> getAsync(String resourceGroupName, String registryName, String taskName) {
         return getWithResponseAsync(resourceGroupName, registryName, taskName)
-            .flatMap(
-                (Response<TaskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -495,7 +500,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specified task.
+     * @return the properties of a specified task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TaskInner> getWithResponse(
@@ -509,12 +514,12 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -548,6 +553,7 @@ public final class TasksClientImpl implements TasksClient {
             taskCreateParameters.validate();
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -560,8 +566,9 @@ public final class TasksClientImpl implements TasksClient {
                             apiVersion,
                             taskName,
                             taskCreateParameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -570,13 +577,13 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -614,6 +621,7 @@ public final class TasksClientImpl implements TasksClient {
             taskCreateParameters.validate();
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -624,6 +632,7 @@ public final class TasksClientImpl implements TasksClient {
                 apiVersion,
                 taskName,
                 taskCreateParameters,
+                accept,
                 context);
     }
 
@@ -633,14 +642,13 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TaskInner>, TaskInner> beginCreateAsync(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -657,15 +665,14 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TaskInner>, TaskInner> beginCreateAsync(
         String resourceGroupName,
         String registryName,
@@ -687,14 +694,13 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
         return beginCreateAsync(resourceGroupName, registryName, taskName, taskCreateParameters).getSyncPoller();
@@ -706,15 +712,14 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -731,12 +736,11 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskInner> createAsync(
@@ -752,13 +756,12 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TaskInner> createAsync(
@@ -778,8 +781,7 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -797,8 +799,7 @@ public final class TasksClientImpl implements TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -824,7 +825,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -864,7 +865,7 @@ public final class TasksClientImpl implements TasksClient {
                             apiVersion,
                             taskName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -877,7 +878,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -926,9 +927,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, String taskName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, taskName);
@@ -948,9 +949,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, String taskName, Context context) {
         context = this.client.mergeContext(context);
@@ -970,9 +971,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String taskName) {
         return beginDeleteAsync(resourceGroupName, registryName, taskName).getSyncPoller();
@@ -988,9 +989,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String taskName, Context context) {
         return beginDeleteAsync(resourceGroupName, registryName, taskName, context).getSyncPoller();
@@ -1005,7 +1006,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskName) {
@@ -1024,7 +1025,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskName, Context context) {
@@ -1074,7 +1075,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1108,6 +1110,7 @@ public final class TasksClientImpl implements TasksClient {
             taskUpdateParameters.validate();
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1120,8 +1123,9 @@ public final class TasksClientImpl implements TasksClient {
                             apiVersion,
                             taskName,
                             taskUpdateParameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1135,7 +1139,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1173,6 +1178,7 @@ public final class TasksClientImpl implements TasksClient {
             taskUpdateParameters.validate();
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1183,6 +1189,7 @@ public final class TasksClientImpl implements TasksClient {
                 apiVersion,
                 taskName,
                 taskUpdateParameters,
+                accept,
                 context);
     }
 
@@ -1196,9 +1203,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdateAsync(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1220,9 +1227,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdateAsync(
         String resourceGroupName,
         String registryName,
@@ -1248,9 +1255,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, registryName, taskName, taskUpdateParameters).getSyncPoller();
@@ -1267,9 +1274,9 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(
         String resourceGroupName,
         String registryName,
@@ -1290,7 +1297,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskInner> updateAsync(
@@ -1311,7 +1318,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TaskInner> updateAsync(
@@ -1375,7 +1382,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TaskInner>> getDetailsWithResponseAsync(
@@ -1403,6 +1411,7 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1414,8 +1423,9 @@ public final class TasksClientImpl implements TasksClient {
                             registryName,
                             apiVersion,
                             taskName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1428,7 +1438,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TaskInner>> getDetailsWithResponseAsync(
@@ -1456,6 +1467,7 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
         }
         final String apiVersion = "2019-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getDetails(
@@ -1465,6 +1477,7 @@ public final class TasksClientImpl implements TasksClient {
                 registryName,
                 apiVersion,
                 taskName,
+                accept,
                 context);
     }
 
@@ -1477,19 +1490,12 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskInner> getDetailsAsync(String resourceGroupName, String registryName, String taskName) {
         return getDetailsWithResponseAsync(resourceGroupName, registryName, taskName)
-            .flatMap(
-                (Response<TaskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1518,7 +1524,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TaskInner> getDetailsWithResponse(
@@ -1533,7 +1539,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TaskInner>> listNextSinglePageAsync(String nextLink) {
@@ -1546,8 +1552,9 @@ public final class TasksClientImpl implements TasksClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<TaskInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1557,7 +1564,7 @@ public final class TasksClientImpl implements TasksClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1568,7 +1575,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of tasks.
+     * @return the collection of tasks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TaskInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1581,9 +1588,10 @@ public final class TasksClientImpl implements TasksClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, this.client.getEndpoint(), context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

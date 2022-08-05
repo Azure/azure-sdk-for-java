@@ -40,4 +40,11 @@ public final class CustomMultiLabelClassificationLROTask extends AnalyzeTextLROT
         this.parameters = parameters;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomMultiLabelClassificationLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A time range. For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z. */
+/**
+ * A time range.
+ *
+ * <p>For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
+ */
 @Fluent
 public final class TimeSpan {
     /*

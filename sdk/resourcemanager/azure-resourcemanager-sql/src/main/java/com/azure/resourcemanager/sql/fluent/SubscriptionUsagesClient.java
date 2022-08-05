@@ -22,7 +22,7 @@ public interface SubscriptionUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscription usage metrics in a given location.
+     * @return all subscription usage metrics in a given location as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SubscriptionUsageInner> listByLocationAsync(String locationName);
@@ -34,7 +34,7 @@ public interface SubscriptionUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscription usage metrics in a given location.
+     * @return all subscription usage metrics in a given location as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionUsageInner> listByLocation(String locationName);
@@ -47,7 +47,7 @@ public interface SubscriptionUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscription usage metrics in a given location.
+     * @return all subscription usage metrics in a given location as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionUsageInner> listByLocation(String locationName, Context context);
@@ -60,7 +60,7 @@ public interface SubscriptionUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription usage metric.
+     * @return a subscription usage metric along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SubscriptionUsageInner>> getWithResponseAsync(String locationName, String usageName);
@@ -73,7 +73,7 @@ public interface SubscriptionUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription usage metric.
+     * @return a subscription usage metric on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SubscriptionUsageInner> getAsync(String locationName, String usageName);
@@ -100,7 +100,7 @@ public interface SubscriptionUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription usage metric.
+     * @return a subscription usage metric along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SubscriptionUsageInner> getWithResponse(String locationName, String usageName, Context context);

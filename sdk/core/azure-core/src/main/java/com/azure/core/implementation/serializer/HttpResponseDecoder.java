@@ -38,6 +38,17 @@ public final class HttpResponseDecoder {
     }
 
     /**
+     * Synchronously decodes a {@link HttpResponse}.
+     *
+     * @param response the response to be decoded
+     * @param decodeData the necessary data required to decode the response
+     * @return the decoded HttpResponse
+     */
+    public HttpDecodedResponse decodeSync(HttpResponse response, HttpResponseDecodeData decodeData) {
+        return new HttpDecodedResponse(response, this.serializer, decodeData);
+    }
+
+    /**
      * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
      *
      * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing to

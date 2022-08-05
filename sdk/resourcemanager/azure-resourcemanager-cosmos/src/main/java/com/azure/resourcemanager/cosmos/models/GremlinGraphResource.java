@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB Gremlin graph resource object. */
 @Fluent
 public class GremlinGraphResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphResource.class);
-
     /*
      * Name of the Cosmos DB Gremlin graph
      */
@@ -53,6 +50,12 @@ public class GremlinGraphResource {
      */
     @JsonProperty(value = "conflictResolutionPolicy")
     private ConflictResolutionPolicy conflictResolutionPolicy;
+
+    /*
+     * Analytical TTL.
+     */
+    @JsonProperty(value = "analyticalStorageTtl")
+    private Long analyticalStorageTtl;
 
     /**
      * Get the id property: Name of the Cosmos DB Gremlin graph.
@@ -181,13 +184,33 @@ public class GremlinGraphResource {
     }
 
     /**
+     * Get the analyticalStorageTtl property: Analytical TTL.
+     *
+     * @return the analyticalStorageTtl value.
+     */
+    public Long analyticalStorageTtl() {
+        return this.analyticalStorageTtl;
+    }
+
+    /**
+     * Set the analyticalStorageTtl property: Analytical TTL.
+     *
+     * @param analyticalStorageTtl the analyticalStorageTtl value to set.
+     * @return the GremlinGraphResource object itself.
+     */
+    public GremlinGraphResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
+        this.analyticalStorageTtl = analyticalStorageTtl;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
         }
@@ -204,4 +227,6 @@ public class GremlinGraphResource {
             conflictResolutionPolicy().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinGraphResource.class);
 }

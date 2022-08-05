@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a notebook workspace resource. */
 @Immutable
 public final class NotebookWorkspaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceProperties.class);
-
     /*
      * Specifies the endpoint of Notebook server.
      */

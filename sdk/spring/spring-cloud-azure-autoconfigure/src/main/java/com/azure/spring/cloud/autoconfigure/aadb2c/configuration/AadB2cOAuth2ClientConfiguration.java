@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
@@ -29,7 +28,6 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -103,10 +101,7 @@ public class AadB2cOAuth2ClientConfiguration {
      * @return ClientRegistration
      */
     private ClientRegistration buildClientRegistration(Map.Entry<String, AuthorizationClientProperties> client) {
-        AuthorizationGrantType authGrantType = Optional.ofNullable(client.getValue().getAuthorizationGrantType())
-                                                                .map(AadAuthorizationGrantType::getValue)
-                                                                .map(AuthorizationGrantType::new)
-                                                                .orElse(null);
+        AuthorizationGrantType authGrantType = client.getValue().getAuthorizationGrantType();
         if (!AuthorizationGrantType.CLIENT_CREDENTIALS.equals(authGrantType)) {
             LOGGER.warn("The authorization type of the {} client registration is not supported.", client.getKey());
         }

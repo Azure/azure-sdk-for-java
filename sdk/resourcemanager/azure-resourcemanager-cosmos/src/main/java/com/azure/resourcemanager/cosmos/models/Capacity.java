@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents all properties related to capacity enforcement on an account. */
 @Fluent
 public final class Capacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Capacity.class);
-
     /*
      * The total throughput limit imposed on the account. A
      * totalThroughputLimit of 2000 imposes a strict limit of max throughput

@@ -806,9 +806,11 @@ public class GatewayAddressCache implements IAddressCache {
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, address.getParitionKeyRangeId());
 
         AddressInformation[] addressInfos =
-                addresses.stream().map(addr ->
-                                GatewayAddressCache.toAddressInformation(addr)
-                                      ).collect(Collectors.toList()).toArray(new AddressInformation[addresses.size()]);
+                addresses
+                    .stream()
+                    .map(addr -> GatewayAddressCache.toAddressInformation(addr))
+                    .collect(Collectors.toList())
+                    .toArray(new AddressInformation[addresses.size()]);
 
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
             for (AddressInformation addressInfo : addressInfos) {
@@ -880,19 +882,17 @@ public class GatewayAddressCache implements IAddressCache {
 
         return Flux.concat(tasks)
                 .flatMap(list -> {
-                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos = list.stream()
+                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos =
+                            list.stream()
                             .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
                             .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
-                            .values().stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
+                            .values()
+                            .stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
                             .collect(Collectors.toList());
 
                     return Flux.fromIterable(addressInfos)
                             .flatMap(addressInfo -> {
-                                this.serverPartitionAddressCache.set(
-                                        new PartitionKeyRangeIdentity(
-                                                collection.getResourceId(),
-                                                addressInfo.getLeft().getPartitionKeyRangeId()),
-                                        addressInfo.getRight());
+                                this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
 
                                 if (this.openConnectionsHandler != null) {
                                     return this.openConnectionsHandler.openConnections(

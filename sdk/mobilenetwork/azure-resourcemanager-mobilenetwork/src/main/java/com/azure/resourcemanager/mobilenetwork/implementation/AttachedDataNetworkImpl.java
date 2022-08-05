@@ -55,6 +55,15 @@ public final class AttachedDataNetworkImpl
         return this.innerModel().userPlaneDataInterface();
     }
 
+    public List<String> dnsAddresses() {
+        List<String> inner = this.innerModel().dnsAddresses();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public NaptConfiguration naptConfiguration() {
         return this.innerModel().naptConfiguration();
     }
@@ -83,6 +92,10 @@ public final class AttachedDataNetworkImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AttachedDataNetworkInner innerModel() {
@@ -248,6 +261,11 @@ public final class AttachedDataNetworkImpl
             this.updateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public AttachedDataNetworkImpl withDnsAddresses(List<String> dnsAddresses) {
+        this.innerModel().withDnsAddresses(dnsAddresses);
+        return this;
     }
 
     public AttachedDataNetworkImpl withNaptConfiguration(NaptConfiguration naptConfiguration) {

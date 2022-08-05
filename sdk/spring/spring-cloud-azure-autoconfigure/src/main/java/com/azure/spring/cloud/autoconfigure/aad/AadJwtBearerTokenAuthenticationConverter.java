@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -23,7 +24,10 @@ import java.util.Map;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
+ *
+ * @deprecated use the default converter {@link JwtAuthenticationConverter} instead in {@link AadResourceServerWebSecurityConfigurerAdapter}.
  */
+@Deprecated
 public class AadJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final Converter<Jwt, Collection<GrantedAuthority>> converter;

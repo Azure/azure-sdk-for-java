@@ -19,6 +19,7 @@ public final class ClientConstants {
     public static final String LINK_NAME_KEY = "linkName";
     public static final String ENTITY_PATH_KEY = "entityPath";
     public static final String SIGNAL_TYPE_KEY = "signalType";
+    public static final String CLIENT_IDENTIFIER_KEY = "clientIdentifier";
 
     // EventHubs specific logging context keys
     public static final String PARTITION_ID_KEY = "partitionId";

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.RecoverableDatabasesClient;
 import com.azure.resourcemanager.sql.fluent.models.RecoverableDatabaseInner;
 import com.azure.resourcemanager.sql.models.RecoverableDatabaseListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecoverableDatabasesClient. */
 public final class RecoverableDatabasesClientImpl implements RecoverableDatabasesClient {
-    private final ClientLogger logger = new ClientLogger(RecoverableDatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecoverableDatabasesService service;
 
@@ -59,7 +57,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
     private interface RecoverableDatabasesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/recoverableDatabases/{databaseName}")
@@ -72,9 +70,10 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/recoverableDatabases")
@@ -86,6 +85,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -99,7 +99,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(
@@ -127,6 +128,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -138,8 +140,9 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -153,7 +156,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(
@@ -181,6 +185,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -190,6 +195,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
                 resourceGroupName,
                 serverName,
                 databaseName,
+                accept,
                 context);
     }
 
@@ -203,19 +209,13 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecoverableDatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap(
-                (Response<RecoverableDatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -246,7 +246,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableDatabaseInner> getWithResponse(
@@ -263,7 +264,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableDatabaseInner>> listByServerSinglePageAsync(
@@ -288,6 +290,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -298,12 +301,13 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
+                            accept,
                             context))
             .<PagedResponse<RecoverableDatabaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -316,7 +320,8 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableDatabaseInner>> listByServerSinglePageAsync(
@@ -341,6 +346,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -349,6 +355,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
+                accept,
                 context)
             .map(
                 res ->
@@ -365,7 +372,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecoverableDatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -382,7 +389,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoverableDatabaseInner> listByServerAsync(
@@ -399,7 +406,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableDatabaseInner> listByServer(String resourceGroupName, String serverName) {
@@ -416,7 +423,7 @@ public final class RecoverableDatabasesClientImpl implements RecoverableDatabase
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableDatabaseInner> listByServer(

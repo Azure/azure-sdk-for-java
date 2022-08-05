@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions Get. */
 public final class SystemTopicEventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopicEventSubscriptions_Get.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_Get.

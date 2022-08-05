@@ -101,7 +101,15 @@
           {
             "matcher": "java-package",
             "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
-          }
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.google\\.gson(\\..*)?/"
+          },
+          "class com\\.azure\\.cosmos\\.BridgeInternal",
+          "class com\\.azure\\.cosmos\\.CosmosBridgeInternal",
+          "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
+          "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
         ]
       }
     }
@@ -145,7 +153,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|json|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -216,6 +224,12 @@
           "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
+          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
+        },
+        {
           "code": "java.method.added",
           "new": "method boolean com.google.gson.JsonArray::isEmpty()",
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
@@ -261,6 +275,51 @@
           "justification": "To move kafka properties customization to bean post processor."
         },
         {
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.aad\\.configuration\\.AadOAuth2ClientConfiguration\\..*",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old:": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX",
+          "justification": "Unused constant."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
           "justification": "Shouldn't have been a public API and was recently released."
@@ -292,6 +351,32 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
+          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
+          "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
         }
       ]
     }

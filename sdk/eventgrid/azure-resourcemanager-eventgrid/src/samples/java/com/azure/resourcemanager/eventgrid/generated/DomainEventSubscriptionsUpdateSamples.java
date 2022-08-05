@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for DomainEventSubscriptions Update. */
 public final class DomainEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainEventSubscriptions_Update.json
      */
     /**
      * Sample code: DomainEventSubscriptions_Update.

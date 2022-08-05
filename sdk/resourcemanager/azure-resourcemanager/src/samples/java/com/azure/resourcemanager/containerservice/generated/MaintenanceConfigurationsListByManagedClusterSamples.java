@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for MaintenanceConfigurations ListByManagedCluster. */
 public final class MaintenanceConfigurationsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/MaintenanceConfigurationsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-06-01/examples/MaintenanceConfigurationsList.json
      */
     /**
      * Sample code: List maintenance configurations by Managed Cluster.

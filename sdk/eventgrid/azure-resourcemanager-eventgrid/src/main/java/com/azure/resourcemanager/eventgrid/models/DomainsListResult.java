@@ -13,13 +13,13 @@ import java.util.List;
 @Fluent
 public final class DomainsListResult {
     /*
-     * A collection of Domains
+     * A collection of Domains.
      */
     @JsonProperty(value = "value")
     private List<DomainInner> value;
 
     /*
-     * A link for the next page of domains
+     * A link for the next page of domains.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

@@ -36,4 +36,25 @@ public class ExtractedSummaryDocumentResult extends DocumentResult {
         this.sentences = sentences;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractedSummaryDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractedSummaryDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExtractedSummaryDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

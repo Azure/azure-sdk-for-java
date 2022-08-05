@@ -1,6 +1,18 @@
 # Release History
 
-## 1.30.0-beta.1 (Unreleased)
+## 1.31.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`.
+
+### Other Changes
+
+## 1.30.0 (2022-06-30)
 
 ### Features Added
 
@@ -16,8 +28,8 @@
 - Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
   - Added ability to get and set `ProgressReporter` on `Context`.
 - Added `HttpPipelineCallContext.getContext()`.
-
-### Breaking Changes
+- Added `com.azure.core.util.metrics` package and metrics abstractions (intended for client libraries):
+  `MeterProvider`, `Meter`, `LongCounter` and `DoubleHistogram`.
 
 ### Bugs Fixed
 
@@ -26,6 +38,11 @@
 - Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.17` to `3.4.19`.
+- Upgraded Jackson from `2.13.2.2` to `2.13.3`.
 
 ## 1.29.1 (2022-06-03)
 

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response containing operationId for a specific purge action. */
 @Fluent
 public final class WorkspacePurgeResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgeResponseInner.class);
-
     /*
      * Id to use when querying for status for a particular purge operation.
      */
@@ -47,10 +44,12 @@ public final class WorkspacePurgeResponseInner {
      */
     public void validate() {
         if (operationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operationId in model WorkspacePurgeResponseInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacePurgeResponseInner.class);
 }

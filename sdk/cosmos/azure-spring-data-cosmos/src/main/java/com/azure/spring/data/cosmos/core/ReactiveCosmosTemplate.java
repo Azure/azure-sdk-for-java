@@ -399,7 +399,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param partitionKey the partition key
      * @return Mono with the item or error
      */
-    public <T> Mono<T> insert(String containerName, Object objectToSave,
+    public <T> Mono<T> insert(String containerName, T objectToSave,
                               PartitionKey partitionKey) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");

@@ -32,6 +32,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATIO
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.MESSAGE_STATE_ANNOTATION_NAME;
 
 /**
  * The data structure encapsulating the message received from Service Bus. The message structure is discussed in detail
@@ -52,8 +53,6 @@ public final class ServiceBusReceivedMessage {
     private UUID lockToken;
     private boolean isSettled = false;
     private Context context;
-
-    static final String SERVICE_BUS_MESSAGE_STATE_KEY = "x-opt-message-state";
 
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
@@ -455,7 +454,7 @@ public final class ServiceBusReceivedMessage {
      * @throws UnsupportedOperationException if the message state is an unknown value.
      */
     public ServiceBusMessageState getState() {
-        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SERVICE_BUS_MESSAGE_STATE_KEY);
+        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(MESSAGE_STATE_ANNOTATION_NAME.getValue());
 
         if (value instanceof Integer) {
             return ServiceBusMessageState.fromValue((Integer) value);

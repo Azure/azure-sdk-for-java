@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.centraluseuap-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (14.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "efbf8e14-c3d0-4e14-b521-9bfca43c2271",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "827",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "d8f0e713-14d1-4fef-96b1-e0c78efe356d",
+      "Body" : "{\r\n    \"error\": {\r\n        \"code\": \"BadRequest\",\r\n        \"message\": \"This resource is configured to receive event in 'CloudEventV10' schema. The JSON received does not conform to the expected schema. Token Expected: StartObject, Actual Token Received: StartArray. Report 'd8f0e713-14d1-4fef-96b1-e0c78efe356d:8:4/4/2022 7:12:27 AM (UTC)' to our forums for assistance or raise a support ticket.\",\r\n        \"details\": [{\r\n            \"code\": \"InputJsonInvalid\",\r\n            \"message\": \"This resource is configured to receive event in 'CloudEventV10' schema. The JSON received does not conform to the expected schema. Token Expected: StartObject, Actual Token Received: StartArray. Report 'd8f0e713-14d1-4fef-96b1-e0c78efe356d:8:4/4/2022 7:12:27 AM (UTC)' to our forums for assistance or raise a support ticket.\"\r\n    }]\r\n  }\r\n}",
+      "Date" : "Mon, 04 Apr 2022 07:12:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

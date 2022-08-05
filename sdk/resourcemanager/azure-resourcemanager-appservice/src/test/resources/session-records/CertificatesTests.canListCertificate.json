@@ -1,4 +1,30 @@
 {
-  "networkCallRecords" : [ ],
-  "variables" : [ "javacsmrge0b145312" ]
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Web/certificates?api-version=2022-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.appservice/2.17.0-beta.1 (11.0.11; Mac OS X; 11.0)",
+      "x-ms-client-request-id" : "b47bd1be-a365-4fa8-b4b7-633e2cb4042e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "12",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4b892993-7332-4da2-ae75-ee1a1710cfd2",
+      "Date" : "Wed, 06 Jul 2022 07:25:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "CENTRALUS:20220706T072514Z:4b892993-7332-4da2-ae75-ee1a1710cfd2",
+      "Expires" : "-1",
+      "x-ms-request-id" : "4b892993-7332-4da2-ae75-ee1a1710cfd2",
+      "Body" : "{\"value\":[]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javacsmrg20272791" ]
 }

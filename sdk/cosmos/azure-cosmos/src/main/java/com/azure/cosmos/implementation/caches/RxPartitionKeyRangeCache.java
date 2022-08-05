@@ -157,14 +157,17 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
                     CosmosException dce = Utils.as(err, CosmosException.class);
-                    logger.debug("tryGetRangeByPartitionKeyRangeId on collectionRid {} and partitionKeyRangeId {} encountered failure",
-                            collectionRid, partitionKeyRangeId, err);
+                    logger.debug(
+                            "tryGetRangeByPartitionKeyRangeId on collectionRid {} and partitionKeyRangeId {} encountered failure",
+                            collectionRid,
+                            partitionKeyRangeId,
+                            err);
 
-                    if (dce != null && Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND)) {
+                    if (dce != null && Exceptions.isNotFound(dce)) {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }
 
-                    return Mono.error(dce);
+                    return dce != null ? Mono.error(dce) : Mono.error(err);
                 });
     }
 

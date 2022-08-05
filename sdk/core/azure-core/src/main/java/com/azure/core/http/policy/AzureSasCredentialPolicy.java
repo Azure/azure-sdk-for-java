@@ -6,8 +6,10 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -16,8 +18,39 @@ import java.util.Objects;
  * Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request.
  */
 public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);
     private final AzureSasCredential credential;
     private final boolean requireHttps;
+
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            HttpRequest httpRequest = context.getHttpRequest();
+            if (requireHttps && "http".equals(httpRequest.getUrl().getProtocol())) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Shared access signature credentials require HTTPS to prevent leaking"
+                        + " the shared access signature."));
+            }
+
+            String signature = credential.getSignature();
+            if (signature.startsWith("?")) {
+                signature = signature.substring(1);
+            }
+
+            String query = httpRequest.getUrl().getQuery();
+            String url = httpRequest.getUrl().toString();
+            if (query == null || query.isEmpty()) {
+                if (url.endsWith("?")) {
+                    url = url + signature;
+                } else {
+                    url = url + "?" + signature;
+                }
+            } else {
+                url = url + "&" + signature;
+            }
+            httpRequest.setUrl(url);
+        }
+    };
 
     /**
      * Creates a policy that uses the passed {@link AzureSasCredential} to append sas to query string.
@@ -48,30 +81,11 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        HttpRequest httpRequest = context.getHttpRequest();
-        if (requireHttps && "http".equals(httpRequest.getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException(
-                "Shared access signature credentials require HTTPS to prevent leaking the shared access signature."));
-        }
+        return inner.process(context, next);
+    }
 
-        String signature = credential.getSignature();
-        if (signature.startsWith("?")) {
-            signature = signature.substring(1);
-        }
-
-        String query = httpRequest.getUrl().getQuery();
-        String url = httpRequest.getUrl().toString();
-        if (query == null || query.isEmpty()) {
-            if (url.endsWith("?")) {
-                url = url + signature;
-            } else {
-                url = url + "?" + signature;
-            }
-        } else {
-            url = url + "&" + signature;
-        }
-        httpRequest.setUrl(url);
-
-        return next.process();
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }
