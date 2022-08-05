@@ -20,8 +20,8 @@ public final class DiskEncryptionSetList {
     private List<DiskEncryptionSetInner> value;
 
     /*
-     * The uri to fetch the next page of disk encryption sets. Call ListNext()
-     * with this to fetch the next page of disk encryption sets.
+     * The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk
+     * encryption sets.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

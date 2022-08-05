@@ -11,16 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CloudServiceRoleSku {
     /*
-     * The sku name. NOTE: If the new SKU is not supported on the hardware the
-     * cloud service is currently on, you need to delete and recreate the cloud
-     * service or move back to the old sku.
+     * The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is currently on, you need
+     * to delete and recreate the cloud service or move back to the old sku.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Specifies the tier of the cloud service. Possible Values are <br /><br
-     * /> **Standard** <br /><br /> **Basic**
+     * Specifies the tier of the cloud service. Possible Values are <br /><br /> **Standard** <br /><br /> **Basic**
      */
     @JsonProperty(value = "tier")
     private String tier;

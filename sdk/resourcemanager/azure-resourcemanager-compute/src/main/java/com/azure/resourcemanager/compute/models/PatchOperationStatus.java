@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PatchOperationStatus. */
+/**
+ * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+ * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings.".
+ */
 public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperationStatus> {
     /** Static value Unknown for PatchOperationStatus. */
     public static final PatchOperationStatus UNKNOWN = fromString("Unknown");

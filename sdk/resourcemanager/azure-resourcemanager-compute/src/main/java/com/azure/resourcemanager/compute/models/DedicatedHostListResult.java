@@ -20,8 +20,8 @@ public final class DedicatedHostListResult {
     private List<DedicatedHostInner> value;
 
     /*
-     * The URI to fetch the next page of dedicated hosts. Call ListNext() with
-     * this URI to fetch the next page of dedicated hosts.
+     * The URI to fetch the next page of dedicated hosts. Call ListNext() with this URI to fetch the next page of
+     * dedicated hosts.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GalleryExtendedLocationType. */
+/** It is type of the extended location. */
 public final class GalleryExtendedLocationType extends ExpandableStringEnum<GalleryExtendedLocationType> {
     /** Static value EdgeZone for GalleryExtendedLocationType. */
     public static final GalleryExtendedLocationType EDGE_ZONE = fromString("EdgeZone");
