@@ -26,7 +26,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     private static final String SPRING_CLOUD_AZURE_DATASOURCE_PREFIX = "spring.datasource.azure";
     protected static final String CLIENT_ID = "credential.client-id";
 
-    protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             AzureCredentialFreeProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
@@ -82,11 +82,11 @@ class JdbcPropertiesBeanPostProcessorTest {
             .run(context -> assertGlobalPropertiesConfigureCorrectly(context));
     }
 
-    protected ApplicationContextRunner configureCustomConfiguration() {
+    private ApplicationContextRunner configureCustomConfiguration() {
         return this.contextRunner;
     }
 
-    protected void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context) {
+    private void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context) {
         assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
         assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
         assertThat(context).hasSingleBean(SpringTokenCredentialProvider.class);
@@ -98,7 +98,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         assertEquals("fake-jdbc-client-id", properties.getCredential().getClientId());
     }
 
-    protected void assertGlobalPropertiesConfigureCorrectly(AssertableApplicationContext context) {
+    private void assertGlobalPropertiesConfigureCorrectly(AssertableApplicationContext context) {
         assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
         assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
         assertThat(context).hasSingleBean(SpringTokenCredentialProvider.class);

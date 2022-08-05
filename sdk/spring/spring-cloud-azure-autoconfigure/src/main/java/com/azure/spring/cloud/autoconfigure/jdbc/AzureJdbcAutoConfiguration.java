@@ -23,13 +23,18 @@ public class AzureJdbcAutoConfiguration {
 
     @Bean
     static JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor(
-           AzureGlobalProperties azureGlobalProperties) {
+        AzureGlobalProperties azureGlobalProperties) {
         return new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
     }
 
     @Bean
     SpringTokenCredentialProvider springTokenCredentialProvider() {
         return new SpringTokenCredentialProvider();
+    }
+
+    @Bean
+    SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
+        return new SpringTokenCredentialProviderContextProvider();
     }
 
 }

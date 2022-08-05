@@ -1,0 +1,14 @@
+package com.azure.spring.cloud.autoconfigure.jdbc;
+
+import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public final class SpringTokenCredentialProviderContextProvider implements ApplicationContextAware {
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        SpringTokenCredentialProvider.setGlobalApplicationContext(applicationContext);
+    }
+}
