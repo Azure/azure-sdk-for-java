@@ -3,18 +3,21 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.context.annotation.Bean;
 
 /**
- * {@link org.springframework.boot.autoconfigure.AutoConfiguration} of {@link BindingServicePropertiesBeanPostProcessor}.
- * To trigger the {@link BindingServicePropertiesBeanPostProcessor} when kafka binder is used.
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka Azure Identity support on Spring Cloud Stream framework.
+ *
+ * To trigger the {@link BindingServicePropertiesBeanPostProcessor} when kafka binder is being used, it enables {@link AzureEventHubsKafkaOAuth2AutoConfiguration}
+ * for Spring Cloud Stream Kafka Binder context which is to support Azure Identity-based OAuth2 authentication.
  *
  * @since 4.4.0
  */
 @ConditionalOnClass(KafkaBinderConfiguration.class)
-public class BindingServicePropertiesBeanPostProcessorAutoConfiguration {
+public class AzureEventHubsKafkaBinderOAuth2AutoConfiguration {
 
     @Bean
     static BeanPostProcessor bindingServicePropertiesBeanPostProcessor() {
