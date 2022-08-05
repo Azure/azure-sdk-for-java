@@ -15,7 +15,7 @@
 	<groupId>com.azure</groupId>
 	<artifactId>azure-communication-rooms</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0-alpha.1</version> <!-- {x-version-update;com.azure:azure-communication-rooms;current} -->
+	<version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-rooms;current} -->
 
 	<name>Microsoft Azure library for ACS Room Service</name>
 	<description>
@@ -122,57 +122,4 @@
          <scope>test</scope>
        </dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-				<configuration>
-					<includes>
-						<include>com/azure/communication/rooms/*.class</include>
-					</includes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>coverage-report</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-				<configuration>
-					<rules>
-						<bannedDependencies>
-							<includes>
-								<include>com.azure:*</include>
-							</includes>
-						</bannedDependencies>
-					</rules>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.revapi</groupId>
-				<artifactId>revapi-maven-plugin</artifactId>
-				<version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-				<configuration>
-					<analysisConfiguration>
-						<revapi.ignore>
-							<item>
-								<code>java.method.added</code>
-								<class>com.azure.core.util.HttpClientOptions</class>
-								<justification>Transitive from Core. Not our problem</justification>
-							</item>
-						</revapi.ignore>
-					</analysisConfiguration>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>
