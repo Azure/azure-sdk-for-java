@@ -43,6 +43,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
     private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider";
+    private static final String SPRING_CLOUD_AZURE_DATASOURCE_PREFIX = "spring.datasource.azure";
 
     private final AzureGlobalProperties azureGlobalProperties;
 
@@ -98,7 +99,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             }
 
             try {
-                AzureCredentialFreeProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureCredentialFreeProperties.class);
+                AzureCredentialFreeProperties properties = Binder.get(environment).bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
 
                 Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
                 String enhancedUrl = connectionString.enhanceConnectionString(enhancedProperties);
