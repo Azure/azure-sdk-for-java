@@ -120,8 +120,10 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
 
     # output the ServiceDirectories environment variable
     service_dirs = list(sorted(service_directories))
-    # JRS need to create service_directory_full_path which will add root_path
-    # and service_directory_sdk_relative_path which doesn't remove the SDK string
+    # Create service_directory_full_path which will add root_path and service_directory_sdk_relative_path
+    # which doesn't remove the SDK string. These are necessary because inline powershell within the yml
+    # won't work correctly if the results, in the yml, are in single quotes that necessary in case the
+    # path contains spaces.
     service_dirs_sdk_rel_path = ""
     service_dirs_full_path = ""
     service_dirs_plain = ""
