@@ -134,6 +134,13 @@ public interface NotificationHubResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner object.
      *
      * @return the inner object.
@@ -503,7 +510,7 @@ public interface NotificationHubResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     Response<DebugSendResponse> debugSendWithResponse(Object parameters, Context context);
 
@@ -523,7 +530,7 @@ public interface NotificationHubResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub PNS Credentials.
+     * @return description of a NotificationHub PNS Credentials along with {@link Response}.
      */
     Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context);
 }

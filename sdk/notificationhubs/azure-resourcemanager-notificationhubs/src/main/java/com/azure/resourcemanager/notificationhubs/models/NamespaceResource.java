@@ -157,6 +157,13 @@ public interface NamespaceResource {
     NamespaceType namespaceType();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner object.
      *
      * @return the inner object.

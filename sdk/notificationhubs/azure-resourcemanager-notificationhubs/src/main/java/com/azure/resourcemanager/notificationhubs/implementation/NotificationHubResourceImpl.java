@@ -109,6 +109,10 @@ public final class NotificationHubResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NotificationHubResourceInner innerModel() {
         return this.innerObject;
     }

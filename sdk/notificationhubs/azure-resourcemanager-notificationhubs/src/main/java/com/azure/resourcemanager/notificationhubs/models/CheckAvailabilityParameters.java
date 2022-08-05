@@ -6,7 +6,6 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Parameters supplied to the Check Name Availability for Namespace and NotificationHubs. */
 @Fluent
 public final class CheckAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckAvailabilityParameters.class);
-
     /*
      * Resource Id
      */
@@ -54,8 +51,7 @@ public final class CheckAvailabilityParameters {
     private Sku sku;
 
     /*
-     * True if the name is available and can be used to create new
-     * Namespace/NotificationHub. Otherwise false.
+     * True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
      */
     @JsonProperty(value = "isAvailiable")
     private Boolean isAvailiable;
@@ -187,7 +183,7 @@ public final class CheckAvailabilityParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CheckAvailabilityParameters"));
@@ -196,4 +192,6 @@ public final class CheckAvailabilityParameters {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckAvailabilityParameters.class);
 }

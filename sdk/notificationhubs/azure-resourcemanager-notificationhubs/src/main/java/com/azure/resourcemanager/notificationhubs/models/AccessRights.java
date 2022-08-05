@@ -33,6 +33,9 @@ public enum AccessRights {
      */
     @JsonCreator
     public static AccessRights fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccessRights[] items = AccessRights.values();
         for (AccessRights item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

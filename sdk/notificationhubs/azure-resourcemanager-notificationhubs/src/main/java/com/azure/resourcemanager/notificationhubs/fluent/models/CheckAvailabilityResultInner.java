@@ -6,20 +6,15 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Description of a CheckAvailability resource. */
 @Fluent
 public final class CheckAvailabilityResultInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckAvailabilityResultInner.class);
-
     /*
-     * True if the name is available and can be used to create new
-     * Namespace/NotificationHub. Otherwise false.
+     * True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
      */
     @JsonProperty(value = "isAvailiable")
     private Boolean isAvailiable;

@@ -7,15 +7,11 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the CreateOrUpdate Namespace AuthorizationRules. */
 @Fluent
 public final class SharedAccessAuthorizationRuleCreateOrUpdateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleCreateOrUpdateParameters.class);
-
     /*
      * Properties of the Namespace AuthorizationRules.
      */
@@ -50,7 +46,7 @@ public final class SharedAccessAuthorizationRuleCreateOrUpdateParameters {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model"
@@ -59,4 +55,7 @@ public final class SharedAccessAuthorizationRuleCreateOrUpdateParameters {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(SharedAccessAuthorizationRuleCreateOrUpdateParameters.class);
 }

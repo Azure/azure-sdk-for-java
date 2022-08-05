@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ApnsCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApnsCredentialProperties.class);
-
     /*
      * The APNS certificate. Specify if using Certificate Authentication Mode.
      */
@@ -30,50 +26,44 @@ public final class ApnsCredentialProperties {
     private String certificateKey;
 
     /*
-     * The APNS endpoint of this credential. If using Certificate
-     * Authentication Mode and Sandbox specify
-     * 'gateway.sandbox.push.apple.com'. If using Certificate Authentication
-     * Mode and Production specify 'gateway.push.apple.com'. If using Token
-     * Authentication Mode and Sandbox specify
-     * 'https://api.development.push.apple.com:443/3/device'. If using Token
-     * Authentication Mode and Production specify
+     * The APNS endpoint of this credential. If using Certificate Authentication Mode and Sandbox specify
+     * 'gateway.sandbox.push.apple.com'. If using Certificate Authentication Mode and Production specify
+     * 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify
+     * 'https://api.development.push.apple.com:443/3/device'. If using Token Authentication Mode and Production specify
      * 'https://api.push.apple.com:443/3/device'.
      */
     @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
-     * The APNS certificate thumbprint. Specify if using Certificate
-     * Authentication Mode.
+     * The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
      */
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
-     * A 10-character key identifier (kid) key, obtained from your developer
-     * account. Specify if using Token Authentication Mode.
+     * A 10-character key identifier (kid) key, obtained from your developer account. Specify if using Token
+     * Authentication Mode.
      */
     @JsonProperty(value = "keyId")
     private String keyId;
 
     /*
-     * The name of the application or BundleId. Specify if using Token
-     * Authentication Mode.
+     * The name of the application or BundleId. Specify if using Token Authentication Mode.
      */
     @JsonProperty(value = "appName")
     private String appName;
 
     /*
-     * The issuer (iss) registered claim key. The value is a 10-character
-     * TeamId, obtained from your developer account. Specify if using Token
-     * Authentication Mode.
+     * The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from your developer account.
+     * Specify if using Token Authentication Mode.
      */
     @JsonProperty(value = "appId")
     private String appId;
 
     /*
-     * Provider Authentication Token, obtained through your developer account.
-     * Specify if using Token Authentication Mode.
+     * Provider Authentication Token, obtained through your developer account. Specify if using Token Authentication
+     * Mode.
      */
     @JsonProperty(value = "token")
     private String token;

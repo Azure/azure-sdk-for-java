@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub GcmCredential. */
 @Fluent
 public final class GcmCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GcmCredentialProperties.class);
-
     /*
-     * The FCM legacy endpoint. Default value is
-     * 'https://fcm.googleapis.com/fcm/send'
+     * The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'
      */
     @JsonProperty(value = "gcmEndpoint")
     private String gcmEndpoint;
