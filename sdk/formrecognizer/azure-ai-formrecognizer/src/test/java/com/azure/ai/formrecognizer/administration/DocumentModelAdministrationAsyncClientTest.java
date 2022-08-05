@@ -12,9 +12,7 @@ import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -264,23 +262,19 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginBuildModelThrowsDocumentModelOperationException(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+    public void beginBuildModelThrowsHttpResponseException(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelErrorRunner((errorTrainingFilesUrl) -> {
             if (!AzureAuthorityHosts.AZURE_GOVERNMENT.equals(TestUtils.getAuthority(client.getEndpoint()))) {
-                DocumentModelOperationException documentModelOperationException
-                    = Assertions.assertThrows(DocumentModelOperationException.class, () ->
+                HttpResponseException httpResponseException
+                    = Assertions.assertThrows(HttpResponseException.class, () ->
                     client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
                         .setPollInterval(durationTestMode)
                         .getSyncPoller()
                         .getFinalResult());
 
-                Assertions.assertEquals("Invalid request.", documentModelOperationException.getMessage());
-                DocumentModelOperationError actualError =
-                    documentModelOperationException.getDocumentModelOperationError();
+                ResponseError actualError = (ResponseError) httpResponseException.getValue();
                 Assertions.assertEquals("InvalidRequest", actualError.getCode());
-                Assertions.assertEquals("Could not build the model: Can't find any OCR files for training.",
-                    actualError.getDetails().get(0).getMessage());
             } else {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->

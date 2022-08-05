@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, GetFeedRangeForPartitionKeyValue}
+import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.sql.functions
 import org.apache.spark.sql.types._
@@ -522,6 +522,20 @@ class SparkE2EChangeFeedITest
         cfg,
         databaseResourceIdAndTokenMap._2
       )
+
+    val tokenMapAfterBackAndForthConversion: Map[Int, Long] = new CreateSpark2ContinuationsFromChangeFeedOffset()
+      .call(
+        cfg,
+        migratedOffset
+      )
+
+    tokenMapAfterBackAndForthConversion.size shouldBe databaseResourceIdAndTokenMap._2.size
+    databaseResourceIdAndTokenMap
+      ._2
+      .foreach(pkRangeLsnPair => {
+        tokenMapAfterBackAndForthConversion.get(pkRangeLsnPair._1).isDefined shouldEqual true
+        tokenMapAfterBackAndForthConversion.get(pkRangeLsnPair._1).get shouldEqual pkRangeLsnPair._2
+      })
 
     if (hdfs.exists(new Path(startOffsetFileLocation))) {
       hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileLocation + ".bak"))

@@ -20,8 +20,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     private Sku sku;
 
     /*
-     * The purchase plan when deploying a virtual machine scale set from VM
-     * Marketplace images.
+     * The purchase plan when deploying a virtual machine scale set from VM Marketplace images.
      */
     @JsonProperty(value = "plan")
     private Plan plan;
