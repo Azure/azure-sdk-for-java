@@ -14,10 +14,9 @@ import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeReso
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeResource;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeResourceList;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplicationTypesImpl implements ApplicationTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationTypesImpl.class);
 
     private final ApplicationTypesClient innerClient;
 
@@ -90,7 +89,7 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
     public ApplicationTypeResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -98,14 +97,14 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
     public Response<ApplicationTypeResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,14 +125,14 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,14 +153,14 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,7 +173,7 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -182,14 +181,14 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String applicationTypeName = Utils.getValueFromIdByName(id, "applicationTypes");
         if (applicationTypeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

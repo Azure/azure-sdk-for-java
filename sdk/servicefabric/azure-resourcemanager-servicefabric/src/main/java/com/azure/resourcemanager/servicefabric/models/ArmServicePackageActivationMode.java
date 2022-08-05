@@ -27,7 +27,11 @@ public final class ArmServicePackageActivationMode extends ExpandableStringEnum<
         return fromString(name, ArmServicePackageActivationMode.class);
     }
 
-    /** @return known ArmServicePackageActivationMode values. */
+    /**
+     * Gets known ArmServicePackageActivationMode values.
+     *
+     * @return known ArmServicePackageActivationMode values.
+     */
     public static Collection<ArmServicePackageActivationMode> values() {
         return values(ArmServicePackageActivationMode.class);
     }

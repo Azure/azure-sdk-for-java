@@ -33,7 +33,11 @@ public final class AddOnFeatures extends ExpandableStringEnum<AddOnFeatures> {
         return fromString(name, AddOnFeatures.class);
     }
 
-    /** @return known AddOnFeatures values. */
+    /**
+     * Gets known AddOnFeatures values.
+     *
+     * @return known AddOnFeatures values.
+     */
     public static Collection<AddOnFeatures> values() {
         return values(AddOnFeatures.class);
     }

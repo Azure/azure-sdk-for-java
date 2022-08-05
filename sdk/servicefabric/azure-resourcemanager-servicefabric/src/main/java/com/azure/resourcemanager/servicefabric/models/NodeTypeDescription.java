@@ -6,7 +6,6 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Describes a node type in the cluster, each node type represents sub set of nodes in the cluster. */
 @Fluent
 public final class NodeTypeDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeTypeDescription.class);
-
     /*
      * The name of the node type.
      */
@@ -23,17 +20,16 @@ public final class NodeTypeDescription {
     private String name;
 
     /*
-     * The placement tags applied to nodes in the node type, which can be used
-     * to indicate where certain services (workload) should run.
+     * The placement tags applied to nodes in the node type, which can be used to indicate where certain services
+     * (workload) should run.
      */
     @JsonProperty(value = "placementProperties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> placementProperties;
 
     /*
-     * The capacity tags applied to the nodes in the node type, the cluster
-     * resource manager uses these tags to understand how much resource a node
-     * has.
+     * The capacity tags applied to the nodes in the node type, the cluster resource manager uses these tags to
+     * understand how much resource a node has.
      */
     @JsonProperty(value = "capacities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -56,46 +52,38 @@ public final class NodeTypeDescription {
      * [DurabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
      *
      * - Bronze - No privileges. This is the default.
-     * - Silver - The infrastructure jobs can be paused for a duration of 10
-     * minutes per UD.
-     * - Gold - The infrastructure jobs can be paused for a duration of 2 hours
-     * per UD. Gold durability can be enabled only on full node VM skus like
-     * D15_V2, G5 etc.
+     * - Silver - The infrastructure jobs can be paused for a duration of 10 minutes per UD.
+     * - Gold - The infrastructure jobs can be paused for a duration of 2 hours per UD. Gold durability can be enabled
+     * only on full node VM skus like D15_V2, G5 etc.
      *
      */
     @JsonProperty(value = "durabilityLevel")
     private DurabilityLevel durabilityLevel;
 
     /*
-     * The range of ports from which cluster assigned port to Service Fabric
-     * applications.
+     * The range of ports from which cluster assigned port to Service Fabric applications.
      */
     @JsonProperty(value = "applicationPorts")
     private EndpointRangeDescription applicationPorts;
 
     /*
-     * The range of ephemeral ports that nodes in this node type should be
-     * configured with.
+     * The range of ephemeral ports that nodes in this node type should be configured with.
      */
     @JsonProperty(value = "ephemeralPorts")
     private EndpointRangeDescription ephemeralPorts;
 
     /*
-     * The node type on which system services will run. Only one node type
-     * should be marked as primary. Primary node type cannot be deleted or
-     * changed for existing clusters.
+     * The node type on which system services will run. Only one node type should be marked as primary. Primary node
+     * type cannot be deleted or changed for existing clusters.
      */
     @JsonProperty(value = "isPrimary", required = true)
     private boolean isPrimary;
 
     /*
-     * VMInstanceCount should be 1 to n, where n indicates the number of VM
-     * instances corresponding to this nodeType. VMInstanceCount = 0 can be
-     * done only in these scenarios: NodeType is a secondary nodeType.
-     * Durability = Bronze or Durability >= Bronze and
-     * InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the
-     * VMs for this nodeType will not be used for the initial cluster size
-     * computation.
+     * VMInstanceCount should be 1 to n, where n indicates the number of VM instances corresponding to this nodeType.
+     * VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary nodeType. Durability = Bronze
+     * or Durability >= Bronze and InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the VMs for
+     * this nodeType will not be used for the initial cluster size computation.
      */
     @JsonProperty(value = "vmInstanceCount", required = true)
     private int vmInstanceCount;
@@ -411,7 +399,7 @@ public final class NodeTypeDescription {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model NodeTypeDescription"));
         }
@@ -422,4 +410,6 @@ public final class NodeTypeDescription {
             ephemeralPorts().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NodeTypeDescription.class);
 }

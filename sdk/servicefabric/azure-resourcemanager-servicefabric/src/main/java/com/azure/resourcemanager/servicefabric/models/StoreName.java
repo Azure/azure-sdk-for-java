@@ -45,7 +45,11 @@ public final class StoreName extends ExpandableStringEnum<StoreName> {
         return fromString(name, StoreName.class);
     }
 
-    /** @return known StoreName values. */
+    /**
+     * Gets known StoreName values.
+     *
+     * @return known StoreName values.
+     */
     public static Collection<StoreName> values() {
         return values(StoreName.class);
     }

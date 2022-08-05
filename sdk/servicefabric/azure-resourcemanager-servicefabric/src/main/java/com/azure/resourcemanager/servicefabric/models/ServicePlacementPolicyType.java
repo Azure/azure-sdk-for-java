@@ -40,7 +40,11 @@ public final class ServicePlacementPolicyType extends ExpandableStringEnum<Servi
         return fromString(name, ServicePlacementPolicyType.class);
     }
 
-    /** @return known ServicePlacementPolicyType values. */
+    /**
+     * Gets known ServicePlacementPolicyType values.
+     *
+     * @return known ServicePlacementPolicyType values.
+     */
     public static Collection<ServicePlacementPolicyType> values() {
         return values(ServicePlacementPolicyType.class);
     }

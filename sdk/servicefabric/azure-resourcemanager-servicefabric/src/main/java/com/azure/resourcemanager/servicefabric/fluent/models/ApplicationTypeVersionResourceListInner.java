@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of application type version resources for the specified application type name resource. */
 @Fluent
 public final class ApplicationTypeVersionResourceListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeVersionResourceListInner.class);
-
     /*
      * The value property.
      */
@@ -22,8 +18,7 @@ public final class ApplicationTypeVersionResourceListInner {
     private List<ApplicationTypeVersionResourceInner> value;
 
     /*
-     * URL to get the next set of application type version list results if
-     * there are any.
+     * URL to get the next set of application type version list results if there are any.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

@@ -27,7 +27,11 @@ public final class SfZonalUpgradeMode extends ExpandableStringEnum<SfZonalUpgrad
         return fromString(name, SfZonalUpgradeMode.class);
     }
 
-    /** @return known SfZonalUpgradeMode values. */
+    /**
+     * Gets known SfZonalUpgradeMode values.
+     *
+     * @return known SfZonalUpgradeMode values.
+     */
     public static Collection<SfZonalUpgradeMode> values() {
         return values(SfZonalUpgradeMode.class);
     }

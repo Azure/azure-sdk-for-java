@@ -36,7 +36,11 @@ public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLeve
         return fromString(name, ReliabilityLevel.class);
     }
 
-    /** @return known ReliabilityLevel values. */
+    /**
+     * Gets known ReliabilityLevel values.
+     *
+     * @return known ReliabilityLevel values.
+     */
     public static Collection<ReliabilityLevel> values() {
         return values(ReliabilityLevel.class);
     }

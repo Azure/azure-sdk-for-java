@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the health policy used to evaluate the health of services belonging to a service type. */
 @Fluent
 public final class ServiceTypeHealthPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTypeHealthPolicy.class);
-
     /*
-     * The maximum percentage of services allowed to be unhealthy before your
-     * application is considered in error.
+     * The maximum percentage of services allowed to be unhealthy before your application is considered in error.
      *
      */
     @JsonProperty(value = "maxPercentUnhealthyServices")

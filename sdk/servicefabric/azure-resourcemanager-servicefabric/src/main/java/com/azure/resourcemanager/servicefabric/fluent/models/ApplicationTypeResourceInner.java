@@ -7,8 +7,6 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The application type name resource. */
 @Fluent
 public final class ApplicationTypeResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeResourceInner.class);
-
     /*
      * The application type name properties
      */
@@ -25,8 +21,7 @@ public final class ApplicationTypeResourceInner extends ProxyResource {
     private ApplicationTypeResourceProperties innerProperties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
     @JsonProperty(value = "location")
     private String location;

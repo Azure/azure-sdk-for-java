@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.MoveCost;
 import com.azure.resourcemanager.servicefabric.models.ServiceCorrelationDescription;
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.servicefabric.models.ServicePlacementPolicyDesc
 import com.azure.resourcemanager.servicefabric.models.ServiceResourcePropertiesBase;
 import com.azure.resourcemanager.servicefabric.models.StatefulServiceUpdateProperties;
 import com.azure.resourcemanager.servicefabric.models.StatelessServiceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -32,8 +30,6 @@ import java.util.List;
 })
 @Fluent
 public class ServiceResourceUpdateProperties extends ServiceResourcePropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceUpdateProperties.class);
-
     /** {@inheritDoc} */
     @Override
     public ServiceResourceUpdateProperties withPlacementConstraints(String placementConstraints) {

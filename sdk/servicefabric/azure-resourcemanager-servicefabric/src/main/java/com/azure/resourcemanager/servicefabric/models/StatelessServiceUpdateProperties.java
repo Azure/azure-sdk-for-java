@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("Stateless")
 @Fluent
 public final class StatelessServiceUpdateProperties extends ServiceResourceUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatelessServiceUpdateProperties.class);
-
     /*
      * The instance count.
      */
@@ -27,14 +23,12 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
     private Integer instanceCount;
 
     /*
-     * Delay duration for RequestDrain feature to ensures that the endpoint
-     * advertised by the stateless instance is removed before the delay starts
-     * prior to closing the instance. This delay enables existing requests to
-     * drain gracefully before the instance actually goes down
+     * Delay duration for RequestDrain feature to ensures that the endpoint advertised by the stateless instance is
+     * removed before the delay starts prior to closing the instance. This delay enables existing requests to drain
+     * gracefully before the instance actually goes down
      * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-     * It is first interpreted as a string representing an ISO 8601 duration.
-     * If that fails, then it is interpreted as a number representing the total
-     * number of milliseconds.
+     * It is first interpreted as a string representing an ISO 8601 duration. It is represented in ISO 8601 format
+     * (hh:mm:ss.s).
      */
     @JsonProperty(value = "instanceCloseDelayDuration")
     private String instanceCloseDelayDuration;
@@ -64,8 +58,8 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
      * advertised by the stateless instance is removed before the delay starts prior to closing the instance. This delay
      * enables existing requests to drain gracefully before the instance actually goes down
      * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-     * It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a
-     * number representing the total number of milliseconds.
+     * It is first interpreted as a string representing an ISO 8601 duration. It is represented in ISO 8601 format
+     * (hh:mm:ss.s).
      *
      * @return the instanceCloseDelayDuration value.
      */
@@ -78,8 +72,8 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
      * advertised by the stateless instance is removed before the delay starts prior to closing the instance. This delay
      * enables existing requests to drain gracefully before the instance actually goes down
      * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-     * It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a
-     * number representing the total number of milliseconds.
+     * It is first interpreted as a string representing an ISO 8601 duration. It is represented in ISO 8601 format
+     * (hh:mm:ss.s).
      *
      * @param instanceCloseDelayDuration the instanceCloseDelayDuration value to set.
      * @return the StatelessServiceUpdateProperties object itself.

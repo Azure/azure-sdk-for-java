@@ -6,7 +6,6 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("Named")
 @Fluent
 public final class NamedPartitionSchemeDescription extends PartitionSchemeDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamedPartitionSchemeDescription.class);
-
     /*
      * The number of partitions.
      */
@@ -26,8 +23,7 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
     private int count;
 
     /*
-     * Array of size specified by the ‘count’ parameter, for the names of the
-     * partitions.
+     * Array of size specified by the ‘count’ parameter, for the names of the partitions.
      */
     @JsonProperty(value = "names", required = true)
     private List<String> names;
@@ -81,10 +77,12 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
     public void validate() {
         super.validate();
         if (names() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property names in model NamedPartitionSchemeDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NamedPartitionSchemeDescription.class);
 }

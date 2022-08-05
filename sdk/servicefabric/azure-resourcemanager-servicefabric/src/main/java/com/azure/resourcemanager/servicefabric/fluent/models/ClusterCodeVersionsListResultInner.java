@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.ClusterCodeVersionsResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list results of the Service Fabric runtime versions. */
 @Fluent
 public final class ClusterCodeVersionsListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCodeVersionsListResultInner.class);
-
     /*
      * The value property.
      */

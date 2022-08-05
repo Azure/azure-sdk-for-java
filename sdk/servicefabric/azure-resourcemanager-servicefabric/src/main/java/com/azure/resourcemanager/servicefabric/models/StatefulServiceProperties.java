@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,12 +17,9 @@ import java.util.List;
 @JsonTypeName("Stateful")
 @Fluent
 public final class StatefulServiceProperties extends ServiceResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatefulServiceProperties.class);
-
     /*
-     * A flag indicating whether this is a persistent service which stores
-     * states on the local disk. If it is then the value of this property is
-     * true, if not it is false.
+     * A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the
+     * value of this property is true, if not it is false.
      */
     @JsonProperty(value = "hasPersistedState")
     private Boolean hasPersistedState;
@@ -42,22 +37,22 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     private Integer minReplicaSetSize;
 
     /*
-     * The duration between when a replica goes down and when a new replica is
-     * created, represented in ISO 8601 format (hh:mm:ss.s).
+     * The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format
+     * (hh:mm:ss.s).
      */
     @JsonProperty(value = "replicaRestartWaitDuration")
     private OffsetDateTime replicaRestartWaitDuration;
 
     /*
-     * The maximum duration for which a partition is allowed to be in a state
-     * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
+     * The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601
+     * format (hh:mm:ss.s).
      */
     @JsonProperty(value = "quorumLossWaitDuration")
     private OffsetDateTime quorumLossWaitDuration;
 
     /*
-     * The definition on how long StandBy replicas should be maintained before
-     * being removed, represented in ISO 8601 format (hh:mm:ss.s).
+     * The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601
+     * format (hh:mm:ss.s).
      */
     @JsonProperty(value = "standByReplicaKeepDuration")
     private OffsetDateTime standByReplicaKeepDuration;

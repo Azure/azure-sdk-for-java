@@ -33,7 +33,11 @@ public final class ServiceCorrelationScheme extends ExpandableStringEnum<Service
         return fromString(name, ServiceCorrelationScheme.class);
     }
 
-    /** @return known ServiceCorrelationScheme values. */
+    /**
+     * Gets known ServiceCorrelationScheme values.
+     *
+     * @return known ServiceCorrelationScheme values.
+     */
     public static Collection<ServiceCorrelationScheme> values() {
         return values(ServiceCorrelationScheme.class);
     }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Defines a health policy used to evaluate the health of an application or one of its children entities. */
 @Fluent
 public final class ArmApplicationHealthPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmApplicationHealthPolicy.class);
-
     /*
      * Indicates whether warnings are treated with the same severity as errors.
      */
@@ -23,31 +19,26 @@ public final class ArmApplicationHealthPolicy {
     private Boolean considerWarningAsError;
 
     /*
-     * The maximum allowed percentage of unhealthy deployed applications.
-     * Allowed values are Byte values from zero to 100.
-     * The percentage represents the maximum tolerated percentage of deployed
-     * applications that can be unhealthy before the application is considered
-     * in error.
-     * This is calculated by dividing the number of unhealthy deployed
-     * applications over the number of nodes where the application is currently
-     * deployed on in the cluster.
-     * The computation rounds up to tolerate one failure on small numbers of
-     * nodes. Default percentage is zero.
+     * The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to
+     * 100.
+     * The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before
+     * the application is considered in error.
+     * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
+     * application is currently deployed on in the cluster.
+     * The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
      *
      */
     @JsonProperty(value = "maxPercentUnhealthyDeployedApplications")
     private Integer maxPercentUnhealthyDeployedApplications;
 
     /*
-     * The health policy used by default to evaluate the health of a service
-     * type.
+     * The health policy used by default to evaluate the health of a service type.
      */
     @JsonProperty(value = "defaultServiceTypeHealthPolicy")
     private ArmServiceTypeHealthPolicy defaultServiceTypeHealthPolicy;
 
     /*
-     * The map with service type health policy per service type name. The map
-     * is empty by default.
+     * The map with service type health policy per service type name. The map is empty by default.
      */
     @JsonProperty(value = "serviceTypeHealthPolicyMap")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

@@ -121,6 +121,10 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceResourceInner innerModel() {
         return this.innerObject;
     }

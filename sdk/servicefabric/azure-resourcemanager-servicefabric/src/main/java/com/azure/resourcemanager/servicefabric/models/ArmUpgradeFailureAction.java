@@ -27,7 +27,11 @@ public final class ArmUpgradeFailureAction extends ExpandableStringEnum<ArmUpgra
         return fromString(name, ArmUpgradeFailureAction.class);
     }
 
-    /** @return known ArmUpgradeFailureAction values. */
+    /**
+     * Gets known ArmUpgradeFailureAction values.
+     *
+     * @return known ArmUpgradeFailureAction values.
+     */
     public static Collection<ArmUpgradeFailureAction> values() {
         return values(ArmUpgradeFailureAction.class);
     }

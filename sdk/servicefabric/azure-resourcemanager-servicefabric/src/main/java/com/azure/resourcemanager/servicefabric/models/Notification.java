@@ -6,15 +6,12 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the notification channel for cluster events. */
 @Fluent
 public final class Notification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Notification.class);
-
     /*
      * Indicates if the notification is enabled.
      */
@@ -126,18 +123,18 @@ public final class Notification {
      */
     public void validate() {
         if (notificationCategory() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property notificationCategory in model Notification"));
         }
         if (notificationLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property notificationLevel in model Notification"));
         }
         if (notificationTargets() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property notificationTargets in model Notification"));
@@ -145,4 +142,6 @@ public final class Notification {
             notificationTargets().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Notification.class);
 }

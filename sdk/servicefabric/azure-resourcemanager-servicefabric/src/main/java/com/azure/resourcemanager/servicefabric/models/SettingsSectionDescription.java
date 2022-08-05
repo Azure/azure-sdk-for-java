@@ -6,15 +6,12 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a section in the fabric settings of the cluster. */
 @Fluent
 public final class SettingsSectionDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SettingsSectionDescription.class);
-
     /*
      * The section name of the fabric settings.
      */
@@ -74,12 +71,12 @@ public final class SettingsSectionDescription {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model SettingsSectionDescription"));
         }
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parameters in model SettingsSectionDescription"));
@@ -87,4 +84,6 @@ public final class SettingsSectionDescription {
             parameters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SettingsSectionDescription.class);
 }

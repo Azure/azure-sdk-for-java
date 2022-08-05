@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  */
 @Fluent
 public final class UpgradableVersionPathResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradableVersionPathResultInner.class);
-
     /*
      * The supportedPath property.
      */

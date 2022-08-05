@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
 import com.azure.resourcemanager.servicefabric.models.MoveCost;
 import com.azure.resourcemanager.servicefabric.models.PartitionSchemeDescription;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.servicefabric.models.ServicePlacementPolicyDesc
 import com.azure.resourcemanager.servicefabric.models.ServiceResourcePropertiesBase;
 import com.azure.resourcemanager.servicefabric.models.StatefulServiceProperties;
 import com.azure.resourcemanager.servicefabric.models.StatelessServiceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -35,11 +33,8 @@ import java.util.List;
 })
 @Fluent
 public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceProperties.class);
-
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response
+     * The current deployment or provisioning state, which only appears in the response
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -63,8 +58,8 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     private ArmServicePackageActivationMode servicePackageActivationMode;
 
     /*
-     * Dns name used for the service. If this is specified, then the service
-     * can be accessed via its DNS name instead of service name.
+     * Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead
+     * of service name.
      */
     @JsonProperty(value = "serviceDnsName")
     private String serviceDnsName;

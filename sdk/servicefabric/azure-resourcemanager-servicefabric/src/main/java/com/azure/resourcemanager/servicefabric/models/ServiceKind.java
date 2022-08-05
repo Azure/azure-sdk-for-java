@@ -30,7 +30,11 @@ public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
         return fromString(name, ServiceKind.class);
     }
 
-    /** @return known ServiceKind values. */
+    /**
+     * Gets known ServiceKind values.
+     *
+     * @return known ServiceKind values.
+     */
     public static Collection<ServiceKind> values() {
         return values(ServiceKind.class);
     }

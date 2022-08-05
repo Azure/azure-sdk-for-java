@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Services. */
 public interface Services {
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -26,7 +28,9 @@ public interface Services {
     ServiceResource get(String resourceGroupName, String clusterName, String applicationName, String serviceName);
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -38,13 +42,15 @@ public interface Services {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     *     application resource along with {@link Response}.
      */
     Response<ServiceResource> getWithResponse(
         String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context);
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -57,7 +63,9 @@ public interface Services {
     void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName);
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -72,7 +80,10 @@ public interface Services {
         String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context);
 
     /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -86,7 +97,10 @@ public interface Services {
     ServiceResourceList list(String resourceGroupName, String clusterName, String applicationName);
 
     /**
-     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     *
+     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -96,13 +110,15 @@ public interface Services {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource.
+     *     resource along with {@link Response}.
      */
     Response<ServiceResourceList> listWithResponse(
         String resourceGroupName, String clusterName, String applicationName, Context context);
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param id the resource ID.
@@ -110,12 +126,14 @@ public interface Services {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     *     application resource along with {@link Response}.
      */
     ServiceResource getById(String id);
 
     /**
-     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric service resource.
+     *
+     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      *
      * @param id the resource ID.
@@ -124,12 +142,14 @@ public interface Services {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     *     application resource along with {@link Response}.
      */
     Response<ServiceResource> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +159,9 @@ public interface Services {
     void deleteById(String id);
 
     /**
-     * Delete a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
+     *
+     * <p>Delete a Service Fabric service resource with the specified name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

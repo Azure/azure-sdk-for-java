@@ -51,7 +51,11 @@ public final class ClusterState extends ExpandableStringEnum<ClusterState> {
         return fromString(name, ClusterState.class);
     }
 
-    /** @return known ClusterState values. */
+    /**
+     * Gets known ClusterState values.
+     *
+     * @return known ClusterState values.
+     */
     public static Collection<ClusterState> values() {
         return values(ClusterState.class);
     }

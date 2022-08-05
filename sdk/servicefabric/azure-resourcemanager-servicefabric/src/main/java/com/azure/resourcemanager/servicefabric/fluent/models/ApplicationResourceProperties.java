@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +15,8 @@ import java.util.Map;
 /** The application resource properties. */
 @Fluent
 public final class ApplicationResourceProperties extends ApplicationResourceUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationResourceProperties.class);
-
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response
+     * The current deployment or provisioning state, which only appears in the response
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
