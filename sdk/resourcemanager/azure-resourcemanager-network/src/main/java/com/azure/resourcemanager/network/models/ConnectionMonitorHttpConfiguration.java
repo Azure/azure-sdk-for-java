@@ -36,15 +36,13 @@ public final class ConnectionMonitorHttpConfiguration {
     private List<HttpHeader> requestHeaders;
 
     /*
-     * HTTP status codes to consider successful. For instance,
-     * "2xx,301-304,418".
+     * HTTP status codes to consider successful. For instance, "2xx,301-304,418".
      */
     @JsonProperty(value = "validStatusCodeRanges")
     private List<String> validStatusCodeRanges;
 
     /*
-     * Value indicating whether HTTPS is preferred over HTTP in cases where the
-     * choice is not explicit.
+     * Value indicating whether HTTPS is preferred over HTTP in cases where the choice is not explicit.
      */
     @JsonProperty(value = "preferHTTPS")
     private Boolean preferHttps;

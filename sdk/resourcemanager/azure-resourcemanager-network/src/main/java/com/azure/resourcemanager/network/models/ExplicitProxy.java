@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Explicit Proxy Settings in Firewall Policy. */
 @Fluent
-public final class ExplicitProxySettings {
+public final class ExplicitProxy {
     /*
      * When set to true, explicit proxy mode is enabled.
      */
@@ -17,18 +17,22 @@ public final class ExplicitProxySettings {
     private Boolean enableExplicitProxy;
 
     /*
-     * Port number for explicit proxy http protocol, cannot be greater than
-     * 64000.
+     * Port number for explicit proxy http protocol, cannot be greater than 64000.
      */
     @JsonProperty(value = "httpPort")
     private Integer httpPort;
 
     /*
-     * Port number for explicit proxy https protocol, cannot be greater than
-     * 64000.
+     * Port number for explicit proxy https protocol, cannot be greater than 64000.
      */
     @JsonProperty(value = "httpsPort")
     private Integer httpsPort;
+
+    /*
+     * When set to true, pac file port and url needs to be provided.
+     */
+    @JsonProperty(value = "enablePacFile")
+    private Boolean enablePacFile;
 
     /*
      * Port number for firewall to serve PAC file.
@@ -55,9 +59,9 @@ public final class ExplicitProxySettings {
      * Set the enableExplicitProxy property: When set to true, explicit proxy mode is enabled.
      *
      * @param enableExplicitProxy the enableExplicitProxy value to set.
-     * @return the ExplicitProxySettings object itself.
+     * @return the ExplicitProxy object itself.
      */
-    public ExplicitProxySettings withEnableExplicitProxy(Boolean enableExplicitProxy) {
+    public ExplicitProxy withEnableExplicitProxy(Boolean enableExplicitProxy) {
         this.enableExplicitProxy = enableExplicitProxy;
         return this;
     }
@@ -75,9 +79,9 @@ public final class ExplicitProxySettings {
      * Set the httpPort property: Port number for explicit proxy http protocol, cannot be greater than 64000.
      *
      * @param httpPort the httpPort value to set.
-     * @return the ExplicitProxySettings object itself.
+     * @return the ExplicitProxy object itself.
      */
-    public ExplicitProxySettings withHttpPort(Integer httpPort) {
+    public ExplicitProxy withHttpPort(Integer httpPort) {
         this.httpPort = httpPort;
         return this;
     }
@@ -95,10 +99,30 @@ public final class ExplicitProxySettings {
      * Set the httpsPort property: Port number for explicit proxy https protocol, cannot be greater than 64000.
      *
      * @param httpsPort the httpsPort value to set.
-     * @return the ExplicitProxySettings object itself.
+     * @return the ExplicitProxy object itself.
      */
-    public ExplicitProxySettings withHttpsPort(Integer httpsPort) {
+    public ExplicitProxy withHttpsPort(Integer httpsPort) {
         this.httpsPort = httpsPort;
+        return this;
+    }
+
+    /**
+     * Get the enablePacFile property: When set to true, pac file port and url needs to be provided.
+     *
+     * @return the enablePacFile value.
+     */
+    public Boolean enablePacFile() {
+        return this.enablePacFile;
+    }
+
+    /**
+     * Set the enablePacFile property: When set to true, pac file port and url needs to be provided.
+     *
+     * @param enablePacFile the enablePacFile value to set.
+     * @return the ExplicitProxy object itself.
+     */
+    public ExplicitProxy withEnablePacFile(Boolean enablePacFile) {
+        this.enablePacFile = enablePacFile;
         return this;
     }
 
@@ -115,9 +139,9 @@ public final class ExplicitProxySettings {
      * Set the pacFilePort property: Port number for firewall to serve PAC file.
      *
      * @param pacFilePort the pacFilePort value to set.
-     * @return the ExplicitProxySettings object itself.
+     * @return the ExplicitProxy object itself.
      */
-    public ExplicitProxySettings withPacFilePort(Integer pacFilePort) {
+    public ExplicitProxy withPacFilePort(Integer pacFilePort) {
         this.pacFilePort = pacFilePort;
         return this;
     }
@@ -135,9 +159,9 @@ public final class ExplicitProxySettings {
      * Set the pacFile property: SAS URL for PAC file.
      *
      * @param pacFile the pacFile value to set.
-     * @return the ExplicitProxySettings object itself.
+     * @return the ExplicitProxy object itself.
      */
-    public ExplicitProxySettings withPacFile(String pacFile) {
+    public ExplicitProxy withPacFile(String pacFile) {
         this.pacFile = pacFile;
         return this;
     }

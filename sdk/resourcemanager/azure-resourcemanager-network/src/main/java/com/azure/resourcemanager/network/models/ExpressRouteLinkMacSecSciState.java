@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteLinkMacSecSciState. */
+/** Sci mode enabled/disabled. */
 public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<ExpressRouteLinkMacSecSciState> {
     /** Static value Disabled for ExpressRouteLinkMacSecSciState. */
     public static final ExpressRouteLinkMacSecSciState DISABLED = fromString("Disabled");
