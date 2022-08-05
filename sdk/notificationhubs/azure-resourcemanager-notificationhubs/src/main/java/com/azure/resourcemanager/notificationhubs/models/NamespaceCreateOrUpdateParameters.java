@@ -6,9 +6,7 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Parameters supplied to the CreateOrUpdate Namespace operation. */
 @Fluent
 public final class NamespaceCreateOrUpdateParameters extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceCreateOrUpdateParameters.class);
-
     /*
      * Properties of the Namespace.
      */

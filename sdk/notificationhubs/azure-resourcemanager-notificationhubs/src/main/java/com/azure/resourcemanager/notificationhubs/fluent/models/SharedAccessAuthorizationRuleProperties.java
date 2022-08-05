@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SharedAccessAuthorizationRule properties. */
 @Fluent
 public final class SharedAccessAuthorizationRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleProperties.class);
-
     /*
      * The rights associated with the rule.
      */
@@ -23,15 +19,13 @@ public final class SharedAccessAuthorizationRuleProperties {
     private List<AccessRights> rights;
 
     /*
-     * A base64-encoded 256-bit primary key for signing and validating the SAS
-     * token.
+     * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
     @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
-     * A base64-encoded 256-bit primary key for signing and validating the SAS
-     * token.
+     * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;

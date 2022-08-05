@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub AdmCredential. */
 @Fluent
 public final class AdmCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdmCredentialProperties.class);
-
     /*
      * The client identifier.
      */

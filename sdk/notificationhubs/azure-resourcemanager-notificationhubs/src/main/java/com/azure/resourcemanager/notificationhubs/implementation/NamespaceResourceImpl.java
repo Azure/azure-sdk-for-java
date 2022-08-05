@@ -107,6 +107,10 @@ public final class NamespaceResourceImpl
         return this.innerModel().namespaceType();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NamespaceResourceInner innerModel() {
         return this.innerObject;
     }

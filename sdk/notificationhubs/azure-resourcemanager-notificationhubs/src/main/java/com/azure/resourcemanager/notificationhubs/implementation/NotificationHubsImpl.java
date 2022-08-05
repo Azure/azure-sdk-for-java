@@ -26,10 +26,9 @@ import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.ResourceListKeys;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NotificationHubsImpl implements NotificationHubs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationHubsImpl.class);
 
     private final NotificationHubsClient innerClient;
 
@@ -361,7 +360,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
     public NotificationHubResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -369,14 +368,14 @@ public final class NotificationHubsImpl implements NotificationHubs {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String notificationHubName = Utils.getValueFromIdByName(id, "notificationHubs");
         if (notificationHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -389,7 +388,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
     public Response<NotificationHubResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -397,14 +396,14 @@ public final class NotificationHubsImpl implements NotificationHubs {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String notificationHubName = Utils.getValueFromIdByName(id, "notificationHubs");
         if (notificationHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -417,7 +416,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -425,14 +424,14 @@ public final class NotificationHubsImpl implements NotificationHubs {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String notificationHubName = Utils.getValueFromIdByName(id, "notificationHubs");
         if (notificationHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -445,7 +444,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -453,14 +452,14 @@ public final class NotificationHubsImpl implements NotificationHubs {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String notificationHubName = Utils.getValueFromIdByName(id, "notificationHubs");
         if (notificationHubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

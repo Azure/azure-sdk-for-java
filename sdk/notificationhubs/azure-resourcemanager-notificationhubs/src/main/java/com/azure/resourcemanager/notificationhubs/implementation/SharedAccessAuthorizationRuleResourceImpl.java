@@ -105,6 +105,10 @@ public final class SharedAccessAuthorizationRuleResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SharedAccessAuthorizationRuleResourceInner innerModel() {
         return this.innerObject;
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Namespace properties. */
 @Fluent
 public final class NamespaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceProperties.class);
-
     /*
      * The name of the namespace.
      */
@@ -29,11 +25,9 @@ public final class NamespaceProperties {
     private String provisioningState;
 
     /*
-     * Specifies the targeted region in which the namespace should be created.
-     * It can be any of the following values: Australia East, Australia
-     * Southeast, Central US, East US, East US 2, West US, North Central US,
-     * South Central US, East Asia, Southeast Asia, Brazil South, Japan East,
-     * Japan West, North Europe, West Europe
+     * Specifies the targeted region in which the namespace should be created. It can be any of the following values:
+     * Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central US, South Central
+     * US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe
      */
     @JsonProperty(value = "region")
     private String region;
@@ -45,8 +39,7 @@ public final class NamespaceProperties {
     private String metricId;
 
     /*
-     * Status of the namespace. It can be any of these values:1 =
-     * Created/Active2 = Creating3 = Suspended4 = Deleting
+     * Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 = Suspended4 = Deleting
      */
     @JsonProperty(value = "status")
     private String status;

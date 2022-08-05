@@ -34,7 +34,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a CheckAvailability resource.
+     * @return description of a CheckAvailability resource along with {@link Response}.
      */
     Response<CheckAvailabilityResult> checkNotificationHubAvailabilityWithResponse(
         String resourceGroupName, String namespaceName, CheckAvailabilityParameters parameters, Context context);
@@ -61,7 +61,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String namespaceName, String notificationHubName, Context context);
@@ -89,7 +89,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     Response<NotificationHubResource> getWithResponse(
         String resourceGroupName, String namespaceName, String notificationHubName, Context context);
@@ -118,7 +118,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     Response<DebugSendResponse> debugSendWithResponse(
         String resourceGroupName, String namespaceName, String notificationHubName, Object parameters, Context context);
@@ -155,7 +155,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Namespace AuthorizationRules.
+     * @return description of a Namespace AuthorizationRules along with {@link Response}.
      */
     Response<SharedAccessAuthorizationRuleResource> createOrUpdateAuthorizationRuleWithResponse(
         String resourceGroupName,
@@ -190,7 +190,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteAuthorizationRuleWithResponse(
         String resourceGroupName,
@@ -225,7 +225,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a NotificationHub by name.
+     * @return an authorization rule for a NotificationHub by name along with {@link Response}.
      */
     Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleWithResponse(
         String resourceGroupName,
@@ -242,7 +242,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NotificationHubResource> list(String resourceGroupName, String namespaceName);
 
@@ -255,7 +255,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List NotificationHub operation.
+     * @return the response of the List NotificationHub operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NotificationHubResource> list(String resourceGroupName, String namespaceName, Context context);
 
@@ -268,7 +268,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a NotificationHub.
+     * @return the authorization rules for a NotificationHub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String notificationHubName);
@@ -283,7 +283,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a NotificationHub.
+     * @return the authorization rules for a NotificationHub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String notificationHubName, Context context);
@@ -314,7 +314,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * @return the Primary and Secondary ConnectionStrings to the NotificationHub along with {@link Response}.
      */
     Response<ResourceListKeys> listKeysWithResponse(
         String resourceGroupName,
@@ -355,7 +355,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/NotificationHub Connection String.
+     * @return namespace/NotificationHub Connection String along with {@link Response}.
      */
     Response<ResourceListKeys> regenerateKeysWithResponse(
         String resourceGroupName,
@@ -389,7 +389,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub PNS Credentials.
+     * @return description of a NotificationHub PNS Credentials along with {@link Response}.
      */
     Response<PnsCredentialsResource> getPnsCredentialsWithResponse(
         String resourceGroupName, String namespaceName, String notificationHubName, Context context);
@@ -401,7 +401,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     NotificationHubResource getById(String id);
 
@@ -413,7 +413,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a NotificationHub Resource.
+     * @return description of a NotificationHub Resource along with {@link Response}.
      */
     Response<NotificationHubResource> getByIdWithResponse(String id, Context context);
 
@@ -435,7 +435,7 @@ public interface NotificationHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

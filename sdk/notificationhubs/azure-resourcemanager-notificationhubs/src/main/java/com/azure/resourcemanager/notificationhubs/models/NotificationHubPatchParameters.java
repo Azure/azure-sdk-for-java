@@ -6,10 +6,8 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** Parameters supplied to the patch NotificationHub operation. */
 @Fluent
 public final class NotificationHubPatchParameters extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubPatchParameters.class);
-
     /*
      * Properties of the NotificationHub.
      */

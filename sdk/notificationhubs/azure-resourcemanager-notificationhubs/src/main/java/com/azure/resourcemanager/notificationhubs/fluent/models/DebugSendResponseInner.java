@@ -6,17 +6,13 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Description of a NotificationHub Resource. */
 @Fluent
 public final class DebugSendResponseInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSendResponseInner.class);
-
     /*
      * Properties of the NotificationHub.
      */

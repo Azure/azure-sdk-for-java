@@ -6,10 +6,8 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** Description of a Namespace resource. */
 @Fluent
 public final class NamespaceResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceResourceInner.class);
-
     /*
      * Properties of the Namespace.
      */

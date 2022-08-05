@@ -30,6 +30,9 @@ public enum NamespaceType {
      */
     @JsonCreator
     public static NamespaceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NamespaceType[] items = NamespaceType.values();
         for (NamespaceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

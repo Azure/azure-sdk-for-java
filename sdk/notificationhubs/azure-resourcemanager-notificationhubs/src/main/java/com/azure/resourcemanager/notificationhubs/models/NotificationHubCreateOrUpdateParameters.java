@@ -9,7 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Parameters supplied to the CreateOrUpdate NotificationHub operation. */
 @Fluent
 public final class NotificationHubCreateOrUpdateParameters extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubCreateOrUpdateParameters.class);
-
     /*
      * Properties of the NotificationHub.
      */
@@ -289,7 +286,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model NotificationHubCreateOrUpdateParameters"));
@@ -300,4 +297,6 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationHubCreateOrUpdateParameters.class);
 }

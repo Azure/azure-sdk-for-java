@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the List NotificationHub operation. */
 @Fluent
 public final class NotificationHubListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubListResult.class);
-
     /*
      * Result of the List NotificationHub operation.
      */
@@ -23,8 +19,7 @@ public final class NotificationHubListResult {
     private List<NotificationHubResourceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of NotificationHub
+     * Link to the next set of results. Not empty if Value contains incomplete list of NotificationHub
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.GcmCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub GcmCredential. */
 @Fluent
 public final class GcmCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GcmCredential.class);
-
     /*
      * Properties of NotificationHub GcmCredential.
      */

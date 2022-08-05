@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Namespace/NotificationHub Connection String. */
 @Fluent
 public final class ResourceListKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceListKeysInner.class);
-
     /*
      * PrimaryConnectionString of the AuthorizationRule.
      */

@@ -21,10 +21,9 @@ import com.azure.resourcemanager.notificationhubs.models.Namespaces;
 import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.ResourceListKeys;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NamespacesImpl implements Namespaces {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespacesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NamespacesImpl.class);
 
     private final NamespacesClient innerClient;
 
@@ -228,7 +227,7 @@ public final class NamespacesImpl implements Namespaces {
     public NamespaceResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,7 +235,7 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -247,7 +246,7 @@ public final class NamespacesImpl implements Namespaces {
     public Response<NamespaceResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -255,7 +254,7 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -266,7 +265,7 @@ public final class NamespacesImpl implements Namespaces {
     public SharedAccessAuthorizationRuleResource getAuthorizationRuleById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -274,14 +273,14 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String authorizationRuleName = Utils.getValueFromIdByName(id, "AuthorizationRules");
         if (authorizationRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -297,7 +296,7 @@ public final class NamespacesImpl implements Namespaces {
         String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -305,14 +304,14 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String authorizationRuleName = Utils.getValueFromIdByName(id, "AuthorizationRules");
         if (authorizationRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -325,7 +324,7 @@ public final class NamespacesImpl implements Namespaces {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -333,7 +332,7 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -344,7 +343,7 @@ public final class NamespacesImpl implements Namespaces {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -352,7 +351,7 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -363,7 +362,7 @@ public final class NamespacesImpl implements Namespaces {
     public void deleteAuthorizationRuleById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -371,14 +370,14 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String authorizationRuleName = Utils.getValueFromIdByName(id, "AuthorizationRules");
         if (authorizationRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -391,7 +390,7 @@ public final class NamespacesImpl implements Namespaces {
     public Response<Void> deleteAuthorizationRuleByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -399,14 +398,14 @@ public final class NamespacesImpl implements Namespaces {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String authorizationRuleName = Utils.getValueFromIdByName(id, "AuthorizationRules");
         if (authorizationRuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
