@@ -27,7 +27,6 @@ import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -180,7 +179,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * for more information on building mode for custom documents.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building a model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -242,7 +241,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * building a custom document analysis model.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building a model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -499,7 +498,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param componentModelIds The list of component models to compose.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the created {@link DocumentModelDetails composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -555,7 +554,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * creating a composed model.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModelDetails}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -632,25 +631,25 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the source model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()}
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModelDetails}.
-     * @throws DocumentModelOperationException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
                                                                                    CopyAuthorization target) {
-        return beginCopyModelTo(modelId, target, null);
+        return beginCopyModelTo(sourceModelId, target, null);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
                                                                             CopyAuthorization target, Context context) {
         return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
-            getCopyActivationOperation(modelId, target, context),
+            getCopyActivationOperation(sourceModelId, target, context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
@@ -969,7 +968,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 break;
             case FAILED:
                 throw logger.logExceptionAsError(
-                    Transforms.toDocumentModelOperationException(getOperationResponse.getError()));
+                    Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
             case CANCELED:
             default:
                 status = LongRunningOperationStatus.fromString(

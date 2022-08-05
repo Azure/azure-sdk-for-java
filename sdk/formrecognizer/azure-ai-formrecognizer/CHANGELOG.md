@@ -3,6 +3,7 @@
 ## 4.0.0-beta.6 (Unreleased)
 
 ### Features Added
+- Add a constructor to create an instance of `CopyAuthorization` model.
 
 ### Breaking Changes
 - Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
@@ -18,6 +19,7 @@
 - Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
 - Renamed `DocTypeInfo` model to `DocumentTypeDetails`
 - Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
+- Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
 
 ### Bugs Fixed
 
