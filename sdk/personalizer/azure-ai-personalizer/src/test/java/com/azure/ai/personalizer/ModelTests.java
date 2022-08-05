@@ -3,7 +3,7 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.ModelProperties;
+import com.azure.ai.personalizer.models.PersonalizerModelProperties;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,7 +49,7 @@ public class ModelTests extends PersonalizerTestBase {
 
     private void getModelProperties(PersonalizerAdminClient client)
     {
-        ModelProperties modelProperties = client.getModelProperties();
+        PersonalizerModelProperties modelProperties = client.getModelProperties();
         assertTrue(modelProperties.getCreationTime() != null);
         assertTrue(modelProperties.getLastModifiedTime() != null);
     }

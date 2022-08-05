@@ -4,8 +4,8 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.LogsProperties;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerLogProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -101,7 +101,7 @@ public final class LogsImpl {
         @Get("/logs/properties")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<LogsProperties>> getProperties(
+        Mono<Response<PersonalizerLogProperties>> getProperties(
                 @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -682,7 +682,7 @@ public final class LogsImpl {
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogsProperties>> getPropertiesWithResponseAsync() {
+    public Mono<Response<PersonalizerLogProperties>> getPropertiesWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getProperties(this.client.getEndpoint(), accept, context));
     }
@@ -699,7 +699,7 @@ public final class LogsImpl {
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogsProperties>> getPropertiesWithResponseAsync(Context context) {
+    public Mono<Response<PersonalizerLogProperties>> getPropertiesWithResponseAsync(Context context) {
         final String accept = "application/json";
         return service.getProperties(this.client.getEndpoint(), accept, context);
     }
@@ -714,7 +714,7 @@ public final class LogsImpl {
      * @return properties of the Personalizer logs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogsProperties> getPropertiesAsync() {
+    public Mono<PersonalizerLogProperties> getPropertiesAsync() {
         return getPropertiesWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -730,7 +730,7 @@ public final class LogsImpl {
      * @return properties of the Personalizer logs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogsProperties> getPropertiesAsync(Context context) {
+    public Mono<PersonalizerLogProperties> getPropertiesAsync(Context context) {
         return getPropertiesWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -744,7 +744,7 @@ public final class LogsImpl {
      * @return properties of the Personalizer logs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsProperties getProperties() {
+    public PersonalizerLogProperties getProperties() {
         return getPropertiesAsync().block();
     }
 
@@ -760,7 +760,7 @@ public final class LogsImpl {
      * @return properties of the Personalizer logs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsProperties> getPropertiesWithResponse(Context context) {
+    public Response<PersonalizerLogProperties> getPropertiesWithResponse(Context context) {
         return getPropertiesWithResponseAsync(context).block();
     }
 }

@@ -3,8 +3,8 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.PolicyContract;
-import com.azure.ai.personalizer.models.ServiceConfiguration;
+import com.azure.ai.personalizer.models.PersonalizerPolicy;
+import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,7 +23,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         double newDefaultReward = 1.0;
         String newRewardFunction = "average";
         float newExplorationPercentage = 0.2f;
-        ServiceConfiguration properties = new ServiceConfiguration()
+        PersonalizerServiceProperties properties = new PersonalizerServiceProperties()
             .setRewardAggregation(newRewardFunction)
             .setModelExportFrequency(modelExportFrequency)
             .setDefaultReward((float) newDefaultReward)
@@ -37,9 +37,9 @@ public class ConfigurationTests extends PersonalizerTestBase {
         resetPolicy(client);
     }
 
-    private void getProperties(PersonalizerAdminClient client, ServiceConfiguration properties)
+    private void getProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
     {
-        ServiceConfiguration result = client.getProperties();
+        PersonalizerServiceProperties result = client.getProperties();
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
         assertTrue(Math.abs(properties.getExplorationPercentage() - result.getExplorationPercentage()) < 1e-3);
         assertEquals(properties.getModelExportFrequency(), result.getModelExportFrequency());
@@ -47,9 +47,9 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void updateProperties(PersonalizerAdminClient client, ServiceConfiguration properties)
+    private void updateProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
     {
-        ServiceConfiguration result = client.updateProperties(properties);
+        PersonalizerServiceProperties result = client.updateProperties(properties);
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
         assertTrue(Math.abs(properties.getExplorationPercentage() - result.getExplorationPercentage()) < 1e-3);
         assertEquals(properties.getModelExportFrequency(), result.getModelExportFrequency());
@@ -59,20 +59,20 @@ public class ConfigurationTests extends PersonalizerTestBase {
 
     private void updateAndGetPolicy(PersonalizerAdminClient client)
     {
-        PolicyContract newPolicy = new PolicyContract()
+        PersonalizerPolicy newPolicy = new PersonalizerPolicy()
             .setName("app1")
             .setArguments("--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2");
-        PolicyContract updatedPolicy = client.updatePolicy(newPolicy);
+        PersonalizerPolicy updatedPolicy = client.updatePolicy(newPolicy);
         assertNotNull(updatedPolicy);
         assertEquals(newPolicy.getArguments(), updatedPolicy.getArguments());
-        PolicyContract policy = client.getPolicy();
+        PersonalizerPolicy policy = client.getPolicy();
         // Only checking the first 190 chars because the epsilon has a float rounding addition when applied
         assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0, 190));
     }
 
     private void resetPolicy(PersonalizerAdminClient client)
     {
-        PolicyContract policy = client.resetPolicy();
+        PersonalizerPolicy policy = client.resetPolicy();
         assertEquals("--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::",
             policy.getArguments());
     }

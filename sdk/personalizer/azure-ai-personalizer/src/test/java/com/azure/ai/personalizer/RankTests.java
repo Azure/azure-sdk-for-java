@@ -3,9 +3,9 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.RankRequest;
-import com.azure.ai.personalizer.models.RankResponse;
-import com.azure.ai.personalizer.models.RankableAction;
+import com.azure.ai.personalizer.models.PersonalizerRankOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankResult;
+import com.azure.ai.personalizer.models.PersonalizerRankableAction;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,11 +38,11 @@ public class RankTests extends PersonalizerTestBase {
                 add(new Object() { String videoType = "documentary"; Integer videoLength = 35; String director = "CarlSagan"; });
                 add(new Object() { String mostWatchedByAge = "30-35"; });
             }};
-        List<RankableAction> actions = new ArrayList<>();
-        actions.add(new RankableAction().setId("Person").setFeatures(features));
-        RankRequest request = new RankRequest().setActions(actions).setContextFeatures(null).setExcludedActions(null);
+        List<PersonalizerRankableAction> actions = new ArrayList<>();
+        actions.add(new PersonalizerRankableAction().setId("Person").setFeatures(features));
+        PersonalizerRankOptions request = new PersonalizerRankOptions().setActions(actions).setContextFeatures(null).setExcludedActions(null);
         // Action
-        RankResponse response = client.rank(request);
+        PersonalizerRankResult response = client.rank(request);
         // Assert
         assertEquals(actions.size(), response.getRanking().size());
         for (int i = 0; i < response.getRanking().size(); i++)
@@ -60,7 +60,7 @@ public class RankTests extends PersonalizerTestBase {
             }
         };
 
-        List<RankableAction> actions = new ArrayList<>();
+        List<PersonalizerRankableAction> actions = new ArrayList<>();
         List<Object> features1 = new ArrayList<>() {
             {
                 add(new Object() {
@@ -73,7 +73,7 @@ public class RankTests extends PersonalizerTestBase {
                 });
             }
         };
-        actions.add(new RankableAction().setId("Person1").setFeatures(features1));
+        actions.add(new PersonalizerRankableAction().setId("Person1").setFeatures(features1));
 
         List<Object> features2 = new ArrayList<>() {
             {
@@ -87,7 +87,7 @@ public class RankTests extends PersonalizerTestBase {
                 });
             }
         };
-        actions.add(new RankableAction().setId("Person2").setFeatures(features2));
+        actions.add(new PersonalizerRankableAction().setId("Person2").setFeatures(features2));
 
         List<String> excludeActions = new ArrayList<>() {
             {
@@ -95,9 +95,9 @@ public class RankTests extends PersonalizerTestBase {
             }
         };
         String eventId = "123456789";
-        RankRequest request = new RankRequest().setActions(actions).setContextFeatures(contextFeatures).setExcludedActions(excludeActions).setEventId(eventId);
+        PersonalizerRankOptions request = new PersonalizerRankOptions().setActions(actions).setContextFeatures(contextFeatures).setExcludedActions(excludeActions).setEventId(eventId);
         // Action
-        RankResponse response = client.rank(request);
+        PersonalizerRankResult response = client.rank(request);
         // Assert
         assertEquals(eventId, response.getEventId());
         assertEquals(actions.size(), response.getRanking().size());
@@ -130,11 +130,11 @@ public class RankTests extends PersonalizerTestBase {
             }
         };
 
-        List<RankableAction> actions = new ArrayList<>();
-        actions.add(new RankableAction().setId("Person1").setFeatures(features1));
-        actions.add(new RankableAction().setId("Person2").setFeatures(features2));
+        List<PersonalizerRankableAction> actions = new ArrayList<>();
+        actions.add(new PersonalizerRankableAction().setId("Person1").setFeatures(features1));
+        actions.add(new PersonalizerRankableAction().setId("Person2").setFeatures(features2));
         // Action
-        RankResponse response = client.rank(new RankRequest().setActions(actions).setContextFeatures(contextFeatures));
+        PersonalizerRankResult response = client.rank(new PersonalizerRankOptions().setActions(actions).setContextFeatures(contextFeatures));
         assertEquals(actions.size(), response.getRanking().size());
     }
 }

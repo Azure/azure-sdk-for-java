@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.RankRequest;
-import com.azure.ai.personalizer.models.RankResponse;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerRankOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -225,9 +225,9 @@ public final class PersonalizerClientV1Preview3Impl {
         @Post("/rank")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<RankResponse>> rank(
+        Mono<Response<PersonalizerRankResult>> rank(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") RankRequest rankRequest,
+                @BodyParam("application/json") PersonalizerRankOptions rankRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -246,7 +246,7 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankResponse>> rankWithResponseAsync(RankRequest rankRequest) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponseAsync(PersonalizerRankOptions rankRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.rank(this.getEndpoint(), rankRequest, accept, context));
     }
@@ -266,7 +266,8 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankResponse>> rankWithResponseAsync(RankRequest rankRequest, Context context) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponseAsync(
+            PersonalizerRankOptions rankRequest, Context context) {
         final String accept = "application/json";
         return service.rank(this.getEndpoint(), rankRequest, accept, context);
     }
@@ -285,7 +286,7 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RankResponse> rankAsync(RankRequest rankRequest) {
+    public Mono<PersonalizerRankResult> rankAsync(PersonalizerRankOptions rankRequest) {
         return rankWithResponseAsync(rankRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -304,7 +305,7 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RankResponse> rankAsync(RankRequest rankRequest, Context context) {
+    public Mono<PersonalizerRankResult> rankAsync(PersonalizerRankOptions rankRequest, Context context) {
         return rankWithResponseAsync(rankRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -322,7 +323,7 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RankResponse rank(RankRequest rankRequest) {
+    public PersonalizerRankResult rank(PersonalizerRankOptions rankRequest) {
         return rankAsync(rankRequest).block();
     }
 
@@ -341,7 +342,7 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RankResponse> rankWithResponse(RankRequest rankRequest, Context context) {
+    public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
         return rankWithResponseAsync(rankRequest, context).block();
     }
 }

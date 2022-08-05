@@ -4,8 +4,8 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.MultiSlotRewardRequest;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -55,7 +55,7 @@ public final class MultiSlotEventsImpl {
         Mono<Response<Void>> reward(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("eventId") String eventId,
-                @BodyParam("application/json") MultiSlotRewardRequest body,
+                @BodyParam("application/json") PersonalizerRewardMultiSlotOptions body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -83,7 +83,7 @@ public final class MultiSlotEventsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, MultiSlotRewardRequest body) {
+    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardMultiSlotOptions body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.reward(this.client.getEndpoint(), eventId, body, accept, context));
@@ -104,7 +104,8 @@ public final class MultiSlotEventsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, MultiSlotRewardRequest body, Context context) {
+    public Mono<Response<Void>> rewardWithResponseAsync(
+            String eventId, PersonalizerRewardMultiSlotOptions body, Context context) {
         final String accept = "application/json";
         return service.reward(this.client.getEndpoint(), eventId, body, accept, context);
     }
@@ -123,7 +124,7 @@ public final class MultiSlotEventsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rewardAsync(String eventId, MultiSlotRewardRequest body) {
+    public Mono<Void> rewardAsync(String eventId, PersonalizerRewardMultiSlotOptions body) {
         return rewardWithResponseAsync(eventId, body).flatMap(ignored -> Mono.empty());
     }
 
@@ -142,7 +143,7 @@ public final class MultiSlotEventsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rewardAsync(String eventId, MultiSlotRewardRequest body, Context context) {
+    public Mono<Void> rewardAsync(String eventId, PersonalizerRewardMultiSlotOptions body, Context context) {
         return rewardWithResponseAsync(eventId, body, context).flatMap(ignored -> Mono.empty());
     }
 
@@ -159,7 +160,7 @@ public final class MultiSlotEventsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reward(String eventId, MultiSlotRewardRequest body) {
+    public void reward(String eventId, PersonalizerRewardMultiSlotOptions body) {
         rewardAsync(eventId, body).block();
     }
 
@@ -178,7 +179,7 @@ public final class MultiSlotEventsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rewardWithResponse(String eventId, MultiSlotRewardRequest body, Context context) {
+    public Response<Void> rewardWithResponse(String eventId, PersonalizerRewardMultiSlotOptions body, Context context) {
         return rewardWithResponseAsync(eventId, body, context).block();
     }
 

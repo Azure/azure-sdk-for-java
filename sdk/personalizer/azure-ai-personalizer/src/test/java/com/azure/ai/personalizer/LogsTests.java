@@ -3,7 +3,7 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.LogsProperties;
+import com.azure.ai.personalizer.models.PersonalizerLogProperties;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,7 +24,7 @@ public class LogsTests extends PersonalizerTestBase {
 
     private void getLogProperties(PersonalizerAdminClient client)
     {
-        LogsProperties properties = client.getLogsProperties();
+        PersonalizerLogProperties properties = client.getLogsProperties();
         OffsetDateTime expectedDefault = OffsetDateTime.now();
         assertEquals(expectedDefault, properties.getDateRange().getFrom());
         assertEquals(expectedDefault, properties.getDateRange().getTo());

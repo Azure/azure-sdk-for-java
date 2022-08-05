@@ -4,10 +4,10 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.Evaluation;
-import com.azure.ai.personalizer.models.EvaluationContract;
-import com.azure.ai.personalizer.models.EvaluationsCreateHeaders;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.implementation.models.EvaluationsCreateHeaders;
+import com.azure.ai.personalizer.models.PersonalizerEvaluation;
+import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -59,7 +59,7 @@ public final class EvaluationsImpl {
         @Get("/evaluations/{evaluationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Evaluation>> get(
+        Mono<Response<PersonalizerEvaluation>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("evaluationId") String evaluationId,
                 @HeaderParam("Accept") String accept,
@@ -76,15 +76,15 @@ public final class EvaluationsImpl {
         @Get("/evaluations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<List<Evaluation>>> list(
+        Mono<Response<List<PersonalizerEvaluation>>> list(
                 @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/evaluations")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> create(
+        Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> create(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") EvaluationContract evaluation,
+                @BodyParam("application/json") PersonalizerEvaluationOptions evaluation,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -102,7 +102,7 @@ public final class EvaluationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Evaluation>> getWithResponseAsync(String evaluationId) {
+    public Mono<Response<PersonalizerEvaluation>> getWithResponseAsync(String evaluationId) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), evaluationId, accept, context));
     }
@@ -121,7 +121,7 @@ public final class EvaluationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Evaluation>> getWithResponseAsync(String evaluationId, Context context) {
+    public Mono<Response<PersonalizerEvaluation>> getWithResponseAsync(String evaluationId, Context context) {
         final String accept = "application/json";
         return service.get(this.client.getEndpoint(), evaluationId, accept, context);
     }
@@ -138,7 +138,7 @@ public final class EvaluationsImpl {
      * @return the Offline Evaluation associated with the Id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> getAsync(String evaluationId) {
+    public Mono<PersonalizerEvaluation> getAsync(String evaluationId) {
         return getWithResponseAsync(evaluationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -155,7 +155,7 @@ public final class EvaluationsImpl {
      * @return the Offline Evaluation associated with the Id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> getAsync(String evaluationId, Context context) {
+    public Mono<PersonalizerEvaluation> getAsync(String evaluationId, Context context) {
         return getWithResponseAsync(evaluationId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -171,7 +171,7 @@ public final class EvaluationsImpl {
      * @return the Offline Evaluation associated with the Id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Evaluation get(String evaluationId) {
+    public PersonalizerEvaluation get(String evaluationId) {
         return getAsync(evaluationId).block();
     }
 
@@ -188,7 +188,7 @@ public final class EvaluationsImpl {
      * @return the Offline Evaluation associated with the Id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Evaluation> getWithResponse(String evaluationId, Context context) {
+    public Response<PersonalizerEvaluation> getWithResponse(String evaluationId, Context context) {
         return getWithResponseAsync(evaluationId, context).block();
     }
 
@@ -297,10 +297,10 @@ public final class EvaluationsImpl {
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Evaluation along with {@link Response} on successful completion of {@link Mono}.
+     * @return array of PersonalizerEvaluation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<Evaluation>>> listWithResponseAsync() {
+    public Mono<Response<List<PersonalizerEvaluation>>> listWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), accept, context));
     }
@@ -314,10 +314,10 @@ public final class EvaluationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Evaluation along with {@link Response} on successful completion of {@link Mono}.
+     * @return array of PersonalizerEvaluation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<Evaluation>>> listWithResponseAsync(Context context) {
+    public Mono<Response<List<PersonalizerEvaluation>>> listWithResponseAsync(Context context) {
         final String accept = "application/json";
         return service.list(this.client.getEndpoint(), accept, context);
     }
@@ -329,10 +329,10 @@ public final class EvaluationsImpl {
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Evaluation on successful completion of {@link Mono}.
+     * @return array of PersonalizerEvaluation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<Evaluation>> listAsync() {
+    public Mono<List<PersonalizerEvaluation>> listAsync() {
         return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -345,10 +345,10 @@ public final class EvaluationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Evaluation on successful completion of {@link Mono}.
+     * @return array of PersonalizerEvaluation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<Evaluation>> listAsync(Context context) {
+    public Mono<List<PersonalizerEvaluation>> listAsync(Context context) {
         return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -359,10 +359,10 @@ public final class EvaluationsImpl {
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Evaluation.
+     * @return array of PersonalizerEvaluation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<Evaluation> list() {
+    public List<PersonalizerEvaluation> list() {
         return listAsync().block();
     }
 
@@ -375,10 +375,10 @@ public final class EvaluationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Evaluation along with {@link Response}.
+     * @return array of PersonalizerEvaluation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<Evaluation>> listWithResponse(Context context) {
+    public Response<List<PersonalizerEvaluation>> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
     }
 
@@ -394,8 +394,8 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> createWithResponseAsync(
-            EvaluationContract evaluation) {
+    public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createWithResponseAsync(
+            PersonalizerEvaluationOptions evaluation) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), evaluation, accept, context));
     }
@@ -413,8 +413,8 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> createWithResponseAsync(
-            EvaluationContract evaluation, Context context) {
+    public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createWithResponseAsync(
+            PersonalizerEvaluationOptions evaluation, Context context) {
         final String accept = "application/json";
         return service.create(this.client.getEndpoint(), evaluation, accept, context);
     }
@@ -431,7 +431,7 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> createAsync(EvaluationContract evaluation) {
+    public Mono<PersonalizerEvaluation> createAsync(PersonalizerEvaluationOptions evaluation) {
         return createWithResponseAsync(evaluation).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -448,7 +448,7 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> createAsync(EvaluationContract evaluation, Context context) {
+    public Mono<PersonalizerEvaluation> createAsync(PersonalizerEvaluationOptions evaluation, Context context) {
         return createWithResponseAsync(evaluation, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -464,7 +464,7 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Evaluation create(EvaluationContract evaluation) {
+    public PersonalizerEvaluation create(PersonalizerEvaluationOptions evaluation) {
         return createAsync(evaluation).block();
     }
 
@@ -481,8 +481,8 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<EvaluationsCreateHeaders, Evaluation> createWithResponse(
-            EvaluationContract evaluation, Context context) {
+    public ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation> createWithResponse(
+            PersonalizerEvaluationOptions evaluation, Context context) {
         return createWithResponseAsync(evaluation, context).block();
     }
 }

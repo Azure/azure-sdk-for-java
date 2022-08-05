@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.PolicyReferenceContract;
-import com.azure.ai.personalizer.models.ServiceConfiguration;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
+import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -56,15 +56,15 @@ public final class ServiceConfigurationsImpl {
         @Get("/configurations/service")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<ServiceConfiguration>> get(
+        Mono<Response<PersonalizerServiceProperties>> get(
                 @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/configurations/service")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ServiceConfiguration>> update(
+        Mono<Response<PersonalizerServiceProperties>> update(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") ServiceConfiguration config,
+                @BodyParam("application/json") PersonalizerServiceProperties config,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -73,7 +73,7 @@ public final class ServiceConfigurationsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> applyFromEvaluation(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") PolicyReferenceContract body,
+                @BodyParam("application/json") PersonalizerPolicyReferenceOptions body,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -89,7 +89,7 @@ public final class ServiceConfigurationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> getWithResponseAsync() {
+    public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
     }
@@ -107,7 +107,7 @@ public final class ServiceConfigurationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> getWithResponseAsync(Context context) {
+    public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
         return service.get(this.client.getEndpoint(), accept, context);
     }
@@ -122,7 +122,7 @@ public final class ServiceConfigurationsImpl {
      * @return the Personalizer service configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> getAsync() {
+    public Mono<PersonalizerServiceProperties> getAsync() {
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -138,7 +138,7 @@ public final class ServiceConfigurationsImpl {
      * @return the Personalizer service configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> getAsync(Context context) {
+    public Mono<PersonalizerServiceProperties> getAsync(Context context) {
         return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -152,7 +152,7 @@ public final class ServiceConfigurationsImpl {
      * @return the Personalizer service configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceConfiguration get() {
+    public PersonalizerServiceProperties get() {
         return getAsync().block();
     }
 
@@ -168,7 +168,7 @@ public final class ServiceConfigurationsImpl {
      * @return the Personalizer service configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceConfiguration> getWithResponse(Context context) {
+    public Response<PersonalizerServiceProperties> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
     }
 
@@ -184,7 +184,7 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> updateWithResponseAsync(ServiceConfiguration config) {
+    public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(PersonalizerServiceProperties config) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), config, accept, context));
     }
@@ -202,7 +202,8 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> updateWithResponseAsync(ServiceConfiguration config, Context context) {
+    public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(
+            PersonalizerServiceProperties config, Context context) {
         final String accept = "application/json";
         return service.update(this.client.getEndpoint(), config, accept, context);
     }
@@ -219,7 +220,7 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> updateAsync(ServiceConfiguration config) {
+    public Mono<PersonalizerServiceProperties> updateAsync(PersonalizerServiceProperties config) {
         return updateWithResponseAsync(config).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -236,7 +237,7 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> updateAsync(ServiceConfiguration config, Context context) {
+    public Mono<PersonalizerServiceProperties> updateAsync(PersonalizerServiceProperties config, Context context) {
         return updateWithResponseAsync(config, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -252,7 +253,7 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceConfiguration update(ServiceConfiguration config) {
+    public PersonalizerServiceProperties update(PersonalizerServiceProperties config) {
         return updateAsync(config).block();
     }
 
@@ -269,7 +270,8 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceConfiguration> updateWithResponse(ServiceConfiguration config, Context context) {
+    public Response<PersonalizerServiceProperties> updateWithResponse(
+            PersonalizerServiceProperties config, Context context) {
         return updateWithResponseAsync(config, context).block();
     }
 
@@ -284,7 +286,7 @@ public final class ServiceConfigurationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PolicyReferenceContract body) {
+    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PersonalizerPolicyReferenceOptions body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context));
@@ -302,7 +304,8 @@ public final class ServiceConfigurationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PolicyReferenceContract body, Context context) {
+    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(
+            PersonalizerPolicyReferenceOptions body, Context context) {
         final String accept = "application/json";
         return service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context);
     }
@@ -318,7 +321,7 @@ public final class ServiceConfigurationsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> applyFromEvaluationAsync(PolicyReferenceContract body) {
+    public Mono<Void> applyFromEvaluationAsync(PersonalizerPolicyReferenceOptions body) {
         return applyFromEvaluationWithResponseAsync(body).flatMap(ignored -> Mono.empty());
     }
 
@@ -334,7 +337,7 @@ public final class ServiceConfigurationsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> applyFromEvaluationAsync(PolicyReferenceContract body, Context context) {
+    public Mono<Void> applyFromEvaluationAsync(PersonalizerPolicyReferenceOptions body, Context context) {
         return applyFromEvaluationWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
     }
 
@@ -348,7 +351,7 @@ public final class ServiceConfigurationsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void applyFromEvaluation(PolicyReferenceContract body) {
+    public void applyFromEvaluation(PersonalizerPolicyReferenceOptions body) {
         applyFromEvaluationAsync(body).block();
     }
 
@@ -364,7 +367,7 @@ public final class ServiceConfigurationsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> applyFromEvaluationWithResponse(PolicyReferenceContract body, Context context) {
+    public Response<Void> applyFromEvaluationWithResponse(PersonalizerPolicyReferenceOptions body, Context context) {
         return applyFromEvaluationWithResponseAsync(body, context).block();
     }
 }

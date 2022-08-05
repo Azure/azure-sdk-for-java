@@ -4,8 +4,8 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.RewardRequest;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerRewardOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -54,7 +54,7 @@ public final class EventsImpl {
         Mono<Response<Void>> reward(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("eventId") String eventId,
-                @BodyParam("application/json") RewardRequest reward,
+                @BodyParam("application/json") PersonalizerRewardOptions reward,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -82,7 +82,7 @@ public final class EventsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, RewardRequest reward) {
+    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardOptions reward) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.reward(this.client.getEndpoint(), eventId, reward, accept, context));
@@ -103,7 +103,8 @@ public final class EventsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, RewardRequest reward, Context context) {
+    public Mono<Response<Void>> rewardWithResponseAsync(
+            String eventId, PersonalizerRewardOptions reward, Context context) {
         final String accept = "application/json";
         return service.reward(this.client.getEndpoint(), eventId, reward, accept, context);
     }
@@ -122,7 +123,7 @@ public final class EventsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rewardAsync(String eventId, RewardRequest reward) {
+    public Mono<Void> rewardAsync(String eventId, PersonalizerRewardOptions reward) {
         return rewardWithResponseAsync(eventId, reward).flatMap(ignored -> Mono.empty());
     }
 
@@ -141,7 +142,7 @@ public final class EventsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rewardAsync(String eventId, RewardRequest reward, Context context) {
+    public Mono<Void> rewardAsync(String eventId, PersonalizerRewardOptions reward, Context context) {
         return rewardWithResponseAsync(eventId, reward, context).flatMap(ignored -> Mono.empty());
     }
 
@@ -158,7 +159,7 @@ public final class EventsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reward(String eventId, RewardRequest reward) {
+    public void reward(String eventId, PersonalizerRewardOptions reward) {
         rewardAsync(eventId, reward).block();
     }
 
@@ -177,7 +178,7 @@ public final class EventsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rewardWithResponse(String eventId, RewardRequest reward, Context context) {
+    public Response<Void> rewardWithResponse(String eventId, PersonalizerRewardOptions reward, Context context) {
         return rewardWithResponseAsync(eventId, reward, context).block();
     }
 

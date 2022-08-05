@@ -5,12 +5,12 @@ package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.util.Transforms;
-import com.azure.ai.personalizer.models.MultiSlotRankRequest;
-import com.azure.ai.personalizer.models.MultiSlotRankResponse;
-import com.azure.ai.personalizer.models.MultiSlotRewardRequest;
-import com.azure.ai.personalizer.models.RankRequest;
-import com.azure.ai.personalizer.models.RankResponse;
-import com.azure.ai.personalizer.models.RewardRequest;
+import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
+import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankResult;
+import com.azure.ai.personalizer.models.PersonalizerRewardOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -47,7 +47,7 @@ public final class PersonalizerAsyncClient {
      *     of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RankResponse> rank(RankRequest rankRequest) {
+    public Mono<PersonalizerRankResult> rank(PersonalizerRankOptions rankRequest) {
         return rankWithResponse(rankRequest).flatMap(FluxUtil::toMono);
     }
 
@@ -62,7 +62,7 @@ public final class PersonalizerAsyncClient {
      *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankResponse>> rankWithResponse(RankRequest rankRequest) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest) {
         try {
             return withContext(context -> rankWithResponse(rankRequest, context));
         } catch (RuntimeException ex) {
@@ -82,7 +82,7 @@ public final class PersonalizerAsyncClient {
      *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankResponse>> rankWithResponse(RankRequest rankRequest, Context context) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
         if (rankRequest == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
         }
@@ -140,7 +140,7 @@ public final class PersonalizerAsyncClient {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
-        return service.getEvents().rewardWithResponseAsync(eventId, new RewardRequest().setValue(rewardValue), context)
+        return service.getEvents().rewardWithResponseAsync(eventId, new PersonalizerRewardOptions().setValue(rewardValue), context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -206,7 +206,7 @@ public final class PersonalizerAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MultiSlotRankResponse> rankMultiSlot(MultiSlotRankRequest rankRequest) {
+    public Mono<PersonalizerRankMultiSlotResult> rankMultiSlot(PersonalizerRankMultiSlotOptions rankRequest) {
         return rankMultiSlotWithResponse(rankRequest).flatMap(FluxUtil::toMono);
     }
 
@@ -220,7 +220,7 @@ public final class PersonalizerAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MultiSlotRankResponse>> rankMultiSlotWithResponse(MultiSlotRankRequest rankRequest) {
+    public Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest) {
         try {
             return withContext(context -> rankMultiSlotWithResponse(rankRequest, context));
         } catch (RuntimeException ex) {
@@ -239,7 +239,7 @@ public final class PersonalizerAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MultiSlotRankResponse>> rankMultiSlotWithResponse(MultiSlotRankRequest rankRequest, Context context) {
+    public Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
         if (rankRequest == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
         }
@@ -259,7 +259,7 @@ public final class PersonalizerAsyncClient {
      * @return the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rewardMultiSlot(String eventId, MultiSlotRewardRequest rewardRequest) {
+    public Mono<Void> rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest) {
         return rewardMultiSlotWithResponse(eventId, rewardRequest).flatMap(FluxUtil::toMono);
     }
 
@@ -274,7 +274,7 @@ public final class PersonalizerAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, MultiSlotRewardRequest rewardRequest) {
+    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest) {
         try {
             return withContext(context -> rewardMultiSlotWithResponse(eventId, rewardRequest, context));
         } catch (RuntimeException ex) {
@@ -294,7 +294,7 @@ public final class PersonalizerAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, MultiSlotRewardRequest rewardRequest, Context context) {
+    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }

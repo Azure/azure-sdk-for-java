@@ -5,13 +5,13 @@ package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.util.Transforms;
-import com.azure.ai.personalizer.models.Evaluation;
-import com.azure.ai.personalizer.models.EvaluationContract;
-import com.azure.ai.personalizer.models.LogsProperties;
-import com.azure.ai.personalizer.models.ModelProperties;
-import com.azure.ai.personalizer.models.PolicyContract;
-import com.azure.ai.personalizer.models.PolicyReferenceContract;
-import com.azure.ai.personalizer.models.ServiceConfiguration;
+import com.azure.ai.personalizer.models.PersonalizerEvaluation;
+import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
+import com.azure.ai.personalizer.models.PersonalizerLogProperties;
+import com.azure.ai.personalizer.models.PersonalizerModelProperties;
+import com.azure.ai.personalizer.models.PersonalizerPolicy;
+import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
+import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -44,23 +44,23 @@ public final class PersonalizerAdminAsyncClient {
 
     /**
      * Submit a new Offline Evaluation job.
-     * @param evaluationContract The Offline Evaluation job definition.
+     * @param evaluationOptions The Offline Evaluation job definition.
      * @return a counterfactual evaluation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> createEvaluation(EvaluationContract evaluationContract) {
-        return createEvaluationWithResponse(evaluationContract).flatMap(FluxUtil::toMono);
+    public Mono<PersonalizerEvaluation> createEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+        return createEvaluationWithResponse(evaluationOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Submit a new Offline Evaluation job.
-     * @param evaluationContract The Offline Evaluation job definition.
+     * @param evaluationOptions The Offline Evaluation job definition.
      * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Evaluation>> createEvaluationWithResponse(EvaluationContract evaluationContract) {
+    public Mono<Response<PersonalizerEvaluation>> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions) {
         try {
-            return withContext(context -> createEvaluationWithResponse(evaluationContract, context));
+            return withContext(context -> createEvaluationWithResponse(evaluationOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -68,13 +68,13 @@ public final class PersonalizerAdminAsyncClient {
 
     /**
      * Submit a new Offline Evaluation job.
-     * @param evaluationContract The Offline Evaluation job definition.
+     * @param evaluationOptions The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
      * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
-    Mono<Response<Evaluation>> createEvaluationWithResponse(EvaluationContract evaluationContract, Context context) {
-        Objects.requireNonNull(evaluationContract, "'evaluationContract' is required and can not be null.");
-        return service.getEvaluations().createWithResponseAsync(evaluationContract, context)
+    Mono<Response<PersonalizerEvaluation>> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions, Context context) {
+        Objects.requireNonNull(evaluationOptions, "'evaluationContract' is required and can not be null.");
+        return service.getEvaluations().createWithResponseAsync(evaluationOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -85,7 +85,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the Offline Evaluation associated with the Id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Evaluation> getEvaluation(String evaluationId) {
+    public Mono<PersonalizerEvaluation> getEvaluation(String evaluationId) {
         return getEvaluationWithResponse(evaluationId).flatMap(FluxUtil::toMono);
     }
 
@@ -96,7 +96,7 @@ public final class PersonalizerAdminAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Evaluation>> getEvaluationWithResponse(String evaluationId) {
+    public Mono<Response<PersonalizerEvaluation>> getEvaluationWithResponse(String evaluationId) {
         try {
             return withContext(context -> getEvaluationWithResponse(evaluationId, context));
         } catch (RuntimeException ex) {
@@ -111,7 +111,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    Mono<Response<Evaluation>> getEvaluationWithResponse(String evaluationId, Context context) {
+    Mono<Response<PersonalizerEvaluation>> getEvaluationWithResponse(String evaluationId, Context context) {
         if (CoreUtils.isNullOrEmpty(evaluationId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null or empty"));
         }
@@ -164,7 +164,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return List Evaluations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<Evaluation>> getEvaluations() {
+    public Mono<List<PersonalizerEvaluation>> getEvaluations() {
         return getEvaluationsWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -173,7 +173,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<Evaluation>>> getEvaluationsWithResponse() {
+    public Mono<Response<List<PersonalizerEvaluation>>> getEvaluationsWithResponse() {
         try {
             return withContext(context -> getEvaluationsWithResponse(context));
         } catch (RuntimeException ex) {
@@ -186,7 +186,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<List<Evaluation>>> getEvaluationsWithResponse(Context context) {
+    Mono<Response<List<PersonalizerEvaluation>>> getEvaluationsWithResponse(Context context) {
         return service.getEvaluations().listWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -197,7 +197,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return properties of the Personalizer logs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogsProperties> getLogsProperties() {
+    public Mono<PersonalizerLogProperties> getLogsProperties() {
         return getLogsPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -206,7 +206,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogsProperties>> getLogsPropertiesWithResponse() {
+    public Mono<Response<PersonalizerLogProperties>> getLogsPropertiesWithResponse() {
         try {
             return withContext(context -> getLogsPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
@@ -219,7 +219,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<LogsProperties>> getLogsPropertiesWithResponse(Context context) {
+    Mono<Response<PersonalizerLogProperties>> getLogsPropertiesWithResponse(Context context) {
         return service.getLogs().getPropertiesWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -264,7 +264,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the configuration of the service with the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> updateProperties(ServiceConfiguration configuration) {
+    public Mono<PersonalizerServiceProperties> updateProperties(PersonalizerServiceProperties configuration) {
         return updatePropertiesWithResponse(configuration).flatMap(FluxUtil::toMono);
     }
 
@@ -274,7 +274,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> updatePropertiesWithResponse(ServiceConfiguration configuration) {
+    public Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties configuration) {
         try {
             return withContext(context -> updatePropertiesWithResponse(configuration, context));
         } catch (RuntimeException ex) {
@@ -288,7 +288,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<ServiceConfiguration>> updatePropertiesWithResponse(ServiceConfiguration configuration, Context context) {
+    Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties configuration, Context context) {
         if (configuration == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'configuration' is required and cannot be null"));
         }
@@ -302,7 +302,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return The properties of the personalizer service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceConfiguration> getProperties() {
+    public Mono<PersonalizerServiceProperties> getProperties() {
         return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -312,7 +312,7 @@ public final class PersonalizerAdminAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceConfiguration>> getPropertiesWithResponse() {
+    public Mono<Response<PersonalizerServiceProperties>> getPropertiesWithResponse() {
         try {
             return withContext(context -> getPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
@@ -326,7 +326,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return The properties of the personalizer service along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    Mono<Response<ServiceConfiguration>> getPropertiesWithResponse(Context context) {
+    Mono<Response<PersonalizerServiceProperties>> getPropertiesWithResponse(Context context) {
         return service.getServiceConfigurations().getWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -335,24 +335,24 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceContract Reference to the policy within the evaluation.
+     * @param policyReferenceOptions Reference to the policy within the evaluation.
      * @return the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> applyEvaluation(PolicyReferenceContract policyReferenceContract) {
-        return applyEvaluationWithResponse(policyReferenceContract).flatMap(FluxUtil::toMono);
+    public Mono<Void> applyEvaluation(PersonalizerPolicyReferenceOptions policyReferenceOptions) {
+        return applyEvaluationWithResponse(policyReferenceOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceContract Reference to the policy within the evaluation.
+     * @param policyReferenceOptions Reference to the policy within the evaluation.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyEvaluationWithResponse(PolicyReferenceContract policyReferenceContract) {
+    public Mono<Response<Void>> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions) {
         try {
-            return withContext(context -> applyEvaluationWithResponse(policyReferenceContract, context));
+            return withContext(context -> applyEvaluationWithResponse(policyReferenceOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -361,15 +361,15 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceContract Reference to the policy within the evaluation.
+     * @param policyReferenceOptions Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<Void>> applyEvaluationWithResponse(PolicyReferenceContract policyReferenceContract, Context context) {
-        if (policyReferenceContract == null) {
+    Mono<Response<Void>> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions, Context context) {
+        if (policyReferenceOptions == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'policyReferenceContract' is required and cannot be null"));
         }
-        return service.getServiceConfigurations().applyFromEvaluationWithResponseAsync(policyReferenceContract, context)
+        return service.getServiceConfigurations().applyFromEvaluationWithResponseAsync(policyReferenceOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -379,7 +379,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return properties of the model file generated by Personalizer service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelProperties> getModelProperties() {
+    public Mono<PersonalizerModelProperties> getModelProperties() {
         return getModelPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -389,7 +389,7 @@ public final class PersonalizerAdminAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelProperties>> getModelPropertiesWithResponse() {
+    public Mono<Response<PersonalizerModelProperties>> getModelPropertiesWithResponse() {
         try {
             return withContext(context -> getModelPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
@@ -403,7 +403,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return properties of the model file generated by Personalizer service along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    Mono<Response<ModelProperties>> getModelPropertiesWithResponse(Context context) {
+    Mono<Response<PersonalizerModelProperties>> getModelPropertiesWithResponse(Context context) {
         return service.getModels().getPropertiesWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -414,7 +414,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the Learning Settings currently used by the Personalizer service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> getPolicy() {
+    public Mono<PersonalizerPolicy> getPolicy() {
         return getPolicyWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -423,7 +423,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the Learning Settings currently used by the Personalizer service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> getPolicyWithResponse() {
+    public Mono<Response<PersonalizerPolicy>> getPolicyWithResponse() {
         try {
             return withContext(context -> getPolicyWithResponse(context));
         } catch (RuntimeException ex) {
@@ -436,7 +436,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return the Learning Settings currently used by the Personalizer service along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<PolicyContract>> getPolicyWithResponse(Context context) {
+    Mono<Response<PersonalizerPolicy>> getPolicyWithResponse(Context context) {
         return service.getPolicies().getWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -448,7 +448,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> updatePolicy(PolicyContract policy) {
+    public Mono<PersonalizerPolicy> updatePolicy(PersonalizerPolicy policy) {
         return updatePolicyWithResponse(policy).flatMap(FluxUtil::toMono);
     }
 
@@ -458,7 +458,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> updatePolicyWithResponse(PolicyContract policy) {
+    public Mono<Response<PersonalizerPolicy>> updatePolicyWithResponse(PersonalizerPolicy policy) {
         try {
             return withContext(context -> updatePolicyWithResponse(policy, context));
         } catch (RuntimeException ex) {
@@ -472,7 +472,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<PolicyContract>> updatePolicyWithResponse(PolicyContract policy, Context context) {
+    Mono<Response<PersonalizerPolicy>> updatePolicyWithResponse(PersonalizerPolicy policy, Context context) {
         if (policy == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'policy' is required and cannot be null"));
         }
@@ -486,7 +486,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the new learning settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> resetPolicy() {
+    public Mono<PersonalizerPolicy> resetPolicy() {
         return resetPolicyWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -495,7 +495,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the new learning settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> resetPolicyWithResponse() {
+    public Mono<Response<PersonalizerPolicy>> resetPolicyWithResponse() {
         try {
             return withContext(context -> resetPolicyWithResponse(context));
         } catch (RuntimeException ex) {
@@ -508,7 +508,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return the new learning settings along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<PolicyContract>> resetPolicyWithResponse(Context context) {
+    Mono<Response<PersonalizerPolicy>> resetPolicyWithResponse(Context context) {
         return service.getPolicies().resetWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));

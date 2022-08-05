@@ -3,14 +3,14 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.MultiSlotRankRequest;
-import com.azure.ai.personalizer.models.MultiSlotRankResponse;
-import com.azure.ai.personalizer.models.MultiSlotRewardRequest;
-import com.azure.ai.personalizer.models.RankRequest;
-import com.azure.ai.personalizer.models.RankResponse;
-import com.azure.ai.personalizer.models.RankableAction;
-import com.azure.ai.personalizer.models.SlotRequest;
-import com.azure.ai.personalizer.models.SlotReward;
+import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
+import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankResult;
+import com.azure.ai.personalizer.models.PersonalizerRankableAction;
+import com.azure.ai.personalizer.models.PersonalizerSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerSlotReward;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -40,7 +40,7 @@ public final class PersonalizerClient {
      *     of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RankResponse rank(RankRequest rankRequest) {
+    public PersonalizerRankResult rank(PersonalizerRankOptions rankRequest) {
         return rankWithResponse(rankRequest, Context.NONE).getValue();
     }
 
@@ -56,7 +56,7 @@ public final class PersonalizerClient {
      *     of a Rank request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RankResponse> rankWithResponse(RankRequest rankRequest, Context context) {
+    public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
         return client.rankWithResponse(rankRequest, context).block();
     }
 
@@ -130,8 +130,8 @@ public final class PersonalizerClient {
      * @return List of slot responses for each slot along with eventId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MultiSlotRankResponse rankMultiSlot(List<RankableAction> actions, List<SlotRequest> slots, List<Object> contextFeatures) {
-        MultiSlotRankRequest request = new MultiSlotRankRequest().setActions(actions).setSlots(slots).setContextFeatures(contextFeatures);
+    public PersonalizerRankMultiSlotResult rankMultiSlot(List<PersonalizerRankableAction> actions, List<PersonalizerSlotOptions> slots, List<Object> contextFeatures) {
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(actions).setSlots(slots).setContextFeatures(contextFeatures);
         return rankMultiSlot(request);
     }
 
@@ -145,7 +145,7 @@ public final class PersonalizerClient {
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MultiSlotRankResponse rankMultiSlot(MultiSlotRankRequest rankRequest) {
+    public PersonalizerRankMultiSlotResult rankMultiSlot(PersonalizerRankMultiSlotOptions rankRequest) {
         return rankMultiSlotWithResponse(rankRequest, Context.NONE).getValue();
     }
 
@@ -160,7 +160,7 @@ public final class PersonalizerClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MultiSlotRankResponse> rankMultiSlotWithResponse(MultiSlotRankRequest rankRequest, Context context) {
+    public Response<PersonalizerRankMultiSlotResult> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
         return client.rankMultiSlotWithResponse(rankRequest, context).block();
     }
 
@@ -176,9 +176,9 @@ public final class PersonalizerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rewardMultiSlot(String eventId, String slotId, float reward) {
-        MultiSlotRewardRequest rewardRequest = new MultiSlotRewardRequest().setReward(new ArrayList<SlotReward>() {
+        PersonalizerRewardMultiSlotOptions rewardRequest = new PersonalizerRewardMultiSlotOptions().setReward(new ArrayList<PersonalizerSlotReward>() {
             {
-                add(new SlotReward().setSlotId(slotId).setValue(reward));
+                add(new PersonalizerSlotReward().setSlotId(slotId).setValue(reward));
             }
         });
         rewardMultiSlot(eventId, rewardRequest);
@@ -194,7 +194,7 @@ public final class PersonalizerClient {
      *                      between 0 and 1.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rewardMultiSlot(String eventId, MultiSlotRewardRequest rewardRequest) {
+    public void rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest) {
         rewardMultiSlotWithResponse(eventId, rewardRequest, Context.NONE).getValue();
     }
 
@@ -210,7 +210,7 @@ public final class PersonalizerClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rewardMultiSlotWithResponse(String eventId, MultiSlotRewardRequest rewardRequest, Context context) {
+    public Response<Void> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
         return client.rewardMultiSlotWithResponse(eventId, rewardRequest, context).block();
     }
 

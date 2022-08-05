@@ -4,8 +4,8 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.PolicyContract;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerPolicy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -53,22 +53,22 @@ public final class PoliciesImpl {
         @Get("/configurations/policy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PolicyContract>> get(
+        Mono<Response<PersonalizerPolicy>> get(
                 @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/configurations/policy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PolicyContract>> update(
+        Mono<Response<PersonalizerPolicy>> update(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") PolicyContract policy,
+                @BodyParam("application/json") PersonalizerPolicy policy,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/configurations/policy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PolicyContract>> reset(
+        Mono<Response<PersonalizerPolicy>> reset(
                 @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -83,7 +83,7 @@ public final class PoliciesImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> getWithResponseAsync() {
+    public Mono<Response<PersonalizerPolicy>> getWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
     }
@@ -101,7 +101,7 @@ public final class PoliciesImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> getWithResponseAsync(Context context) {
+    public Mono<Response<PersonalizerPolicy>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
         return service.get(this.client.getEndpoint(), accept, context);
     }
@@ -117,7 +117,7 @@ public final class PoliciesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> getAsync() {
+    public Mono<PersonalizerPolicy> getAsync() {
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -134,7 +134,7 @@ public final class PoliciesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> getAsync(Context context) {
+    public Mono<PersonalizerPolicy> getAsync(Context context) {
         return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -148,7 +148,7 @@ public final class PoliciesImpl {
      * @return the Learning Settings currently used by the Personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContract get() {
+    public PersonalizerPolicy get() {
         return getAsync().block();
     }
 
@@ -164,7 +164,7 @@ public final class PoliciesImpl {
      * @return the Learning Settings currently used by the Personalizer service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContract> getWithResponse(Context context) {
+    public Response<PersonalizerPolicy> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
     }
 
@@ -181,7 +181,7 @@ public final class PoliciesImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> updateWithResponseAsync(PolicyContract policy) {
+    public Mono<Response<PersonalizerPolicy>> updateWithResponseAsync(PersonalizerPolicy policy) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), policy, accept, context));
     }
@@ -200,7 +200,7 @@ public final class PoliciesImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> updateWithResponseAsync(PolicyContract policy, Context context) {
+    public Mono<Response<PersonalizerPolicy>> updateWithResponseAsync(PersonalizerPolicy policy, Context context) {
         final String accept = "application/json";
         return service.update(this.client.getEndpoint(), policy, accept, context);
     }
@@ -217,7 +217,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> updateAsync(PolicyContract policy) {
+    public Mono<PersonalizerPolicy> updateAsync(PersonalizerPolicy policy) {
         return updateWithResponseAsync(policy).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -234,7 +234,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> updateAsync(PolicyContract policy, Context context) {
+    public Mono<PersonalizerPolicy> updateAsync(PersonalizerPolicy policy, Context context) {
         return updateWithResponseAsync(policy, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -250,7 +250,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContract update(PolicyContract policy) {
+    public PersonalizerPolicy update(PersonalizerPolicy policy) {
         return updateAsync(policy).block();
     }
 
@@ -267,7 +267,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContract> updateWithResponse(PolicyContract policy, Context context) {
+    public Response<PersonalizerPolicy> updateWithResponse(PersonalizerPolicy policy, Context context) {
         return updateWithResponseAsync(policy, context).block();
     }
 
@@ -282,7 +282,7 @@ public final class PoliciesImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> resetWithResponseAsync() {
+    public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.reset(this.client.getEndpoint(), accept, context));
     }
@@ -300,7 +300,7 @@ public final class PoliciesImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyContract>> resetWithResponseAsync(Context context) {
+    public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync(Context context) {
         final String accept = "application/json";
         return service.reset(this.client.getEndpoint(), accept, context);
     }
@@ -315,7 +315,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> resetAsync() {
+    public Mono<PersonalizerPolicy> resetAsync() {
         return resetWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -331,7 +331,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyContract> resetAsync(Context context) {
+    public Mono<PersonalizerPolicy> resetAsync(Context context) {
         return resetWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -345,7 +345,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContract reset() {
+    public PersonalizerPolicy reset() {
         return resetAsync().block();
     }
 
@@ -361,7 +361,7 @@ public final class PoliciesImpl {
      * @return learning settings specifying how to train the model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContract> resetWithResponse(Context context) {
+    public Response<PersonalizerPolicy> resetWithResponse(Context context) {
         return resetWithResponseAsync(context).block();
     }
 }

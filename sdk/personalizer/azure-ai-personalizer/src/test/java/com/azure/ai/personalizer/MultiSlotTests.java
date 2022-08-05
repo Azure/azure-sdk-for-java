@@ -39,34 +39,34 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private void rankMultiSlotNullParameters(PersonalizerClient client) {
-        MultiSlotRankRequest request = new MultiSlotRankRequest().setActions(getActions()).setSlots(getSlots());
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots());
         // Action
-        MultiSlotRankResponse response = client.rankMultiSlot(request);
+        PersonalizerRankMultiSlotResult response = client.rankMultiSlot(request);
         // Assert
         assertEquals(getSlots().size(), response.getSlots().size());
         // Assertions for first slot
-        SlotResponse responseSlot1 = response.getSlots().get(0);
+        PersonalizerSlotResult responseSlot1 = response.getSlots().get(0);
         assertEquals(getSlot1().getId(), responseSlot1.getId());
         assertEquals("NewsArticle", responseSlot1.getRewardActionId());
         // Assertions for second slot
-        SlotResponse responseSlot2 = response.getSlots().get(1);
+        PersonalizerSlotResult responseSlot2 = response.getSlots().get(1);
         assertEquals(getSlot2().getId(), responseSlot2.getId());
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
 
     private void rankMultiSlotNoOptions(PersonalizerClient client)
     {
-        MultiSlotRankRequest request = new MultiSlotRankRequest().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures());
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures());
         // Action
-        MultiSlotRankResponse response = client.rankMultiSlot(getActions(), getSlots(), getContextFeatures());
+        PersonalizerRankMultiSlotResult response = client.rankMultiSlot(getActions(), getSlots(), getContextFeatures());
         // Assert
         assertEquals(getSlots().size(), response.getSlots().size());
         // Assertions for first slot
-        SlotResponse responseSlot1 = response.getSlots().get(0);
+        PersonalizerSlotResult responseSlot1 = response.getSlots().get(0);
         assertEquals(getSlot1().getId(), responseSlot1.getId());
         assertEquals("NewsArticle", responseSlot1.getRewardActionId());
         // Assertions for second slot
-        SlotResponse responseSlot2 = response.getSlots().get(1);
+        PersonalizerSlotResult responseSlot2 = response.getSlots().get(1);
         assertEquals(responseSlot2.getId(), responseSlot2.getId());
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
@@ -74,24 +74,24 @@ public class MultiSlotTests extends PersonalizerTestBase {
     private void rankMultiSlot(PersonalizerClient client)
     {
         String eventId = "sdkTestEventId";
-        MultiSlotRankRequest request = new MultiSlotRankRequest().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures()).setEventId(eventId);
+        PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures()).setEventId(eventId);
         // Action
-        MultiSlotRankResponse response = client.rankMultiSlot(request);
+        PersonalizerRankMultiSlotResult response = client.rankMultiSlot(request);
         // Assert
         assertEquals(getSlots().size(), response.getSlots().size());
         // Assertions for first slot
-        SlotResponse responseSlot1 = response.getSlots().get(0);
+        PersonalizerSlotResult responseSlot1 = response.getSlots().get(0);
         assertEquals(getSlot1().getId(), responseSlot1.getId());
         assertEquals("NewsArticle", responseSlot1.getRewardActionId());
         // Assertions for second slot
-        SlotResponse responseSlot2 = response.getSlots().get(1);
+        PersonalizerSlotResult responseSlot2 = response.getSlots().get(1);
         assertEquals(getSlot2().getId(), responseSlot2.getId());
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
 
     private void reward(PersonalizerClient client)
     {
-        SlotReward slotReward = new SlotReward().setSlotId("testSlot1").setValue(1);
+        PersonalizerSlotReward slotReward = new PersonalizerSlotReward().setSlotId("testSlot1").setValue(1);
         client.rewardMultiSlot("123456789", "testSlot1", 1);
     }
 
@@ -105,8 +105,8 @@ public class MultiSlotTests extends PersonalizerTestBase {
         client.activateMultiSlot("123456789");
     }
 
-    private static List<RankableAction> getActions() {
-        ArrayList<RankableAction> actions = new ArrayList<>();
+    private static List<PersonalizerRankableAction> getActions() {
+        ArrayList<PersonalizerRankableAction> actions = new ArrayList<>();
         ArrayList<Object> newsFeatures = new ArrayList<Object>();
         newsFeatures.add(new Object() {
             Object type = "News";
@@ -119,13 +119,13 @@ public class MultiSlotTests extends PersonalizerTestBase {
         entertainmentFeatures.add(new Object() {
             Object type = "News";
         });
-        actions.add(new RankableAction().setId("NewsArticle").setFeatures(newsFeatures));
-        actions.add(new RankableAction().setId("SportsArticle").setFeatures(sportsFeatures));
-        actions.add(new RankableAction().setId("EntertainmentArticle").setFeatures(entertainmentFeatures));
+        actions.add(new PersonalizerRankableAction().setId("NewsArticle").setFeatures(newsFeatures));
+        actions.add(new PersonalizerRankableAction().setId("SportsArticle").setFeatures(sportsFeatures));
+        actions.add(new PersonalizerRankableAction().setId("EntertainmentArticle").setFeatures(entertainmentFeatures));
         return actions;
     }
 
-    private static SlotRequest getSlot1() {
+    private static PersonalizerSlotOptions getSlot1() {
         ArrayList<Object> positionFeatures = new ArrayList<Object>();
         positionFeatures.add(new Object() {
             Object size = "Large";
@@ -137,10 +137,10 @@ public class MultiSlotTests extends PersonalizerTestBase {
                 add("EntertainmentArticle");
             }
         };
-        return new SlotRequest().setId("Main Article").setBaselineAction("NewsArticle").setFeatures(positionFeatures).setExcludedActions(excludedActions);
+        return new PersonalizerSlotOptions().setId("Main Article").setBaselineAction("NewsArticle").setFeatures(positionFeatures).setExcludedActions(excludedActions);
     }
 
-    private static SlotRequest getSlot2() {
+    private static PersonalizerSlotOptions getSlot2() {
         ArrayList<Object> positionFeatures = new ArrayList<Object>();
         positionFeatures.add(new Object() {
             Object size = "Small";
@@ -151,11 +151,11 @@ public class MultiSlotTests extends PersonalizerTestBase {
                 add("EntertainmentArticle");
             }
         };
-        return new SlotRequest().setId("Side Bar").setBaselineAction("SportsArticle").setFeatures(positionFeatures).setExcludedActions(excludedActions);
+        return new PersonalizerSlotOptions().setId("Side Bar").setBaselineAction("SportsArticle").setFeatures(positionFeatures).setExcludedActions(excludedActions);
     }
 
-    private static List<SlotRequest> getSlots() {
-        return new ArrayList<SlotRequest>() {
+    private static List<PersonalizerSlotOptions> getSlots() {
+        return new ArrayList<PersonalizerSlotOptions>() {
             {
                 add(getSlot1());
                 add(getSlot2());

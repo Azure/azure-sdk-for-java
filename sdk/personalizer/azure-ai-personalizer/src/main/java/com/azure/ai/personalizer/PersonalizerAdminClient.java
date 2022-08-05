@@ -3,13 +3,13 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.Evaluation;
-import com.azure.ai.personalizer.models.EvaluationContract;
-import com.azure.ai.personalizer.models.LogsProperties;
-import com.azure.ai.personalizer.models.ModelProperties;
-import com.azure.ai.personalizer.models.PolicyContract;
-import com.azure.ai.personalizer.models.PolicyReferenceContract;
-import com.azure.ai.personalizer.models.ServiceConfiguration;
+import com.azure.ai.personalizer.models.PersonalizerEvaluation;
+import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
+import com.azure.ai.personalizer.models.PersonalizerLogProperties;
+import com.azure.ai.personalizer.models.PersonalizerModelProperties;
+import com.azure.ai.personalizer.models.PersonalizerPolicy;
+import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
+import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -31,23 +31,23 @@ public final class PersonalizerAdminClient {
 
     /**
      * Submit a new Offline Evaluation job.
-     * @param evaluationContract The Offline Evaluation job definition.
+     * @param evaluationOptions The Offline Evaluation job definition.
      * @return a counterfactual evaluation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Evaluation createEvaluation(EvaluationContract evaluationContract) {
-        return createEvaluationWithResponse(evaluationContract, Context.NONE).getValue();
+    public PersonalizerEvaluation createEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+        return createEvaluationWithResponse(evaluationOptions, Context.NONE).getValue();
     }
 
     /**
      * Submit a new Offline Evaluation job.
-     * @param evaluationContract The Offline Evaluation job definition.
+     * @param evaluationOptions The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
      * @return a counterfactual evaluation along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Evaluation> createEvaluationWithResponse(EvaluationContract evaluationContract, Context context) {
-        return client.createEvaluationWithResponse(evaluationContract, context).block();
+    public Response<PersonalizerEvaluation> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions, Context context) {
+        return client.createEvaluationWithResponse(evaluationOptions, context).block();
     }
 
     /**
@@ -56,7 +56,7 @@ public final class PersonalizerAdminClient {
      * @return the Offline Evaluation associated with the Id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Evaluation getEvaluation(String evaluationId) {
+    public PersonalizerEvaluation getEvaluation(String evaluationId) {
         return getEvaluationWithResponse(evaluationId, Context.NONE).getValue();
     }
 
@@ -67,7 +67,7 @@ public final class PersonalizerAdminClient {
      * @return the Offline Evaluation associated with the Id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Evaluation> getEvaluationWithResponse(String evaluationId, Context context) {
+    public Response<PersonalizerEvaluation> getEvaluationWithResponse(String evaluationId, Context context) {
         return client.getEvaluationWithResponse(evaluationId, context).block();
     }
 
@@ -96,7 +96,7 @@ public final class PersonalizerAdminClient {
      * @return List Evaluations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<Evaluation> getEvaluations() {
+    public List<PersonalizerEvaluation> getEvaluations() {
         return getEvaluationsWithResponse(Context.NONE).getValue();
     }
 
@@ -106,7 +106,7 @@ public final class PersonalizerAdminClient {
      * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<Evaluation>> getEvaluationsWithResponse(Context context) {
+    public Response<List<PersonalizerEvaluation>> getEvaluationsWithResponse(Context context) {
         return client.getEvaluationsWithResponse(context).block();
     }
 
@@ -115,7 +115,7 @@ public final class PersonalizerAdminClient {
      * @return properties of the Personalizer logs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsProperties getLogsProperties() {
+    public PersonalizerLogProperties getLogsProperties() {
         return getLogsPropertiesWithResponse(Context.NONE).getValue();
     }
 
@@ -125,7 +125,7 @@ public final class PersonalizerAdminClient {
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsProperties> getLogsPropertiesWithResponse(Context context) {
+    public Response<PersonalizerLogProperties> getLogsPropertiesWithResponse(Context context) {
         return client.getLogsPropertiesWithResponse(context).block();
     }
 
@@ -153,7 +153,7 @@ public final class PersonalizerAdminClient {
      * @return the configuration of the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceConfiguration updateProperties(ServiceConfiguration configuration) {
+    public PersonalizerServiceProperties updateProperties(PersonalizerServiceProperties configuration) {
         return updatePropertiesWithResponse(configuration, Context.NONE).getValue();
     }
 
@@ -164,7 +164,7 @@ public final class PersonalizerAdminClient {
      * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceConfiguration> updatePropertiesWithResponse(ServiceConfiguration configuration, Context context) {
+    public Response<PersonalizerServiceProperties> updatePropertiesWithResponse(PersonalizerServiceProperties configuration, Context context) {
         return client.updatePropertiesWithResponse(configuration, context).block();
     }
 
@@ -173,7 +173,7 @@ public final class PersonalizerAdminClient {
      * @return The properties of the personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceConfiguration getProperties() {
+    public PersonalizerServiceProperties getProperties() {
         return getPropertiesWithResponse(Context.NONE).getValue();
     }
 
@@ -183,7 +183,7 @@ public final class PersonalizerAdminClient {
      * @return The properties of the personalizer service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceConfiguration> getPropertiesWithResponse(Context context) {
+    public Response<PersonalizerServiceProperties> getPropertiesWithResponse(Context context) {
         return client.getPropertiesWithResponse(context).block();
     }
 
@@ -191,23 +191,23 @@ public final class PersonalizerAdminClient {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceContract Reference to the policy within the evaluation.
+     * @param policyReferenceOptions Reference to the policy within the evaluation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void applyEvaluation(PolicyReferenceContract policyReferenceContract) {
-        applyEvaluationWithResponse(policyReferenceContract, Context.NONE).getValue();
+    public void applyEvaluation(PersonalizerPolicyReferenceOptions policyReferenceOptions) {
+        applyEvaluationWithResponse(policyReferenceOptions, Context.NONE).getValue();
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceContract Reference to the policy within the evaluation.
+     * @param policyReferenceOptions Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> applyEvaluationWithResponse(PolicyReferenceContract policyReferenceContract, Context context) {
-        return client.applyEvaluationWithResponse(policyReferenceContract, context).block();
+    public Response<Void> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions, Context context) {
+        return client.applyEvaluationWithResponse(policyReferenceOptions, context).block();
     }
 
     /**
@@ -215,7 +215,7 @@ public final class PersonalizerAdminClient {
      * @return properties of the model file generated by Personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelProperties getModelProperties() {
+    public PersonalizerModelProperties getModelProperties() {
         return getModelPropertiesWithResponse(Context.NONE).getValue();
     }
 
@@ -225,7 +225,7 @@ public final class PersonalizerAdminClient {
      * @return properties of the model file generated by Personalizer service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelProperties> getModelPropertiesWithResponse(Context context) {
+    public Response<PersonalizerModelProperties> getModelPropertiesWithResponse(Context context) {
         return client.getModelPropertiesWithResponse(context).block();
     }
 
@@ -234,7 +234,7 @@ public final class PersonalizerAdminClient {
      * @return the Learning Settings currently used by the Personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContract getPolicy() {
+    public PersonalizerPolicy getPolicy() {
         return getPolicyWithResponse(Context.NONE).getValue();
     }
 
@@ -244,7 +244,7 @@ public final class PersonalizerAdminClient {
      * @return the Learning Settings currently used by the Personalizer service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContract> getPolicyWithResponse(Context context) {
+    public Response<PersonalizerPolicy> getPolicyWithResponse(Context context) {
         return client.getPolicyWithResponse(context).block();
     }
 
@@ -254,7 +254,7 @@ public final class PersonalizerAdminClient {
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContract updatePolicy(PolicyContract policy) {
+    public PersonalizerPolicy updatePolicy(PersonalizerPolicy policy) {
         return updatePolicyWithResponse(policy, Context.NONE).getValue();
     }
 
@@ -265,7 +265,7 @@ public final class PersonalizerAdminClient {
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContract> updatePolicyWithResponse(PolicyContract policy, Context context) {
+    public Response<PersonalizerPolicy> updatePolicyWithResponse(PersonalizerPolicy policy, Context context) {
         return client.updatePolicyWithResponse(policy, context).block();
     }
 
@@ -274,7 +274,7 @@ public final class PersonalizerAdminClient {
      * @return the new learning settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContract resetPolicy() {
+    public PersonalizerPolicy resetPolicy() {
         return resetPolicyWithResponse(Context.NONE).getValue();
     }
 
@@ -284,7 +284,7 @@ public final class PersonalizerAdminClient {
      * @return the new learning settings along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyContract> resetPolicyWithResponse(Context context) {
+    public Response<PersonalizerPolicy> resetPolicyWithResponse(Context context) {
         return client.resetPolicyWithResponse(context).block();
     }
 

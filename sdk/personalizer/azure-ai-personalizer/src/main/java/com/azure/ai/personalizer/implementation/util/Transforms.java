@@ -3,8 +3,8 @@
 
 package com.azure.ai.personalizer.implementation.util;
 
-import com.azure.ai.personalizer.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.PersonalizerError;
+import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.implementation.models.PersonalizerError;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 
@@ -29,7 +29,7 @@ public class Transforms {
         if (error == null) {
             return null;
         }
-        com.azure.ai.personalizer.models.InternalError innerError = error.getInnerError();
+        com.azure.ai.personalizer.implementation.models.InternalError innerError = error.getInnerError();
         String message = error.getMessage();
         StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
 

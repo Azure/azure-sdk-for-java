@@ -3,8 +3,8 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.PolicyContract;
-import com.azure.ai.personalizer.models.ServiceConfiguration;
+import com.azure.ai.personalizer.models.PersonalizerPolicy;
+import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -78,12 +78,12 @@ public abstract class PersonalizerTestBase extends TestBase {
     }
 
     private void enableMultiSlot(PersonalizerAdminClient adminClient) {
-        ServiceConfiguration configuration = adminClient.getProperties();
+        PersonalizerServiceProperties configuration = adminClient.getProperties();
         configuration.setIsAutoOptimizationEnabled(false);
         adminClient.updateProperties(configuration);
         //sleep 30 seconds to allow settings to propagate
         sleepIfRunningAgainstService(30000);
-        adminClient.updatePolicy(new PolicyContract().setName("multislot").setArguments("--ccb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::"));
+        adminClient.updatePolicy(new PersonalizerPolicy().setName("multislot").setArguments("--ccb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::"));
         //sleep 30 seconds to allow settings to propagate
         sleepIfRunningAgainstService(30000);
     }
