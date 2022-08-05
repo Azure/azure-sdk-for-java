@@ -334,7 +334,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"})
     public void requestSessionTokenDiagnostics() {
         CosmosClient testSessionTokenClient = null;
         try {
@@ -370,9 +370,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             internalObjectNode = getInternalObjectNode();
             batch.createItemOperation(internalObjectNode);
             CosmosBatchResponse batchResponse = cosmosContainer.executeCosmosBatch(batch,
-                new CosmosBatchRequestOptions().setSessionToken("0:-1#2"));
+                new CosmosBatchRequestOptions().setSessionToken(readResponse.getSessionToken()));
             diagnostics = batchResponse.getDiagnostics().toString();
-            assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"",
+                readResponse.getSessionToken()));
 
         } finally {
             if (testSessionTokenClient != null) {
