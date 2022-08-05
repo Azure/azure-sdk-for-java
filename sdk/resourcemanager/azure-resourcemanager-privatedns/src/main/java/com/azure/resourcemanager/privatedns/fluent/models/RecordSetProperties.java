@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.privatedns.models.PtrRecord;
 import com.azure.resourcemanager.privatedns.models.SoaRecord;
 import com.azure.resourcemanager.privatedns.models.SrvRecord;
 import com.azure.resourcemanager.privatedns.models.TxtRecord;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** Represents the properties of the records in the record set. */
 @Fluent
 public final class RecordSetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetProperties.class);
-
     /*
      * The metadata attached to the record set.
      */
@@ -45,8 +41,7 @@ public final class RecordSetProperties {
     private String fqdn;
 
     /*
-     * Is the record set auto-registered in the Private DNS zone through a
-     * virtual network link?
+     * Is the record set auto-registered in the Private DNS zone through a virtual network link?
      */
     @JsonProperty(value = "isAutoRegistered", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutoRegistered;
