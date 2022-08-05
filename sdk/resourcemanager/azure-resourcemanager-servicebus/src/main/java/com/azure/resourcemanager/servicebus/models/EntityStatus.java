@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EntityStatus. */
+/** Entity status. */
 public enum EntityStatus {
     /** Enum value Active. */
     ACTIVE("Active"),
@@ -51,6 +51,9 @@ public enum EntityStatus {
      */
     @JsonCreator
     public static EntityStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EntityStatus[] items = EntityStatus.values();
         for (EntityStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,6 +63,7 @@ public enum EntityStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

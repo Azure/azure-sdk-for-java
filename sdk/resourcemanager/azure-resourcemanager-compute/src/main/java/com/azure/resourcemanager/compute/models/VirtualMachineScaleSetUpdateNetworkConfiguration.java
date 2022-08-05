@@ -20,9 +20,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     private String name;
 
     /*
-     * Describes a virtual machine scale set updatable network profile's IP
-     * configuration.Use this object for updating network profile's IP
-     * Configuration.
+     * Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating
+     * network profile's IP Configuration.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties;

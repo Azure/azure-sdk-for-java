@@ -11,11 +11,11 @@ import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -105,7 +105,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -156,7 +156,7 @@ public final class DocumentAnalysisAsyncClient {
      * that may be passed when analyzing documents.
      * @return A {@link PollerFlux} that polls progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -256,7 +256,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
@@ -313,7 +313,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
@@ -417,8 +417,8 @@ public final class DocumentAnalysisAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                throw logger.logExceptionAsError(
-                    Transforms.toDocumentModelOperationException(analyzeResultOperationResponse.getValue().getError()));
+                throw logger.logExceptionAsError(Transforms
+                    .mapResponseErrorToHttpResponseException(analyzeResultOperationResponse.getValue().getError()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeResultOperationResponse.getValue().getStatus().toString(), true);
