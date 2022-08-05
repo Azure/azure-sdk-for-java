@@ -578,18 +578,18 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     private void executeTestCase(TestScenario scenario) {
         TestScenarioExpectations expected =
             this.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT ?
-                scenario.Direct : this.getClientBuilder().getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORT) ?
-                    scenario.ComputeGateway : scenario.Gateway;
+                scenario.direct : this.getClientBuilder().getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORT) ?
+                    scenario.computeGateway : scenario.gateway;
 
-        logger.info("Scenario: {}, Id: \"{}\"", scenario.Name, scenario.Id);
+        logger.info("Scenario: {}, Id: \"{}\"", scenario.name, scenario.id);
 
         try {
             CosmosItemResponse<ObjectNode> response = this.container.createItem(
-                getDocumentDefinition(scenario.Id),
-                new PartitionKey(scenario.Id),
+                getDocumentDefinition(scenario.id),
+                new PartitionKey(scenario.id),
                 null);
 
-            deserializeAndValidatePayload(response, scenario.Id, expected.ExpectedCreateStatusCode);
+            deserializeAndValidatePayload(response, scenario.id, expected.ExpectedCreateStatusCode);
         } catch (Throwable throwable) {
             CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
             if (cosmosError == null) {
@@ -608,11 +608,11 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
 
         try {
             CosmosItemResponse<ObjectNode> response = this.container.readItem(
-                scenario.Id,
-                new PartitionKey(scenario.Id),
+                scenario.id,
+                new PartitionKey(scenario.id),
                 ObjectNode.class);
 
-            deserializeAndValidatePayload(response, scenario.Id, expected.ExpectedReadStatusCode);
+            deserializeAndValidatePayload(response, scenario.id, expected.ExpectedReadStatusCode);
         } catch (Throwable throwable) {
             CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
             if (cosmosError == null) {
@@ -634,12 +634,12 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
 
         try {
             CosmosItemResponse<ObjectNode> response = this.container.replaceItem(
-                getDocumentDefinition(scenario.Id),
-                scenario.Id,
-                new PartitionKey(scenario.Id),
+                getDocumentDefinition(scenario.id),
+                scenario.id,
+                new PartitionKey(scenario.id),
                 null);
 
-            deserializeAndValidatePayload(response, scenario.Id, expected.ExpectedReplaceStatusCode);
+            deserializeAndValidatePayload(response, scenario.id, expected.ExpectedReplaceStatusCode);
         } catch (Throwable throwable) {
             CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
             if (cosmosError == null) {
@@ -652,8 +652,8 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
 
         try {
             CosmosItemResponse<Object> response = this.container.deleteItem(
-                scenario.Id,
-                new PartitionKey(scenario.Id),
+                scenario.id,
+                new PartitionKey(scenario.id),
                 (CosmosItemRequestOptions)null);
 
             assertThat(response.getStatusCode()).isEqualTo(expected.ExpectedDeleteStatusCode);
@@ -730,21 +730,21 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             TestScenarioExpectations computeGateway,
             TestScenarioExpectations direct) {
 
-            this.Name = name;
-            this.Id = id;
-            this.Gateway = gateway;
-            this.ComputeGateway = computeGateway;
-            this.Direct = direct;
+            this.name = name;
+            this.id = id;
+            this.gateway = gateway;
+            this.computeGateway = computeGateway;
+            this.direct = direct;
         }
 
-        public String Name;
+        public String name;
 
-        public String Id;
+        public String id;
 
-        public TestScenarioExpectations Gateway;
+        public TestScenarioExpectations gateway;
 
-        public TestScenarioExpectations ComputeGateway;
+        public TestScenarioExpectations computeGateway;
 
-        public TestScenarioExpectations Direct;
+        public TestScenarioExpectations direct;
     }
 }
