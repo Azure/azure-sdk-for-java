@@ -5,21 +5,21 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
+import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DocumentModelAdministrationClientTest extends DocumentModelAdministrationClientTestBase {
+public class DocumentModelAdminClientTest extends DocumentModelAdministrationClientTestBase {
     private DocumentModelAdministrationClient client;
 
     private DocumentModelAdministrationClient getDocumentModelAdministrationClient(HttpClient httpClient,
@@ -94,10 +94,10 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     public void getModelWithResponse(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
-            DocumentModelInfo documentModelDetails =
+            DocumentModelDetails documentModelDetails =
                 client.beginBuildModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode).getFinalResult();
-            Response<DocumentModelInfo> documentModelResponse =
+            Response<DocumentModelDetails> documentModelResponse =
                 client.getModelWithResponse(documentModelDetails.getModelId(),
                     Context.NONE);
             client.deleteModel(documentModelDetails.getModelId());
@@ -112,9 +112,9 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void validGetResourceInfo(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+    public void validGetResourceDetails(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        validateResourceInfo(client.getResourceInfo());
+        validateResourceInfo(client.getResourceDetails());
     }
 
     /**
@@ -122,12 +122,12 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void validGetResourceInfoWithResponse(HttpClient httpClient,
-                                                      DocumentAnalysisServiceVersion serviceVersion) {
+    public void validGetResourceDetailsWithResponse(HttpClient httpClient,
+                                                 DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        Response<ResourceInfo> resourceInfoResponse = client.getResourceInfoWithResponse(Context.NONE);
-        assertEquals(resourceInfoResponse.getStatusCode(), HttpResponseStatus.OK.code());
-        validateResourceInfo(resourceInfoResponse.getValue());
+        Response<ResourceDetails> resourceDetailsResponse = client.getResourceDetailsWithResponse(Context.NONE);
+        assertEquals(resourceDetailsResponse.getStatusCode(), HttpResponseStatus.OK.code());
+        validateResourceInfo(resourceDetailsResponse.getValue());
     }
 
     /**
@@ -149,11 +149,11 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller =
+            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller =
                 client.beginBuildModel(trainingDataSasUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            DocumentModelInfo createdModel = syncPoller.getFinalResult();
+            DocumentModelDetails createdModel = syncPoller.getFinalResult();
 
             final Response<Void> deleteModelWithResponse
                 = client.deleteModelWithResponse(createdModel.getModelId(), Context.NONE);
@@ -220,7 +220,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.beginBuildModel(null, DocumentModelBuildMode.TEMPLATE));
-        assertEquals("'trainingFilesUrl' cannot be null.", exception.getMessage());
+        assertEquals("'blobContainerUrl' cannot be null.", exception.getMessage());
     }
 
     /**
@@ -231,18 +231,18 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     public void beginCopy(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller =
+            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller =
                 client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            DocumentModelInfo actualModel = syncPoller.getFinalResult();
+            DocumentModelDetails actualModel = syncPoller.getFinalResult();
 
             CopyAuthorization target =
                 client.getCopyAuthorization();
-            SyncPoller<DocumentOperationResult, DocumentModelInfo>
+            SyncPoller<DocumentOperationResult, DocumentModelDetails>
                 copyPoller = client.beginCopyModelTo(actualModel.getModelId(), target)
                 .setPollInterval(durationTestMode);
-            DocumentModelInfo copiedModel = copyPoller.getFinalResult();
+            DocumentModelDetails copiedModel = copyPoller.getFinalResult();
 
             Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
             client.deleteModel(actualModel.getModelId());
@@ -269,7 +269,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
+            SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                 client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -287,7 +287,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                                                            DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
-            SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
+            SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                 client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -303,13 +303,16 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginBuildModelFailsWithInvalidPrefix(HttpClient httpClient,
-                                                              DocumentAnalysisServiceVersion serviceVersion) {
+                                                      DocumentAnalysisServiceVersion serviceVersion) {
 
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
-                        new BuildModelOptions().setPrefix("invalidPrefix")
+                client.beginBuildModel(trainingFilesUrl,
+                        DocumentModelBuildMode.TEMPLATE,
+                        "invalidPrefix",
+                        null,
+                        Context.NONE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError  = (ResponseError) exception.getValue();
@@ -328,7 +331,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl.setPrefix("subfolders"), DocumentModelBuildMode.TEMPLATE)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "subfolders", null, Context.NONE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError = (ResponseError) exception.getValue();
@@ -344,25 +347,25 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     public void beginCreateComposedModel(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
-                    new BuildModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()), Context.NONE)
+            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()), Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller1.waitForCompletion();
-            DocumentModelInfo createdModel1 = syncPoller1.getFinalResult();
+            DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
-            SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
-                    new BuildModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()), Context.NONE)
+            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller2 =
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()), Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller2.waitForCompletion();
-            DocumentModelInfo createdModel2 = syncPoller2.getFinalResult();
+            DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
 
             final List<String> modelIDList = Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId());
 
-            DocumentModelInfo composedModel =
-                client.beginCreateComposedModel(modelIDList,
-                        new CreateComposedModelOptions().setModelId("sync_java_composed_model" + UUID.randomUUID())
+            DocumentModelDetails composedModel =
+                client.beginComposeModel(modelIDList,
+                        new ComposeModelOptions().setModelId("sync_java_composed_model" + UUID.randomUUID())
                             .setDescription("test desc"),
                         Context.NONE)
                     .setPollInterval(durationTestMode)
@@ -370,8 +373,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
 
             assertNotNull(composedModel.getModelId());
             assertEquals("test desc", composedModel.getDescription());
-            assertEquals(2, composedModel.getDocTypes().size());
-            composedModel.getDocTypes().forEach((key, documentTypeDetails) -> {
+            assertEquals(2, composedModel.getDocumentTypes().size());
+            composedModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
                 if (key.contains("sync_component_model_1") || key.contains("sync_component_model_2")) {
                     assert true;
                 } else {
