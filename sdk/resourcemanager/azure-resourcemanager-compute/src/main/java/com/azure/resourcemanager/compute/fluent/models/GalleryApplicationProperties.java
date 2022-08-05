@@ -14,8 +14,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class GalleryApplicationProperties {
     /*
-     * The description of this gallery Application Definition resource. This
-     * property is updatable.
+     * The description of this gallery Application Definition resource. This property is updatable.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -39,17 +38,15 @@ public final class GalleryApplicationProperties {
     private String releaseNoteUri;
 
     /*
-     * The end of life date of the gallery Application Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
+     * The end of life date of the gallery Application Definition. This property can be used for decommissioning
+     * purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This property allows you to specify the supported type of the OS that
-     * application is built for. <br><br> Possible values are: <br><br>
-     * **Windows** <br><br> **Linux**
+     * This property allows you to specify the supported type of the OS that application is built for. <br><br>
+     * Possible values are: <br><br> **Windows** <br><br> **Linux**
      */
     @JsonProperty(value = "supportedOSType", required = true)
     private OperatingSystemTypes supportedOSType;

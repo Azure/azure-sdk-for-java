@@ -17,8 +17,7 @@ public final class DedicatedHostAllocatableVM {
     private String vmSize;
 
     /*
-     * Maximum number of VMs of size vmSize that can fit in the dedicated
-     * host's remaining capacity.
+     * Maximum number of VMs of size vmSize that can fit in the dedicated host's remaining capacity.
      */
     @JsonProperty(value = "count")
     private Double count;

@@ -31,10 +31,9 @@ public final class AvailabilitySetInner extends Resource {
     private AvailabilitySetProperties innerProperties;
 
     /*
-     * Sku of the availability set, only name is required to be set. See
-     * AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
-     * virtual machines with managed disks and 'Classic' for virtual machines
-     * with unmanaged disks. Default value is 'Classic'.
+     * Sku of the availability set, only name is required to be set. See AvailabilitySetSkuTypes for possible set of
+     * values. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged
+     * disks. Default value is 'Classic'.
      */
     @JsonProperty(value = "sku")
     private Sku sku;

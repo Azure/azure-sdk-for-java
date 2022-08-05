@@ -20,8 +20,7 @@ public final class GalleryList {
     private List<GalleryInner> value;
 
     /*
-     * The uri to fetch the next page of galleries. Call ListNext() with this
-     * to fetch the next page of galleries.
+     * The uri to fetch the next page of galleries. Call ListNext() with this to fetch the next page of galleries.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
