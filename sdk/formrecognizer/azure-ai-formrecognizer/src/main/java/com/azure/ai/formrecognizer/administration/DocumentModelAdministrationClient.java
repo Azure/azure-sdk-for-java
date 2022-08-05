@@ -16,11 +16,11 @@ import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -111,7 +111,7 @@ public final class DocumentModelAdministrationClient {
      * for more information on building mode for custom documents.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -175,7 +175,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -374,7 +374,7 @@ public final class DocumentModelAdministrationClient {
      * @param componentModelIds The list of models IDs to form the composed model.
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -433,7 +433,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */

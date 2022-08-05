@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class RoleInstances {
     /*
-     * List of cloud service role instance names. Value of '*' will signify all
-     * role instances of the cloud service.
+     * List of cloud service role instance names. Value of '*' will signify all role instances of the cloud service.
      */
     @JsonProperty(value = "roleInstances", required = true)
     private List<String> roleInstances;

@@ -7,11 +7,11 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeResultOperation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -79,7 +79,7 @@ public final class DocumentAnalysisClient {
      *
      * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -123,7 +123,7 @@ public final class DocumentAnalysisClient {
      *
      * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -168,7 +168,7 @@ public final class DocumentAnalysisClient {
      *
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation}returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation}returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
@@ -215,7 +215,7 @@ public final class DocumentAnalysisClient {
      *
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */

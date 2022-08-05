@@ -12,28 +12,24 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetStorageProfile {
     /*
-     * Specifies information about the image to use. You can specify
-     * information about platform images, marketplace images, or virtual
-     * machine images. This element is required when you want to use a platform
-     * image, marketplace image, or virtual machine image, but is not used in
-     * other creation operations.
+     * Specifies information about the image to use. You can specify information about platform images, marketplace
+     * images, or virtual machine images. This element is required when you want to use a platform image, marketplace
+     * image, or virtual machine image, but is not used in other creation operations.
      */
     @JsonProperty(value = "imageReference")
     private ImageReference imageReference;
 
     /*
-     * Specifies information about the operating system disk used by the
-     * virtual machines in the scale set. <br><br> For more information about
-     * disks, see [About disks and VHDs for Azure virtual
+     * Specifies information about the operating system disk used by the virtual machines in the scale set. <br><br>
+     * For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "osDisk")
     private VirtualMachineScaleSetOSDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add data disks to the virtual
-     * machines in the scale set. <br><br> For more information about disks,
-     * see [About disks and VHDs for Azure virtual
+     * Specifies the parameters that are used to add data disks to the virtual machines in the scale set. <br><br> For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "dataDisks")
