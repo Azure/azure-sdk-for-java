@@ -74,9 +74,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         AsyncLazyWithRefresh<TValue> initialLazyValue = values.get(key);
         if (initialLazyValue != null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("cache[{}] exists", key);
-            }
+            logger.debug("cache[{}] exists", key);
 
             return initialLazyValue.getValueAsync().flatMap(value -> {
                 if(!forceRefresh.apply(value)) {
@@ -87,9 +85,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
                 return refreshMono.onErrorResume(
                     (exception) -> {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("refresh cache [{}] resulted in error", key, exception);
-                        }
+                        logger.debug("refresh cache [{}] resulted in error", key, exception);
 
                         if (initialLazyValue.shouldRemoveFromCache()) {
                             // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
