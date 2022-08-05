@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @TestPropertySource(properties =
     {
     "spring.cloud.stream.eventhubs.bindings.supply-out-0.producer.sync=true",

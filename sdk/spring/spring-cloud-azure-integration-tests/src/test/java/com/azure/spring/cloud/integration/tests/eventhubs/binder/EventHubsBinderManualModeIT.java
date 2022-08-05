@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @TestPropertySource(properties =
     {
     "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL",

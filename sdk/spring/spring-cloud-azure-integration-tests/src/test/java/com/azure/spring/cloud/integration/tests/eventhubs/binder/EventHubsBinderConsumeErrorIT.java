@@ -25,7 +25,7 @@ import java.util.concurrent.Exchanger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @TestPropertySource(properties = {
     "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-message",

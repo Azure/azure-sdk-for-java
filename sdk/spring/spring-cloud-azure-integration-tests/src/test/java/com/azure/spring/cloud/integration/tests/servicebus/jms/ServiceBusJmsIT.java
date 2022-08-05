@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.Exchanger;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-jms")
 public class ServiceBusJmsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsIT.class);

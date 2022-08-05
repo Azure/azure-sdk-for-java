@@ -31,9 +31,10 @@ import java.util.concurrent.CountDownLatch;
 @ActiveProfiles("servicebus")
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
+    private static final String DATA1 = "service bus test1";
+    private static final String DATA2 = "service bus test2";
     private static CountDownLatch LATCH = new CountDownLatch(1);
     private static String MESSAGE = "";
-    private final String data = "service bus test";
 
     @Autowired
     private ServiceBusSenderClient senderClient;
@@ -64,17 +65,19 @@ public class ServiceBusIT {
     @Test
     public void testServiceBusOperation() throws InterruptedException {
         LOGGER.info("ServiceBusIT begin.");
-        senderClient.sendMessage(new ServiceBusMessage(data));
+        senderClient.sendMessage(new ServiceBusMessage(DATA1));
+        senderClient.sendMessage(new ServiceBusMessage(DATA2));
         senderClient.close();
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
         if (receivedMessages.stream().iterator().hasNext()) {
             ServiceBusReceivedMessage message = receivedMessages.stream().iterator().next();
-            Assertions.assertEquals(data, message.getBody().toString());
+            Assertions.assertEquals(DATA1, message.getBody().toString());
+            receiverClient.complete(message);
         }
         processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
         LATCH.await();
-        Assertions.assertEquals(data, MESSAGE);
+        Assertions.assertEquals(DATA2, MESSAGE);
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
         LOGGER.info("ServiceBusIT end.");

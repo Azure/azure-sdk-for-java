@@ -34,9 +34,9 @@ import java.util.concurrent.CountDownLatch;
 @ActiveProfiles("eventhubs")
 public class EventHubsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsIT.class);
+    private static final String DATA = "eventhub test";
     private static CountDownLatch LATCH = new CountDownLatch(1);
     private static String MESSAGE = "";
-    private final String data = "eventhub test";
 
     @Autowired
     private EventHubProducerClient producerClient;
@@ -70,14 +70,14 @@ public class EventHubsIT {
         LOGGER.info("EventHubsIT begin.");
         processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
-        producerClient.send(Arrays.asList(new EventData(data)));
+        producerClient.send(Arrays.asList(new EventData(DATA)));
         producerClient.close();
         IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("0", 1, EventPosition.earliest());
         for (PartitionEvent event : events) {
-            Assertions.assertEquals(data, event.getData().getBodyAsString());
+            Assertions.assertEquals(DATA, event.getData().getBodyAsString());
         }
         LATCH.await();
-        Assertions.assertEquals(data, MESSAGE);
+        Assertions.assertEquals(DATA, MESSAGE);
         LOGGER.info("EventHubsIT end.");
     }
 }

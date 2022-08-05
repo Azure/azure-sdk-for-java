@@ -7,5 +7,3 @@ spring:
         namespace: ${AZURE_SERVICE_BUS_NAMESPACE}
         entity-name: ${AZURE_SERVICE_BUS_ENTITY_NAME}
         entity-type: ${AZURE_SERVICE_BUS_ENTITY_TYPE}
-    stream:
-      default-binder: servicebus

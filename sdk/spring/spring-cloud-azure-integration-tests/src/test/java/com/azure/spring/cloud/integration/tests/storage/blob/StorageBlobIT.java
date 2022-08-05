@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("storage-blob")
 public class StorageBlobIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobIT.class);
