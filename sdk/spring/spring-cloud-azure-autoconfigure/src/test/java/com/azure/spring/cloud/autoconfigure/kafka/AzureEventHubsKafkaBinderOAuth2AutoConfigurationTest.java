@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
+class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class, BinderFactoryAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class, BinderFactoryAutoConfiguration.class))
             // Required by the init method of BindingServiceProperties
             .withBean(IntegrationUtils.INTEGRATION_CONVERSION_SERVICE_BEAN_NAME, ConversionServiceFactoryBean.class,
                     ConversionServiceFactoryBean::new);
@@ -32,10 +32,10 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
     @Test
     void shouldNotConfigureWithoutKafkaBinderConfigurationClass() {
         new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class))
+                .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class))
                 .withClassLoader(new FilteredClassLoader(KafkaBinderConfiguration.class))
                 .run(context -> {
-                    assertThat(context).doesNotHaveBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
+                    assertThat(context).doesNotHaveBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).doesNotHaveBean(BindingServicePropertiesBeanPostProcessor.class);
                 });
     }
@@ -44,7 +44,7 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
     void shouldConfigureWithKafkaBinderConfigurationClass() {
         this.contextRunner
                 .run(context -> {
-                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
@@ -57,7 +57,7 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
         this.contextRunner
                 .withPropertyValues("spring.cloud.stream.binders.kafka.environment.key=value")
                 .run(context -> {
-                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
@@ -70,7 +70,7 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
         this.contextRunner
                 .withPropertyValues("spring.cloud.stream.binders.custom-binder.type=kafka")
                 .run(context -> {
-                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
@@ -87,7 +87,7 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
                         "spring.cloud.stream.binders.rabbit-binder.environment.key=value"
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
@@ -102,7 +102,7 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
     void shouldAppendOriginalSources() {
 
         new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class))
+                .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class))
                 .withBean(IntegrationUtils.INTEGRATION_CONVERSION_SERVICE_BEAN_NAME, ConversionServiceFactoryBean.class,
                         ConversionServiceFactoryBean::new)
                 .withBean(BindingServiceProperties.class, () -> {
@@ -113,7 +113,7 @@ class BindingServicePropertiesBeanPostProcessorAutoConfigurationTest {
                     return bindingServiceProperties;
                 })
                 .run(context -> {
-                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessorAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
