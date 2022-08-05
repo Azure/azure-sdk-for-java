@@ -154,6 +154,13 @@ public interface ServiceResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner object.
      *
      * @return the inner object.

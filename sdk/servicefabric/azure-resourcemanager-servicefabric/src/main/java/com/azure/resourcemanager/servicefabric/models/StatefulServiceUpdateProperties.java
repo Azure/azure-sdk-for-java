@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("Stateful")
 @Fluent
 public final class StatefulServiceUpdateProperties extends ServiceResourceUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatefulServiceUpdateProperties.class);
-
     /*
      * The target replica set size as a number.
      */
@@ -34,22 +30,22 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     private Integer minReplicaSetSize;
 
     /*
-     * The duration between when a replica goes down and when a new replica is
-     * created, represented in ISO 8601 format (hh:mm:ss.s).
+     * The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format
+     * (hh:mm:ss.s).
      */
     @JsonProperty(value = "replicaRestartWaitDuration")
     private OffsetDateTime replicaRestartWaitDuration;
 
     /*
-     * The maximum duration for which a partition is allowed to be in a state
-     * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
+     * The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601
+     * format (hh:mm:ss.s).
      */
     @JsonProperty(value = "quorumLossWaitDuration")
     private OffsetDateTime quorumLossWaitDuration;
 
     /*
-     * The definition on how long StandBy replicas should be maintained before
-     * being removed, represented in ISO 8601 format (hh:mm:ss.s).
+     * The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601
+     * format (hh:mm:ss.s).
      */
     @JsonProperty(value = "standByReplicaKeepDuration")
     private OffsetDateTime standByReplicaKeepDuration;

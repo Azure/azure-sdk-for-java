@@ -6,14 +6,11 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the server certificate details using common name. */
 @Fluent
 public final class ServerCertificateCommonName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerCertificateCommonName.class);
-
     /*
      * The common name of the server certificate.
      */
@@ -73,16 +70,18 @@ public final class ServerCertificateCommonName {
      */
     public void validate() {
         if (certificateCommonName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateCommonName in model ServerCertificateCommonName"));
         }
         if (certificateIssuerThumbprint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateIssuerThumbprint in model ServerCertificateCommonName"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerCertificateCommonName.class);
 }

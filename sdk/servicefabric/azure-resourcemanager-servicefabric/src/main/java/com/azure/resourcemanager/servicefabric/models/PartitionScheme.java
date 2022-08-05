@@ -33,7 +33,11 @@ public final class PartitionScheme extends ExpandableStringEnum<PartitionScheme>
         return fromString(name, PartitionScheme.class);
     }
 
-    /** @return known PartitionScheme values. */
+    /**
+     * Gets known PartitionScheme values.
+     *
+     * @return known PartitionScheme values.
+     */
     public static Collection<PartitionScheme> values() {
         return values(PartitionScheme.class);
     }

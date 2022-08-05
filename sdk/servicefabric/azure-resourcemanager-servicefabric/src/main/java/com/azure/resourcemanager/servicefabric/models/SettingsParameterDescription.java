@@ -6,14 +6,11 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a parameter in fabric settings of the cluster. */
 @Fluent
 public final class SettingsParameterDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SettingsParameterDescription.class);
-
     /*
      * The parameter name of fabric setting.
      */
@@ -73,16 +70,18 @@ public final class SettingsParameterDescription {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model SettingsParameterDescription"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model SettingsParameterDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SettingsParameterDescription.class);
 }

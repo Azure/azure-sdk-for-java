@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings to enable AAD authentication on the cluster. */
 @Fluent
 public final class AzureActiveDirectory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectory.class);
-
     /*
      * Azure active directory tenant id.
      */

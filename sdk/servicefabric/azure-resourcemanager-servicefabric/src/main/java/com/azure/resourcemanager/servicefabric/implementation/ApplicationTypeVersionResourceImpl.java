@@ -78,6 +78,10 @@ public final class ApplicationTypeVersionResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationTypeVersionResourceInner innerModel() {
         return this.innerObject;
     }

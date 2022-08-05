@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,52 +12,42 @@ import java.util.Map;
 /** Describes the delta health policies for the cluster upgrade. */
 @Fluent
 public final class ClusterUpgradeDeltaHealthPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpgradeDeltaHealthPolicy.class);
-
     /*
-     * The maximum allowed percentage of nodes health degradation allowed
-     * during cluster upgrades.
-     * The delta is measured between the state of the nodes at the beginning of
-     * upgrade and the state of the nodes at the time of the health evaluation.
-     * The check is performed after every upgrade domain upgrade completion to
-     * make sure the global state of the cluster is within tolerated limits.
+     * The maximum allowed percentage of nodes health degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at
+     * the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
+     * cluster is within tolerated limits.
      *
      */
     @JsonProperty(value = "maxPercentDeltaUnhealthyNodes", required = true)
     private int maxPercentDeltaUnhealthyNodes;
 
     /*
-     * The maximum allowed percentage of upgrade domain nodes health
-     * degradation allowed during cluster upgrades.
-     * The delta is measured between the state of the upgrade domain nodes at
-     * the beginning of upgrade and the state of the upgrade domain nodes at
-     * the time of the health evaluation.
-     * The check is performed after every upgrade domain upgrade completion for
-     * all completed upgrade domains to make sure the state of the upgrade
-     * domains is within tolerated limits.
+     * The maximum allowed percentage of upgrade domain nodes health degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the upgrade domain nodes at the beginning of upgrade and the state of
+     * the upgrade domain nodes at the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion for all completed upgrade domains to make
+     * sure the state of the upgrade domains is within tolerated limits.
      *
      */
     @JsonProperty(value = "maxPercentUpgradeDomainDeltaUnhealthyNodes", required = true)
     private int maxPercentUpgradeDomainDeltaUnhealthyNodes;
 
     /*
-     * The maximum allowed percentage of applications health degradation
-     * allowed during cluster upgrades.
-     * The delta is measured between the state of the applications at the
-     * beginning of upgrade and the state of the applications at the time of
-     * the health evaluation.
-     * The check is performed after every upgrade domain upgrade completion to
-     * make sure the global state of the cluster is within tolerated limits.
-     * System services are not included in this.
+     * The maximum allowed percentage of applications health degradation allowed during cluster upgrades.
+     * The delta is measured between the state of the applications at the beginning of upgrade and the state of the
+     * applications at the time of the health evaluation.
+     * The check is performed after every upgrade domain upgrade completion to make sure the global state of the
+     * cluster is within tolerated limits. System services are not included in this.
      *
      */
     @JsonProperty(value = "maxPercentDeltaUnhealthyApplications", required = true)
     private int maxPercentDeltaUnhealthyApplications;
 
     /*
-     * Defines the application delta health policy map used to evaluate the
-     * health of an application or one of its child entities when upgrading the
-     * cluster.
+     * Defines the application delta health policy map used to evaluate the health of an application or one of its
+     * child entities when upgrading the cluster.
      */
     @JsonProperty(value = "applicationDeltaHealthPolicies")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

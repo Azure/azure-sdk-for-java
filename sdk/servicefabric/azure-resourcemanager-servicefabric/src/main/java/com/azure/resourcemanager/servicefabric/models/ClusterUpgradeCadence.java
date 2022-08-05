@@ -30,7 +30,11 @@ public final class ClusterUpgradeCadence extends ExpandableStringEnum<ClusterUpg
         return fromString(name, ClusterUpgradeCadence.class);
     }
 
-    /** @return known ClusterUpgradeCadence values. */
+    /**
+     * Gets known ClusterUpgradeCadence values.
+     *
+     * @return known ClusterUpgradeCadence values.
+     */
     public static Collection<ClusterUpgradeCadence> values() {
         return values(ClusterUpgradeCadence.class);
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the certificate details. */
 @Fluent
 public final class CertificateDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateDescription.class);
-
     /*
      * Thumbprint of the primary certificate.
      */
@@ -99,10 +96,12 @@ public final class CertificateDescription {
      */
     public void validate() {
         if (thumbprint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property thumbprint in model CertificateDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateDescription.class);
 }

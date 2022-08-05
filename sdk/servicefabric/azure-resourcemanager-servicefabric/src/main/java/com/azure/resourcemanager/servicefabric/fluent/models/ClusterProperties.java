@@ -25,7 +25,6 @@ import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription
 import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -33,8 +32,6 @@ import java.util.List;
 /** Describes the cluster resource properties. */
 @Fluent
 public final class ClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterProperties.class);
-
     /*
      * The list of add-on features to enable in the cluster.
      */
@@ -54,47 +51,41 @@ public final class ClusterProperties {
     private AzureActiveDirectory azureActiveDirectory;
 
     /*
-     * The certificate to use for securing the cluster. The certificate
-     * provided will be used for node to node security within the cluster, SSL
-     * certificate for cluster management endpoint and default admin client.
+     * The certificate to use for securing the cluster. The certificate provided will be used for node to node security
+     * within the cluster, SSL certificate for cluster management endpoint and default admin client.
      */
     @JsonProperty(value = "certificate")
     private CertificateDescription certificate;
 
     /*
-     * Describes a list of server certificates referenced by common name that
-     * are used to secure the cluster.
+     * Describes a list of server certificates referenced by common name that are used to secure the cluster.
      */
     @JsonProperty(value = "certificateCommonNames")
     private ServerCertificateCommonNames certificateCommonNames;
 
     /*
-     * The list of client certificates referenced by common name that are
-     * allowed to manage the cluster.
+     * The list of client certificates referenced by common name that are allowed to manage the cluster.
      */
     @JsonProperty(value = "clientCertificateCommonNames")
     private List<ClientCertificateCommonName> clientCertificateCommonNames;
 
     /*
-     * The list of client certificates referenced by thumbprint that are
-     * allowed to manage the cluster.
+     * The list of client certificates referenced by thumbprint that are allowed to manage the cluster.
      */
     @JsonProperty(value = "clientCertificateThumbprints")
     private List<ClientCertificateThumbprint> clientCertificateThumbprints;
 
     /*
-     * The Service Fabric runtime version of the cluster. This property can
-     * only by set the user when **upgradeMode** is set to 'Manual'. To get
-     * list of available Service Fabric versions for new clusters use
-     * [ClusterVersion API](./ClusterVersion.md). To get the list of available
-     * version for existing clusters use **availableClusterVersions**.
+     * The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode**
+     * is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion
+     * API](./ClusterVersion.md). To get the list of available version for existing clusters use
+     * **availableClusterVersions**.
      */
     @JsonProperty(value = "clusterCodeVersion")
     private String clusterCodeVersion;
 
     /*
-     * The Azure Resource Provider endpoint. A system service in the cluster
-     * connects to this  endpoint.
+     * The Azure Resource Provider endpoint. A system service in the cluster connects to this  endpoint.
      */
     @JsonProperty(value = "clusterEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterEndpoint;
@@ -108,30 +99,21 @@ public final class ClusterProperties {
     /*
      * The current state of the cluster.
      *
-     * - WaitingForNodes - Indicates that the cluster resource is created and
-     * the resource provider is waiting for Service Fabric VM extension to boot
-     * up and report to it.
-     * - Deploying - Indicates that the Service Fabric runtime is being
-     * installed on the VMs. Cluster resource will be in this state until the
-     * cluster boots up and system services are up.
-     * - BaselineUpgrade - Indicates that the cluster is upgrading to
-     * establishes the cluster version. This upgrade is automatically initiated
-     * when the cluster boots up for the first time.
-     * - UpdatingUserConfiguration - Indicates that the cluster is being
-     * upgraded with the user provided configuration.
-     * - UpdatingUserCertificate - Indicates that the cluster is being upgraded
-     * with the user provided certificate.
-     * - UpdatingInfrastructure - Indicates that the cluster is being upgraded
-     * with the latest Service Fabric runtime version. This happens only when
-     * the **upgradeMode** is set to 'Automatic'.
-     * - EnforcingClusterVersion - Indicates that cluster is on a different
-     * version than expected and the cluster is being upgraded to the expected
-     * version.
-     * - UpgradeServiceUnreachable - Indicates that the system service in the
-     * cluster is no longer polling the Resource Provider. Clusters in this
-     * state cannot be managed by the Resource Provider.
-     * - AutoScale - Indicates that the ReliabilityLevel of the cluster is
-     * being adjusted.
+     * - WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for
+     * Service Fabric VM extension to boot up and report to it.
+     * - Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be
+     * in this state until the cluster boots up and system services are up.
+     * - BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is
+     * automatically initiated when the cluster boots up for the first time.
+     * - UpdatingUserConfiguration - Indicates that the cluster is being upgraded with the user provided configuration.
+     * - UpdatingUserCertificate - Indicates that the cluster is being upgraded with the user provided certificate.
+     * - UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime
+     * version. This happens only when the **upgradeMode** is set to 'Automatic'.
+     * - EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is
+     * being upgraded to the expected version.
+     * - UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource
+     * Provider. Clusters in this state cannot be managed by the Resource Provider.
+     * - AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.
      * - Ready - Indicates that the cluster is in a stable state.
      *
      */
@@ -139,8 +121,7 @@ public final class ClusterProperties {
     private ClusterState clusterState;
 
     /*
-     * The storage account information for storing Service Fabric diagnostic
-     * logs.
+     * The storage account information for storing Service Fabric diagnostic logs.
      */
     @JsonProperty(value = "diagnosticsStorageAccountConfig")
     private DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig;
@@ -176,18 +157,16 @@ public final class ClusterProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The reliability level sets the replica set size of system services.
-     * Learn about
+     * The reliability level sets the replica set size of system services. Learn about
      * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
      *
-     * - None - Run the System services with a target replica set count of 1.
-     * This should only be used for test clusters.
-     * - Bronze - Run the System services with a target replica set count of 3.
-     * This should only be used for test clusters.
+     * - None - Run the System services with a target replica set count of 1. This should only be used for test
+     * clusters.
+     * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test
+     * clusters.
      * - Silver - Run the System services with a target replica set count of 5.
      * - Gold - Run the System services with a target replica set count of 7.
-     * - Platinum - Run the System services with a target replica set count of
-     * 9.
+     * - Platinum - Run the System services with a target replica set count of 9.
      *
      */
     @JsonProperty(value = "reliabilityLevel")
@@ -200,8 +179,7 @@ public final class ClusterProperties {
     private CertificateDescription reverseProxyCertificate;
 
     /*
-     * Describes a list of server certificates referenced by common name that
-     * are used to secure the cluster.
+     * Describes a list of server certificates referenced by common name that are used to secure the cluster.
      */
     @JsonProperty(value = "reverseProxyCertificateCommonNames")
     private ServerCertificateCommonNames reverseProxyCertificateCommonNames;
@@ -213,8 +191,7 @@ public final class ClusterProperties {
     private ClusterUpgradePolicy upgradeDescription;
 
     /*
-     * The upgrade mode of the cluster when new Service Fabric runtime version
-     * is available.
+     * The upgrade mode of the cluster when new Service Fabric runtime version is available.
      */
     @JsonProperty(value = "upgradeMode")
     private UpgradeMode upgradeMode;
@@ -226,24 +203,21 @@ public final class ClusterProperties {
     private ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy;
 
     /*
-     * The VM image VMSS has been configured with. Generic names such as
-     * Windows or Linux can be used.
+     * The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.
      */
     @JsonProperty(value = "vmImage")
     private String vmImage;
 
     /*
-     * This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple
-     * Availability Zones is already present in the cluster.
+     * This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if
+     * a node type with multiple Availability Zones is already present in the cluster.
      */
     @JsonProperty(value = "sfZonalUpgradeMode")
     private SfZonalUpgradeMode sfZonalUpgradeMode;
 
     /*
-     * This property defines the upgrade mode for the virtual machine scale
-     * set, it is mandatory if a node type with multiple Availability Zones is
-     * added.
+     * This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with
+     * multiple Availability Zones is added.
      */
     @JsonProperty(value = "vmssZonalUpgradeMode")
     private VmssZonalUpgradeMode vmssZonalUpgradeMode;
@@ -255,25 +229,22 @@ public final class ClusterProperties {
     private Boolean infrastructureServiceManager;
 
     /*
-     * Indicates when new cluster runtime version upgrades will be applied
-     * after they are released. By default is Wave0. Only applies when
-     * **upgradeMode** is set to 'Automatic'.
+     * Indicates when new cluster runtime version upgrades will be applied after they are released. By default is
+     * Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
      */
     @JsonProperty(value = "upgradeWave")
     private ClusterUpgradeCadence upgradeWave;
 
     /*
-     * Indicates the start date and time to pause automatic runtime version
-     * upgrades on the cluster for an specific period of time on the cluster
-     * (UTC).
+     * Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific
+     * period of time on the cluster (UTC).
      */
     @JsonProperty(value = "upgradePauseStartTimestampUtc")
     private OffsetDateTime upgradePauseStartTimestampUtc;
 
     /*
-     * Indicates the end date and time to pause automatic runtime version
-     * upgrades on the cluster for an specific period of time on the cluster
-     * (UTC).
+     * Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific
+     * period of time on the cluster (UTC).
      */
     @JsonProperty(value = "upgradePauseEndTimestampUtc")
     private OffsetDateTime upgradePauseEndTimestampUtc;
@@ -976,13 +947,13 @@ public final class ClusterProperties {
             fabricSettings().forEach(e -> e.validate());
         }
         if (managementEndpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property managementEndpoint in model ClusterProperties"));
         }
         if (nodeTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nodeTypes in model ClusterProperties"));
         } else {
@@ -1004,4 +975,6 @@ public final class ClusterProperties {
             notifications().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterProperties.class);
 }

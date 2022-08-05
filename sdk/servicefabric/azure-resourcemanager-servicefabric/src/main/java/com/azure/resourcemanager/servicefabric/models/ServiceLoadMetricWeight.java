@@ -33,7 +33,11 @@ public final class ServiceLoadMetricWeight extends ExpandableStringEnum<ServiceL
         return fromString(name, ServiceLoadMetricWeight.class);
     }
 
-    /** @return known ServiceLoadMetricWeight values. */
+    /**
+     * Gets known ServiceLoadMetricWeight values.
+     *
+     * @return known ServiceLoadMetricWeight values.
+     */
     public static Collection<ServiceLoadMetricWeight> values() {
         return values(ServiceLoadMetricWeight.class);
     }

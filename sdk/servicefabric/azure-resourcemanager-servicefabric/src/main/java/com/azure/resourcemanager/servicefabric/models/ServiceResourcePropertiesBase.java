@@ -5,43 +5,34 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The common service resource properties. */
 @Fluent
 public class ServiceResourcePropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourcePropertiesBase.class);
-
     /*
-     * The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to
-     * particular nodes based on the service requirements. For example, to
-     * place a service on nodes where NodeType is blue specify the following:
-     * "NodeColor == blue)".
+     * The placement constraints as a string. Placement constraints are boolean expressions on node properties and
+     * allow for restricting a service to particular nodes based on the service requirements. For example, to place a
+     * service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
      */
     @JsonProperty(value = "placementConstraints")
     private String placementConstraints;
 
     /*
-     * A list that describes the correlation of the service with other
-     * services.
+     * A list that describes the correlation of the service with other services.
      */
     @JsonProperty(value = "correlationScheme")
     private List<ServiceCorrelationDescription> correlationScheme;
 
     /*
-     * The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
+     * The service load metrics is given as an array of ServiceLoadMetricDescription objects.
      */
     @JsonProperty(value = "serviceLoadMetrics")
     private List<ServiceLoadMetricDescription> serviceLoadMetrics;
 
     /*
-     * A list that describes the correlation of the service with other
-     * services.
+     * A list that describes the correlation of the service with other services.
      */
     @JsonProperty(value = "servicePlacementPolicies")
     private List<ServicePlacementPolicyDescription> servicePlacementPolicies;

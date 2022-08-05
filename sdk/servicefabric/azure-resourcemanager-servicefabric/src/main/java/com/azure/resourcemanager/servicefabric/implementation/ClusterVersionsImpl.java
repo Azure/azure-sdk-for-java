@@ -13,10 +13,9 @@ import com.azure.resourcemanager.servicefabric.fluent.models.ClusterCodeVersions
 import com.azure.resourcemanager.servicefabric.models.ClusterCodeVersionsListResult;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersions;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersionsEnvironment;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClusterVersionsImpl implements ClusterVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterVersionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterVersionsImpl.class);
 
     private final ClusterVersionsClient innerClient;
 

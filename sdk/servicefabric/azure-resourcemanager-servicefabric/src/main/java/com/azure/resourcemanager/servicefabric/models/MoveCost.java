@@ -33,7 +33,11 @@ public final class MoveCost extends ExpandableStringEnum<MoveCost> {
         return fromString(name, MoveCost.class);
     }
 
-    /** @return known MoveCost values. */
+    /**
+     * Gets known MoveCost values.
+     *
+     * @return known MoveCost values.
+     */
     public static Collection<MoveCost> values() {
         return values(MoveCost.class);
     }

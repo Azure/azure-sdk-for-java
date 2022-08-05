@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation supported by the Service Fabric resource provider. */
 @Fluent
 public final class AvailableOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperationDisplay.class);
-
     /*
      * The name of the provider.
      */

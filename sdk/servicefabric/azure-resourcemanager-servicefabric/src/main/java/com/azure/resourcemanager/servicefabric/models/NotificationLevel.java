@@ -27,7 +27,11 @@ public final class NotificationLevel extends ExpandableStringEnum<NotificationLe
         return fromString(name, NotificationLevel.class);
     }
 
-    /** @return known NotificationLevel values. */
+    /**
+     * Gets known NotificationLevel values.
+     *
+     * @return known NotificationLevel values.
+     */
     public static Collection<NotificationLevel> values() {
         return values(NotificationLevel.class);
     }

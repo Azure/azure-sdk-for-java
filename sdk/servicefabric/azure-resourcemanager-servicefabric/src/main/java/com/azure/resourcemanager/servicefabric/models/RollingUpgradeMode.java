@@ -33,7 +33,11 @@ public final class RollingUpgradeMode extends ExpandableStringEnum<RollingUpgrad
         return fromString(name, RollingUpgradeMode.class);
     }
 
-    /** @return known RollingUpgradeMode values. */
+    /**
+     * Gets known RollingUpgradeMode values.
+     *
+     * @return known RollingUpgradeMode values.
+     */
     public static Collection<RollingUpgradeMode> values() {
         return values(RollingUpgradeMode.class);
     }

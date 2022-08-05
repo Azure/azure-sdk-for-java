@@ -30,7 +30,11 @@ public final class DurabilityLevel extends ExpandableStringEnum<DurabilityLevel>
         return fromString(name, DurabilityLevel.class);
     }
 
-    /** @return known DurabilityLevel values. */
+    /**
+     * Gets known DurabilityLevel values.
+     *
+     * @return known DurabilityLevel values.
+     */
     public static Collection<DurabilityLevel> values() {
         return values(DurabilityLevel.class);
     }

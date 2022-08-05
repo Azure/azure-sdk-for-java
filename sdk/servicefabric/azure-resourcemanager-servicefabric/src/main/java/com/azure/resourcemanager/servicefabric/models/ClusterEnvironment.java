@@ -27,7 +27,11 @@ public final class ClusterEnvironment extends ExpandableStringEnum<ClusterEnviro
         return fromString(name, ClusterEnvironment.class);
     }
 
-    /** @return known ClusterEnvironment values. */
+    /**
+     * Gets known ClusterEnvironment values.
+     *
+     * @return known ClusterEnvironment values.
+     */
     public static Collection<ClusterEnvironment> values() {
         return values(ClusterEnvironment.class);
     }

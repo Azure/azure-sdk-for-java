@@ -6,24 +6,20 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Creates a particular correlation between services. */
 @Fluent
 public final class ServiceCorrelationDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceCorrelationDescription.class);
-
     /*
-     * The ServiceCorrelationScheme which describes the relationship between
-     * this service and the service specified via ServiceName.
+     * The ServiceCorrelationScheme which describes the relationship between this service and the service specified via
+     * ServiceName.
      */
     @JsonProperty(value = "scheme", required = true)
     private ServiceCorrelationScheme scheme;
 
     /*
-     * The name of the service that the correlation relationship is established
-     * with.
+     * The name of the service that the correlation relationship is established with.
      */
     @JsonProperty(value = "serviceName", required = true)
     private String serviceName;
@@ -77,16 +73,18 @@ public final class ServiceCorrelationDescription {
      */
     public void validate() {
         if (scheme() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scheme in model ServiceCorrelationDescription"));
         }
         if (serviceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serviceName in model ServiceCorrelationDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceCorrelationDescription.class);
 }

@@ -27,7 +27,11 @@ public final class UpgradeMode extends ExpandableStringEnum<UpgradeMode> {
         return fromString(name, UpgradeMode.class);
     }
 
-    /** @return known UpgradeMode values. */
+    /**
+     * Gets known UpgradeMode values.
+     *
+     * @return known UpgradeMode values.
+     */
     public static Collection<UpgradeMode> values() {
         return values(UpgradeMode.class);
     }

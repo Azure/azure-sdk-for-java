@@ -6,14 +6,11 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationUserAssignedIdentity model. */
 @Fluent
 public class ApplicationUserAssignedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationUserAssignedIdentity.class);
-
     /*
      * The friendly name of user assigned identity.
      */
@@ -73,16 +70,18 @@ public class ApplicationUserAssignedIdentity {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ApplicationUserAssignedIdentity"));
         }
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model ApplicationUserAssignedIdentity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationUserAssignedIdentity.class);
 }

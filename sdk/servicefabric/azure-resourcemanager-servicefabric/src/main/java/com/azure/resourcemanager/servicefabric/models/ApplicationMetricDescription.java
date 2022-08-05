@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ApplicationMetricDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationMetricDescription.class);
-
     /*
      * The name of the metric.
      */
@@ -25,17 +21,14 @@ public final class ApplicationMetricDescription {
 
     /*
      * The maximum node capacity for Service Fabric application.
-     * This is the maximum Load for an instance of this application on a single
-     * node. Even if the capacity of node is greater than this value, Service
-     * Fabric will limit the total load of services within the application on
-     * each node to this value.
+     * This is the maximum Load for an instance of this application on a single node. Even if the capacity of node is
+     * greater than this value, Service Fabric will limit the total load of services within the application on each
+     * node to this value.
      * If set to zero, capacity for this metric is unlimited on each node.
-     * When creating a new application with application capacity defined, the
-     * product of MaximumNodes and this value must always be smaller than or
-     * equal to TotalApplicationCapacity.
-     * When updating existing application with application capacity, the
-     * product of MaximumNodes and this value must always be smaller than or
-     * equal to TotalApplicationCapacity.
+     * When creating a new application with application capacity defined, the product of MaximumNodes and this value
+     * must always be smaller than or equal to TotalApplicationCapacity.
+     * When updating existing application with application capacity, the product of MaximumNodes and this value must
+     * always be smaller than or equal to TotalApplicationCapacity.
      *
      */
     @JsonProperty(value = "maximumCapacity")
@@ -43,14 +36,12 @@ public final class ApplicationMetricDescription {
 
     /*
      * The node reservation capacity for Service Fabric application.
-     * This is the amount of load which is reserved on nodes which have
-     * instances of this application.
-     * If MinimumNodes is specified, then the product of these values will be
-     * the capacity reserved in the cluster for the application.
+     * This is the amount of load which is reserved on nodes which have instances of this application.
+     * If MinimumNodes is specified, then the product of these values will be the capacity reserved in the cluster for
+     * the application.
      * If set to zero, no capacity is reserved for this metric.
-     * When setting application capacity or when updating application capacity;
-     * this value must be smaller than or equal to MaximumCapacity for each
-     * metric.
+     * When setting application capacity or when updating application capacity; this value must be smaller than or
+     * equal to MaximumCapacity for each metric.
      *
      */
     @JsonProperty(value = "reservationCapacity")
@@ -58,12 +49,10 @@ public final class ApplicationMetricDescription {
 
     /*
      * The total metric capacity for Service Fabric application.
-     * This is the total metric capacity for this application in the cluster.
-     * Service Fabric will try to limit the sum of loads of services within the
-     * application to this value.
-     * When creating a new application with application capacity defined, the
-     * product of MaximumNodes and MaximumCapacity must always be smaller than
-     * or equal to this value.
+     * This is the total metric capacity for this application in the cluster. Service Fabric will try to limit the sum
+     * of loads of services within the application to this value.
+     * When creating a new application with application capacity defined, the product of MaximumNodes and
+     * MaximumCapacity must always be smaller than or equal to this value.
      *
      */
     @JsonProperty(value = "totalApplicationCapacity")

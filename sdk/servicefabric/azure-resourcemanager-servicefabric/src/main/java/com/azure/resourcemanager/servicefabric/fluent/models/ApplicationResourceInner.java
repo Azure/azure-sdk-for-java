@@ -7,12 +7,10 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
 import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.Map;
 /** The application resource. */
 @Fluent
 public final class ApplicationResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationResourceInner.class);
-
     /*
      * Describes the managed identities for an Azure resource.
      */
@@ -36,8 +32,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     private ApplicationResourceProperties innerProperties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
     @JsonProperty(value = "location")
     private String location;

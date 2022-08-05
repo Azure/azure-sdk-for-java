@@ -36,6 +36,9 @@ public enum ManagedIdentityType {
      */
     @JsonCreator
     public static ManagedIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ManagedIdentityType[] items = ManagedIdentityType.values();
         for (ManagedIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

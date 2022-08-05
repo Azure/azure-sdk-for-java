@@ -17,7 +17,9 @@ import com.azure.resourcemanager.servicefabric.models.ApplicationResourceUpdate;
 /** An instance of this class provides access to all the operations defined in ApplicationsClient. */
 public interface ApplicationsClient {
     /**
-     * Get a Service Fabric application resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric application resource.
+     *
+     * <p>Get a Service Fabric application resource created or in the process of being created in the Service Fabric
      * cluster resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -33,7 +35,9 @@ public interface ApplicationsClient {
     ApplicationResourceInner get(String resourceGroupName, String clusterName, String applicationName);
 
     /**
-     * Get a Service Fabric application resource created or in the process of being created in the Service Fabric
+     * Gets a Service Fabric application resource.
+     *
+     * <p>Get a Service Fabric application resource created or in the process of being created in the Service Fabric
      * cluster resource.
      *
      * @param resourceGroupName The name of the resource group.
@@ -44,14 +48,16 @@ public interface ApplicationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application resource created or in the process of being created in the Service Fabric
-     *     cluster resource.
+     *     cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationResourceInner> getWithResponse(
         String resourceGroupName, String clusterName, String applicationName, Context context);
 
     /**
-     * Create or update a Service Fabric application resource with the specified name.
+     * Creates or updates a Service Fabric application resource.
+     *
+     * <p>Create or update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -60,14 +66,16 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
+     * @return the {@link SyncPoller} for polling of the application resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationResourceInner parameters);
 
     /**
-     * Create or update a Service Fabric application resource with the specified name.
+     * Creates or updates a Service Fabric application resource.
+     *
+     * <p>Create or update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -77,9 +85,9 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
+     * @return the {@link SyncPoller} for polling of the application resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
@@ -88,7 +96,9 @@ public interface ApplicationsClient {
         Context context);
 
     /**
-     * Create or update a Service Fabric application resource with the specified name.
+     * Creates or updates a Service Fabric application resource.
+     *
+     * <p>Create or update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -104,7 +114,9 @@ public interface ApplicationsClient {
         String resourceGroupName, String clusterName, String applicationName, ApplicationResourceInner parameters);
 
     /**
-     * Create or update a Service Fabric application resource with the specified name.
+     * Creates or updates a Service Fabric application resource.
+     *
+     * <p>Create or update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -125,7 +137,9 @@ public interface ApplicationsClient {
         Context context);
 
     /**
-     * Update a Service Fabric application resource with the specified name.
+     * Updates a Service Fabric application resource.
+     *
+     * <p>Update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -134,14 +148,16 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
+     * @return the {@link SyncPoller} for polling of the application resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationResourceUpdate parameters);
 
     /**
-     * Update a Service Fabric application resource with the specified name.
+     * Updates a Service Fabric application resource.
+     *
+     * <p>Update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -151,9 +167,9 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the application resource.
+     * @return the {@link SyncPoller} for polling of the application resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationResourceInner>, ApplicationResourceInner> beginUpdate(
         String resourceGroupName,
         String clusterName,
@@ -162,7 +178,9 @@ public interface ApplicationsClient {
         Context context);
 
     /**
-     * Update a Service Fabric application resource with the specified name.
+     * Updates a Service Fabric application resource.
+     *
+     * <p>Update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -178,7 +196,9 @@ public interface ApplicationsClient {
         String resourceGroupName, String clusterName, String applicationName, ApplicationResourceUpdate parameters);
 
     /**
-     * Update a Service Fabric application resource with the specified name.
+     * Updates a Service Fabric application resource.
+     *
+     * <p>Update a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -199,7 +219,9 @@ public interface ApplicationsClient {
         Context context);
 
     /**
-     * Delete a Service Fabric application resource with the specified name.
+     * Deletes a Service Fabric application resource.
+     *
+     * <p>Delete a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -207,14 +229,16 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName);
 
     /**
-     * Delete a Service Fabric application resource with the specified name.
+     * Deletes a Service Fabric application resource.
+     *
+     * <p>Delete a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -223,14 +247,16 @@ public interface ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName, Context context);
 
     /**
-     * Delete a Service Fabric application resource with the specified name.
+     * Deletes a Service Fabric application resource.
+     *
+     * <p>Delete a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -243,7 +269,9 @@ public interface ApplicationsClient {
     void delete(String resourceGroupName, String clusterName, String applicationName);
 
     /**
-     * Delete a Service Fabric application resource with the specified name.
+     * Deletes a Service Fabric application resource.
+     *
+     * <p>Delete a Service Fabric application resource with the specified name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -257,7 +285,10 @@ public interface ApplicationsClient {
     void delete(String resourceGroupName, String clusterName, String applicationName, Context context);
 
     /**
-     * Gets all application resources created or in the process of being created in the Service Fabric cluster resource.
+     * Gets the list of application resources created in the specified Service Fabric cluster resource.
+     *
+     * <p>Gets all application resources created or in the process of being created in the Service Fabric cluster
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -271,7 +302,10 @@ public interface ApplicationsClient {
     ApplicationResourceListInner list(String resourceGroupName, String clusterName);
 
     /**
-     * Gets all application resources created or in the process of being created in the Service Fabric cluster resource.
+     * Gets the list of application resources created in the specified Service Fabric cluster resource.
+     *
+     * <p>Gets all application resources created or in the process of being created in the Service Fabric cluster
+     * resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
@@ -280,7 +314,7 @@ public interface ApplicationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application resources created or in the process of being created in the Service Fabric cluster
-     *     resource.
+     *     resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationResourceListInner> listWithResponse(

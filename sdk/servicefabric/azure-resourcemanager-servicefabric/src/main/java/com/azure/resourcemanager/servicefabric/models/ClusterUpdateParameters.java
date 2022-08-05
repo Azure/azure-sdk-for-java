@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -17,11 +15,8 @@ import java.util.Map;
 /** Cluster update request. */
 @Fluent
 public final class ClusterUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdateParameters.class);
-
     /*
-     * Describes the cluster resource properties that can be updated during
-     * PATCH operation.
+     * Describes the cluster resource properties that can be updated during PATCH operation.
      */
     @JsonProperty(value = "properties")
     private ClusterPropertiesUpdateParameters innerProperties;

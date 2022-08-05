@@ -7,9 +7,7 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** The service resource for patch operations. */
 @Fluent
 public final class ServiceResourceUpdate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceUpdate.class);
-
     /*
      * The service resource properties for patch operations.
      */
@@ -26,8 +22,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
     private ServiceResourceUpdateProperties innerProperties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
     @JsonProperty(value = "location")
     private String location;

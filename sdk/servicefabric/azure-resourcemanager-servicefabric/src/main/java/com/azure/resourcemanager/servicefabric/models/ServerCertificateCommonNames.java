@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a list of server certificates referenced by common name that are used to secure the cluster. */
 @Fluent
 public final class ServerCertificateCommonNames {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerCertificateCommonNames.class);
-
     /*
-     * The list of server certificates referenced by common name that are used
-     * to secure the cluster.
+     * The list of server certificates referenced by common name that are used to secure the cluster.
      */
     @JsonProperty(value = "commonNames")
     private List<ServerCertificateCommonName> commonNames;

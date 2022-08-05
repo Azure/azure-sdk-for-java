@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,18 +12,14 @@ import java.util.Map;
 /** Describes the managed identities for an Azure resource. */
 @Fluent
 public class ManagedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentity.class);
-
     /*
-     * The principal id of the managed identity. This property will only be
-     * provided for a system assigned identity.
+     * The principal id of the managed identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id of the managed identity. This property will only be
-     * provided for a system assigned identity.
+     * The tenant id of the managed identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
@@ -37,8 +31,8 @@ public class ManagedIdentity {
     private ManagedIdentityType type;
 
     /*
-     * The list of user identities associated with the resource. The user
-     * identity dictionary key references will be ARM resource ids in the form:
+     * The list of user identities associated with the resource. The user identity dictionary key references will be
+     * ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      *
      */

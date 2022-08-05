@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.AddOnFeatures;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionsCleanupPolicy;
 import com.azure.resourcemanager.servicefabric.models.CertificateDescription;
@@ -21,7 +20,6 @@ import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription
 import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -29,8 +27,6 @@ import java.util.List;
 /** Describes the cluster resource properties that can be updated during PATCH operation. */
 @Fluent
 public final class ClusterPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPropertiesUpdateParameters.class);
-
     /*
      * The list of add-on features to enable in the cluster.
      */
@@ -38,40 +34,37 @@ public final class ClusterPropertiesUpdateParameters {
     private List<AddOnFeatures> addOnFeatures;
 
     /*
-     * The certificate to use for securing the cluster. The certificate
-     * provided will be used for  node to node security within the cluster, SSL
-     * certificate for cluster management endpoint and default  admin client.
+     * The certificate to use for securing the cluster. The certificate provided will be used for  node to node
+     * security within the cluster, SSL certificate for cluster management endpoint and default  admin client.
      */
     @JsonProperty(value = "certificate")
     private CertificateDescription certificate;
 
     /*
-     * Describes a list of server certificates referenced by common name that
-     * are used to secure the cluster.
+     * Describes a list of server certificates referenced by common name that are used to secure the cluster.
      */
     @JsonProperty(value = "certificateCommonNames")
     private ServerCertificateCommonNames certificateCommonNames;
 
     /*
-     * The list of client certificates referenced by common name that are
-     * allowed to manage the cluster. This will overwrite the existing list.
+     * The list of client certificates referenced by common name that are allowed to manage the cluster. This will
+     * overwrite the existing list.
      */
     @JsonProperty(value = "clientCertificateCommonNames")
     private List<ClientCertificateCommonName> clientCertificateCommonNames;
 
     /*
-     * The list of client certificates referenced by thumbprint that are
-     * allowed to manage the cluster. This will overwrite the existing list.
+     * The list of client certificates referenced by thumbprint that are allowed to manage the cluster. This will
+     * overwrite the existing list.
      */
     @JsonProperty(value = "clientCertificateThumbprints")
     private List<ClientCertificateThumbprint> clientCertificateThumbprints;
 
     /*
-     * The Service Fabric runtime version of the cluster. This property can
-     * only by set the user when **upgradeMode** is set to 'Manual'. To get
-     * list of available Service Fabric versions for new clusters use
-     * [ClusterVersion API](./ClusterVersion.md). To get the list of available
-     * version for existing clusters use **availableClusterVersions**.
+     * The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode**
+     * is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion
+     * API](./ClusterVersion.md). To get the list of available version for existing clusters use
+     * **availableClusterVersions**.
      */
     @JsonProperty(value = "clusterCodeVersion")
     private String clusterCodeVersion;
@@ -83,32 +76,28 @@ public final class ClusterPropertiesUpdateParameters {
     private Boolean eventStoreServiceEnabled;
 
     /*
-     * The list of custom fabric settings to configure the cluster. This will
-     * overwrite the existing list.
+     * The list of custom fabric settings to configure the cluster. This will overwrite the existing list.
      */
     @JsonProperty(value = "fabricSettings")
     private List<SettingsSectionDescription> fabricSettings;
 
     /*
-     * The list of node types in the cluster. This will overwrite the existing
-     * list.
+     * The list of node types in the cluster. This will overwrite the existing list.
      */
     @JsonProperty(value = "nodeTypes")
     private List<NodeTypeDescription> nodeTypes;
 
     /*
-     * The reliability level sets the replica set size of system services.
-     * Learn about
+     * The reliability level sets the replica set size of system services. Learn about
      * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
      *
-     * - None - Run the System services with a target replica set count of 1.
-     * This should only be used for test clusters.
-     * - Bronze - Run the System services with a target replica set count of 3.
-     * This should only be used for test clusters.
+     * - None - Run the System services with a target replica set count of 1. This should only be used for test
+     * clusters.
+     * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test
+     * clusters.
      * - Silver - Run the System services with a target replica set count of 5.
      * - Gold - Run the System services with a target replica set count of 7.
-     * - Platinum - Run the System services with a target replica set count of
-     * 9.
+     * - Platinum - Run the System services with a target replica set count of 9.
      *
      */
     @JsonProperty(value = "reliabilityLevel")
@@ -133,24 +122,21 @@ public final class ClusterPropertiesUpdateParameters {
     private ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy;
 
     /*
-     * The upgrade mode of the cluster when new Service Fabric runtime version
-     * is available.
+     * The upgrade mode of the cluster when new Service Fabric runtime version is available.
      */
     @JsonProperty(value = "upgradeMode")
     private UpgradeMode upgradeMode;
 
     /*
-     * This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple
-     * Availability Zones is already present in the cluster.
+     * This property controls the logical grouping of VMs in upgrade domains (UDs). This property can't be modified if
+     * a node type with multiple Availability Zones is already present in the cluster.
      */
     @JsonProperty(value = "sfZonalUpgradeMode")
     private SfZonalUpgradeMode sfZonalUpgradeMode;
 
     /*
-     * This property defines the upgrade mode for the virtual machine scale
-     * set, it is mandatory if a node type with multiple Availability Zones is
-     * added.
+     * This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with
+     * multiple Availability Zones is added.
      */
     @JsonProperty(value = "vmssZonalUpgradeMode")
     private VmssZonalUpgradeMode vmssZonalUpgradeMode;
@@ -162,23 +148,20 @@ public final class ClusterPropertiesUpdateParameters {
     private Boolean infrastructureServiceManager;
 
     /*
-     * Indicates when new cluster runtime version upgrades will be applied
-     * after they are released. By default is Wave0. Only applies when
-     * **upgradeMode** is set to 'Automatic'.
+     * Indicates when new cluster runtime version upgrades will be applied after they are released. By default is
+     * Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
      */
     @JsonProperty(value = "upgradeWave")
     private ClusterUpgradeCadence upgradeWave;
 
     /*
-     * The start timestamp to pause runtime version upgrades on the cluster
-     * (UTC).
+     * The start timestamp to pause runtime version upgrades on the cluster (UTC).
      */
     @JsonProperty(value = "upgradePauseStartTimestampUtc")
     private OffsetDateTime upgradePauseStartTimestampUtc;
 
     /*
-     * The end timestamp of pause runtime version upgrades on the cluster
-     * (UTC).
+     * The end timestamp of pause runtime version upgrades on the cluster (UTC).
      */
     @JsonProperty(value = "upgradePauseEndTimestampUtc")
     private OffsetDateTime upgradePauseEndTimestampUtc;

@@ -24,7 +24,11 @@ public final class NotificationCategory extends ExpandableStringEnum<Notificatio
         return fromString(name, NotificationCategory.class);
     }
 
-    /** @return known NotificationCategory values. */
+    /**
+     * Gets known NotificationCategory values.
+     *
+     * @return known NotificationCategory values.
+     */
     public static Collection<NotificationCategory> values() {
         return values(NotificationCategory.class);
     }

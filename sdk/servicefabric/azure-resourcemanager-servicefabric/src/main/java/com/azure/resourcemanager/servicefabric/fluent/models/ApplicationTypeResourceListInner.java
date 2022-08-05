@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of application type names. */
 @Fluent
 public final class ApplicationTypeResourceListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeResourceListInner.class);
-
     /*
      * The value property.
      */
@@ -22,8 +18,7 @@ public final class ApplicationTypeResourceListInner {
     private List<ApplicationTypeResourceInner> value;
 
     /*
-     * URL to get the next set of application type list results if there are
-     * any.
+     * URL to get the next set of application type list results if there are any.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

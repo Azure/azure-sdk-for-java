@@ -6,7 +6,6 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UniformInt64Range")
 @Fluent
 public final class UniformInt64RangePartitionSchemeDescription extends PartitionSchemeDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UniformInt64RangePartitionSchemeDescription.class);
-
     /*
      * The number of partitions.
      */
@@ -113,16 +110,18 @@ public final class UniformInt64RangePartitionSchemeDescription extends Partition
     public void validate() {
         super.validate();
         if (lowKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lowKey in model UniformInt64RangePartitionSchemeDescription"));
         }
         if (highKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property highKey in model UniformInt64RangePartitionSchemeDescription"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UniformInt64RangePartitionSchemeDescription.class);
 }

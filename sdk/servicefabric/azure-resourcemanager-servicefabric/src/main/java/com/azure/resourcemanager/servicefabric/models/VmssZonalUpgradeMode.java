@@ -27,7 +27,11 @@ public final class VmssZonalUpgradeMode extends ExpandableStringEnum<VmssZonalUp
         return fromString(name, VmssZonalUpgradeMode.class);
     }
 
-    /** @return known VmssZonalUpgradeMode values. */
+    /**
+     * Gets known VmssZonalUpgradeMode values.
+     *
+     * @return known VmssZonalUpgradeMode values.
+     */
     public static Collection<VmssZonalUpgradeMode> values() {
         return values(VmssZonalUpgradeMode.class);
     }

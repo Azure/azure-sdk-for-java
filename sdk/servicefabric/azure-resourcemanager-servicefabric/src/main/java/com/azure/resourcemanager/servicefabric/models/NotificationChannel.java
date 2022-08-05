@@ -27,7 +27,11 @@ public final class NotificationChannel extends ExpandableStringEnum<Notification
         return fromString(name, NotificationChannel.class);
     }
 
-    /** @return known NotificationChannel values. */
+    /**
+     * Gets known NotificationChannel values.
+     *
+     * @return known NotificationChannel values.
+     */
     public static Collection<NotificationChannel> values() {
         return values(NotificationChannel.class);
     }
