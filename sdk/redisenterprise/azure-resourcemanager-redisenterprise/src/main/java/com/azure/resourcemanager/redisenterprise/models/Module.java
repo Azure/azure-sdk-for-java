@@ -8,19 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Module settings Specifies configuration of a redis module. */
+/**
+ * Module settings
+ *
+ * <p>Specifies configuration of a redis module.
+ */
 @Fluent
 public final class Module {
     /*
-     * The name of the module, e.g. 'RedisBloom', 'RediSearch',
-     * 'RedisTimeSeries'
+     * The name of the module, e.g. 'RedisBloom', 'RediSearch', 'RedisTimeSeries'
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Configuration options for the module, e.g. 'ERROR_RATE 0.01 INITIAL_SIZE
-     * 400'.
+     * Configuration options for the module, e.g. 'ERROR_RATE 0.01 INITIAL_SIZE 400'.
      */
     @JsonProperty(value = "args")
     private String args;

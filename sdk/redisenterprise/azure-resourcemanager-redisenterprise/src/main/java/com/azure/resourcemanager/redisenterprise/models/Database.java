@@ -99,6 +99,13 @@ public interface Database {
     DatabasePropertiesGeoReplication geoReplication();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner object.
      *
      * @return the inner object.

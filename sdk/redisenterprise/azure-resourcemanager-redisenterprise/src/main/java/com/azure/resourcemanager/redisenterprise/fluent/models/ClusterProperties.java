@@ -12,8 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * RedisEnterprise cluster properties Properties of RedisEnterprise clusters, as opposed to general resource properties
- * like location, tags.
+ * RedisEnterprise cluster properties
+ *
+ * <p>Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags.
  */
 @Fluent
 public final class ClusterProperties {
@@ -48,8 +49,7 @@ public final class ClusterProperties {
     private String redisVersion;
 
     /*
-     * List of private endpoint connections associated with the specified
-     * RedisEnterprise cluster
+     * List of private endpoint connections associated with the specified RedisEnterprise cluster
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;

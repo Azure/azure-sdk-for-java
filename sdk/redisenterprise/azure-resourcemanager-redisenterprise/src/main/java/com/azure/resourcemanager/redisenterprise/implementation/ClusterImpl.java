@@ -105,6 +105,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ClusterInner innerModel() {
         return this.innerObject;
     }

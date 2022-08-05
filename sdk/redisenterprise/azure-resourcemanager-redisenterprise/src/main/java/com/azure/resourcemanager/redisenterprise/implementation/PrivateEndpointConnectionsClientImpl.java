@@ -434,14 +434,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<PrivateEndpointConnectionInner> getAsync(
         String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
         return getWithResponseAsync(resourceGroupName, clusterName, privateEndpointConnectionName)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -952,7 +945,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
         return deleteWithResponseAsync(resourceGroupName, clusterName, privateEndpointConnectionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

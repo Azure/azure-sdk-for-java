@@ -27,7 +27,11 @@ public final class AofFrequency extends ExpandableStringEnum<AofFrequency> {
         return fromString(name, AofFrequency.class);
     }
 
-    /** @return known AofFrequency values. */
+    /**
+     * Gets known AofFrequency values.
+     *
+     * @return known AofFrequency values.
+     */
     public static Collection<AofFrequency> values() {
         return values(AofFrequency.class);
     }

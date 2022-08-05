@@ -22,7 +22,9 @@ public final class ClusterUpdate {
     private Sku sku;
 
     /*
-     * RedisEnterprise cluster properties Other properties of the cluster.
+     * RedisEnterprise cluster properties
+     *
+     * Other properties of the cluster.
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
@@ -55,7 +57,9 @@ public final class ClusterUpdate {
     }
 
     /**
-     * Get the innerProperties property: RedisEnterprise cluster properties Other properties of the cluster.
+     * Get the innerProperties property: RedisEnterprise cluster properties
+     *
+     * <p>Other properties of the cluster.
      *
      * @return the innerProperties value.
      */

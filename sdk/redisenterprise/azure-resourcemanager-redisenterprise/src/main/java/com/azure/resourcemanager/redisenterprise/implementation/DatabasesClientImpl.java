@@ -1122,14 +1122,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> getAsync(String resourceGroupName, String clusterName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName)
-            .flatMap(
-                (Response<DatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1535,14 +1528,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String clusterName, String databaseName) {
         return listKeysWithResponseAsync(resourceGroupName, clusterName, databaseName)
-            .flatMap(
-                (Response<AccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

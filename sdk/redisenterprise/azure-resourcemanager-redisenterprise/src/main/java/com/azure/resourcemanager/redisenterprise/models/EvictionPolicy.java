@@ -45,7 +45,11 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
         return fromString(name, EvictionPolicy.class);
     }
 
-    /** @return known EvictionPolicy values. */
+    /**
+     * Gets known EvictionPolicy values.
+     *
+     * @return known EvictionPolicy values.
+     */
     public static Collection<EvictionPolicy> values() {
         return values(EvictionPolicy.class);
     }

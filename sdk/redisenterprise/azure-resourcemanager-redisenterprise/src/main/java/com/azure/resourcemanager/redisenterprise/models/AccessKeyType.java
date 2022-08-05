@@ -30,6 +30,9 @@ public enum AccessKeyType {
      */
     @JsonCreator
     public static AccessKeyType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccessKeyType[] items = AccessKeyType.values();
         for (AccessKeyType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
