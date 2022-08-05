@@ -814,6 +814,14 @@ class ApplicationGatewayImpl
             this.innerModel().withSku(new ApplicationGatewaySku().withCapacity(1));
         }
         this.innerModel().sku().withTier(skuTier);
+        if (skuTier == ApplicationGatewayTier.WAF_V2 && this.innerModel().webApplicationFirewallConfiguration() == null) {
+            this.innerModel().withWebApplicationFirewallConfiguration(
+                new ApplicationGatewayWebApplicationFirewallConfiguration()
+                    .withEnabled(true)
+                    .withFirewallMode(ApplicationGatewayFirewallMode.DETECTION)
+                    .withRuleSetType("OWASP")
+                    .withRuleSetVersion("3.0"));
+        }
         return this;
     }
 

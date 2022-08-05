@@ -4,7 +4,11 @@
 
 ### Features Added
 
+- Supported setting default `WebApplicationFirewall` when selected `ApplicationGatewayTier` is `ApplicationGatewayTier.WAF_v2`.
+
 ### Breaking Changes
+
+- Rename class `ExplicitProxySettings` to `ExplicitProxy`.
 
 ### Bugs Fixed
 
