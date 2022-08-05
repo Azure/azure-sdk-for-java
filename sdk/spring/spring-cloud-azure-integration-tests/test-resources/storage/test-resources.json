@@ -253,6 +253,14 @@
     "AZURE_STORAGE_QUEUE_NAME": {
       "type": "string",
       "value": "test"
+    },
+    "AZURE_STORAGE_RESOURCE_BLOB": {
+      "type": "string",
+      "value": "azure-blob://blobcontainer/blob.txt"
+    },
+    "AZURE_STORAGE_RESOURCE_FILE": {
+      "type": "string",
+      "value": "azure-file://fileshare/fileshare.txt"
     }
   }
 }

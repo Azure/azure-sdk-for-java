@@ -4,3 +4,5 @@ spring:
       storage:
         blob:
           account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+resource:
+  blob: ${AZURE_STORAGE_RESOURCE_BLOB}

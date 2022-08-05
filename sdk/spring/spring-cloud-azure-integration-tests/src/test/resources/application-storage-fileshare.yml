@@ -6,3 +6,5 @@ spring:
           account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
           account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
           endpoint: ${AZURE_STORAGE_FILESHARE_ENDPOINT}
+resource:
+  file: ${AZURE_STORAGE_RESOURCE_FILE}
