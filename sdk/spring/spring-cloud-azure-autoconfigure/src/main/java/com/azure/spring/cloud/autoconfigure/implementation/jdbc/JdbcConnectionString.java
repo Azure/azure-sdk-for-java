@@ -14,8 +14,7 @@ import java.util.Optional;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.NONE_VALUE;
 
-
-public class JdbcConnectionString {
+public final class JdbcConnectionString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
 

@@ -37,6 +37,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
+ * {@link BeanPostProcessor} to enhance jdbc connection string.
  */
 class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
 
@@ -47,7 +48,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private Environment environment;
 
-    public JdbcPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
+    JdbcPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
 

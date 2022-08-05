@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 4.4.0
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(DataSourceProperties.class)
 public class AzureJdbcAutoConfiguration {
 
     @Bean

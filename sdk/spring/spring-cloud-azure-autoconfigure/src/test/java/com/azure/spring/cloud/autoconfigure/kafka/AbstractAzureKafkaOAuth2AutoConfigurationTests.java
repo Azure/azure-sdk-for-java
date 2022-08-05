@@ -34,9 +34,6 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     protected static final String SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX = "spring.kafka.producer.properties.";
     protected static final String SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.configuration.";
     protected static final String SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.consumer-properties.";
-    // TODO it will change the property key
-    // protected static final String CLIENT_ID = "azure.credential.client-id";
-    // protected static final String MANAGED_IDENTITY_ENABLED = "azure.credential.managed-identity-enabled";
     protected static final String CLIENT_ID = AuthProperty.CLIENT_ID.getPropertyKey();
     protected static final String MANAGED_IDENTITY_ENABLED = AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey();
 
