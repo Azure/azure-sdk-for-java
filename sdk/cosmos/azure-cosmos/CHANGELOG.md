@@ -1,13 +1,9 @@
 ## Release History
 
-### 4.34.0-beta.1 (Unreleased)
+### 4.34.0 (2022-08-05)
 
 #### Features Added
 * GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
-
-#### Breaking Changes
-
-#### Bugs Fixed
 
 #### Other Changes
 * Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
