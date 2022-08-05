@@ -24,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -65,18 +66,19 @@ public class EventHubsIT {
             return errorContext -> {};
         }
     }
+
     @Test
     public void testEventHubOperation() throws InterruptedException {
         LOGGER.info("EventHubsIT begin.");
-        processorClient.start();
-        Assertions.assertTrue(processorClient.isRunning());
         producerClient.send(Arrays.asList(new EventData(DATA)));
         producerClient.close();
         IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("0", 1, EventPosition.earliest());
         for (PartitionEvent event : events) {
             Assertions.assertEquals(DATA, event.getData().getBodyAsString());
         }
-        LATCH.await();
+        processorClient.start();
+        Assertions.assertTrue(processorClient.isRunning());
+        LATCH.await(200, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA, MESSAGE);
         LOGGER.info("EventHubsIT end.");
     }

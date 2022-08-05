@@ -33,7 +33,6 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-manual",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-manual",
-    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-manual"
     })
 @ActiveProfiles("eventhubs-binder")
 class EventHubsBinderManualModeIT {
