@@ -42,6 +42,24 @@ public final class AseV3NetworkingConfigurationProperties {
     @JsonProperty(value = "allowNewPrivateEndpointConnections")
     private Boolean allowNewPrivateEndpointConnections;
 
+    /*
+     * Property to enable and disable FTP on ASEV3
+     */
+    @JsonProperty(value = "ftpEnabled")
+    private Boolean ftpEnabled;
+
+    /*
+     * Property to enable and disable Remote Debug on ASEV3
+     */
+    @JsonProperty(value = "remoteDebugEnabled")
+    private Boolean remoteDebugEnabled;
+
+    /*
+     * Customer provided Inbound IP Address. Only able to be set on Ase create.
+     */
+    @JsonProperty(value = "inboundIpAddressOverride")
+    private String inboundIpAddressOverride;
+
     /**
      * Get the windowsOutboundIpAddresses property: The windowsOutboundIpAddresses property.
      *
@@ -98,6 +116,68 @@ public final class AseV3NetworkingConfigurationProperties {
     public AseV3NetworkingConfigurationProperties withAllowNewPrivateEndpointConnections(
         Boolean allowNewPrivateEndpointConnections) {
         this.allowNewPrivateEndpointConnections = allowNewPrivateEndpointConnections;
+        return this;
+    }
+
+    /**
+     * Get the ftpEnabled property: Property to enable and disable FTP on ASEV3.
+     *
+     * @return the ftpEnabled value.
+     */
+    public Boolean ftpEnabled() {
+        return this.ftpEnabled;
+    }
+
+    /**
+     * Set the ftpEnabled property: Property to enable and disable FTP on ASEV3.
+     *
+     * @param ftpEnabled the ftpEnabled value to set.
+     * @return the AseV3NetworkingConfigurationProperties object itself.
+     */
+    public AseV3NetworkingConfigurationProperties withFtpEnabled(Boolean ftpEnabled) {
+        this.ftpEnabled = ftpEnabled;
+        return this;
+    }
+
+    /**
+     * Get the remoteDebugEnabled property: Property to enable and disable Remote Debug on ASEV3.
+     *
+     * @return the remoteDebugEnabled value.
+     */
+    public Boolean remoteDebugEnabled() {
+        return this.remoteDebugEnabled;
+    }
+
+    /**
+     * Set the remoteDebugEnabled property: Property to enable and disable Remote Debug on ASEV3.
+     *
+     * @param remoteDebugEnabled the remoteDebugEnabled value to set.
+     * @return the AseV3NetworkingConfigurationProperties object itself.
+     */
+    public AseV3NetworkingConfigurationProperties withRemoteDebugEnabled(Boolean remoteDebugEnabled) {
+        this.remoteDebugEnabled = remoteDebugEnabled;
+        return this;
+    }
+
+    /**
+     * Get the inboundIpAddressOverride property: Customer provided Inbound IP Address. Only able to be set on Ase
+     * create.
+     *
+     * @return the inboundIpAddressOverride value.
+     */
+    public String inboundIpAddressOverride() {
+        return this.inboundIpAddressOverride;
+    }
+
+    /**
+     * Set the inboundIpAddressOverride property: Customer provided Inbound IP Address. Only able to be set on Ase
+     * create.
+     *
+     * @param inboundIpAddressOverride the inboundIpAddressOverride value to set.
+     * @return the AseV3NetworkingConfigurationProperties object itself.
+     */
+    public AseV3NetworkingConfigurationProperties withInboundIpAddressOverride(String inboundIpAddressOverride) {
+        this.inboundIpAddressOverride = inboundIpAddressOverride;
         return this;
     }
 

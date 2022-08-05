@@ -27,7 +27,11 @@ public final class TrackPropertyType extends ExpandableStringEnum<TrackPropertyT
         return fromString(name, TrackPropertyType.class);
     }
 
-    /** @return known TrackPropertyType values. */
+    /**
+     * Gets known TrackPropertyType values.
+     *
+     * @return known TrackPropertyType values.
+     */
     public static Collection<TrackPropertyType> values() {
         return values(TrackPropertyType.class);
     }

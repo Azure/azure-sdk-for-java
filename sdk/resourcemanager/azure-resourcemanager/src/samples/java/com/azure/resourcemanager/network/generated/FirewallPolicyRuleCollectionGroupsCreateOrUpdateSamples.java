@@ -23,7 +23,7 @@ import java.util.Arrays;
 /** Samples for FirewallPolicyRuleCollectionGroups CreateOrUpdate. */
 public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create FirewallPolicyRuleCollectionGroup.
@@ -65,7 +65,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
      */
     /**
      * Sample code: Create FirewallPolicyRuleCollectionGroup With IpGroups.
@@ -113,7 +113,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
      */
     /**
      * Sample code: Create FirewallPolicyRuleCollectionGroup With Web Categories.
@@ -160,7 +160,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
      */
     /**
      * Sample code: Create FirewallPolicyNatRuleCollectionGroup.

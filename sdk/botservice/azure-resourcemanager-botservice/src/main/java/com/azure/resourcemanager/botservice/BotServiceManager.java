@@ -235,7 +235,7 @@ public final class BotServiceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.botservice")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -292,7 +292,11 @@ public final class BotServiceManager {
         }
     }
 
-    /** @return Resource collection API of Bots. */
+    /**
+     * Gets the resource collection API of Bots. It manages Bot.
+     *
+     * @return Resource collection API of Bots.
+     */
     public Bots bots() {
         if (this.bots == null) {
             this.bots = new BotsImpl(clientObject.getBots(), this);
@@ -300,7 +304,11 @@ public final class BotServiceManager {
         return bots;
     }
 
-    /** @return Resource collection API of Channels. */
+    /**
+     * Gets the resource collection API of Channels.
+     *
+     * @return Resource collection API of Channels.
+     */
     public Channels channels() {
         if (this.channels == null) {
             this.channels = new ChannelsImpl(clientObject.getChannels(), this);
@@ -308,7 +316,11 @@ public final class BotServiceManager {
         return channels;
     }
 
-    /** @return Resource collection API of DirectLines. */
+    /**
+     * Gets the resource collection API of DirectLines.
+     *
+     * @return Resource collection API of DirectLines.
+     */
     public DirectLines directLines() {
         if (this.directLines == null) {
             this.directLines = new DirectLinesImpl(clientObject.getDirectLines(), this);
@@ -316,7 +328,11 @@ public final class BotServiceManager {
         return directLines;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -324,7 +340,11 @@ public final class BotServiceManager {
         return operations;
     }
 
-    /** @return Resource collection API of BotConnections. */
+    /**
+     * Gets the resource collection API of BotConnections. It manages ConnectionSetting.
+     *
+     * @return Resource collection API of BotConnections.
+     */
     public BotConnections botConnections() {
         if (this.botConnections == null) {
             this.botConnections = new BotConnectionsImpl(clientObject.getBotConnections(), this);
@@ -332,7 +352,11 @@ public final class BotServiceManager {
         return botConnections;
     }
 
-    /** @return Resource collection API of HostSettings. */
+    /**
+     * Gets the resource collection API of HostSettings.
+     *
+     * @return Resource collection API of HostSettings.
+     */
     public HostSettings hostSettings() {
         if (this.hostSettings == null) {
             this.hostSettings = new HostSettingsImpl(clientObject.getHostSettings(), this);
@@ -340,7 +364,11 @@ public final class BotServiceManager {
         return hostSettings;
     }
 
-    /** @return Resource collection API of OperationResults. */
+    /**
+     * Gets the resource collection API of OperationResults.
+     *
+     * @return Resource collection API of OperationResults.
+     */
     public OperationResults operationResults() {
         if (this.operationResults == null) {
             this.operationResults = new OperationResultsImpl(clientObject.getOperationResults(), this);
@@ -348,7 +376,11 @@ public final class BotServiceManager {
         return operationResults;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -357,7 +389,11 @@ public final class BotServiceManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);

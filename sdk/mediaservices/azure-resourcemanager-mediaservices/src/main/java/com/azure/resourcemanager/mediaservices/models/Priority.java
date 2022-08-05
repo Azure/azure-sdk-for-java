@@ -30,7 +30,11 @@ public final class Priority extends ExpandableStringEnum<Priority> {
         return fromString(name, Priority.class);
     }
 
-    /** @return known Priority values. */
+    /**
+     * Gets known Priority values.
+     *
+     * @return known Priority values.
+     */
     public static Collection<Priority> values() {
         return values(Priority.class);
     }

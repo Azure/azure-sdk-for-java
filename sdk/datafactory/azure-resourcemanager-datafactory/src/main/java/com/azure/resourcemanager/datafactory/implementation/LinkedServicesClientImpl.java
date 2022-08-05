@@ -476,14 +476,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         String ifMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch)
-            .flatMap(
-                (Response<LinkedServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -507,14 +500,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, linkedServiceName, linkedService, ifMatch)
-            .flatMap(
-                (Response<LinkedServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -696,14 +682,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     private Mono<LinkedServiceResourceInner> getAsync(
         String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch) {
         return getWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch)
-            .flatMap(
-                (Response<LinkedServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -722,14 +701,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
         String resourceGroupName, String factoryName, String linkedServiceName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch)
-            .flatMap(
-                (Response<LinkedServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -889,7 +861,7 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String linkedServiceName) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, linkedServiceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

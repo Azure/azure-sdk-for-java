@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.constants;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,6 +37,12 @@ public final class Constants {
      * Default authority set
      */
     public static final Set<SimpleGrantedAuthority> DEFAULT_AUTHORITY_SET;
+
+    /**
+     * The same with {@link AuthorizationGrantType#JWT_BEARER}.
+     */
+    public static final AuthorizationGrantType ON_BEHALF_OF = new AuthorizationGrantType("on_behalf_of");
+    public static final AuthorizationGrantType AZURE_DELEGATED = new AuthorizationGrantType("azure_delegated");
 
     static {
         Set<SimpleGrantedAuthority> authoritySet = new HashSet<>();

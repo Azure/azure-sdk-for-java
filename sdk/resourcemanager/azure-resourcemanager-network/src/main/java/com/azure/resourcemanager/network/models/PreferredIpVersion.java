@@ -27,7 +27,11 @@ public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVe
         return fromString(name, PreferredIpVersion.class);
     }
 
-    /** @return known PreferredIpVersion values. */
+    /**
+     * Gets known PreferredIpVersion values.
+     *
+     * @return known PreferredIpVersion values.
+     */
     public static Collection<PreferredIpVersion> values() {
         return values(PreferredIpVersion.class);
     }

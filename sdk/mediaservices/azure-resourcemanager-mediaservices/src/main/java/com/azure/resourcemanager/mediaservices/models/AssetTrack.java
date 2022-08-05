@@ -45,6 +45,13 @@ public interface AssetTrack {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackInner object.
      *
      * @return the inner object.

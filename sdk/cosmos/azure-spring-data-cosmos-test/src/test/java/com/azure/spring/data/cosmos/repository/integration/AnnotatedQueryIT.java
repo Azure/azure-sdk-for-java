@@ -25,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -123,7 +124,7 @@ public class AnnotatedQueryIT {
         final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
         cosmosPageRequest);
 
-        assertAddressPostalCodes(postalCodes.getContent(), addresses);
+        assertAddressPostalCodesUnordered(postalCodes.getContent(), addresses);
     }
 
     @Test
@@ -133,7 +134,7 @@ public class AnnotatedQueryIT {
 
         final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
 
-        assertAddressPostalCodes(postalCodes, addresses);
+        assertAddressPostalCodesUnordered(postalCodes, addresses);
     }
 
     @Test
@@ -148,7 +149,7 @@ public class AnnotatedQueryIT {
                                                           .stream()
                                                           .map(jsonNode -> jsonNode.get("postalCode").asText())
                                                           .collect(Collectors.toList());
-        assertAddressPostalCodes(actualPostalCodes, addresses);
+        assertAddressPostalCodesUnordered(actualPostalCodes, addresses);
     }
 
     @Test
@@ -163,14 +164,15 @@ public class AnnotatedQueryIT {
             .stream()
             .map(jsonNode -> jsonNode.get("postalCode").asText())
             .collect(Collectors.toList());
-        assertAddressPostalCodes(actualPostalCodes, addresses);
+        assertAddressPostalCodesUnordered(actualPostalCodes, addresses);
     }
 
-    private void assertAddressPostalCodes(List<String> postalCodes, List<Address> expectedResults) {
+    private void assertAddressPostalCodesUnordered(List<String> postalCodes, List<Address> expectedResults) {
         List<String> expectedPostalCodes = expectedResults.stream()
                                                           .map(Address::getPostalCode)
                                                           .collect(Collectors.toList());
-        assertThat(postalCodes).isEqualTo(expectedPostalCodes);
+
+        assertThat(postalCodes).hasSize(expectedPostalCodes.size()).hasSameElementsAs(expectedPostalCodes);
     }
 
     private void assertAddressOrder(List<Address> actualResults, Address ... expectedResults) {
@@ -193,4 +195,20 @@ public class AnnotatedQueryIT {
         assertAddressOrder(descPage.getContent(), Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
     }
 
+    @Test
+    public void testAnnotatedQueryWithMultipleCities() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        List<String> cities = new ArrayList<>();
+        cities.add(TestConstants.CITY);
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCityIn(cities, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+
+        List<String> cities2 = new ArrayList<>();
+        cities2.add(TestConstants.CITY);
+        cities2.add(TestConstants.CITY_0);
+        final List<Address> resultsAsc2 = addressRepository.annotatedFindByCityIn(cities2, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
 }

@@ -24,7 +24,11 @@ public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
         return fromString(name, ConnectorOffer.class);
     }
 
-    /** @return known ConnectorOffer values. */
+    /**
+     * Gets known ConnectorOffer values.
+     *
+     * @return known ConnectorOffer values.
+     */
     public static Collection<ConnectorOffer> values() {
         return values(ConnectorOffer.class);
     }

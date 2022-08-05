@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopics ListByResourceGroup. */
 public final class SystemTopicsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopics_ListByResourceGroup.json
      */
     /**
      * Sample code: SystemTopics_ListByResourceGroup.

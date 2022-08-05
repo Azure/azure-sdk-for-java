@@ -15,13 +15,14 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -32,6 +33,7 @@ public class StorageQueueMessageSourceTests {
     private Message<?> message;
 
     private String destination = "test-destination";
+    private Duration visibilityTimeout = Duration.ofMinutes(1);
     private StorageQueueMessageSource messageSource;
     private AutoCloseable closeable;
 
@@ -49,7 +51,7 @@ public class StorageQueueMessageSourceTests {
 
     @BeforeEach
     public void setup() {
-        messageSource = new StorageQueueMessageSource(destination, mockTemplate);
+        messageSource = new StorageQueueMessageSource(destination, mockTemplate, visibilityTimeout);
     }
 
     @AfterAll
@@ -59,14 +61,23 @@ public class StorageQueueMessageSourceTests {
 
     @Test
     public void testDoReceiveWhenHaveNoMessage() {
-        when(this.mockTemplate.receiveAsync(eq(destination), any())).thenReturn(Mono.empty());
+        when(this.mockTemplate.receiveAsync(eq(destination), eq(visibilityTimeout))).thenReturn(Mono.empty());
         assertNull(messageSource.doReceive());
     }
 
     @Test
     public void testDoReceiveSuccess() {
-        when(this.mockTemplate.receiveAsync(eq(destination), any())).thenReturn(Mono.just(message));
+        when(this.mockTemplate.receiveAsync(eq(destination), eq(visibilityTimeout))).thenReturn(Mono.just(message));
         Message<?> receivedMessage = (Message<?>) messageSource.doReceive();
+        assertEquals(message, receivedMessage);
+    }
+
+    @Test
+    public void testDoReceiveSuccessWithDefaultVisibilityTimeout() {
+        final StorageQueueMessageSource messageSourceWithDefaultTimeout =
+            new StorageQueueMessageSource(destination, mockTemplate);
+        when(this.mockTemplate.receiveAsync(eq(destination), isNull())).thenReturn(Mono.just(message));
+        Message<?> receivedMessage = (Message<?>) messageSourceWithDefaultTimeout.doReceive();
         assertEquals(message, receivedMessage);
     }
 }

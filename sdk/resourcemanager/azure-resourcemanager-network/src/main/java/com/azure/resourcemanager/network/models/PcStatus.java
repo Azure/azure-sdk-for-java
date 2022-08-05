@@ -36,7 +36,11 @@ public final class PcStatus extends ExpandableStringEnum<PcStatus> {
         return fromString(name, PcStatus.class);
     }
 
-    /** @return known PcStatus values. */
+    /**
+     * Gets known PcStatus values.
+     *
+     * @return known PcStatus values.
+     */
     public static Collection<PcStatus> values() {
         return values(PcStatus.class);
     }

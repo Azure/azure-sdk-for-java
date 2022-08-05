@@ -27,7 +27,11 @@ public final class ConnectionMonitorType extends ExpandableStringEnum<Connection
         return fromString(name, ConnectionMonitorType.class);
     }
 
-    /** @return known ConnectionMonitorType values. */
+    /**
+     * Gets known ConnectionMonitorType values.
+     *
+     * @return known ConnectionMonitorType values.
+     */
     public static Collection<ConnectionMonitorType> values() {
         return values(ConnectionMonitorType.class);
     }

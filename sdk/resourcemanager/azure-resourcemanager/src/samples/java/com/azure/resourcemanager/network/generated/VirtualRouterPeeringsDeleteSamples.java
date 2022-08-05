@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualRouterPeerings Delete. */
 public final class VirtualRouterPeeringsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterPeeringDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterPeeringDelete.json
      */
     /**
      * Sample code: Delete VirtualRouterPeering.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BastionHosts List. */
 public final class BastionHostsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionHostListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionHostListBySubscription.json
      */
     /**
      * Sample code: List all Bastion Hosts for a given subscription.

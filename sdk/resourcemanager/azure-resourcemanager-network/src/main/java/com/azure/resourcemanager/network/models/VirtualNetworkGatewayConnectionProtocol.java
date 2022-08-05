@@ -28,7 +28,11 @@ public final class VirtualNetworkGatewayConnectionProtocol
         return fromString(name, VirtualNetworkGatewayConnectionProtocol.class);
     }
 
-    /** @return known VirtualNetworkGatewayConnectionProtocol values. */
+    /**
+     * Gets known VirtualNetworkGatewayConnectionProtocol values.
+     *
+     * @return known VirtualNetworkGatewayConnectionProtocol values.
+     */
     public static Collection<VirtualNetworkGatewayConnectionProtocol> values() {
         return values(VirtualNetworkGatewayConnectionProtocol.class);
     }

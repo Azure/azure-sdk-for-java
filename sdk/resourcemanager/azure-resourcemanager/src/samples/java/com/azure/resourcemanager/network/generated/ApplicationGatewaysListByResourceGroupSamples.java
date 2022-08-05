@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGateways ListByResourceGroup. */
 public final class ApplicationGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayList.json
      */
     /**
      * Sample code: Lists all application gateways in a resource group.

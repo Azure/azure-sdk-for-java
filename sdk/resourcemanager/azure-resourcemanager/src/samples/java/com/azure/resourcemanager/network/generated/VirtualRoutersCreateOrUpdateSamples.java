@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for VirtualRouters CreateOrUpdate. */
 public final class VirtualRoutersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterPut.json
      */
     /**
      * Sample code: Create VirtualRouter.

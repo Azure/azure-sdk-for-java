@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for BastionHosts CreateOrUpdate. */
 public final class BastionHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionHostPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.

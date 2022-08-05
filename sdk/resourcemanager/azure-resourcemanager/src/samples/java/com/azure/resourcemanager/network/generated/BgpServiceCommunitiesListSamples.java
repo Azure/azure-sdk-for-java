@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BgpServiceCommunities List. */
 public final class BgpServiceCommunitiesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceCommunityList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceCommunityList.json
      */
     /**
      * Sample code: ServiceCommunityList.

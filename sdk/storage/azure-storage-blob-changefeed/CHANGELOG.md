@@ -3,6 +3,7 @@
 ## 12.0.0-beta.19 (Unreleased)
 
 ### Features Added
+- GA release for STG 83
 
 ### Breaking Changes
 

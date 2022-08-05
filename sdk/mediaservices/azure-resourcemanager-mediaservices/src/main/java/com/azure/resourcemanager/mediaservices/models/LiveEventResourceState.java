@@ -42,7 +42,11 @@ public final class LiveEventResourceState extends ExpandableStringEnum<LiveEvent
         return fromString(name, LiveEventResourceState.class);
     }
 
-    /** @return known LiveEventResourceState values. */
+    /**
+     * Gets known LiveEventResourceState values.
+     *
+     * @return known LiveEventResourceState values.
+     */
     public static Collection<LiveEventResourceState> values() {
         return values(LiveEventResourceState.class);
     }

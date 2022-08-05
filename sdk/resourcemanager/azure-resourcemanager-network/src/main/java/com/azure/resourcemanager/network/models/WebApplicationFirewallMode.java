@@ -27,7 +27,11 @@ public final class WebApplicationFirewallMode extends ExpandableStringEnum<WebAp
         return fromString(name, WebApplicationFirewallMode.class);
     }
 
-    /** @return known WebApplicationFirewallMode values. */
+    /**
+     * Gets known WebApplicationFirewallMode values.
+     *
+     * @return known WebApplicationFirewallMode values.
+     */
     public static Collection<WebApplicationFirewallMode> values() {
         return values(WebApplicationFirewallMode.class);
     }

@@ -8,13 +8,12 @@ import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,11 +39,11 @@ public class GetWordsUsingSpans {
 
         File selectionMarkDocument = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/forms/Form_1.jpg");
-        byte[] fileContent = Files.readAllBytes(selectionMarkDocument.toPath());
-        InputStream fileStream = new ByteArrayInputStream(fileContent);
+        Path filePath = selectionMarkDocument.toPath();
+        BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath);
 
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", fileStream, selectionMarkDocument.length());
+            client.beginAnalyzeDocument("prebuilt-layout", selectionMarkDocumentData, selectionMarkDocument.length());
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

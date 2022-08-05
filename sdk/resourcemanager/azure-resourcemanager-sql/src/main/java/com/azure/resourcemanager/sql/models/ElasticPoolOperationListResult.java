@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list elastic pool operations request. */
 @Immutable
 public final class ElasticPoolOperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolOperationListResult.class);
-
     /*
      * Array of results.
      */

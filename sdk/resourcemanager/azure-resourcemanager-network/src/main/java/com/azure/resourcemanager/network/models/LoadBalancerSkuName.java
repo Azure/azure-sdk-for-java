@@ -30,7 +30,11 @@ public final class LoadBalancerSkuName extends ExpandableStringEnum<LoadBalancer
         return fromString(name, LoadBalancerSkuName.class);
     }
 
-    /** @return known LoadBalancerSkuName values. */
+    /**
+     * Gets known LoadBalancerSkuName values.
+     *
+     * @return known LoadBalancerSkuName values.
+     */
     public static Collection<LoadBalancerSkuName> values() {
         return values(LoadBalancerSkuName.class);
     }

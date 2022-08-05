@@ -3,10 +3,7 @@
 
 package com.azure.storage.blob.perf;
 
-import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.perf.core.ContainerTest;
+import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -15,8 +12,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.UUID;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
-
 /**
  * Use {@code downloadtofiletest} command to run this test.
  * This test requires providing connection string in {@code STORAGE_CONNECTION_STRING} environment variable.
@@ -24,17 +19,12 @@ import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBu
  * This test includes temporary file deletion as part of scenario. Please keep in mind that this adds
  * constant component to the results.
  */
-public class DownloadBlobToFileTest extends ContainerTest<PerfStressOptions> {
-    private final BlobClient blobClient;
-    private final BlobAsyncClient blobAsyncClient;
+public class DownloadBlobToFileTest extends AbstractDownloadTest<BlobPerfStressOptions> {
 
     private final File tempDir;
 
-    public DownloadBlobToFileTest(PerfStressOptions options) {
+    public DownloadBlobToFileTest(BlobPerfStressOptions options) {
         super(options);
-        String blobName = "downloadToFileTest";
-        blobClient = blobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
 
         try {
             tempDir = Files.createTempDirectory("downloadToFileTest").toFile();
@@ -42,12 +32,6 @@ public class DownloadBlobToFileTest extends ContainerTest<PerfStressOptions> {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-    }
-
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
-            .then();
     }
 
     @Override

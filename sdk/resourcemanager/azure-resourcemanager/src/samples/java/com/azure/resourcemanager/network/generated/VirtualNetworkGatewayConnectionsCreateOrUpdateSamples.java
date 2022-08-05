@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInne
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
@@ -28,7 +29,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkGatewayConnections CreateOrUpdate. */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewayConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayConnectionCreate.json
      */
     /**
      * Sample code: CreateVirtualNetworkGatewayConnection_S2S.
@@ -106,6 +107,17 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                     .withConnectionMode(VirtualNetworkGatewayConnectionMode.DEFAULT)
                     .withSharedKey("Abc123")
                     .withEnableBgp(false)
+                    .withGatewayCustomBgpIpAddresses(
+                        Arrays
+                            .asList(
+                                new GatewayCustomBgpIpAddressIpConfiguration()
+                                    .withIpConfigurationId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/default")
+                                    .withCustomBgpIpAddress("169.254.21.1"),
+                                new GatewayCustomBgpIpAddressIpConfiguration()
+                                    .withIpConfigurationId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/ActiveActive")
+                                    .withCustomBgpIpAddress("169.254.21.3")))
                     .withUsePolicyBasedTrafficSelectors(false)
                     .withIpsecPolicies(Arrays.asList())
                     .withTrafficSelectorPolicies(Arrays.asList()),

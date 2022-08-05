@@ -5,18 +5,19 @@ package com.azure.spring.cloud.service.implementation.eventhubs;
 
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
 
 /**
  * Azure Event Hubs related properties.
  */
-abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties {
+abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
+    implements EventHubClientCommonProperties {
 
     protected String domainName = "servicebus.windows.net";
     protected String namespace;
     protected String eventHubName;
     protected String connectionString;
     protected String customEndpointAddress;
-    protected Integer prefetchCount;
 
     protected String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -37,10 +38,12 @@ abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
+    @Override
     public String getFullyQualifiedNamespace() {
         return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 
+    @Override
     public String getDomainName() {
         return domainName;
     }
@@ -49,6 +52,7 @@ abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
         this.domainName = domainName;
     }
 
+    @Override
     public String getNamespace() {
         return namespace;
     }
@@ -57,6 +61,7 @@ abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
         this.namespace = namespace;
     }
 
+    @Override
     public String getEventHubName() {
         return eventHubName == null ? extractEventHubNameFromConnectionString() : eventHubName;
     }
@@ -65,6 +70,7 @@ abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
         this.eventHubName = eventHubName;
     }
 
+    @Override
     public String getConnectionString() {
         return connectionString;
     }
@@ -73,20 +79,13 @@ abstract class AzureEventHubsCommonTestProperties extends AzureAmqpSdkProperties
         this.connectionString = connectionString;
     }
 
+    @Override
     public String getCustomEndpointAddress() {
         return customEndpointAddress;
     }
 
     public void setCustomEndpointAddress(String customEndpointAddress) {
         this.customEndpointAddress = customEndpointAddress;
-    }
-
-    public Integer getPrefetchCount() {
-        return prefetchCount;
-    }
-
-    public void setPrefetchCount(Integer prefetchCount) {
-        this.prefetchCount = prefetchCount;
     }
 
 }

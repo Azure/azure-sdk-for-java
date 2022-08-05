@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.PfsGroup;
 /** Samples for VirtualNetworkGateways SetVpnclientIpsecParameters. */
 public final class VirtualNetworkGatewaysSetVpnclientIpsecParametersSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
      */
     /**
      * Sample code: Set VirtualNetworkGateway VpnClientIpsecParameters.

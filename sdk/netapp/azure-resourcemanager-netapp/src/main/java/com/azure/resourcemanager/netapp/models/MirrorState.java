@@ -30,7 +30,11 @@ public final class MirrorState extends ExpandableStringEnum<MirrorState> {
         return fromString(name, MirrorState.class);
     }
 
-    /** @return known MirrorState values. */
+    /**
+     * Gets known MirrorState values.
+     *
+     * @return known MirrorState values.
+     */
     public static Collection<MirrorState> values() {
         return values(MirrorState.class);
     }

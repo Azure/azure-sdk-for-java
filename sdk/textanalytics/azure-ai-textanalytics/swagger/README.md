@@ -15,12 +15,13 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use=C:/work/autorest.java
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Language/stable/2022-05-01/textanalytics.json
+use: '@autorest/java@4.1.2'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f705a46c74af9e4c096556e914d9a45c01c47b5e/specification/cognitiveservices/data-plane/Language/stable/2022-05-01/analyzetext.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -33,4 +34,5 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 context-client-method-parameter: true
 service-interface-as-public: true
+generic-response-type: true
 ```

@@ -28,7 +28,11 @@ public final class VirtualNetworkPrivateEndpointNetworkPolicies
         return fromString(name, VirtualNetworkPrivateEndpointNetworkPolicies.class);
     }
 
-    /** @return known VirtualNetworkPrivateEndpointNetworkPolicies values. */
+    /**
+     * Gets known VirtualNetworkPrivateEndpointNetworkPolicies values.
+     *
+     * @return known VirtualNetworkPrivateEndpointNetworkPolicies values.
+     */
     public static Collection<VirtualNetworkPrivateEndpointNetworkPolicies> values() {
         return values(VirtualNetworkPrivateEndpointNetworkPolicies.class);
     }

@@ -31,6 +31,7 @@ import com.azure.resourcemanager.datafactory.implementation.DataFlowsImpl;
 import com.azure.resourcemanager.datafactory.implementation.DatasetsImpl;
 import com.azure.resourcemanager.datafactory.implementation.ExposureControlsImpl;
 import com.azure.resourcemanager.datafactory.implementation.FactoriesImpl;
+import com.azure.resourcemanager.datafactory.implementation.GlobalParametersImpl;
 import com.azure.resourcemanager.datafactory.implementation.IntegrationRuntimeNodesImpl;
 import com.azure.resourcemanager.datafactory.implementation.IntegrationRuntimeObjectMetadatasImpl;
 import com.azure.resourcemanager.datafactory.implementation.IntegrationRuntimesImpl;
@@ -51,6 +52,7 @@ import com.azure.resourcemanager.datafactory.models.DataFlows;
 import com.azure.resourcemanager.datafactory.models.Datasets;
 import com.azure.resourcemanager.datafactory.models.ExposureControls;
 import com.azure.resourcemanager.datafactory.models.Factories;
+import com.azure.resourcemanager.datafactory.models.GlobalParameters;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeNodes;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeObjectMetadatas;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimes;
@@ -116,6 +118,8 @@ public final class DataFactoryManager {
     private PrivateEndpointConnectionOperations privateEndpointConnectionOperations;
 
     private PrivateLinkResources privateLinkResources;
+
+    private GlobalParameters globalParameters;
 
     private final DataFactoryManagementClient clientObject;
 
@@ -282,7 +286,7 @@ public final class DataFactoryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datafactory")
                 .append("/")
-                .append("1.0.0-beta.15");
+                .append("1.0.0-beta.16");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -352,7 +356,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of Factories.
+     * Gets the resource collection API of Factories. It manages Factory.
      *
      * @return Resource collection API of Factories.
      */
@@ -376,7 +380,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of IntegrationRuntimes.
+     * Gets the resource collection API of IntegrationRuntimes. It manages IntegrationRuntimeResource.
      *
      * @return Resource collection API of IntegrationRuntimes.
      */
@@ -414,7 +418,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of LinkedServices.
+     * Gets the resource collection API of LinkedServices. It manages LinkedServiceResource.
      *
      * @return Resource collection API of LinkedServices.
      */
@@ -426,7 +430,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of Datasets.
+     * Gets the resource collection API of Datasets. It manages DatasetResource.
      *
      * @return Resource collection API of Datasets.
      */
@@ -438,7 +442,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of Pipelines.
+     * Gets the resource collection API of Pipelines. It manages PipelineResource.
      *
      * @return Resource collection API of Pipelines.
      */
@@ -474,7 +478,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of Triggers.
+     * Gets the resource collection API of Triggers. It manages TriggerResource.
      *
      * @return Resource collection API of Triggers.
      */
@@ -498,7 +502,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of DataFlows.
+     * Gets the resource collection API of DataFlows. It manages DataFlowResource.
      *
      * @return Resource collection API of DataFlows.
      */
@@ -522,7 +526,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedVirtualNetworks.
+     * Gets the resource collection API of ManagedVirtualNetworks. It manages ManagedVirtualNetworkResource.
      *
      * @return Resource collection API of ManagedVirtualNetworks.
      */
@@ -535,7 +539,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedPrivateEndpoints.
+     * Gets the resource collection API of ManagedPrivateEndpoints. It manages ManagedPrivateEndpointResource.
      *
      * @return Resource collection API of ManagedPrivateEndpoints.
      */
@@ -561,7 +565,8 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of PrivateEndpointConnectionOperations.
+     * Gets the resource collection API of PrivateEndpointConnectionOperations. It manages
+     * PrivateEndpointConnectionResource.
      *
      * @return Resource collection API of PrivateEndpointConnectionOperations.
      */
@@ -584,6 +589,18 @@ public final class DataFactoryManager {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
         return privateLinkResources;
+    }
+
+    /**
+     * Gets the resource collection API of GlobalParameters. It manages GlobalParameterResource.
+     *
+     * @return Resource collection API of GlobalParameters.
+     */
+    public GlobalParameters globalParameters() {
+        if (this.globalParameters == null) {
+            this.globalParameters = new GlobalParametersImpl(clientObject.getGlobalParameters(), this);
+        }
+        return globalParameters;
     }
 
     /**

@@ -64,7 +64,9 @@ public final class QueriesImpl {
     /**
      * Executes a query that allows traversing relationships and filtering by property values. Status codes: * 200 OK *
      * 400 Bad Request * BadRequest - The continuation token is invalid. * SqlQueryError - The query contains some
-     * errors. * 429 Too Many Requests * QuotaReachedError - The maximum query rate limit has been reached.
+     * errors. * TimeoutError - The query execution timed out after 60 seconds. Try simplifying the query or adding
+     * conditions to reduce the result size. * 429 Too Many Requests * QuotaReachedError - The maximum query rate limit
+     * has been reached.
      *
      * @param querySpecification A query specification containing either a query statement or a continuation token from
      *     a previous query result.

@@ -27,7 +27,11 @@ public final class AuthorizationUseStatus extends ExpandableStringEnum<Authoriza
         return fromString(name, AuthorizationUseStatus.class);
     }
 
-    /** @return known AuthorizationUseStatus values. */
+    /**
+     * Gets known AuthorizationUseStatus values.
+     *
+     * @return known AuthorizationUseStatus values.
+     */
     public static Collection<AuthorizationUseStatus> values() {
         return values(AuthorizationUseStatus.class);
     }

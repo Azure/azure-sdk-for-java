@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AzureFirewalls ListByResourceGroup. */
 public final class AzureFirewallsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallListByResourceGroup.json
      */
     /**
      * Sample code: List all Azure Firewalls for a given resource group.

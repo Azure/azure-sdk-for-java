@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Subnets Delete. */
 public final class SubnetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/SubnetDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/SubnetDelete.json
      */
     /**
      * Sample code: Delete subnet.

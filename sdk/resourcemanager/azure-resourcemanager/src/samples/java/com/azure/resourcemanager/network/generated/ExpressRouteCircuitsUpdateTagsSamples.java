@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ExpressRouteCircuits UpdateTags. */
 public final class ExpressRouteCircuitsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitUpdateTags.json
      */
     /**
      * Sample code: Update Express Route Circuit Tags.

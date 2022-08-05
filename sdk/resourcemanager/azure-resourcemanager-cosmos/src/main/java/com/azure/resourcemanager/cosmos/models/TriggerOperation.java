@@ -36,7 +36,11 @@ public final class TriggerOperation extends ExpandableStringEnum<TriggerOperatio
         return fromString(name, TriggerOperation.class);
     }
 
-    /** @return known TriggerOperation values. */
+    /**
+     * Gets known TriggerOperation values.
+     *
+     * @return known TriggerOperation values.
+     */
     public static Collection<TriggerOperation> values() {
         return values(TriggerOperation.class);
     }

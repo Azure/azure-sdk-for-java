@@ -30,7 +30,11 @@ public final class H264Complexity extends ExpandableStringEnum<H264Complexity> {
         return fromString(name, H264Complexity.class);
     }
 
-    /** @return known H264Complexity values. */
+    /**
+     * Gets known H264Complexity values.
+     *
+     * @return known H264Complexity values.
+     */
     public static Collection<H264Complexity> values() {
         return values(H264Complexity.class);
     }

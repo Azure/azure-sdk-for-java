@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringCo
 /** Samples for ExpressRouteCrossConnectionPeerings CreateOrUpdate. */
 public final class ExpressRouteCrossConnectionPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCrossConnectionBgpPeeringCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCrossConnectionBgpPeeringCreate.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionBgpPeeringCreate.

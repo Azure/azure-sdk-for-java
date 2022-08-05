@@ -28,7 +28,11 @@ public final class ApplicationGatewayCustomErrorStatusCode
         return fromString(name, ApplicationGatewayCustomErrorStatusCode.class);
     }
 
-    /** @return known ApplicationGatewayCustomErrorStatusCode values. */
+    /**
+     * Gets known ApplicationGatewayCustomErrorStatusCode values.
+     *
+     * @return known ApplicationGatewayCustomErrorStatusCode values.
+     */
     public static Collection<ApplicationGatewayCustomErrorStatusCode> values() {
         return values(ApplicationGatewayCustomErrorStatusCode.class);
     }

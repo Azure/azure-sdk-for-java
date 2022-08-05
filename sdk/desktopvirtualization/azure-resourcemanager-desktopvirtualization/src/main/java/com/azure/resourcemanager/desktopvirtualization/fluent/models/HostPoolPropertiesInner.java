@@ -13,15 +13,12 @@ import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAss
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
 import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of HostPool. */
 @Fluent
 public final class HostPoolPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostPoolPropertiesInner.class);
-
     /*
      * ObjectId of HostPool. (internal use)
      */
@@ -580,13 +577,13 @@ public final class HostPoolPropertiesInner {
      */
     public void validate() {
         if (hostPoolType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostPoolType in model HostPoolPropertiesInner"));
         }
         if (loadBalancerType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property loadBalancerType in model HostPoolPropertiesInner"));
@@ -595,7 +592,7 @@ public final class HostPoolPropertiesInner {
             registrationInfo().validate();
         }
         if (preferredAppGroupType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredAppGroupType in model HostPoolPropertiesInner"));
@@ -604,4 +601,6 @@ public final class HostPoolPropertiesInner {
             migrationRequest().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HostPoolPropertiesInner.class);
 }

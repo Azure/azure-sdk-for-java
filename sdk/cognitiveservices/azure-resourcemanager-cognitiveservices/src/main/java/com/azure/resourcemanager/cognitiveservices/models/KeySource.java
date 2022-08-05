@@ -27,7 +27,11 @@ public final class KeySource extends ExpandableStringEnum<KeySource> {
         return fromString(name, KeySource.class);
     }
 
-    /** @return known KeySource values. */
+    /**
+     * Gets known KeySource values.
+     *
+     * @return known KeySource values.
+     */
     public static Collection<KeySource> values() {
         return values(KeySource.class);
     }

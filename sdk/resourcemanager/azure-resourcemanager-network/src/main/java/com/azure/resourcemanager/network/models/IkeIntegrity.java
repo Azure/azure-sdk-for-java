@@ -39,7 +39,11 @@ public final class IkeIntegrity extends ExpandableStringEnum<IkeIntegrity> {
         return fromString(name, IkeIntegrity.class);
     }
 
-    /** @return known IkeIntegrity values. */
+    /**
+     * Gets known IkeIntegrity values.
+     *
+     * @return known IkeIntegrity values.
+     */
     public static Collection<IkeIntegrity> values() {
         return values(IkeIntegrity.class);
     }

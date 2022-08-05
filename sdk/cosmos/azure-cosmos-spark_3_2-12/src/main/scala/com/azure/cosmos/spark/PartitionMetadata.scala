@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.Instant
@@ -19,7 +20,7 @@ private object PartitionMetadata {
   // scalastyle:off parameter.number
   def apply(userConfig: Map[String, String],
             cosmosClientConfig: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
             documentCount: Long,
@@ -38,7 +39,7 @@ private object PartitionMetadata {
     PartitionMetadata(
       userConfig,
       cosmosClientConfig,
-      cosmosClientStateHandle,
+      cosmosClientStateHandles,
       cosmosContainerConfig,
       feedRange,
       documentCount,
@@ -57,7 +58,7 @@ private[cosmos] case class PartitionMetadata
 (
   userConfig: Map[String, String],
   cosmosClientConfig: CosmosClientConfiguration,
-  cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+  cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
   cosmosContainerConfig: CosmosContainerConfig,
   feedRange: NormalizedRange,
   documentCount: Long,
@@ -68,7 +69,7 @@ private[cosmos] case class PartitionMetadata
   endLsn: Option[Long],
   lastRetrieved: AtomicLong,
   lastUpdated: AtomicLong
-) {
+)  extends BasicLoggingTrait {
 
   requireNotNull(feedRange, "feedRange")
   requireNotNull(cosmosClientConfig, "cosmosClientConfig")
@@ -81,7 +82,7 @@ private[cosmos] case class PartitionMetadata
     new PartitionMetadata(
       this.userConfig,
       this.cosmosClientConfig,
-      this.cosmosClientStateHandle,
+      this.cosmosClientStateHandles,
       this.cosmosContainerConfig,
       subRange,
       this.documentCount,
@@ -99,7 +100,7 @@ private[cosmos] case class PartitionMetadata
     new PartitionMetadata(
       this.userConfig,
       this.cosmosClientConfig,
-      this.cosmosClientStateHandle,
+      this.cosmosClientStateHandles,
       this.cosmosContainerConfig,
       this.feedRange,
       this.documentCount,
@@ -144,10 +145,16 @@ private[cosmos] case class PartitionMetadata
       this.startLsn
     } else {
       if (this.latestLsn < this.startLsn) {
-        throw new IllegalStateException(
-          s"Latest LSN ${this.latestLsn} must not be smaller than start LSN ${this.startLsn}")
+        logInfo(s"Received LatestLSN '${this.latestLsn}' for range '${this.feedRange}' is smaller than the " +
+          s"StartLSN from last offset '${this.startLsn}'. This can happen when there is a lagging replica with " +
+          s"eventual consistency - and is not a problem when it happens temporarily - the next attempt to drain the " +
+          s"change feed will hit other replica or replica has caught up in the meantime. So eventually all " +
+          s"events will be processed.")
+
+        this.startLsn
+      } else {
+        this.latestLsn
       }
-      this.latestLsn
     }
   }
 }

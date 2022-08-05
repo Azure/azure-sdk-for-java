@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Pairs of Managed Instances in the failover group. */
 @Fluent
 public final class ManagedInstancePairInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstancePairInfo.class);
-
     /*
      * Id of Primary Managed Instance in pair.
      */

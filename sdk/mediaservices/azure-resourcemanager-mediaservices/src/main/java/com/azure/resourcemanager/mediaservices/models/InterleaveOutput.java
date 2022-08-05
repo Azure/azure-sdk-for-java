@@ -27,7 +27,11 @@ public final class InterleaveOutput extends ExpandableStringEnum<InterleaveOutpu
         return fromString(name, InterleaveOutput.class);
     }
 
-    /** @return known InterleaveOutput values. */
+    /**
+     * Gets known InterleaveOutput values.
+     *
+     * @return known InterleaveOutput values.
+     */
     public static Collection<InterleaveOutput> values() {
         return values(InterleaveOutput.class);
     }

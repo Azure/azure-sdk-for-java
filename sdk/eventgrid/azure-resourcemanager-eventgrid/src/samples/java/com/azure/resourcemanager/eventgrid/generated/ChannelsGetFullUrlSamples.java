@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Channels GetFullUrl. */
 public final class ChannelsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_GetFullUrl.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Channels_GetFullUrl.json
      */
     /**
      * Sample code: Channels_GetFullUrl.

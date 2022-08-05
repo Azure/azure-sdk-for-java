@@ -589,9 +589,9 @@ public class StoreReader {
 
         //QueryRequestPerformanceActivity activity = null;
         // TODO: ifNoneMatch and maxPageSize are not used in the .Net code. check with Ji
-        String ifNoneMatch = request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+        // String ifNoneMatch = request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+        // String maxPageSize = null;
         String continuation = null;
-        String maxPageSize = null;
 
         // TODO: is this needed
         this.lastReadAddress = physicalAddress.toString();
@@ -599,7 +599,7 @@ public class StoreReader {
         if (request.getOperationType() == OperationType.ReadFeed ||
                 request.getOperationType() == OperationType.Query) {
             continuation = request.getHeaders().get(HttpConstants.HttpHeaders.CONTINUATION);
-            maxPageSize = request.getHeaders().get(HttpConstants.HttpHeaders.PAGE_SIZE);
+            // maxPageSize = request.getHeaders().get(HttpConstants.HttpHeaders.PAGE_SIZE);
 
             if (continuation != null && continuation.contains(";")) {
                 String[] parts = StringUtils.split(continuation, ';');

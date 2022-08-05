@@ -30,7 +30,11 @@ public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewa
         return fromString(name, AzureFirewallSkuTier.class);
     }
 
-    /** @return known AzureFirewallSkuTier values. */
+    /**
+     * Gets known AzureFirewallSkuTier values.
+     *
+     * @return known AzureFirewallSkuTier values.
+     */
     public static Collection<AzureFirewallSkuTier> values() {
         return values(AzureFirewallSkuTier.class);
     }

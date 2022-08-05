@@ -27,7 +27,11 @@ public final class ApplicationGatewayFirewallMode extends ExpandableStringEnum<A
         return fromString(name, ApplicationGatewayFirewallMode.class);
     }
 
-    /** @return known ApplicationGatewayFirewallMode values. */
+    /**
+     * Gets known ApplicationGatewayFirewallMode values.
+     *
+     * @return known ApplicationGatewayFirewallMode values.
+     */
     public static Collection<ApplicationGatewayFirewallMode> values() {
         return values(ApplicationGatewayFirewallMode.class);
     }

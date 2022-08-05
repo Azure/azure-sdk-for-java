@@ -114,7 +114,6 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -128,7 +127,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                             assetName,
                             trackName,
                             operationId,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -184,7 +183,6 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -196,7 +194,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
                 assetName,
                 trackName,
                 operationId,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -218,14 +216,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     private Mono<AssetTrackOperationStatusInner> getAsync(
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId)
-            .flatMap(
-                (Response<AssetTrackOperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

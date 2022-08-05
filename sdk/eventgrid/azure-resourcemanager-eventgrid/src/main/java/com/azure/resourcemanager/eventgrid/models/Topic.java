@@ -50,32 +50,11 @@ public interface Topic {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The Sku pricing tier for the topic.
-     *
-     * @return the sku value.
-     */
-    ResourceSku sku();
-
-    /**
      * Gets the identity property: Identity information for the resource.
      *
      * @return the identity value.
      */
     IdentityInfo identity();
-
-    /**
-     * Gets the kind property: Kind of the resource.
-     *
-     * @return the kind value.
-     */
-    ResourceKind kind();
-
-    /**
-     * Gets the extendedLocation property: Extended location of the resource.
-     *
-     * @return the extendedLocation value.
-     */
-    ExtendedLocation extendedLocation();
 
     /**
      * Gets the systemData property: The system metadata relating to Topic resource.
@@ -236,10 +215,7 @@ public interface Topic {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
                 DefinitionStages.WithIdentity,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithExtendedLocation,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
@@ -271,16 +247,6 @@ public interface Topic {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Topic definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku pricing tier for the topic..
-             *
-             * @param sku The Sku pricing tier for the topic.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(ResourceSku sku);
-        }
         /** The stage of the Topic definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -290,26 +256,6 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withIdentity(IdentityInfo identity);
-        }
-        /** The stage of the Topic definition allowing to specify kind. */
-        interface WithKind {
-            /**
-             * Specifies the kind property: Kind of the resource..
-             *
-             * @param kind Kind of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withKind(ResourceKind kind);
-        }
-        /** The stage of the Topic definition allowing to specify extendedLocation. */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: Extended location of the resource..
-             *
-             * @param extendedLocation Extended location of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
         /** The stage of the Topic definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -400,7 +346,6 @@ public interface Topic {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
             UpdateStages.WithDisableLocalAuth,
@@ -441,16 +386,6 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withIdentity(IdentityInfo identity);
-        }
-        /** The stage of the Topic update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku pricing tier for the topic..
-             *
-             * @param sku The Sku pricing tier for the topic.
-             * @return the next definition stage.
-             */
-            Update withSku(ResourceSku sku);
         }
         /** The stage of the Topic update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {

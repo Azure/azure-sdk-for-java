@@ -45,7 +45,11 @@ public final class DhGroup extends ExpandableStringEnum<DhGroup> {
         return fromString(name, DhGroup.class);
     }
 
-    /** @return known DhGroup values. */
+    /**
+     * Gets known DhGroup values.
+     *
+     * @return known DhGroup values.
+     */
     public static Collection<DhGroup> values() {
         return values(DhGroup.class);
     }

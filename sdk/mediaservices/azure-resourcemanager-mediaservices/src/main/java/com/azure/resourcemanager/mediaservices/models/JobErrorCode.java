@@ -48,7 +48,11 @@ public final class JobErrorCode extends ExpandableStringEnum<JobErrorCode> {
         return fromString(name, JobErrorCode.class);
     }
 
-    /** @return known JobErrorCode values. */
+    /**
+     * Gets known JobErrorCode values.
+     *
+     * @return known JobErrorCode values.
+     */
     public static Collection<JobErrorCode> values() {
         return values(JobErrorCode.class);
     }

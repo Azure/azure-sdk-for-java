@@ -84,8 +84,8 @@ public class RestProxyXMLTests {
 
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-                pipeline,
-                new JacksonAdapter());
+            pipeline,
+            new JacksonAdapter());
         List<SignedIdentifierInner> identifiers = myXMLService.getContainerACLs().signedIdentifiers();
         assertNotNull(identifiers);
         assertNotEquals(0, identifiers.size());
@@ -98,10 +98,10 @@ public class RestProxyXMLTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.getUrl().toString().endsWith("SetContainerACLs")) {
                 return FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                        .map(bytes -> {
-                            receivedBytes = bytes;
-                            return new MockHttpResponse(request, 200);
-                        });
+                    .map(bytes -> {
+                        receivedBytes = bytes;
+                        return new MockHttpResponse(request, 200);
+                    });
             } else {
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
             }
@@ -134,15 +134,15 @@ public class RestProxyXMLTests {
             .build();
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
-                pipeline,
-                serializer);
+            pipeline,
+            serializer);
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(expectedAcls);
         myXMLService.setContainerACLs(wrapper);
 
         SignedIdentifiersWrapper actualAclsWrapped = serializer.deserialize(
-                new String(httpClient.receivedBytes, StandardCharsets.UTF_8),
-                SignedIdentifiersWrapper.class,
-                SerializerEncoding.XML);
+            new String(httpClient.receivedBytes, StandardCharsets.UTF_8),
+            SignedIdentifiersWrapper.class,
+            SerializerEncoding.XML);
 
         List<SignedIdentifierInner> actualAcls = actualAclsWrapped.signedIdentifiers();
 
@@ -172,9 +172,9 @@ public class RestProxyXMLTests {
 
         //
         MyXMLServiceWithAttributes myXMLService = RestProxy.create(
-                MyXMLServiceWithAttributes.class,
-                pipeline,
-                serializer);
+            MyXMLServiceWithAttributes.class,
+            pipeline,
+            serializer);
 
         Slideshow slideshow = myXMLService.getSlideshow();
         assertEquals("Sample Slide Show", slideshow.title());

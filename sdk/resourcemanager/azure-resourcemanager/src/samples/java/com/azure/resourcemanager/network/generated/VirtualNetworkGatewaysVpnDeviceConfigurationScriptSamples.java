@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.VpnDeviceScriptParameters;
 /** Samples for VirtualNetworkGateways VpnDeviceConfigurationScript. */
 public final class VirtualNetworkGatewaysVpnDeviceConfigurationScriptSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
      */
     /**
      * Sample code: GetVPNDeviceConfigurationScript.

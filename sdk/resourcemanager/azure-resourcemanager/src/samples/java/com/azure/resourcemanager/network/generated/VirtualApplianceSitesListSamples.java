@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualApplianceSites List. */
 public final class VirtualApplianceSitesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualApplianceSiteList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualApplianceSiteList.json
      */
     /**
      * Sample code: List all Network Virtual Appliance sites for a given Network Virtual Appliance.

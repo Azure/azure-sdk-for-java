@@ -36,7 +36,11 @@ public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDire
         return fromString(name, ActiveDirectoryStatus.class);
     }
 
-    /** @return known ActiveDirectoryStatus values. */
+    /**
+     * Gets known ActiveDirectoryStatus values.
+     *
+     * @return known ActiveDirectoryStatus values.
+     */
     public static Collection<ActiveDirectoryStatus> values() {
         return values(ActiveDirectoryStatus.class);
     }

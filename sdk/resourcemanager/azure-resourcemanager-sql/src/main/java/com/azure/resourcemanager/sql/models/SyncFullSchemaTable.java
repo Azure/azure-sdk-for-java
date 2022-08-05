@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the table in the database full schema. */
 @Immutable
 public final class SyncFullSchemaTable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaTable.class);
-
     /*
      * List of columns in the table of database full schema.
      */

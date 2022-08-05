@@ -30,7 +30,11 @@ public final class FaceRedactorMode extends ExpandableStringEnum<FaceRedactorMod
         return fromString(name, FaceRedactorMode.class);
     }
 
-    /** @return known FaceRedactorMode values. */
+    /**
+     * Gets known FaceRedactorMode values.
+     *
+     * @return known FaceRedactorMode values.
+     */
     public static Collection<FaceRedactorMode> values() {
         return values(FaceRedactorMode.class);
     }

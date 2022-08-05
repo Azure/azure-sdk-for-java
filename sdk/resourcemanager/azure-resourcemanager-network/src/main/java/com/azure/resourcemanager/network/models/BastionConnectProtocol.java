@@ -27,7 +27,11 @@ public final class BastionConnectProtocol extends ExpandableStringEnum<BastionCo
         return fromString(name, BastionConnectProtocol.class);
     }
 
-    /** @return known BastionConnectProtocol values. */
+    /**
+     * Gets known BastionConnectProtocol values.
+     *
+     * @return known BastionConnectProtocol values.
+     */
     public static Collection<BastionConnectProtocol> values() {
         return values(BastionConnectProtocol.class);
     }

@@ -27,7 +27,11 @@ public final class VpnType extends ExpandableStringEnum<VpnType> {
         return fromString(name, VpnType.class);
     }
 
-    /** @return known VpnType values. */
+    /**
+     * Gets known VpnType values.
+     *
+     * @return known VpnType values.
+     */
     public static Collection<VpnType> values() {
         return values(VpnType.class);
     }

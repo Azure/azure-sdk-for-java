@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for GremlinResources DeleteGremlinGraph. */
 public final class GremlinResourcesDeleteGremlinGraphSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBGremlinGraphDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGremlinGraphDelete.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphDelete.

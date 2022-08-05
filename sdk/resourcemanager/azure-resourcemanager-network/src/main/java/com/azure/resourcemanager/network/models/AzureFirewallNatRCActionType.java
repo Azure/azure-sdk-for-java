@@ -27,7 +27,11 @@ public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<Azu
         return fromString(name, AzureFirewallNatRCActionType.class);
     }
 
-    /** @return known AzureFirewallNatRCActionType values. */
+    /**
+     * Gets known AzureFirewallNatRCActionType values.
+     *
+     * @return known AzureFirewallNatRCActionType values.
+     */
     public static Collection<AzureFirewallNatRCActionType> values() {
         return values(AzureFirewallNatRCActionType.class);
     }

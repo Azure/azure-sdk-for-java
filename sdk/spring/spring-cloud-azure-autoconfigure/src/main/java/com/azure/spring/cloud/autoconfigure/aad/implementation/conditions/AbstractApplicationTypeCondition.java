@@ -44,7 +44,7 @@ public abstract class AbstractApplicationTypeCondition extends SpringBootConditi
                   .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
                   .orElse(null);
         if (properties == null) {
-            return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
+            return ConditionOutcome.noMatch(message.notAvailable("Azure AD authentication properties"));
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()

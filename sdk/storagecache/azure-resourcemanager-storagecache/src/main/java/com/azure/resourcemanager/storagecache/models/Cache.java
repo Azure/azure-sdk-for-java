@@ -113,6 +113,13 @@ public interface Cache {
     CacheUpgradeStatus upgradeStatus();
 
     /**
+     * Gets the upgradeSettings property: Upgrade settings of the Cache.
+     *
+     * @return the upgradeSettings value.
+     */
+    CacheUpgradeSettings upgradeSettings();
+
+    /**
      * Gets the networkSettings property: Specifies network settings of the cache.
      *
      * @return the networkSettings value.
@@ -149,6 +156,21 @@ public interface Cache {
     List<String> zones();
 
     /**
+     * Gets the primingJobs property: Specifies the priming jobs defined in the cache.
+     *
+     * @return the primingJobs value.
+     */
+    List<PrimingJob> primingJobs();
+
+    /**
+     * Gets the spaceAllocation property: Specifies the space allocation percentage for each storage target in the
+     * cache.
+     *
+     * @return the spaceAllocation value.
+     */
+    List<StorageTargetSpaceAllocation> spaceAllocation();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -161,6 +183,13 @@ public interface Cache {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagecache.fluent.models.CacheInner object.
@@ -219,6 +248,7 @@ public interface Cache {
                 DefinitionStages.WithSku,
                 DefinitionStages.WithCacheSizeGB,
                 DefinitionStages.WithSubnet,
+                DefinitionStages.WithUpgradeSettings,
                 DefinitionStages.WithNetworkSettings,
                 DefinitionStages.WithEncryptionSettings,
                 DefinitionStages.WithSecuritySettings,
@@ -289,6 +319,16 @@ public interface Cache {
              */
             WithCreate withSubnet(String subnet);
         }
+        /** The stage of the Cache definition allowing to specify upgradeSettings. */
+        interface WithUpgradeSettings {
+            /**
+             * Specifies the upgradeSettings property: Upgrade settings of the Cache..
+             *
+             * @param upgradeSettings Upgrade settings of the Cache.
+             * @return the next definition stage.
+             */
+            WithCreate withUpgradeSettings(CacheUpgradeSettings upgradeSettings);
+        }
         /** The stage of the Cache definition allowing to specify networkSettings. */
         interface WithNetworkSettings {
             /**
@@ -353,6 +393,7 @@ public interface Cache {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
+            UpdateStages.WithUpgradeSettings,
             UpdateStages.WithNetworkSettings,
             UpdateStages.WithEncryptionSettings,
             UpdateStages.WithSecuritySettings,
@@ -393,6 +434,16 @@ public interface Cache {
              * @return the next definition stage.
              */
             Update withIdentity(CacheIdentity identity);
+        }
+        /** The stage of the Cache update allowing to specify upgradeSettings. */
+        interface WithUpgradeSettings {
+            /**
+             * Specifies the upgradeSettings property: Upgrade settings of the Cache..
+             *
+             * @param upgradeSettings Upgrade settings of the Cache.
+             * @return the next definition stage.
+             */
+            Update withUpgradeSettings(CacheUpgradeSettings upgradeSettings);
         }
         /** The stage of the Cache update allowing to specify networkSettings. */
         interface WithNetworkSettings {
@@ -523,6 +574,122 @@ public interface Cache {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(Context context);
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @param primingjob Object containing the definition of a priming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob(PrimingJob primingjob);
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob();
+
+    /**
+     * Create a priming job. This operation is only allowed when the cache is healthy.
+     *
+     * @param primingjob Object containing the definition of a priming job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startPrimingJob(PrimingJob primingjob, Context context);
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob(PrimingJobIdParameter primingJobId);
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob();
+
+    /**
+     * Schedule a priming job for deletion.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stopPrimingJob(PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob(PrimingJobIdParameter primingJobId);
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob();
+
+    /**
+     * Schedule a priming job to be paused.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void pausePrimingJob(PrimingJobIdParameter primingJobId, Context context);
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob(PrimingJobIdParameter primingJobId);
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob();
+
+    /**
+     * Resumes a paused priming job.
+     *
+     * @param primingJobId Object containing the priming job ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resumePrimingJob(PrimingJobIdParameter primingJobId, Context context);
 
     /**
      * Upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.

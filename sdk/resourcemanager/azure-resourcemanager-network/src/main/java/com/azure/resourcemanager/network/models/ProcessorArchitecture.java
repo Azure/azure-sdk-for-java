@@ -27,7 +27,11 @@ public final class ProcessorArchitecture extends ExpandableStringEnum<ProcessorA
         return fromString(name, ProcessorArchitecture.class);
     }
 
-    /** @return known ProcessorArchitecture values. */
+    /**
+     * Gets known ProcessorArchitecture values.
+     *
+     * @return known ProcessorArchitecture values.
+     */
     public static Collection<ProcessorArchitecture> values() {
         return values(ProcessorArchitecture.class);
     }

@@ -30,7 +30,11 @@ public final class AssetContainerPermission extends ExpandableStringEnum<AssetCo
         return fromString(name, AssetContainerPermission.class);
     }
 
-    /** @return known AssetContainerPermission values. */
+    /**
+     * Gets known AssetContainerPermission values.
+     *
+     * @return known AssetContainerPermission values.
+     */
     public static Collection<AssetContainerPermission> values() {
         return values(AssetContainerPermission.class);
     }

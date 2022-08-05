@@ -131,5 +131,19 @@ public class BlobStorageCustomization extends Customization {
         listBlobsIncludeItem.renameEnumMember("IMMUTABILITYPOLICY", "IMMUTABILITY_POLICY")
             .renameEnumMember("LEGALHOLD", "LEGAL_HOLD")
             .renameEnumMember("DELETEDWITHVERSIONS", "DELETED_WITH_VERSIONS");
+
+        // BlobErrorCode
+        // Fix typo
+        String blobErrorCodeFile = "src/main/java/com/azure/storage/blob/models/BlobErrorCode.java";
+        String blobErrorCodeFileContent = customization.getRawEditor().getFileContent(blobErrorCodeFile);
+        blobErrorCodeFileContent = blobErrorCodeFileContent.replaceAll("SnaphotOperationRateExceeded", "SnapshotOperationRateExceeded");
+        customization.getRawEditor().replaceFile(blobErrorCodeFile, blobErrorCodeFileContent);
+        // deprecate
+        ClassCustomization blobErrorCode = models.getClass("BlobErrorCode");
+        blobErrorCode.getConstant("SNAPHOT_OPERATION_RATE_EXCEEDED")
+            .addAnnotation("@Deprecated")
+            .getJavadoc()
+            .setDeprecated("Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}");
+
     }
 }

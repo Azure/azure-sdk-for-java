@@ -32,7 +32,7 @@ public interface IntelligencePacks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> disableWithResponse(
         String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
@@ -59,7 +59,7 @@ public interface IntelligencePacks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> enableWithResponse(
         String resourceGroupName, String workspaceName, String intelligencePackName, Context context);
@@ -85,7 +85,7 @@ public interface IntelligencePacks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of IntelligencePack.
+     * @return array of IntelligencePack along with {@link Response}.
      */
     Response<List<IntelligencePack>> listWithResponse(String resourceGroupName, String workspaceName, Context context);
 }

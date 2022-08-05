@@ -39,7 +39,11 @@ public final class CoverageLevel extends ExpandableStringEnum<CoverageLevel> {
         return fromString(name, CoverageLevel.class);
     }
 
-    /** @return known CoverageLevel values. */
+    /**
+     * Gets known CoverageLevel values.
+     *
+     * @return known CoverageLevel values.
+     */
     public static Collection<CoverageLevel> values() {
         return values(CoverageLevel.class);
     }

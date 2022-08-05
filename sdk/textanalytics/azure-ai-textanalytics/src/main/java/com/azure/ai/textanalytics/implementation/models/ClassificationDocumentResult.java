@@ -36,4 +36,25 @@ public class ClassificationDocumentResult extends DocumentResult {
         this.classProperty = classProperty;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ClassificationDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ClassificationDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ClassificationDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

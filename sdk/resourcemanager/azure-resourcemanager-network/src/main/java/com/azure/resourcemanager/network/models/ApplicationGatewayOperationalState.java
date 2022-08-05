@@ -33,7 +33,11 @@ public final class ApplicationGatewayOperationalState extends ExpandableStringEn
         return fromString(name, ApplicationGatewayOperationalState.class);
     }
 
-    /** @return known ApplicationGatewayOperationalState values. */
+    /**
+     * Gets known ApplicationGatewayOperationalState values.
+     *
+     * @return known ApplicationGatewayOperationalState values.
+     */
     public static Collection<ApplicationGatewayOperationalState> values() {
         return values(ApplicationGatewayOperationalState.class);
     }

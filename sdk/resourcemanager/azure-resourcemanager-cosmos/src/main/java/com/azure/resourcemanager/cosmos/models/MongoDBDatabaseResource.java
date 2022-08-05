@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB MongoDB database resource object. */
 @Fluent
 public class MongoDBDatabaseResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBDatabaseResource.class);
-
     /*
      * Name of the Cosmos DB MongoDB database
      */
@@ -47,9 +44,11 @@ public class MongoDBDatabaseResource {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model MongoDBDatabaseResource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDBDatabaseResource.class);
 }

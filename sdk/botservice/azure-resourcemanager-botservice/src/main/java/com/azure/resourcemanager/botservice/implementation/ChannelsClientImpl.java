@@ -308,14 +308,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<BotChannelInner> createAsync(
         String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters) {
         return createWithResponseAsync(resourceGroupName, resourceName, channelName, parameters)
-            .flatMap(
-                (Response<BotChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -497,14 +490,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<BotChannelInner> updateAsync(
         String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, channelName, parameters)
-            .flatMap(
-                (Response<BotChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -665,8 +651,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String channelName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, channelName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName, channelName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -820,14 +805,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BotChannelInner> getAsync(String resourceGroupName, String resourceName, String channelName) {
         return getWithResponseAsync(resourceGroupName, resourceName, channelName)
-            .flatMap(
-                (Response<BotChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -985,14 +963,7 @@ public final class ChannelsClientImpl implements ChannelsClient {
     private Mono<ListChannelWithKeysResponseInner> listWithKeysAsync(
         String resourceGroupName, String resourceName, ChannelName channelName) {
         return listWithKeysWithResponseAsync(resourceGroupName, resourceName, channelName)
-            .flatMap(
-                (Response<ListChannelWithKeysResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

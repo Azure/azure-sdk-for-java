@@ -372,6 +372,10 @@
     "EVENTHUB_CONNECTION_STRING_TEST_EVENTHUB": {
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), '2017-04-01').primaryConnectionString]"
+    },
+    "PRIMARY_STORAGE_BLOB_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').primaryEndpoints.blob]"
     }
   }
 }

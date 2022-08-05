@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRouteCircuitAuthorizations Delete. */
 public final class ExpressRouteCircuitAuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitAuthorizationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitAuthorizationDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteCircuit Authorization.

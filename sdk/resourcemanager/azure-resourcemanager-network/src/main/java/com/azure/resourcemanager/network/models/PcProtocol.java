@@ -30,7 +30,11 @@ public final class PcProtocol extends ExpandableStringEnum<PcProtocol> {
         return fromString(name, PcProtocol.class);
     }
 
-    /** @return known PcProtocol values. */
+    /**
+     * Gets known PcProtocol values.
+     *
+     * @return known PcProtocol values.
+     */
     public static Collection<PcProtocol> values() {
         return values(PcProtocol.class);
     }

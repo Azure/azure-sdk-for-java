@@ -62,4 +62,25 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
         this.relations = relations;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

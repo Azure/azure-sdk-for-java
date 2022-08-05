@@ -64,7 +64,13 @@ public abstract class AbstractQueryGenerator {
         parameters.add(Pair.of(parameter, subjectValue));
 
         if (CriteriaType.isFunction(criteria.getType())) {
-            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter);
+            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter,
+                CriteriaType.isFunctionWithCaseSensitiveSupport(criteria.getType()));
+        } else if (criteria.getType() == CriteriaType.IS_EQUAL
+                && ignoreCase != Part.IgnoreCaseType.NEVER
+                && subjectValue instanceof String) {
+            return getFunctionCondition(ignoreCase, CriteriaType.STRING_EQUALS.getSqlKeyword(),
+                subject, parameter, true);
         } else {
             return getCondition(ignoreCase, sqlKeyword, subject, parameter);
         }
@@ -95,14 +101,19 @@ public abstract class AbstractQueryGenerator {
      * @param sqlKeyword sql key word, operation name
      * @param subject sql column name
      * @param parameter sql filter value
+     * @param takesCaseSensitiveParam if the function type can take the third boolean param
      * @return condition string
      */
     private String getFunctionCondition(final Part.IgnoreCaseType ignoreCase, final String sqlKeyword,
-                                        final String subject, final String parameter) {
+                                        final String subject, final String parameter, final boolean takesCaseSensitiveParam) {
         if (Part.IgnoreCaseType.NEVER == ignoreCase) {
             return String.format("%s(r.%s, @%s)", sqlKeyword, subject, parameter);
         } else {
-            return String.format("%s(UPPER(r.%s), UPPER(@%s))", sqlKeyword, subject, parameter);
+            if (takesCaseSensitiveParam) {
+                return String.format("%s(r.%s, @%s, true)", sqlKeyword, subject, parameter);
+            } else {
+                return String.format("%s(UPPER(r.%s), UPPER(@%s))", sqlKeyword, subject, parameter);
+            }
         }
     }
 
@@ -183,6 +194,7 @@ public abstract class AbstractQueryGenerator {
             case ENDS_WITH:
             case STARTS_WITH:
             case ARRAY_CONTAINS:
+            case STRING_EQUALS:
                 return generateBinaryQuery(criteria, parameters, counter.getAndIncrement());
             case AND:
             case OR:
@@ -248,6 +260,28 @@ public abstract class AbstractQueryGenerator {
         return String.join(" ", queryTails.stream().filter(StringUtils::hasText).collect(Collectors.toList()));
     }
 
+    /**
+     * Generates a Cosmos count query.
+     *
+     * @param query the representation for query method.
+     * @param queryHead the query head.
+     * @return the SQL query spec.
+     */
+    protected SqlQuerySpec generateCosmosCountQuery(@NonNull CosmosQuery query,
+                                               @NonNull String queryHead) {
+        final AtomicInteger counter = new AtomicInteger();
+        final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query, counter);
+        String queryString = String.join(" ", queryHead, queryBody.getFirst(), generateQueryTail(query));
+        final List<Pair<String, Object>> parameters = queryBody.getSecond();
+
+        List<SqlParameter> sqlParameters = parameters.stream()
+            .map(p -> new SqlParameter("@" + p.getFirst(),
+                toCosmosDbValue(p.getSecond())))
+            .collect(Collectors.toList());
+
+        return new SqlQuerySpec(queryString, sqlParameters);
+    }
+
 
     /**
      * Generates a Cosmos query.
@@ -270,7 +304,9 @@ public abstract class AbstractQueryGenerator {
 
         if (query.getLimit() > 0) {
             queryString = new StringBuilder(queryString)
-                .append(" OFFSET 0 LIMIT ")
+                .append(" OFFSET ")
+                .append(query.getOffset())
+                .append(" LIMIT ")
                 .append(query.getLimit()).toString();
         }
 

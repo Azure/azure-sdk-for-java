@@ -28,7 +28,11 @@ public final class ApplicationGatewayRequestRoutingRuleType
         return fromString(name, ApplicationGatewayRequestRoutingRuleType.class);
     }
 
-    /** @return known ApplicationGatewayRequestRoutingRuleType values. */
+    /**
+     * Gets known ApplicationGatewayRequestRoutingRuleType values.
+     *
+     * @return known ApplicationGatewayRequestRoutingRuleType values.
+     */
     public static Collection<ApplicationGatewayRequestRoutingRuleType> values() {
         return values(ApplicationGatewayRequestRoutingRuleType.class);
     }

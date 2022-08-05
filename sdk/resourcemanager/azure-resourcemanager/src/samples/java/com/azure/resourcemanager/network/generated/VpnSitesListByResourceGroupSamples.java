@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnSites ListByResourceGroup. */
 public final class VpnSitesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnSiteListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnSiteListByResourceGroup.json
      */
     /**
      * Sample code: VpnSiteListByResourceGroup.

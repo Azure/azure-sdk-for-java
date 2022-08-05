@@ -3,7 +3,6 @@
 package com.azure.cosmos.spark
 
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
 // scalastyle:off multiple.string.literals
 private class ItemsDataWriteFactory(userConfig: Map[String, String],
                                     inputSchema: StructType,
-                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                                    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
                                     diagnosticsConfig: DiagnosticsConfig)
   extends DataWriterFactory
     with StreamingDataWriterFactory {
@@ -78,12 +77,22 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val cacheItemReleasedCount = new AtomicInteger(0)
     private val clientCacheItem = CosmosClientCache(
       CosmosClientConfiguration(userConfig, useEventualConsistency = true),
-      Some(cosmosClientStateHandle),
+      Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
       s"CosmosWriter($partitionId, $taskId, $epochId)"
     )
 
-    private val container = ThroughputControlHelper.getContainer(
-      userConfig, cosmosTargetContainerConfig, clientCacheItem.client)
+    private val throughputControlClientCacheItemOpt =
+      ThroughputControlHelper.getThroughputControlClientCacheItem(
+        userConfig,
+        clientCacheItem.context,
+        Some(cosmosClientStateHandles))
+
+    private val container =
+      ThroughputControlHelper.getContainer(
+        userConfig,
+        cosmosTargetContainerConfig,
+        clientCacheItem,
+        throughputControlClientCacheItemOpt)
     SparkUtils.safeOpenConnectionInitCaches(container, log)
 
     private val containerDefinition = container.read().block().getProperties
@@ -137,6 +146,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       writer.flushAndClose()
       if (cacheItemReleasedCount.incrementAndGet() == 1) {
         clientCacheItem.close()
+        if (throughputControlClientCacheItemOpt.isDefined) {
+          throughputControlClientCacheItemOpt.get.close()
+        }
       }
     }
   }

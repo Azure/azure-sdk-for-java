@@ -6,15 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for MSIX Package Application properties. */
 @Fluent
 public final class MsixPackageApplications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsixPackageApplications.class);
-
     /*
      * Package Application Id, found in appxmanifest.xml.
      */

@@ -33,7 +33,11 @@ public final class ExpressRouteLinkMacSecCipher extends ExpandableStringEnum<Exp
         return fromString(name, ExpressRouteLinkMacSecCipher.class);
     }
 
-    /** @return known ExpressRouteLinkMacSecCipher values. */
+    /**
+     * Gets known ExpressRouteLinkMacSecCipher values.
+     *
+     * @return known ExpressRouteLinkMacSecCipher values.
+     */
     public static Collection<ExpressRouteLinkMacSecCipher> values() {
         return values(ExpressRouteLinkMacSecCipher.class);
     }

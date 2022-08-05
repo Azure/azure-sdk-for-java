@@ -27,7 +27,11 @@ public final class IpAllocationType extends ExpandableStringEnum<IpAllocationTyp
         return fromString(name, IpAllocationType.class);
     }
 
-    /** @return known IpAllocationType values. */
+    /**
+     * Gets known IpAllocationType values.
+     *
+     * @return known IpAllocationType values.
+     */
     public static Collection<IpAllocationType> values() {
         return values(IpAllocationType.class);
     }

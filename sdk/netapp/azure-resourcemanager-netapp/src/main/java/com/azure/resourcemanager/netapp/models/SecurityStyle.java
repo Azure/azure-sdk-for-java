@@ -27,7 +27,11 @@ public final class SecurityStyle extends ExpandableStringEnum<SecurityStyle> {
         return fromString(name, SecurityStyle.class);
     }
 
-    /** @return known SecurityStyle values. */
+    /**
+     * Gets known SecurityStyle values.
+     *
+     * @return known SecurityStyle values.
+     */
     public static Collection<SecurityStyle> values() {
         return values(SecurityStyle.class);
     }

@@ -78,6 +78,10 @@ public final class BotImpl implements Bot, Bot.Definition, Bot.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BotInner innerModel() {
         return this.innerObject;
     }

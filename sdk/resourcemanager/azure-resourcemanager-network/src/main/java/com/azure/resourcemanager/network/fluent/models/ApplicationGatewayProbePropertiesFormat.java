@@ -64,6 +64,13 @@ public final class ApplicationGatewayProbePropertiesFormat {
     private Boolean pickHostnameFromBackendHttpSettings;
 
     /*
+     * Whether the server name indication should be picked from the backend
+     * settings for Tls protocol. Default value is false.
+     */
+    @JsonProperty(value = "pickHostNameFromBackendSettings")
+    private Boolean pickHostnameFromBackendSettings;
+
+    /*
      * Minimum number of servers that are always marked healthy. Default value
      * is 0.
      */
@@ -239,6 +246,29 @@ public final class ApplicationGatewayProbePropertiesFormat {
     public ApplicationGatewayProbePropertiesFormat withPickHostnameFromBackendHttpSettings(
         Boolean pickHostnameFromBackendHttpSettings) {
         this.pickHostnameFromBackendHttpSettings = pickHostnameFromBackendHttpSettings;
+        return this;
+    }
+
+    /**
+     * Get the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @return the pickHostnameFromBackendSettings value.
+     */
+    public Boolean pickHostnameFromBackendSettings() {
+        return this.pickHostnameFromBackendSettings;
+    }
+
+    /**
+     * Set the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @param pickHostnameFromBackendSettings the pickHostnameFromBackendSettings value to set.
+     * @return the ApplicationGatewayProbePropertiesFormat object itself.
+     */
+    public ApplicationGatewayProbePropertiesFormat withPickHostnameFromBackendSettings(
+        Boolean pickHostnameFromBackendSettings) {
+        this.pickHostnameFromBackendSettings = pickHostnameFromBackendSettings;
         return this;
     }
 

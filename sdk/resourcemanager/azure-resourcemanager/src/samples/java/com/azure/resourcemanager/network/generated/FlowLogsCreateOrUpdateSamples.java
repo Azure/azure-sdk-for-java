@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.FlowLogFormatType;
 /** Samples for FlowLogs CreateOrUpdate. */
 public final class FlowLogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherFlowLogCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherFlowLogCreate.json
      */
     /**
      * Sample code: Create or update flow log.

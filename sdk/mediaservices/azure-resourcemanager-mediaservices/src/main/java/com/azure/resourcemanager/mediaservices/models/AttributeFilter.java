@@ -33,7 +33,11 @@ public final class AttributeFilter extends ExpandableStringEnum<AttributeFilter>
         return fromString(name, AttributeFilter.class);
     }
 
-    /** @return known AttributeFilter values. */
+    /**
+     * Gets known AttributeFilter values.
+     *
+     * @return known AttributeFilter values.
+     */
     public static Collection<AttributeFilter> values() {
         return values(AttributeFilter.class);
     }

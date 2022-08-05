@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for LoadBalancerBackendAddressPools CreateOrUpdate. */
 public final class LoadBalancerBackendAddressPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LBBackendAddressPoolWithBackendAddressesPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LBBackendAddressPoolWithBackendAddressesPut.json
      */
     /**
      * Sample code: Update load balancer backend pool with backend addresses containing virtual network and IP address.

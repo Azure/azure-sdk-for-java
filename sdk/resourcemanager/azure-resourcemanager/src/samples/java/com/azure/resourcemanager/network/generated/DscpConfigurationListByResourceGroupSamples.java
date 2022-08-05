@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DscpConfiguration ListByResourceGroup. */
 public final class DscpConfigurationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/DscpConfigurationList.json
      */
     /**
      * Sample code: Get Dscp Configuration.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import java.util.List;
@@ -56,13 +55,6 @@ public interface NetAppAccount {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the provisioningState property: Azure lifecycle management.
      *
      * @return the provisioningState value.
@@ -96,6 +88,13 @@ public interface NetAppAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner object.

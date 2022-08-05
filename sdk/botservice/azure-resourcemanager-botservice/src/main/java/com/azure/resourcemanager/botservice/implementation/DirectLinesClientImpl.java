@@ -210,14 +210,7 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
     private Mono<BotChannelInner> regenerateKeysAsync(
         String resourceGroupName, String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters) {
         return regenerateKeysWithResponseAsync(resourceGroupName, resourceName, channelName, parameters)
-            .flatMap(
-                (Response<BotChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

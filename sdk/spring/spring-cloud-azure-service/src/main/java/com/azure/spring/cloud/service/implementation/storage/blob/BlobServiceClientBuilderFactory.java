@@ -54,7 +54,7 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
     @Override
     public void configureService(BlobServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(blobServiceClientProperties.getCustomerProvidedKey()).to(CustomerProvidedKey::new);
+        map.from(blobServiceClientProperties.getCustomerProvidedKey()).to(key -> builder.customerProvidedKey(new CustomerProvidedKey(key)));
         map.from(blobServiceClientProperties.getEncryptionScope()).to(builder::encryptionScope);
         map.from(blobServiceClientProperties.getEndpoint()).to(builder::endpoint);
         map.from(blobServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);

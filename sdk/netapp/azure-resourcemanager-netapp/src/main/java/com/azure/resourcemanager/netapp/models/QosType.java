@@ -27,7 +27,11 @@ public final class QosType extends ExpandableStringEnum<QosType> {
         return fromString(name, QosType.class);
     }
 
-    /** @return known QosType values. */
+    /**
+     * Gets known QosType values.
+     *
+     * @return known QosType values.
+     */
     public static Collection<QosType> values() {
         return values(QosType.class);
     }

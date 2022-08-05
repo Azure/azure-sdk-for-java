@@ -103,6 +103,40 @@ public final class RestServiceLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /*
+     * The client ID associated with your application. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "clientId")
+    private Object clientId;
+
+    /*
+     * The client secret associated with your application.
+     */
+    @JsonProperty(value = "clientSecret")
+    private SecretBase clientSecret;
+
+    /*
+     * The token endpoint of the authorization server to acquire access token.
+     * Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "tokenEndpoint")
+    private Object tokenEndpoint;
+
+    /*
+     * The target service or resource to which the access will be requested.
+     * Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "resource")
+    private Object resource;
+
+    /*
+     * The scope of the access required. It describes what kind of access will
+     * be requested. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "scope")
+    private Object scope;
+
     /**
      * Get the url property: The base URL of the REST service.
      *
@@ -378,6 +412,114 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param clientId the clientId value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties withClientId(Object clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret associated with your application.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase clientSecret() {
+        return this.clientSecret;
+    }
+
+    /**
+     * Set the clientSecret property: The client secret associated with your application.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties withClientSecret(SecretBase clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Get the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the tokenEndpoint value.
+     */
+    public Object tokenEndpoint() {
+        return this.tokenEndpoint;
+    }
+
+    /**
+     * Set the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param tokenEndpoint the tokenEndpoint value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties withTokenEndpoint(Object tokenEndpoint) {
+        this.tokenEndpoint = tokenEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the resource value.
+     */
+    public Object resource() {
+        return this.resource;
+    }
+
+    /**
+     * Set the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param resource the resource value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties withResource(Object resource) {
+        this.resource = resource;
+        return this;
+    }
+
+    /**
+     * Get the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the scope value.
+     */
+    public Object scope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param scope the scope value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties withScope(Object scope) {
+        this.scope = scope;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -404,6 +546,9 @@ public final class RestServiceLinkedServiceTypeProperties {
         }
         if (credential() != null) {
             credential().validate();
+        }
+        if (clientSecret() != null) {
+            clientSecret().validate();
         }
     }
 

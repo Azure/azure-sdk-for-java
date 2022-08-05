@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
 /** The AnalyzeTextLROResult model. */
 @JsonTypeInfo(
@@ -57,6 +58,20 @@ public class AnalyzeTextLROResult extends TaskState {
      */
     public AnalyzeTextLROResult setTaskName(String taskName) {
         this.taskName = taskName;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AnalyzeTextLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
+        super.setLastUpdateDateTime(lastUpdateDateTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AnalyzeTextLROResult setStatus(State status) {
+        super.setStatus(status);
         return this;
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServicesUpdateDomain ListUpdateDomains. */
 public final class CloudServicesUpdateDomainListUpdateDomainsSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/ListCloudServiceUpdateDomains.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceUpdateDomain_List.json
      */
     /**
      * Sample code: List Update Domains in Cloud Service.

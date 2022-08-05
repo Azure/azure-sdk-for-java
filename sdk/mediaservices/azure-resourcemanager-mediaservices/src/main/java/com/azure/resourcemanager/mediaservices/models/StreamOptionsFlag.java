@@ -30,7 +30,11 @@ public final class StreamOptionsFlag extends ExpandableStringEnum<StreamOptionsF
         return fromString(name, StreamOptionsFlag.class);
     }
 
-    /** @return known StreamOptionsFlag values. */
+    /**
+     * Gets known StreamOptionsFlag values.
+     *
+     * @return known StreamOptionsFlag values.
+     */
     public static Collection<StreamOptionsFlag> values() {
         return values(StreamOptionsFlag.class);
     }

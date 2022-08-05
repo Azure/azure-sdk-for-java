@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The WorkspacePurgesPurgeHeaders model. */
 @Fluent
 public final class WorkspacePurgesPurgeHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgesPurgeHeaders.class);
-
     /*
      * The x-ms-status-location property.
      */

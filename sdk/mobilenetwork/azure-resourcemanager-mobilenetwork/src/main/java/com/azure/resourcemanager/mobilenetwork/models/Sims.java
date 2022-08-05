@@ -11,121 +11,107 @@ import com.azure.core.util.Context;
 /** Resource collection API of Sims. */
 public interface Sims {
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String simName);
+    void delete(String resourceGroupName, String simGroupName, String simName);
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String simName, Context context);
+    void delete(String resourceGroupName, String simGroupName, String simName, Context context);
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim.
+     * @return information about the specified SIM.
      */
-    Sim getByResourceGroup(String resourceGroupName, String simName);
+    Sim get(String resourceGroupName, String simGroupName, String simName);
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response}.
+     * @return information about the specified SIM along with {@link Response}.
      */
-    Response<Sim> getByResourceGroupWithResponse(String resourceGroupName, String simName, Context context);
+    Response<Sim> getWithResponse(String resourceGroupName, String simGroupName, String simName, Context context);
 
     /**
-     * Gets all the sims in a subscription.
+     * Gets all the SIMs in a SIM group.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedIterable}.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Sim> list();
+    PagedIterable<Sim> listBySimGroup(String resourceGroupName, String simGroupName);
 
     /**
-     * Gets all the sims in a subscription.
+     * Gets all the SIMs in a SIM group.
      *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the sims in a subscription as paginated response with {@link PagedIterable}.
+     * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Sim> list(Context context);
+    PagedIterable<Sim> listBySimGroup(String resourceGroupName, String simGroupName, Context context);
 
     /**
-     * Gets all the Sims in a subscription.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Sim> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * Gets all the Sims in a subscription.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Sims in a subscription as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Sim> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response}.
+     * @return information about the specified SIM along with {@link Response}.
      */
     Sim getById(String id);
 
     /**
-     * Gets information about the specified sim.
+     * Gets information about the specified SIM.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sim along with {@link Response}.
+     * @return information about the specified SIM along with {@link Response}.
      */
     Response<Sim> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +121,7 @@ public interface Sims {
     void deleteById(String id);
 
     /**
-     * Deletes the specified sim.
+     * Deletes the specified SIM.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

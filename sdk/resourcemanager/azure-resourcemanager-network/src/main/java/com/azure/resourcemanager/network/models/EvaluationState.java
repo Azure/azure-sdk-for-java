@@ -30,7 +30,11 @@ public final class EvaluationState extends ExpandableStringEnum<EvaluationState>
         return fromString(name, EvaluationState.class);
     }
 
-    /** @return known EvaluationState values. */
+    /**
+     * Gets known EvaluationState values.
+     *
+     * @return known EvaluationState values.
+     */
     public static Collection<EvaluationState> values() {
         return values(EvaluationState.class);
     }

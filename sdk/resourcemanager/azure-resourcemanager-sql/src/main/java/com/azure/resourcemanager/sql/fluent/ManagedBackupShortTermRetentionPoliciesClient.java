@@ -35,7 +35,8 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy.
+     * @return a managed database's short term retention policy along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(
@@ -55,7 +56,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy.
+     * @return a managed database's short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedBackupShortTermRetentionPolicyInner> getAsync(
@@ -96,7 +97,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy.
+     * @return a managed database's short term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedBackupShortTermRetentionPolicyInner> getWithResponse(
@@ -114,12 +115,11 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -127,7 +127,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays);
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -137,21 +137,20 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return the {@link PollerFlux} for polling of a short term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
             String managedInstanceName,
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
-            Integer retentionDays);
+            ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -161,21 +160,20 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String managedInstanceName,
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
-            Integer retentionDays);
+            ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -185,22 +183,21 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String managedInstanceName,
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
-            Integer retentionDays,
+            ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context);
 
     /**
@@ -211,12 +208,11 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(
@@ -224,7 +220,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays);
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -234,28 +230,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedBackupShortTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedShortTermRetentionPolicyName policyName);
-
-    /**
-     * Updates a managed database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,7 +242,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays);
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -277,8 +252,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -291,7 +265,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays,
+        ManagedBackupShortTermRetentionPolicyInner parameters,
         Context context);
 
     /**
@@ -302,32 +276,11 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedShortTermRetentionPolicyName policyName);
-
-    /**
-     * Updates a managed database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return a short term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -335,7 +288,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays);
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -345,21 +298,20 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return the {@link PollerFlux} for polling of a short term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginUpdateAsync(
             String resourceGroupName,
             String managedInstanceName,
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
-            Integer retentionDays);
+            ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -369,21 +321,20 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginUpdate(
             String resourceGroupName,
             String managedInstanceName,
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
-            Integer retentionDays);
+            ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -393,22 +344,21 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return the {@link SyncPoller} for polling of a short term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginUpdate(
             String resourceGroupName,
             String managedInstanceName,
             String databaseName,
             ManagedShortTermRetentionPolicyName policyName,
-            Integer retentionDays,
+            ManagedBackupShortTermRetentionPolicyInner parameters,
             Context context);
 
     /**
@@ -419,12 +369,11 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
+     * @return a short term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedBackupShortTermRetentionPolicyInner> updateAsync(
@@ -432,7 +381,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays);
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -442,28 +391,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedBackupShortTermRetentionPolicyInner> updateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedShortTermRetentionPolicyName policyName);
-
-    /**
-     * Updates a managed database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -475,7 +403,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays);
+        ManagedBackupShortTermRetentionPolicyInner parameters);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -485,8 +413,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be "default".
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
+     * @param parameters The short term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -499,28 +426,8 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String managedInstanceName,
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
-        Integer retentionDays,
+        ManagedBackupShortTermRetentionPolicyInner parameters,
         Context context);
-
-    /**
-     * Updates a managed database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name. Should always be "default".
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner update(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedShortTermRetentionPolicyName policyName);
 
     /**
      * Gets a managed database's short term retention policy list.
@@ -532,7 +439,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list.
+     * @return a managed database's short term retention policy list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByDatabaseAsync(
@@ -548,7 +455,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list.
+     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(
@@ -565,7 +472,7 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list.
+     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(

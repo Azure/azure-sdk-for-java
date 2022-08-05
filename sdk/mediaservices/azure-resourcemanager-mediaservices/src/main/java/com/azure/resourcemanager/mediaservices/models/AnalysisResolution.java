@@ -27,7 +27,11 @@ public final class AnalysisResolution extends ExpandableStringEnum<AnalysisResol
         return fromString(name, AnalysisResolution.class);
     }
 
-    /** @return known AnalysisResolution values. */
+    /**
+     * Gets known AnalysisResolution values.
+     *
+     * @return known AnalysisResolution values.
+     */
     public static Collection<AnalysisResolution> values() {
         return values(AnalysisResolution.class);
     }

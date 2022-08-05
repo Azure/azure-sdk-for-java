@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for PacketCaptures Create. */
 public final class PacketCapturesCreateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherPacketCaptureCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherPacketCaptureCreate.json
      */
     /**
      * Sample code: Create packet capture.

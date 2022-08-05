@@ -27,7 +27,11 @@ public final class StorageAuthentication extends ExpandableStringEnum<StorageAut
         return fromString(name, StorageAuthentication.class);
     }
 
-    /** @return known StorageAuthentication values. */
+    /**
+     * Gets known StorageAuthentication values.
+     *
+     * @return known StorageAuthentication values.
+     */
     public static Collection<StorageAuthentication> values() {
         return values(StorageAuthentication.class);
     }

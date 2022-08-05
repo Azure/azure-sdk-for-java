@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkInterfaces GetEffectiveRouteTable. */
 public final class NetworkInterfacesGetEffectiveRouteTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkInterfaceEffectiveRouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkInterfaceEffectiveRouteTableList.json
      */
     /**
      * Sample code: Show network interface effective route tables.

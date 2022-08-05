@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGateways BackendHealth. */
 public final class ApplicationGatewaysBackendHealthSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayBackendHealthGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayBackendHealthGet.json
      */
     /**
      * Sample code: Get Backend Health.

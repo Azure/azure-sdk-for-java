@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConnectionMonitors Stop. */
 public final class ConnectionMonitorsStopSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherConnectionMonitorStop.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherConnectionMonitorStop.json
      */
     /**
      * Sample code: Stop connection monitor.

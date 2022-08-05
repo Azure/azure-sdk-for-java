@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkProfiles Delete. */
 public final class NetworkProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkProfileDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkProfileDelete.json
      */
     /**
      * Sample code: Delete network profile.

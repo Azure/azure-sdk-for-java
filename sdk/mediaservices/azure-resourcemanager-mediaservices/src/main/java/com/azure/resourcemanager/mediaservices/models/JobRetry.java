@@ -27,7 +27,11 @@ public final class JobRetry extends ExpandableStringEnum<JobRetry> {
         return fromString(name, JobRetry.class);
     }
 
-    /** @return known JobRetry values. */
+    /**
+     * Gets known JobRetry values.
+     *
+     * @return known JobRetry values.
+     */
     public static Collection<JobRetry> values() {
         return values(JobRetry.class);
     }

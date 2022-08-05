@@ -221,7 +221,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -281,7 +281,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -406,7 +406,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -462,7 +462,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -570,7 +570,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -636,7 +636,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -872,7 +872,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -927,7 +927,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1127,7 +1127,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1183,7 +1183,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1252,8 +1252,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1285,7 +1287,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1303,8 +1305,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1337,7 +1341,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1352,8 +1356,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1370,8 +1376,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1387,8 +1395,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1405,7 +1415,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1442,7 +1454,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1461,7 +1473,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1499,7 +1513,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1515,7 +1529,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1543,7 +1559,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1569,7 +1587,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1588,7 +1608,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1609,7 +1631,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1630,7 +1654,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1652,7 +1678,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -1670,7 +1698,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *

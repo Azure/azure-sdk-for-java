@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkWatchers List. */
 public final class NetworkWatchersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherListAll.json
      */
     /**
      * Sample code: List all network watchers.

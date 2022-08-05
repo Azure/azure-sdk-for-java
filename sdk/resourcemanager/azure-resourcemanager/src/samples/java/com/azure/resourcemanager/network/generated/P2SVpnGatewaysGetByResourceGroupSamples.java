@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for P2SVpnGateways GetByResourceGroup. */
 public final class P2SVpnGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/P2SVpnGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/P2SVpnGatewayGet.json
      */
     /**
      * Sample code: P2SVpnGatewayGet.

@@ -37,7 +37,11 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
         return fromString(name, CheckNameResourceTypes.class);
     }
 
-    /** @return known CheckNameResourceTypes values. */
+    /**
+     * Gets known CheckNameResourceTypes values.
+     *
+     * @return known CheckNameResourceTypes values.
+     */
     public static Collection<CheckNameResourceTypes> values() {
         return values(CheckNameResourceTypes.class);
     }

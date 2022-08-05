@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log Definition of a single resource metric. */
 @Fluent
 public final class LogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSpecification.class);
-
     /*
      * Name of log specification.
      */

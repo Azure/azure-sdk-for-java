@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Volume Export Policy Rule. */
 @Fluent
 public final class ExportPolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportPolicyRule.class);
-
     /*
      * Order index
      */

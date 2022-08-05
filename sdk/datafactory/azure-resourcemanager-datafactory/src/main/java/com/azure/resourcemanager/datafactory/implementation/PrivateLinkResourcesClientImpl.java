@@ -174,15 +174,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkResourcesWrapperInner> getAsync(String resourceGroupName, String factoryName) {
-        return getWithResponseAsync(resourceGroupName, factoryName)
-            .flatMap(
-                (Response<PrivateLinkResourcesWrapperInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, factoryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

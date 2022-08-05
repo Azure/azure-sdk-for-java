@@ -101,6 +101,12 @@ public final class ExpressRouteCircuitPropertiesFormat {
     @JsonProperty(value = "globalReachEnabled")
     private Boolean globalReachEnabled;
 
+    /*
+     * The authorizationKey.
+     */
+    @JsonProperty(value = "authorizationKey")
+    private String authorizationKey;
+
     /**
      * Get the allowClassicOperations property: Allow classic operations.
      *
@@ -363,6 +369,26 @@ public final class ExpressRouteCircuitPropertiesFormat {
      */
     public ExpressRouteCircuitPropertiesFormat withGlobalReachEnabled(Boolean globalReachEnabled) {
         this.globalReachEnabled = globalReachEnabled;
+        return this;
+    }
+
+    /**
+     * Get the authorizationKey property: The authorizationKey.
+     *
+     * @return the authorizationKey value.
+     */
+    public String authorizationKey() {
+        return this.authorizationKey;
+    }
+
+    /**
+     * Set the authorizationKey property: The authorizationKey.
+     *
+     * @param authorizationKey the authorizationKey value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withAuthorizationKey(String authorizationKey) {
+        this.authorizationKey = authorizationKey;
         return this;
     }
 

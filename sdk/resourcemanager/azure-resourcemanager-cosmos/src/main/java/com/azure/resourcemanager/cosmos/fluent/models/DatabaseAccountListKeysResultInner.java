@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The access keys for the given database account. */
 @Immutable
 public final class DatabaseAccountListKeysResultInner extends DatabaseAccountListReadOnlyKeysResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountListKeysResultInner.class);
-
     /*
      * Base 64 encoded value of the primary read-write key.
      */

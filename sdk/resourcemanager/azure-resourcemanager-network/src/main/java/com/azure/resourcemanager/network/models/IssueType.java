@@ -48,7 +48,11 @@ public final class IssueType extends ExpandableStringEnum<IssueType> {
         return fromString(name, IssueType.class);
     }
 
-    /** @return known IssueType values. */
+    /**
+     * Gets known IssueType values.
+     *
+     * @return known IssueType values.
+     */
     public static Collection<IssueType> values() {
         return values(IssueType.class);
     }

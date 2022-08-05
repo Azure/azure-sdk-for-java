@@ -27,7 +27,11 @@ public final class OnErrorType extends ExpandableStringEnum<OnErrorType> {
         return fromString(name, OnErrorType.class);
     }
 
-    /** @return known OnErrorType values. */
+    /**
+     * Gets known OnErrorType values.
+     *
+     * @return known OnErrorType values.
+     */
     public static Collection<OnErrorType> values() {
         return values(OnErrorType.class);
     }

@@ -133,7 +133,11 @@ public final class ApplicationGatewaySslCipherSuite extends ExpandableStringEnum
         return fromString(name, ApplicationGatewaySslCipherSuite.class);
     }
 
-    /** @return known ApplicationGatewaySslCipherSuite values. */
+    /**
+     * Gets known ApplicationGatewaySslCipherSuite values.
+     *
+     * @return known ApplicationGatewaySslCipherSuite values.
+     */
     public static Collection<ApplicationGatewaySslCipherSuite> values() {
         return values(ApplicationGatewaySslCipherSuite.class);
     }

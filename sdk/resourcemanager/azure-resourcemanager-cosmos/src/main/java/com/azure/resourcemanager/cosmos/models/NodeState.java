@@ -36,7 +36,11 @@ public final class NodeState extends ExpandableStringEnum<NodeState> {
         return fromString(name, NodeState.class);
     }
 
-    /** @return known NodeState values. */
+    /**
+     * Gets known NodeState values.
+     *
+     * @return known NodeState values.
+     */
     public static Collection<NodeState> values() {
         return values(NodeState.class);
     }

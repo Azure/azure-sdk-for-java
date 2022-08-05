@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
-import java.util.Map;
 
 /** An immutable client-side representation of VolumeGroup. */
 public interface VolumeGroup {
@@ -36,13 +35,6 @@ public interface VolumeGroup {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRouteCircuitAuthorizations Get. */
 public final class ExpressRouteCircuitAuthorizationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitAuthorizationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitAuthorizationGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit Authorization.

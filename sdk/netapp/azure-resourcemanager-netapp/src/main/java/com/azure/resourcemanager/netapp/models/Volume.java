@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.netapp.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -57,7 +58,14 @@ public interface Volume {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the zones property: Availability Zone.
+     *
+     * @return the zones value.
+     */
+    List<String> zones();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -237,7 +245,7 @@ public interface Volume {
     Boolean smbContinuouslyAvailable();
 
     /**
-     * Gets the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * Gets the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
@@ -245,11 +253,21 @@ public interface Volume {
     Float throughputMibps();
 
     /**
-     * Gets the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Gets the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
+     * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
+     * Microsoft.KeyVault'.
      *
      * @return the encryptionKeySource value.
      */
-    String encryptionKeySource();
+    EncryptionKeySource encryptionKeySource();
+
+    /**
+     * Gets the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
+     * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
+     *
+     * @return the keyVaultPrivateEndpointResourceId value.
+     */
+    String keyVaultPrivateEndpointResourceId();
 
     /**
      * Gets the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
@@ -370,6 +388,14 @@ public interface Volume {
     String volumeSpecName();
 
     /**
+     * Gets the encrypted property: Specifies if the volume is encrypted or not. Only available on volumes created or
+     * updated after 2022-01-01.
+     *
+     * @return the encrypted value.
+     */
+    Boolean encrypted();
+
+    /**
      * Gets the placementRules property: Volume placement rules Application specific placement rules for the particular
      * volume.
      *
@@ -397,6 +423,13 @@ public interface Volume {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.VolumeInner object.
@@ -494,6 +527,7 @@ public interface Volume {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithZones,
                 DefinitionStages.WithServiceLevel,
                 DefinitionStages.WithExportPolicy,
                 DefinitionStages.WithProtocolTypes,
@@ -510,6 +544,7 @@ public interface Volume {
                 DefinitionStages.WithSmbContinuouslyAvailable,
                 DefinitionStages.WithThroughputMibps,
                 DefinitionStages.WithEncryptionKeySource,
+                DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
                 DefinitionStages.WithLdapEnabled,
                 DefinitionStages.WithCoolAccess,
                 DefinitionStages.WithCoolnessPeriod,
@@ -547,6 +582,16 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Volume definition allowing to specify zones. */
+        interface WithZones {
+            /**
+             * Specifies the zones property: Availability Zone.
+             *
+             * @param zones Availability Zone.
+             * @return the next definition stage.
+             */
+            WithCreate withZones(List<String> zones);
         }
         /** The stage of the Volume definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
@@ -708,10 +753,10 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
-             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume
+             * Specifies the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume
              * and this will be accepted as input only for manual qosType volume.
              *
-             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume and this will be
+             * @param throughputMibps Maximum throughput in MiB/s that can be achieved by this volume and this will be
              *     accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
@@ -720,13 +765,29 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify encryptionKeySource. */
         interface WithEncryptionKeySource {
             /**
-             * Specifies the encryptionKeySource property: Encryption Key Source. Possible values are:
-             * 'Microsoft.NetApp'.
+             * Specifies the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if
+             * NetApp account has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are:
+             * 'Microsoft.NetApp, Microsoft.KeyVault'.
              *
-             * @param encryptionKeySource Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+             * @param encryptionKeySource Source of key used to encrypt data in volume. Applicable if NetApp account has
+             *     encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are:
+             *     'Microsoft.NetApp, Microsoft.KeyVault'.
              * @return the next definition stage.
              */
-            WithCreate withEncryptionKeySource(String encryptionKeySource);
+            WithCreate withEncryptionKeySource(EncryptionKeySource encryptionKeySource);
+        }
+        /** The stage of the Volume definition allowing to specify keyVaultPrivateEndpointResourceId. */
+        interface WithKeyVaultPrivateEndpointResourceId {
+            /**
+             * Specifies the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for
+             * KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource =
+             * 'Microsoft.KeyVault'..
+             *
+             * @param keyVaultPrivateEndpointResourceId The resource ID of private endpoint for KeyVault. It must reside
+             *     in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
+             * @return the next definition stage.
+             */
+            WithCreate withKeyVaultPrivateEndpointResourceId(String keyVaultPrivateEndpointResourceId);
         }
         /** The stage of the Volume definition allowing to specify ldapEnabled. */
         interface WithLdapEnabled {
@@ -899,7 +960,9 @@ public interface Volume {
             UpdateStages.WithIsDefaultQuotaEnabled,
             UpdateStages.WithDefaultUserQuotaInKiBs,
             UpdateStages.WithDefaultGroupQuotaInKiBs,
-            UpdateStages.WithUnixPermissions {
+            UpdateStages.WithUnixPermissions,
+            UpdateStages.WithCoolAccess,
+            UpdateStages.WithCoolnessPeriod {
         /**
          * Executes the update request.
          *
@@ -1037,6 +1100,28 @@ public interface Volume {
              */
             Update withUnixPermissions(String unixPermissions);
         }
+        /** The stage of the Volume update allowing to specify coolAccess. */
+        interface WithCoolAccess {
+            /**
+             * Specifies the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume..
+             *
+             * @param coolAccess Specifies whether Cool Access(tiering) is enabled for the volume.
+             * @return the next definition stage.
+             */
+            Update withCoolAccess(Boolean coolAccess);
+        }
+        /** The stage of the Volume update allowing to specify coolnessPeriod. */
+        interface WithCoolnessPeriod {
+            /**
+             * Specifies the coolnessPeriod property: Specifies the number of days after which data that is not accessed
+             * by clients will be tiered..
+             *
+             * @param coolnessPeriod Specifies the number of days after which data that is not accessed by clients will
+             *     be tiered.
+             * @return the next definition stage.
+             */
+            Update withCoolnessPeriod(Integer coolnessPeriod);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -1075,6 +1160,24 @@ public interface Volume {
     void revert(VolumeRevert body, Context context);
 
     /**
+     * Reset cifs password from volume.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetCifsPassword();
+
+    /**
+     * Reset cifs password from volume.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resetCifsPassword(Context context);
+
+    /**
      * Break the replication connection on the destination volume.
      *
      * @param body Optional body to force break the replication.
@@ -1102,6 +1205,49 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void breakReplication(BreakReplicationRequest body, Context context);
+
+    /**
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param body body for the id of the source volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reestablishReplication(ReestablishReplicationRequest body);
+
+    /**
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * snapshots.
+     *
+     * @param body body for the id of the source volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reestablishReplication(ReestablishReplicationRequest body, Context context);
+
+    /**
+     * List all replications for a specified volume.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Replications as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Replication> listReplications();
+
+    /**
+     * List all replications for a specified volume.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Replications as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Replication> listReplications(Context context);
 
     /**
      * Resync the connection on the destination volume. If the operation is ran on the source volume it will
@@ -1200,4 +1346,58 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void poolChange(PoolChangeRequest body, Context context);
+
+    /**
+     * Relocates volume to a new stamp.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void relocate();
+
+    /**
+     * Relocates volume to a new stamp.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void relocate(Context context);
+
+    /**
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void finalizeRelocation();
+
+    /**
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void finalizeRelocation(Context context);
+
+    /**
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revertRelocation();
+
+    /**
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void revertRelocation(Context context);
 }

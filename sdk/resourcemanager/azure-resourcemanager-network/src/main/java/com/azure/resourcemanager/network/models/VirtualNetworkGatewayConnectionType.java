@@ -34,7 +34,11 @@ public final class VirtualNetworkGatewayConnectionType
         return fromString(name, VirtualNetworkGatewayConnectionType.class);
     }
 
-    /** @return known VirtualNetworkGatewayConnectionType values. */
+    /**
+     * Gets known VirtualNetworkGatewayConnectionType values.
+     *
+     * @return known VirtualNetworkGatewayConnectionType values.
+     */
     public static Collection<VirtualNetworkGatewayConnectionType> values() {
         return values(VirtualNetworkGatewayConnectionType.class);
     }

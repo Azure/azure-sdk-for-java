@@ -27,7 +27,11 @@ public final class ExpressRouteCircuitPeeringState extends ExpandableStringEnum<
         return fromString(name, ExpressRouteCircuitPeeringState.class);
     }
 
-    /** @return known ExpressRouteCircuitPeeringState values. */
+    /**
+     * Gets known ExpressRouteCircuitPeeringState values.
+     *
+     * @return known ExpressRouteCircuitPeeringState values.
+     */
     public static Collection<ExpressRouteCircuitPeeringState> values() {
         return values(ExpressRouteCircuitPeeringState.class);
     }

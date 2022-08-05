@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RouteTables ListByResourceGroup. */
 public final class RouteTablesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/RouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/RouteTableList.json
      */
     /**
      * Sample code: List route tables in resource group.

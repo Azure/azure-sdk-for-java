@@ -36,7 +36,11 @@ public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventE
         return fromString(name, LiveEventEncodingType.class);
     }
 
-    /** @return known LiveEventEncodingType values. */
+    /**
+     * Gets known LiveEventEncodingType values.
+     *
+     * @return known LiveEventEncodingType values.
+     */
     public static Collection<LiveEventEncodingType> values() {
         return values(LiveEventEncodingType.class);
     }

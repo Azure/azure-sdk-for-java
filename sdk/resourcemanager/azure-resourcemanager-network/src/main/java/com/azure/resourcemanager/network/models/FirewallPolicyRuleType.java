@@ -30,7 +30,11 @@ public final class FirewallPolicyRuleType extends ExpandableStringEnum<FirewallP
         return fromString(name, FirewallPolicyRuleType.class);
     }
 
-    /** @return known FirewallPolicyRuleType values. */
+    /**
+     * Gets known FirewallPolicyRuleType values.
+     *
+     * @return known FirewallPolicyRuleType values.
+     */
     public static Collection<FirewallPolicyRuleType> values() {
         return values(FirewallPolicyRuleType.class);
     }

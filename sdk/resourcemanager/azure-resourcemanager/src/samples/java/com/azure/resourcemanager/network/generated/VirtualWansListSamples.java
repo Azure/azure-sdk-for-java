@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualWans List. */
 public final class VirtualWansListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualWANList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualWANList.json
      */
     /**
      * Sample code: VirtualWANList.

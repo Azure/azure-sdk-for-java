@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LocalNetworkGateways ListByResourceGroup. */
 public final class LocalNetworkGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LocalNetworkGatewayList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LocalNetworkGatewayList.json
      */
     /**
      * Sample code: ListLocalNetworkGateways.

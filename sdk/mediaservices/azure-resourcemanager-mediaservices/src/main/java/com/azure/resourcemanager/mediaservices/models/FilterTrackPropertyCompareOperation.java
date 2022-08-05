@@ -28,7 +28,11 @@ public final class FilterTrackPropertyCompareOperation
         return fromString(name, FilterTrackPropertyCompareOperation.class);
     }
 
-    /** @return known FilterTrackPropertyCompareOperation values. */
+    /**
+     * Gets known FilterTrackPropertyCompareOperation values.
+     *
+     * @return known FilterTrackPropertyCompareOperation values.
+     */
     public static Collection<FilterTrackPropertyCompareOperation> values() {
         return values(FilterTrackPropertyCompareOperation.class);
     }

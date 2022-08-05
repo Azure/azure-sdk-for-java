@@ -33,7 +33,11 @@ public final class ServiceProviderProvisioningState extends ExpandableStringEnum
         return fromString(name, ServiceProviderProvisioningState.class);
     }
 
-    /** @return known ServiceProviderProvisioningState values. */
+    /**
+     * Gets known ServiceProviderProvisioningState values.
+     *
+     * @return known ServiceProviderProvisioningState values.
+     */
     public static Collection<ServiceProviderProvisioningState> values() {
         return values(ServiceProviderProvisioningState.class);
     }

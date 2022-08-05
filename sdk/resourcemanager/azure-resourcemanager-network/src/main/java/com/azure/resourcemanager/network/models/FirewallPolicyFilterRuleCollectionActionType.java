@@ -28,7 +28,11 @@ public final class FirewallPolicyFilterRuleCollectionActionType
         return fromString(name, FirewallPolicyFilterRuleCollectionActionType.class);
     }
 
-    /** @return known FirewallPolicyFilterRuleCollectionActionType values. */
+    /**
+     * Gets known FirewallPolicyFilterRuleCollectionActionType values.
+     *
+     * @return known FirewallPolicyFilterRuleCollectionActionType values.
+     */
     public static Collection<FirewallPolicyFilterRuleCollectionActionType> values() {
         return values(FirewallPolicyFilterRuleCollectionActionType.class);
     }

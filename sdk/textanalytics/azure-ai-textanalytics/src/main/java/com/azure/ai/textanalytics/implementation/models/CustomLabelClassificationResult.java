@@ -36,4 +36,32 @@ public final class CustomLabelClassificationResult extends CustomResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResult setProjectName(String projectName) {
+        super.setProjectName(projectName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomLabelClassificationResult setDeploymentName(String deploymentName) {
+        super.setDeploymentName(deploymentName);
+        return this;
+    }
 }

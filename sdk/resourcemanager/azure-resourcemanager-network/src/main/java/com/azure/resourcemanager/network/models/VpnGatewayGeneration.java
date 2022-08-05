@@ -30,7 +30,11 @@ public final class VpnGatewayGeneration extends ExpandableStringEnum<VpnGatewayG
         return fromString(name, VpnGatewayGeneration.class);
     }
 
-    /** @return known VpnGatewayGeneration values. */
+    /**
+     * Gets known VpnGatewayGeneration values.
+     *
+     * @return known VpnGatewayGeneration values.
+     */
     public static Collection<VpnGatewayGeneration> values() {
         return values(VpnGatewayGeneration.class);
     }

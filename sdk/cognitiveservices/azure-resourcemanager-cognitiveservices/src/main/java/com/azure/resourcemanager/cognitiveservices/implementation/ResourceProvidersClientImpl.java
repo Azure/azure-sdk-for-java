@@ -193,14 +193,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<SkuAvailabilityListResultInner> checkSkuAvailabilityAsync(
         String location, CheckSkuAvailabilityParameter parameters) {
         return checkSkuAvailabilityWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<SkuAvailabilityListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -333,15 +326,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainAvailabilityInner> checkDomainAvailabilityAsync(CheckDomainAvailabilityParameter parameters) {
-        return checkDomainAvailabilityWithResponseAsync(parameters)
-            .flatMap(
-                (Response<DomainAvailabilityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkDomainAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

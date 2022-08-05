@@ -42,7 +42,11 @@ public final class ClusterEntityStatus extends ExpandableStringEnum<ClusterEntit
         return fromString(name, ClusterEntityStatus.class);
     }
 
-    /** @return known ClusterEntityStatus values. */
+    /**
+     * Gets known ClusterEntityStatus values.
+     *
+     * @return known ClusterEntityStatus values.
+     */
     public static Collection<ClusterEntityStatus> values() {
         return values(ClusterEntityStatus.class);
     }

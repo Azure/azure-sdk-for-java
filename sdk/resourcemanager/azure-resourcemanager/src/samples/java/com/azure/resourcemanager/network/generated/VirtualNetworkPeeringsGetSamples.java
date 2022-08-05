@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualNetworkPeerings Get. */
 public final class VirtualNetworkPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkPeeringGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkPeeringGet.json
      */
     /**
      * Sample code: Get peering.
@@ -26,7 +26,7 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Get peering with remote virtual network encryption.

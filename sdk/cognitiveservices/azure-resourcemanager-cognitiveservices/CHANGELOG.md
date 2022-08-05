@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2022-06-20)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.Deployment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Account` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.CommitmentPlan` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.4 (2022-04-11)
 

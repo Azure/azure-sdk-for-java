@@ -12,6 +12,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -65,6 +66,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") IdpsQueryObject parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -109,6 +111,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -119,6 +122,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
                             resourceGroupName,
                             firewallPolicyName,
                             this.client.getSubscriptionId(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -165,6 +169,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -173,6 +178,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
                 resourceGroupName,
                 firewallPolicyName,
                 this.client.getSubscriptionId(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -193,14 +199,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
     public Mono<QueryResultsInner> listAsync(
         String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName, parameters)
-            .flatMap(
-                (Response<QueryResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

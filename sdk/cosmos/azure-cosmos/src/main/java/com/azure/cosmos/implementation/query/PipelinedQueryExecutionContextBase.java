@@ -53,27 +53,26 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         final Function<JsonNode, T> factoryMethod = DefaultDocumentQueryExecutionContext
             .getEffectiveFactoryMethod(cosmosQueryRequestOptions, queryInfo.hasSelectValue(), classOfT);
 
-        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasDCount()) {
-            return PipelinedDocumentQueryExecutionContext.createAsyncCore(diagnosticsClientContext, client, initParams, pageSize, factoryMethod);
+        if (queryInfo.hasOrderBy()
+            || queryInfo.hasAggregates()
+            || queryInfo.hasGroupBy()
+            || queryInfo.hasDCount()
+            || queryInfo.hasDistinct()) {
+
+            return PipelinedDocumentQueryExecutionContext.createAsyncCore(
+                diagnosticsClientContext,
+                client,
+                initParams,
+                pageSize,
+                factoryMethod);
         }
 
-        return PipelinedQueryExecutionContext.createAsyncCore(diagnosticsClientContext, client, initParams, pageSize, factoryMethod);
-    }
-
-    protected static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createDistinctPipelineComponentFunction(
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponent,
-        QueryInfo queryInfo) {
-
-        if (queryInfo.hasDistinct()) {
-            return
-                (continuationToken, documentQueryParams) ->
-                    DistinctDocumentQueryExecutionContext.createAsync(createBaseComponent,
-                        queryInfo.getDistinctQueryType(),
-                        continuationToken,
-                        documentQueryParams);
-        }
-
-        return createBaseComponent;
+        return PipelinedQueryExecutionContext.createAsyncCore(
+            diagnosticsClientContext,
+            client,
+            initParams,
+            pageSize,
+            factoryMethod);
     }
 
     protected static <T> BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createCommonPipelineComponentFunction(

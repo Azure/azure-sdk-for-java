@@ -49,7 +49,11 @@ public final class OwaspCrsExclusionEntryMatchVariable
         return fromString(name, OwaspCrsExclusionEntryMatchVariable.class);
     }
 
-    /** @return known OwaspCrsExclusionEntryMatchVariable values. */
+    /**
+     * Gets known OwaspCrsExclusionEntryMatchVariable values.
+     *
+     * @return known OwaspCrsExclusionEntryMatchVariable values.
+     */
     public static Collection<OwaspCrsExclusionEntryMatchVariable> values() {
         return values(OwaspCrsExclusionEntryMatchVariable.class);
     }

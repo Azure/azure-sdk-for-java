@@ -33,7 +33,11 @@ public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<
         return fromString(name, ApplicationGatewaySslPolicyName.class);
     }
 
-    /** @return known ApplicationGatewaySslPolicyName values. */
+    /**
+     * Gets known ApplicationGatewaySslPolicyName values.
+     *
+     * @return known ApplicationGatewaySslPolicyName values.
+     */
     public static Collection<ApplicationGatewaySslPolicyName> values() {
         return values(ApplicationGatewaySslPolicyName.class);
     }

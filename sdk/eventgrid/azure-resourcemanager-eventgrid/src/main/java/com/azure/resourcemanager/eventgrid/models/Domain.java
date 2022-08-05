@@ -50,11 +50,11 @@ public interface Domain {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The Sku pricing tier for the Event Grid Domain resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid Domain resource.
      *
-     * @return the sku value.
+     * @return the systemData value.
      */
-    ResourceSku sku();
+    SystemData systemData();
 
     /**
      * Gets the identity property: Identity information for the Event Grid Domain resource.
@@ -62,13 +62,6 @@ public interface Domain {
      * @return the identity value.
      */
     IdentityInfo identity();
-
-    /**
-     * Gets the systemData property: The system metadata relating to the Event Grid Domain resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connections.
@@ -251,7 +244,6 @@ public interface Domain {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
@@ -285,16 +277,6 @@ public interface Domain {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Domain definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku pricing tier for the Event Grid Domain resource..
-             *
-             * @param sku The Sku pricing tier for the Event Grid Domain resource.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(ResourceSku sku);
         }
         /** The stage of the Domain definition allowing to specify identity. */
         interface WithIdentity {
@@ -449,7 +431,6 @@ public interface Domain {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
             UpdateStages.WithDisableLocalAuth,
@@ -492,16 +473,6 @@ public interface Domain {
              * @return the next definition stage.
              */
             Update withIdentity(IdentityInfo identity);
-        }
-        /** The stage of the Domain update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The Sku pricing tier for the domain..
-             *
-             * @param sku The Sku pricing tier for the domain.
-             * @return the next definition stage.
-             */
-            Update withSku(ResourceSku sku);
         }
         /** The stage of the Domain update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {

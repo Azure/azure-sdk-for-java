@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TimeSeriesDatabaseConnections List. */
 public final class TimeSeriesDatabaseConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/TimeSeriesDatabaseConnectionsList_example.json
      */
     /**
      * Sample code: List time series database connections for a DigitalTwins instance.

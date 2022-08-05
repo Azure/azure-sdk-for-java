@@ -44,6 +44,10 @@ public final class LinkedStorageAccountsResourceImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LinkedStorageAccountsResourceInner innerModel() {
         return this.innerObject;
     }

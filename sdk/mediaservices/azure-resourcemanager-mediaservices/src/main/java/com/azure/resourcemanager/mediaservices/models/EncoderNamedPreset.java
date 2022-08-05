@@ -71,7 +71,11 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
         return fromString(name, EncoderNamedPreset.class);
     }
 
-    /** @return known EncoderNamedPreset values. */
+    /**
+     * Gets known EncoderNamedPreset values.
+     *
+     * @return known EncoderNamedPreset values.
+     */
     public static Collection<EncoderNamedPreset> values() {
         return values(EncoderNamedPreset.class);
     }

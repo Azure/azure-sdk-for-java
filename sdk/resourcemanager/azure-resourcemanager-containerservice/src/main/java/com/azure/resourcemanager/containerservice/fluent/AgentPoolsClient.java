@@ -407,8 +407,10 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -423,8 +425,10 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName);
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -438,8 +442,10 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName);
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -452,8 +458,10 @@ public interface AgentPoolsClient {
     AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(String resourceGroupName, String resourceName);
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported Kubernetes versions for the specified agent pool.
+     *
+     * <p>See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for
+     * more details about the version lifecycle.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -468,7 +476,9 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -485,7 +495,9 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -502,7 +514,9 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -519,7 +533,9 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -537,7 +553,9 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -554,7 +572,9 @@ public interface AgentPoolsClient {
         String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *
@@ -570,7 +590,9 @@ public interface AgentPoolsClient {
     AgentPoolInner upgradeNodeImageVersion(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
+     * Upgrades the node image version of an agent pool to the latest.
+     *
+     * <p>Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
      * provides one new image per week with the latest updates. For more details on node image versions, see:
      * https://docs.microsoft.com/azure/aks/node-image-upgrade.
      *

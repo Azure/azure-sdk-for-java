@@ -36,7 +36,11 @@ public final class RouteNextHopType extends ExpandableStringEnum<RouteNextHopTyp
         return fromString(name, RouteNextHopType.class);
     }
 
-    /** @return known RouteNextHopType values. */
+    /**
+     * Gets known RouteNextHopType values.
+     *
+     * @return known RouteNextHopType values.
+     */
     public static Collection<RouteNextHopType> values() {
         return values(RouteNextHopType.class);
     }

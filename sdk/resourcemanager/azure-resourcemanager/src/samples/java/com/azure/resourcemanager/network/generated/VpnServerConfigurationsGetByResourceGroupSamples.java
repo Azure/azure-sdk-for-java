@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnServerConfigurations GetByResourceGroup. */
 public final class VpnServerConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnServerConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnServerConfigurationGet.json
      */
     /**
      * Sample code: VpnServerConfigurationGet.

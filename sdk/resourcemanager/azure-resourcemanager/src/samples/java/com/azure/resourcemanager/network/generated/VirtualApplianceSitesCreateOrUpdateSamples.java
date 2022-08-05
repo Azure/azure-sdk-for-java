@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.Office365PolicyProperties;
 /** Samples for VirtualApplianceSites CreateOrUpdate. */
 public final class VirtualApplianceSitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualApplianceSitePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualApplianceSitePut.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Site.

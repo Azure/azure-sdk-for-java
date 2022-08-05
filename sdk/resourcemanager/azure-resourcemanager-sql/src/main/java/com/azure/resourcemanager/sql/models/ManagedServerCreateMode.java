@@ -27,7 +27,11 @@ public final class ManagedServerCreateMode extends ExpandableStringEnum<ManagedS
         return fromString(name, ManagedServerCreateMode.class);
     }
 
-    /** @return known ManagedServerCreateMode values. */
+    /**
+     * Gets known ManagedServerCreateMode values.
+     *
+     * @return known ManagedServerCreateMode values.
+     */
     public static Collection<ManagedServerCreateMode> values() {
         return values(ManagedServerCreateMode.class);
     }

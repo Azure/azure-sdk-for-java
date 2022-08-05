@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 /** Samples for MongoDBResources RetrieveContinuousBackupInformation. */
 public final class MongoDBResourcesRetrieveContinuousBackupInformationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionBackupInformation.

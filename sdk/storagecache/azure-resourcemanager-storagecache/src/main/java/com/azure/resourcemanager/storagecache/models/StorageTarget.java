@@ -105,6 +105,13 @@ public interface StorageTarget {
     BlobNfsTarget blobNfs();
 
     /**
+     * Gets the allocationPercentage property: The percentage of cache space allocated for this storage target.
+     *
+     * @return the allocationPercentage value.
+     */
+    Integer allocationPercentage();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -117,6 +124,13 @@ public interface StorageTarget {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner object.

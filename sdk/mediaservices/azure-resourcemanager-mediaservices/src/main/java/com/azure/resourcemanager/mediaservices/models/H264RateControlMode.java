@@ -30,7 +30,11 @@ public final class H264RateControlMode extends ExpandableStringEnum<H264RateCont
         return fromString(name, H264RateControlMode.class);
     }
 
-    /** @return known H264RateControlMode values. */
+    /**
+     * Gets known H264RateControlMode values.
+     *
+     * @return known H264RateControlMode values.
+     */
     public static Collection<H264RateControlMode> values() {
         return values(H264RateControlMode.class);
     }

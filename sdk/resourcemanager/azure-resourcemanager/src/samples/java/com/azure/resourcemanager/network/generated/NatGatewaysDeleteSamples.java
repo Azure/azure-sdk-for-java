@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NatGateways Delete. */
 public final class NatGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NatGatewayDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NatGatewayDelete.json
      */
     /**
      * Sample code: Delete nat gateway.

@@ -24,7 +24,11 @@ public final class FlowLogFormatType extends ExpandableStringEnum<FlowLogFormatT
         return fromString(name, FlowLogFormatType.class);
     }
 
-    /** @return known FlowLogFormatType values. */
+    /**
+     * Gets known FlowLogFormatType values.
+     *
+     * @return known FlowLogFormatType values.
+     */
     public static Collection<FlowLogFormatType> values() {
         return values(FlowLogFormatType.class);
     }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
@@ -111,6 +112,13 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
      */
     @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
+
+    /*
+     * GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     */
+    @JsonProperty(value = "gatewayCustomBgpIpAddresses")
+    private List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses;
 
     /*
      * Enable policy-based traffic selectors.
@@ -413,6 +421,29 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
+     * Get the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @return the gatewayCustomBgpIpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses() {
+        return this.gatewayCustomBgpIpAddresses;
+    }
+
+    /**
+     * Set the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @param gatewayCustomBgpIpAddresses the gatewayCustomBgpIpAddresses value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withGatewayCustomBgpIpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses) {
+        this.gatewayCustomBgpIpAddresses = gatewayCustomBgpIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
      *
      * @return the usePolicyBasedTrafficSelectors value.
@@ -544,6 +575,9 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
         }
         if (tunnelConnectionStatus() != null) {
             tunnelConnectionStatus().forEach(e -> e.validate());
+        }
+        if (gatewayCustomBgpIpAddresses() != null) {
+            gatewayCustomBgpIpAddresses().forEach(e -> e.validate());
         }
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());

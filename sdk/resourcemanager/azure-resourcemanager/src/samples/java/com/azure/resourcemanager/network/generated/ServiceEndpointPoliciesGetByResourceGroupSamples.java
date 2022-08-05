@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServiceEndpointPolicies GetByResourceGroup. */
 public final class ServiceEndpointPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyGet.json
      */
     /**
      * Sample code: Get service endPoint Policy.

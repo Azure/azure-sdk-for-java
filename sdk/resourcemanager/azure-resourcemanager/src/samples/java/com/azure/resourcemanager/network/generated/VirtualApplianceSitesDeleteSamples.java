@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualApplianceSites Delete. */
 public final class VirtualApplianceSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkVirtualApplianceSiteDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkVirtualApplianceSiteDelete.json
      */
     /**
      * Sample code: Delete Network Virtual Appliance Site.

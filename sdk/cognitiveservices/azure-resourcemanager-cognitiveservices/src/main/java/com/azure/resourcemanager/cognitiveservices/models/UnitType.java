@@ -42,7 +42,11 @@ public final class UnitType extends ExpandableStringEnum<UnitType> {
         return fromString(name, UnitType.class);
     }
 
-    /** @return known UnitType values. */
+    /**
+     * Gets known UnitType values.
+     *
+     * @return known UnitType values.
+     */
     public static Collection<UnitType> values() {
         return values(UnitType.class);
     }

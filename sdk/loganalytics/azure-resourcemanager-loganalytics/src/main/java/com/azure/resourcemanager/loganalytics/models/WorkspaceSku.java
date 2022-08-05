@@ -6,14 +6,11 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SKU (tier) of a workspace. */
 @Fluent
 public final class WorkspaceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceSku.class);
-
     /*
      * The name of the SKU.
      */
@@ -21,18 +18,11 @@ public final class WorkspaceSku {
     private WorkspaceSkuNameEnum name;
 
     /*
-     * The capacity reservation level for this workspace, when
+     * The capacity reservation level in GB for this workspace, when
      * CapacityReservation sku is selected.
      */
     @JsonProperty(value = "capacityReservationLevel")
-    private Integer capacityReservationLevel;
-
-    /*
-     * The maximum capacity reservation level available for this workspace,
-     * when CapacityReservation sku is selected.
-     */
-    @JsonProperty(value = "maxCapacityReservationLevel", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maxCapacityReservationLevel;
+    private CapacityReservationLevel capacityReservationLevel;
 
     /*
      * The last time when the sku was updated.
@@ -61,35 +51,25 @@ public final class WorkspaceSku {
     }
 
     /**
-     * Get the capacityReservationLevel property: The capacity reservation level for this workspace, when
+     * Get the capacityReservationLevel property: The capacity reservation level in GB for this workspace, when
      * CapacityReservation sku is selected.
      *
      * @return the capacityReservationLevel value.
      */
-    public Integer capacityReservationLevel() {
+    public CapacityReservationLevel capacityReservationLevel() {
         return this.capacityReservationLevel;
     }
 
     /**
-     * Set the capacityReservationLevel property: The capacity reservation level for this workspace, when
+     * Set the capacityReservationLevel property: The capacity reservation level in GB for this workspace, when
      * CapacityReservation sku is selected.
      *
      * @param capacityReservationLevel the capacityReservationLevel value to set.
      * @return the WorkspaceSku object itself.
      */
-    public WorkspaceSku withCapacityReservationLevel(Integer capacityReservationLevel) {
+    public WorkspaceSku withCapacityReservationLevel(CapacityReservationLevel capacityReservationLevel) {
         this.capacityReservationLevel = capacityReservationLevel;
         return this;
-    }
-
-    /**
-     * Get the maxCapacityReservationLevel property: The maximum capacity reservation level available for this
-     * workspace, when CapacityReservation sku is selected.
-     *
-     * @return the maxCapacityReservationLevel value.
-     */
-    public Integer maxCapacityReservationLevel() {
-        return this.maxCapacityReservationLevel;
     }
 
     /**
@@ -108,9 +88,11 @@ public final class WorkspaceSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model WorkspaceSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceSku.class);
 }

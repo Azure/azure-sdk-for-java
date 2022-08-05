@@ -46,6 +46,13 @@ public interface TimeSeriesDatabaseConnection {
     TimeSeriesDatabaseConnectionProperties properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner object.
      *
      * @return the inner object.

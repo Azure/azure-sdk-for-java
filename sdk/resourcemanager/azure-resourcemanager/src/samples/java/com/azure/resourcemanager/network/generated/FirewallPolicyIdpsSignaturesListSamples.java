@@ -6,15 +6,15 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.FilterItems;
+import com.azure.resourcemanager.network.models.FirewallPolicyIdpsQuerySortOrder;
 import com.azure.resourcemanager.network.models.IdpsQueryObject;
 import com.azure.resourcemanager.network.models.OrderBy;
-import com.azure.resourcemanager.network.models.OrderByOrder;
 import java.util.Arrays;
 
 /** Samples for FirewallPolicyIdpsSignatures List. */
 public final class FirewallPolicyIdpsSignaturesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyQuerySignatureOverrides.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyQuerySignatureOverrides.json
      */
     /**
      * Sample code: query signature overrides.
@@ -33,7 +33,8 @@ public final class FirewallPolicyIdpsSignaturesListSamples {
                 new IdpsQueryObject()
                     .withFilters(Arrays.asList(new FilterItems().withField("Mode").withValues(Arrays.asList("Deny"))))
                     .withSearch("")
-                    .withOrderBy(new OrderBy().withField("severity").withOrder(OrderByOrder.ASCENDING))
+                    .withOrderBy(
+                        new OrderBy().withField("severity").withOrder(FirewallPolicyIdpsQuerySortOrder.ASCENDING))
                     .withResultsPerPage(20)
                     .withSkip(0),
                 Context.NONE);

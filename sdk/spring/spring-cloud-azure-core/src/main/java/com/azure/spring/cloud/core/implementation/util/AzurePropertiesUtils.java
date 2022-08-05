@@ -141,5 +141,4 @@ public final class AzurePropertiesUtils {
         return findPropertyNames(source, Objects::isNull);
     }
 
-
 }
