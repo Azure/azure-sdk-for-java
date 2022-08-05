@@ -18,8 +18,8 @@ import java.util.concurrent.Exchanger;
 @ActiveProfiles("servicebus-jms")
 public class ServiceBusJmsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsIT.class);
-    private final String data = "service bus jms test";
-    private final String QUEUE_NAME = "que001";
+    private static final String DATA = "service bus jms test";
+    private static final String QUEUE_NAME = "que001";
     private final Exchanger<String> EXCHANGER = new Exchanger<>();
 
     @Autowired
@@ -28,10 +28,10 @@ public class ServiceBusJmsIT {
     @Test
     public void testServiceBusJmsOperation() throws InterruptedException {
         LOGGER.info("ServiceBusJmsIT begin.");
-        jmsTemplate.convertAndSend(QUEUE_NAME, data);
-        LOGGER.info("Send message: {}", data);
+        jmsTemplate.convertAndSend(QUEUE_NAME, DATA);
+        LOGGER.info("Send message: {}", DATA);
         String msg = EXCHANGER.exchange(null);
-        Assertions.assertEquals(msg, data);
+        Assertions.assertEquals(DATA, msg);
         LOGGER.info("ServiceBusJmsIT end.");
     }
 

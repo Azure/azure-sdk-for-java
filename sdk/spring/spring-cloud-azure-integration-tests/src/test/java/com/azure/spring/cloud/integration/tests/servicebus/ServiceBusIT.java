@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
@@ -66,8 +67,6 @@ public class ServiceBusIT {
     public void testServiceBusOperation() throws InterruptedException {
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
-        senderClient.sendMessage(new ServiceBusMessage(DATA2));
-        senderClient.close();
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
         if (receivedMessages.stream().iterator().hasNext()) {
             ServiceBusReceivedMessage message = receivedMessages.stream().iterator().next();
@@ -75,8 +74,10 @@ public class ServiceBusIT {
             receiverClient.complete(message);
         }
         processorClient.start();
+        senderClient.sendMessage(new ServiceBusMessage(DATA2));
+        senderClient.close();
         Assertions.assertTrue(processorClient.isRunning());
-        LATCH.await();
+        LATCH.await(15, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA2, MESSAGE);
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
