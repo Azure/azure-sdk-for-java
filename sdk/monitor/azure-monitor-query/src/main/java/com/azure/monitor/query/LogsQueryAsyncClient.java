@@ -106,6 +106,7 @@ public final class LogsQueryAsyncClient {
 
     /**
      * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     *
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
@@ -120,6 +121,8 @@ public final class LogsQueryAsyncClient {
     }
 
     /**
+     * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
+     *
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.

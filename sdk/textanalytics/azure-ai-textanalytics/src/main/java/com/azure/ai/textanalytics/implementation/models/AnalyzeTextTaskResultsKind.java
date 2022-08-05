@@ -41,7 +41,11 @@ public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<Analy
         return fromString(name, AnalyzeTextTaskResultsKind.class);
     }
 
-    /** @return known AnalyzeTextTaskResultsKind values. */
+    /**
+     * Gets known AnalyzeTextTaskResultsKind values.
+     *
+     * @return known AnalyzeTextTaskResultsKind values.
+     */
     public static Collection<AnalyzeTextTaskResultsKind> values() {
         return values(AnalyzeTextTaskResultsKind.class);
     }

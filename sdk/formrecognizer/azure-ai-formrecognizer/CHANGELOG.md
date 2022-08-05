@@ -3,15 +3,23 @@
 ## 4.0.0-beta.6 (Unreleased)
 
 ### Features Added
+- Add a constructor to create an instance of `CopyAuthorization` model.
 
 ### Breaking Changes
-- Added BinaryData support to synchronous document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
 - Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
 - Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
 - Renamed `DocumentModelInfo` model to `DocumentModelSummary`
-- Renamed `DocumentModel` model to `DocumentModelInfo`
-- Renamed `getAccountProperties` method to `getResourceInfo`
-- Renamed `AccountProperties` model to `ResourceInfo`
+- Renamed `DocumentModelDetails` model to `DocumentModelInfo`
+- Renamed `ModelOperation` model to `ModelOperationDetails`
+- Renamed `ModelOperationInfo` model to `ModelOperationSummary`
+- Renamed `getAccountProperties` method to `getResourceDetails`
+- Renamed `AccountProperties` model to `ResourceDetails`
+- Renamed `state` property on model `DocumentSelectionMark` to `selectionMarkState`
+- Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
+- Renamed `DocTypeInfo` model to `DocumentTypeDetails`
+- Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
+- Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
 
 ### Bugs Fixed
 
