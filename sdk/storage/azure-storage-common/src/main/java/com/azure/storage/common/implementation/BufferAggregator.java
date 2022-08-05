@@ -83,10 +83,22 @@ public final class BufferAggregator {
         while (data.hasRemaining()) {
             // No need to check hasNext as we already guaranteed the aggregator was big enough to fill the request.
             ByteBuffer source = bufferIterator.next();
-            while (source.hasRemaining() && data.hasRemaining()) {
-                data.put(source.get());
+            if (data.remaining() < source.remaining()) {
+                /*
+                 * If source is bigger than data, scope source down to a duplicate of appropriate size to avoid
+                 * exception. Then advance the original source by the amount read to reflect the change.
+                 */
+                int readAmount = data.remaining();
+                ByteBuffer smallSource = source.duplicate();
+                smallSource.limit(source.position() + readAmount);
+                data.put(smallSource);
+                source.position(source.position() + readAmount);
+            } else {
+                // If source is smaller than data, just transfer over all of source and move on to the next buffer.
+                data.put(source);
             }
         }
+        this.length -= data.array().length;
         return data.array(); // No need to flip as we're just going straight to the underlying array
     }
 }

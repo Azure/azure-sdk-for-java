@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -18,6 +18,9 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.Se
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils.serializeOAuth2AuthorizedClientMap;
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.JWT_BEARER;
 
 class SerializerUtilsTests {
 
@@ -27,17 +30,14 @@ class SerializerUtilsTests {
     void serializeAndDeserializeTest() {
         Map<String, OAuth2AuthorizedClient> authorizedClients = new HashMap<>();
         authorizedClients.put(AZURE_CLIENT_REGISTRATION_ID,
-            createOAuth2AuthorizedClient(AZURE_CLIENT_REGISTRATION_ID,
-                AadAuthorizationGrantType.AUTHORIZATION_CODE.getValue()));
+            createOAuth2AuthorizedClient(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE.getValue()));
         authorizedClients.put("graph",
             createOAuth2AuthorizedClient("graph",
-                AadAuthorizationGrantType.AZURE_DELEGATED.getValue()));
+                Constants.AZURE_DELEGATED.getValue()));
         authorizedClients.put("arm",
-            createOAuth2AuthorizedClient("arm",
-                AadAuthorizationGrantType.CLIENT_CREDENTIALS.getValue()));
+            createOAuth2AuthorizedClient("arm", CLIENT_CREDENTIALS.getValue()));
         authorizedClients.put("office",
-            createOAuth2AuthorizedClient("office",
-                AadAuthorizationGrantType.ON_BEHALF_OF.getValue()));
+            createOAuth2AuthorizedClient("office", JWT_BEARER.getValue()));
         String serializedOAuth2AuthorizedClients = serializeOAuth2AuthorizedClientMap(authorizedClients);
         LOGGER.info(serializedOAuth2AuthorizedClients);
         Map<String, OAuth2AuthorizedClient> deserializedOAuth2AuthorizedClients =

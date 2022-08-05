@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -82,14 +82,13 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument(
                     "prebuilt-receipt",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -116,7 +115,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -124,7 +122,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument(
                     "prebuilt-receipt",
-                    Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)),
+                    BinaryData.fromStream(getContentDetectionFileData(filePath)),
                     dataLength).setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -142,7 +140,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-receipt", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -161,7 +159,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-receipt", Utility.toFluxByteBuffer(data), dataLength)
+                = client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -171,14 +169,13 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29171")
     public void analyzeReceiptFromDataMultiPage(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-receipt",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -196,7 +193,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("prebuilt-receipt", Utility.toFluxByteBuffer(data), dataLength)
+                () -> client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
@@ -211,7 +208,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -268,14 +264,12 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("Until file available on main")
     public void analyzeReceiptSourceUrlWithPngFile(HttpClient httpClient,
                                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -285,7 +279,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29171")
+    @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(documentUrl -> {
@@ -307,13 +301,12 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContent(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-layout",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -341,14 +334,13 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentResultWithContentTypeAutoDetection(HttpClient httpClient,
                                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         localFilePathRunner((filePath, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-layout",
-                    Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)), dataLength)
+                    BinaryData.fromStream(getContentDetectionFileData(filePath)), dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -366,7 +358,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data), dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -381,7 +373,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data), dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -401,7 +393,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data), dataLength)
+                () -> client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
@@ -411,13 +403,12 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentWithSelectionMarks(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data), dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -432,7 +423,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data),
                     dataLength, new AnalyzeDocumentOptions().setPages(Collections.singletonList("1")))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -448,7 +439,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data),
                     dataLength, new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "2")))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -464,7 +455,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data),
                     dataLength, new AnalyzeDocumentOptions().setPages(Arrays.asList("1-2", "3")))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -481,7 +472,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentFromUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -562,7 +552,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentWithSelectionMarksFromUrl(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -604,7 +593,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -638,9 +627,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller =
                 client.beginAnalyzeDocument("prebuilt-businessCard",
-                        Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)),
-                        dataLength,
-                        new AnalyzeDocumentOptions())
+                        BinaryData.fromStream(getContentDetectionFileData(filePath)),
+                        dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -659,7 +647,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -679,7 +667,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -698,7 +686,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("prebuilt-businessCard", Utility.toFluxByteBuffer(data), dataLength)
+                () -> client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller()
                     .getFinalResult());
@@ -718,7 +706,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -740,8 +728,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
 
@@ -798,8 +785,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -819,8 +805,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -883,7 +868,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -905,7 +890,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-invoice",
-                    Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)),
+                    BinaryData.fromStream(getContentDetectionFileData(filePath)),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -926,7 +911,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -944,7 +929,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("prebuilt-invoice", Utility.toFluxByteBuffer(data),
+                () -> client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller()
@@ -964,7 +949,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", Utility.toFluxByteBuffer(data),
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -1076,7 +1061,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocument("prebuilt-idDocument", Utility.toFluxByteBuffer(data), dataLength)
+                = client.beginAnalyzeDocument("prebuilt-idDocument", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1110,7 +1095,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-idDocument",
-                    Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)),
+                    BinaryData.fromStream(getContentDetectionFileData(filePath)),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
@@ -1132,7 +1117,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-idDocument",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1152,7 +1137,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginAnalyzeDocument("prebuilt-idDocument",
-                        Utility.toFluxByteBuffer(data),
+                        BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller()
@@ -1170,7 +1155,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("Enable once file uploaded on github main")
     public void analyzeLicenseSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -1236,7 +1220,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -1254,7 +1238,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -1272,7 +1256,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -1290,7 +1274,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -1308,7 +1292,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -1324,7 +1308,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-tax.us.w2",
-                    Utility.toFluxByteBuffer(data),
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller.waitForCompletion();

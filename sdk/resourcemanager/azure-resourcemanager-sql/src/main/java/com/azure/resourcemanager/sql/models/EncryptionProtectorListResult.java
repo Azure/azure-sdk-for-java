@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.EncryptionProtectorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of server encryption protectors. */
 @Immutable
 public final class EncryptionProtectorListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProtectorListResult.class);
-
     /*
      * Array of results.
      */

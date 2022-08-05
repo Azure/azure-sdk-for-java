@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Read-write endpoint of the failover group instance. */
 @Fluent
 public final class InstanceFailoverGroupReadWriteEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceFailoverGroupReadWriteEndpoint.class);
-
     /*
      * Failover policy of the read-write endpoint for the failover group. If
      * failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes
@@ -84,10 +81,12 @@ public final class InstanceFailoverGroupReadWriteEndpoint {
      */
     public void validate() {
         if (failoverPolicy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property failoverPolicy in model InstanceFailoverGroupReadWriteEndpoint"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InstanceFailoverGroupReadWriteEndpoint.class);
 }

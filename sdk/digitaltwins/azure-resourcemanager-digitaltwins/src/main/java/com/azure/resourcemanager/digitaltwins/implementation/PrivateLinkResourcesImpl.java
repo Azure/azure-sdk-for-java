@@ -14,10 +14,9 @@ import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationRe
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformation;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationResponse;
 import com.azure.resourcemanager.digitaltwins.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 

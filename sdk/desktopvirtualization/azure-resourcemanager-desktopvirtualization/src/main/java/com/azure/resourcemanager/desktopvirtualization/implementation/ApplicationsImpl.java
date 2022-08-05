@@ -13,10 +13,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.ApplicationsClient
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
 import com.azure.resourcemanager.desktopvirtualization.models.Applications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplicationsImpl implements Applications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationsImpl.class);
 
     private final ApplicationsClient innerClient;
 
@@ -78,7 +77,7 @@ public final class ApplicationsImpl implements Applications {
     public Application getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,7 +85,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +94,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -106,7 +105,7 @@ public final class ApplicationsImpl implements Applications {
     public Response<Application> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +122,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -134,7 +133,7 @@ public final class ApplicationsImpl implements Applications {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +150,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -162,7 +161,7 @@ public final class ApplicationsImpl implements Applications {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,7 +169,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationGroupName = Utils.getValueFromIdByName(id, "applicationGroups");
         if (applicationGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class ApplicationsImpl implements Applications {
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));

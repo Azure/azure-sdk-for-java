@@ -33,7 +33,11 @@ public final class VaultUpgradeState extends ExpandableStringEnum<VaultUpgradeSt
         return fromString(name, VaultUpgradeState.class);
     }
 
-    /** @return known VaultUpgradeState values. */
+    /**
+     * Gets known VaultUpgradeState values.
+     *
+     * @return known VaultUpgradeState values.
+     */
     public static Collection<VaultUpgradeState> values() {
         return values(VaultUpgradeState.class);
     }

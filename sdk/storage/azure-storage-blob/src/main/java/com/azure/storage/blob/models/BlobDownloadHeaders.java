@@ -4,6 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -47,7 +48,7 @@ public final class BlobDownloadHeaders {
     public BlobDownloadHeaders() {
         // Added to maintain backwards compatibility as the private constructor removes the implicit no args
         // constructor.
-        this.internalHeaders = new BlobsDownloadHeaders();
+        this.internalHeaders = new BlobsDownloadHeaders(new HttpHeaders());
     }
 
     /*

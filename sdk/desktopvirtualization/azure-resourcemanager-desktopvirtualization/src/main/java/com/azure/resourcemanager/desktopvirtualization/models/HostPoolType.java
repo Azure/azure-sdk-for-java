@@ -30,7 +30,11 @@ public final class HostPoolType extends ExpandableStringEnum<HostPoolType> {
         return fromString(name, HostPoolType.class);
     }
 
-    /** @return known HostPoolType values. */
+    /**
+     * Gets known HostPoolType values.
+     *
+     * @return known HostPoolType values.
+     */
     public static Collection<HostPoolType> values() {
         return values(HostPoolType.class);
     }

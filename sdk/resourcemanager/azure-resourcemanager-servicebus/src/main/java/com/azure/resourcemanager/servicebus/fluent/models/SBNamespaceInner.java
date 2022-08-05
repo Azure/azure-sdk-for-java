@@ -5,59 +5,45 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.servicebus.models.Encryption;
+import com.azure.resourcemanager.servicebus.models.Identity;
 import com.azure.resourcemanager.servicebus.models.SBSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Description of a namespace resource. */
-@JsonFlatten
 @Fluent
-public class SBNamespaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBNamespaceInner.class);
-
+public final class SBNamespaceInner extends Resource {
     /*
-     * Properties of Sku
+     * Properties of SKU
      */
     @JsonProperty(value = "sku")
     private SBSku sku;
 
     /*
-     * Provisioning state of the namespace.
+     * Properties of BYOK Identity description
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
-     * The time the namespace was created.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * The time the namespace was updated.
+     * Properties of the namespace.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Endpoint you can use to perform Service Bus operations.
-     */
-    @JsonProperty(value = "properties.serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceBusEndpoint;
-
-    /*
-     * Identifier for Azure Insights metrics
-     */
-    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
+    @JsonProperty(value = "properties")
+    private SBNamespaceProperties innerProperties;
 
     /**
-     * Get the sku property: Properties of Sku.
+     * Get the sku property: Properties of SKU.
      *
      * @return the sku value.
      */
@@ -66,7 +52,7 @@ public class SBNamespaceInner extends Resource {
     }
 
     /**
-     * Set the sku property: Properties of Sku.
+     * Set the sku property: Properties of SKU.
      *
      * @param sku the sku value to set.
      * @return the SBNamespaceInner object itself.
@@ -77,48 +63,41 @@ public class SBNamespaceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the namespace.
+     * Get the identity property: Properties of BYOK Identity description.
      *
-     * @return the provisioningState value.
+     * @return the identity value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    public Identity identity() {
+        return this.identity;
     }
 
     /**
-     * Get the createdAt property: The time the namespace was created.
+     * Set the identity property: Properties of BYOK Identity description.
      *
-     * @return the createdAt value.
+     * @param identity the identity value to set.
+     * @return the SBNamespaceInner object itself.
      */
-    public OffsetDateTime createdAt() {
-        return this.createdAt;
+    public SBNamespaceInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
-     * Get the updatedAt property: The time the namespace was updated.
+     * Get the systemData property: The system meta data relating to this resource.
      *
-     * @return the updatedAt value.
+     * @return the systemData value.
      */
-    public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
+     * Get the innerProperties property: Properties of the namespace.
      *
-     * @return the serviceBusEndpoint value.
+     * @return the innerProperties value.
      */
-    public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
-    }
-
-    /**
-     * Get the metricId property: Identifier for Azure Insights metrics.
-     *
-     * @return the metricId value.
-     */
-    public String metricId() {
-        return this.metricId;
+    private SBNamespaceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -136,6 +115,178 @@ public class SBNamespaceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the namespace.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the status property: Status of the namespace.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the createdAt property: The time the namespace was created.
+     *
+     * @return the createdAt value.
+     */
+    public OffsetDateTime createdAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
+    }
+
+    /**
+     * Get the updatedAt property: The time the namespace was updated.
+     *
+     * @return the updatedAt value.
+     */
+    public OffsetDateTime updatedAt() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
+    }
+
+    /**
+     * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
+     *
+     * @return the serviceBusEndpoint value.
+     */
+    public String serviceBusEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusEndpoint();
+    }
+
+    /**
+     * Get the metricId property: Identifier for Azure Insights metrics.
+     *
+     * @return the metricId value.
+     */
+    public String metricId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricId();
+    }
+
+    /**
+     * Get the zoneRedundant property: Enabling this property creates a Premium Service Bus Namespace in regions
+     * supported availability zones.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: Enabling this property creates a Premium Service Bus Namespace in regions
+     * supported availability zones.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Properties of BYOK Encryption description.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Properties of BYOK Encryption description.
+     *
+     * @param encryption the encryption value to set.
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the alternateName property: Alternate name for namespace.
+     *
+     * @return the alternateName value.
+     */
+    public String alternateName() {
+        return this.innerProperties() == null ? null : this.innerProperties().alternateName();
+    }
+
+    /**
+     * Set the alternateName property: Alternate name for namespace.
+     *
+     * @param alternateName the alternateName value to set.
+     * @return the SBNamespaceInner object itself.
+     */
+    public SBNamespaceInner withAlternateName(String alternateName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBNamespaceProperties();
+        }
+        this.innerProperties().withAlternateName(alternateName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,6 +294,12 @@ public class SBNamespaceInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

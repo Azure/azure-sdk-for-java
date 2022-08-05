@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -51,6 +52,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -371,5 +373,22 @@ public class ReflectionUtils {
 
     public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager) {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
+    }
+
+    public static HttpClient getClientTelemetryHttpClint(ClientTelemetry clientTelemetry) {
+        return get(HttpClient.class, clientTelemetry, "httpClient");
+    }
+
+    public static HttpClient getClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry) {
+        return get(HttpClient.class, clientTelemetry, "metadataHttpClient");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AtomicReference<AzureVMMetadata> getAzureVMMetadata(ClientTelemetry clientTelemetry) {
+        return get(AtomicReference.class, clientTelemetry, "azureVmMetaDataSingleton");
+    }
+
+    public static void setClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry, HttpClient HttpClient) {
+        set(clientTelemetry, HttpClient, "metadataHttpClient");
     }
 }

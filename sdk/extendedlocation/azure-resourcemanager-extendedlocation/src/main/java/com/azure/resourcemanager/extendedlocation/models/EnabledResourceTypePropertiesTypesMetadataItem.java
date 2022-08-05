@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Metadata of the Resource Type. */
 @Fluent
 public final class EnabledResourceTypePropertiesTypesMetadataItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EnabledResourceTypePropertiesTypesMetadataItem.class);
-
     /*
      * Api Version of Resource Type
      */

@@ -210,6 +210,7 @@ public class HttpConstants {
         // ChangeFeed
         public static final String A_IM = "A-IM";
         public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
+        public static final String CHANGE_FEED_WIRE_FORMAT_VERSION = "x-ms-cosmos-changefeed-wire-format-version";
 
         // These properties were added to support RNTBD and they've been added here to
         // reduce merge conflicts
@@ -323,8 +324,14 @@ public class HttpConstants {
         }
     }
 
+    public static class ChangeFeedWireFormatVersions {
+        public static final String SEPARATE_METADATA_WITH_CRTS = "2021-09-15";
+    }
+
     public static class StatusCodes {
         public static final int OK = 200;
+        public static final int CREATED = 201;
+        public static final int NO_CONTENT = 204;
         public static final int NOT_MODIFIED = 304;
         // Success
         public static final int MINIMUM_SUCCESS_STATUSCODE = 200;

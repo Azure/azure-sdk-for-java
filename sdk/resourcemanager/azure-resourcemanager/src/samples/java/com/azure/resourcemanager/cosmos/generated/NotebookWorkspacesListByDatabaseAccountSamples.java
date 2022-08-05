@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NotebookWorkspaces ListByDatabaseAccount. */
 public final class NotebookWorkspacesListByDatabaseAccountSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBNotebookWorkspaceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBNotebookWorkspaceList.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceList.

@@ -31,8 +31,8 @@ import com.azure.resourcemanager.mediaservices.fluent.JobsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LocationsClient;
-import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationResultsClient;
-import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationStatusesClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServicesOperationResultsClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServicesOperationStatusesClient;
 import com.azure.resourcemanager.mediaservices.fluent.MediaservicesClient;
 import com.azure.resourcemanager.mediaservices.fluent.OperationResultsClient;
 import com.azure.resourcemanager.mediaservices.fluent.OperationStatusesClient;
@@ -200,28 +200,28 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         return this.locations;
     }
 
-    /** The MediaServiceOperationStatusesClient object to access its operations. */
-    private final MediaServiceOperationStatusesClient mediaServiceOperationStatuses;
+    /** The MediaServicesOperationStatusesClient object to access its operations. */
+    private final MediaServicesOperationStatusesClient mediaServicesOperationStatuses;
 
     /**
-     * Gets the MediaServiceOperationStatusesClient object to access its operations.
+     * Gets the MediaServicesOperationStatusesClient object to access its operations.
      *
-     * @return the MediaServiceOperationStatusesClient object.
+     * @return the MediaServicesOperationStatusesClient object.
      */
-    public MediaServiceOperationStatusesClient getMediaServiceOperationStatuses() {
-        return this.mediaServiceOperationStatuses;
+    public MediaServicesOperationStatusesClient getMediaServicesOperationStatuses() {
+        return this.mediaServicesOperationStatuses;
     }
 
-    /** The MediaServiceOperationResultsClient object to access its operations. */
-    private final MediaServiceOperationResultsClient mediaServiceOperationResults;
+    /** The MediaServicesOperationResultsClient object to access its operations. */
+    private final MediaServicesOperationResultsClient mediaServicesOperationResults;
 
     /**
-     * Gets the MediaServiceOperationResultsClient object to access its operations.
+     * Gets the MediaServicesOperationResultsClient object to access its operations.
      *
-     * @return the MediaServiceOperationResultsClient object.
+     * @return the MediaServicesOperationResultsClient object.
      */
-    public MediaServiceOperationResultsClient getMediaServiceOperationResults() {
-        return this.mediaServiceOperationResults;
+    public MediaServicesOperationResultsClient getMediaServicesOperationResults() {
+        return this.mediaServicesOperationResults;
     }
 
     /** The AssetsClient object to access its operations. */
@@ -409,8 +409,8 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
-        this.mediaServiceOperationStatuses = new MediaServiceOperationStatusesClientImpl(this);
-        this.mediaServiceOperationResults = new MediaServiceOperationResultsClientImpl(this);
+        this.mediaServicesOperationStatuses = new MediaServicesOperationStatusesClientImpl(this);
+        this.mediaServicesOperationResults = new MediaServicesOperationResultsClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetFilters = new AssetFiltersClientImpl(this);
         this.tracks = new TracksClientImpl(this);

@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -190,6 +191,16 @@ public final class FileContent extends BinaryDataContent {
     @Override
     public boolean isReplayable() {
         return true;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.just(this);
     }
 
     private byte[] getBytes() {

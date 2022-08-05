@@ -24,7 +24,11 @@ public final class ClusterSkuNameEnum extends ExpandableStringEnum<ClusterSkuNam
         return fromString(name, ClusterSkuNameEnum.class);
     }
 
-    /** @return known ClusterSkuNameEnum values. */
+    /**
+     * Gets known ClusterSkuNameEnum values.
+     *
+     * @return known ClusterSkuNameEnum values.
+     */
     public static Collection<ClusterSkuNameEnum> values() {
         return values(ClusterSkuNameEnum.class);
     }

@@ -33,7 +33,11 @@ public final class KeyKind extends ExpandableStringEnum<KeyKind> {
         return fromString(name, KeyKind.class);
     }
 
-    /** @return known KeyKind values. */
+    /**
+     * Gets known KeyKind values.
+     *
+     * @return known KeyKind values.
+     */
     public static Collection<KeyKind> values() {
         return values(KeyKind.class);
     }

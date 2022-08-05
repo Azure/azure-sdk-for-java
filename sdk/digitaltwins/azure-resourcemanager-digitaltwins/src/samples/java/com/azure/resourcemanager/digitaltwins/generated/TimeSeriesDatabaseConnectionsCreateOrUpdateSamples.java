@@ -9,7 +9,7 @@ import com.azure.resourcemanager.digitaltwins.models.AzureDataExplorerConnection
 /** Samples for TimeSeriesDatabaseConnections CreateOrUpdate. */
 public final class TimeSeriesDatabaseConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/TimeSeriesDatabaseConnectionsPut_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/TimeSeriesDatabaseConnectionsPut_example.json
      */
     /**
      * Sample code: Create or replace a time series database connection for a DigitalTwins instance.

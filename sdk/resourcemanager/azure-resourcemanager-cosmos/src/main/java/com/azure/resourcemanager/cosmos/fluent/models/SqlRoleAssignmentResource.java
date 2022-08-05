@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Cosmos DB SQL Role Assignment resource object. */
 @Fluent
 public final class SqlRoleAssignmentResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleAssignmentResource.class);
-
     /*
      * The unique identifier for the associated Role Definition.
      */

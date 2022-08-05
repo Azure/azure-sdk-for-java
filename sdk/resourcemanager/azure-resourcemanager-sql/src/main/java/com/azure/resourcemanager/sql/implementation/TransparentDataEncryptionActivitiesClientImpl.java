@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.TransparentDataEncryptionActivitiesClient;
 import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionActivityInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivityListResult;
@@ -35,8 +35,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in TransparentDataEncryptionActivitiesClient.
  */
 public final class TransparentDataEncryptionActivitiesClientImpl implements TransparentDataEncryptionActivitiesClient {
-    private final ClientLogger logger = new ClientLogger(TransparentDataEncryptionActivitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TransparentDataEncryptionActivitiesService service;
 
@@ -65,7 +63,7 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientT")
     private interface TransparentDataEncryptionActivitiesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/transparentDataEncryption/{transparentDataEncryptionName}"
@@ -80,6 +78,7 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("transparentDataEncryptionName") TransparentDataEncryptionName transparentDataEncryptionName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -94,7 +93,8 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
+     * @return represents the response to a list database transparent data encryption activity request along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionActivityInner>> listByConfigurationSinglePageAsync(
@@ -131,6 +131,7 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
                         "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -143,12 +144,13 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
                             serverName,
                             databaseName,
                             transparentDataEncryptionName,
+                            accept,
                             context))
             .<PagedResponse<TransparentDataEncryptionActivityInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -163,7 +165,8 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
+     * @return represents the response to a list database transparent data encryption activity request along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionActivityInner>> listByConfigurationSinglePageAsync(
@@ -201,6 +204,7 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
                         "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByConfiguration(
@@ -211,6 +215,7 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
                 serverName,
                 databaseName,
                 transparentDataEncryptionName,
+                accept,
                 context)
             .map(
                 res ->
@@ -229,7 +234,8 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
+     * @return represents the response to a list database transparent data encryption activity request as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TransparentDataEncryptionActivityInner> listByConfigurationAsync(
@@ -255,7 +261,8 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
+     * @return represents the response to a list database transparent data encryption activity request as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TransparentDataEncryptionActivityInner> listByConfigurationAsync(
@@ -281,7 +288,8 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
+     * @return represents the response to a list database transparent data encryption activity request as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransparentDataEncryptionActivityInner> listByConfiguration(
@@ -305,7 +313,8 @@ public final class TransparentDataEncryptionActivitiesClientImpl implements Tran
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list database transparent data encryption activity request.
+     * @return represents the response to a list database transparent data encryption activity request as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransparentDataEncryptionActivityInner> listByConfiguration(

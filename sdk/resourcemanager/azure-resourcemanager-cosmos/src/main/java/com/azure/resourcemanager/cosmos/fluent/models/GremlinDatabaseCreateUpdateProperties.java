@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB Gremlin database. */
 @Fluent
 public final class GremlinDatabaseCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinDatabaseCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a Gremlin database
      */
@@ -78,7 +75,7 @@ public final class GremlinDatabaseCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model GremlinDatabaseCreateUpdateProperties"));
@@ -89,4 +86,6 @@ public final class GremlinDatabaseCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinDatabaseCreateUpdateProperties.class);
 }

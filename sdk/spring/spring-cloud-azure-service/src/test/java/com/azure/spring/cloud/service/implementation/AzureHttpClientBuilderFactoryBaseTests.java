@@ -31,7 +31,6 @@ public abstract class AzureHttpClientBuilderFactoryBaseTests<B, P extends AzureH
 
     protected abstract HttpClientOptions getHttpClientOptions(F builderFactory);
     protected abstract List<HttpPipelinePolicy> getHttpPipelinePolicies(F builderFactory);
-
     protected abstract void verifyHttpClientCalled(B builder, VerificationMode mode);
     protected abstract void verifyRetryOptionsCalled(B builder, P properties, VerificationMode mode);
 

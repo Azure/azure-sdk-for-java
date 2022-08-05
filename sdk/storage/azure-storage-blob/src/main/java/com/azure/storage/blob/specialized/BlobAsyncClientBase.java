@@ -15,6 +15,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.io.IOUtils;
+import com.azure.core.util.ProgressListener;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -23,9 +26,9 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
@@ -109,9 +112,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -130,7 +130,6 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public class BlobAsyncClientBase {
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     /**
      * Backing REST client for the blob client.
@@ -1277,21 +1276,22 @@ public class BlobAsyncClientBase {
                     from the response for better book-keeping towards the end.
                 */
                 long finalCount;
+                long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
                     long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
-                    finalCount = blobLength - finalRange.getOffset();
+                    finalCount = blobLength - initialOffset;
                 } else {
                     finalCount = finalRange.getCount();
                 }
 
-                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue().timeout(TIMEOUT_VALUE),
-                    (throwable, offset) -> {
-                        if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
-                            return Flux.error(throwable);
-                        }
+                // The resume function takes throwable and offset at the destination.
+                // I.e. offset is relative to the starting point.
+                BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
+                    if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                        return Mono.error(throwable);
+                    }
 
-                        long newCount = finalCount - (offset - finalRange.getOffset());
+                    long newCount = finalCount - offset;
 
                         /*
                          It is possible that the network stream will throw an error after emitting all data but before
@@ -1299,27 +1299,22 @@ public class BlobAsyncClientBase {
                          and offset values. Because we have read the intended amount of data, we can ignore the error at the end
                          of the stream.
                          */
-                        if (newCount == 0) {
-                            LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
-                                + "but before stream signaled completion. Returning success as all data was downloaded. "
-                                + "Exception message: " + throwable.getMessage());
-                            return Flux.empty();
-                        }
+                    if (newCount == 0) {
+                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                            + "but before stream signaled completion. Returning success as all data was downloaded. "
+                            + "Exception message: " + throwable.getMessage());
+                        return Mono.empty();
+                    }
 
-                        try {
-                            return downloadRange(
-                                new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context)
-                                .flatMapMany(r -> r.getValue().timeout(TIMEOUT_VALUE));
-                        } catch (Exception e) {
-                            return Flux.error(e);
-                        }
-                    },
-                    finalOptions.getMaxRetryRequests(),
-                    finalRange.getOffset()
-                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
-
-                return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), bufferFlux, blobDownloadHeaders);
+                    try {
+                        return downloadRange(
+                            new BlobRange(initialOffset + offset, newCount), finalRequestConditions, eTag, getMD5, context);
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
+                };
+                return BlobDownloadAsyncResponseConstructorProxy.create(
+                    response, onDownloadErrorResume, finalOptions);
             });
     }
 
@@ -1562,8 +1557,9 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
         Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        Lock progressLock = new ReentrantLock();
-        AtomicLong totalProgress = new AtomicLong(0);
+        ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressReceiver == null ? null : ProgressReporter.withProgressListener(
+            progressReceiver);
 
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
@@ -1589,7 +1585,8 @@ public class BlobAsyncClientBase {
                     .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
                         finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
+                            progressReporter == null ? null : progressReporter.createChild()
+                        ).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
@@ -1597,19 +1594,11 @@ public class BlobAsyncClientBase {
     }
 
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
-        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
-        AtomicLong totalProgress) {
+        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
+        ProgressReporter progressReporter) {
 
-        // Extract the body.
-        Flux<ByteBuffer> data = response.getValue();
-
-        // Report progress as necessary.
-        data = ProgressReporter.addParallelProgressReporting(data,
-            ModelHelper.wrapCommonReceiver(finalParallelTransferOptions.getProgressReceiver()), progressLock,
-            totalProgress);
-
-        // Write to the file.
-        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+        long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
+        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

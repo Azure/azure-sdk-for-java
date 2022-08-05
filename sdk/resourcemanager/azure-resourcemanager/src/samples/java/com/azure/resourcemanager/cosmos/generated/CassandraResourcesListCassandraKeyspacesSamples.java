@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CassandraResources ListCassandraKeyspaces. */
 public final class CassandraResourcesListCassandraKeyspacesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCassandraKeyspaceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraKeyspaceList.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceList.

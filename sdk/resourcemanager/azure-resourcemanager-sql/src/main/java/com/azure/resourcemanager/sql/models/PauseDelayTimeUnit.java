@@ -24,7 +24,11 @@ public final class PauseDelayTimeUnit extends ExpandableStringEnum<PauseDelayTim
         return fromString(name, PauseDelayTimeUnit.class);
     }
 
-    /** @return known PauseDelayTimeUnit values. */
+    /**
+     * Gets known PauseDelayTimeUnit values.
+     *
+     * @return known PauseDelayTimeUnit values.
+     */
     public static Collection<PauseDelayTimeUnit> values() {
         return values(PauseDelayTimeUnit.class);
     }

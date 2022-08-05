@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, ThroughputProperties}
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -288,6 +289,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -297,9 +299,9 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(id)
+    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -313,14 +315,18 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         case _ =>
           // get the latest status of the item
           val originalItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+          val patchPartialUpdateItem =
+            CosmosPatchTestHelper.getPatchItemWithSchema(
+              strippedPartitionKeyPath,
+              partialUpdateSchema,
+              originalItem)
 
           val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-          partialUpdateSchema.fields.foreach(field => {
-            columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, operationType, s"/${field.name}")
+          patchPartialUpdateItem.fields().asScala.foreach(field => {
+            columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, operationType, s"/${field.getKey}")
           })
 
           val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
-          val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
 
           operationType match {
             case CosmosPatchOperationTypes.None =>
@@ -337,7 +343,22 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
 
               for (field: StructField <- partialUpdateSchema.fields) {
-                updatedItem.get(field.name).textValue() shouldEqual patchPartialUpdateItem.get(field.name).textValue()
+                field.dataType match {
+                  case IntegerType =>
+                    updatedItem.get(field.name).intValue() shouldEqual(patchPartialUpdateItem.get(field.name).intValue())
+                  case LongType =>
+                    updatedItem.get(field.name).longValue() shouldEqual(patchPartialUpdateItem.get(field.name).longValue())
+                  case FloatType =>
+                    updatedItem.get(field.name).floatValue() shouldEqual(patchPartialUpdateItem.get(field.name).floatValue())
+                  case DoubleType =>
+                    updatedItem.get(field.name).doubleValue() shouldEqual(patchPartialUpdateItem.get(field.name).doubleValue())
+                  case BooleanType =>
+                    updatedItem.get(field.name).booleanValue() shouldEqual(patchPartialUpdateItem.get(field.name).booleanValue())
+                  case StringType =>
+                    updatedItem.get(field.name).textValue() shouldEqual(patchPartialUpdateItem.get(field.name).textValue())
+                  case _ =>
+                    throw new IllegalArgumentException(s"${field.dataType} is not supported for simple types")
+                }
               }
             case CosmosPatchOperationTypes.Remove =>
               pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
@@ -362,6 +383,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val partitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
+
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -371,9 +394,9 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, partitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(id)
+    val partitionKey = new PartitionKey(itemWithFullSchema.get(partitionKeyPath).textValue())
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -393,7 +416,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           columnConfigsMap += "newItemInPropArray" -> CosmosPatchColumnConfig("newItemInPropArray", operationType, "/propArray/0")
 
           val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
-          val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema)
+          val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partitionKeyPath, partialUpdateSchema)
 
           operationType match {
             case CosmosPatchOperationTypes.None =>
@@ -487,6 +510,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -496,9 +520,9 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(id)
+    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -511,14 +535,18 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         StructField("propInt", IntegerType),
         StructField("propString", StringType),
       ))
+      val patchPartialUpdateItem =
+        CosmosPatchTestHelper.getPatchItemWithSchema(
+          strippedPartitionKeyPath,
+          incrementPartialUpdateInvalidSchema,
+          originalItem)
 
       val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-      incrementPartialUpdateInvalidSchema.fields.foreach(field => {
-        columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Increment, s"/${field.name}")
+      patchPartialUpdateItem.fields().asScala.foreach(field => {
+        columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}")
       })
 
       val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
-      val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, incrementPartialUpdateInvalidSchema, originalItem)
 
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       pointWriterForPatch.flushAndClose()
@@ -535,14 +563,18 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       StructField("propFloat", FloatType),
       StructField("propDouble", DoubleType)
     ))
+    val patchPartialUpdateItem =
+      CosmosPatchTestHelper.getPatchItemWithSchema(
+        strippedPartitionKeyPath,
+        incrementPartialUpdateValidSchema,
+        originalItem)
 
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-    incrementPartialUpdateValidSchema.fields.foreach(field => {
-      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Increment, s"/${field.name}")
+    patchPartialUpdateItem.fields().asScala.foreach(field => {
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Increment, s"/${field.getKey}")
     })
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
-    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, incrementPartialUpdateValidSchema, originalItem)
 
     pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
     pointWriterForPatch.flushAndClose()
@@ -552,6 +584,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -561,9 +594,9 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(id)
+    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -582,13 +615,18 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       StructField("_attachment", StringType)
     ))
 
+    val patchPartialUpdateItem =
+      CosmosPatchTestHelper.getPatchItemWithSchema(
+        strippedPartitionKeyPath,
+        partialUpdateSchema,
+        originalItem)
+
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-    partialUpdateSchema.fields.foreach(field => {
-      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+    patchPartialUpdateItem.fields().asScala.foreach(field => {
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
     })
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
-    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
 
     pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
     pointWriterForPatch.flushAndClose()
@@ -597,10 +635,82 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     updatedItem.get("propInt").asInt() == patchPartialUpdateItem.get("propInt").asInt()
   }
 
+  "Point Writer" should "skip partial update for id and partitionKey properties" in {
+
+    val partitionKeyPathSameAsIdArray = Array(false, true)
+
+    for (partitionKeyPathSameAsId <- partitionKeyPathSameAsIdArray) {
+      // create container
+      val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+      val partitionKeyPath = if (partitionKeyPathSameAsId) "/id" else "/pk"
+      val strippedPartitionKeyPath = partitionKeyPath.substring(1)
+      val containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString, partitionKeyPath)
+      val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+      val containerCreationResponse = cosmosClient
+       .getDatabase(cosmosDatabase)
+       .createContainerIfNotExists(containerProperties, throughputProperties).block()
+      val container =
+        cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
+
+      try {
+        val writeConfig = CosmosWriteConfig(
+          ItemWriteStrategy.ItemOverwrite,
+          5,
+          bulkEnabled = true,
+          bulkMaxPendingOperations = Some(900)
+        )
+
+        val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+        // First create one item, as patch can only operate on existing items
+        val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+        val id = itemWithFullSchema.get("id").textValue()
+        val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+
+        bulkWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+        bulkWriter.flushAndClose()
+        // make sure the item exists
+        val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+        // Cosmos patch does not support for id/partitionKey property
+        // so the test is to make sure we have skipped id/paritionKey property and the request can succeed for other properties
+        val partialUpdateSchema = StructType(Seq(
+          StructField("propInt", IntegerType)
+        ))
+
+        val patchPartialUpdateItem =
+          CosmosPatchTestHelper.getPatchItemWithSchema(
+            strippedPartitionKeyPath,
+            partialUpdateSchema,
+            originalItem)
+
+        val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+        patchPartialUpdateItem.fields().asScala.foreach(field => {
+          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+        })
+
+        val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+
+        patchPartialUpdateItem.fields().asScala.foreach(field => {
+          columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
+        })
+
+        bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+        bulkWriterForPatch.flushAndClose()
+
+        val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+        updatedItem.get("propInt").asInt() shouldEqual patchPartialUpdateItem.get("propInt").asInt()
+      } finally {
+        container.delete().block()
+      }
+    }
+  }
+
   "Point Writer" can "patch item with condition" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
@@ -610,9 +720,9 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     // First create one item, as patch can only operate on existing items
-    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
     val id = itemWithFullSchema.get("id").textValue()
-    val partitionKey = new PartitionKey(id)
+    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
@@ -626,9 +736,15 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       StructField("propInt", IntegerType)
     ))
 
+    val patchPartialUpdateItem =
+      CosmosPatchTestHelper.getPatchItemWithSchema(
+        strippedPartitionKeyPath,
+        partialUpdateSchema,
+        originalItem)
+
     val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
-    partialUpdateSchema.fields.foreach(field => {
-      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+    patchPartialUpdateItem.fields().asScala.foreach(field => {
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}")
     })
 
     val pointWriterForPatch =
@@ -637,7 +753,6 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         container,
         partitionKeyDefinition,
         Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
-    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
 
     try {
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
@@ -657,6 +772,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val partitionKeyPath = StringUtils.join(partitionKeyDefinition.getPaths, "")
+
     val id = UUID.randomUUID().toString
     val partitionKey = new PartitionKey(id)
 
@@ -670,7 +787,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     })
 
     val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
-    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema)
+    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partitionKeyPath, partialUpdateSchema)
 
     try {
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)

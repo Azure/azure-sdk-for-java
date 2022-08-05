@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text
-     * Elements (Graphemes) according to Unicode v8.0.0. For additional
-     * information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
+     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
@@ -39,6 +38,20 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
      */
     public EntitiesTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntitiesTaskParameters setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 }

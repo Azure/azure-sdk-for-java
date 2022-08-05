@@ -10,6 +10,8 @@ public class TestConstants {
 
     static final String CLIENT_ID = "real_client_id";
     static final String CLIENT_SECRET = "real_client_secret";
+    static final String CLIENT_CERTIFICATE_PATH = "client_certificate_path";
+    static final String CLIENT_CERTIFICATE_PASSWORD = "client_certificate_password";
     static final List<String> TARGETED_GROUPS = Arrays.asList("group1", "group2", "group3");
 
     static final String TOKEN_HEADER = "Authorization";

@@ -12,6 +12,9 @@ import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.io.IOUtils;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -24,12 +27,17 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -39,10 +47,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Generic test suite for {@link HttpClient HttpClients}.
@@ -50,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
 
-    private static final String REQUEST_HOST = "http://localhost";
+    private static final String REQUEST_HOST = "localhost";
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
@@ -80,6 +91,14 @@ public abstract class HttpClientTests {
      * @return The HTTP port WireMock is using.
      */
     protected abstract int getWireMockPort();
+
+    /**
+     * Get a flag indicating if communication should be secured or not (https or http).
+     * @return A flag indicating if communication should be secured or not (https or http).
+     */
+    protected boolean isSecure() {
+        return false;
+    }
 
     /**
      * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
@@ -232,6 +251,109 @@ public abstract class HttpClientTests {
     }
 
     /**
+     * Tests that unbuffered response body can be accessed.
+     * @throws IOException When IO fails.
+     */
+    @SyncAsyncTest
+    public void canAccessResponseBody() throws IOException {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        Supplier<HttpResponse> responseSupplier = () -> SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, Context.NONE),
+            () -> createHttpClient().send(request)
+        );
+
+        assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
+
+    }
+
+    /**
+     * Tests that client returns buffered response if requested via azure-eagerly-read-response Context flag.
+     */
+    @SyncAsyncTest
+    public void shouldBufferResponse() {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            BinaryData.fromString("test body"));
+
+        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Buffering buffered response is identity transformation.
+        HttpResponse bufferedResponse = response.buffer();
+        assertSame(response, bufferedResponse);
+    }
+
+    /**
+     * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
+     * @throws IOException When IO fails.
+     */
+    @SyncAsyncTest
+    public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Read response twice using all accessors.
+        assertEquals(requestBody.toString(), response.getBodyAsString().block());
+        assertEquals(requestBody.toString(), response.getBodyAsString().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+    }
+
+    /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      * @param requestBody The BinaryData that contains random bytes.
      * @param expectedResponseBody The expected bytes in the echo response.
@@ -274,6 +396,66 @@ public abstract class HttpClientTests {
             .block();
 
         assertArrayEquals(expectedResponseBody, responseBytes);
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        StepVerifier.create(createHttpClient()
+                .send(request, context)
+                .flatMap(HttpResponse::getBodyAsByteArray))
+            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .verifyComplete();
+
+        assertEquals(expectedResponseBody.length, progress.intValue());
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        HttpResponse httpResponse = createHttpClient()
+            .sendSync(request, context);
+
+        byte[] responseBytes = httpResponse
+            .getBodyAsByteArray()
+            .block();
+
+        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertEquals(expectedResponseBody.length, progress.intValue());
     }
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {
@@ -384,9 +566,29 @@ public abstract class HttpClientTests {
      */
     protected URL getRequestUrl(String requestPath) {
         try {
-            return new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
+            String prefix = isSecure() ? "https://" : "http://";
+            return new URL(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    private byte[] getResponseBytesViaWritableChannel(HttpResponse response) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        response.writeBodyTo(Channels.newChannel(byteArrayOutputStream));
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private byte[] getResponseBytesViaAsynchronousChannel(HttpResponse response) {
+        try {
+            Path tempFile = Files.createTempFile("httpclienttestsasyncchannel", null);
+            try (AsynchronousByteChannel channel = IOUtils.toAsynchronousByteChannel(
+                AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+                response.writeBodyToAsync(channel).block();
+            }
+            return Files.readAllBytes(tempFile);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 

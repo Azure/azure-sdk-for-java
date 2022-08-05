@@ -1,14 +1,32 @@
 # Release History
 
-## 2.16.0-beta.1 (Unreleased)
+## 2.18.0-beta.1 (Unreleased)
 
-### Features Added
+### Other Changes
+
+- Deprecated method `KubernetesClusters.listKubernetesVersions`. Use `KubernetesClusters.listOrchestrators`.
+
+## 2.17.0 (2022-07-25)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Replaced property `azureDefender` with `defender` of type `ManagedClusterSecurityProfileDefender` 
+  in `ManagedClusterSecurityProfile`.
+- Removed class `ManagedClusterSecurityProfileAzureDefender`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-06-01`.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.15.0 (2022-05-25)
 

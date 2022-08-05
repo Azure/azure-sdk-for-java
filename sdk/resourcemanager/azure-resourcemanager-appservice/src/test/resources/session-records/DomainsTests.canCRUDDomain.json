@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.DomainRegistration/domains/jsdk79877.com?api-version=2015-04-01",
+    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.DomainRegistration/domains/jsdk79877.com?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null (WebSiteManagementClient, )",
       "Content-Type" : "application/json; charset=utf-8"
@@ -29,7 +29,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.CertificateRegistration/certificateOrders/wild2crt8b42374211?api-version=2015-08-01",
+    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv24d683784f51d/providers/Microsoft.CertificateRegistration/certificateOrders/wild2crt8b42374211?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null (WebSiteManagementClient, )",
       "Content-Type" : "application/json; charset=utf-8"
@@ -57,7 +57,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DomainRegistration/topLevelDomains/com/listAgreements?api-version=2015-04-01",
+    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DomainRegistration/topLevelDomains/com/listAgreements?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null (WebSiteManagementClient, )",
       "Content-Type" : "application/json; charset=utf-8"
@@ -85,7 +85,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79b395621/providers/Microsoft.DomainRegistration/domains/javatest720.com?api-version=2015-04-01",
+    "Uri" : "http://localhost:8043/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg79b395621/providers/Microsoft.DomainRegistration/domains/javatest720.com?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null (WebSiteManagementClient, )",
       "Content-Type" : "application/json; charset=utf-8"

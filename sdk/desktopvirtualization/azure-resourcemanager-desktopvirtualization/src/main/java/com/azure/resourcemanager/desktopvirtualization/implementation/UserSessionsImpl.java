@@ -14,10 +14,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.UserSession
 import com.azure.resourcemanager.desktopvirtualization.models.SendMessage;
 import com.azure.resourcemanager.desktopvirtualization.models.UserSession;
 import com.azure.resourcemanager.desktopvirtualization.models.UserSessions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UserSessionsImpl implements UserSessions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSessionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UserSessionsImpl.class);
 
     private final UserSessionsClient innerClient;
 
