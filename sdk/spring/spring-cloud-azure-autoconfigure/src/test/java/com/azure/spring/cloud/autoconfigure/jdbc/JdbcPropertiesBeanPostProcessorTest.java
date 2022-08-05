@@ -28,19 +28,19 @@ class JdbcPropertiesBeanPostProcessorTest {
 
     protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
-                                                 AzureCredentialFreeProperties.class,
-                                                 AzureGlobalPropertiesAutoConfiguration.class,
-                                                 AzureTokenCredentialAutoConfiguration.class));
+            AzureCredentialFreeProperties.class,
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AzureTokenCredentialAutoConfiguration.class));
 
     // TODO (zhihaoguo): implement test code body
     @Test
-    void postgreSqlAuthPluginNotOnClassPath(){
+    void postgreSqlAuthPluginNotOnClassPath() {
 
     }
 
     // TODO (zhihaoguo): implement test code body
     @Test
-    void mySqlAuthPluginNotOnClassPath(){
+    void mySqlAuthPluginNotOnClassPath() {
 
     }
 
