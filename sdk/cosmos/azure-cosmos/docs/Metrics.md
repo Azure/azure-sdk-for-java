@@ -78,14 +78,14 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | `OperationStatusCode`                | `200` or `429` etc.                                          | The status code of the operation reported to the app/svc (could indicate sucess `200` even after hitting errors and retyring successfully) | operations  + requests      |
 | `ClientCorrelationId`                | `MyClientUsingAADAuth`                                       | An identifier of the Cosmos client instance - can be specified via the `CosmosClientBuilder. clientTelemetryConfig(). clientCorrelationId(String)` method or gets auto-generated | operations + requests       |
 | `ConsistencyLevel`                   | `Eventual`, `BoundedStaleness`, `Strong` or `Session`        | The consistency level used for the operation                 | operations + requests       |
-| `PartitionKeyRangeId`                | `1`                                                          | The partition key range id - an identifier for the physical shard/partition in the backend. This can be helpful to identify whether load is skewed across physical partitions. | operations + requests       |
+| `PartitionKeyRangeId`                | `1`                                                          | The partition key range id - an identifier for the physical shard/partition in the backend. This can be helpful to identify whether load is skewed across physical partitions.<br /><br />**Disabled by default** | operations + requests       |
 | `RequestStatusCode`                  | `200` or `429` etc.                                          | The status code of an individual request to the Cosmos DB Gateway or a replica | requests                    |
 | `RequestOperationType`               | `Document / ReadFeed` etc.                                   | The resource type and operation type of an individual request to the Cosmos DB Gateway or replica | requests                    |
 | `RegionName`                         | `West Europe`                                                | The Azure region name for the Cosmos DB Gateway or replica endpoint being called | requests                    |
-| `ServiceEndpoint`                    | cdb-ms-prod-westeurope1-fd39.documents.azure.com_14050       | The hostname and port of the service endpoint being called   | requests                    |
+| `ServiceEndpoint`                    | cdb-ms-prod-westeurope1-fd39.documents.azure.com_14050       | The hostname and port of the service endpoint being called<br /><br />**Disabled by default** | requests                    |
 | `ServiceAddress`                     | /apps/f88bfdf4-2954-4324-aad3-f1686668076d/services/3359112a-719d-474e-aa51-e89a142ae1b3/partitions/512fe816-24fa-4fbb-bbb1-587d2ce19851/replicas/133038444008943156p/ | The path information allowing to determine physical partition and replica being called | requests (direct TCP/rntbd) |
-| `IsForceRefresh`                     | `True` or `False`                                            | A flag indicating whether a forced address refresh is requested | address refresh requests    |
-| `IsForceCollectionRoutingMapRefresh` | `True` or `False`                                            | A flag indicating whether a forced refresh of partition and collection metadata is requested | address refresh requests    |
+| `IsForceRefresh`                     | `True` or `False`                                            | A flag indicating whether a forced address refresh is requested<br /><br />**Disabled by default** | address refresh requests    |
+| `IsForceCollectionRoutingMapRefresh` | `True` or `False`                                            | A flag indicating whether a forced refresh of partition and collection metadata is requested<br /><br />**Disabled by default** | address refresh requests    |
 
 
 
@@ -126,7 +126,6 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | cosmos.client.req.rntbd.stats.endpoint.acquiredChannels      | #        | 95th, 99th + histogram | Number of new TCP connections being established per Cosmos DB service endpoint |
 | cosmos.client.req.rntbd.stats.endpoint.availableChannels     | #        | None                   | Number of established TCP connections per  Cosmos DB service endpoint |
 | cosmos.client.req.rntbd.stats.endpoint.inflightRequests      | #        | 95th, 99th + histogram | Number of concurrently processed requests  per Cosmos DB service endpoint |
-| cosmos.client.req.rntbd.channel.acquisition.timeline.xxx     | duration | None                   | Duration spent in different stages of grabbing an existing or creating a new channel (TCP connection) |
 
 ### Metrics for RNTBD service endpoints (across operations, no operation-level tags)
 
