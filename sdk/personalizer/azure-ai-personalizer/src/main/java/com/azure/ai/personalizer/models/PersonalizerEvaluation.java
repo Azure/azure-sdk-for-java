@@ -4,8 +4,6 @@
 
 package com.azure.ai.personalizer.models;
 
-import com.azure.ai.personalizer.implementation.models.EvaluationJobStatus;
-import com.azure.ai.personalizer.implementation.models.EvaluationType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -48,7 +46,7 @@ public final class PersonalizerEvaluation {
      * The status of the job processing the evaluation.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private EvaluationJobStatus status;
+    private PersonalizerEvaluationJobStatus status;
 
     /*
      * The results of the evaluation.
@@ -66,7 +64,7 @@ public final class PersonalizerEvaluation {
      * Evaluation type (manual or through Automatic Optimization).
      */
     @JsonProperty(value = "evaluationType")
-    private EvaluationType evaluationType;
+    private PersonalizerEvaluationType evaluationType;
 
     /*
      * Thr optimal policy.
@@ -130,7 +128,7 @@ public final class PersonalizerEvaluation {
      *
      * @return the status value.
      */
-    public EvaluationJobStatus getStatus() {
+    public PersonalizerEvaluationJobStatus getStatus() {
         return this.status;
     }
 
@@ -179,7 +177,7 @@ public final class PersonalizerEvaluation {
      *
      * @return the evaluationType value.
      */
-    public EvaluationType getEvaluationType() {
+    public PersonalizerEvaluationType getEvaluationType() {
         return this.evaluationType;
     }
 
@@ -189,7 +187,7 @@ public final class PersonalizerEvaluation {
      * @param evaluationType the evaluationType value to set.
      * @return the PersonalizerEvaluation object itself.
      */
-    public PersonalizerEvaluation setEvaluationType(EvaluationType evaluationType) {
+    public PersonalizerEvaluation setEvaluationType(PersonalizerEvaluationType evaluationType) {
         this.evaluationType = evaluationType;
         return this;
     }

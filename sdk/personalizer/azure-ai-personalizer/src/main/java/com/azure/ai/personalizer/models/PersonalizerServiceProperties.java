@@ -4,7 +4,6 @@
 
 package com.azure.ai.personalizer.models;
 
-import com.azure.ai.personalizer.implementation.models.LearningMode;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
@@ -80,7 +79,7 @@ public final class PersonalizerServiceProperties {
      * Learning Modes for Personalizer
      */
     @JsonProperty(value = "learningMode")
-    private LearningMode learningMode;
+    private PersonalizerLearningMode learningMode;
 
     /*
      * Flag indicating whether Personalizer will automatically optimize
@@ -302,7 +301,7 @@ public final class PersonalizerServiceProperties {
      *
      * @return the learningMode value.
      */
-    public LearningMode getLearningMode() {
+    public PersonalizerLearningMode getLearningMode() {
         return this.learningMode;
     }
 
@@ -312,7 +311,7 @@ public final class PersonalizerServiceProperties {
      * @param learningMode the learningMode value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
-    public PersonalizerServiceProperties setLearningMode(LearningMode learningMode) {
+    public PersonalizerServiceProperties setLearningMode(PersonalizerLearningMode learningMode) {
         this.learningMode = learningMode;
         return this;
     }

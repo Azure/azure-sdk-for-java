@@ -4,7 +4,6 @@
 
 package com.azure.ai.personalizer.models;
 
-import com.azure.ai.personalizer.implementation.models.PolicySource;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -30,7 +29,7 @@ public final class PersonalizerPolicyResult {
      * The source of the Learning Settings.
      */
     @JsonProperty(value = "policySource", access = JsonProperty.Access.WRITE_ONLY)
-    private PolicySource policySource;
+    private PersonalizerPolicySource policySource;
 
     /*
      * The aggregate results of the Offline Evaluation.
@@ -67,7 +66,7 @@ public final class PersonalizerPolicyResult {
      *
      * @return the policySource value.
      */
-    public PolicySource getPolicySource() {
+    public PersonalizerPolicySource getPolicySource() {
         return this.policySource;
     }
 
