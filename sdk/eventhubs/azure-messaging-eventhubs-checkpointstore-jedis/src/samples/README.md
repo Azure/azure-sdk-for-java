@@ -5,7 +5,7 @@ languages:
   products:
 - azure
 - azure-event-hubs
-- azure-redis-cache
+- azure-cache-redis
   urlFragment: eventhubs-checkpoint-store-jedis-samples
 ---
 
