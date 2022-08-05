@@ -20,9 +20,12 @@ import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -53,8 +56,11 @@ import java.util.UUID;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_PEEK;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_REMOVE_RULE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SCHEDULE_MESSAGE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
@@ -465,6 +471,65 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
+    public Mono<Void> createRule(String ruleName, CreateRuleOptions ruleOptions) {
+        return isAuthorized(OPERATION_ADD_RULE).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_ADD_RULE, null);
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.RULE_NAME, ruleName);
+            body.put(ManagementConstants.RULE_DESCRIPTION, MessageUtils.encodeRuleOptionToMap(ruleName, ruleOptions));
+
+            message.setBody(new AmqpValue(body));
+            return sendWithVerify(channel, message, null);
+        })).then();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> deleteRule(String ruleName) {
+        return isAuthorized(OPERATION_REMOVE_RULE).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_REMOVE_RULE, null);
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.RULE_NAME, ruleName);
+            message.setBody(new AmqpValue(body));
+            return sendWithVerify(channel, message, null);
+        })).then();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Collection<RuleProperties>> getRules() {
+        return isAuthorized(OPERATION_GET_RULES).then(createChannel.flatMap(channel -> {
+            final Message message = createManagementMessage(OPERATION_GET_RULES, null);
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.SKIP, 0);
+            body.put(ManagementConstants.TOP, Integer.MAX_VALUE);
+
+            message.setBody(new AmqpValue(body));
+            return sendWithVerify(channel, message, null);
+        })).map(response -> {
+            int statusCode = MessageUtils.getMessageStatus(response.getApplicationProperties());
+            Collection<RuleProperties> collection;
+            if (statusCode == ManagementConstants.OK_STATUS_CODE) {
+                collection = getRuleProperties((AmqpValue) response.getBody());
+            } else if (statusCode == ManagementConstants.NO_CONTENT_STATUS_CODE) {
+                collection = Collections.emptyList();
+            } else {
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
+                    "Get rules response error. Could not get rules.",
+                    getErrorContext())));
+            }
+            return collection;
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void close() {
         if (isDisposed) {
             return;
@@ -565,5 +630,33 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
+    }
+
+    /**
+     * Get {@link RuleProperties} from message body.
+     *
+     * @param messageBody A message body which is {@link AmqpValue} type.
+     * @return A collection of {@link RuleProperties}.
+     *
+     * @throws RuntimeException Get @{@link RuleProperties} from message body failed.
+     */
+    private Collection<RuleProperties> getRuleProperties(AmqpValue messageBody) {
+        try {
+            List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
+                .get(ManagementConstants.RULES);
+            if (rules == null) {
+                return Collections.emptyList();
+            }
+            Collection<RuleProperties> ruleProperties = new ArrayList<>();
+            for (Map<String, DescribedType> rule : rules) {
+                DescribedType ruleDescription = rule.get(ManagementConstants.RULE_DESCRIPTION);
+                ruleProperties.add(MessageUtils.decodeRuleDescribedType(ruleDescription));
+            }
+            return ruleProperties;
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
+                String.format("Get rules failed. err: %s", ex.getMessage()),
+                getErrorContext())));
+        }
     }
 }

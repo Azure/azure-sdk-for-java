@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public class RuleProperties {
-    private final String name;
+    private String name;
     private RuleFilter filter;
     private RuleAction action;
 
@@ -209,6 +209,13 @@ public class RuleProperties {
     }
 
     /**
+     * Initializes a new instance
+     */
+    public RuleProperties() {
+
+    }
+
+    /**
      * Initializes a new instance with the given rule {@code name}, {@code filter}, and {@code action}.
      *
      * @param name Name of the rule.
@@ -250,6 +257,11 @@ public class RuleProperties {
      */
     public String getName() {
         return name;
+    }
+
+    public RuleProperties setName(String name) {
+        this.name = Objects.requireNonNull(name, "'name' cannot be null.");
+        return this;
     }
 
     /**

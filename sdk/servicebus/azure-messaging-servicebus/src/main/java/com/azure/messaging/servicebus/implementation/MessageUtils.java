@@ -12,10 +12,20 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.RuleAction;
+import com.azure.messaging.servicebus.administration.models.RuleFilter;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
+import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -32,6 +42,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -367,6 +378,183 @@ public final class MessageUtils {
             return (T) Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
         }
         return (T) described;
+    }
+
+    /**
+     * Create a map and put {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info into map for management request.
+     *
+     * @param name rule name.
+     * @param options rule options.
+     * @return A map with {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info to put into management message body.
+     */
+    public static Map<String, Object> encodeRuleOptionToMap(String name, CreateRuleOptions options) {
+        HashMap<String, Object> descriptionMap = new HashMap<>();
+        if (options.getFilter() instanceof SqlRuleFilter) {
+            HashMap<String, Object> filterMap = new HashMap<>();
+            filterMap.put(ManagementConstants.EXPRESSION, ((SqlRuleFilter) options.getFilter()).getSqlExpression());
+            descriptionMap.put(ManagementConstants.SQL_RULE_FILTER, filterMap);
+        } else if (options.getFilter() instanceof CorrelationRuleFilter) {
+            CorrelationRuleFilter correlationFilter = (CorrelationRuleFilter) options.getFilter();
+            HashMap<String, Object> filterMap = new HashMap<>();
+            filterMap.put(ManagementConstants.CORRELATION_ID, correlationFilter.getCorrelationId());
+            filterMap.put(ManagementConstants.MESSAGE_ID, correlationFilter.getMessageId());
+            filterMap.put(ManagementConstants.TO, correlationFilter.getTo());
+            filterMap.put(ManagementConstants.REPLY_TO, correlationFilter.getReplyTo());
+            filterMap.put(ManagementConstants.LABEL, correlationFilter.getLabel());
+            filterMap.put(ManagementConstants.SESSION_ID, correlationFilter.getSessionId());
+            filterMap.put(ManagementConstants.REPLY_TO_SESSION_ID, correlationFilter.getReplyToSessionId());
+            filterMap.put(ManagementConstants.CONTENT_TYPE, correlationFilter.getContentType());
+            filterMap.put(ManagementConstants.CORRELATION_FILTER_PROPERTIES, correlationFilter.getProperties());
+
+            descriptionMap.put(ManagementConstants.CORRELATION_FILTER, filterMap);
+        } else {
+            throw new IllegalArgumentException("This API supports the addition of only SQLFilters and CorrelationFilters.");
+        }
+
+        if (options.getAction() == null) {
+            descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, null);
+        } else if (options.getAction() instanceof SqlRuleAction) {
+            HashMap<String, Object> sqlActionMap = new HashMap<>();
+            sqlActionMap.put(ManagementConstants.EXPRESSION, ((SqlRuleAction) options.getAction()).getSqlExpression());
+            descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, sqlActionMap);
+        } else {
+            throw new IllegalArgumentException("This API supports the addition of only filters with SqlRuleActions.");
+        }
+
+        descriptionMap.put(ManagementConstants.RULE_NAME, name);
+
+        return descriptionMap;
+    }
+
+    /**
+     * Get message status from application properties.
+     *
+     * @param properties The application properties from message.
+     * @return Status code.
+     */
+    public static int getMessageStatus(ApplicationProperties properties) {
+        int statusCode = ManagementConstants.UNDEFINED_STATUS_CODE;
+        if (properties.getValue() == null) {
+            return statusCode;
+        }
+        Object codeObject = properties.getValue().get(ManagementConstants.STATUS_CODE);
+        if (codeObject == null) {
+            codeObject = properties.getValue().get(ManagementConstants.LEGACY_STATUS_CODE);
+        }
+        if (codeObject != null) {
+            statusCode = (int) codeObject;
+        }
+        return statusCode;
+    }
+
+    /**
+     * Get {@link RuleProperties} from {@link DescribedType}.
+     *
+     * @param ruleDescribedType A {@link DescribedType} with rule information.
+     * @return A {@link RuleProperties} contains name, {@link RuleAction} and {@link RuleFilter}.
+     */
+    public static RuleProperties decodeRuleDescribedType(DescribedType ruleDescribedType) {
+        if (ruleDescribedType == null) {
+            return null;
+        }
+        if (!(ruleDescribedType.getDescriptor()).equals(ServiceBusConstants.RULE_DESCRIPTION_NAME)) {
+            return null;
+        }
+        RuleProperties ruleProperties = new RuleProperties();
+        if (ruleDescribedType.getDescribed() instanceof ArrayList) {
+            ArrayList<Object> describedRule = (ArrayList<Object>) ruleDescribedType.getDescribed();
+            int count = describedRule.size();
+            if (count-- > 0) {
+                ruleProperties.setFilter(decodeFilter((DescribedType) describedRule.get(0)));
+            }
+
+            if (count-- > 0) {
+                ruleProperties.setAction(decodeRuleAction((DescribedType) describedRule.get(1)));
+            }
+
+            if (count > 0) {
+                ruleProperties.setName((String) describedRule.get(2));
+            }
+        }
+
+        return ruleProperties;
+    }
+
+    /**
+     * Get {@link RuleFilter} from a {@link DescribedType}.
+     *
+     * @param describedFilter A {@link DescribedType} with rule filter information.
+     * @return A {@link RuleFilter}.
+     */
+    private static RuleFilter decodeFilter(DescribedType describedFilter) {
+        if (describedFilter.getDescriptor().equals(ServiceBusConstants.SQL_FILTER_NAME)) {
+            ArrayList<Object> describedSqlFilter = (ArrayList<Object>) describedFilter.getDescribed();
+            if (describedSqlFilter.size() > 0) {
+                return new SqlRuleFilter((String) describedSqlFilter.get(0));
+            }
+        } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.CORRELATION_FILTER_NAME)) {
+            CorrelationRuleFilter correlationFilter = new CorrelationRuleFilter();
+            ArrayList<Object> describedCorrelationFilter = (ArrayList<Object>) describedFilter.getDescribed();
+            int countCorrelationFilter = describedCorrelationFilter.size();
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setCorrelationId((String) (describedCorrelationFilter.get(0)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setMessageId((String) (describedCorrelationFilter.get(1)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setTo((String) (describedCorrelationFilter.get(2)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setReplyTo((String) (describedCorrelationFilter.get(3)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setLabel((String) (describedCorrelationFilter.get(4)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setSessionId((String) (describedCorrelationFilter.get(5)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setReplyToSessionId((String) (describedCorrelationFilter.get(6)));
+            }
+            if (countCorrelationFilter-- > 0) {
+                correlationFilter.setContentType((String) (describedCorrelationFilter.get(7)));
+            }
+            if (countCorrelationFilter > 0) {
+                Object properties = describedCorrelationFilter.get(8);
+                if (properties instanceof Map) {
+                    correlationFilter.getProperties().putAll((Map) properties);
+                }
+            }
+
+            return correlationFilter;
+        } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.TRUE_FILTER_NAME)) {
+            return new TrueRuleFilter();
+        } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.FALSE_FILTER_NAME)) {
+            return new FalseRuleFilter();
+        } else {
+            throw new UnsupportedOperationException("This client doesn't support filter with descriptor: " + describedFilter.getDescriptor());
+        }
+        return null;
+    }
+
+    /**
+     * Get {@link RuleAction} from a {@link DescribedType}.
+     *
+     * @param describedAction A {@link DescribedType} with rule action information.
+     * @return A {@link RuleAction}.
+     */
+    private static RuleAction decodeRuleAction(DescribedType describedAction) {
+        if (describedAction.getDescriptor().equals(ServiceBusConstants.EMPTY_RULE_ACTION_NAME)) {
+            return null;
+        } else if (describedAction.getDescriptor().equals(ServiceBusConstants.SQL_RULE_ACTION_NAME)) {
+            ArrayList<Object> describedSqlAction = (ArrayList<Object>) describedAction.getDescribed();
+            if (describedSqlAction.size() > 0) {
+                return new SqlRuleAction((String) describedSqlAction.get(0));
+            }
+        }
+
+        return null;
     }
 
 }

@@ -641,6 +641,15 @@ public final class ServiceBusClientBuilder implements
     }
 
     /**
+     * A new instance of {@link ServiceBusRuleManagerBuilder} used to configure a Service Bus rule manager instance.
+     *
+     * @return A new instance of {@link ServiceBusRuleManagerBuilder}.
+     */
+    public ServiceBusRuleManagerBuilder ruleManager() {
+        return new ServiceBusRuleManagerBuilder();
+    }
+
+    /**
      * Called when a child client is closed. Disposes of the shared connection if there are no more clients.
      */
     void onClientClose() {
@@ -1931,6 +1940,60 @@ public final class ServiceBusClientBuilder implements
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+        }
+    }
+
+    /**
+     * Builder for creating {@link ServiceBusRuleManagerAsyncClient}  to manage Service Bus subscription rules.
+     *
+     * @see ServiceBusRuleManagerAsyncClient
+     */
+    @ServiceClientBuilder(serviceClients = {ServiceBusRuleManagerAsyncClient.class})
+    public final class ServiceBusRuleManagerBuilder {
+        private String subscriptionName;
+        private String topicName;
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusRuleManagerBuilder} object.
+         * @see #subscriptionName A subscription name should be set as well.
+         */
+        public ServiceBusRuleManagerBuilder topicName(String topicName) {
+            this.topicName = topicName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the subscription in the topic to manage its rules. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusRuleManagerBuilder} object.
+         * @see #topicName A topic name should be set as well.
+         */
+        public ServiceBusRuleManagerBuilder subscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+            return this;
+        }
+
+        /**
+         * Creates an <b>asynchronous</b> {@link ServiceBusRuleManagerAsyncClient} for managing rules of the specific subscription.
+         *
+         * @return A new {@link ServiceBusRuleManagerAsyncClient} that manages rules for specific subscription.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty.
+         */
+        public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
+                null);
+            final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
+                null);
+            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
+                ServiceBusClientBuilder.this::onClientClose);
         }
     }
 

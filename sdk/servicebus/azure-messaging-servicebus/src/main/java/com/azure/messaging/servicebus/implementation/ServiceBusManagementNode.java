@@ -6,10 +6,13 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collection;
 import java.util.List;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -121,6 +124,30 @@ public interface ServiceBusManagementNode extends AutoCloseable {
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName, ServiceBusTransactionContext transactionContext);
+
+    /**
+     * Create a rule with the {@link CreateRuleOptions} for Service Bus subscription.
+     *
+     * @param ruleName Name of the rule.
+     * @param ruleOptions Information about the rule to create.
+     * @return Mono that create rule successfully.
+     */
+    Mono<Void> createRule(String ruleName, CreateRuleOptions ruleOptions);
+
+    /**
+     * Deletes a rule the matching {@code ruleName}.
+     *
+     * @param ruleName Name of rule to delete.
+     * @return Mono that delete rule successfully.
+     */
+    Mono<Void> deleteRule(String ruleName);
+
+    /**
+     * Fetches all the rules.
+     *
+     * @return A collection of {@link RuleProperties rules}.
+     */
+    Mono<Collection<RuleProperties>> getRules();
 
     @Override
     void close();

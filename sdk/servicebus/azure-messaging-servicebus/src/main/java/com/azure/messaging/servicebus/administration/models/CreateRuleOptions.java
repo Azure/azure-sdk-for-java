@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
+import com.azure.messaging.servicebus.ServiceBusRuleManagerAsyncClient;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
  *
  * @see ServiceBusAdministrationClient#createRule(String, String, String, CreateRuleOptions)
  * @see ServiceBusAdministrationAsyncClient#createRule(String, String, String, CreateRuleOptions)
+ * @see ServiceBusRuleManagerAsyncClient#createRule(String, CreateRuleOptions)
  */
 @Fluent
 public final class CreateRuleOptions {
