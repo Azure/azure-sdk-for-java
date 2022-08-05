@@ -57,7 +57,11 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
         return fromString(name, ResourceState.class);
     }
 
-    /** @return known ResourceState values. */
+    /**
+     * Gets known ResourceState values.
+     *
+     * @return known ResourceState values.
+     */
     public static Collection<ResourceState> values() {
         return values(ResourceState.class);
     }

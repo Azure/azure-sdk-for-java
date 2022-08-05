@@ -21,13 +21,17 @@ import java.util.List;
 @Fluent
 public final class DatabaseInner extends ProxyResource {
     /*
-     * RedisEnterprise database properties Other properties of the database.
+     * RedisEnterprise database properties
+     *
+     * Other properties of the database.
      */
     @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
 
     /**
-     * Get the innerProperties property: RedisEnterprise database properties Other properties of the database.
+     * Get the innerProperties property: RedisEnterprise database properties
+     *
+     * <p>Other properties of the database.
      *
      * @return the innerProperties value.
      */

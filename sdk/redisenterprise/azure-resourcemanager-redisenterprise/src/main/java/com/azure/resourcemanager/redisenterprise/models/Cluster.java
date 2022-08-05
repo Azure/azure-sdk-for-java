@@ -119,6 +119,13 @@ public interface Cluster {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner object.
      *
      * @return the inner object.

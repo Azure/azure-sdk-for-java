@@ -27,7 +27,11 @@ public final class ClusteringPolicy extends ExpandableStringEnum<ClusteringPolic
         return fromString(name, ClusteringPolicy.class);
     }
 
-    /** @return known ClusteringPolicy values. */
+    /**
+     * Gets known ClusteringPolicy values.
+     *
+     * @return known ClusteringPolicy values.
+     */
     public static Collection<ClusteringPolicy> values() {
         return values(ClusteringPolicy.class);
     }

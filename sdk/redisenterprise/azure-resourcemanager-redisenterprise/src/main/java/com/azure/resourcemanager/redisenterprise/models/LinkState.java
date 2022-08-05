@@ -36,7 +36,11 @@ public final class LinkState extends ExpandableStringEnum<LinkState> {
         return fromString(name, LinkState.class);
     }
 
-    /** @return known LinkState values. */
+    /**
+     * Gets known LinkState values.
+     *
+     * @return known LinkState values.
+     */
     public static Collection<LinkState> values() {
         return values(LinkState.class);
     }

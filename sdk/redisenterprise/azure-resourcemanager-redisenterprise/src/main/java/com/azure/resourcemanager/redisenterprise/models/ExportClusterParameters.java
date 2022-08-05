@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Export an RDB file into a target database Parameters for a Redis Enterprise export operation. */
+/**
+ * Export an RDB file into a target database
+ *
+ * <p>Parameters for a Redis Enterprise export operation.
+ */
 @Fluent
 public final class ExportClusterParameters {
     /*

@@ -27,7 +27,11 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
         return fromString(name, Protocol.class);
     }
 
-    /** @return known Protocol values. */
+    /**
+     * Gets known Protocol values.
+     *
+     * @return known Protocol values.
+     */
     public static Collection<Protocol> values() {
         return values(Protocol.class);
     }

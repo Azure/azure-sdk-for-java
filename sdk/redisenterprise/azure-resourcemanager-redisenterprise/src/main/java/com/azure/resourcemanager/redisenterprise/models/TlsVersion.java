@@ -30,7 +30,11 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
         return fromString(name, TlsVersion.class);
     }
 
-    /** @return known TlsVersion values. */
+    /**
+     * Gets known TlsVersion values.
+     *
+     * @return known TlsVersion values.
+     */
     public static Collection<TlsVersion> values() {
         return values(TlsVersion.class);
     }

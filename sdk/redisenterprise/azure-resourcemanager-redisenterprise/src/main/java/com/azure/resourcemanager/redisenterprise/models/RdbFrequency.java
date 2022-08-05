@@ -30,7 +30,11 @@ public final class RdbFrequency extends ExpandableStringEnum<RdbFrequency> {
         return fromString(name, RdbFrequency.class);
     }
 
-    /** @return known RdbFrequency values. */
+    /**
+     * Gets known RdbFrequency values.
+     *
+     * @return known RdbFrequency values.
+     */
     public static Collection<RdbFrequency> values() {
         return values(RdbFrequency.class);
     }
