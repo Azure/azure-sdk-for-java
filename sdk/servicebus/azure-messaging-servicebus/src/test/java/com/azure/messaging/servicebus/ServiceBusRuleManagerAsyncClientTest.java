@@ -13,6 +13,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleFilter;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -35,9 +36,10 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Collection;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusRuleManagerAsyncClientTest {
@@ -69,6 +71,9 @@ public class ServiceBusRuleManagerAsyncClientTest {
 
     @Mock
     private Runnable onClientClose;
+
+    @Mock
+    private Collection<RuleProperties> rules;
 
     @BeforeAll
     static void beforeAll() {
@@ -119,12 +124,11 @@ public class ServiceBusRuleManagerAsyncClientTest {
     @Test
     void createRuleWithFilter() {
         // Arrange
-        when(managementNode.createRule(anyString(), any(CreateRuleOptions.class))).thenReturn(Mono.empty());
+        when(managementNode.createRule(eq(RULE_NAME), any(CreateRuleOptions.class))).thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleFilter))
             .expectComplete()
-            .log()
             .verify();
     }
 
@@ -138,7 +142,24 @@ public class ServiceBusRuleManagerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleOptions))
-            .expectComplete()
-            .verify();
+            .verifyComplete();
+    }
+
+    @Test
+    void getRules() {
+        // Arrange
+        when(managementNode.getRules()).thenReturn(Mono.just(rules));
+
+        // Act & Assert
+        StepVerifier.create(ruleManager.getRules()).expectNext(rules).verifyComplete();
+    }
+
+    @Test
+    void deleteRule(){
+        // Arrange
+        when(managementNode.deleteRule(RULE_NAME)).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(ruleManager.deleteRule(RULE_NAME)).verifyComplete();
     }
 }
