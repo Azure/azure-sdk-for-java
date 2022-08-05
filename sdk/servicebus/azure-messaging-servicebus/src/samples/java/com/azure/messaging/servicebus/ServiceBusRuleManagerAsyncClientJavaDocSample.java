@@ -8,6 +8,9 @@ import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Code snippets demonstrating various {@link ServiceBusRuleManagerAsyncClient} scenarios.
+ */
 public class ServiceBusRuleManagerAsyncClientJavaDocSample {
     // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
     // We are reading 'connectionString/topicName/subscriptionName' from environment variable.
@@ -29,6 +32,9 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
         .subscriptionName(subscriptionName)
         .buildAsyncClient();
 
+    /**
+     * Code snippet for creating a ServiceBusRuleManagerAsyncClient.
+     */
     @Test
     public void initialization() {
         // BEGIN: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.instantiation
@@ -47,7 +53,9 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
         ruleManager.close();
     }
 
-
+    /**
+     * Demonstrates how to create a rule for a Service Bus subscription.
+     */
     @Test
     public void createRule() {
         ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder()
@@ -70,6 +78,9 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
         ruleManager.close();
     }
 
+    /**
+     * Demonstrates how to fetch all rules under a Service Bus subscription.
+     */
     @Test
     public void getRules() {
         // BEGIN: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules
@@ -81,6 +92,9 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
         // END: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules
     }
 
+    /**
+     * Demonstrates how to delete a rule.
+     */
     @Test
     public void deleteRule() {
         // BEGIN: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.deleteRule

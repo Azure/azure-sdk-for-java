@@ -27,7 +27,7 @@ public class ManageRulesAsyncSample {
     }
 
     /**
-     * This method to invoke this demo on how to create a rule to an Azure Service Bus subscription.
+     * This method to invoke this demo on how to manage rules to an Azure Service Bus subscription.
      */
     @Test
     public void run() {
@@ -68,7 +68,7 @@ public class ManageRulesAsyncSample {
         );
 
         // Delete rule.
-        ruleManager.deleteRule("new-rule").subscribe(
+        ruleManager.deleteRule("exist-rule").subscribe(
             unused -> { },
             err -> System.err.println("Error occurred when delete rule, err: " + err),
             () -> System.out.println("Delete complete.")

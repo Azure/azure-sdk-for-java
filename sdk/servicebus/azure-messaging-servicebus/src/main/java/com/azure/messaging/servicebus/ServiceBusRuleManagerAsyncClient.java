@@ -105,10 +105,10 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Creates a rule under the given topic and subscription.
+     * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
      *
-     * @param name Rule name.
-     * @param options Options for the rule to create.
+     * @param name Name of rule.
+     * @param options The options for the rule to create.
      * @return A Mono that completes when the rule is created.
      */
     public Mono<Void> createRule(String name, CreateRuleOptions options) {
@@ -119,10 +119,10 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Creates a rule under the given topic and subscription.
+     * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
      *
      * @param name Name of rule.
-     * @param filter Filter for the rule to create.
+     * @param filter The filter expression against which messages will be matched.
      * @return A Mono that completes when the rule is created.
      */
     public Mono<Void> createRule(String name, RuleFilter filter) {
@@ -131,9 +131,9 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Fetches all rules under the given topic and subscription.
+     * Fetches all rules associated with the topic and subscription.
      *
-     * @return A collection of rules under the given topic and subscription.
+     * @return A collection of rules associated with the topic and subscription.
      */
     public Mono<Collection<RuleProperties>> getRules() {
         if (isDisposed.get()) {
@@ -148,7 +148,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Deletes a rule the matching {@code ruleName}.
+     * Removes the rule on the subscription identified by {@code ruleName}.
      *
      * @param ruleName Name of rule to delete.
      * @return A Mono that completes when the rule is deleted.
