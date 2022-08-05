@@ -11,6 +11,9 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.RuleFilter;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -33,6 +36,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusRuleManagerAsyncClientTest {
@@ -42,11 +47,16 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "topic-name/subscriptions/subscription-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.SUBSCRIPTION;
+    private static final String RULE_NAME = "foo-bar";
 
     private ServiceBusRuleManagerAsyncClient ruleManager;
     private ServiceBusConnectionProcessor connectionProcessor;
 
     private AutoCloseable mocksCloseable;
+    private CreateRuleOptions ruleOptions;
+
+    @Mock
+    private SqlRuleFilter ruleFilter;
 
     @Mock
     private TokenCredential tokenCredential;
@@ -80,6 +90,8 @@ public class ServiceBusRuleManagerAsyncClientTest {
             AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic(),
             CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product", "test-version");
 
+        ruleOptions = new CreateRuleOptions(ruleFilter);
+
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
 
@@ -96,16 +108,37 @@ public class ServiceBusRuleManagerAsyncClientTest {
     void teardown(TestInfo testInfo) throws Exception {
         LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
-        mocksCloseable.close();
         ruleManager.close();
         Mockito.framework().clearInlineMock(this);
+        mocksCloseable.close();
     }
 
     /**
-     * Verifies that create a rule
+     * Verifies that create a rule with a {@link RuleFilter}.
      */
     @Test
-    void createRule() {
+    void createRuleWithFilter() {
+        // Arrange
+        when(managementNode.createRule(anyString(), any(CreateRuleOptions.class))).thenReturn(Mono.empty());
 
+        // Act & Assert
+        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleFilter))
+            .expectComplete()
+            .log()
+            .verify();
+    }
+
+    /**
+     * Verifies that create a rule with a {@link CreateRuleOptions}.
+     */
+    @Test
+    void createRuleWithOptions() {
+        // Arrange
+        when(managementNode.createRule(RULE_NAME, ruleOptions)).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleOptions))
+            .expectComplete()
+            .verify();
     }
 }
