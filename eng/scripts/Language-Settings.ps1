@@ -471,7 +471,7 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValida
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
     'latest' `
-    $FilteredMetadata`
+    $FilteredMetadata `
     $DocValidationImageId
 }
 

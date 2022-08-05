@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class CloudServiceOsProfile {
     /*
-     * Specifies set of certificates that should be installed onto the role
-     * instances.
+     * Specifies set of certificates that should be installed onto the role instances.
      */
     @JsonProperty(value = "secrets")
     private List<CloudServiceVaultSecretGroup> secrets;
