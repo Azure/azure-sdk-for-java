@@ -29,50 +29,50 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
- * &#47;&#47; The connectionString&#47;topicName&#47;subscriptionName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
  * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
  *
- * ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder()
- *            .connectionString(connectionString)
- *            .ruleManager()
- *            .topicName(topicName)
- *            .subscriptionName(subscriptionName)
- *            .buildAsyncClient();
+ * ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .ruleManager&#40;&#41;
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
+ *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.instantiation -->
  *
  * <p><strong>Create a rule to a Service Bus subscription</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.createRule -->
  * <pre>
- * RuleFilter trueRuleFilter = new TrueRuleFilter();
- * CreateRuleOptions options = new CreateRuleOptions(trueRuleFilter);
- * ruleManager.createRule("new-rule", options).subscribe(
- *     unused -> {},
- *     err -> System.err.println("Error occurred when create a rule, err: " + err),
- *     () -> System.out.println("Create complete.")
- * );
+ * RuleFilter trueRuleFilter = new TrueRuleFilter&#40;&#41;;
+ * CreateRuleOptions options = new CreateRuleOptions&#40;trueRuleFilter&#41;;
+ * ruleManager.createRule&#40;&quot;new-rule&quot;, options&#41;.subscribe&#40;
+ *     unused -&gt; &#123; &#125;,
+ *     err -&gt; System.err.println&#40;&quot;Error occurred when create a rule, err: &quot; + err&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Create complete.&quot;&#41;
+ * &#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.createRule -->
  *
  * <p><strong>Fetch all rules.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  * <pre>
- * ruleManager.getRules().subscribe(
- *     ruleProperties -> ruleProperties.forEach(rule -> System.out.println(rule.getName())),
- *     err -> System.err.println("Error occurred when get rules, err: " + err),
- *     () -> System.out.println("Get complete.")
- * );
+ * ruleManager.getRules&#40;&#41;.subscribe&#40;
+ *     ruleProperties -&gt; ruleProperties.forEach&#40;rule -&gt; System.out.println&#40;rule.getName&#40;&#41;&#41;&#41;,
+ *     err -&gt; System.err.println&#40;&quot;Error occurred when get rules, err: &quot; + err&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Get complete.&quot;&#41;
+ * &#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  *
  * <p><strong>Delete a rule.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.deleteRule -->
  * <pre>
- * ruleManager.deleteRule("exist-rule").subscribe(
- *     unused -> {},
- *     err -> System.err.println("Error occurred when delete rule, err: " + err),
- *     () -> System.out.println("Delete complete.")
- * );
+ * ruleManager.deleteRule&#40;&quot;exist-rule&quot;&#41;.subscribe&#40;
+ *     unused -&gt; &#123; &#125;,
+ *     err -&gt; System.err.println&#40;&quot;Error occurred when delete rule, err: &quot; + err&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Delete complete.&quot;&#41;
+ * &#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.deleteRule -->
  * @see ServiceBusClientBuilder
@@ -87,7 +87,15 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
-    public ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
+    /**
+     * Creates a rule manager that manage rules for a Service Bus subscription.
+     *
+     * @param entityPath The name of the topic and subscription.
+     * @param entityType The type of the Service Bus resource.
+     * @param connectionProcessor The AMQP connection to the Service Bus resource.
+     * @param onClientClose Operation to run when the client completes.
+     */
+    ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = entityType;

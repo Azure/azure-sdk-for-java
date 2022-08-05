@@ -411,11 +411,12 @@ public final class MessageUtils {
             throw new IllegalArgumentException("This API supports the addition of only SQLFilters and CorrelationFilters.");
         }
 
-        if (options.getAction() == null) {
+        RuleAction action = options.getAction();
+        if (action == null) {
             descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, null);
-        } else if (options.getAction() instanceof SqlRuleAction) {
+        } else if (action instanceof SqlRuleAction) {
             HashMap<String, Object> sqlActionMap = new HashMap<>();
-            sqlActionMap.put(ManagementConstants.EXPRESSION, ((SqlRuleAction) options.getAction()).getSqlExpression());
+            sqlActionMap.put(ManagementConstants.EXPRESSION, ((SqlRuleAction) action).getSqlExpression());
             descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, sqlActionMap);
         } else {
             throw new IllegalArgumentException("This API supports the addition of only filters with SqlRuleActions.");
@@ -453,6 +454,7 @@ public final class MessageUtils {
      * @param ruleDescribedType A {@link DescribedType} with rule information.
      * @return A {@link RuleProperties} contains name, {@link RuleAction} and {@link RuleFilter}.
      */
+    @SuppressWarnings("unchecked")
     public static RuleProperties decodeRuleDescribedType(DescribedType ruleDescribedType) {
         if (ruleDescribedType == null) {
             return null;
@@ -486,6 +488,7 @@ public final class MessageUtils {
      * @param describedFilter A {@link DescribedType} with rule filter information.
      * @return A {@link RuleFilter}.
      */
+    @SuppressWarnings("unchecked")
     private static RuleFilter decodeFilter(DescribedType describedFilter) {
         if (describedFilter.getDescriptor().equals(ServiceBusConstants.SQL_FILTER_NAME)) {
             ArrayList<Object> describedSqlFilter = (ArrayList<Object>) describedFilter.getDescribed();
@@ -523,7 +526,7 @@ public final class MessageUtils {
             if (countCorrelationFilter > 0) {
                 Object properties = describedCorrelationFilter.get(8);
                 if (properties instanceof Map) {
-                    correlationFilter.getProperties().putAll((Map) properties);
+                    correlationFilter.getProperties().putAll((Map<String, ?>) properties);
                 }
             }
 
@@ -544,6 +547,7 @@ public final class MessageUtils {
      * @param describedAction A {@link DescribedType} with rule action information.
      * @return A {@link RuleAction}.
      */
+    @SuppressWarnings("unchecked")
     private static RuleAction decodeRuleAction(DescribedType describedAction) {
         if (describedAction.getDescriptor().equals(ServiceBusConstants.EMPTY_RULE_ACTION_NAME)) {
             return null;

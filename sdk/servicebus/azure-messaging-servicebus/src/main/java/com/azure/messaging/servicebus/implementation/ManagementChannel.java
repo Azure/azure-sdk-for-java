@@ -640,6 +640,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      *
      * @throws RuntimeException Get @{@link RuleProperties} from message body failed.
      */
+    @SuppressWarnings("unchecked")
     private Collection<RuleProperties> getRuleProperties(AmqpValue messageBody) {
         try {
             List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())

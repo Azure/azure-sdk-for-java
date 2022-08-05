@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
@@ -45,35 +44,35 @@ public class ManageRulesAsyncSample {
         //    the Service Bus topic.
 
         // Instantiate a client that will be used to call the service.
-       ServiceBusRuleManagerAsyncClient ruleManager= new ServiceBusClientBuilder()
-           .connectionString(connectionString)
-           .ruleManager()
-           .topicName(topicName)
-           .subscriptionName(subscriptionName)
-           .buildAsyncClient();
+        ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder()
+            .connectionString(connectionString)
+            .ruleManager()
+            .topicName(topicName)
+            .subscriptionName(subscriptionName)
+            .buildAsyncClient();
 
-       // Create a rule.
-       RuleFilter trueRuleFilter = new TrueRuleFilter();
-       CreateRuleOptions options = new CreateRuleOptions(trueRuleFilter);
-       ruleManager.createRule("new-rule", options).subscribe(
-           unused -> {},
-           err -> System.err.println("Error occurred when create a rule, err: " + err),
-           () -> System.out.println("Create complete.")
-       );
+        // Create a rule.
+        RuleFilter trueRuleFilter = new TrueRuleFilter();
+        CreateRuleOptions options = new CreateRuleOptions(trueRuleFilter);
+        ruleManager.createRule("new-rule", options).subscribe(
+            unused -> { },
+            err -> System.err.println("Error occurred when create a rule, err: " + err),
+            () -> System.out.println("Create complete.")
+        );
 
-       // Fetch all rules.
-       ruleManager.getRules().subscribe(
-           ruleProperties -> ruleProperties.forEach(rule -> System.out.println(rule.getName())),
-           err -> System.err.println("Error occurred when get rules, err: " + err),
-           () -> System.out.println("Get complete.")
-       );
+        // Fetch all rules.
+        ruleManager.getRules().subscribe(
+            ruleProperties -> ruleProperties.forEach(rule -> System.out.println(rule.getName())),
+            err -> System.err.println("Error occurred when get rules, err: " + err),
+            () -> System.out.println("Get complete.")
+        );
 
-       // Delete rule.
-       ruleManager.deleteRule("new-rule").subscribe(
-           unused -> {},
-           err -> System.err.println("Error occurred when delete rule, err: " + err),
-           () -> System.out.println("Delete complete.")
-       );
+        // Delete rule.
+        ruleManager.deleteRule("new-rule").subscribe(
+            unused -> { },
+            err -> System.err.println("Error occurred when delete rule, err: " + err),
+            () -> System.out.println("Delete complete.")
+        );
 
     }
 }

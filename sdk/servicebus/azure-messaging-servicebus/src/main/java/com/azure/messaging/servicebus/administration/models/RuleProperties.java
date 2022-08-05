@@ -259,6 +259,13 @@ public class RuleProperties {
         return name;
     }
 
+    /**
+     * Sets the name of the rule.
+     *
+     * @param name The name of the rule.
+     *
+     * @return The updated {@link RuleProperties} object itself.
+     */
     public RuleProperties setName(String name) {
         this.name = Objects.requireNonNull(name, "'name' cannot be null.");
         return this;

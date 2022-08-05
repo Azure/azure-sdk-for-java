@@ -22,7 +22,7 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
     String topicName = System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
     String subscriptionName = System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
 
-    ServiceBusRuleManagerAsyncClient ruleManager= new ServiceBusClientBuilder()
+    ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder()
         .connectionString(connectionString)
         .ruleManager()
         .topicName(topicName)
@@ -36,13 +36,13 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
 
-        ServiceBusRuleManagerAsyncClient ruleManager= new ServiceBusClientBuilder()
+        ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .ruleManager()
             .topicName(topicName)
             .subscriptionName(subscriptionName)
             .buildAsyncClient();
-        // END: end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.instantiation
+        // END: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.instantiation
 
         ruleManager.close();
     }
@@ -50,7 +50,7 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
 
     @Test
     public void createRule() {
-        ServiceBusRuleManagerAsyncClient ruleManager= new ServiceBusClientBuilder()
+        ServiceBusRuleManagerAsyncClient ruleManager = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .ruleManager()
             .topicName(topicName)
@@ -61,7 +61,7 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
         RuleFilter trueRuleFilter = new TrueRuleFilter();
         CreateRuleOptions options = new CreateRuleOptions(trueRuleFilter);
         ruleManager.createRule("new-rule", options).subscribe(
-            unused -> {},
+            unused -> { },
             err -> System.err.println("Error occurred when create a rule, err: " + err),
             () -> System.out.println("Create complete.")
         );
@@ -85,7 +85,7 @@ public class ServiceBusRuleManagerAsyncClientJavaDocSample {
     public void deleteRule() {
         // BEGIN: com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.deleteRule
         ruleManager.deleteRule("exist-rule").subscribe(
-            unused -> {},
+            unused -> { },
             err -> System.err.println("Error occurred when delete rule, err: " + err),
             () -> System.out.println("Delete complete.")
         );
