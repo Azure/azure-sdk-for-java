@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.fullfidelity;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -10,8 +10,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
-import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -25,14 +23,12 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,15 +89,10 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
-        CosmosAsyncContainer collectionLink,
-        CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
-        throw new UnsupportedOperationException("createDocumentChangeFeedQueryV1() should be called instead for Full Fidelity");
-    }
+    public <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                                   CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                                                                   Class<T> klass) {
 
-    @Override
-    public Flux<FeedResponse<ChangeFeedProcessorItem>> createDocumentChangeFeedQueryV1(
-        CosmosAsyncContainer collectionLink, CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
         // ChangeFeed processor relies on getting GoneException signals
         // to handle split of leases - so we need to suppress the split-proofing
         // in the underlying fetcher/pipeline for the change feed processor.
@@ -110,7 +101,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
-        Flux<FeedResponse<ChangeFeedProcessorItem>> feedResponseFlux =
+        Flux<FeedResponse<T>> feedResponseFlux =
             clientWrapper
                 .getCollectionCache()
                 .resolveByNameAsync(
@@ -125,13 +116,13 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     return clientWrapper
                         .queryDocumentChangeFeed(collection, effectiveRequestOptions, Document.class)
                         .map(response -> {
-                            List<ChangeFeedProcessorItem> results = response.getResults()
-                                                                            .stream()
-                                                                            .map(document ->
+                            List<T> results = response.getResults()
+                                                             .stream()
+                                                             .map(document ->
                                                                  ModelBridgeInternal.toObjectFromJsonSerializable(
                                                                      document,
-                                                                     ChangeFeedProcessorItem.class))
-                                                                            .collect(Collectors.toList());
+                                                                     klass))
+                                                             .collect(Collectors.toList());
                             return BridgeInternal.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),

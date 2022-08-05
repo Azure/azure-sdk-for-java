@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.fullfidelity;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 
 /**
  * Classifies exceptions based on the status codes.
  */
-class ExceptionClassifier {
+public class ExceptionClassifier {
     public static final int SubStatusCode_Undefined = -1;
 
     // 410: partition key range is gone.
@@ -22,7 +21,7 @@ class ExceptionClassifier {
 
 
     public static StatusCodeErrorType classifyClientException(CosmosException clientException) {
-        Integer subStatusCode = clientException.getSubStatusCode();
+        int subStatusCode = clientException.getSubStatusCode();
 
         if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND && subStatusCode != SubStatusCode_ReadSessionNotAvailable) {
             return StatusCodeErrorType.PARTITION_NOT_FOUND;

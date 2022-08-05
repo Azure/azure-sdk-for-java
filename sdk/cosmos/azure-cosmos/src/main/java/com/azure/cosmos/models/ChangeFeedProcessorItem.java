@@ -2,22 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Change Feed processor item.
+ * Supports current and previous items through {@link JsonNode} structure.
+ *
+ * Caller is recommended to type cast {@link JsonNode} to cosmos item structure.
  */
 @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class ChangeFeedProcessorItem {
+public final class ChangeFeedProcessorItem {
     @JsonProperty("current")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private JsonNode current;
     @JsonProperty("previous")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private JsonNode previous;
     @JsonProperty("metadata")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ChangeFeedMetaData changeFeedMetaData;
 
     /**
@@ -25,6 +32,7 @@ public class ChangeFeedProcessorItem {
      *
      * @return change feed current item.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode getCurrent() {
         return current;
     }
@@ -36,6 +44,7 @@ public class ChangeFeedProcessorItem {
      *
      * @return change feed previous item.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode getPrevious() {
         return previous;
     }
@@ -45,24 +54,17 @@ public class ChangeFeedProcessorItem {
      *
      * @return change feed metadata.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedMetaData getChangeFeedMetaData() {
         return changeFeedMetaData;
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("ChangeFeedProcessorItem{current=")
-            .append(current.toPrettyString())
-            .append(", ");
-        if (previous != null) {
-            stringBuilder.append("previous=")
-                .append(previous.toPrettyString())
-                .append(", ");
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to convert object to string", e);
         }
-        stringBuilder.append("changeFeedMetaData=")
-            .append(changeFeedMetaData)
-            .append("}");
-        return stringBuilder.toString();
     }
 }

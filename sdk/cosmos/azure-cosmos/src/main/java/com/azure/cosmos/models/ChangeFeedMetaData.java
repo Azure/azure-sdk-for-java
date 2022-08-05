@@ -2,18 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.Instant;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Change Feed response meta data
  */
 @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class ChangeFeedMetaData {
+public final class ChangeFeedMetaData {
     @JsonProperty("crts")
-    private Instant conflictResolutionTimestamp;
+    private long conflictResolutionTimestamp;
     @JsonProperty("lsn")
     private long logSequenceNumber;
     @JsonProperty("operationType")
@@ -28,7 +28,8 @@ public class ChangeFeedMetaData {
      *
      * @return conflict resolution timestamp
      */
-    public Instant getConflictResolutionTimestamp() {
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public long getConflictResolutionTimestamp() {
         return conflictResolutionTimestamp;
     }
 
@@ -37,6 +38,7 @@ public class ChangeFeedMetaData {
      *
      * @return current logical sequence number
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public long getLogSequenceNumber() {
         return logSequenceNumber;
     }
@@ -46,6 +48,7 @@ public class ChangeFeedMetaData {
      *
      * @return change Feed operation type
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedOperationType getOperationType() {
         return operationType;
     }
@@ -55,6 +58,7 @@ public class ChangeFeedMetaData {
      *
      * @return previous logical sequence number
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public long getPreviousLogSequenceNumber() {
         return previousLogSequenceNumber;
     }
@@ -65,18 +69,17 @@ public class ChangeFeedMetaData {
      *
      * @return true if ttlExpiration caused the delete.
      */
+    @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isTimeToLiveExpired() {
         return timeToLiveExpired;
     }
 
     @Override
     public String toString() {
-        return "ChangeFeedMetaData{" +
-            "conflictResolutionTimestamp=" + conflictResolutionTimestamp +
-            ", logSequenceNumber=" + logSequenceNumber +
-            ", operationType=" + operationType +
-            ", previousLogSequenceNumber=" + previousLogSequenceNumber +
-            ", timeToLiveExpired=" + timeToLiveExpired +
-            '}';
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to convert object to string", e);
+        }
     }
 }

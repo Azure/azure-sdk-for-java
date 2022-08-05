@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -401,7 +402,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             })
             .doOnError(throwable -> {
                 logger.info("Partition {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
-                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getContinuationToken());
+                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken());
             });
     }
 

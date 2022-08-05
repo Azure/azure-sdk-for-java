@@ -77,11 +77,11 @@ public interface Lease {
      */
     String getTimestamp();
 
-    ChangeFeedState getContinuationState(
+    ChangeFeedState getPartitionKeyBasedContinuationState(
         String containerRid,
         FeedRangeInternal feedRange);
 
-    ChangeFeedState getContinuationStateV1(String containerRid);
+    ChangeFeedState getEpkRangeBasedContinuationState(String containerRid);
 
     /**
      * Gets the continuation token used to determine the last processed point of the Change Feed.
@@ -89,6 +89,14 @@ public interface Lease {
      * @return the continuation token used to determine the last processed point of the Change Feed.
      */
     String getContinuationToken();
+
+    /**
+     * Gets the human-readable continuation token which can be used to determine the last processed point of Change Feed.
+     * NOTE: This is only for logging and debugging purposes.
+     *
+     * @return the human-readable continuation token which can be used to determine the last processed point of Change Feed.
+     */
+    String getReadableContinuationToken();
 
     /**
      * Sets the continuation token used to determine the last processed point of the Change Feed.

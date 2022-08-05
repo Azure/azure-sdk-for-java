@@ -4,12 +4,9 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -23,6 +20,15 @@ import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy
 import com.azure.cosmos.implementation.changefeed.PartitionManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedContextClientImpl;
+import com.azure.cosmos.implementation.changefeed.common.CheckpointerObserverFactory;
+import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
+import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
+import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
+import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -79,7 +85,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     private String hostName;
     private ChangeFeedContextClient feedContextClient;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private ChangeFeedObserverFactory observerFactory;
+    private ChangeFeedObserverFactory<JsonNode> observerFactory;
     private volatile String databaseResourceId;
     private volatile String collectionResourceId;
     private ChangeFeedContextClient leaseContextClient;
@@ -161,14 +167,14 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(
+                                lease.getPartitionKeyBasedContinuationState(
                                     this.collectionResourceId,
                                     feedRange));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
                                 this.feedContextClient.getContainerClient(),
-                                options)
+                                options, JsonNode.class)
                             .take(1)
                             .map(feedResponse -> {
                                 String ownerValue = lease.getOwner();
@@ -242,14 +248,14 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(
+                                lease.getPartitionKeyBasedContinuationState(
                                     this.collectionResourceId,
                                     feedRange));
                         options.setMaxItemCount(1);
 
                         return this.feedContextClient.createDocumentChangeFeedQuery(
                             this.feedContextClient.getContainerClient(),
-                            options)
+                            options, JsonNode.class)
                             .take(1)
                             .map(feedResponse -> {
                                 String sessionTokenLsn = feedResponse.getSessionToken();
@@ -349,7 +355,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
      * @param observerFactory The instance of {@link ChangeFeedObserverFactory} to use.
      * @return current Builder.
      */
-    public ChangeFeedProcessorBuilderImpl observerFactory(ChangeFeedObserverFactory observerFactory) {
+    public ChangeFeedProcessorBuilderImpl observerFactory(ChangeFeedObserverFactory<JsonNode> observerFactory) {
         if (observerFactory == null) {
             throw new IllegalArgumentException("observerFactory");
         }
@@ -359,7 +365,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     }
 
     public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
-        return this.observerFactory(new DefaultObserverFactory(consumer));
+        return this.observerFactory(new DefaultObserverFactory<>(consumer));
     }
 
     /**
@@ -487,7 +493,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        CheckpointerObserverFactory factory = new CheckpointerObserverFactory(this.observerFactory, new CheckpointFrequency());
+        CheckpointerObserverFactory<JsonNode> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
             this.feedContextClient,

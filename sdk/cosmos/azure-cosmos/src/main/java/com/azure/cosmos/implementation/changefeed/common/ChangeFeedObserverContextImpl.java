@@ -1,24 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.incremental;
+package com.azure.cosmos.implementation.changefeed.common;
 
 
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.models.ChangeFeedProcessorItem;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Mono;
 
 /**
  * Implementation for ChangeFeedObserverContext.
  */
-class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
+public class ChangeFeedObserverContextImpl<T> implements ChangeFeedObserverContext<T> {
     private final PartitionCheckpointer checkpointer;
     private final String leaseToken;
-    private final FeedResponse<JsonNode> feedResponse;
+    private final FeedResponse<T> feedResponse;
     private final ChangeFeedState continuationState;
 
 
@@ -30,7 +27,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     }
 
     public ChangeFeedObserverContextImpl(String leaseToken,
-                                         FeedResponse<JsonNode> feedResponse,
+                                         FeedResponse<T> feedResponse,
                                          ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
         this.leaseToken = leaseToken;
@@ -65,12 +62,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      * @return the response from the underlying call.
      */
     @Override
-    public FeedResponse<JsonNode> getFeedResponse() {
+    public FeedResponse<T> getFeedResponse() {
         return this.feedResponse;
-    }
-
-    @Override
-    public FeedResponse<ChangeFeedProcessorItem> getFeedResponseV1() {
-        throw new UnsupportedOperationException("getFeedResponse() should be called instead for Incremental");
     }
 }

@@ -382,6 +382,8 @@ class SparkE2EChangeFeedITest
     hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
     hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
 
+    //  TODO - check for the offset structure to make sure it looks like the new lease format.
+
     hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)

@@ -6,13 +6,12 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,9 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class ServiceItemLeaseV1 implements Lease {
     private String leaseToken;
     private String owner;
     private String continuationToken;
+    private String readableContinuationToken;
     private LeaseVersion version;
     private FeedRangeInternal feedRangeInternal;
     private Map<String, String> properties;
@@ -138,20 +140,31 @@ public class ServiceItemLeaseV1 implements Lease {
     }
 
     @Override
-    public ChangeFeedState getContinuationStateV1(String containerRid) {
+    public String getReadableContinuationToken() {
+        return this.readableContinuationToken;
+    }
+
+    @Override
+    public ChangeFeedState getEpkRangeBasedContinuationState(String containerRid) {
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
+
+        //  Lease token are stored in Base64 encoded json - and contains the complete ChangeFeedState
+        ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(this.continuationToken);
+        //  Calculating this token from epk based lease format
+        //  This token is then used to pass as lsn in form of etag.
+        String token = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
 
         return new ChangeFeedStateV1(
             containerRid,
             this.feedRangeInternal,
             ChangeFeedMode.FULL_FIDELITY,
-            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.continuationToken, this.feedRangeInternal),
-            null);
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(token, this.feedRangeInternal),
+            changeFeedState.getContinuation());
     }
 
     @Override
-    public ChangeFeedState getContinuationState(String containerRid, FeedRangeInternal feedRange) {
-        throw new UnsupportedOperationException("getContinuationState() is not supported for V1 wire format");
+    public ChangeFeedState getPartitionKeyBasedContinuationState(String containerRid, FeedRangeInternal feedRange) {
+        throw new UnsupportedOperationException("getPartitionKeyBasedContinuationState() is not supported for V1 wire format");
     }
 
     @Override
@@ -161,6 +174,9 @@ public class ServiceItemLeaseV1 implements Lease {
 
     public ServiceItemLeaseV1 withContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
+        if (continuationToken != null) {
+            this.readableContinuationToken = new String(Base64.getDecoder().decode(continuationToken), StandardCharsets.UTF_8);
+        }
         return this;
     }
 
@@ -269,7 +285,6 @@ public class ServiceItemLeaseV1 implements Lease {
         }
 
         JsonNode feedRangeNode = (JsonNode) document.get(PROPERTY_NAME_FEED_RANGE);
-        //  TODO:(kuthapar) - we should make sure that lease token and feed range match (min and max).
         if (feedRangeNode != null) {
             try {
                 lease.withFeedRange(
@@ -310,7 +325,7 @@ public class ServiceItemLeaseV1 implements Lease {
             "%s Owner='%s' Continuation=%s Version=%s FeedRange=%s Timestamp(local)=%s Timestamp(server)=%s",
             this.getId(),
             this.getOwner(),
-            this.getContinuationToken(),
+            this.getReadableContinuationToken(),
             this.getVersion(),
             this.getFeedRange(),
             this.getTimestamp(),

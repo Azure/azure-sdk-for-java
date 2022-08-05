@@ -72,7 +72,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         if (throwable instanceof CosmosException) {
                             CosmosException ex = (CosmosException) throwable;
                             if (Exceptions.isNotFound(ex)) {
-                                logger.info("Partition {} with lease token {} could not be found.", cachedLease.getFeedRange(), cachedLease.getLeaseToken());
+                                logger.info("Partition {} could not be found.", cachedLease.getLeaseToken());
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
@@ -83,8 +83,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLeaseV1 serverLease = ServiceItemLeaseV1.fromDocument(document);
                         logger.info(
-                            "Partition {} with lease token {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
-                            cachedLease.getFeedRange(),
+                            "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
                             cachedLease.getLeaseToken(),
                             cachedLease.getConcurrencyToken(),
                             serverLease.getOwner(),
@@ -92,8 +91,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
                         // Check if we still have the expected ownership on the target lease.
                         if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(cachedLease.getOwner())) {
-                            logger.info("Partition {} with lease token {} lease was acquired already by owner '{}'",
-                                serverLease.getFeedRange(), serverLease.getLeaseToken(), serverLease.getOwner());
+                            logger.info("Partition {} lease was acquired already by owner '{}'",
+                                serverLease.getLeaseToken(), serverLease.getOwner());
                             throw new LeaseLostException(serverLease);
                         }
 
@@ -106,8 +105,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .retryWhen(Retry.max(RETRY_COUNT_ON_CONFLICT).filter(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.info(
-                        "Partition {} with lease token {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
-                        cachedLease.getFeedRange(),
+                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner());
@@ -118,12 +116,11 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(
-                        "Partition {} with lease token {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
-                        cachedLease.getFeedRange(),
+                        "Partition {} for the lease with token '{}' failed to update for owner '{}'; current continuation token '{}'.",
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),
-                        cachedLease.getContinuationToken(), throwable);
+                        cachedLease.getReadableContinuationToken(), throwable);
 
                     return Mono.just(cachedLease);
                 }

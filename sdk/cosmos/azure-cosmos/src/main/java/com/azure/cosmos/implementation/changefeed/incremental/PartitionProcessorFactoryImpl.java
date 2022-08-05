@@ -3,15 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -20,11 +13,19 @@ import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedMode;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implementation for {@link PartitionProcessorFactory}.
  */
-class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
+class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNode> {
     private final ChangeFeedContextClient documentClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final LeaseCheckpointer leaseCheckpointer;
@@ -88,7 +89,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
     }
 
     @Override
-    public PartitionProcessor create(Lease lease, ChangeFeedObserver observer) {
+    public PartitionProcessor create(Lease lease, ChangeFeedObserver<JsonNode> observer) {
         if (observer == null) {
             throw new IllegalArgumentException("observer");
         }
@@ -109,7 +110,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
                     this.changeFeedProcessorOptions),
                 null);
         } else {
-            state = lease.getContinuationState(this.collectionResourceId, feedRange);
+            state = lease.getPartitionKeyBasedContinuationState(this.collectionResourceId, feedRange);
         }
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)

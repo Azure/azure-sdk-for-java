@@ -119,7 +119,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),
-                        cachedLease.getContinuationToken(), throwable);
+                        cachedLease.getReadableContinuationToken(), throwable);
 
                     return Mono.just(cachedLease);
                 }

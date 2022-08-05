@@ -24,10 +24,10 @@ import java.time.Duration;
  */
 class DocumentServiceLeaseStore implements LeaseStore {
     private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
-    private ChangeFeedContextClient client;
-    private String containerNamePrefix;
-    private CosmosAsyncContainer leaseCollectionLink;
-    private RequestOptionsFactory requestOptionsFactory;
+    private final ChangeFeedContextClient client;
+    private final String containerNamePrefix;
+    private final CosmosAsyncContainer leaseCollectionLink;
+    private final RequestOptionsFactory requestOptionsFactory;
     private volatile String lockETag;
 
     //  TODO: rename to LeaseStoreImpl

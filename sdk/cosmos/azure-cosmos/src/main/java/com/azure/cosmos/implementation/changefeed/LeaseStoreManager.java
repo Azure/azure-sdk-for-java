@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.changefeed.incremental.LeaseStoreManagerImpl;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Flux;

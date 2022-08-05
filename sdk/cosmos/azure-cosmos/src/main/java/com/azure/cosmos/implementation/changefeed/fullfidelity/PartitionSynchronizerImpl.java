@@ -10,8 +10,6 @@ import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -21,9 +19,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 
@@ -60,7 +56,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-//        logger.info("Creating missing leases now");
         return this.enumPartitionKeyRanges()
                    .collectList()
                    .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
@@ -118,11 +113,10 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                     })
                     .flatMap(pkRange -> {
                         FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
-                        logger.info("Creating lease for pkRange : {}", pkRange);
                         return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
                     }, this.degreeOfParallelism)
                     .map(newLease -> {
-                        logger.info("Partition {} split into new partition with lease token {} and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
+                        logger.info("Partition {} split into new partition and continuation token {}.", newLease.getLeaseToken(), lastContinuationToken);
                         return newLease;
                     });
     }
@@ -153,17 +147,14 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
      * @return a deferred computation of this call.
      */
     private Flux<Lease> createLeases(List<PartitionKeyRange> partitionKeyRanges) {
-//        logger.info("Creating missing leases for partition key ranges : {}, with size {}", partitionKeyRanges, partitionKeyRanges.size());
         return this.leaseContainer
             .getAllLeases()
-            //  collecting this as a list is important.
+            //  collecting this as a list is important because it will still call flatMapMany even if the list is empty.
             //  when initializing, all leases will return empty list.
             .collectList()
             .flatMapMany(leaseList -> {
-//                logger.info("lease list size is : {}", leaseList.size());
                 return Flux.fromIterable(partitionKeyRanges)
                            .flatMap(pkRange -> {
-//                               logger.info("pk range is : {}", pkRange);
                                // check if there are epk based leases for the partitionKeyRange
                                // If there is at least one, then we assume there are others
                                // that cover the rest the full partition range
@@ -174,23 +165,18 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                    Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
                                    //   TODO:(kuthapar) - check this logic
                                    if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
-//                                       logger.info("Filtering out partition key range : {} with epk range {}", pkRange, epkRange);
                                        //  This lease exists, no need to create one for this pkRange
                                        return true;
                                    }
-//                                   logger.info("Creating lease for partition key range : {} with epk range {}", pkRange, epkRange);
                                    return false;
                                });
                                //   If there is no match, it means leases don't exist for these pkranges.
                                if (!anyMatch) {
-//                                   logger.info("None matched the predicate");
                                    return Mono.just(pkRange);
                                }
-//                               logger.info("Found at least one lease");
                                return Mono.empty();
                            }).flatMap(pkRange -> {
                                 FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
-//                                logger.info("Creating lease for pkRange : {}", pkRange);
                                 return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
                                 }, this.degreeOfParallelism);
             });

@@ -13,18 +13,18 @@ import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedMode;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
 /**
  * Implementation for {@link PartitionProcessorFactory}.
  */
-class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
+class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<ChangeFeedProcessorItem> {
     private final ChangeFeedContextClient documentClient;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final LeaseCheckpointer leaseCheckpointer;
@@ -69,23 +69,23 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
         FeedRangeInternal feedRange,
         ChangeFeedProcessorOptions processorOptions) {
 
-        //  TODO:(kuthapar) - how will customers use this? given now the continuation token in the lease will be the full json.
         if (!Strings.isNullOrWhiteSpace(processorOptions.getStartContinuation())) {
+            ChangeFeedState changeFeedState = ChangeFeedStateV1.fromString(processorOptions.getStartContinuation());
             return ChangeFeedStartFromInternal.createFromETagAndFeedRange(
-                processorOptions.getStartContinuation(),
+                changeFeedState.getContinuation().getCurrentContinuationToken().getToken(),
                 feedRange);
         }
         return ChangeFeedStartFromInternal.createFromNow();
     }
 
     @Override
-    public PartitionProcessor create(Lease lease, ChangeFeedObserver observer) {
+    public PartitionProcessor create(Lease lease, ChangeFeedObserver<ChangeFeedProcessorItem> observer) {
         if (observer == null) {
-            throw new IllegalArgumentException("observer");
+            throw new IllegalArgumentException("observer cannot be null");
         }
 
         if (lease == null) {
-            throw new IllegalArgumentException("lease");
+            throw new IllegalArgumentException("lease cannot be null");
         }
 
         ChangeFeedState state;
@@ -99,7 +99,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
                     this.changeFeedProcessorOptions),
                 null);
         } else {
-            state = lease.getContinuationStateV1(this.collectionResourceId);
+            state = lease.getEpkRangeBasedContinuationState(this.collectionResourceId);
         }
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)

@@ -3,14 +3,15 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.fullfidelity.ServiceItemLeaseV1;
+import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
@@ -82,10 +83,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-            ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -142,10 +144,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-            ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -199,9 +202,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessorMain = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -212,9 +216,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .buildChangeFeedProcessor();
 
-            ChangeFeedProcessor changeFeedProcessorSideCart = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
                 .hostName("side-cart")
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })
                 .feedContainer(createdFeedCollection)
@@ -337,9 +342,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessorMain = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -350,9 +356,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .buildChangeFeedProcessor();
 
-            ChangeFeedProcessor changeFeedProcessorSideCart = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
                 .hostName("side-cart")
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })
                 .feedContainer(createdFeedCollection)
@@ -524,9 +531,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
 
-            ChangeFeedProcessor changeFeedProcessorFirst = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
-                .handleChanges(docs -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges(docs -> {
                     log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                 })
@@ -537,9 +545,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 )
                 .buildChangeFeedProcessor();
 
-            ChangeFeedProcessor changeFeedProcessorSecond = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorSecond = new ChangeFeedProcessorBuilder()
                 .hostName(ownerSecond)
-                .handleChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -658,9 +667,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
 
-            ChangeFeedProcessor changeFeedProcessorFirst = new FullFidelityChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
-                .handleChanges(docs -> {
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges(docs -> {
                     logger.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     for (ChangeFeedProcessorItem item : docs) {
                         try {
@@ -789,9 +799,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             String leasePrefix = "TEST";
 
-            changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .handleChanges(fullFidelityChangeFeedProcessorHandler(receivedDocuments))
+                .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+                .handleFullFidelityChanges(fullFidelityChangeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()

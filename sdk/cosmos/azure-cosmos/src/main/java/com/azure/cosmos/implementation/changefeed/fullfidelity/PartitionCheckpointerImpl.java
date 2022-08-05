@@ -31,7 +31,7 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
 
     @Override
     public Mono<Lease> checkpointPartition(ChangeFeedState continuationState) {
-        checkNotNull(continuationState, "Argument 'continuationSttae' must not be null.");
+        checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
         checkArgument(
             continuationState.getContinuation().getContinuationTokenCount() == 1,
             "For ChangeFeedProcessor the continuation state should always have one range/continuation");
@@ -40,12 +40,12 @@ class PartitionCheckpointerImpl implements PartitionCheckpointer {
 
         return this.leaseCheckpointer.checkpoint(
             this.lease,
-            continuationState.getContinuation().getCurrentContinuationToken().getToken(),
+            //  Using the base64 encoded continuation token
+            continuationState.toString(),
             cancellationToken)
             .map(lease1 -> {
                 this.lease = lease1;
-                logger.info("Checkpoint: partition {} with lease token {}, new continuation {}",
-                    this.lease.getFeedRange(), this.lease.getLeaseToken(), this.lease.getContinuationToken());
+                logger.info("Checkpoint: partition {}, new continuation {}", this.lease.getLeaseToken(), this.lease.getReadableContinuationToken());
                 return lease1;
             });
     }

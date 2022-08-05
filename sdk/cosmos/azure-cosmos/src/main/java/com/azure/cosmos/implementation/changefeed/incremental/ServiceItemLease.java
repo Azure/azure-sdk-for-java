@@ -4,17 +4,14 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -120,12 +117,17 @@ public class ServiceItemLease implements Lease {
     }
 
     @Override
-    public ChangeFeedState getContinuationStateV1(String containerRid) {
-        throw new UnsupportedOperationException("getContinuationStateV1() is not supported for V0 wire format");
+    public String getReadableContinuationToken() {
+        return this.continuationToken;
     }
 
     @Override
-    public ChangeFeedState getContinuationState(String containerRid, FeedRangeInternal feedRange) {
+    public ChangeFeedState getEpkRangeBasedContinuationState(String containerRid) {
+        throw new UnsupportedOperationException("getEpkRangeBasedContinuationState() is not supported for V0 wire format");
+    }
+
+    @Override
+    public ChangeFeedState getPartitionKeyBasedContinuationState(String containerRid, FeedRangeInternal feedRange) {
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
@@ -227,12 +229,10 @@ public class ServiceItemLease implements Lease {
 
     @Override
     public void setVersion(LeaseVersion leaseVersion) {
-        //  TODO:(kuthapar) - should be a no-op
     }
 
     @Override
     public void setFeedRange(FeedRangeInternal feedRangeInternal) {
-        //  TODO:(kuthapar) - should be a no-op
     }
 
     public static ServiceItemLease fromDocument(InternalObjectNode document) {
@@ -273,7 +273,7 @@ public class ServiceItemLease implements Lease {
             "%s Owner='%s' Continuation=%s Timestamp(local)=%s Timestamp(server)=%s",
             this.getId(),
             this.getOwner(),
-            this.getContinuationToken(),
+            this.getReadableContinuationToken(),
             this.getTimestamp(),
             UNIX_START_TIME.plusSeconds(Long.parseLong(this.getTs())));
     }

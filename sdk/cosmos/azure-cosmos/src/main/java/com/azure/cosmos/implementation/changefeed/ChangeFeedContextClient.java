@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -18,7 +17,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -45,11 +43,9 @@ public interface ChangeFeedContextClient {
      * @param requestOptions The options for processing the query results feed.
      * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
-    Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
-                                                               CosmosChangeFeedRequestOptions requestOptions);
-
-    Flux<FeedResponse<ChangeFeedProcessorItem>> createDocumentChangeFeedQueryV1(CosmosAsyncContainer collectionLink,
-                                                                                CosmosChangeFeedRequestOptions requestOptions);
+    <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                            CosmosChangeFeedRequestOptions requestOptions,
+                                                            Class<T> klass);
 
     /**
      * Reads a database.

@@ -3,18 +3,19 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedOperationType;
 import com.azure.cosmos.models.ChangeFeedPolicy;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -55,9 +56,9 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static final Set<Integer> createChangeFeedSet = new HashSet<>();
     private static final Set<Integer> deleteChangeFeedSet = new HashSet<>();
     private static final Set<Integer> replaceChangeFeedSet = new HashSet<>();
-    private static final int createCount = 1000;
-    private static final int replaceCount = 1000;
-    private static final int deleteCount = 1000;
+    private static final int createCount = 10;
+    private static final int replaceCount = 10;
+    private static final int deleteCount = 10;
 
     public static void main(String[] args) {
         setup();
@@ -75,7 +76,8 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     private static void countNumberOfRecords() {
         String query = "Select value count(1) from c";
-        CosmosPagedFlux<Long> longCosmosPagedFlux = feedContainer.queryItems(query, new CosmosQueryRequestOptions(), Long.class);
+        CosmosPagedFlux<Long> longCosmosPagedFlux = feedContainer.queryItems(query, new CosmosQueryRequestOptions(),
+            Long.class);
         FeedResponse<Long> longFeedResponse = longCosmosPagedFlux.byPage().blockLast();
         logger.info("Number of records so far is : {}", longFeedResponse.getResults().get(0));
     }
@@ -105,7 +107,7 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static void deleteItems() {
         Flux.range(0, deleteCount).flatMap(range -> {
             return feedContainer.deleteItem(String.valueOf(range), new PartitionKey(String.valueOf(range)));
-        }).blockLast();
+        }).subscribe();
         logger.info("Deleting data, waiting for 10 seconds");
         try {
             Thread.sleep(10 * 1000);
@@ -120,7 +122,7 @@ public class ChangeFeedProcessorFullFidelityTest {
             Family family = getItem(String.valueOf(range));
             family.setLastName("Updated");
             return feedContainer.replaceItem(family, family.getId(), new PartitionKey(family.getMyPk()));
-        }).blockLast();
+        }).subscribe();
         logger.info("Updating data, waiting for 10 seconds");
         try {
             Thread.sleep(10 * 1000);
@@ -134,13 +136,13 @@ public class ChangeFeedProcessorFullFidelityTest {
         Flux.range(0, createCount).flatMap(range -> {
             Family family = getItem(String.valueOf(range));
             return feedContainer.createItem(family);
-        }).blockLast();
+        }).subscribe();
         logger.info("Generating data, waiting for 10 seconds");
-//        try {
-//            Thread.sleep(10 * 1000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            Thread.sleep(10 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         logger.info("Generated data");
     }
 
@@ -184,7 +186,7 @@ public class ChangeFeedProcessorFullFidelityTest {
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
             feedContainerPartitionKeyPath);
         cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
-//        cosmosContainerProperties.setDefaultTimeToLiveInSeconds(5);
+        //        cosmosContainerProperties.setDefaultTimeToLiveInSeconds(5);
         ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(100000);
         testDatabase.createContainer(cosmosContainerProperties, throughputProperties).block();
         logger.info("Feed container created if not existed");
@@ -195,15 +197,16 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     private static void runFullFidelityChangeFeedProcessorFromNow() {
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-        ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
-            .handleChanges(changeFeedProcessorItems -> {
+            .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+            .handleFullFidelityChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
-//                        logger.info("Item is : {}", item.toString());
+                        logger.info("Item is : {}", item.toString());
                         ChangeFeedOperationType operationType = item.getChangeFeedMetaData().getOperationType();
                         if (!changeFeedMap.containsKey(operationType)) {
                             changeFeedMap.put(operationType, 0);
@@ -222,9 +225,8 @@ public class ChangeFeedProcessorFullFidelityTest {
                             default:
                                 throw new IllegalStateException("Operation type : " + operationType + " not supported");
                         }
-                    }
-                    catch (Exception e) {
-                        if (item == null)  {
+                    } catch (Exception e) {
+                        if (item == null) {
                             logger.error("Received null item ", e);
                         } else {
                             logger.error("Error occurred for item : {}", item, e);
@@ -237,7 +239,7 @@ public class ChangeFeedProcessorFullFidelityTest {
         changeFeedProcessor.start().subscribe();
         try {
             logger.info("{} going to sleep for 10 seconds", Thread.currentThread().getName());
-            Thread.sleep(60 * 1000);
+            Thread.sleep(10 * 1000);
         } catch (InterruptedException e) {
             logger.error("Error occurred while sleeping", e);
         }

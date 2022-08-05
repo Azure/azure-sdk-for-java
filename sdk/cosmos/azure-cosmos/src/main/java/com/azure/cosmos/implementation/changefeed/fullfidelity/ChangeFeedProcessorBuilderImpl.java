@@ -19,7 +19,13 @@ import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy
 import com.azure.cosmos.implementation.changefeed.PartitionManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedContextClientImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.CheckpointerObserverFactory;
+import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
+import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
+import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
+import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
@@ -44,20 +50,6 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  * Helper class to buildAsyncClient {@link ChangeFeedProcessor} instances
  * as logical representation of the Azure Cosmos DB database service.
  *
- * <pre>
- * {@code
- * ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
- *     .hostName(hostName)
- *     .feedContainer(feedContainer)
- *     .leaseContainer(leaseContainer)
- *     .handleChanges(docs -> {
- *         for (JsonNode item : docs) {
- *             // Implementation for handling and processing of each JsonNode item goes here
- *         }
- *     })
- *     .buildChangeFeedProcessor();
- * }
- * </pre>
  */
 public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
     private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
@@ -70,7 +62,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     private String hostName;
     private ChangeFeedContextClient feedContextClient;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private ChangeFeedObserverFactory observerFactory;
+    private ChangeFeedObserverFactory<ChangeFeedProcessorItem> observerFactory;
     private volatile String databaseResourceId;
     private volatile String collectionResourceId;
     private ChangeFeedContextClient leaseContextClient;
@@ -162,7 +154,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                                .fullFidelity();
 
                            return this.feedContextClient
-                               .createDocumentChangeFeedQueryV1(this.feedContextClient.getContainerClient(), options)
+                               .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)
                                .take(1)
                                .map(feedResponse -> {
                                    ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
@@ -171,29 +163,19 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
                                    int latestLsn = 0;
                                    int estimatedLag = 0;
-                                   String continuationToken = feedResponse.getContinuationToken();
+                                   int currentLsn = 0;
                                    try {
-                                       ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationToken);
-                                       String token = changeFeedState
-                                           .getContinuation()
-                                           .getCurrentContinuationToken()
-                                           .getToken();
-                                       //   Remove extra quotes from token.
-                                       token = token.replace("\"", "");
-                                       latestLsn = Integer.parseInt(token);
-                                       logger.info("Latest lsn is : {}", latestLsn);
-                                       changeFeedProcessorState.setContinuationToken(String.valueOf(latestLsn));
+                                       latestLsn = getLsnFromEncodedContinuationToken(feedResponse.getContinuationToken());
+                                       changeFeedProcessorState.setContinuationToken(feedResponse.getContinuationToken());
                                        if (Strings.isNullOrWhiteSpace(lease.getContinuationToken())) {
                                            //  Lease continuation token is null
                                            //  Lease is never initialized, which means CFP has not processed any
                                            //  documents
-                                           //  Estimated lag will be (current lsn) - 1
-                                           logger.info("lease continuation token is null");
+                                           //  Estimated lag will be (latest lsn) - 1
                                            estimatedLag = latestLsn - 1;
                                        } else {
-                                           int currentLsn = Integer.parseInt(lease.getContinuationToken().replace("\"", ""));
-                                           logger.info("lease continuation token is : {}", currentLsn);
-                                           //  Otherwise, estimated lag will be latest lsn - current lsn + 1
+                                           //  Otherwise, estimated lag will be latest lsn - current lsn
+                                           currentLsn = getLsnFromEncodedContinuationToken(lease.getContinuationToken());
                                            estimatedLag = latestLsn - currentLsn;
                                        }
                                    } catch (NumberFormatException ex) {
@@ -258,7 +240,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
      * @param observerFactory The instance of {@link ChangeFeedObserverFactory} to use.
      * @return current Builder.
      */
-    public ChangeFeedProcessorBuilderImpl observerFactory(ChangeFeedObserverFactory observerFactory) {
+    public ChangeFeedProcessorBuilderImpl observerFactory(ChangeFeedObserverFactory<ChangeFeedProcessorItem> observerFactory) {
         if (observerFactory == null) {
             throw new IllegalArgumentException("observerFactory");
         }
@@ -268,7 +250,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     }
 
     public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
-        return this.observerFactory(new DefaultObserverFactory(consumer));
+        return this.observerFactory(new DefaultObserverFactory<>(consumer));
     }
 
     /**
@@ -396,7 +378,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
     }
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        CheckpointerObserverFactory factory = new CheckpointerObserverFactory(this.observerFactory, new CheckpointFrequency());
+        CheckpointerObserverFactory<ChangeFeedProcessorItem> factory =
+            new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
             this.feedContextClient,
@@ -449,6 +432,19 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         PartitionManager partitionManager = new PartitionManagerImpl(bootstrapper, partitionController, partitionLoadBalancer);
 
         return Mono.just(partitionManager);
+    }
+
+    private int getLsnFromEncodedContinuationToken(String continuationToken) {
+        int lsn;
+        ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationToken);
+        String token = changeFeedState
+            .getContinuation()
+            .getCurrentContinuationToken()
+            .getToken();
+        //   Remove extra quotes from token.
+        token = token.replace("\"", "");
+        lsn = Integer.parseInt(token);
+        return lsn;
     }
 
     @Override

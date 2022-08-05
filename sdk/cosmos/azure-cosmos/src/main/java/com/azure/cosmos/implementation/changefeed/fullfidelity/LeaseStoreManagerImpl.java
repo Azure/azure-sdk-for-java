@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.fullfidelity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
@@ -160,7 +161,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
-        throw new UnsupportedOperationException("partition key range id based leases are not supported for Change Feed V1 wire format");
+        throw new UnsupportedOperationException("partition key based leases are not supported for Change Feed V1 wire format");
     }
 
     @Override
@@ -194,8 +195,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                                            }
 
                                            InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
-
-//                                           logger.info("Created lease for partition {} with lease token {}.", feedRange, leaseToken);
 
                                            return documentServiceLease
                                                .withId(document.getId())
@@ -245,7 +244,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.requestOptionsFactory.createItemRequestOptions(lease),
             serverLease -> {
                 if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(oldOwner)) {
-                    logger.info("Partition {} with lease token {} lease was acquired already by owner '{}'", lease.getFeedRange(), lease.getLeaseToken(), serverLease.getOwner());
+                    logger.info("Partition {} lease was acquired already by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                     throw new LeaseLostException(lease);
                 }
                 serverLease.setOwner(this.settings.getHostName());
@@ -269,8 +268,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
                     if (Exceptions.isNotFound(e)) {
-                        logger.info("Partition {} with lease token {} failed to renew lease. The lease is gone already.",
-                            lease.getFeedRange(), lease.getLeaseToken());
+                        logger.info("Partition {} failed to renew lease. The lease is gone already.",
+                            lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
                 }
@@ -286,8 +285,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 serverLease ->
                 {
                     if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                        logger.info("Partition {} with lease token {} no need to release lease. The lease was already taken by another host '{}'.",
-                            lease.getFeedRange(), lease.getLeaseToken(), serverLease.getOwner());
+                        logger.info("Partition {} no need to release lease. The lease was already taken by another host '{}'.",
+                            lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
                     serverLease.setOwner(null);
@@ -314,8 +313,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
                     if (Exceptions.isNotFound(e)) {
-                        logger.info("Partition {} with lease token {} failed to renew lease. The lease is gone already.",
-                            lease.getFeedRange(), lease.getLeaseToken());
+                        logger.info("Partition {} failed to renew lease. The lease is gone already.",
+                            lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
                 }
@@ -331,13 +330,13 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 serverLease ->
                 {
                     if (serverLease.getOwner() == null) {
-                        logger.info("Partition {} with lease token {} lease was taken over and released by a different owner",
-                            lease.getFeedRange(), lease.getLeaseToken());
+                        logger.info("Partition {} lease was taken over and released by a different owner",
+                            lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
                     else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                        logger.info("Partition {} with lease token {} lease was taken over by owner '{}'",
-                            lease.getFeedRange(), lease.getLeaseToken(), serverLease.getOwner());
+                        logger.info("Partition {} lease was taken over by owner '{}'",
+                            lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
 
@@ -353,8 +352,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         }
 
         if (lease.getOwner() != null && !lease.getOwner().equalsIgnoreCase(this.settings.getHostName())) {
-            logger.info("Partition '{}' with lease token {} lease was taken over by owner '{}' before lease item update",
-                lease.getFeedRange(), lease.getLeaseToken(), lease.getOwner());
+            logger.info("Partition '{}' lease was taken over by owner '{}' before lease item update",
+                lease.getLeaseToken(), lease.getOwner());
             throw new LeaseLostException(lease);
         }
 
@@ -365,8 +364,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.requestOptionsFactory.createItemRequestOptions(lease),
             serverLease -> {
                 if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                    logger.info("Partition '{}' with lease token {} lease was taken over by owner '{}'",
-                        lease.getFeedRange(), lease.getLeaseToken(), serverLease.getOwner());
+                    logger.info("Partition '{}' lease was taken over by owner '{}'",
+                        lease.getLeaseToken(), serverLease.getOwner());
                     throw new LeaseLostException(lease);
                 }
                 serverLease.setProperties(lease.getProperties());
@@ -400,12 +399,12 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     this.requestOptionsFactory.createItemRequestOptions(lease),
                     serverLease -> {
                         if (serverLease.getOwner() == null) {
-                            logger.info("Partition {} with lease token {} lease was taken over and released by a different owner",
-                                lease.getFeedRange(), lease.getLeaseToken());
+                            logger.info("Partition {} lease was taken over and released by a different owner",
+                                lease.getLeaseToken());
                             throw new LeaseLostException(lease);
                         } else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                            logger.info("Partition {} with lease token {} lease was taken over by owner '{}'",
-                                lease.getFeedRange(), lease.getLeaseToken(), serverLease.getOwner());
+                            logger.info("Partition {} lease was taken over by owner '{}'",
+                                lease.getLeaseToken(), serverLease.getOwner());
                             throw new LeaseLostException(lease);
                         }
                         serverLease.setContinuationToken(continuationToken);
@@ -414,8 +413,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     });
             })
             .doOnError(throwable -> {
-                logger.info("Partition {} with lease token {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
-                    lease.getFeedRange(), lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getContinuationToken());
+                logger.info("Partition {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
+                    lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getReadableContinuationToken());
             });
     }
 

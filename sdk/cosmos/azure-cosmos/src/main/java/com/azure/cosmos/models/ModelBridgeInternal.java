@@ -32,7 +32,6 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.patch.PatchOperation;
@@ -779,13 +778,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
-        String etag, FeedRange feedRange) {
-
-        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

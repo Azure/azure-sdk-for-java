@@ -25,10 +25,10 @@ import java.time.Duration;
  */
 class DocumentServiceLeaseStore implements LeaseStore {
     private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
-    private ChangeFeedContextClient client;
-    private String containerNamePrefix;
-    private CosmosAsyncContainer leaseCollectionLink;
-    private RequestOptionsFactory requestOptionsFactory;
+    private final ChangeFeedContextClient client;
+    private final String containerNamePrefix;
+    private final CosmosAsyncContainer leaseCollectionLink;
+    private final RequestOptionsFactory requestOptionsFactory;
     private volatile String lockETag;
 
     //  TODO: rename to LeaseStoreImpl
@@ -50,7 +50,6 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         InternalObjectNode doc = new InternalObjectNode();
         doc.setId(markerDocId);
-//        logger.info("looking for marker doc with id : {}", markerDocId);
 
         CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLeaseV1.fromDocument(doc));
@@ -61,7 +60,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 if (throwable instanceof CosmosException) {
                     CosmosException e = (CosmosException) throwable;
                     if (Exceptions.isNotFound(e)) {
-//                        logger.info("Lease synchronization document not found");
+                        logger.info("Lease synchronization document not found");
                         return Mono.just(false);
                     }
                 }
@@ -75,22 +74,20 @@ class DocumentServiceLeaseStore implements LeaseStore {
         String markerDocId = this.getStoreMarkerName();
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(markerDocId);
-//        logger.info("Creating marker object : {}", containerDocument.toJson());
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map( item -> {
-//                logger.info("Created marker object : {}", item.getItem().toJson());
                 return true;
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
                     CosmosException e = (CosmosException) throwable;
                     if (Exceptions.isConflict(e)) {
-//                        logger.info("Lease synchronization document was created by a different instance");
+                        logger.info("Lease synchronization document was created by a different instance");
                         return Mono.just(true);
                     }
                 }
-//                logger.error("Unexpected exception thrown", throwable);
+                logger.error("Unexpected exception thrown", throwable);
                 return Mono.just(false);
             });
     }
@@ -100,12 +97,10 @@ class DocumentServiceLeaseStore implements LeaseStore {
         String lockId = this.getStoreLockName();
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(lockId);
-//        logger.info("Creating lock document : {}", containerDocument.toJson());
         BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-//                logger.info("Created lock document : {}", documentResourceResponse.getItem().toJson());
                 if (BridgeInternal.getProperties(documentResourceResponse) != null) {
                     this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();
                     return true;

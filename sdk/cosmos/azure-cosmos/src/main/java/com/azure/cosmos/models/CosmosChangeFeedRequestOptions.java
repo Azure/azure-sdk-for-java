@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
@@ -281,26 +280,6 @@ public final class CosmosChangeFeedRequestOptions {
             changeFeedState.getStartFromSettings(),
             mode,
             changeFeedState);
-    }
-
-    static CosmosChangeFeedRequestOptions createForProcessingFromEtagAndFeedRange(
-        String etag,
-        FeedRange feedRange) {
-
-        if (etag != null) {
-            return new CosmosChangeFeedRequestOptions(
-                FeedRangeInternal.convert(feedRange),
-                ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag,
-                    FeedRangeInternal.convert(feedRange)),
-                ChangeFeedMode.INCREMENTAL,
-                null);
-        }
-
-        return new CosmosChangeFeedRequestOptions(
-            FeedRangeInternal.convert(feedRange),
-            ChangeFeedStartFromInternal.createFromBeginning(),
-            ChangeFeedMode.INCREMENTAL,
-            null);
     }
 
     /**
