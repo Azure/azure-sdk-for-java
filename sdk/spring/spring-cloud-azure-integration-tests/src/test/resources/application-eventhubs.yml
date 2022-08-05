@@ -3,6 +3,9 @@ spring:
     azure:
       eventhubs:
         processor:
+          initial-partition-event-position:
+            0:
+              offset: earliest
           consumer-group: $Default
           checkpoint-store:
             container-name: ${AZURE_STORAGE_CONTAINER_NAME}
