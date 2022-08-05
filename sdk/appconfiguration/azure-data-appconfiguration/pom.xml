@@ -45,7 +45,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
