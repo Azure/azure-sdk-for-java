@@ -21,7 +21,7 @@ import java.nio.charset.Charset;
 @ActiveProfiles("storage-fileshare")
 public class StorageFileShareIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileShareIT.class);
-    private final String data = "sample-data";
+    private static final String DATA = "sample-data";
 
     @Value("azure-file://fileshare/fileshare.txt")
     private Resource storageFileResource;
@@ -30,10 +30,10 @@ public class StorageFileShareIT {
     public void testStorageFileShareOperation() throws IOException {
         LOGGER.info("StorageFileShareIT begin.");
         try (OutputStream os = ((WritableResource) storageFileResource).getOutputStream()) {
-            os.write(data.getBytes());
+            os.write(DATA.getBytes());
         }
         String fileContent = StreamUtils.copyToString(storageFileResource.getInputStream(), Charset.defaultCharset());
-        Assertions.assertEquals(data, fileContent.substring(0, data.length()));
+        Assertions.assertEquals(DATA, fileContent.substring(0, DATA.length()));
         LOGGER.info("StorageFileShareIT end.");
     }
 }

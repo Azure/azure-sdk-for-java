@@ -249,6 +249,10 @@
     "AZURE_STORAGE_BLOB_ENDPOINT": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName')), '2019-06-01').primaryEndpoints.blob]"
+    },
+    "AZURE_STORAGE_QUEUE_NAME": {
+      "type": "string",
+      "value": "test"
     }
   }
 }

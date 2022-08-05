@@ -21,7 +21,7 @@ import java.nio.charset.Charset;
 @ActiveProfiles("storage-blob")
 public class StorageBlobIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobIT.class);
-    private final String data = "sample-data";
+    private static final String DATA = "sample-data";
 
     @Value("azure-blob://blobcontainer/blob.txt")
     private Resource storageBlobResource;
@@ -30,10 +30,10 @@ public class StorageBlobIT {
     public void testStorageBlobOperation() throws IOException {
         LOGGER.info("StorageBlobIT begin.");
         try (OutputStream os = ((WritableResource)storageBlobResource).getOutputStream()) {
-            os.write(data.getBytes());
+            os.write(DATA.getBytes());
         }
         String blobContent = StreamUtils.copyToString(storageBlobResource.getInputStream(), Charset.defaultCharset());
-        Assertions.assertEquals(data, blobContent);
+        Assertions.assertEquals(DATA, blobContent);
         LOGGER.info("StorageBlobIT end.");
     }
 }

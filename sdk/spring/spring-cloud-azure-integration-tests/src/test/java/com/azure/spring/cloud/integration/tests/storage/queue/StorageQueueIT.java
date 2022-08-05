@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("storage-queue")
 public class StorageQueueIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageQueueIT.class);
-    private final String data = "storage queue test";
+    private static final String DATA = "storage queue test";
 
     @Autowired
     private QueueClient client;
@@ -25,9 +25,9 @@ public class StorageQueueIT {
     public void testStorageQueueOperation() {
         LOGGER.info("StorageQueueIT begin.");
         client.create();
-        client.sendMessage(data);
+        client.sendMessage(DATA);
         QueueMessageItem queueMessageItem = client.receiveMessage();
-        Assertions.assertEquals(data, queueMessageItem.getBody().toString());
+        Assertions.assertEquals(DATA, queueMessageItem.getBody().toString());
         LOGGER.info("StorageQueueIT end.");
     }
 
