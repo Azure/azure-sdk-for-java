@@ -52,7 +52,6 @@ import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import reactor.core.publisher.Flux;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -775,7 +774,6 @@ public class CosmosTemplateIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
-        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(criteria));
         final Slice<Person> slice = cosmosTemplate.runSliceQuery(sqlQuerySpec, pageRequest, Person.class, Person.class);
         assertThat(slice.getContent().size()).isEqualTo(1);
