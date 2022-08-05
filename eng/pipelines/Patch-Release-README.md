@@ -10,13 +10,13 @@ The patch release pipeline differs from service directory pipelines in that the 
 
 The script uses the powershell-yml module to load up all the ci.yml files in the repository to create a dictionary. It then uses the input project list to output the Artifacts and AdditionalModules into the YmlToUpdate with the correct metadata. For example; If a library had skipPublishDocMs: true it would be preserved here. There's one additional thing that's being done by the script which makes the Artifacts list it generates different from other ci.yml files and that's the addition of the ServiceDirectory on each Artifact. The reason for this is because there's common tooling that needs the ServiceDirectory as part of it's input. Things like README and Changelog verification are good examples.
 
-  arguments:
-    SourcesDirectory - The root of the repository
-    YmlToUpdate - The yml file to update. This should be the [patch-release.yml][patch_release_yml] file.
-    ProjectList - comma separated list of artifacts.
+  **arguments:**
+    **SourcesDirectory** The root of the repository.
+    **YmlToUpdate** The yml file to update. *This should be the [patch-release.yml][patch_release_yml] file for the patch release pipeline*.
+    **ProjectList** Comma separated list of artifacts.
 
-Example:
-./eng/scripts/Update-Artifacts-List-For-Patch-Release.ps1 -SourcesDirectory $(Build.SourcesDirectory) -YmlToUpdate $(Build.SourcesDirectory)/eng/pipelines/patch-release.yml -ProjectList com.azure:azure-sdk-template,com.azure:azure-sdk-template-two,com.azure:azure-sdk-template-three
+**Example**:
+./eng/scripts/Update-Artifacts-List-For-Patch-Release.ps1 -SourcesDirectory \$\(Build.SourcesDirectory\) -YmlToUpdate $(Build.SourcesDirectory)/eng/pipelines/patch-release.yml -ProjectList com.azure:azure-sdk-template,com.azure:azure-sdk-template-two,com.azure:azure-sdk-template-three
 
 ### [patch-release.yml][patch_release_yml]
 
@@ -34,9 +34,9 @@ The patch-release pipeline utilizes the same tools that the From Source runs use
 
 ## What the patch release pipeline does and doesn't do
 
-In the patch-release pipeline, verifications normally done as part of the release task in service directories pipelines are now being done as part of the AnalyzeAndVerify job. This can be done since there's no ambiguity as to whether or not the artifacts are going to be released.
+**Release verifications are done in the AnalyzeAndVerify Job.** In the patch-release pipeline, verifications normally done as part of the release task in service directories pipelines are now being done as part of the AnalyzeAndVerify job. This can be done since there's no ambiguity as to whether or not the artifacts are going to be released.
 
-Unlike service directory pipelines, there are no tests being run. We have a highly customizable test matrix which many service directories have made changes to. Because of this, it's nearly impossible to rectify a test matrix for a set of artifacts that spans the entire repository. There is a mitigation for this; as part of the preparation for patch release versions, poms, CHANGELOG and README files all need to be updated. These updates will cause each individual service directory pipeline to get run as part of the process for the update PR. In between the update PR and kicking off the patch-release pipeline, there should be no outside changes that aren't related to the aforementioned update. The matrix of FromSource and non-FromSource runs should provide enough verification. We already make the same assumptions when we release service directory, update the dependency version and then release a service directory that depends on what was previously released.
+**Testing is not done in the patch-release pipeline.** Unlike service directory pipelines, there are no tests being run. We have a highly customizable test matrix which many service directories have made changes to. Because of this, it's nearly impossible to rectify a test matrix for a set of artifacts that spans the entire repository. There is a mitigation for this; as part of the preparation for patch release versions, poms, CHANGELOG and README files all need to be updated. These updates will cause each individual service directory pipeline to get run as part of the process for the update PR. In between the update PR and kicking off the patch-release pipeline, there should be no outside changes that aren't related to the aforementioned update. The matrix of FromSource and non-FromSource runs should provide enough verification. We already make the same assumptions when we release service directory, update the dependency version and then release a service directory that depends on what was previously released.
 
 <!-- LINKS -->
 [java_patch_release]: https://dev.azure.com/azure-sdk/internal/_build?definitionId=5015&_a=summary
