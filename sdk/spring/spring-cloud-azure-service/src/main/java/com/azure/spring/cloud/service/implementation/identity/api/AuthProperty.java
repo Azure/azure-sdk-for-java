@@ -51,10 +51,10 @@ public enum AuthProperty {
         false),
 
     GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds",
-        "Max time to get AccessToken.",
+        "Max time to get an access token.",
         false),
     TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME("azure.tokenCredentialProviderClassName",
-        "Reference to class which implements TokenCredentialProvider.",
+        "The canonical class name of a class that implements 'TokenCredentialProvider'.",
         false),
 
     TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName",
@@ -62,7 +62,7 @@ public enum AuthProperty {
         "The given bean name of a TokenCredential bean in the Spring context.",
         false),
     CACHE_ENABLED("azure.cacheEnabled",
-        "Whether to cache an accessToken.",
+        "Whether to cache an access token.",
         false);
 
     String propertyKey;

@@ -32,6 +32,19 @@ class JdbcPropertiesBeanPostProcessorTest {
                                                  AzureGlobalPropertiesAutoConfiguration.class,
                                                  AzureTokenCredentialAutoConfiguration.class));
 
+    // TODO (zhihaoguo): implement test code body
+    @Test
+    void postgreSqlAuthPluginNotOnClassPath(){
+
+    }
+
+    // TODO (zhihaoguo): implement test code body
+    @Test
+    void mySqlAuthPluginNotOnClassPath(){
+
+    }
+
+
     @Test
     void shouldNotConfigureWithoutDataSourceProperties() {
         this.contextRunner
