@@ -65,7 +65,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * Loads all Azure App Configuration Property Sources configured.
      * @param properties Configurations for stores to be loaded.
      * @param appProperties Configurations for the library.
-     * @param clients Clients for connecting to Azure App Configuration.
+     * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
      * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
      * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
      * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
@@ -251,8 +251,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     /**
      * Creates a new set of AppConfigurationPropertySources, 1 per Label.
      *
+     * @param client client for connecting to App Configuration
      * @param store Config Store the PropertySource is being generated from
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
+     * @param profiles active profiles to be used as labels.
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */

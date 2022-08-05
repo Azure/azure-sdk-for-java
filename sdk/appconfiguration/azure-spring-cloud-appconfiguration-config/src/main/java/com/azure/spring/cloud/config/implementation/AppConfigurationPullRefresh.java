@@ -49,7 +49,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      *
      * @param properties Client properties to check against.
      * @param appProperties Library properties for configuring backoff
-     * @param clientStore Clients stores used to connect to App Configuration.
+     * @param clientFactory Clients stores used to connect to App Configuration.
      */
     public AppConfigurationPullRefresh(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
