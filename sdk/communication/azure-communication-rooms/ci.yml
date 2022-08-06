@@ -33,4 +33,4 @@ extends:
     Artifacts:
       - name: azure-communication-rooms
         groupId: com.azure
-        safeName: azurecommunicationroomsclient
+        safeName: azurecommunicationrooms

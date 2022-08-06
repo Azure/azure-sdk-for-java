@@ -33,16 +33,6 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-and then include the direct dependency in the dependencies section without the version tag.
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-communication-rooms</artifactId>
-  </dependency>
-</dependencies>
-```
 
 #### Include direct dependency
 If you want to take dependency on a particular version of the library that is not present in the BOM,
@@ -286,3 +276,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [api_documentation]: https://aka.ms/java-docs
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)
+

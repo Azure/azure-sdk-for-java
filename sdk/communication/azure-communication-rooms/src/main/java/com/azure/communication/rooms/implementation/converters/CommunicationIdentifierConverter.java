@@ -54,8 +54,7 @@ public class CommunicationIdentifierConverter {
      * @throws IllegalArgumentException when identifier is an unknown class derived from
      *          CommunicationIdentifier
      */
-    public static CommunicationIdentifierModel convert(CommunicationIdentifier identifier)
-        throws IllegalArgumentException {
+    public static CommunicationIdentifierModel convert(CommunicationIdentifier identifier) {
 
         if (identifier instanceof CommunicationUserIdentifier) {
             return new CommunicationIdentifierModel()

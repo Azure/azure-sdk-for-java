@@ -15,13 +15,13 @@
 	<groupId>com.azure</groupId>
 	<artifactId>azure-communication-rooms</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-rooms;current} -->
+  	<version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-rooms;current} -->
 
 	<name>Microsoft Azure library for ACS Room Service</name>
 	<description>
     This package contains clients and data structures used to create, update, get, delete the Azure Communication Room Service.
-    For this release, see notes - todo
-    Microsoft Azure Communication Rooms quickstart - todo
+    For this release, see notes
+    Microsoft Azure Communication Rooms quickstart
   </description>
 	<url>https://github.com/Azure/azure-sdk-for-java</url>
 
