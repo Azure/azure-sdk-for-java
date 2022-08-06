@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-wait-time=2s",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
+    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch",
     "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
