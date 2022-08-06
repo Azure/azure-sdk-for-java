@@ -77,7 +77,7 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | `Operation`                          | `Document / ReadFeed` or `Document / queryItems / SomeLogicalQueryIdentifier` | The operation type and for queries with optional logical operation identifier as suffix | operations + requests       |
 | `OperationStatusCode`                | `200` or `429` etc.                                          | The status code of the operation reported to the app/svc (could indicate sucess `200` even after hitting errors and retyring successfully) | operations  + requests      |
 | `ClientCorrelationId`                | `MyClientUsingAADAuth`                                       | An identifier of the Cosmos client instance - can be specified via the `CosmosClientBuilder. clientTelemetryConfig(). clientCorrelationId(String)` method or gets auto-generated | operations + requests       |
-| `ConsistencyLevel`                   | `Eventual`, `BoundedStaleness`, `Strong` or `Session`        | The consistency level used for the operation                 | operations + requests       |
+| `ConsistencyLevel`                   | `Eventual`, `ConsistentPrefix`, `BoundedStaleness`, `Strong` or `Session`        | The consistency level used for the operation  <br /><br />**Disabled by default**| operations + requests       |
 | `PartitionKeyRangeId`                | `1`                                                          | The partition key range id - an identifier for the physical shard/partition in the backend. This can be helpful to identify whether load is skewed across physical partitions.<br /><br />**Disabled by default** | operations + requests       |
 | `RequestStatusCode`                  | `200` or `429` etc.                                          | The status code of an individual request to the Cosmos DB Gateway or a replica | requests                    |
 | `RequestOperationType`               | `Document / ReadFeed` etc.                                   | The resource type and operation type of an individual request to the Cosmos DB Gateway or replica | requests                    |
@@ -123,8 +123,8 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | cosmos.client.req.reqPayloadSize                             |    bytes    | None                   | The request payload size in bytes                             |
 | cosmos.client.req.rspPayloadSize                             |    bytes    | None                   | The response payload size in bytes                             |
 | cosmos.client.req.rntbd.addressResolution.latency | duration | 95th, 99th + histogram | Duration spent for resolving physical addresses of replica for a certain partition |
-| cosmos.client.req.rntbd.stats.endpoint.acquiredChannels      | #        | 95th, 99th + histogram | Number of new TCP connections being established per Cosmos DB service endpoint |
-| cosmos.client.req.rntbd.stats.endpoint.availableChannels     | #        | None                   | Number of established TCP connections per  Cosmos DB service endpoint |
+| cosmos.client.req.rntbd.stats.endpoint.acquiredChannels      | #        | None | Number of actively used TCP connections per Cosmos DB service endpoint |
+| cosmos.client.req.rntbd.stats.endpoint.availableChannels     | #        | None                   | Number of established TCP connections per  Cosmos DB service endpoint that are not actively used. The total number of established connections would be availableChannels + acquiredChannels. |
 | cosmos.client.req.rntbd.stats.endpoint.inflightRequests      | #        | 95th, 99th + histogram | Number of concurrently processed requests  per Cosmos DB service endpoint |
 
 ### Metrics for RNTBD service endpoints (across operations, no operation-level tags)
@@ -140,8 +140,8 @@ The micrometer.io documentation has a list with samples on how to create a `Mete
 | cosmos.client.rntbd.endpoints.evicted           | snapshot | None                   | Current number (snapshot) of endpoints for which TCP connections were closed |
 | cosmos.client.rntbd.requests.concurrent.count   | snapshot | None                   | Current number (snapshot) of concurrent requests handled per service endpoint |
 | cosmos.client.rntbd.requests.queued.count       | snapshot | None                   | Current number (snapshot) of requests being queued (delayed due to no channel available) per service endpoint |
-| cosmos.client.rntbd.channels.acquired.count     | snapshot | None                   | Current number (snapshot) of new channels (TCP connections) being acquired per service endpoint |
-| cosmos.client.rntbd.channels.available.count    | snapshot | None                   | Current number (snapshot) of existing channels (TCP connections)  per service endpoint |
+| cosmos.client.rntbd.channels.acquired.count     | snapshot | None                   | Current number (snapshot) of actively used channels (TCP connections)  per service endpoint |
+| cosmos.client.rntbd.channels.available.count    | snapshot | None                   | Current number (snapshot) of established channels (TCP connections)  per service endpoint that are not actively used. The total number of established channels would be acquired + available |
 
 ### System status  metrics (CPU, memory etc.)
 
@@ -156,7 +156,7 @@ Metrics are available for other stages in the request pipeline as well - but the
 
 - channelAcquisitionStarted: Higher values indicate that no channel (TCP connection) is available and a new one needs to be created - either because there is no open connection for the requested replica or because the number of concurrent requests is so high that another connection is needeed
 - transitTime: This is the duration between first byte sent and last byte received - so the time spent in the backend for processing the request + the network turnaround-time. High value with high variance to the backend-reported latency usually indicate either network problems or some resource constraint on the client (or network component like SNAT ports)
-- queued: is the time the requests waits because too many concurrent requests are being processed on a channel (TCP connection). Constantly high values here would indicate that the capacity of the application/service isn't sufficient and would need to be scaled-out.
+- pipelined: is the time the requests waits because too many concurrent requests are being processed on a channel (TCP connection). Constantly high values here would indicate that the capacity of the application/service isn't sufficient and would need to be scaled-out.
 - The other pipeline stages are not expected to have regularly high values - any high values usually would indicate either some thread-pool issue on the client or client overload. Best way to double check usually is looking whether high values happen on only single (few) client machines or all of them - and what the CPU utilization (max) is at the time in question.
 
 

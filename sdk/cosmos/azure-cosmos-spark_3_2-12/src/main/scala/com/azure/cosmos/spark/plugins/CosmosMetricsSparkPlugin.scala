@@ -42,7 +42,7 @@ class CosmosMetricsSparkPlugin extends SparkPlugin with BasicLoggingTrait {
 
       slf4jReporterEnabled = sc
         .getConf
-        .getBoolean(CosmosConfigNames.MetricsEnabledForSlf4j, defaultValue = true)
+        .getBoolean(CosmosConfigNames.MetricsEnabledForSlf4j, CosmosConstants.defaultSlf4jMetricReporterEnabled)
 
       metricsCollectionIntervalInSeconds = sc
         .getConf

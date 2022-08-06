@@ -555,14 +555,12 @@ public final class ClientTelemetryMetrics {
                 .baseUnit("#")
                 .description("Endpoint statistics(acquired channels)")
                 .maximumExpectedValue(100_000d)
-                .publishPercentiles(0.95, 0.99)
-                .publishPercentileHistogram(true)
+                .publishPercentiles()
+                .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
             acquiredChannelsMeter.record(endpointStatistics.getAcquiredChannels());
 
-            // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
-            /*
             DistributionSummary availableChannelsMeter = DistributionSummary
                 .builder(nameOf("req.rntbd.stats.endpoint.availableChannels"))
                 .baseUnit("#")
@@ -572,7 +570,7 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(false)
                 .tags(requestTags)
                 .register(compositeRegistry);
-            availableChannelsMeter.record(endpointStatistics.getAvailableChannels());*/
+            availableChannelsMeter.record(endpointStatistics.getAvailableChannels());
 
             DistributionSummary inflightRequestsMeter = DistributionSummary
                 .builder(nameOf("req.rntbd.stats.endpoint.inflightRequests"))
