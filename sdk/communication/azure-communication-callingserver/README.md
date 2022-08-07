@@ -21,10 +21,16 @@ This package contains a Java SDK for Azure Communication CallingServer Service. 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callingserver</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-alpha.20220805.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+## Key concepts
+
+`CallAutomationClient` provides the functionality to make call connection, join call connection, answer incoming call or initialize a server call.
+
+`EventHandler` provides the functionality to handle event grid events as well as callback events from the ACS resource.
 
 ## Examples
 
@@ -58,7 +64,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
-[package]: https://search.maven.org/artifact/com.azure/azure-communication-callingserver
+[package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
 [call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
 [call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
