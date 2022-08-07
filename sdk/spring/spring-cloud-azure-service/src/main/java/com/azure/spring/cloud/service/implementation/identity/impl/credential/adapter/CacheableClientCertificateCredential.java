@@ -6,6 +6,10 @@ package com.azure.spring.cloud.service.implementation.identity.impl.credential.a
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
 
+/**
+ * TokenCredential that delegates the {@link ClientCertificateCredential}
+ * and provides functionality to cache an access token.
+ */
 public class CacheableClientCertificateCredential extends CacheableTokenCredentialAdapter<ClientCertificateCredential> {
 
     public CacheableClientCertificateCredential(TokenCredentialProviderOptions options,

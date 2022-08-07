@@ -8,6 +8,9 @@ import com.azure.spring.cloud.service.implementation.identity.impl.credential.pr
 
 import java.util.function.Supplier;
 
+/**
+ * Interface to be implemented by classes that wish to provide the {@link TokenCredential}.
+ */
 @FunctionalInterface
 public interface TokenCredentialProvider extends Supplier<TokenCredential> {
 
@@ -15,6 +18,11 @@ public interface TokenCredentialProvider extends Supplier<TokenCredential> {
         return get();
     }
 
+    /**
+     * Create TokenCredentialProvider instance
+     * @param options Used by {@link TokenCredentialProvider} to create {@link TokenCredentialProvider} instance.
+     * @return TokenCredentialProvider instance.
+     */
     static TokenCredentialProvider createDefault(TokenCredentialProviderOptions options) {
         return TokenCredentialProviders.createInstance(options);
     }

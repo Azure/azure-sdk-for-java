@@ -9,6 +9,12 @@ This section includes changes in `spring-cloud-azure-starter` module.
 #### Features Added
 - Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976].
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
++ Support Azure hosted PostgreSQL and MySQL services authenticating with Azure AD [#30024](https://github.com/Azure/azure-sdk-for-java/pull/30024).
+
 
 ## 4.3.0 (2022-08-05)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.10, 2.7.0-2.7.2. (Note: 2.5.x (x>14), 2.6.y (y>10) and 2.7.z (z>2) should be supported, but they aren't tested with this release.)

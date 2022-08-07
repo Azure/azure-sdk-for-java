@@ -3,12 +3,16 @@
 
 package com.azure.spring.cloud.service.implementation.identity.impl.credential.adapter;
 
+
 /**
- *
- * @param <KEY>
- * @param <KEYContext>
+ * Describe the cache key.
  */
 public interface CacheKeyDescriptor<KEY, KEYContext> {
 
+    /**
+     * Get the cache key.
+     * @param keyContext The context to build cache key.
+     * @return The cache key for caching.
+     */
     KEY getCacheKey(KEYContext keyContext);
 }

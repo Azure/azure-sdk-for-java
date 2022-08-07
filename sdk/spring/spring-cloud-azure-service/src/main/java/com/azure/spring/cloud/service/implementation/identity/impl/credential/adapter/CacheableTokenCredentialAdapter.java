@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Adapter for TokenCredentials to implement cache functionality.
+ * @param <T> Class that extends TokenCredential.
+ */
 public abstract class CacheableTokenCredentialAdapter<T extends TokenCredential>
         implements CacheKeyDescriptor<String, TokenRequestContext>, TokenCredential {
 
@@ -28,6 +32,12 @@ public abstract class CacheableTokenCredentialAdapter<T extends TokenCredential>
         this.delegate = delegate;
     }
 
+    /**
+     * Get the cache key for caching access token.
+     *
+     * @param requestContext Context of a request to get a token.
+     * @return The cache key.
+     */
     @Override
     public String getCacheKey(TokenRequestContext requestContext) {
         List<String> credentialKeyValues = Arrays.stream(getTokenCredentialKeyDescriptors())
@@ -47,7 +57,6 @@ public abstract class CacheableTokenCredentialAdapter<T extends TokenCredential>
     protected TokenCredentialProviderOptions getOptions() {
         return options;
     }
-
 
     enum Descriptor {
         AUTHORITY_HOST(TokenCredentialProviderOptions::getAuthorityHost),

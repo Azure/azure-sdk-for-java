@@ -6,6 +6,10 @@ package com.azure.spring.cloud.service.implementation.identity.impl.credential.a
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
 
+/**
+ * TokenCredential that delegates the {@link DefaultAzureCredential}
+ * and provides functionality to cache an access token.
+ */
 public class CacheableDefaultAzureCredential extends CacheableTokenCredentialAdapter<DefaultAzureCredential> {
 
     public CacheableDefaultAzureCredential(TokenCredentialProviderOptions options,

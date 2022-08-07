@@ -15,6 +15,9 @@ import org.springframework.context.ApplicationContextAware;
 
 import java.util.Objects;
 
+/**
+ * TokenCredentialProvider contains spring context.
+ */
 public class SpringTokenCredentialProvider implements TokenCredentialProvider, ApplicationContextAware {
 
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";

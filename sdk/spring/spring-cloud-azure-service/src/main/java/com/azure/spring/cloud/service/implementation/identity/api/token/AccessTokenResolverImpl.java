@@ -10,9 +10,13 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
+/**
+ * Implementation of AccessTokenResolver that takes a {@link TokenCredential} as input
+ * and outputs a publisher that emits a single access token.
+ */
 class AccessTokenResolverImpl implements AccessTokenResolver {
 
-    private AccessTokenResolverOptions options;
+    private final AccessTokenResolverOptions options;
 
     AccessTokenResolverImpl() {
         this.options = new AccessTokenResolverOptions();
@@ -22,6 +26,11 @@ class AccessTokenResolverImpl implements AccessTokenResolver {
         this.options = options;
     }
 
+    /**
+     * Get a Publisher that emits a single access token.
+     * @param tokenCredential An AAD credential that acquires a token.
+     * @return A Publisher that emits a single access token.
+     */
     @Override
     public Mono<AccessToken> apply(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential);

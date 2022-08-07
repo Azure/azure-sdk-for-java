@@ -3,14 +3,13 @@
 
 package com.azure.spring.cloud.service.implementation.identity.api.token;
 
-import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 
 import java.util.Properties;
 
 
 /**
- * This is better because it can construct using {@link Configuration}
+ * Contains details of a request to get a token.
  */
 public class AccessTokenResolverOptions {
 

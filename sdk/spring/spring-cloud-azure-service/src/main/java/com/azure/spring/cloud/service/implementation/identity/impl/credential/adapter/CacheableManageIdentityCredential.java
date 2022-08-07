@@ -6,6 +6,10 @@ package com.azure.spring.cloud.service.implementation.identity.impl.credential.a
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProviderOptions;
 
+/**
+ * TokenCredential that delegates {@link ManagedIdentityCredential}
+ * and can cache an access token.
+ */
 public class CacheableManageIdentityCredential extends CacheableTokenCredentialAdapter<ManagedIdentityCredential> {
 
     public CacheableManageIdentityCredential(TokenCredentialProviderOptions options,

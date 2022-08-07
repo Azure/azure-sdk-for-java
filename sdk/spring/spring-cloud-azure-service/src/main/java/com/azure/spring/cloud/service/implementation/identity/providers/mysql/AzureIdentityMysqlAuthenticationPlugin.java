@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * The Authentication plugin that enables Azure AD managed identity support.
+ * The authentication plugin that enables Azure AD managed identity support.
  */
 public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationTemplate implements AuthenticationPlugin<NativePacketPayload> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);

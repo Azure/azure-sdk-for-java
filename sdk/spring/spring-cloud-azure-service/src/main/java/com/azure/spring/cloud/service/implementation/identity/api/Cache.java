@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.service.implementation.identity.api;
 
 /**
- *
- * @param <K>
- * @param <V>
+ * Interface to be implemented by classes that wish to provide cache functionality.
+ * @param <K> The type of cache key.
+ * @param <V> The type of cache value.
  */
 public interface Cache<K, V> {
 

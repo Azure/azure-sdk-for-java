@@ -9,6 +9,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 
+/**
+ * Interface to be implemented by classes wish to provide functionality that
+ * takes a TokenCredential as input and outputs a publisher that emits a single access token.
+ */
 @FunctionalInterface
 public interface AccessTokenResolver extends Function<TokenCredential, Mono<AccessToken>> {
 

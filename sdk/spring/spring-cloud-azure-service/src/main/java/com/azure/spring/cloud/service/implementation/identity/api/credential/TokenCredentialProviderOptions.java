@@ -8,6 +8,9 @@ import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
 
 import java.util.Properties;
 
+/**
+ * Used by {@link TokenCredentialProvider} to create {@link TokenCredentialProvider} instance.
+ */
 public class TokenCredentialProviderOptions {
 
     private String authorityHost = AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;

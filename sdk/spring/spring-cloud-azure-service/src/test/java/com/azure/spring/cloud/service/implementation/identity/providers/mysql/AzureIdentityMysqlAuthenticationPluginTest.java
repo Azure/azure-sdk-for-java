@@ -102,7 +102,6 @@ class AzureIdentityMysqlAuthenticationPluginTest {
         assertThrows(IllegalStateException.class, () -> ReflectionTestUtils.invokeMethod(plugin, "getTokenAsPasswordAsync"));
     }
 
-
     @Test
     void testPluginName() {
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();

@@ -10,10 +10,13 @@ import com.azure.spring.cloud.service.implementation.identity.api.Cache;
 import com.azure.spring.cloud.service.implementation.identity.impl.credential.adapter.CacheKeyDescriptor;
 import reactor.core.publisher.Mono;
 
+/**
+ * TokenCredential that can cache AccessToken.
+ */
 public class CacheableTokenCredential implements TokenCredential {
 
     private final TokenCredential delegate;
-    private Cache<String, AccessToken> cache;
+    private final Cache<String, AccessToken> cache;
 
     public CacheableTokenCredential(Cache<String, AccessToken> cache,
                                     TokenCredential tokenCredential) {
@@ -40,4 +43,5 @@ public class CacheableTokenCredential implements TokenCredential {
             return this.delegate.getToken(request);
         }
     }
+
 }

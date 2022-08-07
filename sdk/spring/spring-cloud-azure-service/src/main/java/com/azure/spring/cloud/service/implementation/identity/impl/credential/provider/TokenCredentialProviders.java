@@ -25,11 +25,10 @@ public final class TokenCredentialProviders {
     }
 
     /**
-     * 1. get provider impl class name from options
-     * 2. if not, use the default one
-     * 3. create instance of the class
-     * 4. config the instance with options
-     * 5. return the instance
+     * Get TokenCredentialProvider instance from options.
+     *
+     * @param options Options to create TokenCredentialProvider instance.
+     * @return TokenCredentialProvider instance.
      */
     public static TokenCredentialProvider createInstance(TokenCredentialProviderOptions options) {
         if (options == null) {

@@ -20,11 +20,14 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class JdbcPropertiesBeanPostProcessorTest {
 
     private static final String SPRING_CLOUD_AZURE_DATASOURCE_PREFIX = "spring.datasource.azure";
-    protected static final String CLIENT_ID = "credential.client-id";
+    private static final String CLIENT_ID = "credential.client-id";
+    private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
+    private static final String PASSWORD = "password";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
@@ -32,18 +35,31 @@ class JdbcPropertiesBeanPostProcessorTest {
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
 
-    // TODO (zhihaoguo): implement test code body
     @Test
-    void postgreSqlAuthPluginNotOnClassPath() {
-
+    void testProvidePassword() {
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setPassword(PASSWORD);
+        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor(null);
+        postProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        assertNull(dataSourceProperties.getUrl());
     }
 
-    // TODO (zhihaoguo): implement test code body
+    @Test
+    void testNoURL() {
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor(null);
+        postProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        assertNull(dataSourceProperties.getUrl());
+    }
+
     @Test
     void mySqlAuthPluginNotOnClassPath() {
-
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
+        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor(null);
+        postProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        assertEquals(dataSourceProperties.getUrl(), MYSQL_CONNECTION_STRING);
     }
-
 
     @Test
     void shouldNotConfigureWithoutDataSourceProperties() {
@@ -65,7 +81,6 @@ class JdbcPropertiesBeanPostProcessorTest {
     @Test
     void testBindSpringBootProperties() {
         configureCustomConfiguration()
-
             .withPropertyValues(
                 SPRING_CLOUD_AZURE_DATASOURCE_PREFIX + "." + CLIENT_ID + "=fake-jdbc-client-id",
                 "spring.cloud.azure.credential.client-id=azure-client-id"

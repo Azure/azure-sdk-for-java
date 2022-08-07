@@ -15,7 +15,6 @@ import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
 /**
  * Template class can be extended to get password from access token.
  */
