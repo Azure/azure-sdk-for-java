@@ -119,6 +119,6 @@
       <artifactId>azure-identity</artifactId>
       <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
-      </dependency>
+    </dependency>
   </dependencies>
 </project>
