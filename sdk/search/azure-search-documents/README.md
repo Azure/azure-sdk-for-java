@@ -235,6 +235,10 @@ These are just a few of the basics - please [check out our Samples][samples_read
 * [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
 * [Async APIs](#async-apis)
 
+### Advanced authentication
+
+- [Create a client that can authenticate in a national cloud](#authenticate-in-a-national-cloud)
+
 ### Querying
 
 There are two ways to interact with the data returned from a search query.
@@ -418,6 +422,25 @@ SEARCH_ASYNC_CLIENT.search("luxury")
         Hotel hotel = result.getDocument(Hotel.class);
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
     });
+```
+
+### Authenticate in a National Cloud
+
+To authenticate in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
+
+- Set the `AuthorityHost` in the credential options or via the `AZURE_AUTHORITY_HOST` environment variable
+- Set the `Audience` in `SearchClientOptions`
+
+```java readme-sample-nationalCloud
+// Create a SearchClient that will authenticate through AAD in the China national cloud.
+SearchClient searchClient = new SearchClientBuilder()
+    .endpoint(ENDPOINT)
+    .indexName(INDEX_NAME)
+    .credential(new EnvironmentCredentialBuilder()
+        .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
+        .build())
+    .audience(SearchAudience.AZURE_CHINA)
+    .buildClient();
 ```
 
 ## Troubleshooting
