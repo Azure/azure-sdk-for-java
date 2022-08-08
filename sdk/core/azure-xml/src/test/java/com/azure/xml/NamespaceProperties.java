@@ -203,19 +203,19 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
             String namespaceUri = qName.getNamespaceURI();
 
             if ("Alias".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                alias = xmlReader.getElementStringValue();
+                alias = xmlReader.getStringElement();
             } else if ("CreatedTime".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                createdTime = OffsetDateTime.parse(xmlReader.getElementStringValue());
+                createdTime = OffsetDateTime.parse(xmlReader.getStringElement());
             } else if ("MessagingSKU".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                messagingSku = MessagingSku.fromString(xmlReader.getElementStringValue());
+                messagingSku = MessagingSku.fromString(xmlReader.getStringElement());
             } else if ("MessagingUnits".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                messagingUnits = xmlReader.getElementIntValue();
+                messagingUnits = xmlReader.getIntElement();
             } else if ("ModifiedTime".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                modifiedTime = OffsetDateTime.parse(xmlReader.getElementStringValue());
+                modifiedTime = OffsetDateTime.parse(xmlReader.getStringElement());
             } else if ("Name".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                name = xmlReader.getElementStringValue();
+                name = xmlReader.getStringElement();
             } else if ("NamespaceType".equals(localPart) && expectedNamespaceUri.equals(namespaceUri)) {
-                namespaceType = NamespaceType.fromString(xmlReader.getElementStringValue());
+                namespaceType = NamespaceType.fromString(xmlReader.getStringElement());
             }
         }
 

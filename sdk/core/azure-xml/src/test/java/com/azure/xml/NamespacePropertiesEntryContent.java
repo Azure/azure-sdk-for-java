@@ -78,7 +78,7 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
                 + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
         }
 
-        String type = xmlReader.getAttributeStringValue(null, "type");
+        String type = xmlReader.getStringAttribute(null, "type");
         NamespaceProperties namespaceProperties = null;
 
         while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {

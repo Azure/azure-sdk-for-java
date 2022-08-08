@@ -180,11 +180,11 @@ public class NamespacePropertiesEntry implements XmlSerializable<NamespaceProper
             String namespaceUri = qName.getNamespaceURI();
 
             if ("id".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                id = xmlReader.getElementStringValue();
+                id = xmlReader.getStringElement();
             } else if ("title".equals(localPart)) {
-                title = xmlReader.getElementStringValue();
+                title = xmlReader.getStringElement();
             } else if ("updated".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                updated = OffsetDateTime.parse(xmlReader.getElementStringValue());
+                updated = OffsetDateTime.parse(xmlReader.getStringElement());
             } else if ("author".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
                 author = ResponseAuthor.fromXml(xmlReader);
             } else if ("link".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {

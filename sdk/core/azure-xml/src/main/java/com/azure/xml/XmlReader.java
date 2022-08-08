@@ -52,7 +52,7 @@ public abstract class XmlReader implements Closeable {
      * @return The string value for the attribute in the XML element, or null if the attribute doesn't exist.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public abstract String getAttributeStringValue(String namespaceUri, String localName);
+    public abstract String getStringAttribute(String namespaceUri, String localName);
 
     /**
      * Gets the binary value for the attribute in the XML element.
@@ -62,8 +62,8 @@ public abstract class XmlReader implements Closeable {
      * @return The binary value for the attribute in the XML element.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final byte[] getAttributeBinaryValue(String namespaceUri, String localName) {
-        String value = getAttributeStringValue(namespaceUri, localName);
+    public final byte[] getBinaryAttribute(String namespaceUri, String localName) {
+        String value = getStringAttribute(namespaceUri, localName);
         return (value == null || value.isEmpty()) ? null : Base64.getDecoder().decode(value);
     }
 
@@ -75,8 +75,8 @@ public abstract class XmlReader implements Closeable {
      * @return The boolean value for the attribute in the XML element.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final boolean getAttributeBooleanValue(String namespaceUri, String localName) {
-        return Boolean.parseBoolean(getAttributeStringValue(namespaceUri, localName));
+    public final boolean getBooleanAttribute(String namespaceUri, String localName) {
+        return Boolean.parseBoolean(getStringAttribute(namespaceUri, localName));
     }
 
     /**
@@ -87,8 +87,8 @@ public abstract class XmlReader implements Closeable {
      * @return The double value for the attribute in the XML element.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final double getAttributeDoubleValue(String namespaceUri, String localName) {
-        return Double.parseDouble(getAttributeStringValue(namespaceUri, localName));
+    public final double getDoubleAttribute(String namespaceUri, String localName) {
+        return Double.parseDouble(getStringAttribute(namespaceUri, localName));
     }
 
     /**
@@ -99,8 +99,8 @@ public abstract class XmlReader implements Closeable {
      * @return The float value for the attribute in the XML element.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final float getAttributeFloatValue(String namespaceUri, String localName) {
-        return Float.parseFloat(getAttributeStringValue(namespaceUri, localName));
+    public final float getFloatAttribute(String namespaceUri, String localName) {
+        return Float.parseFloat(getStringAttribute(namespaceUri, localName));
     }
 
     /**
@@ -111,8 +111,8 @@ public abstract class XmlReader implements Closeable {
      * @return The int value for the attribute in the XML element.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final int getAttributeIntValue(String namespaceUri, String localName) {
-        return Integer.parseInt(getAttributeStringValue(namespaceUri, localName));
+    public final int getIntAttribute(String namespaceUri, String localName) {
+        return Integer.parseInt(getStringAttribute(namespaceUri, localName));
     }
 
     /**
@@ -123,15 +123,15 @@ public abstract class XmlReader implements Closeable {
      * @return The long value for the attribute in the XML element.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final long getAttributeLongValue(String namespaceUri, String localName) {
-        return Long.parseLong(getAttributeStringValue(namespaceUri, localName));
+    public final long getLongAttribute(String namespaceUri, String localName) {
+        return Long.parseLong(getStringAttribute(namespaceUri, localName));
     }
 
     /**
      * Gets the nullable value for the attribute in the XML element.
      * <p>
      * If the attribute doesn't have a value or doesn't exist null will be returned, otherwise the attribute
-     * {@link #getAttributeStringValue(String, String)} is passed to the converter.
+     * {@link #getStringAttribute(String, String)} is passed to the converter.
      *
      * @param namespaceUri Attribute namespace, may be null.
      * @param localName Attribute local name.
@@ -140,8 +140,8 @@ public abstract class XmlReader implements Closeable {
      * @return The converted text value, or null if the attribute didn't have a value.
      * @throws IllegalStateException If {@link #currentToken()} isn't {@link XmlToken#START_ELEMENT}.
      */
-    public final <T> T getAttributeNullableValue(String namespaceUri, String localName, Function<String, T> converter) {
-        String textValue = getAttributeStringValue(namespaceUri, localName);
+    public final <T> T getNullableAttribute(String namespaceUri, String localName, Function<String, T> converter) {
+        String textValue = getStringAttribute(namespaceUri, localName);
 
         return textValue == null ? null : converter.apply(textValue);
     }
@@ -151,15 +151,15 @@ public abstract class XmlReader implements Closeable {
      *
      * @return The string value for the current element.
      */
-    public abstract String getElementStringValue();
+    public abstract String getStringElement();
 
     /**
      * Gets the binary value for the current element.
      *
      * @return The binary value for the current element.
      */
-    public final byte[] getElementBinaryValue() {
-        String value = getElementStringValue();
+    public final byte[] getBinaryElement() {
+        String value = getStringElement();
         return (value == null || value.isEmpty()) ? null : Base64.getDecoder().decode(value);
     }
 
@@ -168,8 +168,8 @@ public abstract class XmlReader implements Closeable {
      *
      * @return The boolean value for the current element.
      */
-    public final boolean getElementBooleanValue() {
-        return Boolean.parseBoolean(getElementStringValue());
+    public final boolean getBooleanElement() {
+        return Boolean.parseBoolean(getStringElement());
     }
 
     /**
@@ -177,8 +177,8 @@ public abstract class XmlReader implements Closeable {
      *
      * @return The double value for the current element.
      */
-    public final double getElementDoubleValue() {
-        return Double.parseDouble(getElementStringValue());
+    public final double getDoubleElement() {
+        return Double.parseDouble(getStringElement());
     }
 
     /**
@@ -186,8 +186,8 @@ public abstract class XmlReader implements Closeable {
      *
      * @return The float value for the current element.
      */
-    public final float getElementFloatValue() {
-        return Float.parseFloat(getElementStringValue());
+    public final float getFloatElement() {
+        return Float.parseFloat(getStringElement());
     }
 
     /**
@@ -195,8 +195,8 @@ public abstract class XmlReader implements Closeable {
      *
      * @return The int value for the current element.
      */
-    public final int getElementIntValue() {
-        return Integer.parseInt(getElementStringValue());
+    public final int getIntElement() {
+        return Integer.parseInt(getStringElement());
     }
 
     /**
@@ -204,22 +204,22 @@ public abstract class XmlReader implements Closeable {
      *
      * @return The long value for the current element.
      */
-    public final long getElementLongValue() {
-        return Long.parseLong(getElementStringValue());
+    public final long getLongElement() {
+        return Long.parseLong(getStringElement());
     }
 
     /**
      * Gets the nullable value for the current element.
      * <p>
      * If the current element doesn't have a value null will be returned, otherwise the element
-     * {@link #getElementStringValue() text value} is passed to the converter.
+     * {@link #getStringElement() text value} is passed to the converter.
      *
      * @param converter Function that converts the element text value to the nullable type.
      * @param <T> Type of the element.
      * @return The converted text value, or null if the element didn't have a value.
      */
-    public final <T> T getElementNullableValue(Function<String, T> converter) {
-        String textValue = getElementStringValue();
+    public final <T> T getNullableElement(Function<String, T> converter) {
+        String textValue = getStringElement();
 
         return textValue == null ? null : converter.apply(textValue);
     }
@@ -230,15 +230,15 @@ public abstract class XmlReader implements Closeable {
      * Validates that the {@link XmlReader} is currently pointing to an {@link XmlToken#START_ELEMENT} which has the
      * qualifying name specified by the {@code startTagName}.
      *
-     * @param startTagName The expecting starting tag for the object.
+     * @param localName The expecting starting local name for the object.
      * @param converter The function that reads the object.
      * @param <T> Type of the object.
      * @return An instance of the expected object,
      * @throws IllegalStateException If the starting tag isn't {@link XmlToken#START_ELEMENT} or the tag doesn't match
      * the expected {@code startTagName}
      */
-    public final <T> T readObject(String startTagName, Function<XmlReader, T> converter) {
-        return readObject(new QName(null, startTagName), converter);
+    public final <T> T readObject(String localName, Function<XmlReader, T> converter) {
+        return readObject(new QName(null, localName), converter);
     }
 
     /**
@@ -247,14 +247,19 @@ public abstract class XmlReader implements Closeable {
      * Validates that the {@link XmlReader} is currently pointing to an {@link XmlToken#START_ELEMENT} which has the
      * qualifying name specified by the {@code startTagName}.
      *
-     * @param startTagName The expecting starting tag for the object.
+     * @param namespaceUri The expecting namespace for the object.
+     * @param localName The expecting starting local name for the object.
      * @param converter The function that reads the object.
      * @param <T> Type of the object.
      * @return An instance of the expected object,
      * @throws IllegalStateException If the starting tag isn't {@link XmlToken#START_ELEMENT} or the tag doesn't match
      * the expected {@code startTagName}
      */
-    public final <T> T readObject(QName startTagName, Function<XmlReader, T> converter) {
+    public final <T> T readObject(String namespaceUri, String localName, Function<XmlReader, T> converter) {
+        return readObject(new QName(namespaceUri, localName), converter);
+    }
+
+    private <T> T readObject(QName startTagName, Function<XmlReader, T> converter) {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }

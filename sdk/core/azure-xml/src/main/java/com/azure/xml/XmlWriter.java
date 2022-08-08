@@ -62,13 +62,12 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If {@code prefix} is null this will behave the same as {@link #writeStartElement(String)}.
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element start cannot be written.
      */
-    public abstract XmlWriter writeStartElement(String prefix, String namespaceUri, String localName);
+    public abstract XmlWriter writeStartElement(String namespaceUri, String localName);
 
     /**
      * Begins an XML element start that will be self-closing ({@code <tag/>}).
@@ -96,13 +95,12 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If {@code prefix} is null this will behave the same as {@link #writeStartSelfClosingElement(String)}.
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element start cannot be written.
      */
-    public abstract XmlWriter writeStartSelfClosingElement(String prefix, String namespaceUri, String localName);
+    public abstract XmlWriter writeStartSelfClosingElement(String namespaceUri, String localName);
 
     /**
      * Ends the current XML element by writing the closing tag ({@code </tag>}).
@@ -124,15 +122,6 @@ public abstract class XmlWriter implements Closeable {
     public abstract XmlWriter writeNamespace(String namespaceUri);
 
     /**
-     * Writes an XML namespace bound to the specified prefix.
-     *
-     * @param prefix Prefix to bind the namespace.
-     * @param namespaceUri Namespace URI to bind to the prefix.
-     * @return The updated XmlWriter object.
-     */
-    public abstract XmlWriter writeNamespace(String prefix, String namespaceUri);
-
-    /**
      * Writes a String attribute ({@code attribute="value"}).
      *
      * @param localName Name of the attribute.
@@ -145,14 +134,13 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a String attribute that has a prefix ({@code prefix:attribute="value"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value Value of the attribute.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public abstract XmlWriter writeStringAttribute(String prefix, String namespaceUri, String localName, String value);
+    public abstract XmlWriter writeStringAttribute(String namespaceUri, String localName, String value);
 
     /**
      * Writes a binary attribute as a base64 string ({@code attribute="value"}).
@@ -177,19 +165,18 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If the {@code value} is null this is a no-op.
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value Binary value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeBinaryAttribute(String prefix, String namespaceUri, String localName, byte[] value) {
+    public final XmlWriter writeBinaryAttribute(String namespaceUri, String localName, byte[] value) {
         if (value == null) {
             return this;
         }
 
-        return writeStringAttribute(prefix, namespaceUri, localName, convertBytesToString(value));
+        return writeStringAttribute(namespaceUri, localName, convertBytesToString(value));
     }
 
     /**
@@ -207,15 +194,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a boolean attribute that has a prefix ({@code prefix:attribute="true"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value boolean value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeBooleanAttribute(String prefix, String namespaceUri, String localName, boolean value) {
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+    public final XmlWriter writeBooleanAttribute(String namespaceUri, String localName, boolean value) {
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -241,19 +227,18 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If the {@code value} is null this is a no-op.
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value Boolean value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeBooleanAttribute(String prefix, String namespaceUri, String localName, Boolean value) {
+    public final XmlWriter writeBooleanAttribute(String namespaceUri, String localName, Boolean value) {
         if (value == null) {
             return this;
         }
 
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -271,15 +256,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a double attribute that has a prefix ({@code prefix:attribute="3.14"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value double value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeDoubleAttribute(String prefix, String namespaceUri, String localName, double value) {
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+    public final XmlWriter writeDoubleAttribute(String namespaceUri, String localName, double value) {
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -297,15 +281,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a float attribute that has a prefix ({@code prefix:attribute="2.7"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value float value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeFloatAttribute(String prefix, String namespaceUri, String localName, float value) {
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+    public final XmlWriter writeFloatAttribute(String namespaceUri, String localName, float value) {
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -323,15 +306,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes an int attribute that has a prefix ({@code prefix:attribute="10"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value int value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeIntAttribute(String prefix, String namespaceUri, String localName, int value) {
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+    public final XmlWriter writeIntAttribute(String namespaceUri, String localName, int value) {
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -349,15 +331,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a long attribute that has a prefix ({@code prefix:attribute="100000000000"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value long value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeLongAttribute(String prefix, String namespaceUri, String localName, long value) {
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+    public final XmlWriter writeLongAttribute(String namespaceUri, String localName, long value) {
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -374,14 +355,13 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a null attribute that has a prefix ({@code prefix:attribute="null"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
     public final XmlWriter writeNullAttribute(String prefix, String namespaceUri, String localName) {
-        return writeStringAttribute(prefix, namespaceUri, localName, "null");
+        return writeStringAttribute(namespaceUri, localName, "null");
     }
 
     /**
@@ -403,19 +383,18 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a nullable number attribute that has a prefix ({@code prefix:attribute="number"}).
      *
-     * @param prefix Prefix of the attribute.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the attribute.
      * @param value Number value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeNumberAttribute(String prefix, String namespaceUri, String localName, Number value) {
+    public final XmlWriter writeNumberAttribute(String namespaceUri, String localName, Number value) {
         if (value == null) {
             return this;
         }
 
-        return writeStringAttribute(prefix, namespaceUri, localName, String.valueOf(value));
+        return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
     /**
@@ -443,19 +422,18 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If the {@code value} is null this is a no-op.
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value Binary value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeBinaryElement(String prefix, String namespaceUri, String localName, byte[] value) {
+    public final XmlWriter writeBinaryElement(String namespaceUri, String localName, byte[] value) {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(prefix, namespaceUri, localName)
+        return writeStartElement(namespaceUri, localName)
             .writeBinary(value)
             .writeEndElement();
     }
@@ -477,7 +455,6 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a boolean element that has a prefix ({@code <tag>true</tag}).
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value boolean value to write.
@@ -485,7 +462,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeBooleanElement(String prefix, String namespaceUri, String localName, boolean value) {
-        return writeStartElement(prefix, namespaceUri, localName)
+        return writeStartElement(namespaceUri, localName)
             .writeBoolean(value)
             .writeEndElement();
     }
@@ -515,19 +492,18 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If the {@code value} is null this is a no-op.
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value Boolean value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeBooleanElement(String prefix, String namespaceUri, String localName, Boolean value) {
+    public final XmlWriter writeBooleanElement(String namespaceUri, String localName, Boolean value) {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(prefix, namespaceUri, localName)
+        return writeStartElement(namespaceUri, localName)
             .writeBoolean(value.booleanValue())
             .writeEndElement();
     }
@@ -549,15 +525,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a double element that has a prefix ({@code <tag>3.14</tag}).
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value double value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeDoubleElement(String prefix, String namespaceUri, String localName, double value) {
-        return writeStartElement(prefix, namespaceUri, localName)
+    public final XmlWriter writeDoubleElement(String namespaceUri, String localName, double value) {
+        return writeStartElement(namespaceUri, localName)
             .writeDouble(value)
             .writeEndElement();
     }
@@ -579,15 +554,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a float element that has a prefix ({@code <tag>2.7</tag}).
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value float value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeFloatElement(String prefix, String namespaceUri, String localName, float value) {
-        return writeStartElement(prefix, namespaceUri, localName)
+    public final XmlWriter writeFloatElement(String namespaceUri, String localName, float value) {
+        return writeStartElement(namespaceUri, localName)
             .writeFloat(value)
             .writeEndElement();
     }
@@ -609,15 +583,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes an int element that has a prefix ({@code <tag>10</tag}).
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value int value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeIntElement(String prefix, String namespaceUri, String localName, int value) {
-        return writeStartElement(prefix, namespaceUri, localName)
+    public final XmlWriter writeIntElement(String namespaceUri, String localName, int value) {
+        return writeStartElement(namespaceUri, localName)
             .writeInt(value)
             .writeEndElement();
     }
@@ -639,15 +612,14 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a long element that has a prefix ({@code <tag>100000000000</tag}).
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value long value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeLongElement(String prefix, String namespaceUri, String localName, long value) {
-        return writeStartElement(prefix, namespaceUri, localName)
+    public final XmlWriter writeLongElement(String namespaceUri, String localName, long value) {
+        return writeStartElement(namespaceUri, localName)
             .writeLong(value)
             .writeEndElement();
     }
@@ -668,14 +640,13 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Writes a null element that has a prefix ({@code <tag>null</tag>}).
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeNullElement(String prefix, String namespaceUri, String localName) {
-        return writeStartElement(prefix, namespaceUri, localName)
+    public final XmlWriter writeNullElement(String namespaceUri, String localName) {
+        return writeStartElement(namespaceUri, localName)
             .writeNull()
             .writeEndElement();
     }
@@ -705,19 +676,18 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If the {@code value} is null this is a no-op.
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value Number value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeNumberElement(String prefix, String namespaceUri, String localName, Number value) {
+    public final XmlWriter writeNumberElement(String namespaceUri, String localName, Number value) {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(prefix, namespaceUri, localName)
+        return writeStartElement(namespaceUri, localName)
             .writeNumber(value)
             .writeEndElement();
     }
@@ -747,19 +717,18 @@ public abstract class XmlWriter implements Closeable {
      * <p>
      * If the {@code value} is null this is a no-op.
      *
-     * @param prefix Prefix of the element.
      * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
      * @param localName Name of the element.
      * @param value String value to write.
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeStringElement(String prefix, String namespaceUri, String localName, String value) {
+    public final XmlWriter writeStringElement(String namespaceUri, String localName, String value) {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(prefix, namespaceUri, localName)
+        return writeStartElement(namespaceUri, localName)
             .writeString(value)
             .writeEndElement();
     }

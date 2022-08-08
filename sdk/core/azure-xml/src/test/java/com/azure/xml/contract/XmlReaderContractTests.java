@@ -50,53 +50,53 @@ public abstract class XmlReaderContractTests {
             // Value handling.
 
             // Boolean
-            Arguments.of("<test>false</test>", false, createXmlConsumer(XmlReader::getElementBooleanValue)),
-            Arguments.of("<test>true</test>", true, createXmlConsumer(XmlReader::getElementBooleanValue)),
+            Arguments.of("<test>false</test>", false, createXmlConsumer(XmlReader::getBooleanElement)),
+            Arguments.of("<test>true</test>", true, createXmlConsumer(XmlReader::getBooleanElement)),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Boolean::parseBoolean))),
+                xmlReader.getNullableElement(Boolean::parseBoolean))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Boolean::parseBoolean))),
+                xmlReader.getNullableElement(Boolean::parseBoolean))),
 
             // Double
-            Arguments.of("<test>-42.0</test>", -42D, createXmlConsumer(XmlReader::getElementDoubleValue)),
-            Arguments.of("<test>-42</test>", -42D, createXmlConsumer(XmlReader::getElementDoubleValue)),
-            Arguments.of("<test>42.0</test>", 42D, createXmlConsumer(XmlReader::getElementDoubleValue)),
-            Arguments.of("<test>42</test>", 42D, createXmlConsumer(XmlReader::getElementDoubleValue)),
+            Arguments.of("<test>-42.0</test>", -42D, createXmlConsumer(XmlReader::getDoubleElement)),
+            Arguments.of("<test>-42</test>", -42D, createXmlConsumer(XmlReader::getDoubleElement)),
+            Arguments.of("<test>42.0</test>", 42D, createXmlConsumer(XmlReader::getDoubleElement)),
+            Arguments.of("<test>42</test>", 42D, createXmlConsumer(XmlReader::getDoubleElement)),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Double::parseDouble))),
+                xmlReader.getNullableElement(Double::parseDouble))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Double::parseDouble))),
+                xmlReader.getNullableElement(Double::parseDouble))),
 
             // Float
-            Arguments.of("<test>-42.0</test>", -42F, createXmlConsumer(XmlReader::getElementFloatValue)),
-            Arguments.of("<test>-42</test>", -42F, createXmlConsumer(XmlReader::getElementFloatValue)),
-            Arguments.of("<test>42.0</test>", 42F, createXmlConsumer(XmlReader::getElementFloatValue)),
-            Arguments.of("<test>42</test>", 42F, createXmlConsumer(XmlReader::getElementFloatValue)),
+            Arguments.of("<test>-42.0</test>", -42F, createXmlConsumer(XmlReader::getFloatElement)),
+            Arguments.of("<test>-42</test>", -42F, createXmlConsumer(XmlReader::getFloatElement)),
+            Arguments.of("<test>42.0</test>", 42F, createXmlConsumer(XmlReader::getFloatElement)),
+            Arguments.of("<test>42</test>", 42F, createXmlConsumer(XmlReader::getFloatElement)),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Float::parseFloat))),
+                xmlReader.getNullableElement(Float::parseFloat))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Float::parseFloat))),
+                xmlReader.getNullableElement(Float::parseFloat))),
 
             // Integer
-            Arguments.of("<test>-42</test>", -42, createXmlConsumer(XmlReader::getElementIntValue)),
-            Arguments.of("<test>42</test>", 42, createXmlConsumer(XmlReader::getElementIntValue)),
+            Arguments.of("<test>-42</test>", -42, createXmlConsumer(XmlReader::getIntElement)),
+            Arguments.of("<test>42</test>", 42, createXmlConsumer(XmlReader::getIntElement)),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Integer::parseInt))),
+                xmlReader.getNullableElement(Integer::parseInt))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Integer::parseInt))),
+                xmlReader.getNullableElement(Integer::parseInt))),
 
             // Long
-            Arguments.of("<test>-42</test>", -42L, createXmlConsumer(XmlReader::getElementLongValue)),
-            Arguments.of("<test>42</test>", 42L, createXmlConsumer(XmlReader::getElementLongValue)),
+            Arguments.of("<test>-42</test>", -42L, createXmlConsumer(XmlReader::getLongElement)),
+            Arguments.of("<test>42</test>", 42L, createXmlConsumer(XmlReader::getLongElement)),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Long::parseLong))),
+                xmlReader.getNullableElement(Long::parseLong))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getElementNullableValue(Long::parseLong))),
+                xmlReader.getNullableElement(Long::parseLong))),
 
             // String
-            Arguments.of("<test/>", null, createXmlConsumer(XmlReader::getElementStringValue)),
-            Arguments.of("<test></test>", null, createXmlConsumer(XmlReader::getElementStringValue)),
-            Arguments.of("<test>hello</test>", "hello", createXmlConsumer(XmlReader::getElementStringValue))
+            Arguments.of("<test/>", null, createXmlConsumer(XmlReader::getStringElement)),
+            Arguments.of("<test></test>", null, createXmlConsumer(XmlReader::getStringElement)),
+            Arguments.of("<test>hello</test>", "hello", createXmlConsumer(XmlReader::getStringElement))
         );
     }
 
@@ -115,10 +115,10 @@ public abstract class XmlReaderContractTests {
     private static Stream<Arguments> binaryElementOperationsSupplier() {
         return Stream.of(
             // Binary
-            Arguments.of("<test/>", null, createXmlConsumer(XmlReader::getElementBinaryValue)),
-            Arguments.of("<test></test>", null, createXmlConsumer(XmlReader::getElementBinaryValue)),
+            Arguments.of("<test/>", null, createXmlConsumer(XmlReader::getBinaryElement)),
+            Arguments.of("<test></test>", null, createXmlConsumer(XmlReader::getBinaryElement)),
             Arguments.of("<test>" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "</test>",
-                "Hello".getBytes(StandardCharsets.UTF_8), createXmlConsumer(XmlReader::getElementBinaryValue))
+                "Hello".getBytes(StandardCharsets.UTF_8), createXmlConsumer(XmlReader::getBinaryElement))
         );
     }
 
@@ -139,127 +139,127 @@ public abstract class XmlReaderContractTests {
 
             // Boolean
             Arguments.of("<test test=\"false\"></test>", false, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeBooleanValue(null, "test"))),
+                xmlReader -> xmlReader.getBooleanAttribute(null, "test"))),
             Arguments.of("<test test=\"true\"></test>", true, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeBooleanValue(null, "test"))),
+                xmlReader -> xmlReader.getBooleanAttribute(null, "test"))),
             Arguments.of("<test test=\"false\"/>", false, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeBooleanValue(null, "test"))),
+                xmlReader -> xmlReader.getBooleanAttribute(null, "test"))),
             Arguments.of("<test test=\"true\"/>", true, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeBooleanValue(null, "test"))),
+                xmlReader -> xmlReader.getBooleanAttribute(null, "test"))),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Boolean::parseBoolean))),
+                xmlReader.getNullableAttribute(null, "test", Boolean::parseBoolean))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Boolean::parseBoolean))),
+                xmlReader.getNullableAttribute(null, "test", Boolean::parseBoolean))),
             Arguments.of("<test test=\"\"></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Boolean::parseBoolean))),
+                xmlReader.getNullableAttribute(null, "test", Boolean::parseBoolean))),
             Arguments.of("<test test=\"\"/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Boolean::parseBoolean))),
+                xmlReader.getNullableAttribute(null, "test", Boolean::parseBoolean))),
 
             // Double
             Arguments.of("<test test=\"-42.0\"></test>", -42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"-42\"></test>", -42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"-42.0\"/>", -42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"-42\"/>", -42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"42.0\"></test>", 42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"></test>", 42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"42.0\"/>", 42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"/>", 42D, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeDoubleValue(null, "test"))),
+                xmlReader -> xmlReader.getDoubleAttribute(null, "test"))),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Double::parseDouble))),
+                xmlReader.getNullableAttribute(null, "test", Double::parseDouble))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Double::parseDouble))),
+                xmlReader.getNullableAttribute(null, "test", Double::parseDouble))),
             Arguments.of("<test test=\"\"></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Double::parseDouble))),
+                xmlReader.getNullableAttribute(null, "test", Double::parseDouble))),
             Arguments.of("<test test=\"\"/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Double::parseDouble))),
+                xmlReader.getNullableAttribute(null, "test", Double::parseDouble))),
 
             // Float
             Arguments.of("<test test=\"-42.0\"></test>", -42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"-42\"></test>", -42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"-42.0\"/>", -42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"-42\"/>", -42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"42.0\"></test>", 42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"></test>", 42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"42.0\"/>", 42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"/>", 42F, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeFloatValue(null, "test"))),
+                xmlReader -> xmlReader.getFloatAttribute(null, "test"))),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Float::parseFloat))),
+                xmlReader.getNullableAttribute(null, "test", Float::parseFloat))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Float::parseFloat))),
+                xmlReader.getNullableAttribute(null, "test", Float::parseFloat))),
             Arguments.of("<test test=\"\"></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Float::parseFloat))),
+                xmlReader.getNullableAttribute(null, "test", Float::parseFloat))),
             Arguments.of("<test test=\"\"/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Float::parseFloat))),
+                xmlReader.getNullableAttribute(null, "test", Float::parseFloat))),
 
             // Integer
             Arguments.of("<test test=\"-42\"></test>", -42, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeIntValue(null, "test"))),
+                xmlReader -> xmlReader.getIntAttribute(null, "test"))),
             Arguments.of("<test test=\"-42\"/>", -42, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeIntValue(null, "test"))),
+                xmlReader -> xmlReader.getIntAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"></test>", 42, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeIntValue(null, "test"))),
+                xmlReader -> xmlReader.getIntAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"/>", 42, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeIntValue(null, "test"))),
+                xmlReader -> xmlReader.getIntAttribute(null, "test"))),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Integer::parseInt))),
+                xmlReader.getNullableAttribute(null, "test", Integer::parseInt))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Integer::parseInt))),
+                xmlReader.getNullableAttribute(null, "test", Integer::parseInt))),
             Arguments.of("<test test=\"\"></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Integer::parseInt))),
+                xmlReader.getNullableAttribute(null, "test", Integer::parseInt))),
             Arguments.of("<test test=\"\"/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Integer::parseInt))),
+                xmlReader.getNullableAttribute(null, "test", Integer::parseInt))),
 
             // Long
             Arguments.of("<test test=\"-42\"></test>", -42L, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeLongValue(null, "test"))),
+                xmlReader -> xmlReader.getLongAttribute(null, "test"))),
             Arguments.of("<test test=\"-42\"/>", -42L, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeLongValue(null, "test"))),
+                xmlReader -> xmlReader.getLongAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"></test>", 42L, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeLongValue(null, "test"))),
+                xmlReader -> xmlReader.getLongAttribute(null, "test"))),
             Arguments.of("<test test=\"42\"/>", 42L, createXmlConsumer(
-                xmlReader -> xmlReader.getAttributeLongValue(null, "test"))),
+                xmlReader -> xmlReader.getLongAttribute(null, "test"))),
             Arguments.of("<test></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Long::parseLong))),
+                xmlReader.getNullableAttribute(null, "test", Long::parseLong))),
             Arguments.of("<test/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Long::parseLong))),
+                xmlReader.getNullableAttribute(null, "test", Long::parseLong))),
             Arguments.of("<test test=\"\"></test>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Long::parseLong))),
+                xmlReader.getNullableAttribute(null, "test", Long::parseLong))),
             Arguments.of("<test test=\"\"/>", null, createXmlConsumer(xmlReader ->
-                xmlReader.getAttributeNullableValue(null, "test", Long::parseLong))),
+                xmlReader.getNullableAttribute(null, "test", Long::parseLong))),
 
             // String
             Arguments.of("<test></test>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test/>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test test=\"\"></test>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test test=\"\"/>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test test=\"hello\"></test>", "hello",
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test test=\"hello\"/>", "hello",
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test test=\"hello\"></test>", "hello",
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test"))),
             Arguments.of("<test test=\"hello\"/>", "hello",
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeStringValue(null, "test")))
+                createXmlConsumer(xmlReader -> xmlReader.getStringAttribute(null, "test")))
         );
     }
 
@@ -279,19 +279,19 @@ public abstract class XmlReaderContractTests {
         return Stream.of(
             // Binary
             Arguments.of("<test/>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeBinaryValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))),
             Arguments.of("<test></test>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeBinaryValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))),
             Arguments.of("<test test=\"\"/>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeBinaryValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))),
             Arguments.of("<test test=\"\"></test>", null,
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeBinaryValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))),
             Arguments.of("<test test=\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"></test>",
                 "Hello".getBytes(StandardCharsets.UTF_8),
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeBinaryValue(null, "test"))),
+                createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))),
             Arguments.of("<test test=\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"/>",
                 "Hello".getBytes(StandardCharsets.UTF_8),
-                createXmlConsumer(xmlReader -> xmlReader.getAttributeBinaryValue(null, "test")))
+                createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test")))
         );
     }
 

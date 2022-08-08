@@ -64,7 +64,7 @@ public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
             String namespaceUri = qName.getNamespaceURI();
 
             if ("name".equals(localPart) && "http://www.w3.org/2005/Atom".equals(namespaceUri)) {
-                name = xmlReader.getElementStringValue();
+                name = xmlReader.getStringElement();
             }
         }
 

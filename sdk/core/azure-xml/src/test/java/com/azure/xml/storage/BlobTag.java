@@ -77,9 +77,9 @@ public class BlobTag implements XmlSerializable<BlobTag> {
                 String elementName = reader.getElementName().getLocalPart();
 
                 if ("Key".equals(elementName)) {
-                    deserialized.key = reader.getElementStringValue();
+                    deserialized.key = reader.getStringElement();
                 } else if ("Value".equals(elementName)) {
-                    deserialized.value = reader.getElementStringValue();
+                    deserialized.value = reader.getStringElement();
                 }
             }
 

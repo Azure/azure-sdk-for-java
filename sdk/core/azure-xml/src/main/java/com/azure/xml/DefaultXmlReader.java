@@ -113,7 +113,7 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public String getElementStringValue() {
+    public String getStringElement() {
         try {
             // The default getElementText implementation in the JDK uses an internal buffer as the API handles merging
             // multiple text states, characters, CDATA, space, and entity reference, into a single String. This
@@ -185,7 +185,7 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public String getAttributeStringValue(String namespaceUri, String localName) {
+    public String getStringAttribute(String namespaceUri, String localName) {
         String value = reader.getAttributeValue(namespaceUri, localName);
 
         // Treat empty string as null.

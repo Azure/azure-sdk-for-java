@@ -74,11 +74,11 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
             elementName = elementQName.toString();
 
             if ("Start".equals(elementName)) {
-                startsOn = OffsetDateTime.parse(xmlReader.getElementStringValue());
+                startsOn = OffsetDateTime.parse(xmlReader.getStringElement());
             } else if ("Expiry".equals(elementName)) {
-                expiresOn = OffsetDateTime.parse(xmlReader.getElementStringValue());
+                expiresOn = OffsetDateTime.parse(xmlReader.getStringElement());
             } else if ("Permission".equals(elementName)) {
-                permissions = xmlReader.getElementStringValue();
+                permissions = xmlReader.getStringElement();
             }
         }
 

@@ -71,8 +71,8 @@ public class BlobName implements XmlSerializable<BlobName> {
     public static BlobName fromXml(XmlReader xmlReader) {
         return xmlReader.readObject("Name", reader -> {
             BlobName result = new BlobName();
-            result.encoded = reader.getAttributeNullableValue(null, "Encoded", Boolean::parseBoolean);
-            result.content = reader.getElementStringValue();
+            result.encoded = reader.getNullableAttribute(null, "Encoded", Boolean::parseBoolean);
+            result.content = reader.getStringElement();
 
             return result;
         });

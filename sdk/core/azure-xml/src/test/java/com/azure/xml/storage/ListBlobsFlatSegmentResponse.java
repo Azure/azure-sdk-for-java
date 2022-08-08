@@ -218,22 +218,22 @@ public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFl
         return xmlReader.readObject("EnumerationResults", reader -> {
             ListBlobsFlatSegmentResponse deserialized = new ListBlobsFlatSegmentResponse();
 
-            deserialized.serviceEndpoint = reader.getAttributeStringValue(null, "ServiceEndpoint");
-            deserialized.containerName = reader.getAttributeStringValue(null, "ContainerName");
+            deserialized.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");
+            deserialized.containerName = reader.getStringAttribute(null, "ContainerName");
 
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 String elementName = reader.getElementName().getLocalPart();
 
                 if ("Prefix".equals(elementName)) {
-                    deserialized.prefix = reader.getElementStringValue();
+                    deserialized.prefix = reader.getStringElement();
                 } else if ("Marker".equals(elementName)) {
-                    deserialized.marker = reader.getElementStringValue();
+                    deserialized.marker = reader.getStringElement();
                 } else if ("MaxResults".equals(elementName)) {
-                    deserialized.maxResults = reader.getElementIntValue();
+                    deserialized.maxResults = reader.getIntElement();
                 } else if ("Blobs".equals(elementName)) {
                     deserialized.segment = BlobFlatListSegment.fromXml(reader);
                 } else if ("NextMarker".equals(elementName)) {
-                    deserialized.nextMarker = reader.getElementStringValue();
+                    deserialized.nextMarker = reader.getStringElement();
                 }
             }
 

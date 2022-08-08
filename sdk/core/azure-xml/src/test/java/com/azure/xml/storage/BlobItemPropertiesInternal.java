@@ -1084,87 +1084,87 @@ public class BlobItemPropertiesInternal implements XmlSerializable<BlobItemPrope
                 String elementName = reader.getElementName().getLocalPart();
 
                 if ("Creation-Time".equals(elementName)) {
-                    deserialized.creationTime = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.creationTime = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("Last-Modified".equals(elementName)) {
-                    deserialized.lastModified = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.lastModified = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("Etag".equals(elementName)) {
-                    deserialized.eTag = reader.getElementStringValue();
+                    deserialized.eTag = reader.getStringElement();
                 } else if ("Content-Length".equals(elementName)) {
-                    deserialized.contentLength = reader.getElementNullableValue(Long::parseLong);
+                    deserialized.contentLength = reader.getNullableElement(Long::parseLong);
                 } else if ("Content-Type".equals(elementName)) {
-                    deserialized.contentType = reader.getElementStringValue();
+                    deserialized.contentType = reader.getStringElement();
                 } else if ("Content-Encoding".equals(elementName)) {
-                    deserialized.contentEncoding = reader.getElementStringValue();
+                    deserialized.contentEncoding = reader.getStringElement();
                 } else if ("Content-Language".equals(elementName)) {
-                    deserialized.contentLanguage = reader.getElementStringValue();
+                    deserialized.contentLanguage = reader.getStringElement();
                 } else if ("Content-MD5".equals(elementName)) {
-                    deserialized.contentMd5 = reader.getElementBinaryValue();
+                    deserialized.contentMd5 = reader.getBinaryElement();
                 } else if ("Content-Disposition".equals(elementName)) {
-                    deserialized.contentDisposition = reader.getElementStringValue();
+                    deserialized.contentDisposition = reader.getStringElement();
                 } else if ("Cache-Control".equals(elementName)) {
-                    deserialized.cacheControl = reader.getElementStringValue();
+                    deserialized.cacheControl = reader.getStringElement();
                 } else if ("x-ms-blob-sequence-number".equals(elementName)) {
-                    deserialized.blobSequenceNumber = reader.getElementNullableValue(Long::parseLong);
+                    deserialized.blobSequenceNumber = reader.getNullableElement(Long::parseLong);
                 } else if ("BlobType".equals(elementName)) {
-                    deserialized.blobType = reader.getElementNullableValue(BlobType::fromString);
+                    deserialized.blobType = reader.getNullableElement(BlobType::fromString);
                 } else if ("LeaseStatus".equals(elementName)) {
-                    deserialized.leaseStatus = reader.getElementNullableValue(LeaseStatusType::fromString);
+                    deserialized.leaseStatus = reader.getNullableElement(LeaseStatusType::fromString);
                 } else if ("LeaseState".equals(elementName)) {
-                    deserialized.leaseState = reader.getElementNullableValue(LeaseStateType::fromString);
+                    deserialized.leaseState = reader.getNullableElement(LeaseStateType::fromString);
                 } else if ("LeaseDuration".equals(elementName)) {
-                    deserialized.leaseDuration = reader.getElementNullableValue(LeaseDurationType::fromString);
+                    deserialized.leaseDuration = reader.getNullableElement(LeaseDurationType::fromString);
                 } else if ("CopyId".equals(elementName)) {
-                    deserialized.copyId = reader.getElementStringValue();
+                    deserialized.copyId = reader.getStringElement();
                 } else if ("CopyStatus".equals(elementName)) {
-                    deserialized.copyStatus = reader.getElementNullableValue(CopyStatusType::fromString);
+                    deserialized.copyStatus = reader.getNullableElement(CopyStatusType::fromString);
                 } else if ("CopySource".equals(elementName)) {
-                    deserialized.copySource = reader.getElementStringValue();
+                    deserialized.copySource = reader.getStringElement();
                 } else if ("CopyProgress".equals(elementName)) {
-                    deserialized.copyProgress = reader.getElementStringValue();
+                    deserialized.copyProgress = reader.getStringElement();
                 } else if ("CopyCompletionTime".equals(elementName)) {
-                    deserialized.copyCompletionTime = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.copyCompletionTime = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("CopyStatusDescription".equals(elementName)) {
-                    deserialized.copyStatusDescription = reader.getElementStringValue();
+                    deserialized.copyStatusDescription = reader.getStringElement();
                 } else if ("ServerEncrypted".equals(elementName)) {
-                    deserialized.serverEncrypted = reader.getElementNullableValue(Boolean::parseBoolean);
+                    deserialized.serverEncrypted = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("IncrementalCopy".equals(elementName)) {
-                    deserialized.incrementalCopy = reader.getElementNullableValue(Boolean::parseBoolean);
+                    deserialized.incrementalCopy = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("DestinationSnapshot".equals(elementName)) {
-                    deserialized.destinationSnapshot = reader.getElementStringValue();
+                    deserialized.destinationSnapshot = reader.getStringElement();
                 } else if ("DeletedTime".equals(elementName)) {
-                    deserialized.deletedTime = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.deletedTime = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("RemainingRetentionDays".equals(elementName)) {
-                    deserialized.remainingRetentionDays = reader.getElementNullableValue(Integer::parseInt);
+                    deserialized.remainingRetentionDays = reader.getNullableElement(Integer::parseInt);
                 } else if ("AccessTier".equals(elementName)) {
-                    deserialized.accessTier = reader.getElementNullableValue(AccessTier::fromString);
+                    deserialized.accessTier = reader.getNullableElement(AccessTier::fromString);
                 } else if ("AccessTierInferred".equals(elementName)) {
-                    deserialized.accessTierInferred = reader.getElementNullableValue(Boolean::parseBoolean);
+                    deserialized.accessTierInferred = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("ArchiveStatus".equals(elementName)) {
-                    deserialized.archiveStatus = reader.getElementNullableValue(ArchiveStatus::fromString);
+                    deserialized.archiveStatus = reader.getNullableElement(ArchiveStatus::fromString);
                 } else if ("CustomerProvidedKeySha256".equals(elementName)) {
-                    deserialized.customerProvidedKeySha256 = reader.getElementStringValue();
+                    deserialized.customerProvidedKeySha256 = reader.getStringElement();
                 } else if ("EncryptionScope".equals(elementName)) {
-                    deserialized.encryptionScope = reader.getElementStringValue();
+                    deserialized.encryptionScope = reader.getStringElement();
                 } else if ("AccessTierChangeTime".equals(elementName)) {
-                    deserialized.accessTierChangeTime = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.accessTierChangeTime = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("TagCount".equals(elementName)) {
-                    deserialized.tagCount = reader.getElementNullableValue(Integer::parseInt);
+                    deserialized.tagCount = reader.getNullableElement(Integer::parseInt);
                 } else if ("Expiry-Time".equals(elementName)) {
-                    deserialized.expiresOn = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.expiresOn = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("Sealed".equals(elementName)) {
-                    deserialized.isSealed = reader.getElementNullableValue(Boolean::parseBoolean);
+                    deserialized.isSealed = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("RehydratePriority".equals(elementName)) {
-                    deserialized.rehydratePriority = reader.getElementNullableValue(RehydratePriority::fromString);
+                    deserialized.rehydratePriority = reader.getNullableElement(RehydratePriority::fromString);
                 } else if ("LastAccessTime".equals(elementName)) {
-                    deserialized.lastAccessedOn = reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                    deserialized.lastAccessedOn = reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("ImmutabilityPolicyUntilDate".equals(elementName)) {
                     deserialized.immutabilityPolicyExpiresOn =
-                        reader.getElementNullableValue(DateTimeRfc1123::fromString);
+                        reader.getNullableElement(DateTimeRfc1123::fromString);
                 } else if ("ImmutabilityPolicyMode".equals(elementName)) {
                     deserialized.immutabilityPolicyMode =
-                        reader.getElementNullableValue(BlobImmutabilityPolicyMode::fromString);
+                        reader.getNullableElement(BlobImmutabilityPolicyMode::fromString);
                 } else if ("LegalHold".equals(elementName)) {
-                    deserialized.legalHold = reader.getElementNullableValue(Boolean::parseBoolean);
+                    deserialized.legalHold = reader.getNullableElement(Boolean::parseBoolean);
                 } else {
                     reader.nextElement();
                 }

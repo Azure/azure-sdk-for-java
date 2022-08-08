@@ -62,7 +62,7 @@ public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
             elementName = elementQName.toString();
 
             if ("Id".equals(elementName)) {
-                id = xmlReader.getElementStringValue();
+                id = xmlReader.getStringElement();
                 idFound = true;
             } else if ("AccessPolicy".equals(elementName)) {
                 accessPolicy = AccessPolicy.fromXml(xmlReader);

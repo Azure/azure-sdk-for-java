@@ -68,14 +68,12 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
-    public XmlWriter writeStartElement(String prefix, String namespaceUri, String localName) {
+    public XmlWriter writeStartElement(String namespaceUri, String localName) {
         try {
-            if (prefix == null && namespaceUri == null) {
+            if (namespaceUri == null) {
                 writer.writeStartElement(localName);
-            } else if (prefix == null) {
-                writer.writeStartElement(namespaceUri, localName);
             } else {
-                writer.writeStartElement(prefix, localName, getActualNamespaceUri(namespaceUri, prefix));
+                writer.writeStartElement(namespaceUri, localName);
             }
             return this;
         } catch (XMLStreamException e) {
@@ -94,14 +92,12 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
-    public XmlWriter writeStartSelfClosingElement(String prefix, String namespaceUri, String localName) {
+    public XmlWriter writeStartSelfClosingElement(String namespaceUri, String localName) {
         try {
-            if (prefix == null && namespaceUri == null) {
+            if (namespaceUri == null) {
                 writer.writeEmptyElement(localName);
-            } else if (prefix == null) {
-                writer.writeEmptyElement(namespaceUri, localName);
             } else {
-                writer.writeEmptyElement(prefix, localName, getActualNamespaceUri(namespaceUri, prefix));
+                writer.writeEmptyElement(namespaceUri, localName);
             }
             return this;
         } catch (XMLStreamException e) {
@@ -118,24 +114,6 @@ public final class DefaultXmlWriter extends XmlWriter {
         try {
             writer.setDefaultNamespace(namespaceUri);
             writer.writeDefaultNamespace(namespaceUri);
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public XmlWriter writeNamespace(String prefix, String namespaceUri) {
-        if (prefix == null) {
-            return writeNamespace(namespaceUri);
-        }
-
-        if (Objects.equals(writer.getNamespaceContext().getNamespaceURI(prefix), namespaceUri)) {
-            return this;
-        }
-
-        try {
-            writer.writeNamespace(prefix, namespaceUri);
             return this;
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
@@ -167,14 +145,12 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
-    public XmlWriter writeStringAttribute(String prefix, String namespaceUri, String localName, String value) {
+    public XmlWriter writeStringAttribute(String namespaceUri, String localName, String value) {
         try {
-            if (prefix == null && namespaceUri == null) {
+            if (namespaceUri == null) {
                 writer.writeAttribute(localName, value);
-            } else if (prefix == null) {
-                writer.writeAttribute(namespaceUri, localName, value);
             } else {
-                writer.writeAttribute(prefix, localName, getActualNamespaceUri(namespaceUri, prefix), value);
+                writer.writeAttribute(namespaceUri, localName, value);
             }
             return this;
         } catch (XMLStreamException e) {

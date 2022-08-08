@@ -77,8 +77,8 @@ public class ResponseLink implements XmlSerializable<ResponseLink> {
                 + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
         }
 
-        String rel = xmlReader.getAttributeStringValue(null, "rel");
-        String href = xmlReader.getAttributeStringValue(null, "href");
+        String rel = xmlReader.getStringAttribute(null, "rel");
+        String href = xmlReader.getStringAttribute(null, "href");
 
         while (xmlReader.currentToken() != XmlToken.END_ELEMENT) {
             xmlReader.nextElement();

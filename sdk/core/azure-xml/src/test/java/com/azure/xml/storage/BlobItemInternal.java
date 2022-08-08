@@ -339,13 +339,13 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
                 if ("Name".equals(elementName)) {
                     deserialized.name = BlobName.fromXml(reader);
                 } else if ("Deleted".equals(elementName)) {
-                    deserialized.deleted = reader.getElementBooleanValue();
+                    deserialized.deleted = reader.getBooleanElement();
                 } else if ("Snapshot".equals(elementName)) {
-                    deserialized.snapshot = reader.getElementStringValue();
+                    deserialized.snapshot = reader.getStringElement();
                 } else if ("VersionId".equals(elementName)) {
-                    deserialized.versionId = reader.getElementStringValue();
+                    deserialized.versionId = reader.getStringElement();
                 } else if ("IsCurrentVersion".equals(elementName)) {
-                    deserialized.isCurrentVersion = reader.getElementBooleanValue();
+                    deserialized.isCurrentVersion = reader.getBooleanElement();
                 } else if ("Properties".equals(elementName)) {
                     deserialized.properties = BlobItemPropertiesInternal.fromXml(reader);
                 } else if ("Metadata".equals(elementName)) {
@@ -355,7 +355,7 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
                         }
 
                         deserialized.metadata.put(reader.getElementName().getLocalPart(),
-                            reader.getElementStringValue());
+                            reader.getStringElement());
                     }
                 } else if ("Tags".equals(elementName)) {
                     deserialized.blobTags = BlobTags.fromXml(reader);
@@ -366,12 +366,12 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
                         }
 
                         deserialized.objectReplicationMetadata.put(reader.getElementName().getLocalPart(),
-                            reader.getElementStringValue());
+                            reader.getStringElement());
                     }
                 } else if ("HasVersionsOnly".equals(elementName)) {
-                    deserialized.hasVersionsOnly = reader.getElementBooleanValue();
+                    deserialized.hasVersionsOnly = reader.getBooleanElement();
                 } else if ("IsPrefix".equals(elementName)) {
-                    deserialized.isPrefix = reader.getElementBooleanValue();
+                    deserialized.isPrefix = reader.getBooleanElement();
                 }
             }
 
