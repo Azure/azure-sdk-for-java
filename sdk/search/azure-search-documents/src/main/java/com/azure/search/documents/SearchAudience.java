@@ -3,48 +3,43 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Cloud audiences available for Search.
  */
-public final class SearchAudience {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchAudience.class);
-
-    private final String audience;
-
-    private SearchAudience(String audience) {
-        if (CoreUtils.isNullOrEmpty(audience)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'audience' cannot be null or empty."));
-        }
-
-        this.audience = audience;
-    }
-
+public final class SearchAudience extends ExpandableStringEnum<SearchAudience> {
     /**
      * The {@link SearchAudience} for Azure China cloud.
      */
-    public static final SearchAudience AZURE_CHINA = new SearchAudience("https://search.azure.cn");
+    public static final SearchAudience AZURE_CHINA = fromString("https://search.azure.cn");
 
     /**
      * The {@link SearchAudience} for Azure US Government cloud.
      */
-    public static final SearchAudience AZURE_GOVERNMENT = new SearchAudience("https://search.azure.us");
+    public static final SearchAudience AZURE_US_GOVERNMENT = fromString("https://search.azure.us");
 
     /**
      * The {@link SearchAudience} for the Azure Public cloud.
      */
-    public static final SearchAudience AZURE_PUBLIC = new SearchAudience("https://search.azure.com");
+    public static final SearchAudience AZURE_PUBLIC = fromString("https://search.azure.com");
 
     /**
-     * Gets the Azure Active Directory (AAD) audience to use when forming authorization scopes.
-     * <p>
-     * This value corresponds to a URL that identifies the Azure cloud where the resource is located.
+     * Creates or finds a SearchAudience from its string representation.
      *
-     * @return The Azure Active Directory (AAD) audience to use when forming authorization scopes.
+     * @param name a name to look for.
+     * @return the corresponding SearchAudience.
      */
-    public String getAudience() {
-        return audience;
+    @JsonCreator
+    public static SearchAudience fromString(String name) {
+        return fromString(name, SearchAudience.class);
+    }
+
+    /** @return known SearchAudience values. */
+    public static Collection<SearchAudience> values() {
+        return values(SearchAudience.class);
     }
 }

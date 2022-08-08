@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -278,7 +278,7 @@ public class ReadmeSamples {
         SearchClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName(INDEX_NAME)
-            .credential(new EnvironmentCredentialBuilder()
+            .credential(new DefaultAzureCredentialBuilder()
                 .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
                 .build())
             .audience(SearchAudience.AZURE_CHINA)

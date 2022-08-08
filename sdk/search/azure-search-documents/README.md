@@ -234,9 +234,6 @@ These are just a few of the basics - please [check out our Samples][samples_read
 * [Adding documents to your index](#adding-documents-to-your-index)
 * [Retrieving a specific document from your index](#retrieving-a-specific-document-from-your-index)
 * [Async APIs](#async-apis)
-
-### Advanced authentication
-
 - [Create a client that can authenticate in a national cloud](#authenticate-in-a-national-cloud)
 
 ### Querying
@@ -436,7 +433,7 @@ To authenticate in a [National Cloud](https://docs.microsoft.com/azure/active-di
 SearchClient searchClient = new SearchClientBuilder()
     .endpoint(ENDPOINT)
     .indexName(INDEX_NAME)
-    .credential(new EnvironmentCredentialBuilder()
+    .credential(new DefaultAzureCredentialBuilder()
         .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
         .build())
     .audience(SearchAudience.AZURE_CHINA)

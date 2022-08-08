@@ -141,11 +141,12 @@ public final class Utility {
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
         } else if (tokenCredential != null) {
-            String authorizationScope = audience == null
-                ? SearchAudience.AZURE_PUBLIC.getAudience()
-                : audience.getAudience();
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                authorizationScope + "/.default"));
+            if (audience == null) {
+                httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                    "https://search.azure.com/.default"));
+            } else {
+                httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience + "/.default"));
+            }
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Builder doesn't have a credential "
                 + "configured. Supply either an AzureKeyCredential or TokenCredential."));
