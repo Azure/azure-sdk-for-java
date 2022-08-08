@@ -27,9 +27,6 @@ parameters:
 - name: UseEsrpRelease
   type: boolean
   default: true
-- name: AdditionalBuildOptions
-  type: string
-  default: ''
 
 stages:
   - stage: Build
@@ -52,7 +49,6 @@ stages:
           - AZURE_TEST.*=.*/
           - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         BuildParallelization: 1
-        AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
         TestOptions: '-Punit'
 
   - stage: TestEmulator
@@ -71,7 +67,6 @@ stages:
           - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         AdditionalParameters:
           BuildParallelization: 1
-          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
           Artifacts: ${{ parameters.Artifacts }}
