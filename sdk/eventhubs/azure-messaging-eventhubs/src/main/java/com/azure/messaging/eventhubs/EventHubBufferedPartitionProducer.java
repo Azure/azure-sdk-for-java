@@ -20,7 +20,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.concurrent.Queues;
 
 import java.io.Closeable;
 import java.time.Duration;
@@ -33,7 +32,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.EMIT_RESULT_KEY;
@@ -59,16 +57,16 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final PublishResultSubscriber publishResultSubscriber;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
-        BufferedProducerClientOptions options, AmqpRetryOptions retryOptions) {
+        BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
+        Queue<EventData> eventQueue) {
+
         this.client = client;
         this.partitionId = partitionId;
         this.errorContext = new AmqpErrorContext(client.getFullyQualifiedNamespace());
         this.createBatchOptions = new CreateBatchOptions().setPartitionId(partitionId);
         this.retryOptions = retryOptions;
-
-        final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
-        this.eventQueue = queueSupplier.get();
-        this.eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
+        this.eventSink = eventSink;
+        this.eventQueue = eventQueue;
 
         final Flux<EventDataBatch> eventDataBatchFlux = new EventDataAggregator(eventSink.asFlux(),
             this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
