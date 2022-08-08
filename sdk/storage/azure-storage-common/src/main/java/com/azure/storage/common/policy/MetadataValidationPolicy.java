@@ -48,22 +48,24 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
                 continue;
             }
 
-            // First check if the name is the same length as the 'x-ms-meta-' prefix or has whitespace.
-            boolean hasWhitespace = name.length() == X_MS_META_LENGTH
-                || Character.isWhitespace(name.charAt(X_MS_META_LENGTH))
-                || Character.isWhitespace(name.charAt(name.length() - 1));
+            // First check if the name has whitespace.
+            // Do not validate the name for being empty, that is left to the service to handle.
+            boolean hasWhitespace = name.length() > X_MS_META_LENGTH
+                && checkWhitespace(name, X_MS_META_LENGTH, name.length() - 1);
 
             // Then check if the value is not null or empty and has whitespace.
             String value = header.getValue();
             hasWhitespace |= hasWhitespace // boolean or against the existing check for an early out.
-                || (!CoreUtils.isNullOrEmpty(value)
-                && (Character.isWhitespace(value.charAt(0))
-                    || Character.isWhitespace(value.charAt(value.length() - 1))));
+                || (!CoreUtils.isNullOrEmpty(value) && checkWhitespace(value, 0, value.length() - 1));
 
             if (hasWhitespace) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
                     + "can not contain leading or trailing whitespace. Please remove or encode them."));
             }
         }
+    }
+
+    private static boolean checkWhitespace(String str, int leadIndex, int trailIndex) {
+        return Character.isWhitespace(str.charAt(leadIndex)) || Character.isWhitespace(str.charAt(trailIndex));
     }
 }

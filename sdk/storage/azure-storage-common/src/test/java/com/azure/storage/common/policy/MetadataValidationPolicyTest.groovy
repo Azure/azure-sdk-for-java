@@ -13,12 +13,20 @@ class MetadataValidationPolicyTest extends Specification {
 
         where:
         headers                                                      || _
-        new HttpHeaders().add("x-ms-meta-", "value")                 || _
         new HttpHeaders().add("x-ms-meta- ", "value")                || _
         new HttpHeaders().add("x-ms-meta- nameleadspace", "value")   || _
         new HttpHeaders().add("x-ms-meta-nametrailspace ", "value")  || _
         new HttpHeaders().add("x-ms-meta-valueleadspace", " value")  || _
         new HttpHeaders().add("x-ms-meta-valuetrailspace", "value ") || _
+    }
+
+
+    def "empty metadata name is valid"() { // sort of, this is passed to be handled by the service
+        when:
+        MetadataValidationPolicy.validateMetadataHeaders(new HttpHeaders().add("x-ms-meta-", "emptyname"))
+
+        then:
+        notThrown(IllegalArgumentException)
     }
 
     def "empty metadata value is valid"() {
