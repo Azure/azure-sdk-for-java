@@ -429,7 +429,7 @@ SEARCH_ASYNC_CLIENT.search("luxury")
 To authenticate in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
 
 - Set the `AuthorityHost` in the credential options or via the `AZURE_AUTHORITY_HOST` environment variable
-- Set the `Audience` in `SearchClientOptions`
+- Set the `audience` in `SearchClientBuilder`, `SearchIndexClientBuilder`, or `SearchIndexerClientBuilder`
 
 ```java readme-sample-nationalCloud
 // Create a SearchClient that will authenticate through AAD in the China national cloud.
