@@ -5,9 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,8 +60,6 @@ public class AzureApplicationCredentialTest {
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
-        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
@@ -73,7 +69,7 @@ public class AzureApplicationCredentialTest {
             when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
         })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration).build();
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -87,15 +83,14 @@ public class AzureApplicationCredentialTest {
     public void testNoCredentialWorks() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
-        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
+
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateToIMDSEndpoint(request))
                 .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
         })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration).build();
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
                     .startsWith("EnvironmentCredential authentication unavailable. "))
@@ -108,8 +103,6 @@ public class AzureApplicationCredentialTest {
     public void testCredentialUnavailable() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
-        Configuration configuration = new ConfigurationBuilder(source, source, source).build();
 
         // mock
         try (MockedConstruction<ManagedIdentityCredential> managedIdentityCredentialMock = mockConstruction(ManagedIdentityCredential.class, (managedIdentityCredential, context) -> {
@@ -118,7 +111,7 @@ public class AzureApplicationCredentialTest {
                     new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
         })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration)
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder()
                 .build();
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
