@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CloudServiceVaultCertificate {
     /*
-     * This is the URL of a certificate that has been uploaded to Key Vault as
-     * a secret.
+     * This is the URL of a certificate that has been uploaded to Key Vault as a secret.
      */
     @JsonProperty(value = "certificateUrl")
     private String certificateUrl;

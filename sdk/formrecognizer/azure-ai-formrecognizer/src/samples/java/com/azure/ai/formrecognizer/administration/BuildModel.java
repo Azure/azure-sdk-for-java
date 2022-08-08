@@ -39,11 +39,13 @@ public class BuildModel {
             .buildClient();
 
         // Build custom document analysis model
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String prefix = "{blob_name_prefix}";
         SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-            client.beginBuildModel(trainingFilesUrl,
+            client.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
+                prefix,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("model desc"),

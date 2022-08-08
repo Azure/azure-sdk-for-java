@@ -27,8 +27,8 @@ public final class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /*
-     * The managed identity for the disk encryption set. It should be given
-     * permission on the key vault before it can be used to encrypt disks.
+     * The managed identity for the disk encryption set. It should be given permission on the key vault before it can
+     * be used to encrypt disks.
      */
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;

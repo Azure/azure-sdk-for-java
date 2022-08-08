@@ -27,7 +27,6 @@ import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -152,8 +151,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode -->
      * <pre>
-     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * documentModelAdministrationAsyncClient.beginBuildModel&#40;trainingFilesUrl,
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * documentModelAdministrationAsyncClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE
      *     &#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
@@ -172,7 +171,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
@@ -180,13 +179,13 @@ public final class DocumentModelAdministrationAsyncClient {
      * for more information on building mode for custom documents.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws HttpResponseException If building a model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String trainingFilesUrl,
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String blobContainerUrl,
                                                                                   DocumentModelBuildMode buildMode) {
-        return beginBuildModel(trainingFilesUrl, buildMode, null);
+        return beginBuildModel(blobContainerUrl, buildMode, null, null);
     }
 
     /**
@@ -200,17 +199,18 @@ public final class DocumentModelAdministrationAsyncClient {
      * for information on building your own administration data set.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions -->
      * <pre>
-     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;model-id&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     * String prefix = &quot;Invoice&quot;;
      *
-     * documentModelAdministrationAsyncClient.beginBuildModel&#40;trainingFilesUrl,
+     * documentModelAdministrationAsyncClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE,
+     *         prefix,
      *         new BuildModelOptions&#40;&#41;
-     *             .setPrefix&#40;&quot;Invoice&quot;&#41;
      *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setTags&#40;attrs&#41;&#41;
@@ -230,32 +230,35 @@ public final class DocumentModelAdministrationAsyncClient {
      *         &#125;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentModelBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
+     * @param prefix case-sensitive prefix blob name prefix to filter documents for training.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws HttpResponseException If building a model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String trainingFilesUrl,
-                                                                                  DocumentModelBuildMode buildMode,
-                                                                                  BuildModelOptions buildModelOptions) {
-        return beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, Context.NONE);
+    public PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String blobContainerUrl,
+                                                                                     DocumentModelBuildMode buildMode,
+                                                                                     String prefix,
+                                                                                     BuildModelOptions buildModelOptions) {
+        return beginBuildModel(blobContainerUrl, buildMode, prefix, buildModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String trainingFilesUrl,
-                                                                           DocumentModelBuildMode buildMode,
-                                                                           BuildModelOptions buildModelOptions,
-                                                                           Context context) {
+    PollerFlux<DocumentOperationResult, DocumentModelDetails> beginBuildModel(String blobContainerUrl,
+                                                                              DocumentModelBuildMode buildMode,
+                                                                              String prefix,
+                                                                              BuildModelOptions buildModelOptions,
+                                                                              Context context) {
 
         buildModelOptions =  buildModelOptions == null ? new BuildModelOptions() : buildModelOptions;
         String modelId = buildModelOptions.getModelId();
@@ -264,7 +267,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
         return new PollerFlux<DocumentOperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
-            buildModelActivationOperation(trainingFilesUrl, buildMode, modelId, buildModelOptions, context),
+            buildModelActivationOperation(blobContainerUrl, buildMode, modelId, prefix, buildModelOptions, context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
@@ -499,7 +502,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param componentModelIds The list of component models to compose.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the created {@link DocumentModelDetails composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -555,7 +558,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * creating a composed model.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModelDetails}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -637,7 +640,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * generated from the target resource's call to {@link DocumentModelAdministrationAsyncClient#getCopyAuthorization()}
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModelDetails}.
-     * @throws DocumentModelOperationException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -929,18 +932,18 @@ public final class DocumentModelAdministrationAsyncClient {
 
     private Function<PollingContext<DocumentOperationResult>, Mono<DocumentOperationResult>>
         buildModelActivationOperation(
-        String trainingFilesUrl, DocumentModelBuildMode buildMode, String modelId,
-        BuildModelOptions buildModelOptions, Context context) {
+        String blobContainerUrl, DocumentModelBuildMode buildMode, String modelId,
+        String prefix, BuildModelOptions buildModelOptions, Context context) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
+                Objects.requireNonNull(blobContainerUrl, "'blobContainerUrl' cannot be null.");
                 BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
                     .setModelId(modelId)
                     .setBuildMode(com.azure.ai.formrecognizer.implementation.models.DocumentBuildMode
                         .fromString(buildMode.toString()))
                     .setAzureBlobSource(new AzureBlobContentSource()
-                        .setContainerUrl(trainingFilesUrl)
-                        .setPrefix(buildModelOptions.getPrefix()))
+                        .setContainerUrl(blobContainerUrl)
+                        .setPrefix(prefix))
                     .setDescription(buildModelOptions.getDescription())
                     .setTags(buildModelOptions.getTags());
 
@@ -969,7 +972,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 break;
             case FAILED:
                 throw logger.logExceptionAsError(
-                    Transforms.toDocumentModelOperationException(getOperationResponse.getError()));
+                    Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
             case CANCELED:
             default:
                 status = LongRunningOperationStatus.fromString(
