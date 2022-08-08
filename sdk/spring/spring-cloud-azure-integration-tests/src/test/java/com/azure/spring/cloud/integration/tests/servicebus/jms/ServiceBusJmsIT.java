@@ -4,6 +4,7 @@ package com.azure.spring.cloud.integration.tests.servicebus.jms;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class ServiceBusJmsIT {
     private JmsTemplate jmsTemplate;
 
     @Test
+    @Timeout(70)
     public void testServiceBusJmsOperation() throws InterruptedException {
         LOGGER.info("ServiceBusJmsIT begin.");
         jmsTemplate.convertAndSend(QUEUE_NAME, DATA);

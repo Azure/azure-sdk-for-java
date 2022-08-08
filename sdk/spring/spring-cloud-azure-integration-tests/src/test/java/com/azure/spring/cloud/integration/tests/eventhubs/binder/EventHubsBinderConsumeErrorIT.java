@@ -26,13 +26,11 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource(properties = {
-    "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL",
-    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-message",
-    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-message",
-    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-message"
+@TestPropertySource(properties =
+    {
+    "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL"
     })
-@ActiveProfiles("eventhubs-binder")
+@ActiveProfiles(value = { "eventhubs-binder", "message" })
 class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);

@@ -31,13 +31,10 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=BATCH",
     "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-size=10",
     "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-wait-time=2s",
-    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
-    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
-    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch",
     "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
-@ActiveProfiles("eventhubs-binder")
+@ActiveProfiles(value = { "eventhubs-binder", "batch" })
 class EventHubsBinderBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderBatchModeIT.class);

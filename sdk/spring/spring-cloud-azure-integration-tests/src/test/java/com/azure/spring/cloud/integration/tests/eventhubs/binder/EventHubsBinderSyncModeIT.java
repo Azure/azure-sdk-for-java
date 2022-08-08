@@ -27,12 +27,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @TestPropertySource(properties =
     {
-    "spring.cloud.stream.eventhubs.bindings.supply-out-0.producer.sync=true",
-    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-sync",
-    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-sync",
-    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-sync"
+    "spring.cloud.stream.eventhubs.bindings.supply-out-0.producer.sync=true"
     })
-@ActiveProfiles("eventhubs-binder")
+@ActiveProfiles(value = { "eventhubs-binder", "sync" })
 class EventHubsBinderSyncModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderSyncModeIT.class);

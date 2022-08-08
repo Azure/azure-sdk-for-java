@@ -376,6 +376,27 @@
     "AZURE_EVENT_HUB_NAME": {
       "type": "string",
       "value": "processoreventhub"
-    }
+    },
+    "AZURE_EVENTHUB_BINDER_NAME_FOR_BATCH": {
+      "type": "string",
+      "value": "test-eventhub-batch"
+    },
+    "AZURE_EVENTHUB_BINDER_NAME_FOR_MESSAGE": {
+      "type": "string",
+      "value": "test-eventhub-message"
+    },
+    "AZURE_EVENTHUB_BINDER_NAME_FOR_MANUAL": {
+      "type": "string",
+      "value": "test-eventhub-manual"
+    },
+    "AZURE_EVENTHUB_BINDER_NAME_FOR_RECORD": {
+      "type": "string",
+      "value": "test-eventhub-record"
+    },
+    "AZURE_EVENTHUB_BINDER_NAME_FOR_SYNC": {
+      "type": "string",
+      "value": "test-eventhub-sync"
+    },
+
   }
 }

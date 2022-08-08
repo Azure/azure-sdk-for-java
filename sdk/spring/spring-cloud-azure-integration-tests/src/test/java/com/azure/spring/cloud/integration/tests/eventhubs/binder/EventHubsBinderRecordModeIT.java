@@ -28,11 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties =
     {
     "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=RECORD",
-    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-record",
-    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-record",
-    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-record"
     })
-@ActiveProfiles("eventhubs-binder")
+@ActiveProfiles(value = { "eventhubs-binder", "record" })
 class EventHubsBinderRecordModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderRecordModeIT.class);
