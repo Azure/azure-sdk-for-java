@@ -12,12 +12,12 @@ public enum RoomsServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2021-04-07}
      */
-    V2021_04_07_PREVIEW("2021-04-07"),
+    V2021_04_07("2021-04-07"),
 
     /**
      * Service version {@code 2022-02-01}
      */
-    V2022_02_01_PREVIEW("2022-02-01");
+    V2022_02_01("2022-02-01");
 
     private final String version;
 
