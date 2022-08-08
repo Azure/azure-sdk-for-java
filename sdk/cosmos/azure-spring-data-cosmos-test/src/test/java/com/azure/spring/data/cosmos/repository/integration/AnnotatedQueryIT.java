@@ -134,16 +134,66 @@ public class AnnotatedQueryIT {
             Address.TEST_ADDRESS2_PARTITION1, testAddress);
         addressRepository.saveAll(addresses);
 
-        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 2);
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "postalCode"));
         final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
             cosmosPageRequest);
         assertAddressPostalCodesUnordered(postalCodes.getContent(),
             Arrays.asList(Address.TEST_ADDRESS2_PARTITION1, testAddress));
 
-        final PageRequest cosmosPageRequest2 = CosmosPageRequest.of(1, 2);
+        final PageRequest cosmosPageRequest2 = cosmosPageRequest.next();
         final Page<String> postalCodes2 = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
             cosmosPageRequest2);
         assertAddressPostalCodesUnordered(postalCodes2.getContent(), Arrays.asList(Address.TEST_ADDRESS1_PARTITION1));
+    }
+
+    @Test
+    public void testAnnotatedQueryWithValueAsPageFromPageOneToThree() {
+        Address testAddress = new Address(TestConstants.POSTAL_CODE_1, TestConstants.STREET_0, TestConstants.CITY);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
+            Address.TEST_ADDRESS2_PARTITION1, testAddress);
+        addressRepository.saveAll(addresses);
+
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 1, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest);
+        assertAddressPostalCodesUnordered(postalCodes.getContent(), Arrays.asList(Address.TEST_ADDRESS2_PARTITION1));
+
+        final PageRequest cosmosPageRequest2 = CosmosPageRequest.of(2, 1, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> postalCodes2 = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest2);
+        assertAddressPostalCodesUnordered(postalCodes2.getContent(), Arrays.asList(Address.TEST_ADDRESS1_PARTITION1));
+    }
+
+    @Test
+    public void testAnnotatedQueryWithValueAsPageMultiplePageSizes() {
+        /*
+         * Will have 6 total results in the following order:
+         * 11111, 22222, 333333, 444444, 55555, 98052
+         */
+        Address testAddress1 = new Address("22222", TestConstants.STREET_0, TestConstants.CITY);
+        Address testAddress2 = new Address("33333", TestConstants.STREET_0, TestConstants.CITY);
+        Address testAddress3 = new Address("44444", TestConstants.STREET_0, TestConstants.CITY);
+        Address testAddress4 = new Address("55555", TestConstants.STREET_0, TestConstants.CITY);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
+            Address.TEST_ADDRESS2_PARTITION1, testAddress1, testAddress2, testAddress3, testAddress4);
+        addressRepository.saveAll(addresses);
+
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 1, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest);
+        assertAddressPostalCodesUnordered(postalCodes.getContent(), Arrays.asList(Address.TEST_ADDRESS2_PARTITION1));
+
+        final PageRequest cosmosPageRequest2 = CosmosPageRequest.of(1, 3, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> postalCodes2 = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest2);
+        assertAddressPostalCodesUnordered(postalCodes2.getContent(), Arrays.asList(testAddress3, testAddress4,
+            Address.TEST_ADDRESS1_PARTITION1));
+
+        final PageRequest cosmosPageRequest3 = CosmosPageRequest.of(2, 2, Sort.by(Sort.Direction.ASC, "postalCode"));
+        final Page<String> postalCodes3 = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY,
+            cosmosPageRequest3);
+        assertAddressPostalCodesUnordered(postalCodes3.getContent(), Arrays.asList(testAddress4,
+            Address.TEST_ADDRESS1_PARTITION1));
     }
 
     @Test
