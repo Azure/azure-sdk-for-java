@@ -29,11 +29,6 @@ public class AzureJdbcAutoConfiguration {
     }
 
     @Bean
-    SpringTokenCredentialProvider springTokenCredentialProvider() {
-        return new SpringTokenCredentialProvider();
-    }
-
-    @Bean
     SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
         return new SpringTokenCredentialProviderContextProvider();
     }

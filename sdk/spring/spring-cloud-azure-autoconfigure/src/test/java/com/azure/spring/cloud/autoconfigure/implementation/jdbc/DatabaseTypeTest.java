@@ -30,7 +30,7 @@ class DatabaseTypeTest {
     }
 
     @Test
-    void testPostGreSQL() {
+    void testPostgreSQL() {
         assertEquals(DatabaseType.POSTGRESQL.getSchema(), POSTGRESQL_SCHEMA);
         assertEquals(DatabaseType.POSTGRESQL.getPathQueryDelimiter(), POSTGRESQL_PATH_QUERY_DELIMITER);
         assertEquals(DatabaseType.POSTGRESQL.getQueryDelimiter(), POSTGRESQL_QUERY_DELIMITER);
@@ -44,12 +44,12 @@ class DatabaseTypeTest {
     }
 
     @Test
-    void testMysqlPlugin() {
+    void testMySqlPlugin() {
         assertFalse(DatabaseType.MYSQL.isDatabasePluginEnabled());
     }
 
     @Test
-    void testPostGreSqlPlugin() {
+    void testPostgreSqlPlugin() {
         assertFalse(DatabaseType.POSTGRESQL.isDatabasePluginEnabled());
     }
 
