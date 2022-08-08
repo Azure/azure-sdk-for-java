@@ -171,12 +171,40 @@ extends:
         releaseInBatch: ${{ parameters.release_azurejsongson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-    AdditionalMatrixConfigs:
-      - Name: version_overrides_tests
-        Path: sdk/core/version-overrides-matrix.json
-        Selection: all
-        GenerateVMJobs: true
     AdditionalStagesAfterBuild:
+      - stage: SupportedDependencyVersions
+        displayName: 'Supported Dependency Versions'
+        dependsOn: []
+        jobs:
+        - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+          parameters:
+            JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+            MatrixConfigs:
+              - Name: version_overrides_tests
+                Path: sdk/core/version-overrides-matrix.json
+                Selection: all
+                GenerateVMJobs: true
+            AdditionalParameters:
+              ServiceDirectory: core
+              Artifacts:
+                - name: azure-core
+                  groupId: com.azure
+                  safeName: azurecore
+                - name: azure-core-amqp
+                  groupId: com.azure
+                  safeName: azurecoreamqp
+                - name: azure-core-http-netty
+                  groupId: com.azure
+                  safeName: azurecorehttpnetty
+                - name: azure-core-http-okhttp
+                  groupId: com.azure
+                  safeName: azurecorehttpokhttp
+                - name: azure-core-management
+                  groupId: com.azure
+                  safeName: azurecoremanagement
+                - name: azure-core-serializer-json-jackson
+                  groupId: com.azure
+                  safeName: azurecoreserializerjsonjackson
       - stage: JacksonUnsupportedVersions
         displayName: 'Jackson Unsupported Versions'
         dependsOn: []
