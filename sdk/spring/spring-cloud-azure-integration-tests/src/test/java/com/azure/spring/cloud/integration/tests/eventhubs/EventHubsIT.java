@@ -72,13 +72,13 @@ public class EventHubsIT {
         LOGGER.info("EventHubsIT begin.");
         producerClient.send(Arrays.asList(new EventData(DATA)));
         producerClient.close();
+        processorClient.start();
         IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("0", 1, EventPosition.earliest());
         for (PartitionEvent event : events) {
             Assertions.assertEquals(DATA, event.getData().getBodyAsString());
         }
-        processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
-        LATCH.await(200, TimeUnit.SECONDS);
+        LATCH.await(15, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA, MESSAGE);
         LOGGER.info("EventHubsIT end.");
     }
