@@ -10,9 +10,11 @@
 
 - Rename class `ExplicitProxySettings` to `ExplicitProxy`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
 
 ## 2.17.0 (2022-07-25)
 
