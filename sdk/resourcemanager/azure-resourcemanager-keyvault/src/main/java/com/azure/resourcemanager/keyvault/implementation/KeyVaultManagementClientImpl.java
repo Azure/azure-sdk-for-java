@@ -7,12 +7,16 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
+import com.azure.resourcemanager.keyvault.fluent.KeysClient;
+import com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient;
+import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateLinkResourcesClient;
 import com.azure.resourcemanager.keyvault.fluent.OperationsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.keyvault.fluent.SecretsClient;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -20,8 +24,6 @@ import java.time.Duration;
 /** Initializes a new instance of the KeyVaultManagementClientImpl type. */
 @ServiceClient(builder = KeyVaultManagementClientBuilder.class)
 public final class KeyVaultManagementClientImpl extends AzureServiceClient implements KeyVaultManagementClient {
-    private final ClientLogger logger = new ClientLogger(KeyVaultManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -98,6 +100,18 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         return this.defaultPollInterval;
     }
 
+    /** The KeysClient object to access its operations. */
+    private final KeysClient keys;
+
+    /**
+     * Gets the KeysClient object to access its operations.
+     *
+     * @return the KeysClient object.
+     */
+    public KeysClient getKeys() {
+        return this.keys;
+    }
+
     /** The VaultsClient object to access its operations. */
     private final VaultsClient vaults;
 
@@ -134,6 +148,42 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         return this.privateLinkResources;
     }
 
+    /** The ManagedHsmsClient object to access its operations. */
+    private final ManagedHsmsClient managedHsms;
+
+    /**
+     * Gets the ManagedHsmsClient object to access its operations.
+     *
+     * @return the ManagedHsmsClient object.
+     */
+    public ManagedHsmsClient getManagedHsms() {
+        return this.managedHsms;
+    }
+
+    /** The MhsmPrivateEndpointConnectionsClient object to access its operations. */
+    private final MhsmPrivateEndpointConnectionsClient mhsmPrivateEndpointConnections;
+
+    /**
+     * Gets the MhsmPrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the MhsmPrivateEndpointConnectionsClient object.
+     */
+    public MhsmPrivateEndpointConnectionsClient getMhsmPrivateEndpointConnections() {
+        return this.mhsmPrivateEndpointConnections;
+    }
+
+    /** The MhsmPrivateLinkResourcesClient object to access its operations. */
+    private final MhsmPrivateLinkResourcesClient mhsmPrivateLinkResources;
+
+    /**
+     * Gets the MhsmPrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the MhsmPrivateLinkResourcesClient object.
+     */
+    public MhsmPrivateLinkResourcesClient getMhsmPrivateLinkResources() {
+        return this.mhsmPrivateLinkResources;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -144,6 +194,18 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /** The SecretsClient object to access its operations. */
+    private final SecretsClient secrets;
+
+    /**
+     * Gets the SecretsClient object to access its operations.
+     *
+     * @return the SecretsClient object.
+     */
+    public SecretsClient getSecrets() {
+        return this.secrets;
     }
 
     /**
@@ -170,10 +232,15 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-09-01";
+        this.apiVersion = "2021-10-01";
+        this.keys = new KeysClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.managedHsms = new ManagedHsmsClientImpl(this);
+        this.mhsmPrivateEndpointConnections = new MhsmPrivateEndpointConnectionsClientImpl(this);
+        this.mhsmPrivateLinkResources = new MhsmPrivateLinkResourcesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.secrets = new SecretsClientImpl(this);
     }
 }

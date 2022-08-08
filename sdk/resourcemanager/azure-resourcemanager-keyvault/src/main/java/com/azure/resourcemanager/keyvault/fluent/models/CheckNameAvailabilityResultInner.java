@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.keyvault.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.models.Reason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CheckNameAvailability operation response. */
 @Immutable
 public final class CheckNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResultInner.class);
-
     /*
-     * A boolean value that indicates whether the name is available for you to
-     * use. If true, the name is available. If false, the name has already been
-     * taken or is invalid and cannot be used.
+     * A boolean value that indicates whether the name is available for you to use. If true, the name is available. If
+     * false, the name has already been taken or is invalid and cannot be used.
      */
     @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
-     * The reason that a vault name could not be used. The Reason element is
-     * only returned if NameAvailable is false.
+     * The reason that a vault name could not be used. The Reason element is only returned if NameAvailable is false.
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private Reason reason;

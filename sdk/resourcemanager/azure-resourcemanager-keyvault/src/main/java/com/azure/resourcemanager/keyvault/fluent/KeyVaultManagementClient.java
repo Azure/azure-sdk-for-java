@@ -46,6 +46,13 @@ public interface KeyVaultManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the KeysClient object to access its operations.
+     *
+     * @return the KeysClient object.
+     */
+    KeysClient getKeys();
+
+    /**
      * Gets the VaultsClient object to access its operations.
      *
      * @return the VaultsClient object.
@@ -67,9 +74,37 @@ public interface KeyVaultManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
+     * Gets the ManagedHsmsClient object to access its operations.
+     *
+     * @return the ManagedHsmsClient object.
+     */
+    ManagedHsmsClient getManagedHsms();
+
+    /**
+     * Gets the MhsmPrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the MhsmPrivateEndpointConnectionsClient object.
+     */
+    MhsmPrivateEndpointConnectionsClient getMhsmPrivateEndpointConnections();
+
+    /**
+     * Gets the MhsmPrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the MhsmPrivateLinkResourcesClient object.
+     */
+    MhsmPrivateLinkResourcesClient getMhsmPrivateLinkResources();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the SecretsClient object to access its operations.
+     *
+     * @return the SecretsClient object.
+     */
+    SecretsClient getSecrets();
 }
