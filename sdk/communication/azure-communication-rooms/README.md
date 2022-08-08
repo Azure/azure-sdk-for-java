@@ -202,6 +202,10 @@ public void removeRoomParticipantsWithRoomId() {
 }
 ```
 
+## Troubleshooting
+
+In progress.
+
 ## Next steps
 
 - [Read more about Rooms in Azure Communication Services][next_steps]
