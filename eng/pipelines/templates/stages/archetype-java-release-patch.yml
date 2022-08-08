@@ -6,7 +6,6 @@ parameters:
   - name: Artifacts
     type: object
     default: []
-    # JRS this is here for testing purposes
   - name: TestPipeline
     type: boolean
     default: false
@@ -34,7 +33,7 @@ stages:
     jobs:
       - deployment: SignPackage
         environment: esrp
-        timeoutInMinutes: 20
+        timeoutInMinutes: 240
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
         pool:
@@ -99,9 +98,10 @@ stages:
         - deployment: PublishPackage
           displayName: "Publish to Maven Central"
           condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
-          # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
-          # this is here to ensure larger areas (30+) libraries don't time out.
-          timeoutInMinutes: 120
+          # There are over 130 com.azure libraries. At roughly 3m 20s per ESRP release
+          # this timeout should be enough to allow release of everything. Things should
+          # change once ESRP has batch release enabled.
+          timeoutInMinutes: 540
           environment: ${{ parameters.Environment }}
           dependsOn: TagRepository
           variables:
@@ -223,11 +223,12 @@ stages:
                       CommitMsg: "Increment package versions for patch releases"
                       PRTitle: "Increment versions for patch releases"
                       PRLabels: "auto-merge"
-                      CloseAfterOpenForTesting: 'false'
+                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
         - deployment: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          timeoutInMinutes: 180
           environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
 
@@ -285,6 +286,7 @@ stages:
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          timeoutInMinutes: 120
           environment: ${{ parameters.Environment }}
           dependsOn: PublishPackage
           variables:

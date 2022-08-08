@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServices Start. */
 public final class CloudServicesStartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Start.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Start.json
      */
     /**
      * Sample code: Start Cloud Service.

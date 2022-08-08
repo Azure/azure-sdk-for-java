@@ -4,10 +4,10 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.administration.models.DocumentTypeDetails;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
+import com.azure.core.models.ResponseError;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -34,7 +34,7 @@ public final class ModelOperationDetailsHelper {
 
         void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocumentTypeDetails> docTypes);
 
-        void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError error);
+        void setError(ModelOperationDetails modelOperationDetails, ResponseError error);
 
         void setOperationId(ModelOperationDetails modelOperationDetails, String operationId);
 
@@ -74,8 +74,8 @@ public final class ModelOperationDetailsHelper {
         accessor.setDocTypes(modelOperationDetails, docTypes);
     }
 
-    static void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError documentModelOperationError) {
-        accessor.setError(modelOperationDetails, documentModelOperationError);
+    static void setError(ModelOperationDetails modelOperationDetails, ResponseError responseError) {
+        accessor.setError(modelOperationDetails, responseError);
     }
 
     static void setOperationId(ModelOperationDetails modelOperationDetails, String operationId) {

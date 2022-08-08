@@ -1,16 +1,16 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.7.0 (2022-08-05)
 
 ### Features Added
 
 - Added `AmqpClientOptions` to enable set identifier for AMQP client and link. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.19` to `3.4.21`.
 
 ## 2.6.0 (2022-06-30)
 

@@ -1,16 +1,29 @@
 # Release History
 
-## 1.31.0-beta.1 (Unreleased)
+## 1.31.0 (2022-08-05)
 
 ### Features Added
 
-### Breaking Changes
+- Added support for relative paths returned by polling operations. ([#29676](https://github.com/Azure/azure-sdk-for-java/pull/29676))
+- Added the ability to transfer the body of an `HttpResponse` to an `AsynchronousByteChannel` or `WriteableByteChannel`.
+- Added `AZURE_CLIENT_CERTIFICATE_PASSWORD` property to `Configuration`.
+- Added `AZURE_METRICS_DISABLED` property to `Configuration`.
 
 ### Bugs Fixed
 
-- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`.
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`. ([#30072](https://github.com/Azure/azure-sdk-for-java/pull/30072))
+- Fixed bug where query parameters with Base64 encoded values with trailing `=`s would be stripped. ([#30164](https://github.com/Azure/azure-sdk-for-java/pull/30164))
 
 ### Other Changes
+
+- Added additional information to log messages and exceptions when requests are retried.
+- Removed requirement for `Multi-Release: true` to be included in a manifest when creating an all-in-one JAR including `azure-core`.
+- Updated log messages to mention when there is a fallback being used.
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.19` to `3.4.21`.
 
 ## 1.30.0 (2022-06-30)
 
