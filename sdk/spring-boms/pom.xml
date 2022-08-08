@@ -5,11 +5,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-boms</artifactId>
+  <artifactId>spring-cloud-azure-boms</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>azure-sdk-bom</module>
-    <module>azure-sdk-template-bom</module>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>spring-cloud-azure-dependencies</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>spring3</id>
+      <modules>
+        <module>spring-cloud-azure-dependencies-3</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

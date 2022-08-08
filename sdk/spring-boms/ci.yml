@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/boms/
+      - sdk/spring-boms/
 
 pr:
   branches:
@@ -19,16 +19,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/boms/
+      - sdk/spring-boms/
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
   parameters:
-    ServiceDirectory: boms
+    ServiceDirectory: spring-boms
     Artifacts:
-      - name: azure-sdk-bom
-        groupId: com.azure
-        safeName: azuresdkbom
-      - name: azure-sdk-template-bom
-        groupID: com.azure
-        safeName: azuresdktemplatebom
+      - name: spring-cloud-azure-dependencies
+        groupID: com.azure.spring
+        safeName: springcloudazuredependencies
