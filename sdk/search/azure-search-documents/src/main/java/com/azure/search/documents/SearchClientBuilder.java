@@ -114,6 +114,7 @@ public final class SearchClientBuilder implements
 
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
+    private SearchAudience audience;
 
     private SearchServiceVersion serviceVersion;
     private String endpoint;
@@ -199,7 +200,7 @@ public final class SearchClientBuilder implements
         }
 
         return Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy, retryOptions,
-            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
+            azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient, LOGGER);
     }
 
     /**
@@ -243,6 +244,21 @@ public final class SearchClientBuilder implements
     @Override
     public SearchClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD).
+     * <p>
+     * The audience is not considered when using a {@link #credential(AzureKeyCredential) shared key}.
+     * <p>
+     * If {@code audience} is null the public cloud audience will be assumed.
+     *
+     * @param audience The Audience to use for authentication with Azure Active Directory (AAD).
+     * @return The updated SearchClientBuilder object.
+     */
+    public SearchClientBuilder audience(SearchAudience audience) {
+        this.audience = audience;
         return this;
     }
 
