@@ -112,6 +112,9 @@
             <goals>
               <goal>integration-test</goal>
             </goals>
+            <configuration>
+              <skipITs>true</skipITs>
+            </configuration>
           </execution>
         </executions>
       </plugin>
