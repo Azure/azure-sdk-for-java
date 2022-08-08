@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Implementation of {@link Cache} that provide static cache.
  */
 public class StaticAccessTokenCache implements Cache<String, AccessToken> {
-    private static final Map<String, AccessToken> cache = new ConcurrentHashMap<>();
+    private static Map<String, AccessToken> cache = new ConcurrentHashMap<>();
 
     @Override
     public void put(String key, AccessToken value) {
