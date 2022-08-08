@@ -32,10 +32,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <properties>
-    <skipSpringITs>true</skipSpringITs>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -117,7 +113,7 @@
               <goal>integration-test</goal>
             </goals>
             <configuration>
-              <skipITs>${skipSpringITs}</skipITs>
+              <skipITs>true</skipITs>
             </configuration>
           </execution>
         </executions>
