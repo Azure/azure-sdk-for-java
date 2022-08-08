@@ -2004,7 +2004,7 @@ public class UTF8StreamJsonParser
                     // Nope, escape sequence
                     ch = _decodeEscaped();
                 }
-                // Oh crap. May need to UTF-8 (re-)encode it, if it's beyond
+                // May need to UTF-8 (re-)encode it, if it's beyond
                 // 7-bit ASCII. Gets pretty messy. If this happens often, may
                 // want to use different name canonicalization to avoid these hits.
                 if (ch > 127) {
