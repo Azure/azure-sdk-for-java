@@ -8,7 +8,7 @@
 
 This project provides client tools or utilities in Java to query data in [Azure Application Insights](https://azure.microsoft.com/services/application-insights/). For reference documentation on classes and models, see the [Azure SDK for Java reference](https://docs.microsoft.com/java/api/overview/azure/?view=azure-java-stable). 
 
-Azure Application Insights provides SDKs for telemetry collection and enables deep analytics via a [rich query language](https://docs.loganalytics.io/index). This library provides query access to data already stored in Application Insights. To start monitoring a Java application, see the [quickstart](https://docs.microsoft.com/azure/application-insights/app-insights-java-quick-start). 
+Azure Application Insights provides SDKs for telemetry collection and enables deep analytics via a [rich query language](https://docs.microsoft.com/azure/azure-monitor/logs/log-analytics-overview). This library provides query access to data already stored in Application Insights. To start monitoring a Java application, see the [quickstart](https://docs.microsoft.com/azure/application-insights/app-insights-java-quick-start). 
 
 ## Examples
 
