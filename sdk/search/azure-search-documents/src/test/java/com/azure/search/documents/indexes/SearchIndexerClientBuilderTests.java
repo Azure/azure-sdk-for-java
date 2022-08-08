@@ -110,11 +110,6 @@ public class SearchIndexerClientBuilderTests {
     }
 
     @Test
-    public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new SearchIndexerClientBuilder().credential(null));
-    }
-
-    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("")));

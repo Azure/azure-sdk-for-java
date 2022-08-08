@@ -16,12 +16,8 @@ To see additional help and options, run:
 > `autorest --help`
 
 ### Setup
+
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout v4
-git submodule update --init --recursive
-mvn package -Dlocal -DskipTests
-npm install
 npm install -g autorest
 ```
 
@@ -38,9 +34,10 @@ autorest
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --tag=package-2021-04-30-Preview-searchindex
-autorest --tag=package-2021-04-30-Preview-searchservice
+autorest --tag=package-2020-06-searchindex
+autorest --tag=package-2020-06-searchservice
 ```
+
 ## Configuration
 
 ### Basic Information 
@@ -58,7 +55,7 @@ These settings apply only when `--tag=package-2020-06-searchindex` is specified 
 ``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d95c18e2d5fc678a1453c454d746fdce22d30122/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dbf859c7e443e2c341bafcf11c687de6916cf4ff/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode,SuggestOptions
@@ -72,7 +69,7 @@ These settings apply only when `--tag=package-2020-06-searchservice` is specifie
 ``` yaml $(tag) == 'package-2020-06-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d95c18e2d5fc678a1453c454d746fdce22d30122/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1dfd790c01ccc1a81b2d4d2fb0bff981c02182b7/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomAnalyzer,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzer,LexicalAnalyzerName,LexicalTokenizerName,LuceneStandardAnalyzer,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternAnalyzer,PatternReplaceCharFilter,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchField,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerKnowledgeStore,SearchIndexerKnowledgeStoreBlobProjectionSelector,SearchIndexerKnowledgeStoreFileProjectionSelector,SearchIndexerKnowledgeStoreObjectProjectionSelector,SearchIndexerKnowledgeStoreProjection,SearchIndexerKnowledgeStoreProjectionSelector,SearchIndexerKnowledgeStoreTableProjectionSelector,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerSkillset,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchResourceEncryptionKey,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SearchSuggester,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopAnalyzer,StopwordsList,SynonymMap,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
@@ -107,19 +104,17 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.0.60'
+use: '@autorest/java@4.1.2'
 sync-methods: none
 generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true
 service-interface-as-public: true
 required-fields-as-ctor-args: true
-license-header: |-
-  Copyright (c) Microsoft Corporation. All rights reserved.
-  Licensed under the MIT License.
-  Code generated by Microsoft (R) AutoRest Code Generator.
-  Changes may cause incorrect behavior and will be lost if the code is regenerated.
+license-header: MICROSOFT_MIT_SMALL_NO_VERSION
+disable-client-builder: true
 require-x-ms-flattened-to-flatten: true
+pass-discriminator-to-child-deserialization: true
 ```
 
 ### Set odata.metadata Accept header in operations
