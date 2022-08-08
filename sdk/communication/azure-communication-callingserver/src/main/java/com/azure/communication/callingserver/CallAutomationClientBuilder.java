@@ -325,9 +325,9 @@ public final class CallAutomationClientBuilder implements
             "false");
         isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
 
-        if ((isConnectionStringSet || isTokenCredentialSet) && isEndpointSet && !isCustomEndpointUsed) {
+        if (isConnectionStringSet && isEndpointSet && !isCustomEndpointUsed) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Both 'connectionString/tokenCredential' and 'endpoint' are set. Just one may be used."));
+                "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
         }
 
         if (((!isConnectionStringSet && !isTokenCredentialSet) || !isEndpointSet) && isCustomEndpointUsed) {
