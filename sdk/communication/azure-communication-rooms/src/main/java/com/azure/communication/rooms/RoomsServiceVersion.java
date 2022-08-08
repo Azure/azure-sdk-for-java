@@ -39,6 +39,6 @@ public enum RoomsServiceVersion implements ServiceVersion {
      * @return the latest {@link RoomsServiceVersion}
      */
     public static RoomsServiceVersion getLatest() {
-        return V2022_02_01_PREVIEW;
+        return V2022_02_01;
     }
 }
