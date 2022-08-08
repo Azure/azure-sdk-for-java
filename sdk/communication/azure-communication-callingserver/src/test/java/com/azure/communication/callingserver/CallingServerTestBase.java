@@ -61,7 +61,6 @@ public class CallingServerTestBase extends TestBase {
     protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
             .connectionString(CONNECTION_STRING)
-            .endpoint(ENDPOINT)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -76,7 +75,6 @@ public class CallingServerTestBase extends TestBase {
         TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .endpoint(ENDPOINT)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
@@ -92,7 +90,6 @@ public class CallingServerTestBase extends TestBase {
         TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
 
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .endpoint(ENDPOINT_401)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 

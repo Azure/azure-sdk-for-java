@@ -30,7 +30,6 @@ public class CallingServerResponseMocker {
         return new CallAutomationClientBuilder()
             .httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
-            .endpoint(MOCK_ENDPOINT)
             .buildAsyncClient();
     }
 
@@ -40,7 +39,6 @@ public class CallingServerResponseMocker {
         return new CallAutomationClientBuilder()
             .httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
-            .endpoint(MOCK_ENDPOINT)
             .buildClient();
     }
 
