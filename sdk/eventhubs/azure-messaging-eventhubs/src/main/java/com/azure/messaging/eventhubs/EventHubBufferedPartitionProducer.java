@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
+import com.azure.messaging.eventhubs.implementation.UncheckedInterruptedException;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
@@ -37,7 +38,6 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
  * Keeps track of publishing events to a partition.
@@ -114,32 +114,31 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 return;
             }
 
-            try {
-                if (isClosed.get()) {
-                    sink.error(new IllegalStateException(String.format("Partition publisher id[%s] was "
-                            + "closed between flushing events and now. Cannot enqueue events.", partitionId)));
-                    return;
-                }
+            if (isClosed.get()) {
+                sink.error(new IllegalStateException(String.format("Partition publisher id[%s] was "
+                    + "closed between flushing events and now. Cannot enqueue events.", partitionId)));
+                return;
+            }
 
-                eventSink.emitNext(eventData, (signalType, emitResult) -> {
-                    // If the draining queue is slower than the publishing queue.
-                    LOGGER.atInfo()
-                        .addKeyValue(PARTITION_ID_KEY, partitionId)
-                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                        .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                        .log("Could not push event downstream.");
-                    switch (emitResult) {
-                        case FAIL_OVERFLOW:
-                        case FAIL_NON_SERIALIZED:
-                            return true;
-                        default:
-                            LOGGER.info("Not trying to emit again. EmitResult: {}", emitResult);
-                            return false;
-                    }
-                });
+            final Sinks.EmitResult emitResult1 = eventSink.tryEmitNext(eventData);
+            if (emitResult1.isSuccess()) {
                 sink.success();
-            } catch (Exception e) {
-                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(), e,
+                return;
+            }
+
+            if (emitResult1 == Sinks.EmitResult.FAIL_NON_SERIALIZED || emitResult1 == Sinks.EmitResult.FAIL_OVERFLOW) {
+                // If the draining queue is slower than the publishing queue.
+                LOGGER.atInfo()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .addKeyValue(EMIT_RESULT_KEY, emitResult1)
+                    .log("Event could not be published downstream. Applying retry.");
+
+                sink.error(new AmqpException(true, emitResult1 + " occurred.", errorContext));
+            } else {
+                LOGGER.atWarning().addKeyValue(EMIT_RESULT_KEY, emitResult1)
+                    .log("Event could not be published downstream. Not retrying.", emitResult1);
+
+                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
                     errorContext));
             }
         });
@@ -361,9 +360,4 @@ class EventHubBufferedPartitionProducer implements Closeable {
         }
     }
 
-    static class UncheckedInterruptedException extends RuntimeException {
-        UncheckedInterruptedException(Throwable error) {
-            super("Unable to fetch batch.", error);
-        }
-    }
 }
