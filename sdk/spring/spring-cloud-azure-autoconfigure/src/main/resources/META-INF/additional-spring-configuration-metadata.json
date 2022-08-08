@@ -1514,6 +1514,12 @@
       "type": "java.lang.String",
       "description": "Tenant ID for Azure resources.",
       "sourceType": "com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties"
+    },
+    {
+      "name": "spring.datasource.azure.profile.cloud-type",
+      "type": "java.lang.String",
+      "description": "Name of the Azure cloud to connect to.",
+      "sourceType": "com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties"
     }
   ],
   "hints": [
