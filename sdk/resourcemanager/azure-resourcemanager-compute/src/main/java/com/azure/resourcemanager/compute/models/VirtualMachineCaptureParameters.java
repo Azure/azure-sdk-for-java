@@ -24,8 +24,7 @@ public final class VirtualMachineCaptureParameters {
     private String destinationContainerName;
 
     /*
-     * Specifies whether to overwrite the destination virtual hard disk, in
-     * case of conflict.
+     * Specifies whether to overwrite the destination virtual hard disk, in case of conflict.
      */
     @JsonProperty(value = "overwriteVhds", required = true)
     private boolean overwriteVhds;

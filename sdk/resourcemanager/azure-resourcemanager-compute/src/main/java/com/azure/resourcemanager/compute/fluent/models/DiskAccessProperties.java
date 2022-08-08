@@ -13,8 +13,8 @@ import java.util.List;
 @Immutable
 public final class DiskAccessProperties {
     /*
-     * A readonly collection of private endpoint connections created on the
-     * disk. Currently only one endpoint connection is supported.
+     * A readonly collection of private endpoint connections created on the disk. Currently only one endpoint
+     * connection is supported.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;

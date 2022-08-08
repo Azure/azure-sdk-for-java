@@ -20,8 +20,7 @@ public final class DiskList {
     private List<DiskInner> value;
 
     /*
-     * The uri to fetch the next page of disks. Call ListNext() with this to
-     * fetch the next page of disks.
+     * The uri to fetch the next page of disks. Call ListNext() with this to fetch the next page of disks.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

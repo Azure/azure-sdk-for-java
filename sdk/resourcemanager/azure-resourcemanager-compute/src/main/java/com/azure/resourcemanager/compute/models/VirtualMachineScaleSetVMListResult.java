@@ -20,8 +20,8 @@ public final class VirtualMachineScaleSetVMListResult {
     private List<VirtualMachineScaleSetVMInner> value;
 
     /*
-     * The uri to fetch the next page of Virtual Machine Scale Set VMs. Call
-     * ListNext() with this to fetch the next page of VMSS VMs
+     * The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next
+     * page of VMSS VMs
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

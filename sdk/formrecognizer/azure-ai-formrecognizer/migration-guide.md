@@ -522,10 +522,13 @@ Build a custom document model using 4.x.x `beginBuildModel`:
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+String prefix = "{blob_name_prefix}}";
 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
         DocumentModelBuildMode.TEMPLATE,
-        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
+        prefix,
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"),
+        Context.NONE);
 
 DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
@@ -570,6 +573,6 @@ For additional samples please take a look at the [Form Recognizer samples][READM
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md
-<!-- [service_supported_models]: TODO -->
+[service_supported_models]: https://aka.ms/azsdk/formrecognizer/models
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2Fmigration-guide.png)

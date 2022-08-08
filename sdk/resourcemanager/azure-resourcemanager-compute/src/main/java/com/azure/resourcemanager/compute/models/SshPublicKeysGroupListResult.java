@@ -20,8 +20,8 @@ public final class SshPublicKeysGroupListResult {
     private List<SshPublicKeyResourceInner> value;
 
     /*
-     * The URI to fetch the next page of SSH public keys. Call ListNext() with
-     * this URI to fetch the next page of SSH public keys.
+     * The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH
+     * public keys.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

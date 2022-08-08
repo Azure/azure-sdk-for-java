@@ -20,8 +20,7 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineImageProperties {
     /*
-     * Used for establishing the purchase context of any 3rd Party artifact
-     * through MarketPlace.
+     * Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
      */
     @JsonProperty(value = "plan")
     private PurchasePlan plan;
@@ -51,8 +50,7 @@ public final class VirtualMachineImageProperties {
     private HyperVGenerationTypes hyperVGeneration;
 
     /*
-     * Specifies disallowed configuration for the VirtualMachine created from
-     * the image
+     * Specifies disallowed configuration for the VirtualMachine created from the image
      */
     @JsonProperty(value = "disallowed")
     private DisallowedConfiguration disallowed;

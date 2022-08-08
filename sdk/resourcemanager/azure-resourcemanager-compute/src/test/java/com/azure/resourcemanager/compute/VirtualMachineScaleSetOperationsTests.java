@@ -493,7 +493,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withDeploymentEnabled()
                 .create();
         final InputStream embeddedJsonConfig =
-            VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/myTest.txt");
+            this.getClass().getResourceAsStream("/myTest.txt");
         String secretValue = IOUtils.toString(embeddedJsonConfig, StandardCharsets.UTF_8);
         Secret secret = vault.secrets().define(secretName).withValue(secretValue).create();
         List<VaultCertificate> certs = new ArrayList<>();

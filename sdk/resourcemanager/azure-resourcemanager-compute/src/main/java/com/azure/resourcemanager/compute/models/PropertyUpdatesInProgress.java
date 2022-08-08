@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PropertyUpdatesInProgress {
     /*
-     * The target performance tier of the disk if a tier change operation is in
-     * progress.
+     * The target performance tier of the disk if a tier change operation is in progress.
      */
     @JsonProperty(value = "targetTier")
     private String targetTier;
