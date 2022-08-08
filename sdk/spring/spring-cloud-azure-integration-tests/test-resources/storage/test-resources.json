@@ -159,6 +159,32 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storageAccountsName'), '/default/blobcontainer')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+      "apiVersion": "2021-09-01",
+      "name": "[concat(parameters('storageAccountsName'), '/default/fileshare')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccountsName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountsName'))]"
+      ],
+      "properties": {
+        "accessTier": "TransactionOptimized",
+        "shareQuota": 5120,
+        "enabledProtocols": "SMB"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default/test-eventhub-message')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
@@ -234,9 +260,17 @@
       "type": "string",
       "value": "[variables('storageAccountsName')]"
     },
-    "AZURE_STORAGE_CONTAINER_NAME": {
+    "AZURE_STORAGE_CONTAINER_NAME_FOR_EVENTHUB": {
       "type": "string",
       "value": "processorcontainer"
+    },
+    "AZURE_STORAGE_CONTAINER_NAME_FOR_BLOB": {
+      "type": "string",
+      "value": "blobcontainer"
+    },
+    "AZURE_STORAGE_CONTAINER_NAME_FOR_FILE": {
+      "type": "string",
+      "value": "fileshare"
     },
     "AZURE_STORAGE_ACCOUNT_KEY": {
       "type": "string",
@@ -253,14 +287,6 @@
     "AZURE_STORAGE_QUEUE_NAME": {
       "type": "string",
       "value": "test"
-    },
-    "AZURE_STORAGE_RESOURCE_BLOB": {
-      "type": "string",
-      "value": "azure-blob://blobcontainer/blob.txt"
-    },
-    "AZURE_STORAGE_RESOURCE_FILE": {
-      "type": "string",
-      "value": "azure-file://fileshare/fileshare.txt"
     }
   }
 }
