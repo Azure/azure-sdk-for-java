@@ -77,6 +77,33 @@ public class ReadmeSamples {
         return roomsClient;
     }
 
+    // BEGIN: readme-sample-createRoomWithValidInput
+    public void createRoomWithValidInput() {
+        OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+        OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+        List<RoomParticipant> participants = new ArrayList<>();
+        // Add two participants
+        participants.add(new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("<ACS User MRI identity 1>")).setRole(RoleType.ATTENDEE));
+        participants.add(new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(RoleType.CONSUMER));
+
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        CommunicationRoom roomResult = roomsClient.createRoom(validFrom, validUntil, RoomJoinPolicy.INVITE_ONLY, participants);
+        System.out.println("Room Id: " + roomResult.getRoomId());
+    }
+    // END: readme-sample-createRoomWithValidInput
+    
+    // BEGIN: readme-sample-createOpenRoomWithValidInput
+    public void createOpenRoomWithValidInput() {
+        OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+        OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        CommunicationRoom roomResult = roomsClient.createRoom(validFrom, validUntil, RoomJoinPolicy.INVITE_ONLY, null);
+        System.out.println("Room Id: " + roomResult.getRoomId());
+    }
+    // END: readme-sample-createOpenRoomWithValidInput
+    
+
     public void createRoomWithParticipants() {
         OffsetDateTime validFrom = OffsetDateTime.of(2022, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
         OffsetDateTime validUntil = OffsetDateTime.of(2022, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
@@ -100,6 +127,7 @@ public class ReadmeSamples {
         System.out.println("Room Id: " + roomResult.getRoomId());
     }
 
+    // BEGIN: readme-sample-updateRoomWithRoomId
     public void updateRoomWithRoomId() {
         OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
         OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
@@ -117,7 +145,9 @@ public class ReadmeSamples {
             System.out.println(ex);
         }
     }
+    // END: readme-sample-updateRoomWithRoomId
 
+    // BEGIN: readme-sample-getRoomWithRoomId
     public void getRoomWithRoomId() {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
         try {
@@ -127,7 +157,9 @@ public class ReadmeSamples {
             System.out.println(ex);
         }
     }
+    // END: readme-sample-getRoomWithRoomId
 
+    // BEGIN: readme-sample-deleteRoomWithRoomId
     public void deleteRoomWithRoomId() {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
         try {
@@ -136,7 +168,9 @@ public class ReadmeSamples {
             System.out.println(ex);
         }
     }
+    // END: readme-sample-deleteRoomWithRoomId
 
+    // BEGIN: readme-sample-addRoomParticipantsWithRoomId
     public void addRoomParticipantsWithRoomId() {
         RoomParticipant user1 = new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd9")).setRole(RoleType.ATTENDEE);
         RoomParticipant user2 = new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd7")).setRole(RoleType.PRESENTER);
@@ -153,7 +187,9 @@ public class ReadmeSamples {
             System.out.println(ex);
         }
     }
+    // END: readme-sample-addRoomParticipantsWithRoomId
 
+    // BEGIN: readme-sample-removeRoomParticipantsWithRoomId
     public void removeRoomParticipantsWithRoomId() {
         RoomParticipant user1 = new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd9")).setRole(RoleType.ATTENDEE);
         RoomParticipant user2 = new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd7")).setRole(RoleType.PRESENTER);
@@ -169,7 +205,8 @@ public class ReadmeSamples {
             System.out.println(ex);
         }
     }
-
+    // END: readme-sample-removeRoomParticipantsWithRoomId
+    
     public void updateRoomParticipantsWithRoomId() {
         RoomParticipant user1 = new RoomParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("8:acs:b6372803-0c35-4ec0-833b-c19b798cef2d_0000000e-3240-55cf-9806-113a0d001dd9")).setRole(RoleType.PRESENTER);
 
@@ -180,19 +217,6 @@ public class ReadmeSamples {
             ParticipantsCollection roomParticipants =  roomsClient.updateParticipants("<Room Id>", participants);
             System.out.println("Room Id: " + roomParticipants.getParticipants().size());
 
-        } catch (RuntimeException ex) {
-            System.out.println(ex);
-        }
-    }
-
-    public void deleteAllParticipantsWithEmptyPayload() {
-        RoomsClient roomsClient = createRoomsClientWithConnectionString();
-        List<RoomParticipant> participants = new ArrayList<RoomParticipant>(); // Empty participants list
-
-        try {
-            CommunicationRoom deleteAllParticipantsRoom =  roomsClient.updateRoom("<Room Id>", null, null, null, participants);
-            System.out.println("Room Id: " + deleteAllParticipantsRoom.getRoomId());
-            System.out.println("No. of Participants in room: " + deleteAllParticipantsRoom.getParticipants().size());
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
