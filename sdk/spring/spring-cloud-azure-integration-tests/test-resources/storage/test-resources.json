@@ -171,10 +171,10 @@
     {
       "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
       "apiVersion": "2021-09-01",
-      "name": "[concat(parameters('storageAccountsName'), '/default/fileshare')]",
+      "name": "[concat(variables('storageAccountsName'), '/default/fileshare')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccountsName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountsName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', variables('storageAccountsName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
       ],
       "properties": {
         "accessTier": "TransactionOptimized",
