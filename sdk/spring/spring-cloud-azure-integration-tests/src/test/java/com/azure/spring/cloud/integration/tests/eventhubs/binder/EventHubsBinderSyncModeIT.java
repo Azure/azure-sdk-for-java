@@ -25,10 +25,6 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource(properties =
-    {
-    "spring.cloud.stream.eventhubs.bindings.supply-out-0.producer.sync=true"
-    })
 @ActiveProfiles(value = { "eventhubs-binder", "sync" })
 class EventHubsBinderSyncModeIT {
 

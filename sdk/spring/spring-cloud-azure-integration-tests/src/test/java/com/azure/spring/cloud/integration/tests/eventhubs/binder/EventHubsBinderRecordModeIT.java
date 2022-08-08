@@ -25,10 +25,6 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource(properties =
-    {
-    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=RECORD",
-    })
 @ActiveProfiles(value = { "eventhubs-binder", "record" })
 class EventHubsBinderRecordModeIT {
 

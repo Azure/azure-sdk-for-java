@@ -26,14 +26,6 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource(properties =
-    {
-    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=BATCH",
-    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-size=10",
-    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-wait-time=2s",
-    "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
-    "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
-    })
 @ActiveProfiles(value = { "eventhubs-binder", "batch" })
 class EventHubsBinderBatchModeIT {
 

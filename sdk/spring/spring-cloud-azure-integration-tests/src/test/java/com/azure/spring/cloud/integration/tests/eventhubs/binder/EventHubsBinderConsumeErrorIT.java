@@ -26,10 +26,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@TestPropertySource(properties =
-    {
-    "spring.cloud.stream.eventhubs.default.consumer.checkpoint.mode=MANUAL"
-    })
 @ActiveProfiles(value = { "eventhubs-binder", "message" })
 class EventHubsBinderConsumeErrorIT {
 
