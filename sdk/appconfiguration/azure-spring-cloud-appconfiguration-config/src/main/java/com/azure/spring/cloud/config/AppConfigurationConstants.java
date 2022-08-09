@@ -32,6 +32,11 @@ public class AppConfigurationConstants {
      * Feature Store Prefix
      */
     public static final String FEATURE_STORE_SUFFIX = ".appconfig";
+    
+    /**
+     * Separator for multiple labels.
+     */
+    public static final String LABEL_SEPARATOR = ",";
 
     /**
      * Key for returning all feature flags

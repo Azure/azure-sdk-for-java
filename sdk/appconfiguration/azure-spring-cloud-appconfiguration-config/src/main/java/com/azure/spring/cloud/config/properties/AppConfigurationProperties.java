@@ -33,6 +33,11 @@ public final class AppConfigurationProperties {
      * Prefix for client configurations for connecting to configuration stores.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
+    
+    /**
+     * Separator for multiple labels.
+     */
+    public static final String LABEL_SEPARATOR = ",";
 
     /**
      * Context for loading configuration keys.

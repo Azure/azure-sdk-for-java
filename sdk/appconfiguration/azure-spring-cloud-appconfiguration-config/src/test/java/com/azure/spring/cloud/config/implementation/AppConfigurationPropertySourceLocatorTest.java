@@ -16,10 +16,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -422,7 +425,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(configStoreMockError.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
-        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(List.of(replicaClientMock));
+        when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.listSettings(Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());

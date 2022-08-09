@@ -53,19 +53,19 @@ public class AppConfigurationBootstrapConfiguration {
         SecretClientBuilderSetup keyVaultClientProvider = null;
         KeyVaultSecretProvider keyVaultSecretProvider = null;
 
-        if (keyVaultCredentialProviderOptional.isEmpty()) {
+        if (!keyVaultCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
             keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get();
         }
 
-        if (keyVaultClientProviderOptional.isEmpty()) {
+        if (!keyVaultClientProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
             keyVaultClientProvider = keyVaultClientProviderOptional.get();
         }
 
-        if (keyVaultSecretProviderOptional.isEmpty()) {
+        if (!keyVaultSecretProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultSecretProvider found.");
         } else {
             keyVaultSecretProvider = keyVaultSecretProviderOptional.get();
@@ -119,13 +119,13 @@ public class AppConfigurationBootstrapConfiguration {
         AppConfigurationCredentialProvider tokenCredentialProvider = null;
         ConfigurationClientBuilderSetup clientProvider = null;
 
-        if (tokenCredentialProviderOptional.isEmpty()) {
+        if (!tokenCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationCredentialProvider found.");
         } else {
             tokenCredentialProvider = tokenCredentialProviderOptional.get();
         }
 
-        if (clientProviderOptional.isEmpty()) {
+        if (!clientProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationClientProvider found.");
         } else {
             clientProvider = clientProviderOptional.get();
