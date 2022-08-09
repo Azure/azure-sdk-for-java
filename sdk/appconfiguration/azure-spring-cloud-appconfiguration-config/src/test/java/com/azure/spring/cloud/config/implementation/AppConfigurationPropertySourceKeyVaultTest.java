@@ -22,8 +22,9 @@ import static com.azure.spring.cloud.config.implementation.TestUtils.createSecre
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -33,9 +34,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -49,14 +48,11 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class AppConfigurationPropertySourceKeyVaultTest {
 
     public static final List<ConfigurationSetting> TEST_ITEMS = new ArrayList<>();
-
-    public static final List<ConfigurationSetting> FEATURE_ITEMS = new ArrayList<>();
 
     private static final String EMPTY_CONTENT_TYPE = "";
 
@@ -93,24 +89,6 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretAsyncClient clientMock;
 
     @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
-
-    @Mock
-    private List<PagedResponse<ConfigurationSetting>> itemsMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedResponseMock;
-
-    @Mock
     private PagedIterable<ConfigurationSetting> pagedFluxMock;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
@@ -127,8 +105,6 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         appProperties.setMaxRetryTime(0);
         ConfigStore testStore = new ConfigStore();
         testStore.setEndpoint(TEST_STORE_NAME);
-        ArrayList<String> contexts = new ArrayList<String>();
-        contexts.add("/application/*");
         AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(testStore, selects, new ArrayList<>(),
@@ -146,10 +122,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     }
 
     @Test
-    public void testKeyVaultTest() throws Exception {
+    public void testKeyVaultTest() throws AppConfigurationStatusException, IOException {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
         when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+            .thenReturn(Collections.emptyIterator());
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);

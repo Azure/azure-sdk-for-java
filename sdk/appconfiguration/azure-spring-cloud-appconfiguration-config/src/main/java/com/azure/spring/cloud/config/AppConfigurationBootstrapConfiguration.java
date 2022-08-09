@@ -100,7 +100,6 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
-     * @param env used to check it if it is a dev environment
      * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App
      * Configuration.
      * @param clientProviderOptional Optional client for overriding Client Connections to App Configuration stores.
@@ -116,8 +115,9 @@ public class AppConfigurationBootstrapConfiguration {
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
-        
-        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(appProperties.getMaxRetries());
+
+        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
+            appProperties.getMaxRetries());
 
         if (!tokenCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationCredentialProvider found.");

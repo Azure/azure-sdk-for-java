@@ -64,7 +64,7 @@ class State {
     }
 
     /**
-     * @param refreshAttempt the refreshAttempt to set
+     * Adds 1 to the number of refresh attempts
      */
     public void incrementRefreshAttempt() {
         this.refreshAttempt += 1;

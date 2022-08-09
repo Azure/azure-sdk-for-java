@@ -41,7 +41,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     final boolean isKeyVaultConfigured;
 
     /**
-     * App Configuraiton Http Pipeline Policy
+     * App Configuration Http Pipeline Policy
      * @param isDev is using dev profile
      * @param isKeyVaultConfigured is key vault configured
      */

@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -39,7 +38,7 @@ public class AppConfigurationPullRefreshTest {
     private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
 
         eventData = new RefreshEventData();
@@ -47,7 +46,7 @@ public class AppConfigurationPullRefreshTest {
     }
 
     @AfterEach
-    public void cleanupMethod(TestInfo testInfo) throws Exception {
+    public void cleanupMethod() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 

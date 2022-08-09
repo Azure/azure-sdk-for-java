@@ -71,7 +71,7 @@ public class AppConfigurationRefreshUtilTest {
     private FeatureFlagStore featureStore = new FeatureFlagStore();
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
 
         featureStore.setEnabled(true);
@@ -252,7 +252,7 @@ public class AppConfigurationRefreshUtilTest {
         State newState = new State(watchKeysFeatureFlags, Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
             endpoint);
 
-        // Config Store returns an new feature flag
+        // Config Store returns a new feature flag
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(flagsPagedIterableMock);
         when(flagsPagedIterableMock.iterator()).thenReturn(listedKeys.iterator());
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
@@ -438,10 +438,10 @@ public class AppConfigurationRefreshUtilTest {
         // Refresh Time, trigger refresh
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
 
-        ConfigurationSetting refeshKey = new ConfigurationSetting().setKey(KEY_FILTER).setLabel(EMPTY_LABEL)
+        ConfigurationSetting refreshKey = new ConfigurationSetting().setKey(KEY_FILTER).setLabel(EMPTY_LABEL)
             .setETag("new");
 
-        when(clientOriginMock.getWatchKey(Mockito.anyString(), Mockito.anyString())).thenReturn(refeshKey);
+        when(clientOriginMock.getWatchKey(Mockito.anyString(), Mockito.anyString())).thenReturn(refreshKey);
 
         State newState = new State(generateWatchKeys(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
