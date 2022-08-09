@@ -3,10 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedProcessorBuilderImpl;
-import com.azure.cosmos.models.ChangeFeedMode;
-import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
@@ -36,8 +33,6 @@ public class ChangeFeedProcessorBuilder {
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private Consumer<List<JsonNode>> partitionKeyBasedLeaseConsumer;
-    private Consumer<List<ChangeFeedProcessorItem>> epkRangeBasedLeaseConsumer;
-    private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
 
     /**
      * Instantiates a new Cosmos a new ChangeFeedProcessor builder.
@@ -104,45 +99,6 @@ public class ChangeFeedProcessorBuilder {
     }
 
     /**
-     * Sets a consumer function which will be called to process changes for full fidelity
-     *
-     * <pre>
-     * {@code
-     *     ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
-     *             .hostName(hostName)
-     *             .feedContainer(feedContainer)
-     *             .leaseContainer(leaseContainer)
-     *             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-     *             .handleAllChanges(docs -> {
-     *                 for (ChangeFeedProcessorItem item : docs) {
-     *                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
-     *                 }
-     *             })
-     *             .buildChangeFeedProcessor();
-     * }
-     * </pre>
-     *
-     * @param consumer the {@link Consumer} to call for handling the feeds.
-     * @return current Builder.
-     */
-    //  TODO:(kuthapar) - finalize the name for this.
-    //  Full Fidelity -> operationLogs
-    //  Incremental -> itemLogs
-    //  handleChangesWithOperationLogs() ?
-    //  handleChangesWithFullFidelity() ?
-    //  handleChangesForFullFidelity() ?
-    //  handleOperationChanges() ?
-    //  Future options -> handleChangesWithMergeSupport() ?
-    //  Future options -> handleChangesWithLogicalPartition() ?
-    //  Or keep it generic and open for future -> handleChangesV1() ?
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ChangeFeedProcessorBuilder handleAllChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
-        this.epkRangeBasedLeaseConsumer = consumer;
-
-        return this;
-    }
-
-    /**
      * Sets the {@link ChangeFeedProcessorOptions} to be used.
      * Unless specifically set the default values that will be used are:
      * <ul>
@@ -164,19 +120,6 @@ public class ChangeFeedProcessorBuilder {
     }
 
     /**
-     * Sets the Change Feed Mode to be used with this {@link ChangeFeedProcessor}.
-     * Unless specifically set, the default will be {@link ChangeFeedMode#INCREMENTAL} to support backward-compatibility.
-     *
-     * @param changeFeedMode changeFeedMode to be used for this {@link ChangeFeedProcessor}
-     * @return current Builder
-     */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ChangeFeedProcessorBuilder changeFeedMode(ChangeFeedMode changeFeedMode) {
-        this.changeFeedMode = changeFeedMode;
-        return this;
-    }
-
-    /**
      * Builds a new instance of the {@link ChangeFeedProcessor} with the specified configuration.
      *
      * @return an instance of {@link ChangeFeedProcessor}.
@@ -184,30 +127,17 @@ public class ChangeFeedProcessorBuilder {
     public ChangeFeedProcessor buildChangeFeedProcessor() {
         validateChangeFeedProcessorBuilder();
 
-        if (ChangeFeedMode.INCREMENTAL.equals(changeFeedMode)) {
-            ChangeFeedProcessorBuilderImpl builder = new ChangeFeedProcessorBuilderImpl()
-                .hostName(this.hostName)
-                .feedContainer(this.feedContainer)
-                .leaseContainer(this.leaseContainer)
-                .handleChanges(this.partitionKeyBasedLeaseConsumer);
+        ChangeFeedProcessorBuilderImpl builder = new ChangeFeedProcessorBuilderImpl()
+            .hostName(this.hostName)
+            .feedContainer(this.feedContainer)
+            .leaseContainer(this.leaseContainer)
+            .handleChanges(this.partitionKeyBasedLeaseConsumer);
 
-            if (this.changeFeedProcessorOptions != null) {
-                builder.options(this.changeFeedProcessorOptions);
-            }
-
-            return builder.build();
-        } else {
-            com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedProcessorBuilderImpl builder =
-                new com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedProcessorBuilderImpl()
-                    .hostName(this.hostName)
-                    .feedContainer(this.feedContainer)
-                    .leaseContainer(this.leaseContainer)
-                    .handleChanges(this.epkRangeBasedLeaseConsumer);
-            if (this.changeFeedProcessorOptions != null) {
-                builder.options(this.changeFeedProcessorOptions);
-            }
-            return builder.build();
+        if (this.changeFeedProcessorOptions != null) {
+            builder.options(this.changeFeedProcessorOptions);
         }
+
+        return builder.build();
     }
 
     private void validateChangeFeedProcessorBuilder() {
@@ -220,16 +150,6 @@ public class ChangeFeedProcessorBuilder {
         if (leaseContainer == null) {
             throw new IllegalArgumentException("leaseContainer cannot be null");
         }
-        if ((partitionKeyBasedLeaseConsumer == null && epkRangeBasedLeaseConsumer == null)
-            || (partitionKeyBasedLeaseConsumer != null && epkRangeBasedLeaseConsumer != null)) {
-            throw new IllegalArgumentException("expecting either incremental or full fidelity consumer for handling change feed processor changes");
-        }
-        if (ChangeFeedMode.INCREMENTAL.equals(changeFeedMode) && partitionKeyBasedLeaseConsumer == null) {
-            throw new IllegalArgumentException("consumer for handling change feed processor incremental changes cannot be null when using incremental mode");
-        }
-        if (ChangeFeedMode.FULL_FIDELITY.equals(changeFeedMode) && epkRangeBasedLeaseConsumer == null) {
-            throw new IllegalArgumentException("consumer for handling change feed processor full fidelity changes cannot be null when using full fidelity mode");
-        }
         validateChangeFeedProcessorOptions();
     }
 
@@ -241,16 +161,6 @@ public class ChangeFeedProcessorBuilder {
             // Lease renewer task must execute at a faster frequency than expiration setting; otherwise this will
             //  force a lot of resets and lead to a poor overall performance of ChangeFeedProcessor.
             throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
-        }
-        //  Some extra checks for full fidelity mode
-        if (ChangeFeedMode.FULL_FIDELITY.equals(changeFeedMode)) {
-            if (this.changeFeedProcessorOptions.getStartTime() != null) {
-                throw new IllegalStateException("changeFeedProcessorOptions: Full fidelity change feed is not supported for startTime option.");
-            }
-
-            if (this.changeFeedProcessorOptions.isStartFromBeginning()) {
-                throw new IllegalStateException("changeFeedProcessorOptions: Full fidelity change feed is not supported for startFromBeginning option.");
-            }
         }
     }
 }

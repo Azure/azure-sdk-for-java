@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
-import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;

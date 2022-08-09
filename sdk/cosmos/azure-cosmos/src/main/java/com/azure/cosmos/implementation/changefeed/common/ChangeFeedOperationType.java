@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
