@@ -46,6 +46,11 @@ public class FileParallelUploadOptions {
         this.data = null;
     }
 
+    /**
+     * Constructs a new {@code FileParallelUploadOptions}.
+     *
+     * @param data The {@link BinaryData} to write to the file.
+     */
     public FileParallelUploadOptions(BinaryData data) {
         StorageImplUtils.assertNotNull("data must not be null", data);
         StorageImplUtils.assertNotNull("data must have defined length", data.getLength());
