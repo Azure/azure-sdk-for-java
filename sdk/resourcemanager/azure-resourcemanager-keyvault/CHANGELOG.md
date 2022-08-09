@@ -2,6 +2,14 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Removed class `PrivateEndpointConnectionsDeleteHeaders`.
+- Removed class `PrivateEndpointConnectionsDeleteResponse`.
+- Added parameter `HttpHeaders` to the constructor of class `PrivateEndpointConnectionsPutHeaders`.
+- Changed return type of method `actionsRequired` in `PrivateLinkServiceConnectionState` from `String` to `ActionsRequired`.
+- Changed parameter type of method `withActionsRequired` in `PrivateLinkServiceConnectionState` from `String` to `ActionsRequired`.
+
 ### Other Changes
 
 #### Dependency Updates
