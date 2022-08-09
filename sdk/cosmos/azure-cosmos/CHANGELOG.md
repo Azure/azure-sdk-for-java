@@ -3,7 +3,7 @@
 ### 4.35.0-beta.1 (Unreleased)
 
 #### Features Added
-* //TODO:(kuthapar) - add changelog for FFCF CFP
+* Added new preview APIs to `ChangeFeedProcessor` for handling all changes - See [PR 30169](https://github.com/Azure/azure-sdk-for-java/pull/30169)
 
 #### Breaking Changes
 

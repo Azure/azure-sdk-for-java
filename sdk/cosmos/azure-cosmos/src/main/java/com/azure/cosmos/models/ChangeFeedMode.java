@@ -8,7 +8,7 @@ import com.azure.cosmos.util.Beta;
 /**
  * Change feed mode
  */
-@Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ChangeFeedMode {
     /**
      * Incremental mode
