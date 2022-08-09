@@ -28,7 +28,7 @@ public class SpringDataCosmosIT {
         User testUser = new User(USER_ID, "testFirstName", "testLastName", "test address line one");
         userRepository.save(testUser);
         Optional<User> user = userRepository.findById(USER_ID);
-        Assertions.assertEquals(Optional.of(testUser), user);
+        Assertions.assertEquals(testUser, user.get());
         userRepository.delete(testUser);
         Assertions.assertFalse(userRepository.findById(USER_ID).isPresent());
         LOGGER.info("SpringDataCosmosIT end.");
