@@ -6,8 +6,8 @@
     "JavaTestVersion": "1.17",
     "TestGoals": "surefire:test",
     "VersionOverrides": [
-      "reactor_3.4",
-      "reactor_3.5"
+      "reactor_2020",
+      "reactor_2022"
     ],
     "AZURE_VERSION_OVERRIDE_TESTS": true,
     "TestFromSource": true

@@ -248,7 +248,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
 
     if version_overrides and not version_overrides.startswith('$'):
         # Azure DevOps passes '$(VersionOverrides)' when the variable value is not set
-        load_version_overrides("eng/versioning/alternative_external_dependency_versions.json", ext_dep_map, version_overrides)
+        load_version_overrides("eng/versioning/supported_external_dependency_versions.json", ext_dep_map, version_overrides)
 
     display_version_info(version_map)
     display_version_info(ext_dep_map)
@@ -296,7 +296,7 @@ def main():
     parser.add_argument('--auto-version-increment', '--avi', action='store_true', help='If this script is being run after an auto version increment, add changelog entry for new version')
     # Comma separated list artifacts, has to be split into an array. If we're not skipping README updates, only update MD files for entries for the list of libraries passed in
     parser.add_argument('--library-list', '--ll', nargs='?', help='(Optional) Comma seperated list of groupId:artifactId. If updating MD files, only update entries in this list.')
-    parser.add_argument('--version_override', '--vo', nargs='?', help='(Optional) identifier of version update configuratation matching entry in alternative_external_dependency_versions.json')
+    parser.add_argument('--version_override', '--vo', nargs='?', help='(Optional) identifier of version update configuratation matching (exactly) first-level identifier in supported_external_dependency_versions.json')
     args = parser.parse_args()
     if args.build_type == BuildType.management:
         raise ValueError('{} is not currently supported.'.format(BuildType.management.name))
