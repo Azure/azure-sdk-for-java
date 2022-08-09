@@ -69,8 +69,8 @@ public class CallMediaAsync {
      * @return Void for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> playAll(PlaySource playSource) {
-        return playAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> playToAll(PlaySource playSource) {
+        return playToAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -99,7 +99,7 @@ public class CallMediaAsync {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource, PlayOptions options) {
+    public Mono<Response<Void>> playToAllWithResponse(PlaySource playSource, PlayOptions options) {
         return playWithResponseInternal(playSource, Collections.emptyList(), options, null);
     }
 

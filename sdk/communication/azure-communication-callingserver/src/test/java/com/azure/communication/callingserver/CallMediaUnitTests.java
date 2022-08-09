@@ -50,7 +50,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void playFileToAllWithResponseTest() {
-        Response<Void> response = callMedia.playAllWithResponse(playSource, playOptions, Context.NONE);
+        Response<Void> response = callMedia.playToAllWithResponse(playSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 

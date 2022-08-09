@@ -46,8 +46,8 @@ public class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void playAll(PlaySource playSource) {
-        callMediaAsync.playAll(playSource).block();
+    public void playToAll(PlaySource playSource) {
+        callMediaAsync.playToAll(playSource).block();
     }
 
     /**
@@ -78,7 +78,7 @@ public class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
+    public Response<Void> playToAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
         return callMediaAsync
             .playWithResponseInternal(playSource, Collections.emptyList(), options, context)
             .block();
