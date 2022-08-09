@@ -12,6 +12,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
@@ -72,11 +74,6 @@ public abstract class JsonWriterContractTests {
                 .writeString("value").writeEndObject()), "{\"fieldName\":\"value\"}"),
 
             // Value handling.
-
-            // Non-null
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeNonNull(null, JsonWriter::writeString)), ""),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeNonNull("null", JsonWriter::writeString)),
-                "\"null\""),
 
             // Binary
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null)), "null"),
@@ -153,8 +150,7 @@ public abstract class JsonWriterContractTests {
 
             // Field name and value.
             // Binary
-            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBinaryField("field", null)),
-                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBinaryField("field", null)), "{}"),
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBinaryField("field", new byte[0])),
                 "{\"field\":\"\"}"),
             Arguments.of(createJsonObjectConsumer(
@@ -166,8 +162,7 @@ public abstract class JsonWriterContractTests {
                 "{\"field\":true}"),
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", false)),
                 "{\"field\":false}"),
-            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", null)),
-                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", null)), "{}"),
 
             // Double
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", -42D)),
@@ -206,8 +201,7 @@ public abstract class JsonWriterContractTests {
                 "{\"field\":null}"),
 
             // Number
-            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeNumberField("field", null)),
-                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeNumberField("field", null)), "{}"),
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeNumberField("field", -42D)),
                 "{\"field\":-42.0}"),
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeNumberField("field", -42.0D)),
@@ -242,8 +236,7 @@ public abstract class JsonWriterContractTests {
                 "{\"field\":-42}"),
 
             // String
-            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", null)),
-                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", null)), "{}"),
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", "")),
                 "{\"field\":\"\"}"),
             Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", "null")),
@@ -481,6 +474,48 @@ public abstract class JsonWriterContractTests {
             Arguments.of(createJsonConsumer(jsonWriter ->
                     jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartArray().writeEndArray()),
                 JsonWriteState.OBJECT)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("nullPointerExceptionsSupplier")
+    public void nullPointerExceptions(Consumer<JsonWriter> consumer) {
+        assertThrows(NullPointerException.class, () -> consumer.accept(getJsonWriter()));
+    }
+
+    private static Stream<Consumer<JsonWriter>> nullPointerExceptionsSupplier() {
+        return Stream.of(
+            jsonWriter -> jsonWriter.writeStartObject(null),
+            jsonWriter -> jsonWriter.writeStartArray(null),
+            jsonWriter -> jsonWriter.writeFieldName(null),
+            jsonWriter -> jsonWriter.writeArray((Object[]) null, null),
+            jsonWriter -> jsonWriter.writeArray(Collections.emptyList(), null),
+            jsonWriter -> jsonWriter.writeMap(null, null),
+            jsonWriter -> jsonWriter.writeRawValue(null),
+
+            jsonWriter -> jsonWriter.writeNullableField(null, null, (writer, obj) -> { }),
+            jsonWriter -> jsonWriter.writeNullableField("field", null, null),
+            jsonWriter -> jsonWriter.writeJsonField(null, null),
+            jsonWriter -> jsonWriter.writeArrayField(null, (Object[]) null, (writer, elem) -> { }),
+            jsonWriter -> jsonWriter.writeArrayField("field", (Object[]) null, null),
+            jsonWriter -> jsonWriter.writeArrayField(null, Collections.emptyList(), (writer, elem) -> { }),
+            jsonWriter -> jsonWriter.writeArrayField("field", (List<Object>) null, null),
+            jsonWriter -> jsonWriter.writeMapField(null, null, (writer, value) -> { }),
+            jsonWriter -> jsonWriter.writeMapField("field", null, null),
+
+            jsonWriter -> jsonWriter.writeBinaryField(null, null),
+            jsonWriter -> jsonWriter.writeBooleanField(null, false),
+            jsonWriter -> jsonWriter.writeBooleanField(null, null),
+            jsonWriter -> jsonWriter.writeDoubleField(null, 0.0D),
+            jsonWriter -> jsonWriter.writeFloatField(null, 0.0F),
+            jsonWriter -> jsonWriter.writeIntField(null, 0),
+            jsonWriter -> jsonWriter.writeLongField(null, 0L),
+            jsonWriter -> jsonWriter.writeNullField(null),
+            jsonWriter -> jsonWriter.writeNumberField(null, null),
+            jsonWriter -> jsonWriter.writeStringField(null, null),
+            jsonWriter -> jsonWriter.writeRawField(null, "0"),
+            jsonWriter -> jsonWriter.writeRawField("field", null),
+            jsonWriter -> jsonWriter.writeUntypedField(null, null)
         );
     }
 
