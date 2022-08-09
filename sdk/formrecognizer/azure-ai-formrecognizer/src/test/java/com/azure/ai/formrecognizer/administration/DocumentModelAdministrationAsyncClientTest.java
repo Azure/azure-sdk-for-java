@@ -84,7 +84,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void validGetResourceInfo(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+    public void validGetResourceDetails(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
@@ -96,7 +96,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void validGetResourceInfoWithResponse(HttpClient httpClient,
+    public void validGetResourceDetailsWithResponse(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getResourceDetails())
@@ -112,7 +112,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel = syncPoller1.getFinalResult();
@@ -155,14 +155,14 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
                         new BuildModelOptions().setModelId("async_component_model_1"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
                         new BuildModelOptions().setModelId("async_component_model_2"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller2.waitForCompletion();
@@ -203,13 +203,13 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller2.waitForCompletion();
             DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
@@ -246,7 +246,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
@@ -268,7 +268,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             if (!AzureAuthorityHosts.AZURE_GOVERNMENT.equals(TestUtils.getAuthority(client.getEndpoint()))) {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->
-                    client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                    client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode)
                         .getSyncPoller()
                         .getFinalResult());
@@ -278,7 +278,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             } else {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->
-                    client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                    client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                         .setPollInterval(durationTestMode)
                         .getSyncPoller()
                         .getFinalResult());
@@ -301,7 +301,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
                         new BuildModelOptions()
                             .setModelId(modelId)
                             .setDescription(TestUtils.EXPECTED_DESC)
@@ -329,8 +329,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
 
         buildModelRunner((trainingFilesUrl) -> {
-            StepVerifier.create(client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE,
-                        new BuildModelOptions().setPrefix("invalidPrefix"))
+            StepVerifier.create(client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "invalidPrefix",
+                        null)
                     .setPollInterval(durationTestMode))
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
@@ -349,7 +349,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
@@ -382,7 +382,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
@@ -452,7 +452,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null)
+                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel = syncPoller1.getFinalResult();

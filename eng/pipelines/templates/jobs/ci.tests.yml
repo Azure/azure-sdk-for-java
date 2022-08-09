@@ -40,9 +40,6 @@ parameters:
   - name: TestOptions
     type: string
     default: $(TestOptions)
-  - name: AdditionalBuildOptions
-    type: string
-    default: ''
   - name: TestParallelization
     type: string
     default: '1C'
@@ -94,6 +91,5 @@ jobs:
           SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
-          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}

@@ -24,19 +24,15 @@ parameters:
 - name: BuildParallelization
   type: string
   default: '2C'
-- name: AdditionalBuildOptions
-  type: string
-  default: ''
 - name: UseEsrpRelease
   type: boolean
   default: true
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
-# JRS this is here for testing purposes only since I'm using template to test
 - name: TestPipeline
   type: boolean
-  default: true
+  default: false
 
 
 stages:
@@ -109,6 +105,17 @@ stages:
             pip install markdown2 BeautifulSoup4
           displayName: 'pip install markdown2 and BeautifulSoup4'
 
+        # Save the Package Properties
+        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is
+        # output by the generate_from_source_pom script above.
+        - pwsh: |
+            $ServiceDirs = '$(ServiceDirectories)'
+            foreach($ServiceDir in $ServiceDirs.Split(',')) {
+              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+            }
+          workingDirectory: $(Pipeline.Workspace)
+          displayName: "Save Package Properties"
+
         # Why is this necessary? Normal build and release jobs don't install reporting tools prior
         # to building however they're still able to find the the build tools through the root aggregate
         # pom file. The ClientFromSourcePom only contains what is necessary for the list of libraries
@@ -124,7 +131,7 @@ stages:
           inputs:
             mavenPomFile: ClientFromSourcePom.xml
             goals: 'deploy'
-            options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+            options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -262,7 +269,6 @@ stages:
         - pwsh: |
             $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, ServiceDirectory, uberJar | Where-Object -Not "uberJar")
             $ArtifactsList | Format-Table -Property GroupId, Name, ServiceDirectory | Out-String | Write-Host
-            python --version
             foreach($artifact in $ArtifactsList) {
               $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/$($artifact.ServiceDirectory)
             }
@@ -298,12 +304,6 @@ stages:
                   # Note, for the patch release pipeline there's no point in verifying the non-release
                   # changelog since the only time this pipeline should run is for a patch release.
                   ForRelease: true
-
-        # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-        # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-        - template: ../steps/install-reporting-tools.yml
-          parameters:
-            JdkVersion: ${{ parameters.JavaBuildVersion }}
 
         - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 

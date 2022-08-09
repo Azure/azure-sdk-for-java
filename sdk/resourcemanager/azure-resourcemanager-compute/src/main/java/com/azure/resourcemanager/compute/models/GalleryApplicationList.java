@@ -20,9 +20,8 @@ public final class GalleryApplicationList {
     private List<GalleryApplicationInner> value;
 
     /*
-     * The uri to fetch the next page of Application Definitions in the
-     * Application Gallery. Call ListNext() with this to fetch the next page of
-     * gallery Application Definitions.
+     * The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this
+     * to fetch the next page of gallery Application Definitions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
