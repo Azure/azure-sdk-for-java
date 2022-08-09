@@ -27,8 +27,8 @@ public final class DiskUpdate {
     private Map<String, String> tags;
 
     /*
-     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS,
-     * UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
+     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS,
+     * StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;

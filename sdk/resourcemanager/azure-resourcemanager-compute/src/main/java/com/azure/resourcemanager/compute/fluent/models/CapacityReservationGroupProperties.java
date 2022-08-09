@@ -14,23 +14,20 @@ import java.util.List;
 @Immutable
 public final class CapacityReservationGroupProperties {
     /*
-     * A list of all capacity reservation resource ids that belong to capacity
-     * reservation group.
+     * A list of all capacity reservation resource ids that belong to capacity reservation group.
      */
     @JsonProperty(value = "capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> capacityReservations;
 
     /*
-     * A list of references to all virtual machines associated to the capacity
-     * reservation group.
+     * A list of references to all virtual machines associated to the capacity reservation group.
      */
     @JsonProperty(value = "virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAssociated;
 
     /*
-     * The capacity reservation group instance view which has the list of
-     * instance views for all the capacity reservations that belong to the
-     * capacity reservation group.
+     * The capacity reservation group instance view which has the list of instance views for all the capacity
+     * reservations that belong to the capacity reservation group.
      */
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private CapacityReservationGroupInstanceView instanceView;

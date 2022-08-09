@@ -45,43 +45,43 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void beginBuildModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+            = documentModelAdministrationClient.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE)
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions, Context)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions-Context
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "custom-model-id";
         String prefix = "Invoice";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+            = documentModelAdministrationClient.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
+                prefix,
                 new BuildModelOptions()
                     .setModelId(modelId)
                     .setDescription("model desc")
-                    .setPrefix(prefix)
                     .setTags(attrs),
                 Context.NONE)
             .getFinalResult();
@@ -90,14 +90,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
         System.out.printf("Model assigned tags: %s%n", documentModelDetails.getTags());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions-Context
     }
 
     /**
@@ -214,11 +214,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list
@@ -250,11 +250,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
         System.out.printf("Model assigned tags: %s%n", documentModelDetails.getTags());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list-ComposeModelOptions-Context
@@ -334,11 +334,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getModel#string
@@ -356,11 +356,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getModelWithResponse#string-Context

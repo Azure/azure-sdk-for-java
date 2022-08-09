@@ -22,8 +22,8 @@ public class CustomerManagedKeyEncryptionPropertiesKeyEncryptionKeyIdentity {
     /*
      * user assigned identity to use for accessing key encryption key Url. Ex:
      * /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
-     * group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
-     * Mutually exclusive with identityType systemAssignedIdentity.
+     * group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType
+     * systemAssignedIdentity.
      */
     @JsonProperty(value = "userAssignedIdentityResourceId")
     private String userAssignedIdentityResourceId;

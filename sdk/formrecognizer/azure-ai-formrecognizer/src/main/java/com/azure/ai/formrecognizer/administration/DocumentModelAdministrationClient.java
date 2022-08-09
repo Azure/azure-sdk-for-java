@@ -16,11 +16,11 @@ import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -85,25 +85,25 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode -->
      * <pre>
-     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
+     *     = documentModelAdministrationClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE&#41;
      *     .getFinalResult&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
@@ -111,13 +111,13 @@ public final class DocumentModelAdministrationClient {
      * for more information on building mode for custom documents.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws HttpResponseException If building model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginBuildModel(
-        String trainingFilesUrl, DocumentModelBuildMode buildMode) {
-        return beginBuildModel(trainingFilesUrl, buildMode, null, Context.NONE);
+        String blobContainerUrl, DocumentModelBuildMode buildMode) {
+        return beginBuildModel(blobContainerUrl, buildMode, null, null, Context.NONE);
     }
 
     /**
@@ -130,21 +130,21 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions-Context -->
      * <pre>
-     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;custom-model-id&quot;;
      * String prefix = &quot;Invoice&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
+     *     = documentModelAdministrationClient.beginBuildModel&#40;blobContainerUrl,
      *         DocumentModelBuildMode.TEMPLATE,
+     *         prefix,
      *         new BuildModelOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setPrefix&#40;prefix&#41;
      *             .setTags&#40;attrs&#41;,
      *         Context.NONE&#41;
      *     .getFinalResult&#40;&#41;;
@@ -153,37 +153,37 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
-     * documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions-Context -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentModelBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
+     * @param prefix case-sensitive prefix blob name prefix to filter documents for training.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
-     * @throws DocumentModelOperationException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginBuildModel(
-        String trainingFilesUrl, DocumentModelBuildMode buildMode,
-        BuildModelOptions buildModelOptions,
+        String blobContainerUrl, DocumentModelBuildMode buildMode,
+        String prefix, BuildModelOptions buildModelOptions,
         Context context) {
-        return client.beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, context)
+        return client.beginBuildModel(blobContainerUrl, buildMode, prefix, buildModelOptions, context)
             .getSyncPoller();
     }
 
@@ -361,11 +361,11 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
@@ -374,7 +374,7 @@ public final class DocumentModelAdministrationClient {
      * @param componentModelIds The list of models IDs to form the composed model.
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -416,11 +416,11 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModelDetails.getTags&#40;&#41;&#41;;
-     * documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
@@ -433,7 +433,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws HttpResponseException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
@@ -470,7 +470,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the source model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}
      *
@@ -478,9 +478,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
         CopyAuthorization target) {
-        return beginCopyModelTo(modelId, target, Context.NONE);
+        return beginCopyModelTo(sourceModelId, target, Context.NONE);
     }
 
     /**
@@ -509,7 +509,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context -->
      *
-     * @param modelId Model identifier of the model to copy to target resource.
+     * @param sourceModelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -518,9 +518,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
         CopyAuthorization target, Context context) {
-        return client.beginCopyModelTo(modelId, target, context).getSyncPoller();
+        return client.beginCopyModelTo(sourceModelId, target, context).getSyncPoller();
     }
 
     /**
@@ -583,11 +583,11 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
@@ -616,11 +616,11 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModelDetails.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModelDetails.getCreatedOn&#40;&#41;&#41;;
-     * documentModelDetails.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
-     *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
+     * documentModelDetails.getDocumentTypes&#40;&#41;.forEach&#40;&#40;key, documentTypeDetails&#41; -&gt; &#123;
+     *     documentTypeDetails.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
      *         System.out.printf&#40;&quot;Field type: %s&quot;, documentFieldSchema.getType&#40;&#41;&#41;;
-     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, docTypeInfo.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
+     *         System.out.printf&#40;&quot;Field confidence: %.2f&quot;, documentTypeDetails.getFieldConfidence&#40;&#41;.get&#40;field&#41;&#41;;
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>

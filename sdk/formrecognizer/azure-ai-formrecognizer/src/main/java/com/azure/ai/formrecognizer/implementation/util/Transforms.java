@@ -4,18 +4,17 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentTypeDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.implementation.models.Error;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.GetInfoResponse;
 import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
@@ -33,7 +32,6 @@ import com.azure.ai.formrecognizer.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.models.DocumentLine;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentPageKind;
@@ -248,8 +246,7 @@ public class Transforms {
     }
 
     /**
-     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exists. Otherwise, return
-     * original {@link Throwable}.
+     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException}.
      *
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
@@ -270,19 +267,22 @@ public class Transforms {
         return throwable;
     }
 
+    public static HttpResponseException mapResponseErrorToHttpResponseException(Error error) {
+        return new HttpResponseException(
+            error.getMessage(),
+            null,
+            toResponseError(error)
+        );
+    }
+
     public static CopyAuthorization toCopyAuthorization(
         com.azure.ai.formrecognizer.implementation.models.CopyAuthorization innerCopyAuthorization) {
-        CopyAuthorization copyAuthorization = new CopyAuthorization();
-        CopyAuthorizationHelper.setTargetModelId(copyAuthorization, innerCopyAuthorization.getTargetModelId());
-        CopyAuthorizationHelper.setAccessToken(copyAuthorization, innerCopyAuthorization.getAccessToken());
-        CopyAuthorizationHelper.setExpirationDateTime(copyAuthorization,
+        return new CopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
+            innerCopyAuthorization.getTargetResourceRegion(),
+            innerCopyAuthorization.getTargetModelId(),
+            innerCopyAuthorization.getTargetModelLocation(),
+            innerCopyAuthorization.getAccessToken(),
             innerCopyAuthorization.getExpirationDateTime());
-        CopyAuthorizationHelper.setTargetModelLocation(copyAuthorization,
-            innerCopyAuthorization.getTargetModelLocation());
-        CopyAuthorizationHelper.setTargetResourceId(copyAuthorization, innerCopyAuthorization.getTargetResourceId());
-        CopyAuthorizationHelper.setTargetResourceRegion(copyAuthorization,
-            innerCopyAuthorization.getTargetResourceRegion());
-        return copyAuthorization;
     }
 
     public static ResourceDetails toAccountProperties(GetInfoResponse getInfoResponse) {
@@ -298,26 +298,26 @@ public class Transforms {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
         DocumentModelDetailsHelper.setModelId(documentModelDetails, modelInfo.getModelId());
         DocumentModelDetailsHelper.setDescription(documentModelDetails, modelInfo.getDescription());
-        Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
+        Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelInfo);
         DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
         DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelInfo.getCreatedDateTime());
         DocumentModelDetailsHelper.setTags(documentModelDetails, modelInfo.getTags());
         return documentModelDetails;
     }
 
-    private static Map<String, DocTypeInfo> getStringDocTypeInfoMap(ModelInfo modelInfo) {
+    private static Map<String, DocumentTypeDetails> getStringDocTypeInfoMap(ModelInfo modelInfo) {
         if (!CoreUtils.isNullOrEmpty(modelInfo.getDocTypes())) {
-            Map<String, DocTypeInfo> docTypeMap = new HashMap<>();
+            Map<String, DocumentTypeDetails> docTypeMap = new HashMap<>();
             modelInfo.getDocTypes().forEach((key, innerDocTypeInfo) -> {
-                DocTypeInfo docTypeInfo = new DocTypeInfo();
-                DocTypeInfoHelper.setDescription(docTypeInfo, innerDocTypeInfo.getDescription());
+                DocumentTypeDetails documentTypeDetails = new DocumentTypeDetails();
+                DocumentTypeDetailsHelper.setDescription(documentTypeDetails, innerDocTypeInfo.getDescription());
                 Map<String, DocumentFieldSchema> schemaMap = new HashMap<>();
                 innerDocTypeInfo.getFieldSchema().forEach((schemaKey, innerDocSchema)
                     -> schemaMap.put(schemaKey, toDocumentFieldSchema(innerDocSchema)));
-                DocTypeInfoHelper.setFieldSchema(docTypeInfo, schemaMap);
-                DocTypeInfoHelper.setFieldConfidence(docTypeInfo, innerDocTypeInfo.getFieldConfidence());
-                docTypeMap.put(key, docTypeInfo);
-                DocTypeInfoHelper.setBuildMode(docTypeInfo,
+                DocumentTypeDetailsHelper.setFieldSchema(documentTypeDetails, schemaMap);
+                DocumentTypeDetailsHelper.setFieldConfidence(documentTypeDetails, innerDocTypeInfo.getFieldConfidence());
+                docTypeMap.put(key, documentTypeDetails);
+                DocumentTypeDetailsHelper.setBuildMode(documentTypeDetails,
                     innerDocTypeInfo.getBuildMode() != null
                         ? DocumentModelBuildMode.fromString(innerDocTypeInfo.getBuildMode().toString())
                         : null);
@@ -557,7 +557,7 @@ public class Transforms {
             ModelOperationDetailsHelper.setModelId(modelOperationDetails, modelInfo.getModelId());
             ModelOperationDetailsHelper.setDescription(modelOperationDetails, modelInfo.getDescription());
             ModelOperationDetailsHelper.setCreatedOn(modelOperationDetails, modelInfo.getCreatedDateTime());
-            Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
+            Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelInfo);
             ModelOperationDetailsHelper.setDocTypes(modelOperationDetails, docTypeMap);
         }
         ModelOperationDetailsHelper.setOperationId(modelOperationDetails, getOperationResponse.getOperationId());
@@ -571,8 +571,7 @@ public class Transforms {
         ModelOperationDetailsHelper.setStatus(modelOperationDetails,
             ModelOperationStatus.fromString(getOperationResponse.getStatus().toString()));
         ModelOperationDetailsHelper.setResourceLocation(modelOperationDetails, getOperationResponse.getResourceLocation());
-        DocumentModelOperationError error = toDocumentModelOperationError(getOperationResponse.getError());
-        ModelOperationDetailsHelper.setError(modelOperationDetails, error);
+        ModelOperationDetailsHelper.setError(modelOperationDetails, toResponseError(getOperationResponse.getError()));
         return modelOperationDetails;
     }
 
@@ -606,12 +605,6 @@ public class Transforms {
         return documentOperationResult;
     }
 
-    public static DocumentModelOperationException toDocumentModelOperationException(com.azure.ai.formrecognizer.implementation.models.Error error) {
-        DocumentModelOperationError documentModelOperationError = toDocumentModelOperationError(error);
-        DocumentModelOperationException documentModelOperationException
-            = new DocumentModelOperationException(documentModelOperationError);
-        return documentModelOperationException;
-    }
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.implementation.models.Error error) {
         if (error == null) {
             return null;
@@ -626,36 +619,5 @@ public class Transforms {
                 .append(": ").append(innerError.getMessage());
         }
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
-    }
-
-    private static DocumentModelOperationError toDocumentModelOperationError(com.azure.ai.formrecognizer.implementation.models.Error error) {
-        if (error != null) {
-            DocumentModelOperationError documentModelOperationError = new DocumentModelOperationError();
-            DocumentModelOperationErrorHelper.setCode(documentModelOperationError, error.getCode());
-            DocumentModelOperationErrorHelper.setInnerError(documentModelOperationError, toInnerError(error.getInnererror()));
-            DocumentModelOperationErrorHelper.setDetails(documentModelOperationError, toErrorDetails(error.getDetails()));
-            DocumentModelOperationErrorHelper.setMessage(documentModelOperationError, error.getMessage());
-            DocumentModelOperationErrorHelper.setTarget(documentModelOperationError, error.getTarget());
-            return documentModelOperationError;
-        }
-        return null;
-    }
-
-    private static DocumentModelOperationInnerError toInnerError(
-        com.azure.ai.formrecognizer.implementation.models.InnerError serviceInnerError) {
-        if (serviceInnerError == null) {
-            return null;
-        }
-        DocumentModelOperationInnerError innerError = new DocumentModelOperationInnerError();
-        InnerErrorHelper.setCode(innerError, serviceInnerError.getCode());
-        InnerErrorHelper.setMessage(innerError, serviceInnerError.getMessage());
-        InnerErrorHelper.setInnerError(innerError, toInnerError(serviceInnerError.getInnererror()));
-        return innerError;
-    }
-    private static List<DocumentModelOperationError> toErrorDetails(List<com.azure.ai.formrecognizer.implementation.models.Error> details) {
-        return !CoreUtils.isNullOrEmpty(details) ? details
-            .stream()
-            .map(error -> toDocumentModelOperationError(error))
-            .collect(Collectors.toList()) : null;
     }
 }

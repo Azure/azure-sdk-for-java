@@ -39,11 +39,13 @@ public class BuildModel {
             .buildClient();
 
         // Build custom document analysis model
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String prefix = "{blob_name_prefix}";
         SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-            client.beginBuildModel(trainingFilesUrl,
+            client.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
+                prefix,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("model desc"),
@@ -57,11 +59,11 @@ public class BuildModel {
         System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
 
         System.out.println("Document Fields:");
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
     }

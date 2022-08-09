@@ -43,13 +43,13 @@ public class ComposeModelAsync {
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModelDetails> model1Poller =
-            client.beginBuildModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE, null);
+            client.beginBuildModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE);
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModelDetails> model2Poller =
-            client.beginBuildModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE, null);
+            client.beginBuildModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE);
 
         String labeledModelId1 = model1Poller.getSyncPoller().getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getSyncPoller().getFinalResult().getModelId();
@@ -65,11 +65,11 @@ public class ComposeModelAsync {
                 System.out.printf("Composed model created on: %s%n", documentModel.getCreatedOn());
 
                 System.out.println("Document Fields:");
-                documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
-                    docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                         System.out.printf("Field: %s", field);
                         System.out.printf("Field type: %s", documentFieldSchema.getType());
-                        System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
                     });
                 });
             });

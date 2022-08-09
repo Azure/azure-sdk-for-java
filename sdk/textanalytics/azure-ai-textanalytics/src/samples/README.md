@@ -3,9 +3,9 @@ page_type: sample
 languages:
   - java
 products:
-  - azure
-  - azure-cognitive-services
-  - azure-text-analytics
+    - azure
+    - azure-cognitive-services
+    - language-service
 urlFragment: textanalytics-java-samples
 ---
 

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SupportedCapabilities {
     /*
-     * True if the image from which the OS disk is created supports accelerated
-     * networking.
+     * True if the image from which the OS disk is created supports accelerated networking.
      */
     @JsonProperty(value = "acceleratedNetwork")
     private Boolean acceleratedNetwork;

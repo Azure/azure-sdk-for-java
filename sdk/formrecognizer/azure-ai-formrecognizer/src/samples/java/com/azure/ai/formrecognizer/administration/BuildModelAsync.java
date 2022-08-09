@@ -40,11 +40,12 @@ public class BuildModelAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String prefix = "{blob_name_prefix}";
         PollerFlux<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
-            client.beginBuildModel(trainingFilesUrl,
-                DocumentModelBuildMode.TEMPLATE,
+            client.beginBuildModel(blobContainerUrl,
+                DocumentModelBuildMode.TEMPLATE, prefix,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("my custom model desc"));
@@ -66,11 +67,11 @@ public class BuildModelAsync {
             System.out.printf("Model created on: %s%n%n", documentModel.getCreatedOn());
 
             System.out.println("Document Fields:");
-            documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
-                docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+            documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());
-                    System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                    System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
                 });
             });
         });

@@ -20,8 +20,8 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     private List<UpgradeOperationHistoricalStatusInfoInner> value;
 
     /*
-     * The uri to fetch the next page of OS Upgrade History. Call ListNext()
-     * with this to fetch the next page of history of upgrades.
+     * The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of
+     * history of upgrades.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

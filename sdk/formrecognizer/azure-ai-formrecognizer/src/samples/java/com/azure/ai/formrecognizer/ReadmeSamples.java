@@ -112,7 +112,7 @@ public class ReadmeSamples {
             // selection marks
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
                 System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-                    documentSelectionMark.getState().toString(),
+                    documentSelectionMark.getSelectionMarkState().toString(),
                     documentSelectionMark.getBoundingPolygon().toString(),
                     documentSelectionMark.getConfidence()));
         });
@@ -152,7 +152,7 @@ public class ReadmeSamples {
             DocumentField merchantNameField = receiptFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (DocumentFieldType.STRING == merchantNameField.getType()) {
-                    String merchantName = merchantNameField.getValueString();
+                    String merchantName = merchantNameField.getValueAsString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
@@ -161,7 +161,7 @@ public class ReadmeSamples {
             DocumentField merchantPhoneNumberField = receiptFields.get("MerchantPhoneNumber");
             if (merchantPhoneNumberField != null) {
                 if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
-                    String merchantAddress = merchantPhoneNumberField.getValuePhoneNumber();
+                    String merchantAddress = merchantPhoneNumberField.getValueAsPhoneNumber();
                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                         merchantAddress, merchantPhoneNumberField.getConfidence());
                 }
@@ -170,7 +170,7 @@ public class ReadmeSamples {
             DocumentField transactionDateField = receiptFields.get("TransactionDate");
             if (transactionDateField != null) {
                 if (DocumentFieldType.DATE == transactionDateField.getType()) {
-                    LocalDate transactionDate = transactionDateField.getValueDate();
+                    LocalDate transactionDate = transactionDateField.getValueAsDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
                 }
@@ -180,21 +180,21 @@ public class ReadmeSamples {
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
                 if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-                    List<DocumentField> receiptItems = receiptItemsField.getValueList();
+                    List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
                     receiptItems.stream()
                         .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                        .map(documentField -> documentField.getValueMap())
+                        .map(documentField -> documentField.getValueAsMap())
                         .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                             if ("Name".equals(key)) {
                                 if (DocumentFieldType.STRING == documentField.getType()) {
-                                    String name = documentField.getValueString();
+                                    String name = documentField.getValueAsString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
                                         name, documentField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
                                 if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                    Float quantity = documentField.getValueFloat();
+                                    Float quantity = documentField.getValueAsFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, documentField.getConfidence());
                                 }
@@ -214,10 +214,13 @@ public class ReadmeSamples {
         // Build custom document analysis model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String prefix = "{blob_name_prefix}}";
         SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
             documentModelAdminClient.beginBuildModel(trainingFilesUrl,
                 DocumentModelBuildMode.TEMPLATE,
-                new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
+                prefix,
+                new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"),
+                Context.NONE);
 
         DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
@@ -225,12 +228,12 @@ public class ReadmeSamples {
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
             System.out.printf("Document type: %s%n", key);
-            docTypeInfo.getFieldSchema().forEach((name, documentFieldSchema) -> {
+            documentTypeDetails.getFieldSchema().forEach((name, documentFieldSchema) -> {
                 System.out.printf("Document field: %s%n", name);
                 System.out.printf("Document field type: %s%n", documentFieldSchema.getType().toString());
-                System.out.printf("Document field confidence: %.2f%n", docTypeInfo.getFieldConfidence().get(name));
+                System.out.printf("Document field confidence: %.2f%n", documentTypeDetails.getFieldConfidence().get(name));
             });
         });
         // END: readme-sample-buildModel
@@ -385,11 +388,11 @@ public class ReadmeSamples {
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
-            documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
-                docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+            documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());
-                    System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                    System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
                 });
             });
         });

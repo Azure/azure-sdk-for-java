@@ -77,6 +77,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -1108,6 +1109,30 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithDirectSessionIncludeComputeGateway() {
+        Object[][] originalProviders = clientBuildersWithDirectSession(
+            true,
+            true,
+            toArray(protocols));
+        List<Object[]> providers = new ArrayList<>(Arrays.asList(originalProviders));
+        Object[] injectedProviderParameters = new Object[1];
+        CosmosClientBuilder builder = createGatewayRxDocumentClient(
+            TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
+            ConsistencyLevel.SESSION,
+            false,
+            null,
+            true,
+            true);
+        injectedProviderParameters[0] = builder;
+
+        providers.add(injectedProviderParameters);
+
+        Object[][] array = new Object[providers.size()][];
+
+        return providers.toArray(array);
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithDirectTcpSession() {
         return clientBuildersWithDirectSession(true, true, Protocol.TCP);
     }
@@ -1229,8 +1254,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         boolean contentResponseOnWriteEnabled,
         boolean retryOnThrottledRequests) {
 
+        return createGatewayRxDocumentClient(
+            TestConfigurations.HOST,
+            consistencyLevel,
+            multiMasterEnabled,
+            preferredRegions,
+            contentResponseOnWriteEnabled,
+            retryOnThrottledRequests);
+    }
+
+    static protected CosmosClientBuilder createGatewayRxDocumentClient(
+        String endpoint,
+        ConsistencyLevel consistencyLevel,
+        boolean multiMasterEnabled,
+        List<String> preferredRegions,
+        boolean contentResponseOnWriteEnabled,
+        boolean retryOnThrottledRequests) {
+
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
             .credential(credential)
             .gatewayMode(gatewayConnectionConfig)
             .multipleWriteRegionsEnabled(multiMasterEnabled)

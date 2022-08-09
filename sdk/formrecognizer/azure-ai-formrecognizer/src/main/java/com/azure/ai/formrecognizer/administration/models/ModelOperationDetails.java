@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.administration.models;
 
 
 import com.azure.ai.formrecognizer.implementation.util.ModelOperationDetailsHelper;
+import com.azure.core.models.ResponseError;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -29,9 +30,9 @@ public final class ModelOperationDetails extends ModelOperationSummary {
      */
     private OffsetDateTime createdOn;
 
-    private Map<String, DocTypeInfo> docTypes;
+    private Map<String, DocumentTypeDetails> docTypes;
 
-    private DocumentModelOperationError error;
+    private ResponseError error;
 
     /**
      * Get the Unique model identifier.
@@ -79,16 +80,16 @@ public final class ModelOperationDetails extends ModelOperationSummary {
      *
      * @return the docTypes value.
      */
-    public Map<String, DocTypeInfo> getDocTypes() {
+    public Map<String, DocumentTypeDetails> getDocTypes() {
         return docTypes;
     }
 
     void setDocTypes(
-        Map<String, DocTypeInfo> docTypes) {
+        Map<String, DocumentTypeDetails> docTypes) {
         this.docTypes = docTypes;
     }
 
-    void setError(DocumentModelOperationError error) {
+    void setError(ResponseError error) {
         this.error = error;
     }
 
@@ -97,7 +98,7 @@ public final class ModelOperationDetails extends ModelOperationSummary {
      *
      * @return the error value.
      */
-    public DocumentModelOperationError getError() {
+    public ResponseError getError() {
         return error;
     }
 
@@ -179,12 +180,12 @@ public final class ModelOperationDetails extends ModelOperationSummary {
             }
 
             @Override
-            public void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes) {
+            public void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocumentTypeDetails> docTypes) {
                 modelOperationDetails.setDocTypes(docTypes);
             }
 
             @Override
-            public void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError error) {
+            public void setError(ModelOperationDetails modelOperationDetails, ResponseError error) {
                 modelOperationDetails.setError(error);
             }
 
