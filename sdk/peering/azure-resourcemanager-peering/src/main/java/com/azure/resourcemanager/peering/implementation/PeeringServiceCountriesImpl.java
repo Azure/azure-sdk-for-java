@@ -11,10 +11,9 @@ import com.azure.resourcemanager.peering.fluent.PeeringServiceCountriesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceCountryInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceCountries;
 import com.azure.resourcemanager.peering.models.PeeringServiceCountry;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringServiceCountriesImpl implements PeeringServiceCountries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceCountriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServiceCountriesImpl.class);
 
     private final PeeringServiceCountriesClient innerClient;
 

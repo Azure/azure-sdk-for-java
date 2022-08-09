@@ -28,6 +28,12 @@ public final class DirectPeeringType extends ExpandableStringEnum<DirectPeeringT
     /** Static value IxRs for DirectPeeringType. */
     public static final DirectPeeringType IX_RS = fromString("IxRs");
 
+    /** Static value Voice for DirectPeeringType. */
+    public static final DirectPeeringType VOICE = fromString("Voice");
+
+    /** Static value EdgeZoneForOperators for DirectPeeringType. */
+    public static final DirectPeeringType EDGE_ZONE_FOR_OPERATORS = fromString("EdgeZoneForOperators");
+
     /**
      * Creates or finds a DirectPeeringType from its string representation.
      *
@@ -39,7 +45,11 @@ public final class DirectPeeringType extends ExpandableStringEnum<DirectPeeringT
         return fromString(name, DirectPeeringType.class);
     }
 
-    /** @return known DirectPeeringType values. */
+    /**
+     * Gets known DirectPeeringType values.
+     *
+     * @return known DirectPeeringType values.
+     */
     public static Collection<DirectPeeringType> values() {
         return values(DirectPeeringType.class);
     }

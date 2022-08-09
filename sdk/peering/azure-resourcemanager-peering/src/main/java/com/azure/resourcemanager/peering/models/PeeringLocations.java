@@ -16,7 +16,7 @@ public interface PeeringLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeeringLocation> list(PeeringLocationsKind kind);
 
@@ -29,7 +29,7 @@ public interface PeeringLocations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeeringLocation> list(
         PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context);

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.PeeringLocationsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringLocationInner;
 import com.azure.resourcemanager.peering.models.PeeringLocationListResult;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PeeringLocationsClient. */
 public final class PeeringLocationsClientImpl implements PeeringLocationsClient {
-    private final ClientLogger logger = new ClientLogger(PeeringLocationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PeeringLocationsService service;
 
@@ -93,7 +90,8 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringLocationInner>> listSinglePageAsync(
@@ -147,7 +145,8 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringLocationInner>> listSinglePageAsync(
@@ -197,7 +196,7 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringLocationInner> listAsync(
@@ -213,7 +212,7 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringLocationInner> listAsync(PeeringLocationsKind kind) {
@@ -231,7 +230,7 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringLocationInner> listAsync(
@@ -248,7 +247,7 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringLocationInner> list(PeeringLocationsKind kind) {
@@ -265,7 +264,7 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringLocationInner> list(
@@ -280,7 +279,8 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringLocationInner>> listNextSinglePageAsync(String nextLink) {
@@ -316,7 +316,8 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering locations.
+     * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringLocationInner>> listNextSinglePageAsync(String nextLink, Context context) {

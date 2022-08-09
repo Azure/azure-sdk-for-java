@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define an exchange peering facility. */
 @Fluent
 public final class ExchangePeeringFacility {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExchangePeeringFacility.class);
-
     /*
      * The name of the exchange peering facility.
      */
@@ -21,8 +17,7 @@ public final class ExchangePeeringFacility {
     private String exchangeName;
 
     /*
-     * The bandwidth of the connection between Microsoft and the exchange
-     * peering facility.
+     * The bandwidth of the connection between Microsoft and the exchange peering facility.
      */
     @JsonProperty(value = "bandwidthInMbps")
     private Integer bandwidthInMbps;

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.peering.fluent.PeeringServiceProvidersClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceProviderInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceProvider;
 import com.azure.resourcemanager.peering.models.PeeringServiceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringServiceProvidersImpl implements PeeringServiceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServiceProvidersImpl.class);
 
     private final PeeringServiceProvidersClient innerClient;
 

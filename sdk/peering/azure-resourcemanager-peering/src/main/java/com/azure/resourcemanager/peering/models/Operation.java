@@ -30,6 +30,13 @@ public interface Operation {
     Boolean isDataAction();
 
     /**
+     * Gets the serviceSpecification property: Service specification payload.
+     *
+     * @return the serviceSpecification value.
+     */
+    ServiceSpecification serviceSpecification();
+
+    /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.OperationInner object.
      *
      * @return the inner object.

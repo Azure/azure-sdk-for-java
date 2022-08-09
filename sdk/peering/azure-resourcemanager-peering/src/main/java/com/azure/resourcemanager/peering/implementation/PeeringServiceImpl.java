@@ -7,6 +7,7 @@ package com.azure.resourcemanager.peering.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
+import com.azure.resourcemanager.peering.models.LogAnalyticsWorkspaceProperties;
 import com.azure.resourcemanager.peering.models.PeeringService;
 import com.azure.resourcemanager.peering.models.PeeringServiceSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
@@ -68,12 +69,20 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
         return this.innerModel().providerBackupPeeringLocation();
     }
 
+    public LogAnalyticsWorkspaceProperties logAnalyticsWorkspaceProperties() {
+        return this.innerModel().logAnalyticsWorkspaceProperties();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PeeringServiceInner innerModel() {
@@ -216,6 +225,12 @@ public final class PeeringServiceImpl implements PeeringService, PeeringService.
 
     public PeeringServiceImpl withProviderBackupPeeringLocation(String providerBackupPeeringLocation) {
         this.innerModel().withProviderBackupPeeringLocation(providerBackupPeeringLocation);
+        return this;
+    }
+
+    public PeeringServiceImpl withLogAnalyticsWorkspaceProperties(
+        LogAnalyticsWorkspaceProperties logAnalyticsWorkspaceProperties) {
+        this.innerModel().withLogAnalyticsWorkspaceProperties(logAnalyticsWorkspaceProperties);
         return this;
     }
 

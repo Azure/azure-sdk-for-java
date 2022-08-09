@@ -6,16 +6,12 @@ package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties that define a direct peering. */
 @Fluent
 public final class PeeringPropertiesDirect {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringPropertiesDirect.class);
-
     /*
      * The set of connections that constitute a direct peering.
      */
@@ -23,8 +19,7 @@ public final class PeeringPropertiesDirect {
     private List<DirectConnection> connections;
 
     /*
-     * The flag that indicates whether or not the peering is used for peering
-     * service.
+     * The flag that indicates whether or not the peering is used for peering service.
      */
     @JsonProperty(value = "useForPeeringService", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean useForPeeringService;

@@ -28,6 +28,12 @@ public final class PeeringLocationsDirectPeeringType extends ExpandableStringEnu
     /** Static value IxRs for PeeringLocationsDirectPeeringType. */
     public static final PeeringLocationsDirectPeeringType IX_RS = fromString("IxRs");
 
+    /** Static value Voice for PeeringLocationsDirectPeeringType. */
+    public static final PeeringLocationsDirectPeeringType VOICE = fromString("Voice");
+
+    /** Static value EdgeZoneForOperators for PeeringLocationsDirectPeeringType. */
+    public static final PeeringLocationsDirectPeeringType EDGE_ZONE_FOR_OPERATORS = fromString("EdgeZoneForOperators");
+
     /**
      * Creates or finds a PeeringLocationsDirectPeeringType from its string representation.
      *
@@ -39,7 +45,11 @@ public final class PeeringLocationsDirectPeeringType extends ExpandableStringEnu
         return fromString(name, PeeringLocationsDirectPeeringType.class);
     }
 
-    /** @return known PeeringLocationsDirectPeeringType values. */
+    /**
+     * Gets known PeeringLocationsDirectPeeringType values.
+     *
+     * @return known PeeringLocationsDirectPeeringType values.
+     */
     public static Collection<PeeringLocationsDirectPeeringType> values() {
         return values(PeeringLocationsDirectPeeringType.class);
     }

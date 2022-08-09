@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties that define an exchange peering location. */
 @Fluent
 public final class PeeringLocationPropertiesExchange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringLocationPropertiesExchange.class);
-
     /*
      * The list of exchange peering facilities at the peering location.
      */

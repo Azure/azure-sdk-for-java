@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The contact detail class. */
 @Fluent
 public final class ContactDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContactDetail.class);
-
     /*
      * The role of the contact.
      */

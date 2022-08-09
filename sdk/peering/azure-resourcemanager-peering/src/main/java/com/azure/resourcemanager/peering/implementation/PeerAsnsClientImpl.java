@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.PeerAsnsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
 import com.azure.resourcemanager.peering.models.PeerAsnListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PeerAsnsClient. */
 public final class PeerAsnsClientImpl implements PeerAsnsClient {
-    private final ClientLogger logger = new ClientLogger(PeerAsnsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PeerAsnsService service;
 
@@ -127,7 +124,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> getWithResponseAsync(String peerAsnName) {
@@ -169,7 +167,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> getWithResponseAsync(String peerAsnName, Context context) {
@@ -207,19 +206,12 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeerAsnInner> getAsync(String peerAsnName) {
-        return getWithResponseAsync(peerAsnName)
-            .flatMap(
-                (Response<PeerAsnInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(peerAsnName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -244,7 +236,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeerAsnInner> getWithResponse(String peerAsnName, Context context) {
@@ -259,7 +251,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the essential information related to the peer's ASN.
+     * @return the essential information related to the peer's ASN along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> createOrUpdateWithResponseAsync(String peerAsnName, PeerAsnInner peerAsn) {
@@ -308,7 +301,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the essential information related to the peer's ASN.
+     * @return the essential information related to the peer's ASN along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerAsnInner>> createOrUpdateWithResponseAsync(
@@ -354,19 +348,11 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the essential information related to the peer's ASN.
+     * @return the essential information related to the peer's ASN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeerAsnInner> createOrUpdateAsync(String peerAsnName, PeerAsnInner peerAsn) {
-        return createOrUpdateWithResponseAsync(peerAsnName, peerAsn)
-            .flatMap(
-                (Response<PeerAsnInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrUpdateWithResponseAsync(peerAsnName, peerAsn).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -393,7 +379,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the essential information related to the peer's ASN.
+     * @return the essential information related to the peer's ASN along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeerAsnInner> createOrUpdateWithResponse(
@@ -408,7 +394,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String peerAsnName) {
@@ -450,7 +436,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String peerAsnName, Context context) {
@@ -488,11 +474,11 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String peerAsnName) {
-        return deleteWithResponseAsync(peerAsnName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(peerAsnName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -516,7 +502,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String peerAsnName, Context context) {
@@ -528,7 +514,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listSinglePageAsync() {
@@ -574,7 +561,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listSinglePageAsync(Context context) {
@@ -615,7 +603,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeerAsnInner> listAsync() {
@@ -630,7 +618,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeerAsnInner> listAsync(Context context) {
@@ -643,7 +631,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeerAsnInner> list() {
@@ -657,7 +645,7 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeerAsnInner> list(Context context) {
@@ -671,7 +659,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -708,7 +697,8 @@ public final class PeerAsnsClientImpl implements PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerAsnInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {

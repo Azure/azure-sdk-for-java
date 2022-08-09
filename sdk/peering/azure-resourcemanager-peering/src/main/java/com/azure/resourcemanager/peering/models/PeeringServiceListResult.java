@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of peering services. */
 @Fluent
 public final class PeeringServiceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceListResult.class);
-
     /*
      * The list of peering services.
      */

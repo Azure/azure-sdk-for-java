@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.peering.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredPrefixInner;
 import com.azure.resourcemanager.peering.models.PeeringRegisteredPrefix;
@@ -46,6 +47,10 @@ public final class PeeringRegisteredPrefixImpl
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PeeringRegisteredPrefixInner innerModel() {
@@ -149,6 +154,16 @@ public final class PeeringRegisteredPrefixImpl
                 .getWithResponse(resourceGroupName, peeringName, registeredPrefixName, context)
                 .getValue();
         return this;
+    }
+
+    public PeeringRegisteredPrefix validate() {
+        return serviceManager.registeredPrefixes().validate(resourceGroupName, peeringName, registeredPrefixName);
+    }
+
+    public Response<PeeringRegisteredPrefix> validateWithResponse(Context context) {
+        return serviceManager
+            .registeredPrefixes()
+            .validateWithResponse(resourceGroupName, peeringName, registeredPrefixName, context);
     }
 
     public PeeringRegisteredPrefixImpl withPrefix(String prefix) {

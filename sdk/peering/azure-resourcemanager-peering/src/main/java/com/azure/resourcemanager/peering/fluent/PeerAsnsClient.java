@@ -33,7 +33,7 @@ public interface PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peer ASN with the specified name under the given subscription.
+     * @return the peer ASN with the specified name under the given subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeerAsnInner> getWithResponse(String peerAsnName, Context context);
@@ -60,7 +60,7 @@ public interface PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the essential information related to the peer's ASN.
+     * @return the essential information related to the peer's ASN along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeerAsnInner> createOrUpdateWithResponse(String peerAsnName, PeerAsnInner peerAsn, Context context);
@@ -84,7 +84,7 @@ public interface PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String peerAsnName, Context context);
@@ -94,7 +94,7 @@ public interface PeerAsnsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeerAsnInner> list();
@@ -106,7 +106,7 @@ public interface PeerAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peer ASNs.
+     * @return the paginated list of peer ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeerAsnInner> list(Context context);

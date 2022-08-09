@@ -17,7 +17,7 @@ public interface LegacyPeerings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Peering> list(String peeringLocation, LegacyPeeringsKind kind);
 
@@ -27,11 +27,17 @@ public interface LegacyPeerings {
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering.
      * @param asn The ASN number associated with a legacy peering.
+     * @param directPeeringType The direct peering type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Peering> list(String peeringLocation, LegacyPeeringsKind kind, Integer asn, Context context);
+    PagedIterable<Peering> list(
+        String peeringLocation,
+        LegacyPeeringsKind kind,
+        Integer asn,
+        DirectPeeringType directPeeringType,
+        Context context);
 }

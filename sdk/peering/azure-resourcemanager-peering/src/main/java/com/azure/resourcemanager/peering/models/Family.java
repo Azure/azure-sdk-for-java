@@ -27,7 +27,11 @@ public final class Family extends ExpandableStringEnum<Family> {
         return fromString(name, Family.class);
     }
 
-    /** @return known Family values. */
+    /**
+     * Gets known Family values.
+     *
+     * @return known Family values.
+     */
     public static Collection<Family> values() {
         return values(Family.class);
     }

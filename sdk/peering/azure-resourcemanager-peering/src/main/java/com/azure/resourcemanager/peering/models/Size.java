@@ -30,7 +30,11 @@ public final class Size extends ExpandableStringEnum<Size> {
         return fromString(name, Size.class);
     }
 
-    /** @return known Size values. */
+    /**
+     * Gets known Size values.
+     *
+     * @return known Size values.
+     */
     public static Collection<Size> values() {
         return values(Size.class);
     }

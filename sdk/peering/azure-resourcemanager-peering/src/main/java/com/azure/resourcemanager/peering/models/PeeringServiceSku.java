@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SKU that defines the type of the peering service. */
 @Fluent
 public final class PeeringServiceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceSku.class);
-
     /*
      * The name of the peering service SKU.
      */

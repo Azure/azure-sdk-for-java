@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.peering.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredPrefixInner;
 
@@ -64,6 +65,13 @@ public interface PeeringRegisteredPrefix {
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredPrefixInner object.
@@ -174,4 +182,26 @@ public interface PeeringRegisteredPrefix {
      * @return the refreshed resource.
      */
     PeeringRegisteredPrefix refresh(Context context);
+
+    /**
+     * Validates an existing registered prefix with the specified name under the given subscription, resource group and
+     * peering.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's prefix that is registered by the peering service provider.
+     */
+    PeeringRegisteredPrefix validate();
+
+    /**
+     * Validates an existing registered prefix with the specified name under the given subscription, resource group and
+     * peering.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's prefix that is registered by the peering service provider along with {@link Response}.
+     */
+    Response<PeeringRegisteredPrefix> validateWithResponse(Context context);
 }

@@ -30,7 +30,11 @@ public final class LearnedType extends ExpandableStringEnum<LearnedType> {
         return fromString(name, LearnedType.class);
     }
 
-    /** @return known LearnedType values. */
+    /**
+     * Gets known LearnedType values.
+     *
+     * @return known LearnedType values.
+     */
     public static Collection<LearnedType> values() {
         return values(LearnedType.class);
     }

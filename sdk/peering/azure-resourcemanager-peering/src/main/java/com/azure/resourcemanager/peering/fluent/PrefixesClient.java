@@ -40,7 +40,7 @@ public interface PrefixesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeeringServicePrefixInner> getWithResponse(
@@ -76,7 +76,7 @@ public interface PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the peering service prefix class.
+     * @return the peering service prefix class along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeeringServicePrefixInner> createOrUpdateWithResponse(
@@ -111,7 +111,7 @@ public interface PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -125,7 +125,7 @@ public interface PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringServicePrefixInner> listByPeeringService(String resourceGroupName, String peeringServiceName);
@@ -140,7 +140,7 @@ public interface PrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringServicePrefixInner> listByPeeringService(

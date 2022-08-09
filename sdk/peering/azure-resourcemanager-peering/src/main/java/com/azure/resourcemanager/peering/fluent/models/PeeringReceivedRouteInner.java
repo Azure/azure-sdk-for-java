@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define a received route. */
 @Immutable
 public final class PeeringReceivedRouteInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringReceivedRouteInner.class);
-
     /*
      * The prefix.
      */
@@ -39,15 +35,13 @@ public final class PeeringReceivedRouteInner {
     private String originAsValidationState;
 
     /*
-     * The RPKI validation state for the prefix and origin AS that's listed in
-     * the AS path.
+     * The RPKI validation state for the prefix and origin AS that's listed in the AS path.
      */
     @JsonProperty(value = "rpkiValidationState", access = JsonProperty.Access.WRITE_ONLY)
     private String rpkiValidationState;
 
     /*
-     * The authority which holds the Route Origin Authorization record for the
-     * prefix, if any.
+     * The authority which holds the Route Origin Authorization record for the prefix, if any.
      */
     @JsonProperty(value = "trustAnchor", access = JsonProperty.Access.WRITE_ONLY)
     private String trustAnchor;

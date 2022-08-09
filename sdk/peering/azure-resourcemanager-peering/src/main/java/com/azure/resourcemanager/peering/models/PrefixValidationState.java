@@ -42,7 +42,11 @@ public final class PrefixValidationState extends ExpandableStringEnum<PrefixVali
         return fromString(name, PrefixValidationState.class);
     }
 
-    /** @return known PrefixValidationState values. */
+    /**
+     * Gets known PrefixValidationState values.
+     *
+     * @return known PrefixValidationState values.
+     */
     public static Collection<PrefixValidationState> values() {
         return values(PrefixValidationState.class);
     }

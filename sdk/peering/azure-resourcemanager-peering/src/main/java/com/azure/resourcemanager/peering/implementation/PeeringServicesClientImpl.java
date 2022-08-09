@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -29,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.PeeringServicesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceListResult;
@@ -38,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PeeringServicesClient. */
 public final class PeeringServicesClientImpl implements PeeringServicesClient {
-    private final ClientLogger logger = new ClientLogger(PeeringServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PeeringServicesService service;
 
@@ -152,6 +150,17 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/initializeConnectionMonitor")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> initializeConnectionMonitor(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -180,7 +189,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering service with the specified name under the given subscription and resource group.
+     * @return an existing peering service with the specified name under the given subscription and resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServiceInner>> getByResourceGroupWithResponseAsync(
@@ -230,7 +240,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering service with the specified name under the given subscription and resource group.
+     * @return an existing peering service with the specified name under the given subscription and resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServiceInner>> getByResourceGroupWithResponseAsync(
@@ -276,19 +287,13 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering service with the specified name under the given subscription and resource group.
+     * @return an existing peering service with the specified name under the given subscription and resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringServiceInner> getByResourceGroupAsync(String resourceGroupName, String peeringServiceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, peeringServiceName)
-            .flatMap(
-                (Response<PeeringServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -315,7 +320,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering service with the specified name under the given subscription and resource group.
+     * @return an existing peering service with the specified name under the given subscription and resource group along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeeringServiceInner> getByResourceGroupWithResponse(
@@ -333,7 +339,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServiceInner>> createOrUpdateWithResponseAsync(
@@ -391,7 +397,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServiceInner>> createOrUpdateWithResponseAsync(
@@ -445,20 +451,13 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringServiceInner> createOrUpdateAsync(
         String resourceGroupName, String peeringServiceName, PeeringServiceInner peeringService) {
         return createOrUpdateWithResponseAsync(resourceGroupName, peeringServiceName, peeringService)
-            .flatMap(
-                (Response<PeeringServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -490,7 +489,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeeringServiceInner> createOrUpdateWithResponse(
@@ -506,7 +505,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String peeringServiceName) {
@@ -555,7 +554,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -601,12 +600,11 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String peeringServiceName) {
-        return deleteWithResponseAsync(resourceGroupName, peeringServiceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, peeringServiceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -632,7 +630,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String peeringServiceName, Context context) {
@@ -648,7 +646,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServiceInner>> updateWithResponseAsync(
@@ -705,7 +703,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringServiceInner>> updateWithResponseAsync(
@@ -758,20 +756,13 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringServiceInner> updateAsync(
         String resourceGroupName, String peeringServiceName, ResourceTags tags) {
         return updateWithResponseAsync(resourceGroupName, peeringServiceName, tags)
-            .flatMap(
-                (Response<PeeringServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -800,7 +791,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering Service.
+     * @return peering Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeeringServiceInner> updateWithResponse(
@@ -815,7 +806,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -867,7 +859,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listByResourceGroupSinglePageAsync(
@@ -916,7 +909,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -933,7 +926,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -949,7 +942,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceInner> listByResourceGroup(String resourceGroupName) {
@@ -964,7 +957,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -976,7 +969,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listSinglePageAsync() {
@@ -1022,7 +1016,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listSinglePageAsync(Context context) {
@@ -1063,7 +1058,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceInner> listAsync() {
@@ -1078,7 +1073,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringServiceInner> listAsync(Context context) {
@@ -1091,7 +1086,7 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceInner> list() {
@@ -1105,11 +1100,117 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringServiceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Initialize Peering Service for Connection Monitor functionality.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> initializeConnectionMonitorWithResponseAsync() {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .initializeConnectionMonitor(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Initialize Peering Service for Connection Monitor functionality.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> initializeConnectionMonitorWithResponseAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .initializeConnectionMonitor(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Initialize Peering Service for Connection Monitor functionality.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> initializeConnectionMonitorAsync() {
+        return initializeConnectionMonitorWithResponseAsync().flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Initialize Peering Service for Connection Monitor functionality.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void initializeConnectionMonitor() {
+        initializeConnectionMonitorAsync().block();
+    }
+
+    /**
+     * Initialize Peering Service for Connection Monitor functionality.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> initializeConnectionMonitorWithResponse(Context context) {
+        return initializeConnectionMonitorWithResponseAsync(context).block();
     }
 
     /**
@@ -1119,7 +1220,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1156,7 +1258,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listByResourceGroupNextSinglePageAsync(
@@ -1192,7 +1295,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1229,7 +1333,8 @@ public final class PeeringServicesClientImpl implements PeeringServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering services.
+     * @return the paginated list of peering services along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringServiceInner>> listBySubscriptionNextSinglePageAsync(

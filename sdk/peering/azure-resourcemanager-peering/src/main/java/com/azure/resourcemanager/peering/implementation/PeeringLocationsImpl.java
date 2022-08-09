@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.models.PeeringLocation;
 import com.azure.resourcemanager.peering.models.PeeringLocations;
 import com.azure.resourcemanager.peering.models.PeeringLocationsDirectPeeringType;
 import com.azure.resourcemanager.peering.models.PeeringLocationsKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringLocationsImpl implements PeeringLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringLocationsImpl.class);
 
     private final PeeringLocationsClient innerClient;
 

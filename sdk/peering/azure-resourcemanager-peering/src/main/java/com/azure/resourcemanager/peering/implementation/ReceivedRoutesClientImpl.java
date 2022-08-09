@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.ReceivedRoutesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringReceivedRouteInner;
 import com.azure.resourcemanager.peering.models.PeeringReceivedRouteListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReceivedRoutesClient. */
 public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
-    private final ClientLogger logger = new ClientLogger(ReceivedRoutesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReceivedRoutesService service;
 
@@ -103,7 +100,8 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringReceivedRouteInner>> listByPeeringSinglePageAsync(
@@ -177,7 +175,8 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringReceivedRouteInner>> listByPeeringSinglePageAsync(
@@ -248,7 +247,7 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringReceivedRouteInner> listByPeeringAsync(
@@ -280,7 +279,7 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringReceivedRouteInner> listByPeeringAsync(String resourceGroupName, String peeringName) {
@@ -316,7 +315,7 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringReceivedRouteInner> listByPeeringAsync(
@@ -350,7 +349,7 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringReceivedRouteInner> listByPeering(String resourceGroupName, String peeringName) {
@@ -384,7 +383,7 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringReceivedRouteInner> listByPeering(
@@ -415,7 +414,8 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringReceivedRouteInner>> listByPeeringNextSinglePageAsync(String nextLink) {
@@ -451,7 +451,8 @@ public final class ReceivedRoutesClientImpl implements ReceivedRoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of received routes for the peering.
+     * @return the paginated list of received routes for the peering along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringReceivedRouteInner>> listByPeeringNextSinglePageAsync(

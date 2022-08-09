@@ -41,7 +41,7 @@ public interface RegisteredPrefixesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered prefix with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeeringRegisteredPrefixInner> getWithResponse(
@@ -77,7 +77,7 @@ public interface RegisteredPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's prefix that is registered by the peering service provider.
+     * @return the customer's prefix that is registered by the peering service provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeeringRegisteredPrefixInner> createOrUpdateWithResponse(
@@ -112,7 +112,7 @@ public interface RegisteredPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -126,7 +126,7 @@ public interface RegisteredPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringRegisteredPrefixInner> listByPeering(String resourceGroupName, String peeringName);
@@ -140,9 +140,41 @@ public interface RegisteredPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered prefixes.
+     * @return the paginated list of peering registered prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringRegisteredPrefixInner> listByPeering(
         String resourceGroupName, String peeringName, Context context);
+
+    /**
+     * Validates an existing registered prefix with the specified name under the given subscription, resource group and
+     * peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param registeredPrefixName The name of the registered prefix.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's prefix that is registered by the peering service provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PeeringRegisteredPrefixInner validate(String resourceGroupName, String peeringName, String registeredPrefixName);
+
+    /**
+     * Validates an existing registered prefix with the specified name under the given subscription, resource group and
+     * peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param registeredPrefixName The name of the registered prefix.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the customer's prefix that is registered by the peering service provider along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PeeringRegisteredPrefixInner> validateWithResponse(
+        String resourceGroupName, String peeringName, String registeredPrefixName, Context context);
 }

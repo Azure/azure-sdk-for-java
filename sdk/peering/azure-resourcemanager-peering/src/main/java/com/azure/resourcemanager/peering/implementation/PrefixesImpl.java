@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.fluent.PrefixesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServicePrefixInner;
 import com.azure.resourcemanager.peering.models.PeeringServicePrefix;
 import com.azure.resourcemanager.peering.models.Prefixes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrefixesImpl implements Prefixes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrefixesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrefixesImpl.class);
 
     private final PrefixesClient innerClient;
 
@@ -77,7 +76,7 @@ public final class PrefixesImpl implements Prefixes {
     public PeeringServicePrefix getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +92,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String prefixName = Utils.getValueFromIdByName(id, "prefixes");
         if (prefixName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'prefixes'.", id)));
@@ -107,7 +106,7 @@ public final class PrefixesImpl implements Prefixes {
     public Response<PeeringServicePrefix> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +122,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String prefixName = Utils.getValueFromIdByName(id, "prefixes");
         if (prefixName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'prefixes'.", id)));
@@ -134,7 +133,7 @@ public final class PrefixesImpl implements Prefixes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,18 +149,18 @@ public final class PrefixesImpl implements Prefixes {
         }
         String prefixName = Utils.getValueFromIdByName(id, "prefixes");
         if (prefixName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'prefixes'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, peeringServiceName, prefixName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, peeringServiceName, prefixName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +176,7 @@ public final class PrefixesImpl implements Prefixes {
         }
         String prefixName = Utils.getValueFromIdByName(id, "prefixes");
         if (prefixName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'prefixes'.", id)));

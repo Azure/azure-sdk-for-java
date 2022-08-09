@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.fluent.PeeringServicesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
 import com.azure.resourcemanager.peering.models.PeeringService;
 import com.azure.resourcemanager.peering.models.PeeringServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringServicesImpl implements PeeringServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServicesImpl.class);
 
     private final PeeringServicesClient innerClient;
 
@@ -80,10 +79,18 @@ public final class PeeringServicesImpl implements PeeringServices {
         return Utils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
     }
 
+    public void initializeConnectionMonitor() {
+        this.serviceClient().initializeConnectionMonitor();
+    }
+
+    public Response<Void> initializeConnectionMonitorWithResponse(Context context) {
+        return this.serviceClient().initializeConnectionMonitorWithResponse(context);
+    }
+
     public PeeringService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,7 +98,7 @@ public final class PeeringServicesImpl implements PeeringServices {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +110,7 @@ public final class PeeringServicesImpl implements PeeringServices {
     public Response<PeeringService> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +118,7 @@ public final class PeeringServicesImpl implements PeeringServices {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,7 +130,7 @@ public final class PeeringServicesImpl implements PeeringServices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,19 +138,19 @@ public final class PeeringServicesImpl implements PeeringServices {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, peeringServiceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, peeringServiceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +158,7 @@ public final class PeeringServicesImpl implements PeeringServices {
         }
         String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

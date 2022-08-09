@@ -11,10 +11,9 @@ import com.azure.resourcemanager.peering.fluent.CdnPeeringPrefixesClient;
 import com.azure.resourcemanager.peering.fluent.models.CdnPeeringPrefixInner;
 import com.azure.resourcemanager.peering.models.CdnPeeringPrefix;
 import com.azure.resourcemanager.peering.models.CdnPeeringPrefixes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CdnPeeringPrefixesImpl implements CdnPeeringPrefixes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnPeeringPrefixesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CdnPeeringPrefixesImpl.class);
 
     private final CdnPeeringPrefixesClient innerClient;
 

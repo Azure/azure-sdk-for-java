@@ -66,6 +66,13 @@ public interface PeeringManagementClient {
     LegacyPeeringsClient getLegacyPeerings();
 
     /**
+     * Gets the LookingGlassClient object to access its operations.
+     *
+     * @return the LookingGlassClient object.
+     */
+    LookingGlassClient getLookingGlass();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -113,6 +120,13 @@ public interface PeeringManagementClient {
      * @return the ReceivedRoutesClient object.
      */
     ReceivedRoutesClient getReceivedRoutes();
+
+    /**
+     * Gets the ConnectionMonitorTestsClient object to access its operations.
+     *
+     * @return the ConnectionMonitorTestsClient object.
+     */
+    ConnectionMonitorTestsClient getConnectionMonitorTests();
 
     /**
      * Gets the PeeringServiceCountriesClient object to access its operations.

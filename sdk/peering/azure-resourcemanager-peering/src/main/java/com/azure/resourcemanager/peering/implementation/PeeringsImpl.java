@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.fluent.PeeringsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
 import com.azure.resourcemanager.peering.models.Peering;
 import com.azure.resourcemanager.peering.models.Peerings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringsImpl implements Peerings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringsImpl.class);
 
     private final PeeringsClient innerClient;
 
@@ -82,7 +81,7 @@ public final class PeeringsImpl implements Peerings {
     public Peering getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,7 +89,7 @@ public final class PeeringsImpl implements Peerings {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
@@ -101,7 +100,7 @@ public final class PeeringsImpl implements Peerings {
     public Response<Peering> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class PeeringsImpl implements Peerings {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
@@ -120,7 +119,7 @@ public final class PeeringsImpl implements Peerings {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,18 +127,18 @@ public final class PeeringsImpl implements Peerings {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, peeringName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, peeringName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class PeeringsImpl implements Peerings {
         }
         String peeringName = Utils.getValueFromIdByName(id, "peerings");
         if (peeringName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'peerings'.", id)));

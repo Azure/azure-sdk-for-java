@@ -27,7 +27,11 @@ public final class PeeringLocationsKind extends ExpandableStringEnum<PeeringLoca
         return fromString(name, PeeringLocationsKind.class);
     }
 
-    /** @return known PeeringLocationsKind values. */
+    /**
+     * Gets known PeeringLocationsKind values.
+     *
+     * @return known PeeringLocationsKind values.
+     */
     public static Collection<PeeringLocationsKind> values() {
         return values(PeeringLocationsKind.class);
     }

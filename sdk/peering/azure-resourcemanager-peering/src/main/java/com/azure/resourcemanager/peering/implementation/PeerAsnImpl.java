@@ -146,9 +146,4 @@ public final class PeerAsnImpl implements PeerAsn, PeerAsn.Definition, PeerAsn.U
         this.innerModel().withPeerName(peerName);
         return this;
     }
-
-    public PeerAsnImpl withValidationState(ValidationState validationState) {
-        this.innerModel().withValidationState(validationState);
-        return this;
-    }
 }

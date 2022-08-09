@@ -27,7 +27,11 @@ public final class SessionAddressProvider extends ExpandableStringEnum<SessionAd
         return fromString(name, SessionAddressProvider.class);
     }
 
-    /** @return known SessionAddressProvider values. */
+    /**
+     * Gets known SessionAddressProvider values.
+     *
+     * @return known SessionAddressProvider values.
+     */
     public static Collection<SessionAddressProvider> values() {
         return values(SessionAddressProvider.class);
     }

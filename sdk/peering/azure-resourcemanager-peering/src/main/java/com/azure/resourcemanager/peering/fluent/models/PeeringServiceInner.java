@@ -5,26 +5,29 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.peering.models.LogAnalyticsWorkspaceProperties;
 import com.azure.resourcemanager.peering.models.PeeringServiceSku;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Peering Service. */
-@JsonFlatten
 @Fluent
-public class PeeringServiceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceInner.class);
-
+public final class PeeringServiceInner extends ProxyResource {
     /*
      * The SKU that defines the type of the peering service.
      */
     @JsonProperty(value = "sku")
     private PeeringServiceSku sku;
+
+    /*
+     * The properties that define a peering service.
+     */
+    @JsonProperty(value = "properties")
+    private PeeringServiceProperties innerProperties;
 
     /*
      * The location of the resource.
@@ -36,39 +39,8 @@ public class PeeringServiceInner extends ProxyResource {
      * The resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * The location (state/province) of the customer.
-     */
-    @JsonProperty(value = "properties.peeringServiceLocation")
-    private String peeringServiceLocation;
-
-    /*
-     * The name of the service provider.
-     */
-    @JsonProperty(value = "properties.peeringServiceProvider")
-    private String peeringServiceProvider;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The primary peering (Microsoft/service provider) location to be used for
-     * customer traffic.
-     */
-    @JsonProperty(value = "properties.providerPrimaryPeeringLocation")
-    private String providerPrimaryPeeringLocation;
-
-    /*
-     * The backup peering (Microsoft/service provider) location to be used for
-     * customer traffic.
-     */
-    @JsonProperty(value = "properties.providerBackupPeeringLocation")
-    private String providerBackupPeeringLocation;
 
     /**
      * Get the sku property: The SKU that defines the type of the peering service.
@@ -88,6 +60,15 @@ public class PeeringServiceInner extends ProxyResource {
     public PeeringServiceInner withSku(PeeringServiceSku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: The properties that define a peering service.
+     *
+     * @return the innerProperties value.
+     */
+    private PeeringServiceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -136,7 +117,7 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the peeringServiceLocation value.
      */
     public String peeringServiceLocation() {
-        return this.peeringServiceLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringServiceLocation();
     }
 
     /**
@@ -146,7 +127,10 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the PeeringServiceInner object itself.
      */
     public PeeringServiceInner withPeeringServiceLocation(String peeringServiceLocation) {
-        this.peeringServiceLocation = peeringServiceLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProperties();
+        }
+        this.innerProperties().withPeeringServiceLocation(peeringServiceLocation);
         return this;
     }
 
@@ -156,7 +140,7 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the peeringServiceProvider value.
      */
     public String peeringServiceProvider() {
-        return this.peeringServiceProvider;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringServiceProvider();
     }
 
     /**
@@ -166,7 +150,10 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the PeeringServiceInner object itself.
      */
     public PeeringServiceInner withPeeringServiceProvider(String peeringServiceProvider) {
-        this.peeringServiceProvider = peeringServiceProvider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProperties();
+        }
+        this.innerProperties().withPeeringServiceProvider(peeringServiceProvider);
         return this;
     }
 
@@ -176,7 +163,7 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -186,7 +173,7 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the providerPrimaryPeeringLocation value.
      */
     public String providerPrimaryPeeringLocation() {
-        return this.providerPrimaryPeeringLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().providerPrimaryPeeringLocation();
     }
 
     /**
@@ -197,7 +184,10 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the PeeringServiceInner object itself.
      */
     public PeeringServiceInner withProviderPrimaryPeeringLocation(String providerPrimaryPeeringLocation) {
-        this.providerPrimaryPeeringLocation = providerPrimaryPeeringLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProperties();
+        }
+        this.innerProperties().withProviderPrimaryPeeringLocation(providerPrimaryPeeringLocation);
         return this;
     }
 
@@ -208,7 +198,7 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the providerBackupPeeringLocation value.
      */
     public String providerBackupPeeringLocation() {
-        return this.providerBackupPeeringLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().providerBackupPeeringLocation();
     }
 
     /**
@@ -219,7 +209,34 @@ public class PeeringServiceInner extends ProxyResource {
      * @return the PeeringServiceInner object itself.
      */
     public PeeringServiceInner withProviderBackupPeeringLocation(String providerBackupPeeringLocation) {
-        this.providerBackupPeeringLocation = providerBackupPeeringLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProperties();
+        }
+        this.innerProperties().withProviderBackupPeeringLocation(providerBackupPeeringLocation);
+        return this;
+    }
+
+    /**
+     * Get the logAnalyticsWorkspaceProperties property: The Log Analytics Workspace Properties.
+     *
+     * @return the logAnalyticsWorkspaceProperties value.
+     */
+    public LogAnalyticsWorkspaceProperties logAnalyticsWorkspaceProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().logAnalyticsWorkspaceProperties();
+    }
+
+    /**
+     * Set the logAnalyticsWorkspaceProperties property: The Log Analytics Workspace Properties.
+     *
+     * @param logAnalyticsWorkspaceProperties the logAnalyticsWorkspaceProperties value to set.
+     * @return the PeeringServiceInner object itself.
+     */
+    public PeeringServiceInner withLogAnalyticsWorkspaceProperties(
+        LogAnalyticsWorkspaceProperties logAnalyticsWorkspaceProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceProperties();
+        }
+        this.innerProperties().withLogAnalyticsWorkspaceProperties(logAnalyticsWorkspaceProperties);
         return this;
     }
 
@@ -232,10 +249,15 @@ public class PeeringServiceInner extends ProxyResource {
         if (sku() != null) {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model PeeringServiceInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServiceInner.class);
 }

@@ -36,7 +36,7 @@ public interface Prefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response}.
      */
     Response<PeeringServicePrefix> getWithResponse(
         String resourceGroupName, String peeringServiceName, String prefixName, String expand, Context context);
@@ -65,7 +65,7 @@ public interface Prefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String peeringServiceName, String prefixName, Context context);
@@ -78,7 +78,7 @@ public interface Prefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeeringServicePrefix> listByPeeringService(String resourceGroupName, String peeringServiceName);
 
@@ -92,7 +92,7 @@ public interface Prefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering service prefixes.
+     * @return the paginated list of peering service prefixes as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PeeringServicePrefix> listByPeeringService(
         String resourceGroupName, String peeringServiceName, String expand, Context context);
@@ -105,7 +105,7 @@ public interface Prefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response}.
      */
     PeeringServicePrefix getById(String id);
 
@@ -119,7 +119,7 @@ public interface Prefixes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing prefix with the specified name under the given subscription, resource group and peering
-     *     service.
+     *     service along with {@link Response}.
      */
     Response<PeeringServicePrefix> getByIdWithResponse(String id, String expand, Context context);
 
@@ -143,7 +143,7 @@ public interface Prefixes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

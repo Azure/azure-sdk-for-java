@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.RegisteredAsnsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringRegisteredAsnInner;
 import com.azure.resourcemanager.peering.models.PeeringRegisteredAsnListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RegisteredAsnsClient. */
 public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
-    private final ClientLogger logger = new ClientLogger(RegisteredAsnsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RegisteredAsnsService service;
 
@@ -147,7 +144,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredAsnInner>> getWithResponseAsync(
@@ -203,7 +200,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredAsnInner>> getWithResponseAsync(
@@ -255,20 +252,13 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringRegisteredAsnInner> getAsync(
         String resourceGroupName, String peeringName, String registeredAsnName) {
         return getWithResponseAsync(resourceGroupName, peeringName, registeredAsnName)
-            .flatMap(
-                (Response<PeeringRegisteredAsnInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -299,7 +289,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeeringRegisteredAsnInner> getWithResponse(
@@ -317,7 +307,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's ASN that is registered by the peering service provider.
+     * @return the customer's ASN that is registered by the peering service provider along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredAsnInner>> createOrUpdateWithResponseAsync(
@@ -382,7 +373,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's ASN that is registered by the peering service provider.
+     * @return the customer's ASN that is registered by the peering service provider along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeeringRegisteredAsnInner>> createOrUpdateWithResponseAsync(
@@ -444,7 +436,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's ASN that is registered by the peering service provider.
+     * @return the customer's ASN that is registered by the peering service provider on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PeeringRegisteredAsnInner> createOrUpdateAsync(
@@ -453,14 +446,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
         String registeredAsnName,
         PeeringRegisteredAsnInner registeredAsn) {
         return createOrUpdateWithResponseAsync(resourceGroupName, peeringName, registeredAsnName, registeredAsn)
-            .flatMap(
-                (Response<PeeringRegisteredAsnInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -495,7 +481,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's ASN that is registered by the peering service provider.
+     * @return the customer's ASN that is registered by the peering service provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeeringRegisteredAsnInner> createOrUpdateWithResponse(
@@ -519,7 +505,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -575,7 +561,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -627,12 +613,12 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String peeringName, String registeredAsnName) {
         return deleteWithResponseAsync(resourceGroupName, peeringName, registeredAsnName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -662,7 +648,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -678,7 +664,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringSinglePageAsync(
@@ -736,7 +723,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringSinglePageAsync(
@@ -790,7 +778,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringRegisteredAsnInner> listByPeeringAsync(String resourceGroupName, String peeringName) {
@@ -808,7 +796,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringRegisteredAsnInner> listByPeeringAsync(
@@ -826,7 +814,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringRegisteredAsnInner> listByPeering(String resourceGroupName, String peeringName) {
@@ -842,7 +830,7 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeeringRegisteredAsnInner> listByPeering(
@@ -857,7 +845,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringNextSinglePageAsync(String nextLink) {
@@ -893,7 +882,8 @@ public final class RegisteredAsnsClientImpl implements RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringRegisteredAsnInner>> listByPeeringNextSinglePageAsync(

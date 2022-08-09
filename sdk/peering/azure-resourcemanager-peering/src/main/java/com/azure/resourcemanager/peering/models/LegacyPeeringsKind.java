@@ -27,7 +27,11 @@ public final class LegacyPeeringsKind extends ExpandableStringEnum<LegacyPeering
         return fromString(name, LegacyPeeringsKind.class);
     }
 
-    /** @return known LegacyPeeringsKind values. */
+    /**
+     * Gets known LegacyPeeringsKind values.
+     *
+     * @return known LegacyPeeringsKind values.
+     */
     public static Collection<LegacyPeeringsKind> values() {
         return values(LegacyPeeringsKind.class);
     }

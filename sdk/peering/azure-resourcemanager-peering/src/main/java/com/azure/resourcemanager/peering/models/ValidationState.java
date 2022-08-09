@@ -33,7 +33,11 @@ public final class ValidationState extends ExpandableStringEnum<ValidationState>
         return fromString(name, ValidationState.class);
     }
 
-    /** @return known ValidationState values. */
+    /**
+     * Gets known ValidationState values.
+     *
+     * @return known ValidationState values.
+     */
     public static Collection<ValidationState> values() {
         return values(ValidationState.class);
     }

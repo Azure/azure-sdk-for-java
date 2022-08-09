@@ -39,7 +39,7 @@ public interface RegisteredAsnsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing registered ASN with the specified name under the given subscription, resource group and
-     *     peering.
+     *     peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeeringRegisteredAsnInner> getWithResponse(
@@ -75,7 +75,7 @@ public interface RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's ASN that is registered by the peering service provider.
+     * @return the customer's ASN that is registered by the peering service provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PeeringRegisteredAsnInner> createOrUpdateWithResponse(
@@ -110,7 +110,7 @@ public interface RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -124,7 +124,7 @@ public interface RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringRegisteredAsnInner> listByPeering(String resourceGroupName, String peeringName);
@@ -138,7 +138,7 @@ public interface RegisteredAsnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peering registered ASNs.
+     * @return the paginated list of peering registered ASNs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringRegisteredAsnInner> listByPeering(

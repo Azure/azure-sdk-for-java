@@ -11,10 +11,9 @@ import com.azure.resourcemanager.peering.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.peering.models.CheckServiceProviderAvailabilityInput;
 import com.azure.resourcemanager.peering.models.Enum0;
 import com.azure.resourcemanager.peering.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 

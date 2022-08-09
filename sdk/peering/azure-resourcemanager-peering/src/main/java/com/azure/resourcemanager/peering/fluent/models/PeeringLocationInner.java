@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.models.Kind;
 import com.azure.resourcemanager.peering.models.PeeringLocationPropertiesDirect;
 import com.azure.resourcemanager.peering.models.PeeringLocationPropertiesExchange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peering location is where connectivity could be established to the Microsoft Cloud Edge. */
-@JsonFlatten
 @Fluent
-public class PeeringLocationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringLocationInner.class);
-
+public final class PeeringLocationInner extends ProxyResource {
     /*
      * The kind of peering that the peering location supports.
      */
@@ -27,34 +21,10 @@ public class PeeringLocationInner extends ProxyResource {
     private Kind kind;
 
     /*
-     * The properties that define a direct peering location.
+     * The properties that define a peering location.
      */
-    @JsonProperty(value = "properties.direct")
-    private PeeringLocationPropertiesDirect direct;
-
-    /*
-     * The properties that define an exchange peering location.
-     */
-    @JsonProperty(value = "properties.exchange")
-    private PeeringLocationPropertiesExchange exchange;
-
-    /*
-     * The name of the peering location.
-     */
-    @JsonProperty(value = "properties.peeringLocation")
-    private String peeringLocation;
-
-    /*
-     * The country in which the peering location exists.
-     */
-    @JsonProperty(value = "properties.country")
-    private String country;
-
-    /*
-     * The Azure region associated with the peering location.
-     */
-    @JsonProperty(value = "properties.azureRegion")
-    private String azureRegion;
+    @JsonProperty(value = "properties")
+    private PeeringLocationProperties innerProperties;
 
     /**
      * Get the kind property: The kind of peering that the peering location supports.
@@ -77,12 +47,21 @@ public class PeeringLocationInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties that define a peering location.
+     *
+     * @return the innerProperties value.
+     */
+    private PeeringLocationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the direct property: The properties that define a direct peering location.
      *
      * @return the direct value.
      */
     public PeeringLocationPropertiesDirect direct() {
-        return this.direct;
+        return this.innerProperties() == null ? null : this.innerProperties().direct();
     }
 
     /**
@@ -92,7 +71,10 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the PeeringLocationInner object itself.
      */
     public PeeringLocationInner withDirect(PeeringLocationPropertiesDirect direct) {
-        this.direct = direct;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringLocationProperties();
+        }
+        this.innerProperties().withDirect(direct);
         return this;
     }
 
@@ -102,7 +84,7 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the exchange value.
      */
     public PeeringLocationPropertiesExchange exchange() {
-        return this.exchange;
+        return this.innerProperties() == null ? null : this.innerProperties().exchange();
     }
 
     /**
@@ -112,7 +94,10 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the PeeringLocationInner object itself.
      */
     public PeeringLocationInner withExchange(PeeringLocationPropertiesExchange exchange) {
-        this.exchange = exchange;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringLocationProperties();
+        }
+        this.innerProperties().withExchange(exchange);
         return this;
     }
 
@@ -122,7 +107,7 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
-        return this.peeringLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringLocation();
     }
 
     /**
@@ -132,7 +117,10 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the PeeringLocationInner object itself.
      */
     public PeeringLocationInner withPeeringLocation(String peeringLocation) {
-        this.peeringLocation = peeringLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringLocationProperties();
+        }
+        this.innerProperties().withPeeringLocation(peeringLocation);
         return this;
     }
 
@@ -142,7 +130,7 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the country value.
      */
     public String country() {
-        return this.country;
+        return this.innerProperties() == null ? null : this.innerProperties().country();
     }
 
     /**
@@ -152,7 +140,10 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the PeeringLocationInner object itself.
      */
     public PeeringLocationInner withCountry(String country) {
-        this.country = country;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringLocationProperties();
+        }
+        this.innerProperties().withCountry(country);
         return this;
     }
 
@@ -162,7 +153,7 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the azureRegion value.
      */
     public String azureRegion() {
-        return this.azureRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().azureRegion();
     }
 
     /**
@@ -172,7 +163,10 @@ public class PeeringLocationInner extends ProxyResource {
      * @return the PeeringLocationInner object itself.
      */
     public PeeringLocationInner withAzureRegion(String azureRegion) {
-        this.azureRegion = azureRegion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringLocationProperties();
+        }
+        this.innerProperties().withAzureRegion(azureRegion);
         return this;
     }
 
@@ -182,11 +176,8 @@ public class PeeringLocationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (direct() != null) {
-            direct().validate();
-        }
-        if (exchange() != null) {
-            exchange().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

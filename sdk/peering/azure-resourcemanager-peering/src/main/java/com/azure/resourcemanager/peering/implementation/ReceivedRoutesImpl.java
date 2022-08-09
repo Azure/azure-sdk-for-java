@@ -11,10 +11,9 @@ import com.azure.resourcemanager.peering.fluent.ReceivedRoutesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringReceivedRouteInner;
 import com.azure.resourcemanager.peering.models.PeeringReceivedRoute;
 import com.azure.resourcemanager.peering.models.ReceivedRoutes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReceivedRoutesImpl implements ReceivedRoutes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReceivedRoutesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReceivedRoutesImpl.class);
 
     private final ReceivedRoutesClient innerClient;
 

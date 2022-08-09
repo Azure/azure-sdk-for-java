@@ -27,7 +27,11 @@ public final class Enum0 extends ExpandableStringEnum<Enum0> {
         return fromString(name, Enum0.class);
     }
 
-    /** @return known Enum0 values. */
+    /**
+     * Gets known Enum0 values.
+     *
+     * @return known Enum0 values.
+     */
     public static Collection<Enum0> values() {
         return values(Enum0.class);
     }

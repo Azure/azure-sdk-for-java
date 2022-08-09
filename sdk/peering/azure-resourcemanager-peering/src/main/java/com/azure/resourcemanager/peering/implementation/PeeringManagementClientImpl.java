@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,7 +23,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.peering.fluent.CdnPeeringPrefixesClient;
+import com.azure.resourcemanager.peering.fluent.ConnectionMonitorTestsClient;
 import com.azure.resourcemanager.peering.fluent.LegacyPeeringsClient;
+import com.azure.resourcemanager.peering.fluent.LookingGlassClient;
 import com.azure.resourcemanager.peering.fluent.OperationsClient;
 import com.azure.resourcemanager.peering.fluent.PeerAsnsClient;
 import com.azure.resourcemanager.peering.fluent.PeeringLocationsClient;
@@ -43,15 +46,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the PeeringManagementClientImpl type. */
 @ServiceClient(builder = PeeringManagementClientBuilder.class)
 public final class PeeringManagementClientImpl implements PeeringManagementClient {
-    private final ClientLogger logger = new ClientLogger(PeeringManagementClientImpl.class);
-
     /** The Azure subscription ID. */
     private final String subscriptionId;
 
@@ -160,6 +160,18 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         return this.legacyPeerings;
     }
 
+    /** The LookingGlassClient object to access its operations. */
+    private final LookingGlassClient lookingGlass;
+
+    /**
+     * Gets the LookingGlassClient object to access its operations.
+     *
+     * @return the LookingGlassClient object.
+     */
+    public LookingGlassClient getLookingGlass() {
+        return this.lookingGlass;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -244,6 +256,18 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         return this.receivedRoutes;
     }
 
+    /** The ConnectionMonitorTestsClient object to access its operations. */
+    private final ConnectionMonitorTestsClient connectionMonitorTests;
+
+    /**
+     * Gets the ConnectionMonitorTestsClient object to access its operations.
+     *
+     * @return the ConnectionMonitorTestsClient object.
+     */
+    public ConnectionMonitorTestsClient getConnectionMonitorTests() {
+        return this.connectionMonitorTests;
+    }
+
     /** The PeeringServiceCountriesClient object to access its operations. */
     private final PeeringServiceCountriesClient peeringServiceCountries;
 
@@ -326,10 +350,11 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2022-06-01";
         this.cdnPeeringPrefixes = new CdnPeeringPrefixesClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.legacyPeerings = new LegacyPeeringsClientImpl(this);
+        this.lookingGlass = new LookingGlassClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.peerAsns = new PeerAsnsClientImpl(this);
         this.peeringLocations = new PeeringLocationsClientImpl(this);
@@ -337,6 +362,7 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         this.registeredPrefixes = new RegisteredPrefixesClientImpl(this);
         this.peerings = new PeeringsClientImpl(this);
         this.receivedRoutes = new ReceivedRoutesClientImpl(this);
+        this.connectionMonitorTests = new ConnectionMonitorTestsClientImpl(this);
         this.peeringServiceCountries = new PeeringServiceCountriesClientImpl(this);
         this.peeringServiceLocations = new PeeringServiceLocationsClientImpl(this);
         this.prefixes = new PrefixesClientImpl(this);
@@ -360,10 +386,7 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -427,7 +450,7 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -486,4 +509,6 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringManagementClientImpl.class);
 }

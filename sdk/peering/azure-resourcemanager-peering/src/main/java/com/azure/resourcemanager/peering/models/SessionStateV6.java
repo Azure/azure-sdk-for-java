@@ -54,7 +54,11 @@ public final class SessionStateV6 extends ExpandableStringEnum<SessionStateV6> {
         return fromString(name, SessionStateV6.class);
     }
 
-    /** @return known SessionStateV6 values. */
+    /**
+     * Gets known SessionStateV6 values.
+     *
+     * @return known SessionStateV6 values.
+     */
     public static Collection<SessionStateV6> values() {
         return values(SessionStateV6.class);
     }

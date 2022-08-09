@@ -7,6 +7,7 @@ package com.azure.resourcemanager.peering.implementation;
 import com.azure.resourcemanager.peering.fluent.models.OperationInner;
 import com.azure.resourcemanager.peering.models.Operation;
 import com.azure.resourcemanager.peering.models.OperationDisplayInfo;
+import com.azure.resourcemanager.peering.models.ServiceSpecification;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -28,6 +29,10 @@ public final class OperationImpl implements Operation {
 
     public Boolean isDataAction() {
         return this.innerModel().isDataAction();
+    }
+
+    public ServiceSpecification serviceSpecification() {
+        return this.innerModel().serviceSpecification();
     }
 
     public OperationInner innerModel() {

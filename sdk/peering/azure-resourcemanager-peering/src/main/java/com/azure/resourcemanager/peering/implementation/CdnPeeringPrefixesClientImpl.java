@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.peering.fluent.CdnPeeringPrefixesClient;
 import com.azure.resourcemanager.peering.fluent.models.CdnPeeringPrefixInner;
 import com.azure.resourcemanager.peering.models.CdnPeeringPrefixListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CdnPeeringPrefixesClient. */
 public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesClient {
-    private final ClientLogger logger = new ClientLogger(CdnPeeringPrefixesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CdnPeeringPrefixesService service;
 
@@ -89,7 +86,8 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnPeeringPrefixInner>> listSinglePageAsync(String peeringLocation) {
@@ -141,7 +139,8 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnPeeringPrefixInner>> listSinglePageAsync(String peeringLocation, Context context) {
@@ -189,7 +188,7 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CdnPeeringPrefixInner> listAsync(String peeringLocation) {
@@ -205,7 +204,7 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CdnPeeringPrefixInner> listAsync(String peeringLocation, Context context) {
@@ -221,7 +220,7 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CdnPeeringPrefixInner> list(String peeringLocation) {
@@ -236,7 +235,7 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CdnPeeringPrefixInner> list(String peeringLocation, Context context) {
@@ -250,7 +249,8 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnPeeringPrefixInner>> listNextSinglePageAsync(String nextLink) {
@@ -286,7 +286,8 @@ public final class CdnPeeringPrefixesClientImpl implements CdnPeeringPrefixesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of CDN peering prefixes.
+     * @return the paginated list of CDN peering prefixes along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnPeeringPrefixInner>> listNextSinglePageAsync(String nextLink, Context context) {

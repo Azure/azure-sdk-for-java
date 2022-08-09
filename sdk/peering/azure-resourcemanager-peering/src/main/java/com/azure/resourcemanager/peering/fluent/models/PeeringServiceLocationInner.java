@@ -5,35 +5,26 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The peering service location. */
-@JsonFlatten
 @Fluent
-public class PeeringServiceLocationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceLocationInner.class);
-
+public final class PeeringServiceLocationInner extends ProxyResource {
     /*
-     * Country of the customer
+     * The properties that define a peering service location.
      */
-    @JsonProperty(value = "properties.country")
-    private String country;
+    @JsonProperty(value = "properties")
+    private PeeringServiceLocationProperties innerProperties;
 
-    /*
-     * State of the customer
+    /**
+     * Get the innerProperties property: The properties that define a peering service location.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.state")
-    private String state;
-
-    /*
-     * Azure region for the location
-     */
-    @JsonProperty(value = "properties.azureRegion")
-    private String azureRegion;
+    private PeeringServiceLocationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the country property: Country of the customer.
@@ -41,7 +32,7 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @return the country value.
      */
     public String country() {
-        return this.country;
+        return this.innerProperties() == null ? null : this.innerProperties().country();
     }
 
     /**
@@ -51,7 +42,10 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @return the PeeringServiceLocationInner object itself.
      */
     public PeeringServiceLocationInner withCountry(String country) {
-        this.country = country;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceLocationProperties();
+        }
+        this.innerProperties().withCountry(country);
         return this;
     }
 
@@ -61,7 +55,7 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -71,7 +65,10 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @return the PeeringServiceLocationInner object itself.
      */
     public PeeringServiceLocationInner withState(String state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceLocationProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -81,7 +78,7 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @return the azureRegion value.
      */
     public String azureRegion() {
-        return this.azureRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().azureRegion();
     }
 
     /**
@@ -91,7 +88,10 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @return the PeeringServiceLocationInner object itself.
      */
     public PeeringServiceLocationInner withAzureRegion(String azureRegion) {
-        this.azureRegion = azureRegion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceLocationProperties();
+        }
+        this.innerProperties().withAzureRegion(azureRegion);
         return this;
     }
 
@@ -101,5 +101,8 @@ public class PeeringServiceLocationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

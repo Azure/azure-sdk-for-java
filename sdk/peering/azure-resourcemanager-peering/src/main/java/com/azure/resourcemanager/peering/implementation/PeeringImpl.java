@@ -79,6 +79,10 @@ public final class PeeringImpl implements Peering, Peering.Definition, Peering.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PeeringInner innerModel() {
         return this.innerObject;
     }
