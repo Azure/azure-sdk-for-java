@@ -43,14 +43,12 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
 
     /** {@inheritDoc} */
     @Override
-    @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
         return this;
     }
 
     /** {@inheritDoc} */
-    @Override
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setGeneratedKeyName(String generatedKeyName) {
         super.setGeneratedKeyName(generatedKeyName);
@@ -59,14 +57,12 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
 
     /** {@inheritDoc} */
     @Override
-    @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setSource(String source) {
         super.setSource(source);
         return this;
     }
 
     /** {@inheritDoc} */
-    @Override
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setSourceContext(String sourceContext) {
         super.setSourceContext(sourceContext);
@@ -75,33 +71,6 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
 
     /** {@inheritDoc} */
     @Override
-    @Override
-    public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
-        super.setInputs(inputs);
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreBlobProjectionSelector setReferenceKeyName(String referenceKeyName) {
-        super.setReferenceKeyName(referenceKeyName);
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreBlobProjectionSelector setGeneratedKeyName(String generatedKeyName) {
-        super.setGeneratedKeyName(generatedKeyName);
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreBlobProjectionSelector setSource(String source) {
-        super.setSource(source);
-
-        return this;
-    }
-
-    public SearchIndexerKnowledgeStoreBlobProjectionSelector setSourceContext(String sourceContext) {
-        super.setSourceContext(sourceContext);
-        return this;
-    }
-
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
         return this;
