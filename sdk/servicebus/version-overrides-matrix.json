@@ -11,6 +11,7 @@
       "reactor_2022"
     ],
     "TestFromSource": true,
+    "TestVersionSupport": true,
     "AZURE_VERSION_OVERRIDE_TESTS": true
   }
 }
