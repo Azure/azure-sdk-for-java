@@ -3361,7 +3361,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
+        StepVerifier.create(fac.upload((Flux<ByteBuffer>)null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
