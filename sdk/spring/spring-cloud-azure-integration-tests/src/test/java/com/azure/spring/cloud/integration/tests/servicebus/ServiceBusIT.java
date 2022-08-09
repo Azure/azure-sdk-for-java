@@ -26,7 +26,8 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
     properties = {
-        //exclude these two configurations avoiding start binder bean won't use which activated by errorhandler
+        //exclude these two configurations to avoid activating the Spring Cloud Stream Binder, which will be
+        // activated unintentionally by error handler (which is a Consumer<> bean)
         "spring.autoconfigure.exclude=org.springframework.cloud.stream.config.BindingServiceConfiguration"
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
     })
