@@ -2597,6 +2597,27 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    def "Append binary data min"() {
+        when:
+        fc.append(data.defaultBinaryData, 0)
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Append binary data"() {
+        setup:
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, null, null, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+    }
+
     def "Flush data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
@@ -3709,6 +3730,38 @@ class FileAPITest extends APISpec {
 
         when:
         clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.uploadWithResponse(new FileParallelUploadOptions(data.defaultBinaryData), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data overwrite"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.upload(data.defaultBinaryData, true)
 
         then:
         notThrown(Exception)

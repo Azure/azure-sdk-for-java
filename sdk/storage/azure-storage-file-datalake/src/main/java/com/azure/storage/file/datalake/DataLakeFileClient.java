@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -287,6 +288,32 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
+     * Creates a new file. By default, this method will not overwrite an existing file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.upload#BinaryData -->
+     * <pre>
+     * try &#123;
+     *     client.upload&#40;binaryData&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.upload#BinaryData -->
+     *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark
+     * support.
+     * @return Information about the uploaded path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathInfo upload(BinaryData data) {
+        return upload(data, false);
+    }
+
+    /**
      * Creates a new file, or updates the content of an existing file.
      *
      * <p><strong>Code Samples</strong></p>
@@ -318,6 +345,39 @@ public class DataLakeFileClient extends DataLakePathClient {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return uploadWithResponse(new FileParallelUploadOptions(data, length).setRequestConditions(requestConditions),
+            null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new file, or updates the content of an existing file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.upload#BinaryData-boolean -->
+     * <pre>
+     * try &#123;
+     *     boolean overwrite = false;
+     *     client.upload&#40;binaryData, overwrite&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.upload#BinaryData-boolean -->
+     *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark
+     * support.
+     * @param overwrite Whether to overwrite, should data exist on the file.
+     * @return Information about the uploaded path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathInfo upload(BinaryData data, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadWithResponse(new FileParallelUploadOptions(data).setRequestConditions(requestConditions),
             null, Context.NONE).getValue();
     }
 
@@ -518,6 +578,30 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.append#BinaryData-long -->
+     * <pre>
+     * client.append&#40;binaryData, offset&#41;;
+     * System.out.println&#40;&quot;Append data completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.append#BinaryData-long -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param data The data to write to the file.
+     * @param fileOffset The position where the data is to be appended.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void append(BinaryData data, long fileOffset) {
+        appendWithResponse(data, fileOffset, null, null, null, Context.NONE);
+    }
+
+    /**
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-byte-String-Duration-Context -->
      * <pre>
      * FileRange range = new FileRange&#40;1024, 2048L&#41;;
@@ -555,6 +639,54 @@ public class DataLakeFileClient extends DataLakePathClient {
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
             fbb.subscribeOn(Schedulers.boundedElastic()), fileOffset, length, contentMd5, leaseId, context);
+
+        try {
+            return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        } catch (UncheckedIOException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
+    }
+
+    /**
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#BinaryData-long-byte-String-Duration-Context -->
+     * <pre>
+     * FileRange range = new FileRange&#40;1024, 2048L&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * byte[] contentMd5 = new byte[0]; &#47;&#47; Replace with valid md5
+     *
+     * Response&lt;Void&gt; response = client.appendWithResponse&#40;binaryData, offset, contentMd5, leaseId, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Append data completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#BinaryData-long-byte-String-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param data The data to write to the file.
+     * @param fileOffset The position where the data is to be appended.
+     * @param contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate the MD5 of the
+     * received data and fail the request if it does not match the provided MD5.
+     * @param leaseId By setting lease id, requests will fail if the provided lease does not match the active lease on
+     * the file.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(BinaryData data, long fileOffset, byte[] contentMd5, String leaseId,
+        Duration timeout, Context context) {
+
+        Objects.requireNonNull(data);
+        Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
+        Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
+            fluxData.subscribeOn(Schedulers.boundedElastic()), fileOffset, data.getLength(), contentMd5, leaseId, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
