@@ -276,10 +276,6 @@
       "type": "string",
       "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName')), '2019-06-01').keys[0].value]"
     },
-    "AZURE_STORAGE_FILESHARE_ENDPOINT": {
-      "type": "string",
-      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))).primaryEndpoints.file]"
-    },
     "AZURE_STORAGE_BLOB_ENDPOINT": {
       "type": "string",
       "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName')), '2019-06-01').primaryEndpoints.blob]"

@@ -5,6 +5,5 @@ spring:
         fileshare:
           account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
           account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
-          endpoint: ${AZURE_STORAGE_FILESHARE_ENDPOINT}
 resource:
   file: azure-file://${AZURE_STORAGE_CONTAINER_NAME_FOR_FILE}/fileshare.txt
