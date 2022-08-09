@@ -193,9 +193,9 @@ public class RoomsTestBase extends TestBase {
     }
 
     protected void cleanUpUsers() {
-        communicationClient.deleteUser(firstParticipantId);
-        communicationClient.deleteUser(secondParticipantId);
-        communicationClient.deleteUser(thirdParticipantId);
+//        communicationClient.deleteUser(firstParticipantId);
+//        communicationClient.deleteUser(secondParticipantId);
+//        communicationClient.deleteUser(thirdParticipantId);
     }
 
     protected RoomsClientBuilder addLoggingPolicy(RoomsClientBuilder builder, String testName) {

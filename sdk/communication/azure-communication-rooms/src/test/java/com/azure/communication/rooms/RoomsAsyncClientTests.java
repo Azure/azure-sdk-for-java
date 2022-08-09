@@ -35,8 +35,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     @Override
     protected void afterTest() {
         super.afterTest();
-        // TODO: Fix build failures
-        // cleanUpUsers();
+         cleanUpUsers();
     }
 
     @ParameterizedTest
