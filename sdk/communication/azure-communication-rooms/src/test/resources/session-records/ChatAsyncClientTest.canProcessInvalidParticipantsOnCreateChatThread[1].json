@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/chat/threads?api-version=2021-09-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.3.0-beta.1 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4d38e25d-ac4c-477d-b501-ae61e8a53f88",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "283",
+      "StatusCode" : "201",
+      "Body" : "{\"chatThread\":{\"id\":\"000\",\"topic\":\"topic\",\"createdOn\":null,\"createdByCommunicationIdentifier\":{\"rawId\":null,\"communicationUser\":{\"id\":\"8:acs:000\"},\"phoneNumber\":null,\"microsoftTeamsUser\":null},\"deletedOn\":null},\"invalidParticipants\":[{\"code\":null,\"message\":null,\"target\":\"invalid\"}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
