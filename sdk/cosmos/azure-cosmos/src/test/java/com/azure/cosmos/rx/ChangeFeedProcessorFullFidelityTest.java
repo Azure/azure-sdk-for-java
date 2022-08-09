@@ -42,7 +42,7 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static final String databaseId = "SampleDatabase";
     private static final String feedContainerId = "GreenTaxiRecords";
     private static final String leaseContainerId = "newleasecontainer";
-    private static final String feedContainerPartitionKeyPath = "/lastName";
+    private static final String feedContainerPartitionKeyPath = "/myPk";
     private static final String leaseContainerPartitionKeyPath = "/id";
     private static final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorFullFidelityTest.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -54,9 +54,9 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static final Set<Integer> createChangeFeedSet = ConcurrentHashMap.newKeySet();
     private static final Set<Integer> deleteChangeFeedSet = ConcurrentHashMap.newKeySet();
     private static final Set<Integer> replaceChangeFeedSet = ConcurrentHashMap.newKeySet();
-    private static final int createCount = 10;
-    private static final int replaceCount = 10;
-    private static final int deleteCount = 10;
+    private static final int createCount = 100;
+    private static final int replaceCount = 100;
+    private static final int deleteCount = 100;
 
     public static void main(String[] args) {
         setup();
@@ -112,7 +112,8 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     private static void deleteItems() {
         Flux.range(0, deleteCount).flatMap(range -> {
-            return feedContainer.deleteItem(String.valueOf(range), new PartitionKey("lastName"));
+            String stringRange = String.valueOf(range);
+            return feedContainer.deleteItem(stringRange, new PartitionKey(stringRange));
         }).blockLast();
         logger.info("Deleting items, waiting for 10 seconds");
         try {
@@ -127,7 +128,7 @@ public class ChangeFeedProcessorFullFidelityTest {
         Flux.range(0, replaceCount).flatMap(range -> {
             Family family = getItem(String.valueOf(range));
             family.setFirstName("Updated");
-            return feedContainer.replaceItem(family, family.getId(), new PartitionKey(family.getLastName()));
+            return feedContainer.replaceItem(family, family.getId(), new PartitionKey(family.getMyPk()));
         }).blockLast();
         logger.info("Replacing items, waiting for 10 seconds");
         try {
@@ -212,7 +213,7 @@ public class ChangeFeedProcessorFullFidelityTest {
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleCFPItemChanges(changeFeedProcessorItems -> {
+            .handleAllChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
 //                        logger.info("Item is : {}", item.toString());

@@ -113,7 +113,7 @@ public class ChangeFeedProcessorBuilder {
      *             .feedContainer(feedContainer)
      *             .leaseContainer(leaseContainer)
      *             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-     *             .handleCFPItemChanges(docs -> {
+     *             .handleAllChanges(docs -> {
      *                 for (ChangeFeedProcessorItem item : docs) {
      *                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
      *                 }
@@ -126,16 +126,17 @@ public class ChangeFeedProcessorBuilder {
      * @return current Builder.
      */
     //  TODO:(kuthapar) - finalize the name for this.
-    //  Full Fidelity -> operation logs
-    //  Incremental -> item logs
+    //  Full Fidelity -> operationLogs
+    //  Incremental -> itemLogs
     //  handleChangesWithOperationLogs() ?
     //  handleChangesWithFullFidelity() ?
     //  handleChangesForFullFidelity() ?
+    //  handleOperationChanges() ?
     //  Future options -> handleChangesWithMergeSupport() ?
     //  Future options -> handleChangesWithLogicalPartition() ?
     //  Or keep it generic and open for future -> handleChangesV1() ?
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ChangeFeedProcessorBuilder handleCFPItemChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+    public ChangeFeedProcessorBuilder handleAllChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.epkRangeBasedLeaseConsumer = consumer;
 
         return this;

@@ -28,7 +28,7 @@ public class ChangeFeedProcessorFullFidelityModeCodeSnippet {
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleCFPItemChanges(docs -> {
+            .handleAllChanges(docs -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
@@ -54,7 +54,7 @@ public class ChangeFeedProcessorFullFidelityModeCodeSnippet {
             .leaseContainer(leaseContainer)
             // BEGIN: com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges
             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleCFPItemChanges(docs -> {
+            .handleAllChanges(docs -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
