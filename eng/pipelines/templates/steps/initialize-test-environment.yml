@@ -80,7 +80,7 @@ steps:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
       arguments: '--project-list $(ProjectList)'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), or(eq(variables['TestFromSource'], 'true'),  eq(variables['TestVersionSupport'], 'true')))
 
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
     parameters:
