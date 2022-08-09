@@ -21,7 +21,6 @@ To update generated files for rooms service, run the following command
 
 ### Code generation settings
 ``` yaml
-package-rooms-2022-02-01
 require:
     - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e30976f6ccb058a36cd2f9d5160e1fd51f6c5d95/specification/communication/data-plane/Rooms/readme.md
 use: '@autorest/java@4.0.59'

@@ -58,8 +58,8 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-	    <artifactId>azure-core</artifactId>
-	    <version>1.31.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <artifactId>azure-core</artifactId>
+      <version>1.31.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -76,12 +76,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.22</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -47,6 +47,7 @@ public class ReadmeSamples {
         return roomsClient;
     }
 
+    // BEGIN: readme-sample-createRoomsClientWithConnectionString
     public RoomsClient createRoomsClientWithConnectionString() {
         // You can find your connection string from your resource in the Azure Portal
         String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
@@ -55,6 +56,7 @@ public class ReadmeSamples {
 
         return roomsClient;
     }
+    // END: readme-sample-createRoomsClientWithConnectionString
 
     public RoomsClient createRoomsClientWithAAD() {
         // You can find your endpoint and access key from your resource in the Azure

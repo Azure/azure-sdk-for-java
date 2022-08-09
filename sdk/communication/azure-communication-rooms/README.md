@@ -15,24 +15,6 @@ Azure Communication Rooms is used to operate on rooms.
 - A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
-#### Include the BOM file
-
-Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
-
-```xml
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-sdk-bom</artifactId>
-            <version>{bom_version_to_target}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-```
 
 #### Include direct dependency
 If you want to take dependency on a particular version of the library that is not present in the BOM,
@@ -56,8 +38,8 @@ A `DefaultAzureCredential` object must be passed to the `RoomsClientBuilder` via
 are needed to create a DefaultAzureCredential object.
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L45-L53 -->
-```java
+
+```java readme-sample-createRoomsClientWithConnectionString
 
 public RoomsClient createRoomsClientWithConnectionString() {
     // You can find your connection string from your resource in the Azure Portal
@@ -204,7 +186,9 @@ public void removeRoomParticipantsWithRoomId() {
 
 ## Troubleshooting
 
-In progress.
+1. If creating a client fails, verify if you have the right connection string.
+2. For room creation failures the communication error should in most case give a brief description of the issue.
+3. For participants update failures, make sure the participants are present in the room using the get participants.
 
 ## Next steps
 
