@@ -155,7 +155,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     }
 
     @Test
-    void deleteRule(){
+    void deleteRule() {
         // Arrange
         when(managementNode.deleteRule(RULE_NAME)).thenReturn(Mono.empty());
 
