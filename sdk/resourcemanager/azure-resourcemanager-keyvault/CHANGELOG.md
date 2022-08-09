@@ -2,13 +2,11 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-10-01`.
 
 ## 2.17.0 (2022-07-25)
 
