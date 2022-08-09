@@ -1553,8 +1553,7 @@
       <id>external-dependency-version-overrides</id>
       <activation>
         <property>
-          <name>AZURE_VERSION_OVERRIDE_TESTS</name>
-          <value>true</value>
+          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
         </property>
       </activation>
       <repositories>

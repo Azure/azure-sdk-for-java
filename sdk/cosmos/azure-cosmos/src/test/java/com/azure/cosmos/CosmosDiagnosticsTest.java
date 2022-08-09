@@ -42,6 +42,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -1179,7 +1180,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     public void isValidJSON(final String json) {
         try {
-            final JsonParser parser = new ObjectMapper().createParser(json);
+            final JsonParser parser = new JsonFactory().createParser(json);
             while (parser.nextToken() != null) {
             }
         } catch (IOException ex) {
