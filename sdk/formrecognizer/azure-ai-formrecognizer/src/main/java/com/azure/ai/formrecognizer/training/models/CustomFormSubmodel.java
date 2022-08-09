@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.Map;
 /**
  * The CustomFormSubmodel model.
  */
-@Immutable
 public final class CustomFormSubmodel {
 
     /*

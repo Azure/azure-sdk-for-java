@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
-import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;

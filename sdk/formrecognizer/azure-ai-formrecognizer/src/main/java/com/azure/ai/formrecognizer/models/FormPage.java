@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
  * Represents a page recognized from the input document. Contains lines, words, tables,
  * selection marks, and page metadata.
  */
-@Immutable
 public final class FormPage {
 
     /*

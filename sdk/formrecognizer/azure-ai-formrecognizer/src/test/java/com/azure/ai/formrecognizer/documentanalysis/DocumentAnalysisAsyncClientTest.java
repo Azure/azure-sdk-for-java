@@ -3,9 +3,6 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
-import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
-import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientTestBase;
-import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
@@ -84,7 +81,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies receipt data from a document using file data as source.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -104,7 +101,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies an exception thrown for a document using null data value.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptDataNullData(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -117,7 +114,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -137,7 +134,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies receipt data from a document using PNG file data as source and including element reference details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptDataWithPngFile(HttpClient httpClient,
                                                 DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -156,7 +153,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies receipt data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptDataWithBlankPdf(HttpClient httpClient,
                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -171,7 +168,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptFromDataMultiPage(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -191,7 +188,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify that receipt recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptFromDamagedPdf(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
@@ -210,7 +207,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies receipt data for a document using source as file url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -228,7 +225,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * encoded blank space as input data to recognize receipt from url API.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -247,7 +244,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies that an exception is thrown for invalid source url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptInvalidSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
@@ -266,7 +263,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies receipt data for a document using source as PNG file url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeReceiptSourceUrlWithPngFile(HttpClient httpClient,
                                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -281,7 +278,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -303,7 +300,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies layout data for a document using source as input stream data.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContent(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -322,7 +319,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies an exception thrown for a document using null data value.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentResultWithNullData(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -336,7 +333,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies content type will be auto-detected when using content/layout API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentResultWithContentTypeAutoDetection(HttpClient httpClient,
                                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -355,7 +352,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies blank form file is still a valid file to process
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentResultWithBlankPdf(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -370,7 +367,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentFromDataMultiPage(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -390,7 +387,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify that content recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentFromDamagedPdf(HttpClient httpClient,
                                                DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -405,7 +402,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentWithSelectionMarks(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -421,7 +418,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentWithPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -437,7 +434,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentWithPages(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -453,7 +450,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentWithPageRange(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -474,7 +471,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies layout data for a document using source as input stream data.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentFromUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -492,7 +489,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * encoded blank space as input data to recognize a content from url API.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -508,7 +505,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies layout data for a pdf url
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentFromUrlWithPdf(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -525,7 +522,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies that an exception is thrown for invalid status model Id.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentInvalidSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
@@ -538,7 +535,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner((documentUrl) -> {
@@ -554,7 +551,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeContentWithSelectionMarksFromUrl(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -569,7 +566,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeGermanContentFromUrl(HttpClient httpClient,
                                               DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -590,7 +587,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies business card data from a document using file data as source.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -609,7 +606,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies an exception thrown for a document using null data value.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardDataNullData(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -622,7 +619,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -643,7 +640,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies business card data from a document using PNG file data as source and including element reference details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardDataWithPngFile(HttpClient httpClient,
                                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -663,7 +660,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies business card data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardDataWithBlankPdf(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -683,7 +680,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify that business card recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardFromDamagedPdf(HttpClient httpClient,
                                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -703,7 +700,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify business card recognition with multipage pdf.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeMultipageBusinessCard(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -725,7 +722,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies business card data for a document using source as file url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -745,7 +742,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * encoded blank space as input data to recognize business card from url API.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                            DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -761,7 +758,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies that an exception is thrown for invalid source url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardInvalidSourceUrl(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -781,7 +778,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies business card data for a document using source as PNG file url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeBusinessCardSourceUrlWithPngFile(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -801,7 +798,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify business card recognition with multipage pdf url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeMultipageBusinessCardUrl(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -821,7 +818,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify pages parameter passed when specified by user.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void receiptWithPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -841,7 +838,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify pages parameter passed when specified by user for business cards API.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void businessCardWithPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -865,7 +862,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies invoice data recognition  for a document using source as input stream data.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -885,7 +882,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies content type will be auto-detected when using invoice API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -907,7 +904,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies invoice data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceDataWithBlankPdf(HttpClient httpClient,
                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -927,7 +924,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify that invoice recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceFromDamagedPdf(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
@@ -946,7 +943,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify invoice data recognition with multipage pdf.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeMultipageInvoice(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -967,7 +964,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies invoice card data for a document using source as file url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
@@ -986,7 +983,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * encoded blank space as input data to recognize invoice card from url API.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1003,7 +1000,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies that an exception is thrown for invalid source url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceInvalidSourceUrl(HttpClient httpClient,
                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1018,7 +1015,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify locale parameter passed when specified by user.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void invoiceValidLocale(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -1034,7 +1031,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeInvoiceWithPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -1058,7 +1055,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies license card data from a document using file data as source.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeLicenseCardData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -1077,7 +1074,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies an exception thrown for a document using null data value.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeIDDocumentDataNullData(HttpClient httpClient,
                                                 DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1090,7 +1087,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeLicenseDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1112,7 +1109,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies identity document data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeIDDocumentWithBlankPdf(HttpClient httpClient,
                                                 DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1133,7 +1130,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verify that identity document recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeIDDocumentFromDamagedPdf(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1157,7 +1154,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies business card data for a document using source as file url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeLicenseSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -1175,7 +1172,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies that an exception is thrown for invalid source url.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeIDDocumentInvalidSourceUrl(HttpClient httpClient,
                                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1193,7 +1190,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies that languages are returned on analyze result when using "prebuilt-read".
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void testDocumentLanguagePrebuiltRead(HttpClient httpClient,
                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1215,7 +1212,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      * Verifies support for pptx when using "prebuilt-read".
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void testPptDocumentPrebuiltRead(HttpClient httpClient,
                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1233,7 +1230,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void testHtmlDocumentPrebuiltRead(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1251,7 +1248,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void testDocxDocumentPrebuiltRead(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1269,7 +1266,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void testXlsxDocumentPrebuiltRead(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1287,7 +1284,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void testGermanDocumentLanguagePrebuiltRead(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1304,7 +1301,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         }, GERMAN_PNG);
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void analyzeW2Data(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {

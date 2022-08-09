@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Map;
 /**
  * Represents a form that has been recognized by a trained or prebuilt model based on the provided input document.
  */
-@Immutable
 public final class RecognizedForm {
 
     /*

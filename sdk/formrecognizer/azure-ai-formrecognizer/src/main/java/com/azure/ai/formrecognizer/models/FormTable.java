@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.FormTableHelper;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 /**
  * Represents a table recognized from the input document.
  */
-@Immutable
 public final class FormTable {
 
     /*
