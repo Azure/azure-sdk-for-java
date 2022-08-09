@@ -11,10 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
-import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
-import com.azure.communication.identity.models.GetTokenOptions;
+import com.azure.communication.identity.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -115,6 +112,31 @@ public class ReadmeSamples {
         // END: readme-sample-createNewUser
 
         return user;
+    }
+
+    /**
+     * Sample code for creating a user together with token with custom expiration
+     *
+     * @return the result with the created user and token with custom expiration
+     */
+    public CommunicationUserIdentifierAndToken createNewUserAndTokenWithCustomExpiration() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+
+        // BEGIN: readme-sample-createNewUserAndTokenWithCustomExpiration
+        // Define a list of communication token scopes
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+        // Create options to pass mandatory and configurable parameters to get a Communication Identity access token
+        CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
+        Duration customExpiration = Duration.ofMinutes(60);
+        createUserAndTokenOptions.setExpiresInMinutes(customExpiration);
+
+        CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
+        System.out.println("User id: " + result.getUser().getId());
+        System.out.println("User token value: " + result.getUserToken().getToken());
+        // END: readme-sample-createNewUserAndTokenWithCustomExpiration
+
+        return result;
     }
 
     /**

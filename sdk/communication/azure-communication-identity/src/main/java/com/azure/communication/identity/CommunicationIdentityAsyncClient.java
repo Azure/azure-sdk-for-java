@@ -108,6 +108,39 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Creates a new CommunicationUserIdentifier with token.
      *
+     * @param createUserAndTokenOptions {@link CreateUserAndTokenOptions} to pass mandatory and configurable parameters
+     * to get a Communication Identity access token together with a {@link CommunicationUserIdentifier}.
+     * @return The created communication user and token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationUserIdentifierAndToken>
+    createUserAndToken(CreateUserAndTokenOptions createUserAndTokenOptions) {
+        try {
+            Objects.requireNonNull(createUserAndTokenOptions.getScopes());
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(createUserAndTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+            CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
+            communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
+
+            if (createUserAndTokenOptions.getExpiresInMinutes() != null) {
+                Integer expiresInMinutes = Math.toIntExact(createUserAndTokenOptions.getExpiresInMinutes().toMinutes());
+                communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
+            }
+
+            return client.createAsync(communicationIdentityCreateRequest)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .flatMap(
+                    (CommunicationIdentityAccessTokenResult result) -> {
+                        return Mono.just(userWithAccessTokenResultConverter(result));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token.
+     *
      * @param scopes The list of scopes for the token.
      * @return The created communication user and token.
      */
@@ -116,12 +149,41 @@ public final class CommunicationIdentityAsyncClient {
         createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-            return client.createAsync(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput))
+            CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
+            return createUserAndToken(createUserAndTokenOptions);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token with response.
+     *
+     * @param createUserAndTokenOptions {@link CreateUserAndTokenOptions} to pass mandatory and configurable parameters
+     * to get a Communication Identity access token together with a {@link CommunicationUserIdentifier}.
+     * @return The result with created communication user and token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationUserIdentifierAndToken>>
+    createUserAndTokenWithResponse(CreateUserAndTokenOptions createUserAndTokenOptions) {
+        try {
+            Objects.requireNonNull(createUserAndTokenOptions.getScopes());
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(createUserAndTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+            CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
+            communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
+
+            if (createUserAndTokenOptions.getExpiresInMinutes() != null) {
+                Integer expiresInMinutes = Math.toIntExact(createUserAndTokenOptions.getExpiresInMinutes().toMinutes());
+                communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
+            }
+
+            return client.createWithResponseAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap(
-                    (CommunicationIdentityAccessTokenResult result) -> {
-                        return Mono.just(userWithAccessTokenResultConverter(result));
+                    (Response<CommunicationIdentityAccessTokenResult> response) -> {
+                        return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
+                            userWithAccessTokenResultConverter(response.getValue())));
                     });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -139,15 +201,8 @@ public final class CommunicationIdentityAsyncClient {
         createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-            return client.createWithResponseAsync(
-                new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput))
-                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                .flatMap(
-                    (Response<CommunicationIdentityAccessTokenResult> response) -> {
-                        return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
-                            userWithAccessTokenResultConverter(response.getValue())));
-                    });
+            CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
+            return createUserAndTokenWithResponse(createUserAndTokenOptions);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -268,8 +323,14 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-        GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
-        return getToken(getTokenOptions);
+        try {
+            Objects.requireNonNull(communicationUser);
+            Objects.requireNonNull(scopes);
+            GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
+            return getToken(getTokenOptions);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -318,8 +379,14 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-        GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
-        return getTokenWithResponse(getTokenOptions);
+        try {
+            Objects.requireNonNull(communicationUser);
+            Objects.requireNonNull(scopes);
+            GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
+            return getTokenWithResponse(getTokenOptions);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

@@ -3,40 +3,22 @@
 
 package com.azure.communication.identity.models;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.Immutable;
 
 import java.time.Duration;
 
-/**
- * Options to pass mandatory and configurable parameters to get a Communication Identity access token for a
- * {@link CommunicationUserIdentifier}.
- */
 @Immutable
-public final class GetTokenOptions {
-
-    private CommunicationUserIdentifier communicationUser;
+public final class CreateUserAndTokenOptions {
     private Iterable<CommunicationTokenScope> scopes;
     private Duration expiresInMinutes;
 
     /**
-     * Constructor of {@link GetTokenOptions}.
-     *
-     * @param communicationUser The {@link CommunicationUserIdentifier} for whom to get a Communication Identity access
-     * token.
+     * Constructor of {@link CreateUserAndTokenOptions}.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
      */
-    public GetTokenOptions(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes){
-        this.communicationUser = communicationUser;
+    public CreateUserAndTokenOptions(Iterable<CommunicationTokenScope> scopes){
         this.scopes = scopes;
     }
-
-    /**
-     * Gets the {@link CommunicationUserIdentifier}.
-     *
-     * @return the {@link CommunicationUserIdentifier}.
-     */
-    public CommunicationUserIdentifier getCommunicationUser() { return this.communicationUser; }
 
     /**
      * Gets the scopes for the Communication Identity access token.
@@ -60,7 +42,7 @@ public final class GetTokenOptions {
      * within &lt;60,1440&gt; minutes range.
      * @return {@link GetTokenOptions}.
      */
-    public GetTokenOptions setExpiresInMinutes(Duration expiresInMinutes){
+    public CreateUserAndTokenOptions setExpiresInMinutes(Duration expiresInMinutes){
         this.expiresInMinutes = expiresInMinutes;
         return this;
     }

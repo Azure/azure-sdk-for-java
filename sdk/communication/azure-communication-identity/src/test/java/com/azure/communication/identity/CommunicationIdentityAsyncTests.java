@@ -116,10 +116,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserAndTokenNullScopes");
+        Iterable<CommunicationTokenScope> scopes = null;
 
         // Action & Assert
         StepVerifier.create(
-            asyncClient.createUserAndToken(null))
+            asyncClient.createUserAndToken(scopes))
             .verifyError(NullPointerException.class);
     }
 
@@ -128,10 +129,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseNullScopes");
+        Iterable<CommunicationTokenScope> scopes = null;
 
         // Action & Assert
         StepVerifier.create(
-            asyncClient.createUserAndTokenWithResponse(null))
+            asyncClient.createUserAndTokenWithResponse(scopes))
             .verifyError(NullPointerException.class);
     }
 

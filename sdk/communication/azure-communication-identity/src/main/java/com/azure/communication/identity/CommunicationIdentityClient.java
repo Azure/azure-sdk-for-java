@@ -14,11 +14,8 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
-import com.azure.communication.identity.models.GetTokenOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -96,6 +93,31 @@ public final class CommunicationIdentityClient {
     /**
      * Creates a new CommunicationUserIdentifier with token.
      *
+     * @param createUserAndTokenOptions {@link CreateUserAndTokenOptions} to pass mandatory and configurable parameters
+     * to get a Communication Identity access token together with a {@link CommunicationUserIdentifier}.
+     * @return The created communication user and token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationUserIdentifierAndToken createUserAndToken(
+        CreateUserAndTokenOptions createUserAndTokenOptions) {
+        Objects.requireNonNull(createUserAndTokenOptions.getScopes());
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(createUserAndTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
+        communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
+
+        if (createUserAndTokenOptions.getExpiresInMinutes() != null) {
+            Integer expiresInMinutes = Math.toIntExact(createUserAndTokenOptions.getExpiresInMinutes().toMinutes());
+            communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
+        }
+
+        CommunicationIdentityAccessTokenResult result = client.create(communicationIdentityCreateRequest);
+        return userWithAccessTokenResultConverter(result);
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token.
+     *
      * @param scopes The list of scopes for the token.
      * @return The created communication user and token.
      */
@@ -103,10 +125,43 @@ public final class CommunicationIdentityClient {
     public CommunicationUserIdentifierAndToken createUserAndToken(
         Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(scopes);
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-        CommunicationIdentityAccessTokenResult result = client.create(
-            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput));
-        return userWithAccessTokenResultConverter(result);
+
+        CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
+        return createUserAndToken(createUserAndTokenOptions);
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token with response.
+     *
+     * @param createUserAndTokenOptions {@link CreateUserAndTokenOptions} to pass mandatory and configurable parameters
+     * to get a Communication Identity access token together with a {@link CommunicationUserIdentifier}.
+     * @param context A {@link Context} representing the request context.
+     * @return The created communication user and token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
+        CreateUserAndTokenOptions createUserAndTokenOptions, Context context) {
+        Objects.requireNonNull(createUserAndTokenOptions.getScopes());
+        context = context == null ? Context.NONE : context;
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(createUserAndTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
+        communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
+
+        if (createUserAndTokenOptions.getExpiresInMinutes() != null) {
+            Integer expiresInMinutes = Math.toIntExact(createUserAndTokenOptions.getExpiresInMinutes().toMinutes());
+            communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
+        }
+
+        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
+            communicationIdentityCreateRequest, context).block();
+
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+        }
+        return new SimpleResponse<CommunicationUserIdentifierAndToken>(
+            response,
+            userWithAccessTokenResultConverter(response.getValue()));
     }
 
     /**
@@ -120,17 +175,9 @@ public final class CommunicationIdentityClient {
     public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
         Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(scopes);
+        CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
         context = context == null ? Context.NONE : context;
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
-            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput), context).block();
-
-        if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
-        }
-        return new SimpleResponse<CommunicationUserIdentifierAndToken>(
-            response,
-            userWithAccessTokenResultConverter(response.getValue()));
+        return createUserAndTokenWithResponse(createUserAndTokenOptions, context);
     }
 
     /**

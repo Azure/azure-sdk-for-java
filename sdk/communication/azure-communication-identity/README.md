@@ -163,6 +163,22 @@ System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());
 ```
 
+Here it's also possible to specify the expiration time for the Communication Identity access token. The token can be configured to expire in as little as one hour or as long as 24 hours. The default expiration time is 24 hours.
+
+```java readme-sample-createNewUserAndTokenWithCustomExpiration
+// Define a list of communication token scopes
+List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+// Create options to pass mandatory and configurable parameters to get a Communication Identity access token
+CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
+Duration customExpiration = Duration.ofMinutes(60);
+createUserAndTokenOptions.setExpiresInMinutes(customExpiration);
+
+CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
+System.out.println("User id: " + result.getUser().getId());
+System.out.println("User token value: " + result.getUserToken().getToken());
+```
+
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
