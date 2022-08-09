@@ -20,10 +20,8 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
 import static com.azure.spring.cloud.config.implementation.TestUtils.createSecretReference;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -161,11 +159,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         FeatureSet featureSet = new FeatureSet();
 
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = TEST_ITEMS.stream()

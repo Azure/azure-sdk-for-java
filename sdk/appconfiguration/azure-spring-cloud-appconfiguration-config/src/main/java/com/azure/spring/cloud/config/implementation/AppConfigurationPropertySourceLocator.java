@@ -134,8 +134,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
-                            clientFactory)) {
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, clientFactory,
+                            configStore.getFeatureFlags())) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -149,34 +149,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         LOGGER.debug("PropertySource context.");
 
                         // Setting new ETag values for Watch
-                        List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
-                        List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
-
-                        for (AppConfigurationStoreTrigger trigger : configStore.getMonitoring().getTriggers()) {
-                            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
-                            if (watchKey != null) {
-                                watchKeysSettings.add(watchKey);
-                            } else {
-                                watchKeysSettings
-                                    .add(new ConfigurationSetting().setKey(trigger.getKey())
-                                        .setLabel(trigger.getLabel()));
-                            }
-                        }
-
-                        if (configStore.getFeatureFlags().getEnabled()) {
-                            SettingSelector settingSelector = new SettingSelector()
-                                .setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
-                                .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
-
-                            PagedIterable<ConfigurationSetting> watchKeys = client.listSettings(settingSelector);
-
-                            watchKeys
-                                .forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
-
-                            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
-                                configStore.getMonitoring().getFeatureFlagRefreshInterval());
-                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
-                        }
+                        List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
+                            configStore.getMonitoring().getTriggers());
+                        getFeatureFlagWatchKeys(client, configStore, newState);
 
                         newState.setState(configStore.getEndpoint(), watchKeysSettings,
                             configStore.getMonitoring().getRefreshInterval());
@@ -219,6 +194,42 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return composite;
     }
 
+    private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
+        List<AppConfigurationStoreTrigger> triggers) {
+        List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
+        for (AppConfigurationStoreTrigger trigger : triggers) {
+            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
+            if (watchKey != null) {
+                watchKeysSettings.add(watchKey);
+            } else {
+                watchKeysSettings
+                    .add(new ConfigurationSetting().setKey(trigger.getKey())
+                        .setLabel(trigger.getLabel()));
+            }
+        }
+        return watchKeysSettings;
+    }
+
+    private void getFeatureFlagWatchKeys(AppConfigurationReplicaClient client, ConfigStore configStore,
+        StateHolder newState) {
+        List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
+
+        if (configStore.getFeatureFlags().getEnabled()) {
+            SettingSelector settingSelector = new SettingSelector()
+                .setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
+                .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
+
+            PagedIterable<ConfigurationSetting> watchKeys = client.listSettings(settingSelector);
+
+            watchKeys
+                .forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
+
+            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+                configStore.getMonitoring().getFeatureFlagRefreshInterval());
+            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
+        }
+    }
+
     private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e) {
         String message = "Failed to generate property sources for " + configStore.getEndpoint();
         if (!STARTUP.get()) {
@@ -254,8 +265,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param client client for connecting to App Configuration
      * @param store Config Store the PropertySource is being generated from
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
-     * @param profiles active profiles to be used as labels.
-     * it needs to be in the last one.
+     * @param profiles active profiles to be used as labels. it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
     private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,

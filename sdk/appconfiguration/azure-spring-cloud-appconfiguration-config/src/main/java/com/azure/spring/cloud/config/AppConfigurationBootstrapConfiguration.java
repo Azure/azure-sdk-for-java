@@ -116,36 +116,29 @@ public class AppConfigurationBootstrapConfiguration {
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
-
-        AppConfigurationCredentialProvider tokenCredentialProvider = null;
-        ConfigurationClientBuilderSetup clientProvider = null;
+        
+        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(appProperties.getMaxRetries());
 
         if (!tokenCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationCredentialProvider found.");
         } else {
-            tokenCredentialProvider = tokenCredentialProviderOptional.get();
+            clientBuilder.setTokenCredentialProvider(tokenCredentialProviderOptional.get());
         }
 
         if (!clientProviderOptional.isPresent()) {
             LOGGER.debug("No AppConfigurationClientProvider found.");
         } else {
-            clientProvider = clientProviderOptional.get();
+            clientBuilder.setClientProvider(clientProviderOptional.get());
         }
-
-        boolean isDev = false;
-        boolean isKeyVaultConfigured = false;
 
         if (keyVaultCredentialProviderOptional.isPresent() || keyVaultClientProviderOptional.isPresent()) {
-            isKeyVaultConfigured = true;
+            clientBuilder.setKeyVaultConfigured(true);
         }
-
-        String clientId = "";
 
         if (properties.getManagedIdentity() != null) {
-            clientId = properties.getManagedIdentity().getClientId();
+            clientBuilder.setClientId(properties.getManagedIdentity().getClientId());
         }
 
-        return new AppConfigurationReplicaClientsBuilder(tokenCredentialProvider, clientProvider, isKeyVaultConfigured,
-            clientId, appProperties.getMaxRetries());
+        return clientBuilder;
     }
 }

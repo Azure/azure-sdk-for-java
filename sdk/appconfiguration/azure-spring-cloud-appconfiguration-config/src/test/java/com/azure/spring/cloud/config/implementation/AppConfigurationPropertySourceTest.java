@@ -217,11 +217,7 @@ public class AppConfigurationPropertySourceTest {
             .thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
         propertySource.initFeatures(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
@@ -252,11 +248,7 @@ public class AppConfigurationPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock);
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -317,11 +309,7 @@ public class AppConfigurationPropertySourceTest {
         featureFlagStore.setEnabled(false);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
         propertySource.initFeatures(featureSet);
 
         assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
@@ -397,11 +385,7 @@ public class AppConfigurationPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = items.stream()
@@ -420,11 +404,7 @@ public class AppConfigurationPropertySourceTest {
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-
-        }
+        propertySource.initProperties(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = {};
@@ -441,11 +421,7 @@ public class AppConfigurationPropertySourceTest {
         featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
         propertySource.initFeatures(featureSet);
 
         FeatureSet featureSetExpected = new FeatureSet();
