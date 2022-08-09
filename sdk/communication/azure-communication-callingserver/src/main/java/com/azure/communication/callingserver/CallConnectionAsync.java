@@ -110,67 +110,35 @@ public class CallConnectionAsync {
     /**
      * Hangup a call.
      *
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> hangup() {
-        return hangupWithResponse().flatMap(FluxUtil::toMono);
+    public Mono<Void> hangUp(boolean isForEveryone) {
+        return hangUpWithResponse(isForEveryone).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Hangup a call.
      *
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> hangupWithResponse() {
-        return withContext(this::hangupWithResponseInternal);
+    public Mono<Response<Void>> hangUpWithResponse(boolean isForEveryone) {
+        return withContext(context -> hangUpWithResponseInternal(isForEveryone, context));
     }
 
-    Mono<Response<Void>> hangupWithResponseInternal(Context context) {
+    Mono<Response<Void>> hangUpWithResponseInternal(boolean isForEveryone, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Terminates the conversation for all participants in the call.
-     *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateCall() {
-        return terminateCallWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Terminates the conversation for all participants in the call.
-     *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateCallWithResponse() {
-        return withContext(this::terminateCallWithResponseInternal);
-    }
-
-    Mono<Response<Void>> terminateCallWithResponseInternal(Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-
-            return callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+                : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

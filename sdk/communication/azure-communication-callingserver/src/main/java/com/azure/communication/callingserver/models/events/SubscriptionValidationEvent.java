@@ -5,12 +5,11 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SubscriptionValidationEvent model. */
 @Immutable
-public final class SubscriptionValidationEvent implements CallingServerBaseEvent {
+public final class SubscriptionValidationEvent extends CallAutomationEventBase {
     /*
      * validationCode
      */
@@ -23,17 +22,10 @@ public final class SubscriptionValidationEvent implements CallingServerBaseEvent
     @JsonProperty(value = "validationUrl")
     private final String validationUrl;
 
-    /*
-     * The event types.
-     */
-    @JsonIgnore
-    private final AcsEventType type;
-
     @JsonCreator
     private SubscriptionValidationEvent() {
         this.validationCode = null;
         this.validationUrl = null;
-        this.type = AcsEventType.SUBSCRIPTION_VALIDATION_EVENT;
     }
 
     /**
@@ -52,14 +44,5 @@ public final class SubscriptionValidationEvent implements CallingServerBaseEvent
      */
     public String getValidationUrl() {
         return this.validationUrl;
-    }
-
-    /**
-     * Get the type property.
-     *
-     * @return the type value.
-     */
-    public AcsEventType getType() {
-        return this.type;
     }
 }

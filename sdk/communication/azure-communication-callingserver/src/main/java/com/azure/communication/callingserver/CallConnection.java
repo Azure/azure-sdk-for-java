@@ -58,52 +58,28 @@ public class CallConnection {
     /**
      * Hangup a call.
      *
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hangup() {
-        return callConnectionAsync.hangup().block();
+    public Void hangUp(boolean isForEveryone) {
+        return callConnectionAsync.hangUp(isForEveryone).block();
     }
 
     /**
      * Hangup a call.
      *
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangupWithResponse(Context context) {
-        return callConnectionAsync.hangupWithResponseInternal(context).block();
-    }
-
-
-    /**
-     * Terminates the conversation for all participants in the call.
-     *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void terminateCall() {
-        return callConnectionAsync.terminateCall().block();
-    }
-
-    /**
-     * Terminates the conversation for all participants in the call.
-     *
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateCallWithResponse(Context context) {
-        return callConnectionAsync.terminateCallWithResponseInternal(context).block();
+    public Response<Void> hangUpWithResponse(boolean isForEveryone, Context context) {
+        return callConnectionAsync.hangUpWithResponseInternal(isForEveryone, context).block();
     }
 
     /**

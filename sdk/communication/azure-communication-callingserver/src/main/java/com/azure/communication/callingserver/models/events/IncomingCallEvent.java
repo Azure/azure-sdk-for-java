@@ -17,7 +17,7 @@ import java.util.Map;
 
 /** The AddParticipantsSucceededEvent model. */
 @Immutable
-public final class IncomingCallEvent implements CallingServerBaseEvent {
+public final class IncomingCallEvent extends CallAutomationEventBase {
     /*
      * From property
      */
@@ -37,12 +37,6 @@ public final class IncomingCallEvent implements CallingServerBaseEvent {
     private final boolean hasIncomingVideo;
 
     /*
-     * The type property.
-     */
-    @JsonIgnore
-    private final AcsEventType type;
-
-    /*
      * callerDisplayName
      */
     @JsonProperty(value = "callerDisplayName")
@@ -54,20 +48,11 @@ public final class IncomingCallEvent implements CallingServerBaseEvent {
     @JsonProperty(value = "incomingCallContext")
     private final String incomingCallContext;
 
-    /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
-     */
-    @JsonProperty(value = "correlationId")
-    private final String correlationId;
-
     @JsonCreator
     private IncomingCallEvent(@JsonProperty("from") Map<String, Object> from, @JsonProperty("to") Map<String, Object> to) {
         this.hasIncomingVideo = false;
         this.callerDisplayName = null;
         this.incomingCallContext = null;
-        this.correlationId = null;
-        this.type = AcsEventType.INCOMING_CALL_EVENT;
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -107,15 +92,6 @@ public final class IncomingCallEvent implements CallingServerBaseEvent {
     }
 
     /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    public AcsEventType getType() {
-        return this.type;
-    }
-
-    /**
      * Get the callerDisplayName property.
      *
      * @return the callerDisplayName value.
@@ -132,15 +108,4 @@ public final class IncomingCallEvent implements CallingServerBaseEvent {
     public String getIncomingCallContext() {
         return this.incomingCallContext;
     }
-
-    /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
-     * @return the correlationId value.
-     */
-    public String getCorrelationId() {
-        return this.correlationId;
-    }
-
 }

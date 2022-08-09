@@ -67,13 +67,4 @@ public final class ListParticipantsResponse {
     public List<CallParticipant> getValues() {
         return this.values;
     }
-
-    /**
-     * Get the nextLink property: The nextLink property.
-     *
-     * @return the nextLink value.
-     */
-    public String getNextLink() {
-        return this.nextLink;
-    }
 }

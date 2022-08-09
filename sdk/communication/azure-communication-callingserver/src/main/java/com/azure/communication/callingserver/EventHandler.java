@@ -6,11 +6,11 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.events.AcsEventType;
 import com.azure.communication.callingserver.models.events.AddParticipantsFailedEvent;
 import com.azure.communication.callingserver.models.events.AddParticipantsSucceededEvent;
+import com.azure.communication.callingserver.models.events.CallAutomationEventBase;
 import com.azure.communication.callingserver.models.events.CallConnectedEvent;
 import com.azure.communication.callingserver.models.events.CallDisconnectedEvent;
 import com.azure.communication.callingserver.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callingserver.models.events.CallTransferFailedEvent;
-import com.azure.communication.callingserver.models.events.CallingServerBaseEvent;
 import com.azure.communication.callingserver.models.events.IncomingCallEvent;
 import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent;
 import com.azure.communication.callingserver.models.events.SubscriptionValidationEvent;
@@ -37,16 +37,16 @@ public final class EventHandler {
      *
      * @param requestBody Body of the event request.
      * @throws RuntimeException Any exceptions occurs at runtime.
-     * @return a list of CallingServerBaseEvent
+     * @return a list of CallAutomationEventBase
      */
-    public static List<CallingServerBaseEvent> parseEventList(String requestBody) {
-        List<CallingServerBaseEvent> callingServerBaseEvents;
-        callingServerBaseEvents = parseEventGridEventList(requestBody);
-        if (callingServerBaseEvents.isEmpty()) {
-            callingServerBaseEvents = parseCloudEventList(requestBody);
+    public static List<CallAutomationEventBase> parseEventList(String requestBody) {
+        List<CallAutomationEventBase> callAutomationBaseEvents;
+        callAutomationBaseEvents = parseEventGridEventList(requestBody);
+        if (callAutomationBaseEvents.isEmpty()) {
+            callAutomationBaseEvents = parseCloudEventList(requestBody);
         }
 
-        return callingServerBaseEvents;
+        return callAutomationBaseEvents;
     }
 
     /***
@@ -56,60 +56,60 @@ public final class EventHandler {
      * @throws RuntimeException Any exceptions occurs at runtime.
      * @return the first(or the only) event if request is not empty, otherwise null is returned.
      */
-    public static CallingServerBaseEvent parseEvent(String requestBody) {
-        List<CallingServerBaseEvent> callingServerBaseEvents = parseEventList(requestBody);
-        return callingServerBaseEvents.isEmpty() ? null : callingServerBaseEvents.get(0);
+    public static CallAutomationEventBase parseEvent(String requestBody) {
+        List<CallAutomationEventBase> callAutomationBaseEvents = parseEventList(requestBody);
+        return callAutomationBaseEvents.isEmpty() ? null : callAutomationBaseEvents.get(0);
     }
 
-    private static List<CallingServerBaseEvent> parseEventGridEventList(String requestBody) {
+    private static List<CallAutomationEventBase> parseEventGridEventList(String requestBody) {
         try {
             List<EventGridEvent> eventGridEvents;
-            List<CallingServerBaseEvent> callingServerBaseEvents = new ArrayList<>();
+            List<CallAutomationEventBase> callAutomationBaseEvents = new ArrayList<>();
 
             try {
                 eventGridEvents = EventGridEvent.fromString(requestBody);
             } catch (RuntimeException e) {
-                return callingServerBaseEvents;
+                return callAutomationBaseEvents;
             }
 
             for (EventGridEvent eventGridEvent : eventGridEvents) {
-                CallingServerBaseEvent temp = parseSingleEventGridEvent(eventGridEvent.getData().toString(), eventGridEvent.getEventType());
+                CallAutomationEventBase temp = parseSingleEventGridEvent(eventGridEvent.getData().toString(), eventGridEvent.getEventType());
                 if (temp != null) {
-                    callingServerBaseEvents.add(temp);
+                    callAutomationBaseEvents.add(temp);
                 }
             }
-            return callingServerBaseEvents;
+            return callAutomationBaseEvents;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
     }
 
-    private static List<CallingServerBaseEvent> parseCloudEventList(String requestBody) {
+    private static List<CallAutomationEventBase> parseCloudEventList(String requestBody) {
         try {
             List<CloudEvent> cloudEvents;
-            List<CallingServerBaseEvent> callingServerBaseEvents = new ArrayList<>();
+            List<CallAutomationEventBase> callAutomationBaseEvents = new ArrayList<>();
 
             try {
                 cloudEvents = CloudEvent.fromString(requestBody);
             } catch (RuntimeException e) {
-                return callingServerBaseEvents;
+                return callAutomationBaseEvents;
             }
 
             for (CloudEvent cloudEvent : cloudEvents) {
-                CallingServerBaseEvent temp = parseSingleCloudEvent(cloudEvent.getData().toString());
+                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString());
                 if (temp != null) {
-                    callingServerBaseEvents.add(temp);
+                    callAutomationBaseEvents.add(temp);
                 }
             }
-            return callingServerBaseEvents;
+            return callAutomationBaseEvents;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
     }
 
-    private static CallingServerBaseEvent parseSingleEventGridEvent(String data, String eventType) {
+    private static CallAutomationEventBase parseSingleEventGridEvent(String data, String eventType) {
         try {
-            CallingServerBaseEvent ret = null;
+            CallAutomationEventBase ret = null;
             ObjectMapper mapper = new ObjectMapper();
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -130,9 +130,9 @@ public final class EventHandler {
         }
     }
 
-    private static CallingServerBaseEvent parseSingleCloudEvent(String data) {
+    private static CallAutomationEventBase parseSingleCloudEvent(String data) {
         try {
-            CallingServerBaseEvent ret = null;
+            CallAutomationEventBase ret = null;
             ObjectMapper mapper = new ObjectMapper();
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
