@@ -8,6 +8,7 @@ module com.azure.communication.rooms {
     // public API surface area
     exports com.azure.communication.rooms;
     exports com.azure.communication.rooms.models;
+    exports com.azure.communication.rooms.implementation.models;
 
     opens com.azure.communication.rooms
         to com.fasterxml.jackson.databind, com.azure.core;
@@ -16,6 +17,4 @@ module com.azure.communication.rooms {
     opens com.azure.communication.rooms.implementation.models
         to com.fasterxml.jackson.databind, com.azure.core;
 }
-
-
 
