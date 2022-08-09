@@ -52,7 +52,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playAllWithResponse(playSource, playOptions))
+                callMedia.playToAllWithResponse(playSource, playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
