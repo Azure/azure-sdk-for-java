@@ -659,16 +659,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomEntitiesAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeCustomEntitiesAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void singleLabelClassificationAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+    abstract void singleLabelClassificationAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void multiCategoryClassifyAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+    abstract void multiCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void singleLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -1208,6 +1214,33 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setMultiLabelClassifyActions(
                     new MultiLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
                         AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
+    }
+
+    void recognizeCustomEntitiesRunner(BiConsumer<List<String>, List<String>> testRunner) {
+        testRunner.accept(CUSTOM_ENTITIES_INPUT,
+            asList(
+                Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME),
+                Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
+        );
+    }
+
+    void classifyCustomSingleLabelRunner(BiConsumer<List<String>, List<String>> testRunner) {
+        testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
+            asList(
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME),
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
+        );
+    }
+
+    void classifyCustomMultiLabelRunner(BiConsumer<List<String>, List<String>> testRunner) {
+        testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
+            asList(
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME),
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
     String getEndpoint() {
