@@ -141,7 +141,8 @@ class EventHubBufferedPartitionProducer implements Closeable {
             }
         });
 
-        return withRetry(enqueueOperation, retryOptions, "Timed out trying to enqueue event data.", true);
+        return withRetry(enqueueOperation, retryOptions, "Timed out trying to enqueue event data.", true)
+            .onErrorMap(IllegalStateException.class, error -> new AmqpException(true, "Retries exhausted.", error, errorContext));
     }
 
     /**
