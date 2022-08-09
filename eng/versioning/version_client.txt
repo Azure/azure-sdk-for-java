@@ -59,12 +59,13 @@ com.azure:azure-aot-graalvm-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-aot-graalvm-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-chat;1.2.4;1.3.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-communication-common;1.1.5;1.2.0-beta.1
+com.azure:azure-communication-common;1.2.0;1.3.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.4;1.2.0-beta.1
 com.azure:azure-communication-identity;1.2.0;1.3.0-beta.1
 com.azure:azure-communication-phonenumbers;1.0.13;1.1.0-beta.9
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
+com.azure:azure-communication-rooms;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.6;1.1.0-beta.2
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.31.0;1.32.0-beta.1
@@ -99,7 +100,7 @@ com.azure:azure-data-tables;12.3.2;12.4.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.3.0;1.4.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.5.3;1.6.0-beta.1
+com.azure:azure-identity;1.5.4;1.6.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
@@ -107,8 +108,8 @@ com.azure:azure-json;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-json-gson;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventgrid;4.12.0;4.13.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.12.2;5.13.0-beta.1
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.14.0;1.15.0-beta.1
+com.azure:azure-messaging-eventhubs;5.12.2;5.13.0-beta.2
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.14.0;1.15.0-beta.2
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
