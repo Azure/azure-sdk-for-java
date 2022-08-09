@@ -106,20 +106,28 @@ public class ChangeFeedProcessorBuilder {
     /**
      * Sets a consumer function which will be called to process changes for full fidelity
      *
-     * <!-- src_embed com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges -->
      * <pre>
-     * .handleChanges&#40;docs -&gt; &#123;
-     *     for &#40;JsonNode item : docs&#41; &#123;
-     *         &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
-     *     &#125;
-     * &#125;&#41;
+     * {@code
+     *     ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+     *             .hostName(hostName)
+     *             .feedContainer(feedContainer)
+     *             .leaseContainer(leaseContainer)
+     *             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+     *             .handleCFPItemChanges(docs -> {
+     *                 for (ChangeFeedProcessorItem item : docs) {
+     *                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+     *                 }
+     *             })
+     *             .buildChangeFeedProcessor();
+     * }
      * </pre>
-     * <!-- end com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges -->
      *
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
     //  TODO:(kuthapar) - finalize the name for this.
+    //  Full Fidelity -> operation logs
+    //  Incremental -> item logs
     //  handleChangesWithOperationLogs() ?
     //  handleChangesWithFullFidelity() ?
     //  handleChangesForFullFidelity() ?
@@ -127,7 +135,7 @@ public class ChangeFeedProcessorBuilder {
     //  Future options -> handleChangesWithLogicalPartition() ?
     //  Or keep it generic and open for future -> handleChangesV1() ?
     @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ChangeFeedProcessorBuilder handleFullFidelityChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+    public ChangeFeedProcessorBuilder handleCFPItemChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.epkRangeBasedLeaseConsumer = consumer;
 
         return this;

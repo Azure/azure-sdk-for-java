@@ -153,6 +153,8 @@ public class ServiceItemLeaseV1 implements Lease {
         //  Calculating this token from epk based lease format
         //  This token is then used to pass as lsn in form of etag.
         String token = changeFeedState.getContinuation().getCurrentContinuationToken().getToken();
+        //  This token has extra quotes
+        token = token.replace("\"", "");
 
         return new ChangeFeedStateV1(
             containerRid,

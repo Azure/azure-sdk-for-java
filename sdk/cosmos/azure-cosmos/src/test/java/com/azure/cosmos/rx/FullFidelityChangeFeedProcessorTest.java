@@ -87,7 +87,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -148,7 +148,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -205,7 +205,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -219,7 +219,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
                 .hostName("side-cart")
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })
                 .feedContainer(createdFeedCollection)
@@ -345,7 +345,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -359,7 +359,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
                 .hostName("side-cart")
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })
                 .feedContainer(createdFeedCollection)
@@ -534,7 +534,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges(docs -> {
+                .handleCFPItemChanges(docs -> {
                     log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                 })
@@ -548,7 +548,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorSecond = new ChangeFeedProcessorBuilder()
                 .hostName(ownerSecond)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges((List<ChangeFeedProcessorItem> docs) -> {
+                .handleCFPItemChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                     for (ChangeFeedProcessorItem item : docs) {
                         processItem(item, receivedDocuments);
@@ -670,7 +670,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges(docs -> {
+                .handleCFPItemChanges(docs -> {
                     logger.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     for (ChangeFeedProcessorItem item : docs) {
                         try {
@@ -802,7 +802,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-                .handleFullFidelityChanges(fullFidelityChangeFeedProcessorHandler(receivedDocuments))
+                .handleCFPItemChanges(fullFidelityChangeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()

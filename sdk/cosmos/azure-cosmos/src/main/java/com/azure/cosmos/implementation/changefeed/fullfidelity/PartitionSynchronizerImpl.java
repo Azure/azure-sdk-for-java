@@ -104,7 +104,6 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         // After a split, the children are either all or none available
         return this.enumPartitionKeyRanges()
                    .filter(pkRange -> {
-                        //   TODO:(kuthapar) - check this logic
                         if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
                             //  This lease exists, no need to create one for this pkRange
                             return false;
@@ -157,13 +156,13 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                            .flatMap(pkRange -> {
                                // check if there are epk based leases for the partitionKeyRange
                                // If there is at least one, then we assume there are others
-                               // that cover the rest the full partition range
+                               // that cover the rest of the full partition range
                                // based on the fact that the lease store was always
                                // initialized for the full collection
                                // TODO:(kuthapar) what if some epkRange did not create successfully?
                                boolean anyMatch = leaseList.stream().anyMatch(lease -> {
                                    Range<String> epkRange = ((FeedRangeEpkImpl) lease.getFeedRange()).getRange();
-                                   //   TODO:(kuthapar) - check this logic
+                                   //  We are creating the lease for the whole pkRange, so even if we find at least one, we should be good.
                                    if (epkRange.getMin().equals(pkRange.getMinInclusive()) || epkRange.getMax().equals(pkRange.getMaxExclusive())) {
                                        //  This lease exists, no need to create one for this pkRange
                                        return true;
@@ -177,6 +176,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                                return Mono.empty();
                            }).flatMap(pkRange -> {
                                 FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(pkRange.toRange());
+                                //  We are creating the lease for the whole pkRange.
                                 return leaseManager.createLeaseIfNotExist(feedRangeEpk, null);
                                 }, this.degreeOfParallelism);
             });

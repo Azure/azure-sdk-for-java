@@ -9,7 +9,6 @@ import com.azure.cosmos.util.Beta;
  * Change feed mode
  */
 @Beta(value = Beta.SinceVersion.V4_34_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-//  TODO:(kuthapar) - do we really need to expose this now or should it be exposed when we do merge support.
 public enum ChangeFeedMode {
     /**
      * Incremental mode

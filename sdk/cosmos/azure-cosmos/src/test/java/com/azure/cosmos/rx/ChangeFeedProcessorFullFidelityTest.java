@@ -29,22 +29,20 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
-//  TODO:(kuthapar) - to be removed after testing.
 public class ChangeFeedProcessorFullFidelityTest {
 
     private static final String databaseId = "SampleDatabase";
     private static final String feedContainerId = "GreenTaxiRecords";
     private static final String leaseContainerId = "newleasecontainer";
-    private static final String feedContainerPartitionKeyPath = "/myPk";
+    private static final String feedContainerPartitionKeyPath = "/lastName";
     private static final String leaseContainerPartitionKeyPath = "/id";
     private static final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorFullFidelityTest.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -52,10 +50,10 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static CosmosAsyncContainer feedContainer;
     private static CosmosAsyncContainer leaseContainer;
 
-    private static final Map<ChangeFeedOperationType, Integer> changeFeedMap = new ConcurrentHashMap<>();
-    private static final Set<Integer> createChangeFeedSet = new HashSet<>();
-    private static final Set<Integer> deleteChangeFeedSet = new HashSet<>();
-    private static final Set<Integer> replaceChangeFeedSet = new HashSet<>();
+    private static final Map<ChangeFeedOperationType, AtomicInteger> changeFeedMap = new ConcurrentHashMap<>();
+    private static final Set<Integer> createChangeFeedSet = ConcurrentHashMap.newKeySet();
+    private static final Set<Integer> deleteChangeFeedSet = ConcurrentHashMap.newKeySet();
+    private static final Set<Integer> replaceChangeFeedSet = ConcurrentHashMap.newKeySet();
     private static final int createCount = 10;
     private static final int replaceCount = 10;
     private static final int deleteCount = 10;
@@ -85,65 +83,73 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static void checkChangeFeedMapDetails() {
         logger.info("Change feed map details are");
         changeFeedMap.forEach((key, value) -> {
-            logger.info("Operation type : {}, number of changes : {}", key, value);
+            logger.info("Operation type : {}, number of changes : {}", key, value.get());
         });
+        int missingItems = 0;
         for (int i = 0; i < createCount; i++) {
             if (!createChangeFeedSet.contains(i)) {
-                logger.info("Missing create item id : {}", i);
+                missingItems++;
             }
         }
+        logger.info("Missing create items : {}", missingItems);
+
+        missingItems = 0;
         for (int i = 0; i < replaceCount; i++) {
             if (!replaceChangeFeedSet.contains(i)) {
-                logger.info("Missing replace item id : {}", i);
+                missingItems++;
             }
         }
+        logger.info("Missing replace items : {}", missingItems);
+
+        missingItems = 0;
         for (int i = 0; i < deleteCount; i++) {
             if (!deleteChangeFeedSet.contains(i)) {
-                logger.info("Missing delete item id : {}", i);
+                missingItems++;
             }
         }
+        logger.info("Missing delete items : {}", missingItems);
     }
 
     private static void deleteItems() {
         Flux.range(0, deleteCount).flatMap(range -> {
-            return feedContainer.deleteItem(String.valueOf(range), new PartitionKey(String.valueOf(range)));
-        }).subscribe();
-        logger.info("Deleting data, waiting for 10 seconds");
+            return feedContainer.deleteItem(String.valueOf(range), new PartitionKey("lastName"));
+        }).blockLast();
+        logger.info("Deleting items, waiting for 10 seconds");
         try {
             Thread.sleep(10 * 1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        logger.info("Deleted data");
+        logger.info("Deleted items");
     }
 
     private static void replaceItems() {
         Flux.range(0, replaceCount).flatMap(range -> {
             Family family = getItem(String.valueOf(range));
-            family.setLastName("Updated");
-            return feedContainer.replaceItem(family, family.getId(), new PartitionKey(family.getMyPk()));
-        }).subscribe();
-        logger.info("Updating data, waiting for 10 seconds");
+            family.setFirstName("Updated");
+            return feedContainer.replaceItem(family, family.getId(), new PartitionKey(family.getLastName()));
+        }).blockLast();
+        logger.info("Replacing items, waiting for 10 seconds");
         try {
             Thread.sleep(10 * 1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        logger.info("Updated data");
+        logger.info("Replaced items");
     }
 
     private static void createItems() {
         Flux.range(0, createCount).flatMap(range -> {
             Family family = getItem(String.valueOf(range));
             return feedContainer.createItem(family);
-        }).subscribe();
-        logger.info("Generating data, waiting for 10 seconds");
+        }).blockLast();
+        logger.info("Creating items, waiting for 10 seconds");
         try {
             Thread.sleep(10 * 1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        logger.info("Generated data");
+        logger.info("Created items");
     }
 
     private static void setup() {
@@ -161,8 +167,8 @@ public class ChangeFeedProcessorFullFidelityTest {
         logger.info("Test database created if not existed");
         testDatabase = cosmosAsyncClient.getDatabase(databaseId);
 
-        logger.info("Deleting feed container");
         feedContainer = testDatabase.getContainer(feedContainerId);
+        logger.info("Deleting feed container");
         try {
             feedContainer.delete().block();
         } catch (CosmosException cosmosException) {
@@ -172,8 +178,8 @@ public class ChangeFeedProcessorFullFidelityTest {
             }
         }
 
-        logger.info("Deleting lease container");
         leaseContainer = testDatabase.getContainer(leaseContainerId);
+        logger.info("Deleting lease container");
         try {
             leaseContainer.delete().block();
         } catch (CosmosException cosmosException) {
@@ -185,10 +191,12 @@ public class ChangeFeedProcessorFullFidelityTest {
 
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
             feedContainerPartitionKeyPath);
-        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
-        //        cosmosContainerProperties.setDefaultTimeToLiveInSeconds(5);
         ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(100000);
-        testDatabase.createContainer(cosmosContainerProperties, throughputProperties).block();
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(60)));
+        testDatabase.createContainerIfNotExists(cosmosContainerProperties, throughputProperties).block();
+//        cosmosContainerProperties = feedContainer.read().block().getProperties();
+//        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+//        feedContainer.replace(cosmosContainerProperties).block();
         logger.info("Feed container created if not existed");
 
         testDatabase.createContainerIfNotExists(leaseContainerId, leaseContainerPartitionKeyPath).block();
@@ -197,21 +205,20 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     private static void runFullFidelityChangeFeedProcessorFromNow() {
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+        changeFeedProcessorOptions.setMaxItemCount(1000);
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleFullFidelityChanges(changeFeedProcessorItems -> {
+            .handleCFPItemChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
-                        logger.info("Item is : {}", item.toString());
+//                        logger.info("Item is : {}", item.toString());
                         ChangeFeedOperationType operationType = item.getChangeFeedMetaData().getOperationType();
-                        if (!changeFeedMap.containsKey(operationType)) {
-                            changeFeedMap.put(operationType, 0);
-                        }
-                        changeFeedMap.put(operationType, changeFeedMap.get(operationType) + 1);
+                        changeFeedMap.computeIfAbsent(operationType, changeFeedOperationType -> new AtomicInteger(0));
+                        changeFeedMap.get(operationType).incrementAndGet();
                         switch (operationType) {
                             case CREATE:
                                 createChangeFeedSet.add(item.getCurrent().get("id").asInt());
@@ -238,16 +245,16 @@ public class ChangeFeedProcessorFullFidelityTest {
         logger.info("Starting change feed processor");
         changeFeedProcessor.start().subscribe();
         try {
-            logger.info("{} going to sleep for 10 seconds", Thread.currentThread().getName());
-            Thread.sleep(10 * 1000);
+            logger.info("{} going to sleep for 30 seconds", Thread.currentThread().getName());
+            Thread.sleep(30 * 1000);
         } catch (InterruptedException e) {
             logger.error("Error occurred while sleeping", e);
         }
         logger.info("Finished starting change feed processor");
     }
 
-    private static Family getItem(String pk) {
-        return new Family(pk, UUID.randomUUID().toString(), UUID.randomUUID().toString(), pk);
+    private static Family getItem(String id) {
+        return new Family(id, "firstName", "lastName", id);
     }
 
 
