@@ -63,7 +63,7 @@ public class RoomsClientTest extends RoomsTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteRoomSync(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithFullOperation");
+        roomsClient = setupSyncClient(httpClient, "deleteRoomSync");
         assertNotNull(roomsClient);
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(VALID_FROM, VALID_UNTIL, RoomJoinPolicy.INVITE_ONLY, participants4);
         assertHappyPath(createCommunicationRoom);

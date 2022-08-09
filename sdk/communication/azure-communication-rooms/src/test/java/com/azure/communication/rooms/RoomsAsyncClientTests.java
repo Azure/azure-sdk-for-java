@@ -91,6 +91,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRoomFullCycleWithOutResponseStep(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient, "createRoomFullCycleWithOutResponse");
+        assertNotNull(roomsAsyncClient);
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(VALID_FROM, VALID_UNTIL, roomJoinPolicy, participants1);
 
         StepVerifier.create(response1)
@@ -129,8 +130,6 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteParticipantsWithOutResponseStep(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient, "deleteParticipantsWithOutResponseStep");
-        createUsers(httpClient);
-
         assertNotNull(roomsAsyncClient);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(VALID_FROM, VALID_UNTIL, roomJoinPolicy, participants1);
