@@ -21,7 +21,9 @@ public abstract class XmlWriter implements Closeable {
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML start document cannot be written.
      */
-    public abstract XmlWriter writeStartDocument();
+    public final XmlWriter writeStartDocument() {
+        return writeStartDocument("1.0", "utf-8");
+    }
 
     /**
      * Writes the XML document start ({@code <?xml version="1.0" encoding="utf-8?>}).
@@ -49,7 +51,9 @@ public abstract class XmlWriter implements Closeable {
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element start cannot be written.
      */
-    public abstract XmlWriter writeStartElement(String localName);
+    public final XmlWriter writeStartElement(String localName) {
+        return writeStartElement(null, localName);
+    }
 
     /**
      * Begins an XML element start that has a prefix ({@code <prefix:tag}).
@@ -82,7 +86,9 @@ public abstract class XmlWriter implements Closeable {
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element start cannot be written.
      */
-    public abstract XmlWriter writeStartSelfClosingElement(String localName);
+    public final XmlWriter writeStartSelfClosingElement(String localName) {
+        return writeStartSelfClosingElement(null, localName);
+    }
 
     /**
      * Begins an XML element start that has a prefix that will be self-closing ({@code <prefix:tag/>}).
@@ -129,7 +135,9 @@ public abstract class XmlWriter implements Closeable {
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML attribute cannot be written.
      */
-    public abstract XmlWriter writeStringAttribute(String localName, String value);
+    public final XmlWriter writeStringAttribute(String localName, String value) {
+        return writeStringAttribute(null, localName, value);
+    }
 
     /**
      * Writes a String attribute that has a prefix ({@code prefix:attribute="value"}).
@@ -342,29 +350,6 @@ public abstract class XmlWriter implements Closeable {
     }
 
     /**
-     * Writes a null attribute ({@code attribute="null"}).
-     *
-     * @param localName Name of the attribute.
-     * @return The updated XmlWriter object.
-     * @throws RuntimeException If the XML attribute cannot be written.
-     */
-    public final XmlWriter writeNullAttribute(String localName) {
-        return writeStringAttribute(localName, "null");
-    }
-
-    /**
-     * Writes a null attribute that has a prefix ({@code prefix:attribute="null"}).
-     *
-     * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
-     * @param localName Name of the attribute.
-     * @return The updated XmlWriter object.
-     * @throws RuntimeException If the XML attribute cannot be written.
-     */
-    public final XmlWriter writeNullAttribute(String prefix, String namespaceUri, String localName) {
-        return writeStringAttribute(namespaceUri, localName, "null");
-    }
-
-    /**
      * Writes a nullable number attribute ({@code attribute="number"}).
      *
      * @param localName Name of the attribute.
@@ -461,7 +446,7 @@ public abstract class XmlWriter implements Closeable {
      * @return The updated XmlWriter object.
      * @throws RuntimeException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeBooleanElement(String prefix, String namespaceUri, String localName, boolean value) {
+    public final XmlWriter writeBooleanElement(String namespaceUri, String localName, boolean value) {
         return writeStartElement(namespaceUri, localName)
             .writeBoolean(value)
             .writeEndElement();
@@ -621,33 +606,6 @@ public abstract class XmlWriter implements Closeable {
     public final XmlWriter writeLongElement(String namespaceUri, String localName, long value) {
         return writeStartElement(namespaceUri, localName)
             .writeLong(value)
-            .writeEndElement();
-    }
-
-    /**
-     * Writes a null element ({@code <tag>null</tag}).
-     *
-     * @param localName Name of the element.
-     * @return The updated XmlWriter object.
-     * @throws RuntimeException If the XML element and value cannot be written.
-     */
-    public final XmlWriter writeNullElement(String localName) {
-        return writeStartElement(localName)
-            .writeNull()
-            .writeEndElement();
-    }
-
-    /**
-     * Writes a null element that has a prefix ({@code <tag>null</tag>}).
-     *
-     * @param namespaceUri Namespace URI to bind the prefix to, if null the default namespace is used.
-     * @param localName Name of the element.
-     * @return The updated XmlWriter object.
-     * @throws RuntimeException If the XML element and value cannot be written.
-     */
-    public final XmlWriter writeNullElement(String namespaceUri, String localName) {
-        return writeStartElement(namespaceUri, localName)
-            .writeNull()
             .writeEndElement();
     }
 
@@ -825,16 +783,6 @@ public abstract class XmlWriter implements Closeable {
      */
     public final XmlWriter writeLong(long value) {
         return writeString(String.valueOf(value));
-    }
-
-    /**
-     * Writes an explicit null.
-     *
-     * @return The updated XmlWriter object.
-     * @throws RuntimeException If the XML value cannot be written.
-     */
-    public final XmlWriter writeNull() {
-        return writeString("null");
     }
 
     /**

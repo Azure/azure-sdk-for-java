@@ -277,4 +277,34 @@ public abstract class XmlReader implements Closeable {
 
         return converter.apply(this);
     }
+
+    /**
+     * Skips the current XML element.
+     * <p>
+     * If the {@link #currentToken()} isn't an {@link XmlToken#START_ELEMENT} this is a no-op.
+     * <p>
+     * This reads the XML stream until the matching {@link XmlToken#END_ELEMENT} is found for the current
+     * {@link XmlToken#START_ELEMENT}.
+     */
+    public final void skipElement() {
+        XmlToken currentToken = currentToken();
+        if (currentToken != XmlToken.START_ELEMENT) {
+            return;
+        }
+
+        int depth = 1;
+        while (depth > 0) {
+            currentToken = nextElement();
+
+            if (currentToken == XmlToken.START_ELEMENT) {
+                depth++;
+            } else if (currentToken == XmlToken.END_ELEMENT) {
+                depth--;
+            } else {
+                // Should never get into this state if the XML token stream is properly formatted XML.
+                // But if this happens, just break until a better strategy can be determined.
+                break;
+            }
+        }
+    }
 }
