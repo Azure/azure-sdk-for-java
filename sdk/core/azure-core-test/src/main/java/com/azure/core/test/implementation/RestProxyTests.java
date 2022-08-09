@@ -45,7 +45,7 @@ import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -1714,8 +1714,6 @@ public abstract class RestProxyTests {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     try {
                         streamResponse.writeValueTo(Channels.newChannel(bos));
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
                     } finally {
                         streamResponse.close();
                     }

@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
@@ -44,12 +44,12 @@ public class CopyModel {
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<DocumentOperationResult, DocumentModelInfo> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
+        SyncPoller<DocumentOperationResult, DocumentModelDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
             modelCopyAuthorization);
         copyPoller.waitForCompletion();
 
         // Get the copied model
-        DocumentModelInfo copiedModel = targetClient.getModel(modelCopyAuthorization.getTargetModelId());
+        DocumentModelDetails copiedModel = targetClient.getModel(modelCopyAuthorization.getTargetModelId());
 
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n",
             copiedModel.getModelId(),

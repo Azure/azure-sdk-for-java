@@ -59,7 +59,7 @@ public class SyncRestProxy extends RestProxyBase {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
         try {
-            context = startTracingSpan(method, context);
+            context = startTracingSpan(methodParser, context);
 
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
@@ -161,10 +161,9 @@ public class SyncRestProxy extends RestProxyBase {
 
         final Object result;
         if (httpMethod == HttpMethod.HEAD
-            && (TypeUtil.isTypeOrSubTypeOf(
-            entityType, Boolean.TYPE) || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
-            boolean isSuccess = (responseStatusCode / 100) == 2;
-            result = isSuccess;
+            && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
+            || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+            result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
             BinaryData binaryData = response.getSourceResponse().getBodyAsBinaryData();
@@ -210,7 +209,8 @@ public class SyncRestProxy extends RestProxyBase {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-            result = expectedResponse;
+            expectedResponse.close();
+            result = null;
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
             // Block the deserialization until a value T is received

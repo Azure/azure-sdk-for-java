@@ -1,14 +1,26 @@
 ## Release History
 
-### 3.25.0-beta.1 (Unreleased)
+### 3.26.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed issues with pagination when an offset is passed in with the pageable object. - See [PR 29462](https://github.com/Azure/azure-sdk-for-java/pull/29462)
+* Fixed an issue with @Query annotation using IN queries in `azure-spring-data-cosmos` which were not working - See [PR 30123](https://github.com/Azure/azure-sdk-for-java/pull/30123)
+* Fixed sorted queries to utilize composite indexes. - See [PR 30199](https://github.com/Azure/azure-sdk-for-java/pull/30199)
+* Fixed issues with pagination when accessing a page other than the first page. - See [PR 30276](https://github.com/Azure/azure-sdk-for-java/pull/30276)
 
 #### Other Changes
+
+### 3.25.0 (2022-07-22)
+
+#### Bugs Fixed
+* Fixed issues with offset and limit where you cannot use offset and limit. - See [PR 29841](https://github.com/Azure/azure-sdk-for-java/pull/29841)  
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.33.1`.
 
 ### 3.24.0 (2022-07-14)
 

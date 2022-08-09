@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CloudServiceSlotType. */
+/**
+ * Slot type for the cloud service. Possible values are &lt;br /&gt;&lt;br /&gt;**Production**&lt;br /&gt;&lt;br
+ * /&gt;**Staging**&lt;br /&gt;&lt;br /&gt; If not specified, the default value is Production.
+ */
 public final class CloudServiceSlotType extends ExpandableStringEnum<CloudServiceSlotType> {
     /** Static value Production for CloudServiceSlotType. */
     public static final CloudServiceSlotType PRODUCTION = fromString("Production");

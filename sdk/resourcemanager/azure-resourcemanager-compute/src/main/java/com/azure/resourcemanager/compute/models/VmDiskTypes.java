@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VmDiskTypes. */
+/** VM disk types which are disallowed. */
 public final class VmDiskTypes extends ExpandableStringEnum<VmDiskTypes> {
     /** Static value None for VmDiskTypes. */
     public static final VmDiskTypes NONE = fromString("None");

@@ -293,14 +293,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     public Mono<VirtualMachineImageInner> getAsync(
         String location, String publisherName, String offer, String skus, String version) {
         return getWithResponseAsync(location, publisherName, offer, skus, version)
-            .flatMap(
-                (Response<VirtualMachineImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -497,14 +490,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     public Mono<List<VirtualMachineImageResourceInner>> listAsync(
         String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby) {
         return listWithResponseAsync(location, publisherName, offer, skus, expand, top, orderby)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -527,14 +513,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
         final Integer top = null;
         final String orderby = null;
         return listWithResponseAsync(location, publisherName, offer, skus, expand, top, orderby)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -697,15 +676,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName) {
-        return listOffersWithResponseAsync(location, publisherName)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listOffersWithResponseAsync(location, publisherName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -833,15 +804,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location) {
-        return listPublishersWithResponseAsync(location)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listPublishersWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -996,14 +959,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     public Mono<List<VirtualMachineImageResourceInner>> listSkusAsync(
         String location, String publisherName, String offer) {
         return listSkusWithResponseAsync(location, publisherName, offer)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1150,15 +1106,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VmImagesInEdgeZoneListResultInner> listByEdgeZoneAsync(String location, String edgeZone) {
-        return listByEdgeZoneWithResponseAsync(location, edgeZone)
-            .flatMap(
-                (Response<VmImagesInEdgeZoneListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listByEdgeZoneWithResponseAsync(location, edgeZone).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

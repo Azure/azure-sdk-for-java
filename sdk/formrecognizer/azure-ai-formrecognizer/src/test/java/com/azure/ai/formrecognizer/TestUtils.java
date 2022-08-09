@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -278,17 +278,17 @@ public final class TestUtils {
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
-    public static FormRecognizerAudience getAudience(String endpoint) {
+    public static DocumentAnalysisAudience getAudience(String endpoint) {
         String authority = getAuthority(endpoint);
         switch (authority) {
             case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
 
             case AzureAuthorityHosts.AZURE_CHINA:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_CHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
+                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
 
             default:
                 return null;

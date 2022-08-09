@@ -18,8 +18,7 @@ public final class CommunityGalleryInfo {
     private String publisherUri;
 
     /*
-     * Community gallery publisher support email. The email address of the
-     * publisher. Visible to all users.
+     * Community gallery publisher support email. The email address of the publisher. Visible to all users.
      */
     @JsonProperty(value = "publisherContact")
     private String publisherContact;
@@ -31,8 +30,7 @@ public final class CommunityGalleryInfo {
     private String eula;
 
     /*
-     * The prefix of the gallery name that will be displayed publicly. Visible
-     * to all users.
+     * The prefix of the gallery name that will be displayed publicly. Visible to all users.
      */
     @JsonProperty(value = "publicNamePrefix")
     private String publicNamePrefix;

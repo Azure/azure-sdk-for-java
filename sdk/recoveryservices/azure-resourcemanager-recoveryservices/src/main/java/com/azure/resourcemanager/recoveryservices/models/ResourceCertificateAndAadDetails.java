@@ -52,6 +52,12 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     @JsonProperty(value = "serviceResourceId")
     private String serviceResourceId;
 
+    /*
+     * AAD audience for the resource
+     */
+    @JsonProperty(value = "aadAudience")
+    private String aadAudience;
+
     /**
      * Get the aadAuthority property: AAD tenant authority.
      *
@@ -170,6 +176,26 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
      */
     public ResourceCertificateAndAadDetails withServiceResourceId(String serviceResourceId) {
         this.serviceResourceId = serviceResourceId;
+        return this;
+    }
+
+    /**
+     * Get the aadAudience property: AAD audience for the resource.
+     *
+     * @return the aadAudience value.
+     */
+    public String aadAudience() {
+        return this.aadAudience;
+    }
+
+    /**
+     * Set the aadAudience property: AAD audience for the resource.
+     *
+     * @param aadAudience the aadAudience value to set.
+     * @return the ResourceCertificateAndAadDetails object itself.
+     */
+    public ResourceCertificateAndAadDetails withAadAudience(String aadAudience) {
+        this.aadAudience = aadAudience;
         return this;
     }
 

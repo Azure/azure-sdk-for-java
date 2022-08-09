@@ -25,8 +25,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     private Boolean primary;
 
     /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
+     * Specifies whether the network interface is accelerated networking-enabled.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;

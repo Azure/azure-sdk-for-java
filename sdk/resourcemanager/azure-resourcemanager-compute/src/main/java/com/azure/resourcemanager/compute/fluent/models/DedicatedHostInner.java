@@ -26,9 +26,8 @@ public final class DedicatedHostInner extends Resource {
     private DedicatedHostProperties innerProperties;
 
     /*
-     * SKU of the dedicated host for Hardware Generation and VM family. Only
-     * name is required to be set. List Microsoft.Compute SKUs for a list of
-     * possible values.
+     * SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List
+     * Microsoft.Compute SKUs for a list of possible values.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the properties of the Private DNS zone. */
 @Fluent
 public final class VirtualNetworkLinkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkProperties.class);
-
     /*
      * The reference of the virtual network.
      */
@@ -24,23 +20,21 @@ public final class VirtualNetworkLinkProperties {
     private SubResource virtualNetwork;
 
     /*
-     * Is auto-registration of virtual machine records in the virtual network
-     * in the Private DNS zone enabled?
+     * Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?
      */
     @JsonProperty(value = "registrationEnabled")
     private Boolean registrationEnabled;
 
     /*
-     * The status of the virtual network link to the Private DNS zone. Possible
-     * values are 'InProgress' and 'Done'. This is a read-only property and any
-     * attempt to set this value will be ignored.
+     * The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'.
+     * This is a read-only property and any attempt to set this value will be ignored.
      */
     @JsonProperty(value = "virtualNetworkLinkState", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkLinkState virtualNetworkLinkState;
 
     /*
-     * The provisioning state of the resource. This is a read-only property and
-     * any attempt to set this value will be ignored.
+     * The provisioning state of the resource. This is a read-only property and any attempt to set this value will be
+     * ignored.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;

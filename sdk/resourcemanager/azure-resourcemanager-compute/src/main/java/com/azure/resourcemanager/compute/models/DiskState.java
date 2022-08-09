@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskState. */
+/** This enumerates the possible state of the disk. */
 public final class DiskState extends ExpandableStringEnum<DiskState> {
     /** Static value Unattached for DiskState. */
     public static final DiskState UNATTACHED = fromString("Unattached");

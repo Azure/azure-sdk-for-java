@@ -10,6 +10,8 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentStatus;
 import com.azure.resourcemanager.appservice.models.LoadBalancingMode;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
+import com.azure.resourcemanager.appservice.models.UpgradeAvailability;
+import com.azure.resourcemanager.appservice.models.UpgradePreference;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -22,7 +24,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      * Core resource properties
      */
     @JsonProperty(value = "properties")
-    private AppServiceEnvironment innerProperties;
+    private AppServiceEnvironmentInner innerProperties;
 
     /*
      * Kind of resource.
@@ -35,7 +37,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      *
      * @return the innerProperties value.
      */
-    private AppServiceEnvironment innerProperties() {
+    private AppServiceEnvironmentInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -108,7 +110,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withVirtualNetwork(VirtualNetworkProfile virtualNetwork) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withVirtualNetwork(virtualNetwork);
         return this;
@@ -134,7 +136,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     public AppServiceEnvironmentResourceInner withInternalLoadBalancingMode(
         LoadBalancingMode internalLoadBalancingMode) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withInternalLoadBalancingMode(internalLoadBalancingMode);
         return this;
@@ -157,7 +159,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withMultiSize(String multiSize) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withMultiSize(multiSize);
         return this;
@@ -189,7 +191,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withIpsslAddressCount(Integer ipsslAddressCount) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withIpsslAddressCount(ipsslAddressCount);
         return this;
@@ -212,7 +214,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withDnsSuffix(String dnsSuffix) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withDnsSuffix(dnsSuffix);
         return this;
@@ -244,7 +246,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withFrontEndScaleFactor(Integer frontEndScaleFactor) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withFrontEndScaleFactor(frontEndScaleFactor);
         return this;
@@ -278,7 +280,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withClusterSettings(List<NameValuePair> clusterSettings) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withClusterSettings(clusterSettings);
         return this;
@@ -301,7 +303,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withUserWhitelistedIpRanges(List<String> userWhitelistedIpRanges) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withUserWhitelistedIpRanges(userWhitelistedIpRanges);
         return this;
@@ -314,6 +316,29 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public Boolean hasLinuxWorkers() {
         return this.innerProperties() == null ? null : this.innerProperties().hasLinuxWorkers();
+    }
+
+    /**
+     * Get the upgradePreference property: Upgrade Preference.
+     *
+     * @return the upgradePreference value.
+     */
+    public UpgradePreference upgradePreference() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePreference();
+    }
+
+    /**
+     * Set the upgradePreference property: Upgrade Preference.
+     *
+     * @param upgradePreference the upgradePreference value to set.
+     * @return the AppServiceEnvironmentResourceInner object itself.
+     */
+    public AppServiceEnvironmentResourceInner withUpgradePreference(UpgradePreference upgradePreference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironmentInner();
+        }
+        this.innerProperties().withUpgradePreference(upgradePreference);
+        return this;
     }
 
     /**
@@ -333,7 +358,7 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withDedicatedHostCount(Integer dedicatedHostCount) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withDedicatedHostCount(dedicatedHostCount);
         return this;
@@ -356,10 +381,67 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
      */
     public AppServiceEnvironmentResourceInner withZoneRedundant(Boolean zoneRedundant) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AppServiceEnvironment();
+            this.innerProperties = new AppServiceEnvironmentInner();
         }
         this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
+    }
+
+    /**
+     * Get the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
+     *
+     * @return the customDnsSuffixConfiguration value.
+     */
+    public CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().customDnsSuffixConfiguration();
+    }
+
+    /**
+     * Set the customDnsSuffixConfiguration property: Full view of the custom domain suffix configuration for ASEv3.
+     *
+     * @param customDnsSuffixConfiguration the customDnsSuffixConfiguration value to set.
+     * @return the AppServiceEnvironmentResourceInner object itself.
+     */
+    public AppServiceEnvironmentResourceInner withCustomDnsSuffixConfiguration(
+        CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironmentInner();
+        }
+        this.innerProperties().withCustomDnsSuffixConfiguration(customDnsSuffixConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the networkingConfiguration property: Full view of networking configuration for an ASE.
+     *
+     * @return the networkingConfiguration value.
+     */
+    public AseV3NetworkingConfigurationInner networkingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkingConfiguration();
+    }
+
+    /**
+     * Set the networkingConfiguration property: Full view of networking configuration for an ASE.
+     *
+     * @param networkingConfiguration the networkingConfiguration value to set.
+     * @return the AppServiceEnvironmentResourceInner object itself.
+     */
+    public AppServiceEnvironmentResourceInner withNetworkingConfiguration(
+        AseV3NetworkingConfigurationInner networkingConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironmentInner();
+        }
+        this.innerProperties().withNetworkingConfiguration(networkingConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the upgradeAvailability property: Whether an upgrade is available for this App Service Environment.
+     *
+     * @return the upgradeAvailability value.
+     */
+    public UpgradeAvailability upgradeAvailability() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeAvailability();
     }
 
     /**
