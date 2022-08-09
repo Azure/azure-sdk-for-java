@@ -20,7 +20,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_USE_SSL;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_USE_SSL;
-import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcPropertiesBeanPostProcessor.DEFAULT_ENHANCED_PROPERTIES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -73,7 +72,7 @@ class JdbcConnectionStringTest {
         String connectionString = "jdbc:mysql://mockpostgresqlurl:3306/db?useSSL=false";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
-        configMap.putAll(DEFAULT_ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
+        configMap.putAll(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
         assertThrows(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceConnectionString(configMap));
     }
 
@@ -82,7 +81,6 @@ class JdbcConnectionStringTest {
         String connectionString = "jdbc:mysql://mockpostgresqlurl:3306/db?useSSL=true";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
-        configMap.putAll(DEFAULT_ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
         assertNotNull(jdbcConnectionString.enhanceConnectionString(configMap));
     }
 
@@ -98,7 +96,7 @@ class JdbcConnectionStringTest {
         String connectionString = "jdbc:mysql://host/database";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
-        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(DEFAULT_ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
+        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
         String expectedUrl = String.format("%s?%s&%s&%s&%s", connectionString,
             MYSQL_AUTH_PLUGIN_PROPERTY,
             MYSQL_DEFAULT_PLUGIN_PROPERTY,
@@ -112,7 +110,7 @@ class JdbcConnectionStringTest {
         String connectionString = "jdbc:mysql://host/database?sslMode=REQUIRED";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
-        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(DEFAULT_ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
+        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
         String expectedUrl = String.format("%s&%s&%s&%s", connectionString,
             MYSQL_AUTH_PLUGIN_PROPERTY,
             MYSQL_DEFAULT_PLUGIN_PROPERTY,

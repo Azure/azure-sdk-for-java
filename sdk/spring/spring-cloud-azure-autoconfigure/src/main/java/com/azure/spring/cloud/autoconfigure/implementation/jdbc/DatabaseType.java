@@ -4,6 +4,19 @@
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
 import org.springframework.util.ClassUtils;
+import java.util.Map;
+import java.util.TreeMap;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_AUTHENTICATION_PLUGINS;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_POSTGRESQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_SSL_MODE;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_POSTGRESQL_SSL_MODE;
 
 /**
  * The type of database URL.
@@ -54,6 +67,7 @@ public enum DatabaseType {
         return queryDelimiter;
     }
 
+    // TODO (zhihaoguo): refactor with interfaces.
     public boolean isDatabasePluginEnabled() {
         if (DatabaseType.POSTGRESQL == this) {
             return isPostgresqlPluginEnabled();
@@ -61,6 +75,24 @@ public enum DatabaseType {
             return isMySqlPluginEnabled();
         }
         return false;
+    }
+
+    public Map<String, String> getDefaultEnhancedProperties() {
+        Map<String, String> result = new TreeMap<>();
+        if (DatabaseType.POSTGRESQL == this) {
+            result.put(PROPERTY_NAME_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME, POSTGRES_AUTH_PLUGIN_CLASS_NAME);
+            result.put(PROPERTY_NAME_POSTGRESQL_SSL_MODE, PROPERTY_VALUE_POSTGRESQL_SSL_MODE);
+        } else if (DatabaseType.MYSQL == this) {
+            result.put(PROPERTY_NAME_MYSQL_SSL_MODE, PROPERTY_VALUE_MYSQL_SSL_MODE);
+            result.put(PROPERTY_NAME_MYSQL_USE_SSL, PROPERTY_VALUE_MYSQL_USE_SSL);
+            result.put(PROPERTY_NAME_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN, MYSQL_AUTH_PLUGIN_CLASS_NAME);
+            result.put(PROPERTY_NAME_MYSQL_AUTHENTICATION_PLUGINS, MYSQL_AUTH_PLUGIN_CLASS_NAME);
+        }
+        return result;
+    }
+
+    public void setDefaultEnhancedProperties(Map<String, String> map) {
+        map.putAll(getDefaultEnhancedProperties());
     }
 
     private static boolean isPostgresqlPluginEnabled() {

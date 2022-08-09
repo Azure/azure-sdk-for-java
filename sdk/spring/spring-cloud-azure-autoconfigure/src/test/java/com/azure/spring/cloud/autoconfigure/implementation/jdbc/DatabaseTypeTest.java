@@ -4,9 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DatabaseTypeTest {
 
@@ -45,12 +48,22 @@ class DatabaseTypeTest {
 
     @Test
     void testMySqlPlugin() {
-        assertFalse(DatabaseType.MYSQL.isDatabasePluginEnabled());
+        assertTrue(DatabaseType.MYSQL.isDatabasePluginEnabled());
+        new ApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader("com.mysql.cj.protocol.AuthenticationPlugin"))
+            .run(context -> {
+                assertFalse(DatabaseType.MYSQL.isDatabasePluginEnabled());
+            });
     }
 
     @Test
     void testPostgreSqlPlugin() {
-        assertFalse(DatabaseType.POSTGRESQL.isDatabasePluginEnabled());
+        assertTrue(DatabaseType.POSTGRESQL.isDatabasePluginEnabled());
+        new ApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader("org.postgresql.plugin.AuthenticationPlugin"))
+            .run(context -> {
+                assertFalse(DatabaseType.POSTGRESQL.isDatabasePluginEnabled());
+            });
     }
 
 }

@@ -19,7 +19,8 @@ public final class JdbcConnectionString {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
 
     public static final String INVALID_CONNECTION_STRING_FORMAT = "Invalid connection string: %s";
-    public static final String UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT = "Unsupported database type: %s";
+    public static final String UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT = "The DatabaseType specified in : %s is not "
+        + "supported to enhance authentication with Azure AD by Spring Cloud Azure.";
     public static final String INVALID_PROPERTY_PAIR_FORMAT = "Connection string has invalid key value pair: %s";
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private final String jdbcURL;

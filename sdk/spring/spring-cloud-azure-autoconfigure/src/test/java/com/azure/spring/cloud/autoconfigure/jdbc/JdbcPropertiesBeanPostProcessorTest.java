@@ -6,8 +6,8 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
-import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -31,6 +31,7 @@ class JdbcPropertiesBeanPostProcessorTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
+            DataSourceProperties.class,
             AzureCredentialFreeProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
@@ -74,7 +75,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProvider.class);
+                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
             });
     }
 
@@ -104,7 +105,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     private void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context) {
         assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
         assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-        assertThat(context).hasSingleBean(SpringTokenCredentialProvider.class);
+        assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
 
         ConfigurableEnvironment environment = context.getEnvironment();
         AzureCredentialFreeProperties properties = Binder.get(environment).bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
@@ -116,7 +117,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     private void assertGlobalPropertiesConfigureCorrectly(AssertableApplicationContext context) {
         assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
         assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-        assertThat(context).hasSingleBean(SpringTokenCredentialProvider.class);
+        assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
         assertThat(context).hasSingleBean(AzureGlobalProperties.class);
         AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
 

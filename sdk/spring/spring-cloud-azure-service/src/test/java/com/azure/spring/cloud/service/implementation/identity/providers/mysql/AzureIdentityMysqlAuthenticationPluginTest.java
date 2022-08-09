@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.service.implementation.identity.providers.mysql;
 
-import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
-import com.azure.spring.cloud.service.implementation.identity.api.credential.TokenCredentialProvider;
-import com.azure.spring.cloud.service.implementation.identity.impl.credential.CacheableTokenCredential;
-import com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.DefaultTokenCredentialProvider;
+import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProvider;
+import com.azure.spring.cloud.service.implementation.identity.credential.CacheableTokenCredential;
+import com.azure.spring.cloud.service.implementation.identity.credential.provider.DefaultTokenCredentialProvider;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativePacketPayload;

@@ -4,7 +4,7 @@ package com.azure.spring.cloud.service.implementation.credentialfree;
 
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
 
 import java.util.Map;
 import java.util.function.BiConsumer;

@@ -8,7 +8,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
-import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -21,19 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_AUTHENTICATION_PLUGINS;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_MYSQL_USE_SSL;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_NAME_POSTGRESQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_SSL_MODE;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_MYSQL_USE_SSL;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.PROPERTY_VALUE_POSTGRESQL_SSL_MODE;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
@@ -42,7 +31,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
-    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = "com.azure.spring.cloud.service.implementation.identity.impl.credential.provider.SpringTokenCredentialProvider";
+    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProvider.class.getName();
     private static final String SPRING_CLOUD_AZURE_DATASOURCE_PREFIX = "spring.datasource.azure";
 
     private final AzureGlobalProperties azureGlobalProperties;
@@ -53,23 +42,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         this.azureGlobalProperties = azureGlobalProperties;
     }
 
-    private static final Map<String, String> POSTGRES_ENHANCED_PROPERTIES = new TreeMap<>();
-    private static final Map<String, String> MYSQL_ENHANCED_PROPERTIES = new TreeMap<>();
-    static final Map<DatabaseType, Map<String, String>> DEFAULT_ENHANCED_PROPERTIES = new HashMap<>();
-
-    static {
-        POSTGRES_ENHANCED_PROPERTIES.put(PROPERTY_NAME_POSTGRESQL_AUTHENTICATION_PLUGIN_CLASSNAME, POSTGRES_AUTH_PLUGIN_CLASS_NAME);
-        POSTGRES_ENHANCED_PROPERTIES.put(PROPERTY_NAME_POSTGRESQL_SSL_MODE, PROPERTY_VALUE_POSTGRESQL_SSL_MODE);
-
-        MYSQL_ENHANCED_PROPERTIES.put(PROPERTY_NAME_MYSQL_SSL_MODE, PROPERTY_VALUE_MYSQL_SSL_MODE);
-        MYSQL_ENHANCED_PROPERTIES.put(PROPERTY_NAME_MYSQL_USE_SSL, PROPERTY_VALUE_MYSQL_USE_SSL);
-        MYSQL_ENHANCED_PROPERTIES.put(PROPERTY_NAME_MYSQL_DEFAULT_AUTHENTICATION_PLUGIN, MYSQL_AUTH_PLUGIN_CLASS_NAME);
-        MYSQL_ENHANCED_PROPERTIES.put(PROPERTY_NAME_MYSQL_AUTHENTICATION_PLUGINS, MYSQL_AUTH_PLUGIN_CLASS_NAME);
-
-        DEFAULT_ENHANCED_PROPERTIES.put(DatabaseType.MYSQL, MYSQL_ENHANCED_PROPERTIES);
-        DEFAULT_ENHANCED_PROPERTIES.put(DatabaseType.POSTGRESQL, POSTGRES_ENHANCED_PROPERTIES);
-    }
-
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
@@ -77,36 +49,38 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
 
             if (isPasswordProvided) {
-                LOGGER.debug("'spring.datasource.password' provided, skip JdbcPropertiesBeanPostProcessor.");
+                LOGGER.debug("Value of 'spring.datasource.password' is provided, skip enhancing jdbc url.");
                 return bean;
             }
 
             String url = dataSourceProperties.getUrl();
             if (!StringUtils.hasText(url)) {
-                LOGGER.debug("No 'spring.datasource.url' provided, skip JdbcPropertiesBeanPostProcessor.");
+                LOGGER.debug("No 'spring.datasource.url' provided, skip enhancing jdbc url.");
                 return bean;
             }
 
             JdbcConnectionString connectionString = JdbcConnectionString.resolve(url);
             if (connectionString == null) {
-                LOGGER.debug("Can not resolve connection string from provided {}, skip JdbcPropertiesBeanPostProcessor.", url);
+                //
+                LOGGER.debug("Can not resolve jdbc connection string from provided {}, skip enhancing jdbc url.", url);
                 return bean;
             }
 
             DatabaseType databaseType = connectionString.getDatabaseType();
             if (!databaseType.isDatabasePluginEnabled()) {
-                LOGGER.info("The jdbc plugin with provided jdbc schema is not on the classpath , skip JdbcPropertiesBeanPostProcessor");
+                LOGGER.debug("The jdbc plugin with provided jdbc schema is not on the classpath, skip enhancing jdbc url.");
                 return bean;
             }
 
             try {
-                AzureCredentialFreeProperties properties = Binder.get(environment).bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
+                AzureCredentialFreeProperties properties = Binder.get(environment)
+                    .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
 
                 Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
                 String enhancedUrl = connectionString.enhanceConnectionString(enhancedProperties);
                 ((DataSourceProperties) bean).setUrl(enhancedUrl);
             } catch (IllegalArgumentException e) {
-                LOGGER.debug("Inconsistent properties detected, skip JdbcPropertiesBeanPostProcessor");
+                LOGGER.debug("Inconsistent properties detected, skip enhancing jdbc url.");
             }
         }
         return bean;
@@ -118,7 +92,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         TokenCredential credentialFreeTokenCredential = new AzureTokenCredentialResolver().resolve(properties);
 
         if (globalTokenCredential != null && credentialFreeTokenCredential == null) {
-            LOGGER.info("Add SpringTokenCredentialProvider as the default token credential provider.");
+            LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         }
 
@@ -136,9 +110,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         AuthProperty.AUTHORITY_HOST.setProperty(result, String.valueOf(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint()));
         AuthProperty.TENANT_ID.setProperty(result, String.valueOf(properties.getProfile().getTenantId()));
 
-        if (DEFAULT_ENHANCED_PROPERTIES.get(databaseType) != null) {
-            result.putAll(DEFAULT_ENHANCED_PROPERTIES.get(databaseType));
-        }
+        databaseType.setDefaultEnhancedProperties(result);
+
         return result;
     }
 

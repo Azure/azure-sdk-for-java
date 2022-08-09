@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.service.implementation.identity.providers.postgresql;
 
-import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
-import com.azure.spring.cloud.service.implementation.identity.api.AzureAuthenticationTemplate;
+import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;
@@ -37,6 +37,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin extends AzureAuthentica
      * @return the password.
      * @throws PSQLException when an error occurs.
      */
+    //TODO (zhihaoguo): We need to know the usage of AuthenticationRequestType.
     @Override
     public char[] getPassword(AuthenticationRequestType art) throws PSQLException {
         String password = getTokenAsPassword();

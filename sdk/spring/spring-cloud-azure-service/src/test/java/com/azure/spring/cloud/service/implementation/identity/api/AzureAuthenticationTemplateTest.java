@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation.identity.api;
 
+import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.time.Duration;

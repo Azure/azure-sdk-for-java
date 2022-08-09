@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.service.implementation.identity.providers.mysql;
 
-import com.azure.spring.cloud.service.implementation.identity.api.AuthProperty;
-import com.azure.spring.cloud.service.implementation.identity.api.AzureAuthenticationTemplate;
+import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
 import com.mysql.cj.callback.MysqlCallbackHandler;
 import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
@@ -26,16 +26,9 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
     private static final String PLUGIN_NAME = "mysql_clear_password";
 
     /**
-     * Stores the callback handler.
-     */
-    private MysqlCallbackHandler callbackHandler;
-
-    /**
      * Stores the protocol.SharedTokenCacheCredential
      */
     private Protocol<NativePacketPayload> protocol;
-
-    private String sourceOfAuthData;
 
     @Override
     public void destroy() {
@@ -57,7 +50,6 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
     @Override
     public void init(Protocol<NativePacketPayload> protocol, MysqlCallbackHandler callbackHandler) {
         this.init(protocol);
-        this.callbackHandler = callbackHandler;
     }
 
     @Override
@@ -102,22 +94,14 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
         return true;
     }
 
+    // TODO (zhihaoguo): where to use requiresConfidentiality?
     @Override
     public boolean requiresConfidentiality() {
         return true;
     }
 
     @Override
-    public void reset() {
-    }
-
-    @Override
     public void setAuthenticationParameters(String username, String password) {
-    }
-
-    @Override
-    public void setSourceOfAuthData(String sourceOfAuthData) {
-        this.sourceOfAuthData = sourceOfAuthData;
     }
 
 }
