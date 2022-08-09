@@ -17,8 +17,8 @@ public final class ClassificationCategoryPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link ClassificationCategory} instance.
      */
     public interface ClassificationCategoryAccessor {
-        void setCategory(ClassificationCategory classificationCategory, String category);
-        void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore);
+        void setCategory(ClassificationCategory classification, String category);
+        void setConfidenceScore(ClassificationCategory classification, double confidenceScore);
     }
 
     /**
@@ -30,11 +30,11 @@ public final class ClassificationCategoryPropertiesHelper {
         accessor = classificationCategoryAccessor;
     }
 
-    public static void setCategory(ClassificationCategory classificationCategory, String category) {
-        accessor.setCategory(classificationCategory, category);
+    public static void setCategory(ClassificationCategory classification, String category) {
+        accessor.setCategory(classification, category);
     }
 
-    public static void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore) {
-        accessor.setConfidenceScore(classificationCategory, confidenceScore);
+    public static void setConfidenceScore(ClassificationCategory classification, double confidenceScore) {
+        accessor.setConfidenceScore(classification, confidenceScore);
     }
 }

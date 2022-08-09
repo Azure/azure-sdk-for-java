@@ -18,13 +18,13 @@ public final class ClassificationCategory {
         ClassificationCategoryPropertiesHelper.setAccessor(
             new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
                 @Override
-                public void setCategory(ClassificationCategory classificationCategory, String category) {
-                    classificationCategory.setCategory(category);
+                public void setCategory(ClassificationCategory classification, String category) {
+                    classification.setCategory(category);
                 }
 
                 @Override
-                public void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore) {
-                    classificationCategory.setConfidenceScore(confidenceScore);
+                public void setConfidenceScore(ClassificationCategory classification, double confidenceScore) {
+                    classification.setConfidenceScore(confidenceScore);
                 }
             });
     }

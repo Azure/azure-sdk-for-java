@@ -1010,9 +1010,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
             for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
-                for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
                     System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                        classification.getCategory(), classification.getConfidenceScore());
                 }
             }
         });
@@ -1044,9 +1044,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
             for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
-                for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
                     System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                        classification.getCategory(), classification.getConfidenceScore());
                 }
             }
         });
@@ -1074,9 +1074,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
             for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
-                for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
                     System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                        classification.getCategory(), classification.getConfidenceScore());
                 }
             }
         });
@@ -1104,9 +1104,9 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
             for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
-                for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
                     System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                        classification.getCategory(), classification.getConfidenceScore());
                 }
             }
         });

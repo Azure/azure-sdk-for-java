@@ -20,8 +20,8 @@ public final class ClassifyDocumentResultPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentResult} instance.
      */
     public interface ClassifyDocumentResultAccessor {
-        void setClassificationCategories(ClassifyDocumentResult classifyDocumentResult,
-            IterableStream<ClassificationCategory> classificationCategories);
+        void setClassifications(ClassifyDocumentResult classifyDocumentResult,
+            IterableStream<ClassificationCategory> classifications);
         void setWarnings(ClassifyDocumentResult classifyDocumentResult,
             IterableStream<TextAnalyticsWarning> warnings);
     }
@@ -35,9 +35,9 @@ public final class ClassifyDocumentResultPropertiesHelper {
         accessor = classifyDocumentResultAccessor;
     }
 
-    public static void setClassificationCategories(ClassifyDocumentResult classifyDocumentResult,
-        IterableStream<ClassificationCategory> classificationCategories) {
-        accessor.setClassificationCategories(classifyDocumentResult, classificationCategories);
+    public static void setClassifications(ClassifyDocumentResult classifyDocumentResult,
+        IterableStream<ClassificationCategory> classifications) {
+        accessor.setClassifications(classifyDocumentResult, classifications);
     }
 
     public static void setWarnings(ClassifyDocumentResult classifyDocumentResult,

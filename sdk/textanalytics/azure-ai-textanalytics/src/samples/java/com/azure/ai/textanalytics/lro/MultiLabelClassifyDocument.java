@@ -53,9 +53,9 @@ public class MultiLabelClassifyDocument {
             for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
                 if (!documentResult.isError()) {
-                    for (ClassificationCategory classificationCategory : documentResult.getClassificationCategories()) {
+                    for (ClassificationCategory classification : documentResult.getClassifications()) {
                         System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                            classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                            classification.getCategory(), classification.getConfidenceScore());
                     }
                 } else {
                     System.out.printf("\tCannot classify category of document. Error: %s%n",

@@ -1607,7 +1607,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             assertNotNull(documentResult.getError());
         } else {
             assertNull(documentResult.getError());
-            for (ClassificationCategory classification : documentResult.getClassificationCategories()) {
+            for (ClassificationCategory classification : documentResult.getClassifications()) {
                 validateDocumentClassification(classification);
             }
         }

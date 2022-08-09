@@ -3,8 +3,17 @@
 ## 5.2.0-beta.4 (Unreleased)
 
 ### Features Added
+- Added public bespoke methods for the custom entity recognition, and single-label and multi-label classification features,
+  such as, `beginRecognizeCustomEntities()`, `beginSingleLabelClassify()` and `beginMultiLabelClassify()`.
 
 ### Breaking Changes
+- Removed support for `Healthcare FHIR`, and `Extractive Summarization` features.
+- Renamed 
+  `SingleCategoryClassifyAction` to `SingleLabelClassifyAction`,
+  `MultiCategoryClassifyAction` to `MultiLabelClassifyAction`.
+- Merged 
+  `SingleCategoryClassifyResultCollection` and `SingleCategoryClassifyResultCollection` to `ClassifyDocumentResultCollection`,
+  `MultiCategoryClassifyResult` and `SingleCategoryClassifyResult` to `ClassifyDocumentResult`.
 
 ### Bugs Fixed
 

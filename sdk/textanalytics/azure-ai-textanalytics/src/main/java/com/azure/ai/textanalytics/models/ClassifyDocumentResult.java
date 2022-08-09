@@ -12,17 +12,16 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class ClassifyDocumentResult extends TextAnalyticsResult {
-    private IterableStream<ClassificationCategory> classificationCategories;
+    private IterableStream<ClassificationCategory> classifications;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         ClassifyDocumentResultPropertiesHelper.setAccessor(
             new ClassifyDocumentResultPropertiesHelper.ClassifyDocumentResultAccessor() {
                 @Override
-                public void setClassificationCategories(
-                    ClassifyDocumentResult classifyDocumentResult,
-                    IterableStream<ClassificationCategory> classificationCategories) {
-                    classifyDocumentResult.setClassificationCategories(classificationCategories);
+                public void setClassifications(ClassifyDocumentResult classifyDocumentResult,
+                    IterableStream<ClassificationCategory> classifications) {
+                    classifyDocumentResult.setClassifications(classifications);
                 }
 
                 @Override
@@ -48,11 +47,11 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
     /**
      * The document classification result which contains the classification category and the confidence score on it.
      *
-     * @return The {@link ClassificationCategory}.
+     * @return {@link IterableStream} of {@link ClassificationCategory}.
      */
-    public IterableStream<ClassificationCategory> getClassificationCategories() {
+    public IterableStream<ClassificationCategory> getClassifications() {
         throwExceptionIfError();
-        return classificationCategories;
+        return classifications;
     }
 
     /**
@@ -64,8 +63,8 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
         return this.warnings;
     }
 
-    private void setClassificationCategories(IterableStream<ClassificationCategory> classificationCategories) {
-        this.classificationCategories = classificationCategories;
+    private void setClassifications(IterableStream<ClassificationCategory> classifications) {
+        this.classifications = classifications;
     }
 
     private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {

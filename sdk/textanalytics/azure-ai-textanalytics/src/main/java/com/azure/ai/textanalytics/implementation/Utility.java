@@ -1274,7 +1274,7 @@ public final class Utility {
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
         // Single category classification will only have one category.
-        ClassifyDocumentResultPropertiesHelper.setClassificationCategories(classifyDocumentResult,
+        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult,
             IterableStream.of(toDocumentClassifications(classificationResult)));
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
             new IterableStream<>(warnings));
@@ -1282,15 +1282,15 @@ public final class Utility {
     }
 
     private static List<ClassificationCategory> toDocumentClassifications(List<ClassificationResult> classificationResults) {
-        List<ClassificationCategory> classificationCategories = new ArrayList<>();
+        List<ClassificationCategory> classifications = new ArrayList<>();
         for (ClassificationResult classificationResult : classificationResults) {
-            final ClassificationCategory classificationCategory = new ClassificationCategory();
-            ClassificationCategoryPropertiesHelper.setCategory(classificationCategory, classificationResult.getCategory());
-            ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory,
+            final ClassificationCategory classification = new ClassificationCategory();
+            ClassificationCategoryPropertiesHelper.setCategory(classification, classificationResult.getCategory());
+            ClassificationCategoryPropertiesHelper.setConfidenceScore(classification,
                 classificationResult.getConfidenceScore());
-            classificationCategories.add(classificationCategory);
+            classifications.add(classification);
         }
-        return classificationCategories;
+        return classifications;
     }
 
     /*

@@ -1816,9 +1816,9 @@ public final class TextAnalyticsClient {
      *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
      *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
      *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classificationCategory : documentResult.getClassificationCategories&#40;&#41;&#41; &#123;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classificationCategory.getCategory&#40;&#41;, classificationCategory.getConfidenceScore&#40;&#41;&#41;;
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
@@ -1883,9 +1883,9 @@ public final class TextAnalyticsClient {
      *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
      *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
      *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classificationCategory : documentResult.getClassificationCategories&#40;&#41;&#41; &#123;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classificationCategory.getCategory&#40;&#41;, classificationCategory.getConfidenceScore&#40;&#41;&#41;;
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
@@ -1943,9 +1943,9 @@ public final class TextAnalyticsClient {
      *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
      *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
      *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classificationCategory : documentResult.getClassificationCategories&#40;&#41;&#41; &#123;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classificationCategory.getCategory&#40;&#41;, classificationCategory.getConfidenceScore&#40;&#41;&#41;;
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
@@ -2006,9 +2006,9 @@ public final class TextAnalyticsClient {
      *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
      *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
      *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *         for &#40;ClassificationCategory classificationCategory : documentResult.getClassificationCategories&#40;&#41;&#41; &#123;
+     *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *                 classificationCategory.getCategory&#40;&#41;, classificationCategory.getConfidenceScore&#40;&#41;&#41;;
+     *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
      *         &#125;
      *     &#125;
      * &#125;&#41;;
