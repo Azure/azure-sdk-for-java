@@ -43,10 +43,10 @@ abstract class LinkHandler extends Handler {
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
      * null.
      */
-    LinkHandler(String connectionId, String hostname, String entityPath, Meter meter) {
+    LinkHandler(String connectionId, String hostname, String entityPath, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname);
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.metricsProvider = AmqpMetricsProvider.getOrCreate(meter, hostname, entityPath);
+        this.metricsProvider = metricsProvider;
     }
 
     @Override
@@ -79,9 +79,6 @@ abstract class LinkHandler extends Handler {
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkFinal");
-
-        final Link link = event != null ? event.getLink() : null;
-        metricsProvider.recordLinkError(link != null ? link.getCondition() : null);
 
         // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
         // releasing this link. So we want to complete the endpoint states.
@@ -120,6 +117,7 @@ abstract class LinkHandler extends Handler {
         }
 
         if (condition != null && condition.getCondition() != null) {
+            metricsProvider.recordLinkError(condition);
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
                 condition.getDescription(), getErrorContext(link));
 

@@ -19,10 +19,43 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Helper class responsible for efficient reporting metrics in AMQP core. It's efficient and safe to use when there is no
+ * meter configured by client SDK when metrics are disabled.
+ */
 public class AmqpMetricsProvider {
+    class AmqpMetricsProviderBuilder {
+        private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", "xxx", new MetricsOptions());
+        private final ConcurrentHashMap<String, AmqpMetricsProvider> metricsCache = new ConcurrentHashMap<>();
+        private final Meter meter;
+        private String namespace;
+        private String entityPath;
+        public AmqpMetricsProviderBuilder(Meter meter) {
+            this.meter = meter == null ? DEFAULT_METER : meter;
+        }
+
+        public AmqpMetricsProviderBuilder namespace(String namespace) {
+            this.namespace = namespace;
+            return this;
+        }
+
+        public AmqpMetricsProviderBuilder entityPath(String entityPath) {
+            this.entityPath = entityPath;
+            return tis;
+        }
+
+        public AmqpMetricsProvider build() {
+            if (!meter.isEnabled()) {
+                return NOOP;
+            }
+
+            
+        }
+
+    }
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider(null, null, null, null, false);
     private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", "xxx", new MetricsOptions());
-    private final static ConcurrentHashMap<String, AmqpMetricsProvider> METRICS_CACHE = new ConcurrentHashMap<>();
+    private final static ConcurrentHashMap<MeterId, AmqpMetricsProvider> METRICS_CACHE = new ConcurrentHashMap<>();
     private final boolean isEnabled;
     private final DoubleHistogram sendDuration;
     private final LongCounter activeConnections;
@@ -73,6 +106,11 @@ public class AmqpMetricsProvider {
         }
     }
 
+    /**
+     * Gets metric provider for namespace and entity path. If there is no cached provider, creates a new one.
+     * It's still preferred to keep AmqpMetricsProvider instances in instance fields and avoid unnecessary calls
+     * to this method.
+     */
     public static AmqpMetricsProvider getOrCreate(Meter meter, String namespace, String entityPath) {
         if (meter == null) {
             meter = DEFAULT_METER;
@@ -84,12 +122,9 @@ public class AmqpMetricsProvider {
 
         Meter finalMeter = meter;
 
-        String meterId = namespace;
-        if (entityPath != null) {
-            meterId += "/" + entityPath;
-        }
+        MeterId mId = new MeterId(meter, namespace, entityPath);
 
-        return METRICS_CACHE.computeIfAbsent(meterId, ignored -> {
+        return METRICS_CACHE.computeIfAbsent(mId, ignored -> {
             String name = null;
             String path = null;
             if (entityPath != null) {
@@ -107,10 +142,55 @@ public class AmqpMetricsProvider {
         });
     }
 
+    private static class MeterId {
+        private final Meter meter;
+        private final String namespace;
+        private final String entityPath;
+
+        private MeterId(Meter meter, String namespace, String entityPath) {
+            this.meter = meter;
+            this.namespace = namespace;
+            this.entityPath = entityPath;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 17;
+            hash = hash * 23 + meter.hashCode();
+            hash = hash * 23 + namespace.hashCode();
+            if (entityPath != null) {
+                hash = hash * 23 + entityPath.hashCode();
+            }
+
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object  other) {
+            if (other == this) {
+                return true;
+            }
+
+            if (!(other instanceof MeterId)) {
+                return false;
+            }
+
+            MeterId om = (MeterId)other;
+
+            return this.meter == om.meter && this.namespace.equals(om.namespace) && (Objects.equals(entityPath, om.entityPath));
+        }
+    }
+
+    /**
+     * Checks if send duration metric is enabled - use it to avoid any overhead of measuring current time.
+     */
     public boolean isSendDurationEnabled() {
         return isEnabled && sendDuration.isEnabled();
     }
 
+    /**
+     * Records duration of AMQP send call.
+     */
     public void recordSendDelivery(long start, DeliveryState.DeliveryStateType deliveryState) {
         if (isEnabled && sendDuration.isEnabled()) {
             String deliveryStateStr = deliveryState != null ? deliveryState.toString() : "other";
@@ -119,12 +199,18 @@ public class AmqpMetricsProvider {
         }
     }
 
+    /**
+     * Records connection init.
+     */
     public void recordConnectionInit() {
         if (isEnabled && activeConnections.isEnabled()) {
             activeConnections.add(1, commonAttributes, Context.NONE);
         }
     }
 
+    /**
+     * Records connection close.
+     */
     public void recordConnectionClosed(ErrorCondition condition) {
         if (isEnabled) {
             if (activeConnections.isEnabled()) {
@@ -138,37 +224,49 @@ public class AmqpMetricsProvider {
         }
     }
 
+    /**
+     * Records the message was received.
+     */
     public void recordReceivedMessage() {
         if (isEnabled && receivedMessages.isEnabled()) {
             receivedMessages.add(1, commonAttributes, Context.NONE);
         }
     }
 
+    /**
+     * Records that credits were added to link
+     */
     public void recordAddCredits(int credits) {
         if (isEnabled && addCredits.isEnabled()) {
             addCredits.add(credits, commonAttributes, Context.NONE);
         }
     }
 
+    /**
+     * Records link error. Noop if condition is null (no error).
+     */
     public void recordLinkError(ErrorCondition condition) {
-        if (isEnabled && linkErrors.isEnabled() && condition != null) {
+        if (isEnabled && linkErrors.isEnabled() && condition != null && condition.getCondition() != null) {
             linkErrors.add(1,
-                amqpErrorAttributeCache.getOrCreate(condition.toString()),
+                amqpErrorAttributeCache.getOrCreate(condition.getCondition().toString()),
                 Context.NONE);
         }
     }
 
+    /**
+     * Records session error. Noop if condition is null (no error).
+     */
     public void recordSessionError(ErrorCondition condition) {
-        if (isEnabled && sessionErrors.isEnabled() && condition != null) {
+        if (isEnabled && sessionErrors.isEnabled() && condition != null && condition.getCondition() != null) {
             sessionErrors.add(1,
-                amqpErrorAttributeCache.getOrCreate(condition.toString()),
+                amqpErrorAttributeCache.getOrCreate(condition.getCondition().toString()),
                 Context.NONE);
         }
     }
 
     private static class AttributeCache {
         private final Map<String, TelemetryAttributes> attr;
-        private final Map<String, Object>  commonAttributesMap;
+        private final Map<String, Object> commonAttributesMap;
         private final String dimensionName;
         private final Meter meter;
 

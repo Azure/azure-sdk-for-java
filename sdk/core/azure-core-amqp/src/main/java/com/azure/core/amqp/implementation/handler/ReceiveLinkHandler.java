@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -51,8 +52,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, Meter Meter) {
-        super(connectionId, hostname, entityPath, Meter);
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
