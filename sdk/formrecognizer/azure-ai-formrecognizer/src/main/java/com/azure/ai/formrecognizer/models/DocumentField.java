@@ -62,7 +62,7 @@ public final class DocumentField {
     /*
      * 3-letter country code value (ISO 3166-1 alpha-3).
      */
-    private String valueCountryRegion;
+    private String valueCountry;
 
     /*
      * Array of field values.
@@ -127,7 +127,7 @@ public final class DocumentField {
      *
      * @return the valueString value.
      */
-    public String getValueString() {
+    public String getValueAsString() {
         return this.valueString;
     }
 
@@ -145,7 +145,7 @@ public final class DocumentField {
      *
      * @return the valueDate value.
      */
-    public LocalDate getValueDate() {
+    public LocalDate getValueAsDate() {
         return this.valueDate;
     }
 
@@ -163,7 +163,7 @@ public final class DocumentField {
      *
      * @return the valueTime value.
      */
-    public LocalTime getValueTime() {
+    public LocalTime getValueAsTime() {
         return this.valueTime;
     }
 
@@ -181,7 +181,7 @@ public final class DocumentField {
      *
      * @return the valuePhoneNumber value.
      */
-    public String getValuePhoneNumber() {
+    public String getValueAsPhoneNumber() {
         return this.valuePhoneNumber;
     }
 
@@ -199,7 +199,7 @@ public final class DocumentField {
      *
      * @return the valueFloat value.
      */
-    public Float getValueFloat() {
+    public Float getValueAsFloat() {
         return this.valueFloat;
     }
 
@@ -217,7 +217,7 @@ public final class DocumentField {
      *
      * @return the valueInteger value.
      */
-    public Long getValueInteger() {
+    public Long getValueAsInteger() {
         return this.valueInteger;
     }
 
@@ -235,7 +235,7 @@ public final class DocumentField {
      *
      * @return the valueSelectionMark value.
      */
-    public SelectionMarkState getValueSelectionMark() {
+    public SelectionMarkState getValueAsSelectionMark() {
         return this.valueSelectionMark;
     }
 
@@ -253,7 +253,7 @@ public final class DocumentField {
      *
      * @return the valueSignature value.
      */
-    public DocumentSignatureType getValueSignature() {
+    public DocumentSignatureType getValueAsSignature() {
         return this.valueSignature;
     }
 
@@ -271,17 +271,17 @@ public final class DocumentField {
      *
      * @return the valueCountryRegion value.
      */
-    public String getValueCountryRegion() {
-        return this.valueCountryRegion;
+    public String getValueAsCountry() {
+        return this.valueCountry;
     }
 
     /**
      * Set the valueCountryRegion property: 3-letter country code value (ISO 3166-1 alpha-3).
      *
-     * @param valueCountryRegion the valueCountryRegion value to set.
+     * @param valueCountry the valueCountryRegion value to set.
      */
-    void setValueCountryRegion(String valueCountryRegion) {
-        this.valueCountryRegion = valueCountryRegion;
+    void setValueCountry(String valueCountry) {
+        this.valueCountry = valueCountry;
     }
 
     /**
@@ -295,7 +295,7 @@ public final class DocumentField {
      *
      * @return the valueList value.
      */
-    public List<DocumentField> getValueList() {
+    public List<DocumentField> getValueAsList() {
         return this.valueList;
     }
 
@@ -314,7 +314,7 @@ public final class DocumentField {
      *
      * @return the valueMap value.
      */
-    public Map<String, DocumentField> getValueMap() {
+    public Map<String, DocumentField> getValueAsMap() {
         return this.valueMap;
     }
 
@@ -333,7 +333,7 @@ public final class DocumentField {
      *
      * @return the valueCurrency value.
      */
-    public CurrencyValue getValueCurrency() {
+    public CurrencyValue getValueAsCurrency() {
         return valueCurrency;
     }
 
@@ -351,7 +351,7 @@ public final class DocumentField {
      *
      * @return the valueAddress value.
      */
-    public AddressValue getValueAddress() {
+    public AddressValue getValueAsAddress() {
         return this.valueAddress;
     }
 
@@ -487,7 +487,7 @@ public final class DocumentField {
 
             @Override
             public void setValueCountryRegion(DocumentField documentField, String valueCountryRegion) {
-                documentField.setValueCountryRegion(valueCountryRegion);
+                documentField.setValueCountry(valueCountryRegion);
             }
 
             @Override

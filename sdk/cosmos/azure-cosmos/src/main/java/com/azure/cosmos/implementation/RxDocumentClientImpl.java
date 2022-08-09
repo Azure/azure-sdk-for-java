@@ -1584,10 +1584,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
 
-            if (this.getStoreProxy(request) == this.gatewayProxy) {
-                this.gatewayProxy.prepareRequestForAuth(request, resourceName);
-            }
-
             String authorization = this.getUserAuthorizationToken(
                 resourceName, request.getResourceType(), httpMethod, request.getHeaders(),
                     AuthorizationTokenType.PrimaryMasterKey, request.properties);
@@ -4078,7 +4074,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
-        if (request.UseGatewayMode) {
+        if (request.useGatewayMode) {
             return this.gatewayProxy;
         }
 

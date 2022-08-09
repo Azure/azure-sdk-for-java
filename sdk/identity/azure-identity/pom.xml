@@ -33,12 +33,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.31.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+      <version>1.31.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
@@ -78,6 +78,24 @@
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
       <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+      <version>6.2.0.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.redisson</groupId>
+      <artifactId>redisson</artifactId>
+      <version>3.17.0</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.12.9</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -137,7 +155,9 @@
             <configuration>
               <sources>
                 <source>src/samples/java</source>
-                <source>src/samples/Azure Cache For Redis/Jedis/java</source>
+                <source>src/samples/Azure-Cache-For-Redis/Jedis/java</source>
+                <source>src/samples/Azure-Cache-For-Redis/Lettuce/java</source>
+                <source>src/samples/Azure-Cache-For-Redis/Redisson/java</source>
               </sources>
             </configuration>
           </execution>

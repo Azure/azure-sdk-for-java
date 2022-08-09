@@ -273,8 +273,8 @@ class NettyAsyncHttpClient implements HttpClient {
             if (eagerlyReadResponse) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return FluxUtil.collectBytesFromNetworkResponse(
-                    reactorNettyConnection.inbound().receive().asByteBuffer(),
-                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                        reactorNettyConnection.inbound().receive().asByteBuffer(),
+                        new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
             } else {

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.ReportsClient;
 import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
 import com.azure.resourcemanager.automanage.models.ReportList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReportsClient. */
 public final class ReportsClientImpl implements ReportsClient {
-    private final ClientLogger logger = new ClientLogger(ReportsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReportsService service;
 
@@ -104,7 +101,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run.
+     * @return information about a report associated with a configuration profile assignment run along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReportInner>> getWithResponseAsync(
@@ -166,7 +164,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run.
+     * @return information about a report associated with a configuration profile assignment run along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReportInner>> getWithResponseAsync(
@@ -228,20 +227,14 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run.
+     * @return information about a report associated with a configuration profile assignment run on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReportInner> getAsync(
         String resourceGroupName, String configurationProfileAssignmentName, String reportName, String vmName) {
         return getWithResponseAsync(resourceGroupName, configurationProfileAssignmentName, reportName, vmName)
-            .flatMap(
-                (Response<ReportInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -273,7 +266,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run.
+     * @return information about a report associated with a configuration profile assignment run along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReportInner> getWithResponse(
@@ -295,7 +289,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReportInner>> listByConfigurationProfileAssignmentsSinglePageAsync(
@@ -356,7 +351,8 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReportInner>> listByConfigurationProfileAssignmentsSinglePageAsync(
@@ -413,7 +409,7 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReportInner> listByConfigurationProfileAssignmentsAsync(
@@ -434,7 +430,7 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReportInner> listByConfigurationProfileAssignmentsAsync(
@@ -454,7 +450,7 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReportInner> listByConfigurationProfileAssignments(
@@ -473,7 +469,7 @@ public final class ReportsClientImpl implements ReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list report operation.
+     * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReportInner> listByConfigurationProfileAssignments(

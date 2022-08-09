@@ -44,16 +44,14 @@ public final class VirtualMachineScaleSetProperties {
     private String provisioningState;
 
     /*
-     * Specifies whether the Virtual Machine Scale Set should be
-     * overprovisioned.
+     * Specifies whether the Virtual Machine Scale Set should be overprovisioned.
      */
     @JsonProperty(value = "overprovision")
     private Boolean overprovision;
 
     /*
-     * When Overprovision is enabled, extensions are launched only on the
-     * requested number of VMs which are finally kept. This property will hence
-     * ensure that the extensions do not run on the extra overprovisioned VMs.
+     * When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally
+     * kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
      */
     @JsonProperty(value = "doNotRunExtensionsOnOverprovisionedVMs")
     private Boolean doNotRunExtensionsOnOverprovisionedVMs;
@@ -65,20 +63,17 @@ public final class VirtualMachineScaleSetProperties {
     private String uniqueId;
 
     /*
-     * When true this limits the scale set to a single placement group, of max
-     * size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may
-     * be modified to false. However, if singlePlacementGroup is false, it may
-     * not be modified to true.
+     * When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If
+     * singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not
+     * be modified to true.
      */
     @JsonProperty(value = "singlePlacementGroup")
     private Boolean singlePlacementGroup;
 
     /*
-     * Whether to force strictly even Virtual Machine distribution cross
-     * x-zones in case there is zone outage. zoneBalance property can only be
-     * set if the zones property of the scale set contains more than one zone.
-     * If there are no zones or only one zone specified, then zoneBalance
-     * property should not be set.
+     * Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
+     * zoneBalance property can only be set if the zones property of the scale set contains more than one zone. If
+     * there are no zones or only one zone specified, then zoneBalance property should not be set.
      */
     @JsonProperty(value = "zoneBalance")
     private Boolean zoneBalance;
@@ -90,32 +85,29 @@ public final class VirtualMachineScaleSetProperties {
     private Integer platformFaultDomainCount;
 
     /*
-     * Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. <br><br>Minimum
-     * api-version: 2018-04-01.
+     * Specifies information about the proximity placement group that the virtual machine scale set should be assigned
+     * to. <br><br>Minimum api-version: 2018-04-01.
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
 
     /*
-     * Specifies information about the dedicated host group that the virtual
-     * machine scale set resides in. <br><br>Minimum api-version: 2020-06-01.
+     * Specifies information about the dedicated host group that the virtual machine scale set resides in.
+     * <br><br>Minimum api-version: 2020-06-01.
      */
     @JsonProperty(value = "hostGroup")
     private SubResource hostGroup;
 
     /*
-     * Specifies additional capabilities enabled or disabled on the Virtual
-     * Machines in the Virtual Machine Scale Set. For instance: whether the
-     * Virtual Machines have the capability to support attaching managed data
-     * disks with UltraSSD_LRS storage account type.
+     * Specifies additional capabilities enabled or disabled on the Virtual Machines in the Virtual Machine Scale Set.
+     * For instance: whether the Virtual Machines have the capability to support attaching managed data disks with
+     * UltraSSD_LRS storage account type.
      */
     @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
 
     /*
-     * Specifies the policies applied when scaling in Virtual Machines in the
-     * Virtual Machine Scale Set.
+     * Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
      */
     @JsonProperty(value = "scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
@@ -133,8 +125,8 @@ public final class VirtualMachineScaleSetProperties {
     private SpotRestorePolicy spotRestorePolicy;
 
     /*
-     * Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.<br><br>Minimum api-version: 2022-03-01.
+     * Specifies the time at which the Virtual Machine Scale Set resource was created.<br><br>Minimum api-version:
+     * 2022-03-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
