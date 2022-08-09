@@ -1611,14 +1611,7 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<VirtualMachineScaleSetInner> getByResourceGroupAsync(
         String resourceGroupName, String vmScaleSetName, ExpandTypesForGetVMScaleSets expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmScaleSetName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1635,14 +1628,7 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<VirtualMachineScaleSetInner> getByResourceGroupAsync(String resourceGroupName, String vmScaleSetName) {
         final ExpandTypesForGetVMScaleSets expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, vmScaleSetName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2468,14 +2454,7 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<VirtualMachineScaleSetInstanceViewInner> getInstanceViewAsync(
         String resourceGroupName, String vmScaleSetName) {
         return getInstanceViewWithResponseAsync(resourceGroupName, vmScaleSetName)
-            .flatMap(
-                (Response<VirtualMachineScaleSetInstanceViewInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5918,14 +5897,7 @@ public final class VirtualMachineScaleSetsClientImpl
         String placementGroupId) {
         return forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponseAsync(
                 resourceGroupName, vmScaleSetName, platformUpdateDomain, zone, placementGroupId)
-            .flatMap(
-                (Response<RecoveryWalkResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5946,14 +5918,7 @@ public final class VirtualMachineScaleSetsClientImpl
         final String placementGroupId = null;
         return forceRecoveryServiceFabricPlatformUpdateDomainWalkWithResponseAsync(
                 resourceGroupName, vmScaleSetName, platformUpdateDomain, zone, placementGroupId)
-            .flatMap(
-                (Response<RecoveryWalkResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6132,7 +6097,7 @@ public final class VirtualMachineScaleSetsClientImpl
     public Mono<Void> convertToSinglePlacementGroupAsync(
         String resourceGroupName, String vmScaleSetName, VMScaleSetConvertToSinglePlacementGroupInput parameters) {
         return convertToSinglePlacementGroupWithResponseAsync(resourceGroupName, vmScaleSetName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6439,7 +6404,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6475,7 +6441,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6513,7 +6480,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6549,7 +6517,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6586,7 +6555,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6622,7 +6592,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6660,7 +6631,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6696,7 +6668,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -6734,7 +6707,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6772,7 +6746,8 @@ public final class VirtualMachineScaleSetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

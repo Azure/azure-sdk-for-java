@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    azure:
+      storage:
+        queue:
+          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+          queue-name: ${AZURE_STORAGE_QUEUE_NAME}

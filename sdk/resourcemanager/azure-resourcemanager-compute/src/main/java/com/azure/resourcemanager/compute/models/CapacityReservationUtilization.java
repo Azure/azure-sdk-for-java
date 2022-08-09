@@ -12,8 +12,7 @@ import java.util.List;
 @Immutable
 public final class CapacityReservationUtilization {
     /*
-     * A list of all virtual machines resource ids allocated against the
-     * capacity reservation.
+     * A list of all virtual machines resource ids allocated against the capacity reservation.
      */
     @JsonProperty(value = "virtualMachinesAllocated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAllocated;
