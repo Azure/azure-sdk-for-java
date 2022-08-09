@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed issue where FAIL_OVERFLOW when pushing events in EventHubBufferedProducerClient would result in a tight loop, so no more events would be published. ([30258](https://github.com/Azure/azure-sdk-for-java/issues/30258))
+
 ### Other Changes
 
 ## 5.13.0-beta.1 (2022-08-01)
