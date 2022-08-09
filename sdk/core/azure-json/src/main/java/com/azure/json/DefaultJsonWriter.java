@@ -9,6 +9,7 @@ import com.azure.json.implementation.jackson.core.JsonGenerator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.util.Objects;
 
 /**
  * Default {@link JsonWriter} implementation.
@@ -112,6 +113,8 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeFieldName(String fieldName) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
         context.validateToken(JsonToken.FIELD_NAME);
 
         try {
@@ -242,6 +245,8 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeRawValue(String value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
         context.validateToken(JsonToken.STRING);
 
         try {
@@ -251,128 +256,6 @@ public final class DefaultJsonWriter extends JsonWriter {
         }
 
         context = context.updateContext(JsonToken.STRING);
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeBinaryField(String fieldName, byte[] value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            if (value == null) {
-                generator.writeNullField(fieldName);
-            } else {
-                generator.writeBinaryField(fieldName, value);
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeBooleanField(String fieldName, boolean value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeBooleanField(fieldName, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeDoubleField(String fieldName, double value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeNumberField(fieldName, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeFloatField(String fieldName, float value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeNumberField(fieldName, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeIntField(String fieldName, int value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeNumberField(fieldName, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeLongField(String fieldName, long value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeNumberField(fieldName, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeNullField(String fieldName) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeNullField(fieldName);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeStringField(String fieldName, String value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeStringField(fieldName, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeRawField(String fieldName, String value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeFieldName(fieldName);
-            generator.writeRawValue(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
         return this;
     }
 
