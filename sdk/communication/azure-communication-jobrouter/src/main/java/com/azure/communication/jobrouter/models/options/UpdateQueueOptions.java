@@ -43,13 +43,12 @@ public final class UpdateQueueOptions {
     private String exceptionPolicyId;
 
     /**
-     * Sets queueId.
+     * Constructor for UpdateQueueOptions.
      * @param queueId The Id of this queue
      * @return this
      */
-    public UpdateQueueOptions setQueueId(String queueId) {
+    public UpdateQueueOptions(String queueId) {
         this.queueId = queueId;
-        return this;
     }
 
     /**
