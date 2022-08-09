@@ -7,6 +7,16 @@ spring:
           checkpoint-store:
             account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
             endpoint: ${AZURE_STORAGE_BLOB_ENDPOINT}
+    stream:
+      function:
+        definition: consume;supply
+      bindings:
+        consume-in-0:
+          group: $Default
+      default:
+        producer:
+          errorChannelEnabled: true
+      default-binder: eventhubs
 ---
 spring:
   cloud:
@@ -14,23 +24,16 @@ spring:
       eventhubs:
         processor:
           checkpoint-store:
-            container-name: ${AZURE_EVENTHUB_BINDER_NAME_FOR_BATCH}
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_BATCH}
     stream:
-      function:
-        definition: consume;supply
       bindings:
         consume-in-0:
           content-type: text/plain
-          group: $Default
           consumer:
             batch-mode: true
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_BATCH}
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_BATCH}
         supply-out-0:
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_BATCH}
-      default:
-        producer:
-          errorChannelEnabled: true
-      default-binder: eventhubs
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_BATCH}
       eventhubs:
         bindings:
           consume-in-0:
@@ -50,20 +53,13 @@ spring:
       eventhubs:
         processor:
           checkpoint-store:
-            container-name: ${AZURE_EVENTHUB_BINDER_NAME_FOR_MESSAGE}
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
     stream:
-      function:
-        definition: consume;supply
       bindings:
         consume-in-0:
-          group: $Default
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_MESSAGE}
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
         supply-out-0:
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_MESSAGE}
-      default:
-        producer:
-          errorChannelEnabled: true
-      default-binder: eventhubs
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MESSAGE}
       eventhubs:
         default:
           consumer:
@@ -79,20 +75,13 @@ spring:
       eventhubs:
         processor:
           checkpoint-store:
-            container-name: ${AZURE_EVENTHUB_BINDER_NAME_FOR_MANUAL}
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MANUAL}
     stream:
-      function:
-        definition: consume;supply
       bindings:
         consume-in-0:
-          group: $Default
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_MANUAL}
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MANUAL}
         supply-out-0:
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_MANUAL}
-      default:
-        producer:
-          errorChannelEnabled: true
-      default-binder: eventhubs
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_MANUAL}
       eventhubs:
         default:
           consumer:
@@ -108,20 +97,13 @@ spring:
       eventhubs:
         processor:
           checkpoint-store:
-            container-name: ${AZURE_EVENTHUB_BINDER_NAME_FOR_RECORD}
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_RECORD}
     stream:
-      function:
-        definition: consume;supply
       bindings:
         consume-in-0:
-          group: $Default
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_RECORD}
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_RECORD}
         supply-out-0:
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_RECORD}
-      default:
-        producer:
-          errorChannelEnabled: true
-      default-binder: eventhubs
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_RECORD}
       eventhubs:
         bindings:
           consume-in-0:
@@ -138,20 +120,13 @@ spring:
       eventhubs:
         processor:
           checkpoint-store:
-            container-name: ${AZURE_EVENTHUB_BINDER_NAME_FOR_SYNC}
+            container-name: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
     stream:
-      function:
-        definition: consume;supply
       bindings:
         consume-in-0:
-          group: $Default
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_SYNC}
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
         supply-out-0:
-          destination: ${AZURE_EVENTHUB_BINDER_NAME_FOR_SYNC}
-      default:
-        producer:
-          errorChannelEnabled: true
-      default-binder: eventhubs
+          destination: ${AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC}
       eventhubs:
         bindings:
           supply-out-0:
