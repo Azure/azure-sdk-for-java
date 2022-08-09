@@ -4,7 +4,9 @@
 package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -150,6 +152,12 @@ public class KeyTests extends KeyVaultManagementTest {
 
         vault.keys().deleteById(key.id());
         Assertions.assertEquals(0, TestUtilities.getSize(vault.keys().list()));
+
+        Response<Void> response = vault.keyClient().purgeDeletedKeyWithResponse(keyName).block();
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(2, response.getStatusCode() / 100);
+        // To ensure file is purged server-side.
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
         vault.keys().restore(backup);
         PagedIterable<Key> keys = vault.keys().list();
