@@ -35,11 +35,6 @@ public final class AppConfigurationProperties {
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
     /**
-     * Separator for multiple labels.
-     */
-    public static final String LABEL_SEPARATOR = ",";
-
-    /**
      * Context for loading configuration keys.
      */
     @NotEmpty
@@ -173,7 +168,7 @@ public final class AppConfigurationProperties {
     }
 
     /**
-     * Validates at least one store is configured for use and they are valid.
+     * Validates at least one store is configured for use, and they are valid.
      * @throws IllegalArgumentException when duplicate endpoints are configured
      */
     @PostConstruct

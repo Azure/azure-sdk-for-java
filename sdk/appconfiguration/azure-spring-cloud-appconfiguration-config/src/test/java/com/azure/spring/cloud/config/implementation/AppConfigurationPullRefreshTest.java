@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.AfterEach;
@@ -22,21 +21,18 @@ import org.springframework.context.ApplicationEventPublisher;
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.properties.ConfigStore;
 
 import net.jcip.annotations.NotThreadSafe;
 
 @NotThreadSafe
 public class AppConfigurationPullRefreshTest {
-    
+
     @Mock
     private ApplicationEventPublisher publisher;
 
     private AppConfigurationProperties clientProperties;
 
     private AppConfigurationProviderProperties providerProperties;
-
-    private List<ConfigStore> configStores;
 
     private Duration refreshInterval = Duration.ofMinutes(10);
 
@@ -46,7 +42,7 @@ public class AppConfigurationPullRefreshTest {
     private AppConfigurationReplicaClientFactory clientFactoryMock;
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
 
         clientProperties = new AppConfigurationProperties();
@@ -56,7 +52,7 @@ public class AppConfigurationPullRefreshTest {
     }
 
     @AfterEach
-    public void cleanupMethod(TestInfo testInfo) throws Exception {
+    public void cleanupMethod() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 

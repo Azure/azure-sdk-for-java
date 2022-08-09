@@ -53,19 +53,19 @@ public class AppConfigurationBootstrapConfiguration {
         SecretClientBuilderSetup keyVaultClientProvider = null;
         KeyVaultSecretProvider keyVaultSecretProvider = null;
 
-        if (!keyVaultCredentialProviderOptional.isPresent()) {
+        if (keyVaultCredentialProviderOptional.isEmpty()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
             keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get();
         }
 
-        if (!keyVaultClientProviderOptional.isPresent()) {
+        if (keyVaultClientProviderOptional.isEmpty()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
             keyVaultClientProvider = keyVaultClientProviderOptional.get();
         }
 
-        if (!keyVaultSecretProviderOptional.isPresent()) {
+        if (keyVaultSecretProviderOptional.isEmpty()) {
             LOGGER.debug("No KeyVaultSecretProvider found.");
         } else {
             keyVaultSecretProvider = keyVaultSecretProviderOptional.get();
@@ -100,7 +100,6 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
-     * @param env used to check it if it is a dev environment
      * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App
      * Configuration.
      * @param clientProviderOptional Optional client for overriding Client Connections to App Configuration stores.
@@ -120,24 +119,19 @@ public class AppConfigurationBootstrapConfiguration {
         AppConfigurationCredentialProvider tokenCredentialProvider = null;
         ConfigurationClientBuilderSetup clientProvider = null;
 
-        if (!tokenCredentialProviderOptional.isPresent()) {
+        if (tokenCredentialProviderOptional.isEmpty()) {
             LOGGER.debug("No AppConfigurationCredentialProvider found.");
         } else {
             tokenCredentialProvider = tokenCredentialProviderOptional.get();
         }
 
-        if (!clientProviderOptional.isPresent()) {
+        if (clientProviderOptional.isEmpty()) {
             LOGGER.debug("No AppConfigurationClientProvider found.");
         } else {
             clientProvider = clientProviderOptional.get();
         }
 
-        boolean isDev = false;
-        boolean isKeyVaultConfigured = false;
-
-        if (keyVaultCredentialProviderOptional.isPresent() || keyVaultClientProviderOptional.isPresent()) {
-            isKeyVaultConfigured = true;
-        }
+        boolean isKeyVaultConfigured = keyVaultCredentialProviderOptional.isPresent() || keyVaultClientProviderOptional.isPresent();
 
         String clientId = "";
 

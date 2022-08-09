@@ -28,17 +28,17 @@ public class BackoffTimeCalculatorTest {
 
         assertTrue(testDate > 1);
 
-        Long calcuatedTime = BackoffTimeCalculator.calculateBackoff(1, (long) 600, (long) 30);
+        Long calculatedTime = BackoffTimeCalculator.calculateBackoff(1, (long) 600, (long) 30);
 
-        assertTrue(calcuatedTime > testTime);
+        assertTrue(calculatedTime > testTime);
 
-        calcuatedTime = BackoffTimeCalculator.calculateBackoff(2, (long) 600, (long) 30);
+        calculatedTime = BackoffTimeCalculator.calculateBackoff(2, (long) 600, (long) 30);
 
-        assertTrue(calcuatedTime > testTime);
+        assertTrue(calculatedTime > testTime);
 
-        calcuatedTime = BackoffTimeCalculator.calculateBackoff(3, (long) 600, (long) 30);
+        calculatedTime = BackoffTimeCalculator.calculateBackoff(3, (long) 600, (long) 30);
 
-        assertTrue(calcuatedTime > testTime);
+        assertTrue(calculatedTime > testTime);
     }
 
 }

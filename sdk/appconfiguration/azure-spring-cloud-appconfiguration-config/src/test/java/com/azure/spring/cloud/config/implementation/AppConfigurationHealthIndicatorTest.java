@@ -12,13 +12,11 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 
-import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.health.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
@@ -30,11 +28,8 @@ public class AppConfigurationHealthIndicatorTest {
     @Mock
     private AppConfigurationRefresh refreshMock;
 
-    @Mock
-    private ConfigurationClient client;
-
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -51,15 +46,11 @@ public class AppConfigurationHealthIndicatorTest {
     }
 
     @Test
-    public void heathlyConfigurationStore() {
+    public void healthyConfigurationStore() {
         String storeName = "singleHealthyStoreIndicatorTest";
 
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
         Map<String, AppConfigurationStoreHealth> storeHealth = new HashMap<>();
-
-        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
-
-        clients.add(new AppConfigurationReplicaClient(storeName, client));
 
         storeHealth.put(storeName, AppConfigurationStoreHealth.UP);
 
@@ -86,11 +77,11 @@ public class AppConfigurationHealthIndicatorTest {
         properties.setStores(stores);
 
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
-        
-        Map<String,  AppConfigurationStoreHealth> mockHealth = new HashMap<String, AppConfigurationStoreHealth>();
-        
+
+        Map<String,  AppConfigurationStoreHealth> mockHealth = new HashMap<>();
+
         mockHealth.put(storeName, AppConfigurationStoreHealth.NOT_LOADED);
-        
+
         when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(mockHealth);
 
         Health health = indicator.health();
@@ -100,7 +91,7 @@ public class AppConfigurationHealthIndicatorTest {
     }
 
     @Test
-    public void unheathlyConfigurationStore() {
+    public void unhealthyConfigurationStore() {
         String storeName = "singleUnhealthyStoreIndicatorTest";
 
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);

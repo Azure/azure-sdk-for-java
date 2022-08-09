@@ -29,12 +29,12 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
      * unless value is less than the amount of time to the next refresh check.
      * @param endpoint Config Store endpoint to expire refresh interval on.
-     * @param syncToken syncToken to verify latest changes are available on pull
+     * @param syncToken syncToken to verify the latest changes are available on pull
      */
     void expireRefreshInterval(String endpoint, String syncToken);
 
     /**
-     * Gets latest Health connection info for refresh.
+     * Gets the latest Health connection info for refresh.
      *
      * @return Map of String, endpoint, and Health information.
      */

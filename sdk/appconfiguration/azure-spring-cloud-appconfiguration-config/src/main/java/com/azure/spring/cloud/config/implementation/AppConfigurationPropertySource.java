@@ -239,7 +239,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             }
             secretValue = secret.getValue();
         } catch (RuntimeException | IOException e) {
-            LOGGER.error("Error Retreiving Key Vault Entry");
+            LOGGER.error("Error Retrieving Key Vault Entry");
             ReflectionUtils.rethrowRuntimeException(e);
         }
         return secretValue;

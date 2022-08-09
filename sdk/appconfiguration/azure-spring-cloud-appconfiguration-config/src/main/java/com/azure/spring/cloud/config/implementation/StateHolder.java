@@ -127,14 +127,14 @@ final class StateHolder {
     }
 
     /**
-     * @param name the loadState name to set
+     * @param originEndpoint the loadState name to set
      */
     void setLoadState(String originEndpoint, Boolean loaded) {
         loadState.put(originEndpoint, loaded);
     }
 
     /**
-     * @param name the loadState feature flag name to set
+     * @param originEndpoint the loadState feature flag name to set
      */
     void setLoadStateFeatureFlag(String originEndpoint, Boolean loaded) {
         setLoadState(originEndpoint + FEATURE_ENDPOINT, loaded);

@@ -33,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 public class KeyVaultClientTest {
 
-    static TokenCredential tokenCredential;
-
     private KeyVaultClient clientStore;
 
     @Mock
@@ -62,7 +60,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void multipleArguments() throws IOException, URISyntaxException {
+    public void multipleArguments() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         AppConfigManagedIdentityProperties msiProps = new AppConfigManagedIdentityProperties();
         msiProps.setClientId("testclientid");
@@ -88,10 +86,9 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void configProviderAuth() throws IOException, URISyntaxException {
+    public void configProviderAuth() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
-        AppConfigManagedIdentityProperties msiProps = null;
-        azureProperties.setManagedIdentity(msiProps);
+        azureProperties.setManagedIdentity(null);
 
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
@@ -123,7 +120,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void configClientIdAuth() throws IOException, URISyntaxException {
+    public void configClientIdAuth() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         AppConfigManagedIdentityProperties msiProps = new AppConfigManagedIdentityProperties();
         msiProps.setClientId("testClientId");
@@ -153,7 +150,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void systemAssignedCredentials() throws IOException, URISyntaxException {
+    public void systemAssignedCredentials() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         AppConfigManagedIdentityProperties msiProps = new AppConfigManagedIdentityProperties();
         msiProps.setClientId("");

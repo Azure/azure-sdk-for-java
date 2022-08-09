@@ -43,14 +43,9 @@ public class ConnectionManager {
     private final ConfigStore configStore;
 
     /**
-     * Creates a set of connections to a app configuration store.
+     * Creates a set of connections to an app configuration store.
      * @param configStore Connection info for the store
      * @param appProperties Properties for setting up the connection
-     * @param tokenCredentialProvider optional provider for token credentials
-     * @param clientProvider optional provider for modifying the client
-     * @param isDev Is a dev machine
-     * @param isKeyVaultConfigured is key vault configured
-     * @param clientId Client Id for Managed Identity
      */
     ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore,
         AppConfigurationProviderProperties appProperties) {
@@ -81,20 +76,20 @@ public class ConnectionManager {
     String getOriginEndpoint() {
         return originEndpoint;
     }
-    
+
     /**
      * Returns a client.
-     * @return ConfiguraitonClient
+     * @return ConfigurationClient
      */
-    List<AppConfigurationReplicaClient> getAvalibleClients() {
-        return getAvalibleClients(false);
+    List<AppConfigurationReplicaClient> getAvailableClients() {
+        return getAvailableClients(false);
     }
 
     /**
      * Returns a client.
-     * @return ConfiguraitonClient
+     * @return ConfigurationClient
      */
-    List<AppConfigurationReplicaClient> getAvalibleClients(Boolean useCurrent) {
+    List<AppConfigurationReplicaClient> getAvailableClients(Boolean useCurrent) {
         if (clients == null) {
             clients = clientBuilder.buildClients(configStore);
 
@@ -108,11 +103,11 @@ public class ConnectionManager {
             }
         }
 
-        List<AppConfigurationReplicaClient> avalibleClients = new ArrayList<>();
+        List<AppConfigurationReplicaClient> availableClients = new ArrayList<>();
         boolean foundCurrent = !useCurrent;
 
         if (client != null) {
-            avalibleClients.add(client);
+            availableClients.add(client);
         } else if (clients.size() > 0) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getEndpoint().equals(currentReplica)) {
@@ -120,17 +115,17 @@ public class ConnectionManager {
                 }
                 if (foundCurrent && replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
-                    avalibleClients.add(replicaClient);
+                    availableClients.add(replicaClient);
                 }
             }
-            if (avalibleClients.size() == 0) {
+            if (availableClients.size() == 0) {
                 this.health = AppConfigurationStoreHealth.DOWN;
             } else {
                 this.health = AppConfigurationStoreHealth.UP;
             }
         }
 
-        return avalibleClients;
+        return availableClients;
     }
 
     List<String> getAllEndpoints() {
@@ -155,11 +150,11 @@ public class ConnectionManager {
             }
         }
     }
-    
+
     /**
      * Updates the sync token of the client. Only works if no replicas are being used.
-     * 
-     * @param syncToken App Configuraiton sync token
+     *
+     * @param syncToken App Configuration sync token
      */
     void updateSyncToken(String syncToken) {
         client.updateSyncToken(syncToken);

@@ -93,11 +93,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
             String storeName = configStores.get(0).getEndpoint();
             AppConfigurationStoreSelects selectedKey = configStores.get(0).getSelects().get(0);
-            if (source.getName()
-                .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/")) {
-                return true;
-            }
-            return false;
+            return source.getName()
+                .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/");
         });
         if (currentlyLoaded && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
@@ -134,7 +131,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore.getFeatureFlags(), client,
                             clientFactory)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;

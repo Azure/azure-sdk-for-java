@@ -22,9 +22,9 @@ public class AppConfigurationReplicaClientFactory {
 
     /**
      * Sets up Connections to all configuration stores.
-     * 
+     *
      * @param properties client properties
-     * @param appProperties library properties  
+     * @param appProperties library properties
      */
     public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
@@ -43,16 +43,16 @@ public class AppConfigurationReplicaClientFactory {
      * @return ConfigurationClient for accessing App Configuration
      */
     List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
-        return CONNECTIONS.get(originEndpoint).getAvalibleClients();
+        return CONNECTIONS.get(originEndpoint).getAvailableClients();
     }
-    
+
     /**
      * Returns the current used endpoint for a given config store.
      * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @return ConfigurationClient for accessing App Configuration
      */
     List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint, Boolean useCurrent) {
-        return CONNECTIONS.get(originEndpoint).getAvalibleClients(useCurrent);
+        return CONNECTIONS.get(originEndpoint).getAvailableClients(useCurrent);
     }
 
     /**
@@ -78,7 +78,7 @@ public class AppConfigurationReplicaClientFactory {
 
     /**
      * Returns the origin endpoint for a given endpoint. If not found will return the given endpoint;
-     * 
+     *
      * @param endpoint App Configuration Endpoint
      * @return String Endpoint
      */
@@ -95,7 +95,7 @@ public class AppConfigurationReplicaClientFactory {
 
     /**
      * Checks if a given endpoint has any configured replicas.
-     * @param endpoint Endpoint to check for replics
+     * @param endpoint Endpoint to check for replicas
      * @return true if at least one other unique endpoint connects to the same configuration store
      */
     boolean hasReplicas(String endpoint) {
@@ -118,7 +118,7 @@ public class AppConfigurationReplicaClientFactory {
     void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
         CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
     }
-    
+
     void updateSyncToken(String originEndpoint, String syncToken) {
         ConnectionManager manager = CONNECTIONS.get(originEndpoint);
         if (manager.getAllEndpoints().size() > 1) {

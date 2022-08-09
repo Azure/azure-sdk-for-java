@@ -70,7 +70,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     /**
-     * Given a connection string, returns the endpoint inside of it.
+     * Given a connection string, returns the endpoint value inside of it.
      * @param connectionString connection string to app configuration
      * @return endpoint
      * @throws IllegalStateException when connection string isn't valid.
@@ -104,7 +104,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
             throw new IllegalArgumentException(
-                "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Connection method was set for connecting to App Configuration.");
         }
 
         TokenCredential tokenCredential = null;
@@ -120,10 +120,10 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         if ((tokenCredentialIsPresent || clientIdIsPresent)
             && connectionStringIsPresent) {
             throw new IllegalArgumentException(
-                "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Connection method was set for connecting to App Configuration.");
         } else if (tokenCredential != null && clientIdIsPresent) {
             throw new IllegalArgumentException(
-                "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Connection method was set for connecting to App Configuration.");
         }
 
         ConfigurationClientBuilder builder = getBuilder();
@@ -165,7 +165,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 .clientId(clientId);
             builder.credential(micBuilder.build());
         } else {
-            // System Assigned Identity. Needs to be checked last as all of the above should have a Endpoint.
+            // System Assigned Identity. Needs to be checked last as all of the above should have an Endpoint.
             LOGGER.debug("Connecting to " + endpoint
                 + " using Azure System Assigned Identity or Azure User Assigned Identity.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();

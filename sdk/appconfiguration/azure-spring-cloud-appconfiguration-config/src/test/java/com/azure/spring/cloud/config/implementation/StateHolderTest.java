@@ -27,7 +27,7 @@ public class StateHolderTest {
 
     private AppConfigurationProviderProperties providerProperties;
 
-    private List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+    private List<ConfigurationSetting> watchKeys = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -44,7 +44,7 @@ public class StateHolderTest {
 
     /**
      * Because of static code these need to run all at once.
-     * @param testInfo
+     * @param testInfo Test Names are used as static code key names
      */
     @Test
     public void stateHolderTest(TestInfo testInfo) {
