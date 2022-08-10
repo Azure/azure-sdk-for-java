@@ -24,8 +24,6 @@
 - Changed method `beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)` to `beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions)`
 - Removed `prefix` property on model `BuildModelOptions`
 
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 
