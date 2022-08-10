@@ -421,7 +421,7 @@ class BuilderHelperTest extends Specification {
             .buildClient()
 
         then:
-        notThrown(IllegalStateException.class)
+        thrown(IllegalStateException.class)
 
         when:
         new ShareClientBuilder()
@@ -431,7 +431,7 @@ class BuilderHelperTest extends Specification {
             .buildClient()
 
         then:
-        notThrown(IllegalStateException.class)
+        thrown(IllegalStateException.class)
 
         when:
         new ShareFileClientBuilder()
@@ -455,7 +455,7 @@ class BuilderHelperTest extends Specification {
             .buildDirectoryClient()
 
         then:
-        notThrown(IllegalStateException.class)
+        thrown(IllegalStateException.class)
 
         when:
         new ShareFileClientBuilder()
@@ -466,7 +466,7 @@ class BuilderHelperTest extends Specification {
             .buildDirectoryClient()
 
         then:
-        notThrown(IllegalStateException.class)
+        thrown(IllegalStateException.class)
 
         when:
         new ShareServiceClientBuilder()
@@ -486,7 +486,7 @@ class BuilderHelperTest extends Specification {
             .buildClient()
 
         then:
-        notThrown(IllegalStateException.class)
+        thrown(IllegalStateException.class)
 
         when:
         new ShareServiceClientBuilder()
@@ -495,7 +495,7 @@ class BuilderHelperTest extends Specification {
             .buildClient()
 
         then:
-        notThrown(IllegalStateException.class)
+        thrown(IllegalStateException.class)
     }
 
     def "Only one retryOptions can be applied"() {
