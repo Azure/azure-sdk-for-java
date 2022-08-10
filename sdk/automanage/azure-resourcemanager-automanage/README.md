@@ -76,7 +76,7 @@ See [API design][design] for general introduction on design and key concepts on 
 
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/automanage/azure-resourcemanager-automanage/SAMPLE.md)
 
-#### Create Custom Configuration Profile
+### Create Custom Configuration Profile
 
 ```java
 Map<String, String> tags = Map.of("environment", "prod");
@@ -111,26 +111,26 @@ client
         .create();
 ```
 
-#### Delete Custom Configuration Profile by Resource ID
+### Delete Custom Configuration Profile by Resource ID
 
 ```java
 client.configurationProfiles().deleteById("<resource ID>");
 ```
 
-#### Delete Custom Configuration Profile by Resource Group 
+### Delete Custom Configuration Profile by Resource Group 
 
 ```java
 client.configurationProfiles().deleteByResourceGroup("resourceGroup", "configurationProfileName");
 ```
 
-#### Get Custom Configuration Profile by Resource ID
+### Get Custom Configuration Profile by Resource ID
 
 ```java
 ConfigurationProfile profile = client.configurationProfiles().getById("<resource ID>");
 System.out.println(profile.innerModel().properties().configuration());
 ```
 
-#### Create Best Practices Production Profile Assignment 
+### Create Best Practices Production Profile Assignment 
 
 ```java
 String configProfile = "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction";
@@ -144,7 +144,7 @@ client
     .create();
 ```
 
-#### Create Custom Profile Assignment 
+### Create Custom Profile Assignment 
 
 ```java
 String configProfile = "/subscriptions/<subscription ID>/resourceGroups/resourceGroup/providers/Microsoft.Automanage/configurationProfiles/configurationProfileName";
@@ -159,7 +159,7 @@ client
     .create();
 ```
 
-#### Get Profile Assignment 
+### Get Profile Assignment 
 
 ```java 
 ConfigurationProfileAssignment assignment = client.configurationProfileAssignments().get("resourceGroup", "default", "vmName"); // name must be default
