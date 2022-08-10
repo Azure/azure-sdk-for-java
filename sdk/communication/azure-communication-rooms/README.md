@@ -40,7 +40,6 @@ are needed to create a DefaultAzureCredential object.
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
 
 ```java readme-sample-createRoomsClientWithConnectionString
-
 public RoomsClient createRoomsClientWithConnectionString() {
     // You can find your connection string from your resource in the Azure Portal
     String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
