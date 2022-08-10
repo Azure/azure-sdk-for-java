@@ -12,6 +12,7 @@ import com.azure.ai.personalizer.models.PersonalizerRankableAction;
 import com.azure.ai.personalizer.models.PersonalizerSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerSlotReward;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -22,6 +23,7 @@ import java.util.List;
 /**
  * Client to call the Personalizer instance in a synchronous manner.
  */
+@ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = false)
 public final class PersonalizerClient {
     private final PersonalizerAsyncClient client;
 

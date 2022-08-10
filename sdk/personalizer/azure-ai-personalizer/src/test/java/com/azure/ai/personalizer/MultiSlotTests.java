@@ -19,7 +19,7 @@ public class MultiSlotTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public void multiSlotTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerClient client = getPersonalizerClient(httpClient, serviceVersion);
+        PersonalizerClient client = getClient(httpClient, serviceVersion, false);
         multiSlotTestInner(client);
     }
 

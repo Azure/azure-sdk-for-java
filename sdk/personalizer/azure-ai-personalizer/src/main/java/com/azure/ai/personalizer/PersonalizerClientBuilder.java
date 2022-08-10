@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
+ * A builder for creating a new instance of PersonalizerAsyncClient and PersonalizerClient.
  */
-@ServiceClientBuilder(serviceClients = {PersonalizerAsyncClient.class, PersonalizerClient.class})
+@ServiceClientBuilder(serviceClients = {PersonalizerAsyncClient.class, PersonalizerClient.class, PersonalizerAdminClient.class, PersonalizerAdminAsyncClient.class})
 public final class PersonalizerClientBuilder implements
     AzureKeyCredentialTrait<PersonalizerClientBuilder>,
     ConfigurationTrait<PersonalizerClientBuilder>,

@@ -11,16 +11,18 @@ import com.azure.ai.personalizer.models.PersonalizerPolicy;
 import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
 import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-
-import java.util.List;
+import reactor.core.publisher.Mono;
 
 /**
  * Client to perform administrative operations on Personalizer instance in a synchronous manner.
  */
+@ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = false)
 public final class PersonalizerAdminClient {
 
     private final PersonalizerAdminAsyncClient client;
@@ -43,7 +45,8 @@ public final class PersonalizerAdminClient {
      * Submit a new Offline Evaluation job.
      * @param evaluationOptions The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
-     * @return a counterfactual evaluation along with {@link ResponseBase}.
+     * @throws NullPointerException thrown if evaluationOptions is null.
+     * @return a counterfactual evaluation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerEvaluation> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions, Context context) {
@@ -53,6 +56,7 @@ public final class PersonalizerAdminClient {
     /**
      * Get the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation.
+     * @throws NullPointerException thrown if evaluationId is null.
      * @return the Offline Evaluation associated with the Id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -64,6 +68,7 @@ public final class PersonalizerAdminClient {
      * Get the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if evaluationId is null.
      * @return the Offline Evaluation associated with the Id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -73,6 +78,7 @@ public final class PersonalizerAdminClient {
 
     /**
      * Delete the Offline Evaluation associated with the Id.
+     * @throws IllegalArgumentException thrown if evaluationId is null.
      * @param evaluationId Id of the Offline Evaluation to delete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -84,6 +90,7 @@ public final class PersonalizerAdminClient {
      * Delete the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if evaluationId is null.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -92,22 +99,22 @@ public final class PersonalizerAdminClient {
     }
 
     /**
-     * List of all Offline Evaluations.
-     * @return List Evaluations.
+     * List of Offline Evaluations with paging.
+     * @return Evaluations with paging.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<PersonalizerEvaluation> getEvaluations() {
-        return getEvaluationsWithResponse(Context.NONE).getValue();
+    public PagedIterable<PersonalizerEvaluation> getEvaluations() {
+        return getEvaluations(Context.NONE);
     }
 
     /**
-     * List of all Offline Evaluations.
+     * List of Offline Evaluations with paging.
      * @param context The context to associate with this operation.
-     * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
+     * @return Evaluations with paging.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<PersonalizerEvaluation>> getEvaluationsWithResponse(Context context) {
-        return client.getEvaluationsWithResponse(context).block();
+    public PagedIterable<PersonalizerEvaluation> getEvaluations(Context context) {
+        return new PagedIterable<>(client.getEvaluations(context));
     }
 
     /**
@@ -148,24 +155,26 @@ public final class PersonalizerAdminClient {
     }
 
     /**
-     * Update the Personalizer service configuration.
-     * @param configuration The personalizer service configuration.
-     * @return the configuration of the service.
+     * Update the Personalizer service serviceProperties.
+     * @param serviceProperties The personalizer service serviceProperties.
+     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @return the serviceProperties of the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerServiceProperties updateProperties(PersonalizerServiceProperties configuration) {
-        return updatePropertiesWithResponse(configuration, Context.NONE).getValue();
+    public PersonalizerServiceProperties updateProperties(PersonalizerServiceProperties serviceProperties) {
+        return updatePropertiesWithResponse(serviceProperties, Context.NONE).getValue();
     }
 
     /**
-     * Update the Personalizer service configuration.
-     * @param configuration The personalizer service configuration.
+     * Update the Personalizer service serviceProperties.
+     * @param serviceProperties The personalizer service serviceProperties.
      * @param context The context to associate with this operation.
-     * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @return the serviceProperties of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerServiceProperties> updatePropertiesWithResponse(PersonalizerServiceProperties configuration, Context context) {
-        return client.updatePropertiesWithResponse(configuration, context).block();
+    public Response<PersonalizerServiceProperties> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties, Context context) {
+        return client.updatePropertiesWithResponse(serviceProperties, context).block();
     }
 
     /**
@@ -203,6 +212,7 @@ public final class PersonalizerAdminClient {
      * Settings and model and replacing the previous ones.
      * @param policyReferenceOptions Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if the policyReferenceOptions is empty.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -251,6 +261,7 @@ public final class PersonalizerAdminClient {
     /**
      * Update the Learning Settings that the Personalizer service will use to train models.
      * @param policy The learning settings.
+     * @throws IllegalArgumentException thrown if the policy is null.
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -262,6 +273,7 @@ public final class PersonalizerAdminClient {
      * Update the Learning Settings that the Personalizer service will use to train models.
      * @param policy The learning settings.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if the policy is null.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -296,7 +308,7 @@ public final class PersonalizerAdminClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData exportModel(boolean isSigned) {
-        return exportModelWithResponse(isSigned, Context.NONE);
+        return exportModel(isSigned, Context.NONE);
     }
 
     /**
@@ -306,7 +318,7 @@ public final class PersonalizerAdminClient {
      * @return the model file generated by Personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData exportModelWithResponse(boolean isSigned, Context context) {
+    public BinaryData exportModel(boolean isSigned, Context context) {
         return client.exportModelWithResponse(isSigned, context).block();
     }
 

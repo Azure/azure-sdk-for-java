@@ -1,0 +1,82 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c2ebd1d7-d3c7-4eeb-bbba-6b70e55ad9c5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "166",
+      "x-envoy-upstream-service-time" : "37",
+      "apim-request-id" : "bc47c453-9638-451a-b9c2-6ae350243f41",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Wed, 10 Aug 2022 08:57:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"ranking\": [\n    {\n      \"id\": \"Person\",\n      \"probability\": 1.0\n    }\n  ],\n  \"eventId\": \"6e5e6d46d3204be49ebc26a0ef2b6088-asH0k\",\n  \"rewardActionId\": \"Person\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7f00324b-8caf-433a-bd99-35d5f8355019",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "200",
+      "x-envoy-upstream-service-time" : "39",
+      "apim-request-id" : "1b232b3e-d491-49c2-a062-73e9483957f8",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Wed, 10 Aug 2022 08:57:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"ranking\": [\n    {\n      \"id\": \"Person1\",\n      \"probability\": 0.0\n    },\n    {\n      \"id\": \"Person2\",\n      \"probability\": 1.0\n    }\n  ],\n  \"eventId\": \"123456789\",\n  \"rewardActionId\": \"Person2\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9eaebc90-97ce-43d6-8d93-27659333bd2e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "229",
+      "x-envoy-upstream-service-time" : "2",
+      "apim-request-id" : "40dc1b85-21d7-4084-bed1-6da4254b910d",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Wed, 10 Aug 2022 08:57:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"ranking\": [\n    {\n      \"id\": \"Person2\",\n      \"probability\": 0.5\n    },\n    {\n      \"id\": \"Person1\",\n      \"probability\": 0.5\n    }\n  ],\n  \"eventId\": \"0857a01c739340bb9fa511397a4eb0e2-asH0k\",\n  \"rewardActionId\": \"Person2\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

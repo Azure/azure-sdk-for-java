@@ -53,7 +53,7 @@ public class RankTests extends PersonalizerTestBase {
 
     private void rankServerFeatures(PersonalizerClient client)
     {
-        List<Object> contextFeatures = new ArrayList<>() {
+        List<Object> contextFeatures = new ArrayList<Object>() {
             {
                 add(new Object() { Object features = new Object() { String day = "Tuesday"; String time = "Night"; String weather = "rainy"; }; });
                 add(new Object() { Object features = new Object() { String userId = "1234"; boolean payingUser = true; String favoriteGenre = "rainy"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });
@@ -61,7 +61,7 @@ public class RankTests extends PersonalizerTestBase {
         };
 
         List<PersonalizerRankableAction> actions = new ArrayList<>();
-        List<Object> features1 = new ArrayList<>() {
+        List<Object> features1 = new ArrayList<Object>() {
             {
                 add(new Object() {
                     String videoType = "documentary";
@@ -75,7 +75,7 @@ public class RankTests extends PersonalizerTestBase {
         };
         actions.add(new PersonalizerRankableAction().setId("Person1").setFeatures(features1));
 
-        List<Object> features2 = new ArrayList<>() {
+        List<Object> features2 = new ArrayList<Object>() {
             {
                 add(new Object() {
                     String videoType = "documentary";
@@ -89,7 +89,7 @@ public class RankTests extends PersonalizerTestBase {
         };
         actions.add(new PersonalizerRankableAction().setId("Person2").setFeatures(features2));
 
-        List<String> excludeActions = new ArrayList<>() {
+        ArrayList<String> excludeActions = new ArrayList<String>() {
             {
                 add("Person1");
             }
@@ -130,7 +130,7 @@ public class RankTests extends PersonalizerTestBase {
             }
         };
 
-        List<PersonalizerRankableAction> actions = new ArrayList<>();
+        List<PersonalizerRankableAction> actions = new ArrayList<PersonalizerRankableAction>();
         actions.add(new PersonalizerRankableAction().setId("Person1").setFeatures(features1));
         actions.add(new PersonalizerRankableAction().setId("Person2").setFeatures(features2));
         // Action

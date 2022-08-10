@@ -31,13 +31,13 @@ public class ConfigurationTests extends PersonalizerTestBase {
             .setExplorationPercentage(newExplorationPercentage)
             .setLogRetentionDays(Integer.MAX_VALUE);
         PersonalizerAdminClient client = getAdministrationClient(httpClient, serviceVersion, true);
-        updateProperties(client, properties);
-        getProperties(client, properties);
+        testUpdateProperties(client, properties);
+        testGetProperties(client, properties);
         updateAndGetPolicy(client);
         resetPolicy(client);
     }
 
-    private void getProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
+    private void testGetProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
     {
         PersonalizerServiceProperties result = client.getProperties();
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
@@ -47,7 +47,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void updateProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
+    private void testUpdateProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
     {
         PersonalizerServiceProperties result = client.updateProperties(properties);
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
@@ -67,7 +67,8 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(newPolicy.getArguments(), updatedPolicy.getArguments());
         PersonalizerPolicy policy = client.getPolicy();
         // Only checking the first 190 chars because the epsilon has a float rounding addition when applied
-        assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0, 190));
+        int length = Math.min(190, policy.getArguments().length());
+        assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0, length));
     }
 
     private void resetPolicy(PersonalizerAdminClient client)

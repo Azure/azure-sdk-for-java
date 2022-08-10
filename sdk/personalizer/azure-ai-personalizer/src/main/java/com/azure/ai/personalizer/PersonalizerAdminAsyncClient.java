@@ -13,9 +13,12 @@ import com.azure.ai.personalizer.models.PersonalizerPolicy;
 import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
 import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -24,7 +27,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -33,6 +35,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Client to perform administrative operations on Personalizer instance in an asynchronous manner.
  */
+@ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = true)
 public final class PersonalizerAdminAsyncClient {
 
     private final PersonalizerClientV1Preview3Impl service;
@@ -55,7 +58,8 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Submit a new Offline Evaluation job.
      * @param evaluationOptions The Offline Evaluation job definition.
-     * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @throws NullPointerException thrown if evaluationOptions is null.
+     * @return a counterfactual evaluation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerEvaluation>> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions) {
@@ -70,10 +74,11 @@ public final class PersonalizerAdminAsyncClient {
      * Submit a new Offline Evaluation job.
      * @param evaluationOptions The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
-     * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @throws NullPointerException thrown if evaluationOptions is null.
+     * @return a counterfactual evaluation along with {@link Response} on successful completion of {@link Mono}.
      */
     Mono<Response<PersonalizerEvaluation>> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions, Context context) {
-        Objects.requireNonNull(evaluationOptions, "'evaluationContract' is required and can not be null.");
+        Objects.requireNonNull(evaluationOptions, "'evaluationOptions' is required and can not be null.");
         return service.getEvaluations().createWithResponseAsync(evaluationOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -82,6 +87,7 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Get the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation.
+     * @throws IllegalArgumentException thrown if the evaluationId is empty.
      * @return the Offline Evaluation associated with the Id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -92,6 +98,7 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Get the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation.
+     * @throws IllegalArgumentException thrown if the evaluationId is empty.
      * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -108,6 +115,7 @@ public final class PersonalizerAdminAsyncClient {
      * Get the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if the evaluationId is empty.
      * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -123,6 +131,7 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Delete the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation to delete.
+     * @throws IllegalArgumentException thrown if the evaluationId is empty.
      * @return the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -133,6 +142,7 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Delete the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation to delete.
+     * @throws IllegalArgumentException thrown if the evaluationId is empty.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -148,6 +158,7 @@ public final class PersonalizerAdminAsyncClient {
      * Delete the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if the evaluationId is empty.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     Mono<Response<Void>> deleteEvaluationWithResponse(String evaluationId, Context context) {
@@ -160,36 +171,12 @@ public final class PersonalizerAdminAsyncClient {
     }
 
     /**
-     * List of all Offline Evaluations.
-     * @return List Evaluations on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<PersonalizerEvaluation>> getEvaluations() {
-        return getEvaluationsWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * List of all Offline Evaluations.
-     * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<PersonalizerEvaluation>>> getEvaluationsWithResponse() {
-        try {
-            return withContext(context -> getEvaluationsWithResponse(context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * List of all Offline Evaluations.
+     * List Offline Evaluations with paging.
      * @param context The context to associate with this operation.
      * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<List<PersonalizerEvaluation>>> getEvaluationsWithResponse(Context context) {
-        return service.getEvaluations().listWithResponseAsync(context)
-            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+    PagedFlux<PersonalizerEvaluation> getEvaluations(Context context) {
+        return new PagedFlux<>(() -> getEvaluationsSinglePageAsync(context), null);
     }
 
     /**
@@ -219,7 +206,7 @@ public final class PersonalizerAdminAsyncClient {
      * @param context The context to associate with this operation.
      * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<PersonalizerLogProperties>> getLogsPropertiesWithResponse(Context context) {
+    public Mono<Response<PersonalizerLogProperties>> getLogsPropertiesWithResponse(Context context) {
         return service.getLogs().getPropertiesWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -247,6 +234,19 @@ public final class PersonalizerAdminAsyncClient {
         }
     }
 
+    Mono<PagedResponse<PersonalizerEvaluation>> getEvaluationsSinglePageAsync(Context context) {
+        // return the service call wrapped in PagedResponseBase
+        return service.getEvaluations().listWithResponseAsync(context)
+            .map(
+                res -> new PagedResponseBase<>(
+                    res.getRequest(),
+                    res.getStatusCode(),
+                    res.getHeaders(),
+                    res.getValue(),
+                    "",
+                    null));
+    }
+
     /**
      * Delete all logs of Rank and Reward calls stored by Personalizer.
      * @param context The context to associate with this operation.
@@ -259,40 +259,43 @@ public final class PersonalizerAdminAsyncClient {
     }
 
     /**
-     * Update the Personalizer service configuration.
-     * @param configuration The personalizer service configuration.
-     * @return the configuration of the service with the completion of {@link Mono}.
+     * Update the Personalizer service serviceProperties.
+     * @param serviceProperties The personalizer service serviceProperties.
+     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @return the serviceProperties of the service with the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PersonalizerServiceProperties> updateProperties(PersonalizerServiceProperties configuration) {
-        return updatePropertiesWithResponse(configuration).flatMap(FluxUtil::toMono);
+    public Mono<PersonalizerServiceProperties> updateProperties(PersonalizerServiceProperties serviceProperties) {
+        return updatePropertiesWithResponse(serviceProperties).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Update the Personalizer service configuration.
-     * @param configuration The personalizer service configuration.
-     * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
+     * Update the Personalizer service serviceProperties.
+     * @param serviceProperties The personalizer service serviceProperties.
+     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @return the serviceProperties of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties configuration) {
+    public Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties) {
         try {
-            return withContext(context -> updatePropertiesWithResponse(configuration, context));
+            return withContext(context -> updatePropertiesWithResponse(serviceProperties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Update the Personalizer service configuration.
-     * @param configuration The personalizer service configuration.
+     * Update the Personalizer service serviceProperties.
+     * @param serviceProperties The personalizer service serviceProperties.
      * @param context The context to associate with this operation.
-     * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @return the serviceProperties of the service along with {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties configuration, Context context) {
-        if (configuration == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'configuration' is required and cannot be null"));
+    Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties, Context context) {
+        if (serviceProperties == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'serviceProperties' is required and cannot be null"));
         }
-        return service.getServiceConfigurations().updateWithResponseAsync(configuration, context)
+        return service.getServiceConfigurations().updateWithResponseAsync(serviceProperties, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -347,6 +350,7 @@ public final class PersonalizerAdminAsyncClient {
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
      * @param policyReferenceOptions Reference to the policy within the evaluation.
+     * @throws IllegalArgumentException thrown if policyReferenceOptions is empty.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -363,11 +367,12 @@ public final class PersonalizerAdminAsyncClient {
      * Settings and model and replacing the previous ones.
      * @param policyReferenceOptions Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if policyReferenceOptions is empty.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     Mono<Response<Void>> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions, Context context) {
         if (policyReferenceOptions == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'policyReferenceContract' is required and cannot be null"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'policyReferenceOptions' is required and cannot be null"));
         }
         return service.getServiceConfigurations().applyFromEvaluationWithResponseAsync(policyReferenceOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
@@ -445,6 +450,7 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Update the Learning Settings that the Personalizer service will use to train models.
      * @param policy The learning settings.
+     * @throws IllegalArgumentException thrown if policy is null.
      * @return learning settings specifying how to train the model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -455,6 +461,7 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Update the Learning Settings that the Personalizer service will use to train models.
      * @param policy The learning settings.
+     * @throws IllegalArgumentException thrown if policy is null.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -470,6 +477,7 @@ public final class PersonalizerAdminAsyncClient {
      * Update the Learning Settings that the Personalizer service will use to train models.
      * @param policy The learning settings.
      * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if policy is null.
      * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
      */
     Mono<Response<PersonalizerPolicy>> updatePolicyWithResponse(PersonalizerPolicy policy, Context context) {
@@ -520,7 +528,7 @@ public final class PersonalizerAdminAsyncClient {
      * @return the model file generated by Personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> exportModelWithResponse(boolean isSigned) {
+    public Mono<BinaryData> exportModel(boolean isSigned) {
         try {
             return exportModelWithResponse(isSigned, Context.NONE);
         } catch (RuntimeException ex) {

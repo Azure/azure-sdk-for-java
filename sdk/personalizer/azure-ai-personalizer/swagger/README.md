@@ -15,12 +15,12 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>****
-autorest --java --use:D:\sharathm\code\github\autorest.java
+autorest --java --use:C:\work\autorest.java
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: D:\temp\new.Personalizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true

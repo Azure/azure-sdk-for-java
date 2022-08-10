@@ -33,7 +33,7 @@ public abstract class PersonalizerTestBase extends TestBase {
     public PersonalizerClientBuilder getPersonalizerClientBuilder(HttpClient httpClient,
                                                                   PersonalizerServiceVersion serviceVersion,
                                                                   boolean isSingleSlot) {
-        String endpoint = getEndpoint();
+        String endpoint = getEndpoint(isSingleSlot);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
         PersonalizerClientBuilder builder = new PersonalizerClientBuilder()
@@ -78,9 +78,9 @@ public abstract class PersonalizerTestBase extends TestBase {
     }
 
     private void enableMultiSlot(PersonalizerAdminClient adminClient) {
-        PersonalizerServiceProperties configuration = adminClient.getProperties();
-        configuration.setIsAutoOptimizationEnabled(false);
-        adminClient.updateProperties(configuration);
+        PersonalizerServiceProperties serviceProperties = adminClient.getProperties();
+        serviceProperties.setIsAutoOptimizationEnabled(false);
+        adminClient.updateProperties(serviceProperties);
         //sleep 30 seconds to allow settings to propagate
         sleepIfRunningAgainstService(30000);
         adminClient.updatePolicy(new PersonalizerPolicy().setName("multislot").setArguments("--ccb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::"));
@@ -88,8 +88,8 @@ public abstract class PersonalizerTestBase extends TestBase {
         sleepIfRunningAgainstService(30000);
     }
 
-    private String getEndpoint() {
+    private String getEndpoint(boolean isSingleSlot) {
         return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080" : PERSONALIZER_ENDPOINT_SINGLE_SLOT;
+            ? "https://localhost:8080" : (isSingleSlot ? PERSONALIZER_ENDPOINT_SINGLE_SLOT : PERSONALIZER_ENDPOINT_MULTI_SLOT);
     }
 }

@@ -5,6 +5,7 @@ module com.azure.ai.personalizer {
     requires transitive com.azure.core;
 
     exports com.azure.ai.personalizer;
+    exports com.azure.ai.personalizer.models;
 
     opens com.azure.ai.personalizer to com.fasterxml.jackson.databind;
     opens com.azure.ai.personalizer.implementation to com.fasterxml.jackson.databind;

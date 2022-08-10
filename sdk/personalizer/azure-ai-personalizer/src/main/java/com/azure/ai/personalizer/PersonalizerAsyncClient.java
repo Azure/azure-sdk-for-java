@@ -7,11 +7,12 @@ import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl
 import com.azure.ai.personalizer.implementation.util.Transforms;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
-import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankResult;
+import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRewardOptions;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -27,6 +28,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Client to call the Personalizer instance in an asynchronous manner.
  */
+@ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = true)
 public final class PersonalizerAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(PersonalizerAsyncClient.class);
@@ -81,8 +83,7 @@ public final class PersonalizerAsyncClient {
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
+    Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
         if (rankRequest == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
         }
@@ -238,8 +239,7 @@ public final class PersonalizerAsyncClient {
      * @param context The context to associate with this operation.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
+    Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
         if (rankRequest == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
         }
@@ -293,8 +293,7 @@ public final class PersonalizerAsyncClient {
      * @param context The context to associate with this operation.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
+    Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
@@ -348,8 +347,7 @@ public final class PersonalizerAsyncClient {
      * @param context The context to associate with this operation.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> activateMultiSlotWithResponse(String eventId, Context context) {
+    Mono<Response<Void>> activateMultiSlotWithResponse(String eventId, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
