@@ -45,7 +45,6 @@ public final class UpdateQueueOptions {
     /**
      * Constructor for UpdateQueueOptions.
      * @param queueId The Id of this queue
-     * @return this
      */
     public UpdateQueueOptions(String queueId) {
         this.queueId = queueId;
