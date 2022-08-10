@@ -570,6 +570,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "sync copy"() {
         setup:
         vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        sleepIfRecord(30000) // Give time for the policy to take effect
         def destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
         def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
