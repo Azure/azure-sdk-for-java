@@ -8,17 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a Data Network resource. */
+/** Reference to a data network resource. */
 @Fluent
 public final class DataNetworkResourceId {
     /*
-     * Data Network resource ID.
+     * Data network resource ID.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
-     * Get the id property: Data Network resource ID.
+     * Get the id property: Data network resource ID.
      *
      * @return the id value.
      */
@@ -27,7 +27,7 @@ public final class DataNetworkResourceId {
     }
 
     /**
-     * Set the id property: Data Network resource ID.
+     * Set the id property: Data network resource ID.
      *
      * @param id the id value to set.
      * @return the DataNetworkResourceId object itself.

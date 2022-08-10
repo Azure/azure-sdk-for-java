@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionStatus. */
+/** The connection status. */
 public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatus> {
     /** Static value Unknown for ConnectionStatus. */
     public static final ConnectionStatus UNKNOWN = fromString("Unknown");

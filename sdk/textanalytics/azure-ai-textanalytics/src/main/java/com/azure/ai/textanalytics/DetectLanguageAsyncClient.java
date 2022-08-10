@@ -103,7 +103,7 @@ class DetectLanguageAsyncClient {
                        .analyzeTextWithResponseAsync(
                            new AnalyzeTextLanguageDetectionInput()
                                .setParameters(
-                                   (LanguageDetectionTaskParameters) new LanguageDetectionTaskParameters()
+                                   new LanguageDetectionTaskParameters()
                                                                          .setModelVersion(options.getModelVersion())
                                                                          .setLoggingOptOut(
                                                                              options.isServiceLogsDisabled()))

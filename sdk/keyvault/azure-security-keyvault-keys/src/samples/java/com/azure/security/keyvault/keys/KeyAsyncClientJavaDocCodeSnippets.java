@@ -45,7 +45,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClient() {
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .vaultUrl("https://myvault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation
@@ -60,7 +60,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClientWithHttpClient() {
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .vaultUrl("https://myvault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .httpClient(HttpClient.createDefault())
@@ -74,15 +74,15 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
      * @return An instance of {@link KeyAsyncClient}
      */
     public KeyAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline
+        // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
             .build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
-            .vaultUrl("https://myvault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline
+        // END: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline
         return keyAsyncClient;
     }
 

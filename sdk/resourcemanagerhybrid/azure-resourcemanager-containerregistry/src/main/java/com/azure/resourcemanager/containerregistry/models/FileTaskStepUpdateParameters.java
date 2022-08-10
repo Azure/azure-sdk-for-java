@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("FileTask")
 @Fluent
 public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileTaskStepUpdateParameters.class);
-
     /*
      * The task template/definition file path relative to the source context.
      */
@@ -95,6 +91,20 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
      */
     public FileTaskStepUpdateParameters withValues(List<SetValue> values) {
         this.values = values;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskStepUpdateParameters withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
         return this;
     }
 

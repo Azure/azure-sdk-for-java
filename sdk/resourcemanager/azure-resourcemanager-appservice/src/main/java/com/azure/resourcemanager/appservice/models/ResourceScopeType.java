@@ -30,7 +30,11 @@ public final class ResourceScopeType extends ExpandableStringEnum<ResourceScopeT
         return fromString(name, ResourceScopeType.class);
     }
 
-    /** @return known ResourceScopeType values. */
+    /**
+     * Gets known ResourceScopeType values.
+     *
+     * @return known ResourceScopeType values.
+     */
     public static Collection<ResourceScopeType> values() {
         return values(ResourceScopeType.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps GetPrivateEndpointConnectionSlot. */
 public final class WebAppsGetPrivateEndpointConnectionSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetSitePrivateEndpointConnectionSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSitePrivateEndpointConnectionSlot.json
      */
     /**
      * Sample code: Get a private endpoint connection for a site.

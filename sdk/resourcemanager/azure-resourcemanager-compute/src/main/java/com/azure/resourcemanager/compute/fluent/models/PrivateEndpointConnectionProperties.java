@@ -21,8 +21,7 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateEndpoint privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * DiskAccess and Virtual Network.
+     * A collection of information about the state of the connection between DiskAccess and Virtual Network.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;

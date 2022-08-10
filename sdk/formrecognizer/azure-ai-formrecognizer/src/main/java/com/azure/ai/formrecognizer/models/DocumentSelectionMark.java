@@ -14,7 +14,7 @@ public final class DocumentSelectionMark {
     /*
      * State of the selection mark.
      */
-    private SelectionMarkState state;
+    private SelectionMarkState selectionMarkState;
 
     /*
      * Bounding polygon of the selection mark.
@@ -37,18 +37,18 @@ public final class DocumentSelectionMark {
      *
      * @return the state value.
      */
-    public SelectionMarkState getState() {
-        return this.state;
+    public SelectionMarkState getSelectionMarkState() {
+        return this.selectionMarkState;
     }
 
     /**
      * Set the state property: State of the selection mark.
      *
-     * @param state the state value to set.
+     * @param selectionMarkState the state value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    void setState(SelectionMarkState state) {
-        this.state = state;
+    void setSelectionMarkState(SelectionMarkState selectionMarkState) {
+        this.selectionMarkState = selectionMarkState;
     }
 
     /**
@@ -116,7 +116,7 @@ public final class DocumentSelectionMark {
         DocumentSelectionMarkHelper.setAccessor(new DocumentSelectionMarkHelper.DocumentSelectionMarkAccessor() {
             @Override
             public void setState(DocumentSelectionMark documentSelectionMark, SelectionMarkState state) {
-                documentSelectionMark.setState(state);
+                documentSelectionMark.setSelectionMarkState(state);
             }
 
             @Override

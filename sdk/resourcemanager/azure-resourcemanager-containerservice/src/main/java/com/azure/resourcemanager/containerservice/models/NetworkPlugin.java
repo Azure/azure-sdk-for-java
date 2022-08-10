@@ -16,6 +16,9 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
     /** Static value kubenet for NetworkPlugin. */
     public static final NetworkPlugin KUBENET = fromString("kubenet");
 
+    /** Static value none for NetworkPlugin. */
+    public static final NetworkPlugin NONE = fromString("none");
+
     /**
      * Creates or finds a NetworkPlugin from its string representation.
      *

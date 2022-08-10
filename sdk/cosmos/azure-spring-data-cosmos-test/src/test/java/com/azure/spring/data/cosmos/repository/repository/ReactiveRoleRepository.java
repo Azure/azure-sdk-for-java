@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, String> {
 
     Flux<Role> findByDeveloperAndId(boolean isDeveloper, String id);
@@ -18,4 +20,7 @@ public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, S
 
     @Query(value = "select * from c where c.developer = true and c.level = @level")
     Flux<Role> annotatedFindDeveloperByLevel(@Param("level") String level, Sort sort);
+
+    @Query(value = "select * from c where c.level IN (@levels)")
+    Flux<Role> annotatedFindRoleByLevelIn(@Param("levels") List<String> levels, Sort sort);
 }

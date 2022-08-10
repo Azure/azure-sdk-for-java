@@ -36,7 +36,11 @@ public final class SyncGroupState extends ExpandableStringEnum<SyncGroupState> {
         return fromString(name, SyncGroupState.class);
     }
 
-    /** @return known SyncGroupState values. */
+    /**
+     * Gets known SyncGroupState values.
+     *
+     * @return known SyncGroupState values.
+     */
     public static Collection<SyncGroupState> values() {
         return values(SyncGroupState.class);
     }

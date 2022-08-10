@@ -36,7 +36,11 @@ public final class RevisionProvisioningState extends ExpandableStringEnum<Revisi
         return fromString(name, RevisionProvisioningState.class);
     }
 
-    /** @return known RevisionProvisioningState values. */
+    /**
+     * Gets known RevisionProvisioningState values.
+     *
+     * @return known RevisionProvisioningState values.
+     */
     public static Collection<RevisionProvisioningState> values() {
         return values(RevisionProvisioningState.class);
     }

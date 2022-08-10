@@ -71,6 +71,10 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SiteInner innerModel() {
         return this.innerObject;
     }

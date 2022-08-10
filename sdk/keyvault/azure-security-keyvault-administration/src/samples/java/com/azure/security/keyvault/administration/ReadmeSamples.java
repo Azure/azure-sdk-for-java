@@ -28,22 +28,22 @@ import java.time.Duration;
 public class ReadmeSamples {
     private final KeyVaultAccessControlClient keyVaultAccessControlClient =
         new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("<your-access-control-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     private final KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient =
         new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("<your-access-control-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     private final KeyVaultBackupClient keyVaultBackupClient =
         new KeyVaultBackupClientBuilder()
-            .vaultUrl("<your-backup-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     private final KeyVaultBackupAsyncClient keyVaultBackupAsyncClient =
         new KeyVaultBackupClientBuilder()
-            .vaultUrl("<your-backup-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
@@ -53,7 +53,7 @@ public class ReadmeSamples {
     public void createAccessControlClient() {
         // BEGIN: readme-sample-createAccessControlClient
         KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: readme-sample-createAccessControlClient
@@ -273,7 +273,7 @@ public class ReadmeSamples {
     public void createBackupClient() {
         // BEGIN: readme-sample-createBackupClient
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: readme-sample-createBackupClient

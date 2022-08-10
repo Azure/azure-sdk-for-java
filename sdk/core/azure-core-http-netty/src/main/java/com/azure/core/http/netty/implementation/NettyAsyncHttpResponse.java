@@ -65,7 +65,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     }
 
     @Override
-    public Mono<Void> transferBodyToAsync(AsynchronousByteChannel channel) {
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         return bodyIntern().retain()
             .flatMapSequential(nettyBuffer ->
                 FluxUtil.writeToAsynchronousByteChannel(Flux.just(nettyBuffer.nioBuffer()), channel)
@@ -74,7 +74,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     }
 
     @Override
-    public void transferBodyTo(WritableByteChannel channel) {
+    public void writeBodyTo(WritableByteChannel channel) {
         bodyIntern().retain()
             .publishOn(Schedulers.boundedElastic())
             .map(nettyBuffer -> {

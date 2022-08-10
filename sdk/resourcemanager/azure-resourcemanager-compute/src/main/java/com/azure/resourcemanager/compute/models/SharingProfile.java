@@ -12,9 +12,8 @@ import java.util.List;
 @Fluent
 public final class SharingProfile {
     /*
-     * This property allows you to specify the permission of sharing gallery.
-     * <br><br> Possible values are: <br><br> **Private** <br><br> **Groups**
-     * <br><br> **Community**
+     * This property allows you to specify the permission of sharing gallery. <br><br> Possible values are: <br><br>
+     * **Private** <br><br> **Groups** <br><br> **Community**
      */
     @JsonProperty(value = "permissions")
     private GallerySharingPermissionTypes permissions;
@@ -26,11 +25,10 @@ public final class SharingProfile {
     private List<SharingProfileGroup> groups;
 
     /*
-     * Information of community gallery if current gallery is shared to
-     * community.
+     * Information of community gallery if current gallery is shared to community.
      */
     @JsonProperty(value = "communityGalleryInfo")
-    private Object communityGalleryInfo;
+    private CommunityGalleryInfo communityGalleryInfo;
 
     /**
      * Get the permissions property: This property allows you to specify the permission of sharing gallery.
@@ -71,7 +69,7 @@ public final class SharingProfile {
      *
      * @return the communityGalleryInfo value.
      */
-    public Object communityGalleryInfo() {
+    public CommunityGalleryInfo communityGalleryInfo() {
         return this.communityGalleryInfo;
     }
 
@@ -82,7 +80,7 @@ public final class SharingProfile {
      * @param communityGalleryInfo the communityGalleryInfo value to set.
      * @return the SharingProfile object itself.
      */
-    public SharingProfile withCommunityGalleryInfo(Object communityGalleryInfo) {
+    public SharingProfile withCommunityGalleryInfo(CommunityGalleryInfo communityGalleryInfo) {
         this.communityGalleryInfo = communityGalleryInfo;
         return this;
     }
@@ -95,6 +93,9 @@ public final class SharingProfile {
     public void validate() {
         if (groups() != null) {
             groups().forEach(e -> e.validate());
+        }
+        if (communityGalleryInfo() != null) {
+            communityGalleryInfo().validate();
         }
     }
 }

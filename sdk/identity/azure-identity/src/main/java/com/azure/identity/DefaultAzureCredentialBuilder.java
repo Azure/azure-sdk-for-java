@@ -157,7 +157,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions));
         output.add(new IntelliJCredential(tenantId, identityClientOptions));
-        output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
         output.add(new AzureCliCredential(tenantId, identityClientOptions));
         output.add(new AzurePowerShellCredential(tenantId, identityClientOptions));
         return output;

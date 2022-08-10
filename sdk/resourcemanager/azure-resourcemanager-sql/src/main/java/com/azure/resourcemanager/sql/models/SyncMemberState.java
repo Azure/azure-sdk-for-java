@@ -75,7 +75,11 @@ public final class SyncMemberState extends ExpandableStringEnum<SyncMemberState>
         return fromString(name, SyncMemberState.class);
     }
 
-    /** @return known SyncMemberState values. */
+    /**
+     * Gets known SyncMemberState values.
+     *
+     * @return known SyncMemberState values.
+     */
     public static Collection<SyncMemberState> values() {
         return values(SyncMemberState.class);
     }

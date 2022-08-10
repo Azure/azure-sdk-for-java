@@ -30,6 +30,9 @@ public enum Conditionality {
      */
     @JsonCreator
     public static Conditionality fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Conditionality[] items = Conditionality.values();
         for (Conditionality item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

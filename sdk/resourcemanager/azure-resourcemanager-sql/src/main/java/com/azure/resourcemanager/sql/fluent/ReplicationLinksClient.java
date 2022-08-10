@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.models.UnlinkParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +32,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(
@@ -48,7 +49,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String linkId);
@@ -80,7 +81,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -97,7 +98,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ReplicationLinkInner>> getWithResponseAsync(
@@ -114,7 +115,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ReplicationLinkInner> getAsync(
@@ -148,7 +149,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ReplicationLinkInner> getWithResponse(
@@ -165,7 +166,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -182,9 +183,9 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId);
 
@@ -199,9 +200,9 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, String linkId);
 
@@ -217,9 +218,9 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context);
 
@@ -234,7 +235,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName, String linkId);
@@ -282,7 +283,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> failoverAllowDataLossWithResponseAsync(
@@ -300,9 +301,9 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId);
 
@@ -318,9 +319,9 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId);
 
@@ -337,9 +338,9 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context);
 
@@ -355,7 +356,7 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> failoverAllowDataLossAsync(
@@ -403,15 +404,15 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> unlinkWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination);
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters);
 
     /**
      * Deletes a database replication link in forced or friendly way.
@@ -421,15 +422,15 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginUnlinkAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination);
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters);
 
     /**
      * Deletes a database replication link in forced or friendly way.
@@ -439,15 +440,15 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUnlink(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination);
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters);
 
     /**
      * Deletes a database replication link in forced or friendly way.
@@ -457,20 +458,20 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUnlink(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context);
 
     /**
@@ -481,15 +482,15 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> unlinkAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination);
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters);
 
     /**
      * Deletes a database replication link in forced or friendly way.
@@ -499,30 +500,14 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId);
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void unlink(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination);
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters);
 
     /**
      * Deletes a database replication link in forced or friendly way.
@@ -532,7 +517,7 @@ public interface ReplicationLinksClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -544,23 +529,8 @@ public interface ReplicationLinksClient {
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context);
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unlink(String resourceGroupName, String serverName, String databaseName, String linkId);
 
     /**
      * Lists a database's replication links.
@@ -572,7 +542,8 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ReplicationLinkInner> listByDatabaseAsync(
@@ -588,7 +559,8 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationLinkInner> listByDatabase(
@@ -605,7 +577,8 @@ public interface ReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationLinkInner> listByDatabase(

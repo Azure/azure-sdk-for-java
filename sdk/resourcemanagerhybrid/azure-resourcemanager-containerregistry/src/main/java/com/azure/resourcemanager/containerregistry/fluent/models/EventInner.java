@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.EventRequestMessage;
 import com.azure.resourcemanager.containerregistry.models.EventResponseMessage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The event for a webhook. */
 @Fluent
 public final class EventInner extends EventInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventInner.class);
-
     /*
      * The event request message sent to the service URI.
      */
@@ -65,6 +61,13 @@ public final class EventInner extends EventInfoInner {
      */
     public EventInner withEventResponseMessage(EventResponseMessage eventResponseMessage) {
         this.eventResponseMessage = eventResponseMessage;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

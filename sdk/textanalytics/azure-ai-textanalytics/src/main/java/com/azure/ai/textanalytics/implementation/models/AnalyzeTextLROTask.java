@@ -4,7 +4,7 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -28,7 +28,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ExtractiveSummarization", value = ExtractiveSummarizationLROTask.class),
     @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = KeyPhraseLROTask.class)
 })
-@Immutable
+@Fluent
 public class AnalyzeTextLROTask extends TaskIdentifier {
-
+    /** {@inheritDoc} */
+    @Override
+    public AnalyzeTextLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

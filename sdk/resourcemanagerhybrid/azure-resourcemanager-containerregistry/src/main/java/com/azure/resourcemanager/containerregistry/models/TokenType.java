@@ -27,7 +27,11 @@ public final class TokenType extends ExpandableStringEnum<TokenType> {
         return fromString(name, TokenType.class);
     }
 
-    /** @return known TokenType values. */
+    /**
+     * Gets known TokenType values.
+     *
+     * @return known TokenType values.
+     */
     public static Collection<TokenType> values() {
         return values(TokenType.class);
     }

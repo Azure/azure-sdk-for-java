@@ -5,7 +5,7 @@ package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
@@ -106,14 +106,14 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     }
 
     @Override
-    public void transferBodyTo(WritableByteChannel channel) throws IOException {
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
         if (responseBody != null) {
             IOUtils.transfer(responseBody.source(), channel);
         }
     }
 
     @Override
-    public Mono<Void> transferBodyToAsync(AsynchronousByteChannel channel) {
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         if (responseBody != null) {
             return IOUtils.transferAsync(responseBody.source(), channel);
         } else {

@@ -27,7 +27,11 @@ public final class OS extends ExpandableStringEnum<OS> {
         return fromString(name, OS.class);
     }
 
-    /** @return known OS values. */
+    /**
+     * Gets known OS values.
+     *
+     * @return known OS values.
+     */
     public static Collection<OS> values() {
         return values(OS.class);
     }

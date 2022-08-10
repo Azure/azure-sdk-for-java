@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class P2SVpnConnectionHealthInner {
     /*
-     * Returned sas url of the blob to which the p2s vpn connection detailed
-     * health will be written.
+     * Returned sas url of the blob to which the p2s vpn connection detailed health will be written.
      */
     @JsonProperty(value = "sasUrl")
     private String sasUrl;
