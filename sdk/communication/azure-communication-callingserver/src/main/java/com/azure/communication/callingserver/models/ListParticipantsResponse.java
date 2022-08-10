@@ -19,11 +19,6 @@ public final class ListParticipantsResponse {
      */
     private final List<CallParticipant> values;
 
-    /*
-     * The nextLink property.
-     */
-    private final String nextLink;
-
     static {
         ListParticipantsResponseConstructorProxy.setAccessor(
             new ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor() {
@@ -40,7 +35,6 @@ public final class ListParticipantsResponse {
      */
     public ListParticipantsResponse() {
         this.values = null;
-        this.nextLink = null;
     }
 
     /**
@@ -55,8 +49,6 @@ public final class ListParticipantsResponse {
             .getValues()
             .stream()
             .map(CallParticipantConverter::convert).collect(Collectors.toList());
-
-        this.nextLink = getParticipantsResponseInternal.getNextLink();
     }
 
     /**
