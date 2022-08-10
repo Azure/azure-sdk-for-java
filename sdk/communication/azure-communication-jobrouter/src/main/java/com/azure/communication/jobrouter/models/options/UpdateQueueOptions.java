@@ -17,7 +17,7 @@ public final class UpdateQueueOptions {
     /**
      * The Id of this queue
      */
-    private String queueId;
+    private final String queueId;
 
     /**
      * The name of this queue.
