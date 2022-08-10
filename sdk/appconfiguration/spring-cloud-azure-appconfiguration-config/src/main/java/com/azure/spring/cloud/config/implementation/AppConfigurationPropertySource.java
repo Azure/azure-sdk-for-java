@@ -50,11 +50,11 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
     }
 
     private static String getLabelName(String[] labelFilter) {
-        String labelName = "";
+        StringBuilder labelName = new StringBuilder();
         for (String label : labelFilter) {
 
-            labelName += labelName.isEmpty() ? label : "," + label;
+            labelName.append((labelName.length() == 0) ? label : "," + label);
         }
-        return labelName;
+        return labelName.toString();
     }
 }

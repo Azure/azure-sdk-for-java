@@ -76,7 +76,7 @@ public class AppConfigurationRefreshUtilTest {
     public void setup(TestInfo testInfo) {
         MockitoAnnotations.openMocks(this);
         configStore = new ConfigStore();
-        
+
         featureStore.setEnabled(true);
 
         List<FeatureFlagKeyValueSelector> ffSelects = new ArrayList<>();
@@ -104,7 +104,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(false);
 
             assertFalse(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -123,7 +123,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             assertFalse(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -137,15 +137,20 @@ public class AppConfigurationRefreshUtilTest {
             .setETag("updated");
 
         State newState = new State(watchKeys, Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
+        
+        List<ConfigurationSetting> listedKeys = new ArrayList<>();
+        listedKeys.add(watchKeysFeatureFlags.get(0));
 
         // Config Store does return a watch key change.
         when(clientMock.getWatchKey(Mockito.eq(KEY_FILTER), Mockito.eq(EMPTY_LABEL))).thenReturn(updatedWatchKey);
+        when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(flagsPagedIterableMock);
+        when(flagsPagedIterableMock.iterator()).thenReturn(listedKeys.iterator());
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
-            stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
-            stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
+            stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(true);
+            stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             assertFalse(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -161,7 +166,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(false);
 
             assertFalse(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -177,7 +182,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadStateFeatureFlag(endpoint)).thenReturn(false);
 
             assertFalse(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -202,7 +207,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             assertFalse(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
 
@@ -230,7 +235,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             assertTrue(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -252,7 +257,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             assertTrue(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }
@@ -278,7 +283,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             assertTrue(
-                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, clientMock, clientFactoryMock,
+                AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
                     new ArrayList<String>()));
         }
     }

@@ -66,23 +66,15 @@ class AppConfigurationReplicaClient {
     }
 
     /**
-     * @return ConfiguraitonClinet
-     */
-    ConfigurationClient getClient() {
-        return client;
-    }
-
-    /**
      * Gets the Configuration Setting for the given config store that match the Setting Selector criteria. Follows
      * retry-after-ms header.
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
-     * @param endpoint Endpoint of the App Configuration store to query against.
      * @return The first returned configuration.
      */
     ConfigurationSetting getWatchKey(String key, String label)
-        throws HttpResponseException, AppConfigurationStatusException {
+        throws HttpResponseException {
         try {
             ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(client.getConfigurationSetting(key, label));
@@ -102,11 +94,10 @@ class AppConfigurationReplicaClient {
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
-     * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
     PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
-        throws HttpResponseException, AppConfigurationStatusException {
+        throws HttpResponseException {
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
             this.failedAttempts = 0;

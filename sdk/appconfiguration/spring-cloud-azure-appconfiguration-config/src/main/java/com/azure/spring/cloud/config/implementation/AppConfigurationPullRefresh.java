@@ -46,7 +46,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final Duration refreshInterval;
-    
+
     private List<String> profiles;
 
     /**
@@ -86,7 +86,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
      * unless value is less than the amount of time to the next refresh check.
      * @param endpoint Config Store endpoint to expire refresh interval on.
-     * @param syncToken syncToken to verify latest changes are available on pull
+     * @param syncToken syncToken to verify the latest changes are available on pull
      */
     public void expireRefreshInterval(String endpoint, String syncToken) {
         LOGGER.debug("Expiring refresh interval for " + endpoint);
@@ -136,7 +136,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
 
     @Override
     public void setEnvironment(Environment environment) {
-        Arrays.asList(environment.getActiveProfiles());
+        profiles = Arrays.asList(environment.getActiveProfiles());
     }
 
 }

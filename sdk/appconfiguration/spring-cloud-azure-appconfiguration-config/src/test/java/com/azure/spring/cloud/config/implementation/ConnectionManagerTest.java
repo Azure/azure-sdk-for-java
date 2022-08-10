@@ -125,7 +125,7 @@ public class ConnectionManagerTest {
         expectedEndpoints.add(originEndpoint);
         expectedEndpoints.add(replicaEndpoint);
 
-        assertEquals(2, connectionManager.getAvalibleClients().size());
+        assertEquals(2, connectionManager.getAvailableClients().size());
         assertEquals(2, connectionManager.getAllEndpoints().size());
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.UP, connectionManager.getHealth());
@@ -136,14 +136,14 @@ public class ConnectionManagerTest {
 
         when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(1000));
 
-        assertEquals(1, connectionManager.getAvalibleClients().size());
+        assertEquals(1, connectionManager.getAvailableClients().size());
         assertEquals(2, connectionManager.getAllEndpoints().size());
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.UP, connectionManager.getHealth());
 
         connectionManager.backoffClient(originEndpoint);
 
-        assertEquals(1, connectionManager.getAvalibleClients().size());
+        assertEquals(1, connectionManager.getAvailableClients().size());
         assertEquals(2, connectionManager.getAllEndpoints().size());
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.UP, connectionManager.getHealth());
@@ -153,7 +153,7 @@ public class ConnectionManagerTest {
 
         when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(1000));
 
-        assertEquals(0, connectionManager.getAvalibleClients().size());
+        assertEquals(0, connectionManager.getAvailableClients().size());
         assertEquals(2, connectionManager.getAllEndpoints().size());
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.DOWN, connectionManager.getHealth());

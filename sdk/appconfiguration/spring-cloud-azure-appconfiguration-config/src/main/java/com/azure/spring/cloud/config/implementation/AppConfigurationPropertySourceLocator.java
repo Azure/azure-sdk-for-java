@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -30,7 +29,6 @@ import com.azure.spring.cloud.config.implementation.properties.AppConfigurationP
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Locates Azure App Configuration Property Sources.
@@ -83,7 +81,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     @Override
     public PropertySource<?> locate(Environment environment) {
-        if (!(environment instanceof ConfigurableEnvironment)) {
+    	 if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
 
@@ -91,11 +89,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
             String storeName = configStores.get(0).getEndpoint();
             AppConfigurationKeyValueSelector selectedKey = configStores.get(0).getSelects().get(0);
-            if (source.getName()
-                .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/")) {
-                return true;
-            }
-            return false;
+            return source.getName()
+                .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/");
         });
         if (currentlyLoaded && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
@@ -109,11 +104,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         StateHolder newState = new StateHolder();
         newState.setNextForcedRefresh(properties.getRefreshInterval());
 
-        Iterator<ConfigStore> configStoreIterator = configStores.iterator();
         // Feature Management needs to be set in the last config store.
-        while (configStoreIterator.hasNext()) {
-            ConfigStore configStore = configStoreIterator.next();
-
+        for (ConfigStore configStore : configStores) {
             boolean loadNewPropertySources = STARTUP.get() || StateHolder.getLoadState(configStore.getEndpoint());
 
             if (configStore.isEnabled() && loadNewPropertySources) {
@@ -131,8 +123,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore, client,
-                            clientFactory, profiles)) {
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore.getFeatureFlags(), client,
+                        configStore.getEndpoint(), profiles)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -249,7 +241,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param store Config Store the PropertySource is being generated from
      * @param profiles active profiles to be used as labels. it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
-     * @throws JsonProcessingException
+     * @throws Exception creating a property source failed
      */
     private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,
         List<String> profiles) throws Exception {

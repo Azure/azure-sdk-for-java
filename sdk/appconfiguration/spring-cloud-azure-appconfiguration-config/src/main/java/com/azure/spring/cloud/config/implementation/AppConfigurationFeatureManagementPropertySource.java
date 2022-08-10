@@ -56,7 +56,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
 
     private static final String KEY_FILTER_DEFAULT = KEY_FILTER_PREFIX + "*";
 
-    private List<ConfigurationSetting> featureConfigurationSettings;
+    private final List<ConfigurationSetting> featureConfigurationSettings;
 
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
@@ -82,9 +82,6 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
      * AppConfigurationPropertySource}
      * </p>
      *
-     * @param featureSet The set of Feature Management Flags from various config stores.
-     * @return Updated Feature Set from Property Source
-     * @throws IOException Thrown when processing key/value failed when reading feature flags
      */
     public void initProperties() {
         SettingSelector settingSelector = new SettingSelector();

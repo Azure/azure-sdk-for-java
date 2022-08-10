@@ -17,7 +17,7 @@ final class BackoffTimeCalculator {
 
     /**
      * Calculates the new Backoff time for requests.
-     * 
+     *
      * @param attempts Number of attempts so far
      * @param maxBackoff maximum amount of time between requests
      * @param minBackoff minimum amount of time between requests
@@ -38,8 +38,8 @@ final class BackoffTimeCalculator {
             throw new IllegalArgumentException("Number of previous attempts needs to be a positive number.");
         }
 
-        Long minBackoffNano = minBackoff * SECONDS_TO_NANO_SECONDS;
-        Long maxBackoffNano = maxBackoff * SECONDS_TO_NANO_SECONDS;
+        long minBackoffNano = minBackoff * SECONDS_TO_NANO_SECONDS;
+        long maxBackoffNano = maxBackoff * SECONDS_TO_NANO_SECONDS;
 
         if (attempts <= 1 || maxBackoff <= minBackoff) {
             return minBackoffNano;
