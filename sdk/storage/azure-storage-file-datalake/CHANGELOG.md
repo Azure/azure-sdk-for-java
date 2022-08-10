@@ -3,6 +3,7 @@
 ## 12.12.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added upload and append methods on DataLakeFileClient and DataLakeFileAsyncClient that support BinaryData.
 
 ### Breaking Changes
 

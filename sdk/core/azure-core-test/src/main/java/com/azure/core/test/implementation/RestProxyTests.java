@@ -1714,8 +1714,6 @@ public abstract class RestProxyTests {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     try {
                         streamResponse.writeValueTo(Channels.newChannel(bos));
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
                     } finally {
                         streamResponse.close();
                     }
