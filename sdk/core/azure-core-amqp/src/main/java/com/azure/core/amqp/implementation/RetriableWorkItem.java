@@ -62,9 +62,7 @@ class RetriableWorkItem {
     }
 
     private void reportMetrics(DeliveryState deliveryState) {
-        if (metricsProvider.isSendDurationEnabled()) {
-            metricsProvider.recordSendDelivery(tryStartTime, deliveryState != null ? deliveryState.getType() : null);
-        }
+        metricsProvider.recordSendDelivery(tryStartTime, deliveryState != null ? deliveryState.getType() : null);
     }
 
     void success(DeliveryState deliveryState) {
@@ -78,10 +76,7 @@ class RetriableWorkItem {
     }
 
     void startTry() {
-        if (metricsProvider.isSendDurationEnabled()) {
-            this.tryStartTime = Instant.now().toEpochMilli();
-        }
-
+        this.tryStartTime = Instant.now().toEpochMilli();
         retryAttempts.incrementAndGet();
     }
 

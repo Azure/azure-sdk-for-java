@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -88,7 +89,7 @@ public class ConnectionHandlerTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
             AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
             VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
-        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null);
+        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
     }
 
     @AfterEach
@@ -106,9 +107,10 @@ public class ConnectionHandlerTest {
 
     @Test
     void constructorNull() {
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails, null));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, null));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null));
     }
 
     @Test
@@ -123,7 +125,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails, null);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails, AmqpMetricsProvider.noop());
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -137,7 +139,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION, null);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());

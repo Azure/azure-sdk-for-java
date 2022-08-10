@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -73,7 +74,7 @@ public class WebSocketsConnectionHandlerTest {
             AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
             scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null);
+        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
     }
 
     @AfterEach
@@ -188,7 +189,7 @@ public class WebSocketsConnectionHandlerTest {
             CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpoint, port);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails, null)) {
+            peerDetails, AmqpMetricsProvider.noop())) {
 
             // Act
             handler.onConnectionInit(event);

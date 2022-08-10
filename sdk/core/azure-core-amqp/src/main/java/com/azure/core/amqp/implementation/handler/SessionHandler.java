@@ -31,12 +31,12 @@ public class SessionHandler extends Handler {
     private final AmqpMetricsProvider metricsProvider;
 
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
-                          Duration openTimeout, Meter meter) {
+                          Duration openTimeout, AmqpMetricsProvider metricProvider) {
         super(connectionId, hostname);
         this.sessionName = sessionName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
-        this.metricsProvider = AmqpMetricsProvider.getOrCreate(meter, hostname, null);
+        this.metricsProvider = metricProvider;
     }
 
     public AmqpErrorContext getErrorContext() {

@@ -100,7 +100,7 @@ public class ReactorSession implements AmqpSession {
 
     private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
     private final Flux<AmqpShutdownSignal> shutdownSignals;
-    private final Meter meter;
+    private final AmqpMetricsProvider metricsProvider;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -132,7 +132,7 @@ public class ReactorSession implements AmqpSession {
         this.activeTimeoutMessage = String.format(
             "ReactorSession connectionId[%s], session[%s]: Retries exhausted waiting for ACTIVE endpoint state.",
             sessionHandler.getConnectionId(), sessionName);
-        this.meter = handlerProvider.getMeter();
+        this.metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), null);
 
         this.logger = new ClientLogger(ReactorSession.class, createContextWithConnectionId(this.sessionHandler.getConnectionId()));
 
@@ -419,8 +419,9 @@ public class ReactorSession implements AmqpSession {
      */
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
         return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider.getReactorDispatcher(), retryOptions, meter);
+            reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
     }
 
     /**
@@ -551,7 +552,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
-            provider, tokenManager, messageSerializer, options, timeoutScheduler, meter);
+            provider, tokenManager, messageSerializer, options, timeoutScheduler, handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {

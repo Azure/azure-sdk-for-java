@@ -102,7 +102,7 @@ public class ReactorSessionTest {
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60), null);
+        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60), AmqpMetricsProvider.noop());
         this.cbsNodeSupplier = Mono.just(cbsNode);
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -181,7 +181,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, null);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         when(session.sender(linkName)).thenReturn(sender);
         when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
@@ -224,7 +224,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, null);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         final Event closeSendEvent = mock(Event.class);
         when(closeSendEvent.getLink()).thenReturn(sender);
@@ -266,7 +266,7 @@ public class ReactorSessionTest {
         final String entityPath = transactionLinkName;
 
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, null);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         when(session.sender(linkName)).thenReturn(sender);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);

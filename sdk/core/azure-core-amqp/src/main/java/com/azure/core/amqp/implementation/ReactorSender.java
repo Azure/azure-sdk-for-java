@@ -123,7 +123,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
      */
     ReactorSender(AmqpConnection amqpConnection, String entityPath, Sender sender, SendLinkHandler handler,
                   ReactorProvider reactorProvider, TokenManager tokenManager, MessageSerializer messageSerializer,
-                  AmqpRetryOptions retryOptions, Scheduler scheduler, Meter meter) {
+                  AmqpRetryOptions retryOptions, Scheduler scheduler, AmqpMetricsProvider metricsProvider) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.sender = Objects.requireNonNull(sender, "'sender' cannot be null.");
         this.handler = Objects.requireNonNull(handler, "'handler' cannot be null.");
@@ -134,7 +134,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         this.retry = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManager = tokenManager;
 
-        this.metricsProvider = AmqpMetricsProvider.getOrCreate(meter, amqpConnection.getFullyQualifiedNamespace(), entityPath);
+        this.metricsProvider = metricsProvider;
 
         String connectionId = handler.getConnectionId() == null ? NOT_APPLICABLE : handler.getConnectionId();
         String linkName = getLinkName() == null ? NOT_APPLICABLE : getLinkName();

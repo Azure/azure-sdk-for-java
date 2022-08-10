@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
@@ -109,11 +110,11 @@ public class WebSocketsProxyConnectionHandlerTest {
     @Test
     public void constructorNull() {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(null, connectionOptions,
-            PROXY_OPTIONS, peerDetails, null));
+            PROXY_OPTIONS, peerDetails, AmqpMetricsProvider.noop()));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, null,
-            PROXY_OPTIONS, peerDetails, null));
+            PROXY_OPTIONS, peerDetails, AmqpMetricsProvider.noop()));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-            connectionOptions, PROXY_OPTIONS, null, null));
+            connectionOptions, PROXY_OPTIONS, null, AmqpMetricsProvider.noop()));
     }
 
     /**
@@ -126,7 +127,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, PROXY_OPTIONS,
-            peerDetails, null);
+            peerDetails, AmqpMetricsProvider.noop());
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -145,7 +146,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, peerDetails, null);
+            ProxyOptions.SYSTEM_DEFAULTS, peerDetails, AmqpMetricsProvider.noop());
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -168,7 +169,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions,
-            peerDetails, null);
+            peerDetails, AmqpMetricsProvider.noop());
 
         // Act and Assert
         Assertions.assertEquals(address.getHostName(), handler.getHostname());

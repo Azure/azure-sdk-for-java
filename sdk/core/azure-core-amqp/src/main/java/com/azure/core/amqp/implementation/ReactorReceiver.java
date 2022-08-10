@@ -76,13 +76,13 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
                               ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-                              AmqpRetryOptions retryOptions, Meter meter) {
+                              AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
-        this.metricsProvider = AmqpMetricsProvider.getOrCreate(meter, amqpConnection.getFullyQualifiedNamespace(), entityPath);
+        this.metricsProvider = metricsProvider;
 
         Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());

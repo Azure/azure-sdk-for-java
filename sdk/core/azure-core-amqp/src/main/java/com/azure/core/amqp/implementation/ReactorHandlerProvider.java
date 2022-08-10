@@ -20,14 +20,17 @@ import org.apache.qpid.proton.reactor.Reactor;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides handlers for the various types of links.
  */
 public class ReactorHandlerProvider {
     private static final ClientLogger LOGGER = new ClientLogger(ReactorHandlerProvider.class);
-    private final ReactorProvider provider;
+    private final ConcurrentHashMap<String, AmqpMetricsProvider> metricsCache = new ConcurrentHashMap<>();
     private final Meter meter;
+
+    private final ReactorProvider provider;
 
     /**
      * Creates a new instance with the reactor provider to handle {@link ReactorDispatcher ReactorDispatchers} to its
@@ -70,10 +73,11 @@ public class ReactorHandlerProvider {
         Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
+        AmqpMetricsProvider metricsProvider = getMetricProvider(options.getFullyQualifiedNamespace(), null);
         if (options.getTransportType() == AmqpTransportType.AMQP) {
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
-            return new ConnectionHandler(connectionId, options, peerDetails, meter);
+            return new ConnectionHandler(connectionId, options, peerDetails, metricsProvider);
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {
@@ -101,7 +105,7 @@ public class ReactorHandlerProvider {
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
-            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails, meter);
+            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails, metricsProvider);
         } else if (isSystemProxyConfigured) {
             LOGGER.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
                 options.getFullyQualifiedNamespace(), options.getPort());
@@ -109,14 +113,14 @@ public class ReactorHandlerProvider {
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
             return new WebSocketsProxyConnectionHandler(connectionId, options, ProxyOptions.SYSTEM_DEFAULTS,
-                peerDetails, meter);
+                peerDetails, metricsProvider);
         }
 
         final SslPeerDetails peerDetails = isCustomEndpointConfigured
             ? Proton.sslPeerDetails(options.getHostname(), options.getPort())
             : Proton.sslPeerDetails(options.getFullyQualifiedNamespace(), options.getPort());
 
-        return new WebSocketsConnectionHandler(connectionId, options, peerDetails, meter);
+        return new WebSocketsConnectionHandler(connectionId, options, peerDetails, metricsProvider);
     }
 
     /**
@@ -132,7 +136,7 @@ public class ReactorHandlerProvider {
         Duration openTimeout) {
 
         return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(),
-            openTimeout, meter);
+            openTimeout, getMetricProvider(hostname, null));
     }
 
     /**
@@ -146,7 +150,7 @@ public class ReactorHandlerProvider {
      */
     public SendLinkHandler createSendLinkHandler(String connectionId, String hostname,
         String senderName, String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, meter);
+        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, getMetricProvider (hostname, entityPath));
     }
 
     /**
@@ -160,10 +164,16 @@ public class ReactorHandlerProvider {
     public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname,
         String receiverName, String entityPath) {
 
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, meter);
+        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, getMetricProvider(receiverName, entityPath));
     }
 
-    Meter getMeter() {
-        return meter;
+    AmqpMetricsProvider getMetricProvider(String namespace, String entityPath) {
+        if (meter != null && !meter.isEnabled()) {
+            return AmqpMetricsProvider.noop();
+        }
+
+        return metricsCache.computeIfAbsent(
+            namespace + (entityPath == null ? "" : "/" + entityPath),
+            ignored -> new AmqpMetricsProvider(meter, namespace, entityPath));
     }
 }

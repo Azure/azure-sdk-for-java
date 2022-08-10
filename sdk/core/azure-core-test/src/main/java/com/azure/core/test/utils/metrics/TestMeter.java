@@ -1,0 +1,67 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.test.utils.metrics;
+
+import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.metrics.DoubleHistogram;
+import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.Meter;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Test meter implementation.
+ */
+public class TestMeter implements Meter {
+    private final Map<String, TestHistogram> histograms = new ConcurrentHashMap<>();
+    private final Map<String, TestCounter> counters = new ConcurrentHashMap<>();
+    @Override
+    public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
+        return histograms.computeIfAbsent(name, n -> new TestHistogram());
+    }
+
+    @Override
+    public LongCounter createLongCounter(String name, String description, String unit) {
+        return counters.computeIfAbsent(name, n -> new TestCounter());
+    }
+
+    @Override
+    public LongCounter createLongUpDownCounter(String name, String description, String unit) {
+        return counters.computeIfAbsent(name, n -> new TestCounter());
+    }
+
+    @Override
+    public TelemetryAttributes createAttributes(Map<String, Object> attributeMap) {
+        return new TestTelemetryAttributes(attributeMap);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public void close() {
+    }
+
+    /**
+     * Gets histograms created with this meter.
+     *
+     * @return map of histograms (by histogram name)
+     */
+    public Map<String, TestHistogram> getHistograms() {
+        return histograms;
+    }
+
+    /**
+     * Gets counters created with this meter.
+     *
+     * @return map of counters (by counter name)
+     */
+    public Map<String, TestCounter> getCounters() {
+        return counters;
+    }
+}
+

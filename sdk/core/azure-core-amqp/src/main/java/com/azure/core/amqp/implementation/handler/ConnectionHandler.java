@@ -11,7 +11,6 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
-import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -63,7 +62,7 @@ public class ConnectionHandler extends Handler {
     @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
                              SslPeerDetails peerDetails) {
-        this(connectionId, connectionOptions, peerDetails, null);
+        this(connectionId, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
     }
 
     /**
@@ -73,7 +72,7 @@ public class ConnectionHandler extends Handler {
      * @param connectionOptions Options used when creating the AMQP connection.
      */
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails, Meter meter) {
+        SslPeerDetails peerDetails, AmqpMetricsProvider metricProvider) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
         add(new Handshaker());
@@ -95,8 +94,7 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
         this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
-
-        this.metricProvider = AmqpMetricsProvider.getOrCreate(meter, connectionOptions.getFullyQualifiedNamespace(), null);
+        this.metricProvider = Objects.requireNonNull(metricProvider, "'metricProvider' cannot be null.");
     }
 
     /**

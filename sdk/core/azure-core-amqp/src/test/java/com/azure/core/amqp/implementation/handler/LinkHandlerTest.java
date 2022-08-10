@@ -7,6 +7,9 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
@@ -36,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_STOLEN;
@@ -260,7 +264,7 @@ public class LinkHandlerTest {
         when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
 
         TestMeter meter = new TestMeter();
-        LinkHandler handlerWithMetrics = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, meter);
+        LinkHandler handlerWithMetrics = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
         handlerWithMetrics.onLinkRemoteClose(event);
 
         // Assert
@@ -286,7 +290,7 @@ public class LinkHandlerTest {
         when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
 
         TestMeter meter = new TestMeter();
-        LinkHandler handlerWithMetrics = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, meter);
+        LinkHandler handlerWithMetrics = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
         handlerWithMetrics.onLinkRemoteClose(event);
 
         // Assert
@@ -461,123 +465,11 @@ public class LinkHandlerTest {
 
     private static final class MockLinkHandler extends LinkHandler {
         MockLinkHandler(String connectionId, String hostname, String entityPath) {
-            super(connectionId, hostname, entityPath, null);
+            super(connectionId, hostname, entityPath, AmqpMetricsProvider.noop());
         }
 
-        MockLinkHandler(String connectionId, String hostname, String entityPath, Meter meter) {
-            super(connectionId, hostname, entityPath, meter);
-        }
-    }
-
-    private class TestMeter implements Meter {
-        private final Map<String, TestHistogram> histograms = new ConcurrentHashMap<>();
-        private final Map<String, TestCounter> counters = new ConcurrentHashMap<>();
-        @Override
-        public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
-            return histograms.computeIfAbsent(name, n -> new TestHistogram());
-        }
-
-        @Override
-        public LongCounter createLongCounter(String name, String description, String unit) {
-            return counters.computeIfAbsent(name, n -> new TestCounter());
-        }
-
-        @Override
-        public LongCounter createLongUpDownCounter(String name, String description, String unit) {
-            return counters.computeIfAbsent(name, n -> new TestCounter());
-        }
-
-        @Override
-        public TelemetryAttributes createAttributes(Map<String, Object> attributeMap) {
-            return new TestTelemetryAttributes(attributeMap);
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return true;
-        }
-
-        @Override
-        public void close() {
-        }
-
-        public Map<String, TestHistogram> getHistograms() {
-            return histograms;
-        }
-
-        public Map<String, TestCounter> getCounters() {
-            return counters;
-        }
-    }
-
-    private class TestTelemetryAttributes implements TelemetryAttributes {
-        private final Map<String, Object> map;
-        public TestTelemetryAttributes(Map<String, Object> map) {
-            this.map = Collections.unmodifiableMap(map);
-        }
-
-        public Map<String, Object> getAttributes() {
-            return map;
-        }
-    }
-
-    private class TestMeasurement<T> {
-        private final T value;
-        private final TestTelemetryAttributes attributes;
-        private final Context context;
-
-        public TestMeasurement(T value, TestTelemetryAttributes attributes, Context context) {
-            this.value = value;
-            this.attributes = attributes;
-            this.context = context;
-        }
-
-        public T getValue() {
-            return value;
-        }
-
-        public Map<String, Object> getAttributes() {
-            return attributes.getAttributes();
-        }
-
-        public Context getContext() {
-            return context;
-        }
-    }
-
-    private class TestCounter implements LongCounter {
-        private final ConcurrentLinkedQueue<TestMeasurement<Long>> measurements = new ConcurrentLinkedQueue<>();
-        @Override
-        public void add(long value, TelemetryAttributes attributes, Context context) {
-            measurements.add(new TestMeasurement<>(value, (TestTelemetryAttributes)attributes, context));
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return true;
-        }
-
-        public List<TestMeasurement<Long>> getMeasurements() {
-            return measurements.stream().toList();
-        }
-    }
-
-
-    private class TestHistogram implements DoubleHistogram {
-        private final ConcurrentLinkedQueue<TestMeasurement<Double>> measurements = new ConcurrentLinkedQueue<>();
-
-        @Override
-        public void record(double value, TelemetryAttributes attributes, Context context) {
-            measurements.add(new TestMeasurement<>(value, (TestTelemetryAttributes)attributes, context));
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return true;
-        }
-
-        public List<TestMeasurement<Double>> getMeasurements() {
-            return measurements.stream().toList();
+        MockLinkHandler(String connectionId, String hostname, String entityPath, AmqpMetricsProvider metricsProvider) {
+            super(connectionId, hostname, entityPath, metricsProvider);
         }
     }
 }
