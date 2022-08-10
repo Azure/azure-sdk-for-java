@@ -18,11 +18,15 @@ import java.util.Map;
 public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
 
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind.Bindable.BindRestriction";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind"
+        + ".Bindable.BindRestriction";
 
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6 = "org.springframework.boot.autoconfigure.data.redis.ClientResourcesBuilderCustomizer";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6 = "org.springframework.boot.autoconfigure.data.redis"
+        + ".ClientResourcesBuilderCustomizer";
 
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_7 = "org.springframework.boot.autoconfigure.amqp.RabbitStreamTemplateConfigurer";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_7 = "org.springframework.boot.autoconfigure.amqp"
+        + ".RabbitStreamTemplateConfigurer";
+
     /**
      * Versions supported by Spring Cloud Azure, for present is [2.5, 2.6, 2.7]. Update this value if needed.
      */
@@ -79,8 +83,8 @@ public class AzureSpringBootVersionVerifier {
         return String.format("Change Spring Boot version to one of the following versions %s.%n"
                 + "You can find the latest Spring Boot versions here [%s].%n"
                 + "If you want to learn more about the Spring Cloud Azure compatibility, "
-                + "you can visit this page [%s] and check the [Which Version of Spring Cloud Azure Should I Use] section.%n"
-                + "If you want to disable this check, "
+                + "you can visit this page [%s] and check the [Which Version of Spring Cloud Azure Should I Use] "
+                + "section.%n If you want to disable this check, "
                 + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false].",
             this.acceptedVersions,
             "https://spring.io/projects/spring-boot#learn",
@@ -95,7 +99,7 @@ public class AzureSpringBootVersionVerifier {
         for (String acceptedVersion : acceptedVersions) {
             try {
                 if (this.matchSpringBootVersionFromManifest(acceptedVersion)) {
-                    LOGGER.debug("Version matching succeeded.");
+                    LOGGER.debug("current Spring Boot version matching succeeded in [{}].", acceptedVersion);
                     return true;
                 }
             } catch (FileNotFoundException e) {
@@ -114,9 +118,10 @@ public class AzureSpringBootVersionVerifier {
 
     private boolean matchSpringBootVersionFromManifest(String acceptedVersion) throws FileNotFoundException {
         String version = this.getVersionFromManifest();
-        LOGGER.debug("Version [{}] is matching in Boot manifest [{}].", version, acceptedVersion);
+        LOGGER.debug("Currently running on Spring Boot version [{}], trying to match it in Spring Cloud Azure "
+            + "Supported Versions [{}].", version, acceptedVersion);
         if (!StringUtils.hasText(version)) {
-            LOGGER.info("Cannot check Boot version from manifest.");
+            LOGGER.info("Cannot check current Spring Boot version from Spring Cloud Azure supported versions.");
             throw new FileNotFoundException("Spring Boot version not found");
         } else {
             return version.startsWith(stripWildCardFromVersion(acceptedVersion));
