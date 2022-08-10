@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.fullfidelity;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -23,7 +23,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -90,9 +89,9 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
-        CosmosAsyncContainer collectionLink,
-        CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+    public <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                                   CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                                                                   Class<T> klass) {
 
         // ChangeFeed processor relies on getting GoneException signals
         // to handle split of leases - so we need to suppress the split-proofing
@@ -102,7 +101,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
-        Flux<FeedResponse<JsonNode>> feedResponseFlux =
+        Flux<FeedResponse<T>> feedResponseFlux =
             clientWrapper
                 .getCollectionCache()
                 .resolveByNameAsync(
@@ -117,12 +116,12 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     return clientWrapper
                         .queryDocumentChangeFeed(collection, effectiveRequestOptions, Document.class)
                         .map(response -> {
-                            List<JsonNode> results = response.getResults()
+                            List<T> results = response.getResults()
                                                              .stream()
                                                              .map(document ->
                                                                  ModelBridgeInternal.toObjectFromJsonSerializable(
                                                                      document,
-                                                                     JsonNode.class))
+                                                                     klass))
                                                              .collect(Collectors.toList());
                             return BridgeInternal.toFeedResponsePage(
                                 results,

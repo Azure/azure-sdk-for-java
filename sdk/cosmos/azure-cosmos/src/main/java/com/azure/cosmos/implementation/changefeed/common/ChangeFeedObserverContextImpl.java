@@ -1,38 +1,36 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.incremental;
+package com.azure.cosmos.implementation.changefeed.common;
 
 
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Mono;
 
 /**
  * Implementation for ChangeFeedObserverContext.
  */
-class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
+public class ChangeFeedObserverContextImpl<T> implements ChangeFeedObserverContext<T> {
     private final PartitionCheckpointer checkpointer;
-    private final String partitionKeyRangeId;
-    private final FeedResponse<JsonNode> feedResponse;
+    private final String leaseToken;
+    private final FeedResponse<T> feedResponse;
     private final ChangeFeedState continuationState;
 
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
-        this.partitionKeyRangeId = leaseToken;
+        this.leaseToken = leaseToken;
         this.checkpointer = null;
         this.feedResponse = null;
         this.continuationState = null;
     }
 
     public ChangeFeedObserverContextImpl(String leaseToken,
-                                         FeedResponse<JsonNode> feedResponse,
+                                         FeedResponse<T> feedResponse,
                                          ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
-        this.partitionKeyRangeId = leaseToken;
+        this.leaseToken = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;
         this.continuationState = continuationState;
@@ -56,15 +54,15 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      * @return the id of the partition for the current event.
      */
     @Override
-    public String getPartitionKeyRangeId() {
-        return this.partitionKeyRangeId;
+    public String getLeaseToken() {
+        return this.leaseToken;
     }
 
     /**
      * @return the response from the underlying call.
      */
     @Override
-    public FeedResponse<JsonNode> getFeedResponse() {
+    public FeedResponse<T> getFeedResponse() {
         return this.feedResponse;
     }
 }

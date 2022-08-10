@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.incremental;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.implementation.changefeed.HealthMonitor;
 import com.azure.cosmos.implementation.changefeed.HealthMonitoringRecord;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for trace health monitor.
  */
-class TraceHealthMonitor implements HealthMonitor {
+public class TraceHealthMonitor implements HealthMonitor {
     private final Logger logger = LoggerFactory.getLogger(TraceHealthMonitor.class);
     @Override
     public Mono<Void> inspect(HealthMonitoringRecord record) {

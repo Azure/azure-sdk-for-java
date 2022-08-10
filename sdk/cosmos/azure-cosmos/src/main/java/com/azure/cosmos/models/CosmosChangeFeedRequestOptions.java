@@ -283,26 +283,6 @@ public final class CosmosChangeFeedRequestOptions {
             changeFeedState);
     }
 
-    static CosmosChangeFeedRequestOptions createForProcessingFromEtagAndFeedRange(
-        String etag,
-        FeedRange feedRange) {
-
-        if (etag != null) {
-            return new CosmosChangeFeedRequestOptions(
-                FeedRangeInternal.convert(feedRange),
-                ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag,
-                    FeedRangeInternal.convert(feedRange)),
-                ChangeFeedMode.INCREMENTAL,
-                null);
-        }
-
-        return new CosmosChangeFeedRequestOptions(
-            FeedRangeInternal.convert(feedRange),
-            ChangeFeedStartFromInternal.createFromBeginning(),
-            ChangeFeedMode.INCREMENTAL,
-            null);
-    }
-
     /**
      * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
      * change feed items from the current time - so only events for all future changes will be

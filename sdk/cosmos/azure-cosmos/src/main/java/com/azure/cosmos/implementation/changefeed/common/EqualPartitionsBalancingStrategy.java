@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation.changefeed.fullfidelity;
+package com.azure.cosmos.implementation.changefeed.common;
 
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +19,7 @@ import java.util.Random;
 /**
  * Implementation for {@link PartitionLoadBalancingStrategy}.
  */
-class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy {
+public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy {
     private final Logger logger = LoggerFactory.getLogger(EqualPartitionsBalancingStrategy.class);
     private final String hostName;
     private final int minPartitionCount;
