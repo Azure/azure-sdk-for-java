@@ -294,6 +294,7 @@ public final class ShareServiceClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public ShareServiceClientBuilder sasToken(String sasToken) {
+        this.storageSharedKeyCredential = null;
         this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
         return this;

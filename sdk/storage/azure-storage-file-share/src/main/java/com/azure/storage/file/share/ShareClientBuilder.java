@@ -148,7 +148,6 @@ public class ShareClientBuilder implements
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
-    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -191,7 +190,7 @@ public class ShareClientBuilder implements
     public ShareAsyncClient buildAsyncClient() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
+            storageSharedKeyCredential, null, azureSasCredential, null, LOGGER);
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
@@ -199,18 +198,12 @@ public class ShareClientBuilder implements
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (azureSasCredential != null) {
                 return new AzureSasCredentialPolicy(azureSasCredential, false);
-            } else if (sasToken != null) {
-                return new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
             } else {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
         }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient,
             perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        if (sasToken != null && azureSasCredential == null) {
-            azureSasCredential = new AzureSasCredential(sasToken);
-        }
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -330,7 +323,6 @@ public class ShareClientBuilder implements
      */
     public ShareClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sasToken = null;
         return this;
     }
 
@@ -356,9 +348,9 @@ public class ShareClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public ShareClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
+        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
         return this;
     }
 
