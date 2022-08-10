@@ -12,6 +12,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallMediaAsyncLiveTests extends CallAutomationTestBase {
     @ParameterizedTest
@@ -39,7 +40,7 @@ public class CallMediaAsyncLiveTests extends CallAutomationTestBase {
             assertNotNull(response);
             assertEquals(202, response.getStatusCode());
         } catch (Exception ex) {
-            System.out.println(ex);
+            fail("Unexpected exception received", ex);
         }
     }
 }

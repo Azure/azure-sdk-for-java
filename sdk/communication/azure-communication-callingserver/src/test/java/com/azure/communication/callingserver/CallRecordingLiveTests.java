@@ -14,6 +14,7 @@ import java.net.URI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallRecordingLiveTests extends CallAutomationTestBase {
 
@@ -56,7 +57,7 @@ public class CallRecordingLiveTests extends CallAutomationTestBase {
             callRecording.stopRecording(recordingId);
             assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(recordingId));
         } catch (Exception ex) {
-            System.out.println(ex);
+            fail("Unexpected exception received", ex);
         }
     }
 }

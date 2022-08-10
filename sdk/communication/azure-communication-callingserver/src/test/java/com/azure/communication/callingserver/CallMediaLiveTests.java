@@ -1,10 +1,6 @@
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.FileSource;
-import com.azure.communication.callingserver.models.RecordingStatus;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
-import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -12,12 +8,11 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.net.URI;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallMediaLiveTests  extends CallAutomationTestBase {
     @ParameterizedTest
@@ -46,7 +41,7 @@ public class CallMediaLiveTests  extends CallAutomationTestBase {
             assertNotNull(response);
             assertEquals(202, response.getStatusCode());
         } catch (Exception ex) {
-            System.out.println(ex);
+            fail("Unexpected exception received", ex);
         }
     }
 }
