@@ -1,10 +1,11 @@
 # Release History
 
-## 4.0.0-beta.6 (Unreleased)
+## 4.0.0-beta.6 (2022-08-10)
 
 ### Features Added
 - Add a constructor to create an instance of `CopyAuthorization` model.
 - Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Added support for V2.1 & V2.0 APIs by adding FormRecognizerClient and FormTrainingClient.
 
 ### Breaking Changes
 - Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
@@ -26,6 +27,10 @@
 ### Bugs Fixed
 
 ### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
 
 ## 3.1.13 (2022-07-05)
 
@@ -442,7 +447,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
   - URL input should use the method with suffix `fromUrl`
   - Stream methods will automatically detect content-type of the input file if not provided.
 - Authentication with API key supported using `AzureKeyCredential("<api_key>")` from `com.azure.core.credential`
-- All service errors use the base type: `com.azure.ai.formrecognizer.documentanalysis.models.ErrorResponseException`
+- All service errors use the base type: `com.azure.ai.formrecognizer.models.ErrorResponseException`
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
 This package's
