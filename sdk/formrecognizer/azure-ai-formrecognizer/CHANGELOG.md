@@ -442,7 +442,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
   - URL input should use the method with suffix `fromUrl`
   - Stream methods will automatically detect content-type of the input file if not provided.
 - Authentication with API key supported using `AzureKeyCredential("<api_key>")` from `com.azure.core.credential`
-- All service errors use the base type: `com.azure.ai.formrecognizer.models.ErrorResponseException`
+- All service errors use the base type: `com.azure.ai.formrecognizer.documentanalysis.models.ErrorResponseException`
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
 This package's

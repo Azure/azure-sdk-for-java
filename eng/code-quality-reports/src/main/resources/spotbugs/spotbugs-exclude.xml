@@ -1319,6 +1319,13 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- FormRecognizerException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
+    <Field name="errorInformationList"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
   <!-- TextAnalyticsException fields re serializable -->
   <Match>
     <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException"/>
