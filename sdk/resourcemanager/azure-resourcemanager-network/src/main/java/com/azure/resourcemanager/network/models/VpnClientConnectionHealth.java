@@ -24,8 +24,7 @@ public final class VpnClientConnectionHealth {
     private Long totalEgressBytesTransferred;
 
     /*
-     * The total of p2s vpn clients connected at this time to this
-     * P2SVpnGateway.
+     * The total of p2s vpn clients connected at this time to this P2SVpnGateway.
      */
     @JsonProperty(value = "vpnClientConnectionsCount")
     private Integer vpnClientConnectionsCount;
