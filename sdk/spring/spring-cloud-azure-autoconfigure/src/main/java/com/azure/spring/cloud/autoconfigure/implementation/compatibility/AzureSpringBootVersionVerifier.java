@@ -95,6 +95,7 @@ public class AzureSpringBootVersionVerifier {
         for (String acceptedVersion : acceptedVersions) {
             try {
                 if (this.matchSpringBootVersionFromManifest(acceptedVersion)) {
+                    LOGGER.debug("Version matching succeeded");
                     return true;
                 }
             } catch (FileNotFoundException e) {
@@ -113,7 +114,7 @@ public class AzureSpringBootVersionVerifier {
 
     private boolean matchSpringBootVersionFromManifest(String acceptedVersion) throws FileNotFoundException {
         String version = this.getVersionFromManifest();
-        LOGGER.debug("Version found in Boot manifest [{}]", version);
+        LOGGER.debug("Version [{}] is matching in Boot manifest [{}]", version, acceptedVersion);
         if (!StringUtils.hasText(version)) {
             LOGGER.info("Cannot check Boot version from manifest");
             throw new FileNotFoundException("Spring Boot version not found");
