@@ -1,4 +1,4 @@
-## Azure Communications Rooms Service client library for Java
+# Azure Communications Rooms Service client library for Java
 
 Azure Communication Rooms is used to operate on rooms.
 
