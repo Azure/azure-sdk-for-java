@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/callConnectionId:play?api-version=2022-04-07-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.15; Mac OS X; 12.5)",
+      "x-ms-client-request-id" : "34cca319-fa10-4a3b-b09f-ca479fcf7833",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0NPfzYgAAAADE11d8buumSq2sPXrMIcwkV1NURURHRTA4MDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "202",
+      "X-Microsoft-Skype-Chain-ID" : "2cc0db8e-5782-413f-be38-5cedcb8e313e",
+      "x-ms-client-request-id" : "34cca319-fa10-4a3b-b09f-ca479fcf7833",
+      "Date" : "Wed, 10 Aug 2022 18:21:42 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
