@@ -563,6 +563,12 @@ and were returned in the list models response.
 For additional samples please take a look at the [Form Recognizer samples][README-Samples]
 
 <!-- Links -->
+[DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisClientBuilder.java
+[DocumentAnalysisClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisClient.java
+[DocumentAnalysisAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisAsyncClient.java
+[DocumentModelAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClientBuilder.java
+[DocumentModelAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClient.java
+[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationAsyncClient.java
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
