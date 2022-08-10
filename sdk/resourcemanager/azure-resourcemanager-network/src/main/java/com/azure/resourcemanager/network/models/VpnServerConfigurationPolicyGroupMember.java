@@ -23,8 +23,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
     private VpnPolicyMemberAttributeType attributeType;
 
     /*
-     * The value of Attribute used for this
-     * VpnServerConfigurationPolicyGroupMember.
+     * The value of Attribute used for this VpnServerConfigurationPolicyGroupMember.
      */
     @JsonProperty(value = "attributeValue")
     private String attributeValue;

@@ -20,8 +20,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
     private ApplicationGatewayBackendSettingsPropertiesFormat innerProperties;
 
     /*
-     * Name of the backend settings that is unique within an Application
-     * Gateway.
+     * Name of the backend settings that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

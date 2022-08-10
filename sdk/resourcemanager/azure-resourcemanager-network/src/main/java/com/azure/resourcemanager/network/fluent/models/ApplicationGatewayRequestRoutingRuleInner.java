@@ -20,8 +20,7 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     private ApplicationGatewayRequestRoutingRulePropertiesFormat innerProperties;
 
     /*
-     * Name of the request routing rule that is unique within an Application
-     * Gateway.
+     * Name of the request routing rule that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

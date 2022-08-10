@@ -18,8 +18,7 @@ public final class VerificationIpFlowResultInner {
     private Access access;
 
     /*
-     * Name of the rule. If input is not matched against any security rule, it
-     * is not displayed.
+     * Name of the rule. If input is not matched against any security rule, it is not displayed.
      */
     @JsonProperty(value = "ruleName")
     private String ruleName;

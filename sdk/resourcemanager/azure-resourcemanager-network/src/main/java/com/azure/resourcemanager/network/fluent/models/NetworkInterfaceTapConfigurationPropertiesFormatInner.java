@@ -18,8 +18,7 @@ public final class NetworkInterfaceTapConfigurationPropertiesFormatInner {
     private VirtualNetworkTapInner virtualNetworkTap;
 
     /*
-     * The provisioning state of the network interface tap configuration
-     * resource.
+     * The provisioning state of the network interface tap configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
