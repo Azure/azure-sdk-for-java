@@ -334,7 +334,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void requestSessionTokenDiagnostics() {
         CosmosClient testSessionTokenClient = null;
         try {
