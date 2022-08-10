@@ -4,9 +4,10 @@
 package com.azure.communication.callingserver;
 
 
-import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.AnswerCallResult;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.CreateCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -41,7 +42,7 @@ public final class CallAutomationClient {
      * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionProperties createCall(CreateCallOptions createCallOptions) {
+    public CreateCallResult createCall(CreateCallOptions createCallOptions) {
         return callAutomationAsyncClient.createCall(createCallOptions).block();
     }
 
@@ -55,7 +56,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
+    public Response<CreateCallResult> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
         return callAutomationAsyncClient.createCallWithResponseInternal(createCallOptions, context).block();
     }
 
@@ -69,7 +70,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionProperties answerCall(String incomingCallContext, String callbackUri) {
+    public AnswerCallResult answerCall(String incomingCallContext, String callbackUri) {
         return callAutomationAsyncClient.answerCall(incomingCallContext, callbackUri).block();
     }
 
@@ -84,7 +85,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> answerCallWithResponse(String incomingCallContext, String callbackUri,
+    public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUri,
                                                                      Context context) {
         return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, context).block();
     }

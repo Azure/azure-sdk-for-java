@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
-/** The RemoveParticipantsResponse model. */
+/** The RemoveParticipantsResult model. */
 @Immutable
-public final class RemoveParticipantsResponse {
+public final class RemoveParticipantsResult {
     /*
      * The operation context provided by client.
      */
@@ -21,8 +21,8 @@ public final class RemoveParticipantsResponse {
         RemoveParticipantsResponseConstructorProxy.setAccessor(
             new RemoveParticipantsResponseConstructorProxy.RemoveParticipantsResponseConstructorAccessor() {
                 @Override
-                public RemoveParticipantsResponse create(RemoveParticipantsResponseInternal internalHeaders) {
-                    return new RemoveParticipantsResponse(internalHeaders);
+                public RemoveParticipantsResult create(RemoveParticipantsResponseInternal internalHeaders) {
+                    return new RemoveParticipantsResult(internalHeaders);
                 }
             });
     }
@@ -31,7 +31,7 @@ public final class RemoveParticipantsResponse {
      * Public constructor.
      *
      */
-    public RemoveParticipantsResponse() {
+    public RemoveParticipantsResult() {
         this.operationContext = null;
     }
 
@@ -40,7 +40,7 @@ public final class RemoveParticipantsResponse {
      *
      * @param  removeParticipantsResponseInternal The response from the service
      */
-    RemoveParticipantsResponse(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
+    RemoveParticipantsResult(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
         Objects.requireNonNull(removeParticipantsResponseInternal, "removeParticipantsResponseInternal must not be null");
 
         this.operationContext = removeParticipantsResponseInternal.getOperationContext();

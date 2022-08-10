@@ -12,7 +12,7 @@ import com.azure.communication.callingserver.implementation.accesshelpers.CallCo
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallSourceInternal;
-import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.AnswerCallResult;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
@@ -22,6 +22,7 @@ import com.azure.communication.callingserver.implementation.models.RejectCallReq
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.CreateCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -86,7 +87,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> createCall(CreateCallOptions createCallOptions) {
+    public Mono<CreateCallResult> createCall(CreateCallOptions createCallOptions) {
         return createCallWithResponse(createCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -99,11 +100,11 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> createCallWithResponse(CreateCallOptions createCallOptions) {
+    public Mono<Response<CreateCallResult>> createCallWithResponse(CreateCallOptions createCallOptions) {
         return withContext(context -> createCallWithResponseInternal(createCallOptions, context));
     }
 
-    Mono<Response<CallConnectionProperties>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
+    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
                                                                             Context context) {
         try {
             context = context == null ? Context.NONE : context;
@@ -126,10 +127,13 @@ public final class CallAutomationAsyncClient {
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
+                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
+
+                        return new SimpleResponse<>(response,
+                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                                new CallConnection(callConnectionAsync), callConnectionAsync));
                     } catch (URISyntaxException e) {
-                        logger.logExceptionAsError(new RuntimeException(e));
-                        return null;
+                        throw logger.logExceptionAsError(new RuntimeException(e));
                     }
                 });
         } catch (RuntimeException ex) {
@@ -147,7 +151,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> answerCall(String incomingCallContext, String callbackUri) {
+    public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUri) {
         return answerCallWithResponse(incomingCallContext, callbackUri).flatMap(FluxUtil::toMono);
     }
 
@@ -161,12 +165,12 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> answerCallWithResponse(String incomingCallContext,
+    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
                                                                            String callbackUri) {
         return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUri, context));
     }
 
-    Mono<Response<CallConnectionProperties>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
+    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
                                                                             Context context) {
         try {
             context = context == null ? Context.NONE : context;
@@ -179,10 +183,12 @@ public final class CallAutomationAsyncClient {
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
+                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        return new SimpleResponse<>(response,
+                            new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                                new CallConnection(callConnectionAsync), callConnectionAsync));
                     } catch (URISyntaxException e) {
-                        logger.logExceptionAsError(new RuntimeException(e));
-                        return null;
+                        throw logger.logExceptionAsError(new RuntimeException(e));
                     }
                 });
         } catch (RuntimeException ex) {

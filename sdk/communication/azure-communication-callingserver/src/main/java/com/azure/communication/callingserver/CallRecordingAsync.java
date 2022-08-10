@@ -19,7 +19,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.models.RecordingStatusResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -87,7 +87,7 @@ public class CallRecordingAsync {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStatusResponse> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+    public Mono<RecordingStatusResult> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
         return startRecordingWithResponse(callLocator, recordingStateCallbackUri, null)
             .flatMap(response -> Mono.just(response.getValue()));
     }
@@ -104,14 +104,14 @@ public class CallRecordingAsync {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> startRecordingWithResponse(
+    public Mono<Response<RecordingStatusResult>> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
         StartRecordingOptions options) {
         return startRecordingWithResponseInternal(callLocator, recordingStateCallbackUri, options, null);
     }
 
-    Mono<Response<RecordingStatusResponse>> startRecordingWithResponseInternal(
+    Mono<Response<RecordingStatusResult>> startRecordingWithResponseInternal(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
         StartRecordingOptions options,
@@ -296,7 +296,7 @@ public class CallRecordingAsync {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStatusResponse> getRecordingState(String recordingId) {
+    public Mono<RecordingStatusResult> getRecordingState(String recordingId) {
         return getRecordingStateWithResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
     }
 
@@ -309,11 +309,11 @@ public class CallRecordingAsync {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> getRecordingStateWithResponse(String recordingId) {
+    public Mono<Response<RecordingStatusResult>> getRecordingStateWithResponse(String recordingId) {
         return getRecordingStateWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<RecordingStatusResponse>> getRecordingStateWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<RecordingStatusResult>> getRecordingStateWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;

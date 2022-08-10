@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** The AddParticipantsResponse model. */
+/** The AddParticipantsResult model. */
 @Immutable
-public final class AddParticipantsResponse {
+public final class AddParticipantsResult {
     /*
      * The participants property.
      */
@@ -29,8 +29,8 @@ public final class AddParticipantsResponse {
         AddParticipantsResponseConstructorProxy.setAccessor(
             new AddParticipantsResponseConstructorProxy.AddParticipantsResponseConstructorAccessor() {
                 @Override
-                public AddParticipantsResponse create(AddParticipantsResponseInternal internalHeaders) {
-                    return new AddParticipantsResponse(internalHeaders);
+                public AddParticipantsResult create(AddParticipantsResponseInternal internalHeaders) {
+                    return new AddParticipantsResult(internalHeaders);
                 }
             });
     }
@@ -39,7 +39,7 @@ public final class AddParticipantsResponse {
      * Public constructor.
      *
      */
-    public AddParticipantsResponse() {
+    public AddParticipantsResult() {
         this.participants = null;
         this.operationContext = null;
     }
@@ -49,7 +49,7 @@ public final class AddParticipantsResponse {
      *
      * @param addParticipantsResponseInternal The response from the addParticipant service
      */
-    AddParticipantsResponse(AddParticipantsResponseInternal addParticipantsResponseInternal) {
+    AddParticipantsResult(AddParticipantsResponseInternal addParticipantsResponseInternal) {
         Objects.requireNonNull(addParticipantsResponseInternal, "addParticipantsResponseInternal must not be null");
 
         this.participants = addParticipantsResponseInternal.getParticipants()

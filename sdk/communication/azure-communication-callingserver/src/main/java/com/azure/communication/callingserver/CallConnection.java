@@ -5,12 +5,12 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsOptions;
-import com.azure.communication.callingserver.models.AddParticipantsResponse;
+import com.azure.communication.callingserver.models.AddParticipantsResult;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.ListParticipantsResponse;
-import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
-import com.azure.communication.callingserver.models.TransferCallResponse;
+import com.azure.communication.callingserver.models.ListParticipantsResult;
+import com.azure.communication.callingserver.models.RemoveParticipantsResult;
+import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.callingserver.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -117,7 +117,7 @@ public class CallConnection {
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListParticipantsResponse listParticipants() {
+    public ListParticipantsResult listParticipants() {
         return callConnectionAsync.listParticipants().block();
     }
 
@@ -130,7 +130,7 @@ public class CallConnection {
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListParticipantsResponse> listParticipantsWithResponse(Context context) {
+    public Response<ListParticipantsResult> listParticipantsWithResponse(Context context) {
         return callConnectionAsync.listParticipantsWithResponseInternal(context).block();
     }
 
@@ -143,7 +143,7 @@ public class CallConnection {
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResponse transferToParticipantCall(TransferToParticipantCallOptions transferToParticipantCallOptions) {
+    public TransferCallResult transferToParticipantCall(TransferToParticipantCallOptions transferToParticipantCallOptions) {
         return callConnectionAsync.transferToParticipantCall(transferToParticipantCallOptions).block();
     }
 
@@ -157,7 +157,7 @@ public class CallConnection {
      * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResponse> transferToParticipantCallWithResponse(
+    public Response<TransferCallResult> transferToParticipantCallWithResponse(
         TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
         return callConnectionAsync.transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context).block();
     }
@@ -171,7 +171,7 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantsResponse addParticipants(AddParticipantsOptions addParticipantsOptions) {
+    public AddParticipantsResult addParticipants(AddParticipantsOptions addParticipantsOptions) {
         return callConnectionAsync.addParticipants(addParticipantsOptions).block();
     }
 
@@ -185,8 +185,8 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddParticipantsResponse> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions,
-                                                                         Context context) {
+    public Response<AddParticipantsResult> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions,
+                                                                       Context context) {
         return callConnectionAsync.addParticipantsWithResponseInternal(addParticipantsOptions, context).block();
     }
 
@@ -200,8 +200,8 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResponse removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                         String operationContext) {
+    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove,
+                                                       String operationContext) {
         return callConnectionAsync.removeParticipants(participantsToRemove, operationContext).block();
     }
 
@@ -216,8 +216,8 @@ public class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResponse> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
-                                                                               String operationContext, Context context) {
+    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
+                                                                             String operationContext, Context context) {
         return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context).block();
     }
 

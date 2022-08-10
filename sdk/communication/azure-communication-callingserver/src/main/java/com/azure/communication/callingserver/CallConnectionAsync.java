@@ -18,14 +18,14 @@ import com.azure.communication.callingserver.implementation.models.AddParticipan
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
+import com.azure.communication.callingserver.models.AddParticipantsResult;
 import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsOptions;
-import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.ListParticipantsResponse;
-import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
-import com.azure.communication.callingserver.models.TransferCallResponse;
+import com.azure.communication.callingserver.models.ListParticipantsResult;
+import com.azure.communication.callingserver.models.RemoveParticipantsResult;
+import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.callingserver.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -192,7 +192,7 @@ public class CallConnectionAsync {
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListParticipantsResponse> listParticipants() {
+    public Mono<ListParticipantsResult> listParticipants() {
         return listParticipantsWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -204,11 +204,11 @@ public class CallConnectionAsync {
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ListParticipantsResponse>> listParticipantsWithResponse() {
+    public Mono<Response<ListParticipantsResult>> listParticipantsWithResponse() {
         return withContext(this::listParticipantsWithResponseInternal);
     }
 
-    Mono<Response<ListParticipantsResponse>> listParticipantsWithResponseInternal(Context context) {
+    Mono<Response<ListParticipantsResult>> listParticipantsWithResponseInternal(Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
@@ -230,7 +230,7 @@ public class CallConnectionAsync {
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResponse> transferToParticipantCall(
+    public Mono<TransferCallResult> transferToParticipantCall(
         TransferToParticipantCallOptions transferToParticipantCallOptions) {
         return transferToParticipantCallWithResponse(transferToParticipantCallOptions).flatMap(FluxUtil::toMono);
     }
@@ -244,12 +244,12 @@ public class CallConnectionAsync {
      * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResponse>> transferToParticipantCallWithResponse(
+    public Mono<Response<TransferCallResult>> transferToParticipantCallWithResponse(
         TransferToParticipantCallOptions transferToParticipantCallOptions) {
         return withContext(context -> transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context));
     }
 
-    Mono<Response<TransferCallResponse>> transferToParticipantCallWithResponseInternal(
+    Mono<Response<TransferCallResult>> transferToParticipantCallWithResponseInternal(
         TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
@@ -278,7 +278,7 @@ public class CallConnectionAsync {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddParticipantsResponse> addParticipants(AddParticipantsOptions addParticipantsOptions) {
+    public Mono<AddParticipantsResult> addParticipants(AddParticipantsOptions addParticipantsOptions) {
         return addParticipantsWithResponse(addParticipantsOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -291,12 +291,12 @@ public class CallConnectionAsync {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddParticipantsResponse>> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions) {
+    public Mono<Response<AddParticipantsResult>> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions) {
         return withContext(context -> addParticipantsWithResponseInternal(addParticipantsOptions, context));
     }
 
-    Mono<Response<AddParticipantsResponse>> addParticipantsWithResponseInternal(AddParticipantsOptions addParticipantsOptions,
-                                                                                Context context) {
+    Mono<Response<AddParticipantsResult>> addParticipantsWithResponseInternal(AddParticipantsOptions addParticipantsOptions,
+                                                                              Context context) {
         try {
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> participantModels = addParticipantsOptions.getParticipants()
@@ -333,8 +333,8 @@ public class CallConnectionAsync {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoveParticipantsResponse> removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                               String operationContext) {
+    public Mono<RemoveParticipantsResult> removeParticipants(List<CommunicationIdentifier> participantsToRemove,
+                                                             String operationContext) {
         return removeParticipantsWithResponse(participantsToRemove, operationContext).flatMap(FluxUtil::toMono);
     }
 
@@ -348,13 +348,13 @@ public class CallConnectionAsync {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
-                                                                                     String operationContext) {
+    public Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponse(List<CommunicationIdentifier> participantsToRemove,
+                                                                                   String operationContext) {
         return withContext(context -> removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context));
     }
 
-    Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponseInternal(List<CommunicationIdentifier> participantsToRemove,
-                                                                                      String operationContext, Context context) {
+    Mono<Response<RemoveParticipantsResult>> removeParticipantsWithResponseInternal(List<CommunicationIdentifier> participantsToRemove,
+                                                                                    String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> participantModels = participantsToRemove

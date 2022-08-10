@@ -4,10 +4,10 @@
 package com.azure.communication.callingserver.implementation.accesshelpers;
 
 import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
-import com.azure.communication.callingserver.models.TransferCallResponse;
+import com.azure.communication.callingserver.models.TransferCallResult;
 
 /**
- * Helper class to access private values of {@link TransferCallResponse} across package boundaries.
+ * Helper class to access private values of {@link TransferCallResult} across package boundaries.
  */
 public final class TransferCallResponseConstructorProxy {
     private static TransferCallResponseConstructorAccessor accessor;
@@ -20,17 +20,17 @@ public final class TransferCallResponseConstructorProxy {
      */
     public interface TransferCallResponseConstructorAccessor {
         /**
-         * Creates a new instance of {@link TransferCallResponse} backed by an internal instance of
-         * {@link TransferCallResponse}.
+         * Creates a new instance of {@link TransferCallResult} backed by an internal instance of
+         * {@link TransferCallResult}.
          *
          * @param internalResponse The internal response.
-         * @return A new instance of {@link TransferCallResponse}.
+         * @return A new instance of {@link TransferCallResult}.
          */
-        TransferCallResponse create(TransferCallResponseInternal internalResponse);
+        TransferCallResult create(TransferCallResponseInternal internalResponse);
     }
 
     /**
-     * The method called from {@link TransferCallResponse} to set it's accessor.
+     * The method called from {@link TransferCallResult} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -39,18 +39,18 @@ public final class TransferCallResponseConstructorProxy {
     }
 
     /**
-     * Creates a new instance of {@link TransferCallResponse} backed by an internal instance of
-     * {@link TransferCallResponse}.
+     * Creates a new instance of {@link TransferCallResult} backed by an internal instance of
+     * {@link TransferCallResult}.
      *
      * @param internalResponse The internal response.
-     * @return A new instance of {@link TransferCallResponse}.
+     * @return A new instance of {@link TransferCallResult}.
      */
-    public static TransferCallResponse create(TransferCallResponseInternal internalResponse) {
+    public static TransferCallResult create(TransferCallResponseInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new TransferCallResponse();
+            new TransferCallResult();
         }
 
         assert accessor != null;

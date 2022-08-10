@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 
 /** The response payload of start call recording operation. */
 @Immutable
-public final class RecordingStatusResponse {
+public final class RecordingStatusResult {
     static {
-        RecordingStatusResponseConstructorProxy.setAccessor(RecordingStatusResponse::new);
+        RecordingStatusResponseConstructorProxy.setAccessor(RecordingStatusResult::new);
     }
     /*
      * The recording id of the started recording
@@ -42,7 +42,7 @@ public final class RecordingStatusResponse {
      * Public constructor.
      *
      */
-    public RecordingStatusResponse() {
+    public RecordingStatusResult() {
         this.recordingId = null;
         this.recordingStatus = null;
     }
@@ -52,7 +52,7 @@ public final class RecordingStatusResponse {
      *
      * @param  recordingStatusResponseInternal The response from the service
      */
-    RecordingStatusResponse(RecordingStatusResponseInternal recordingStatusResponseInternal) {
+    RecordingStatusResult(RecordingStatusResponseInternal recordingStatusResponseInternal) {
         this.recordingId = recordingStatusResponseInternal.getRecordingId();
         this.recordingStatus = RecordingStatus.fromString(recordingStatusResponseInternal.getRecordingStatus().toString());
     }

@@ -4,10 +4,10 @@
 package com.azure.communication.callingserver.implementation.accesshelpers;
 
 import com.azure.communication.callingserver.implementation.models.RecordingStatusResponseInternal;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.models.RecordingStatusResult;
 
 /**
- * Helper class to access private values of {@link RecordingStatusResponse} across package boundaries.
+ * Helper class to access private values of {@link RecordingStatusResult} across package boundaries.
  */
 public final class RecordingStatusResponseConstructorProxy {
     private static RecordingStatusResponseConstructorAccessor accessor;
@@ -20,17 +20,17 @@ public final class RecordingStatusResponseConstructorProxy {
      */
     public interface RecordingStatusResponseConstructorAccessor {
         /**
-         * Creates a new instance of {@link RecordingStatusResponse} backed by an internal instance of
+         * Creates a new instance of {@link RecordingStatusResult} backed by an internal instance of
          * {@link RecordingStatusResponseInternal}.
          *
          * @param internalResponse The internal response.
-         * @return A new instance of {@link RecordingStatusResponse}.
+         * @return A new instance of {@link RecordingStatusResult}.
          */
-        RecordingStatusResponse create(RecordingStatusResponseInternal internalResponse);
+        RecordingStatusResult create(RecordingStatusResponseInternal internalResponse);
     }
 
     /**
-     * The method called from {@link RecordingStatusResponse} to set it's accessor.
+     * The method called from {@link RecordingStatusResult} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -39,15 +39,15 @@ public final class RecordingStatusResponseConstructorProxy {
     }
 
     /**
-     * Creates a new instance of {@link RecordingStatusResponse} backed by an internal instance of
+     * Creates a new instance of {@link RecordingStatusResult} backed by an internal instance of
      * {@link RecordingStatusResponseInternal}.
      *
      * @param internalResponse The internal response.
-     * @return A new instance of {@link RecordingStatusResponse}.
+     * @return A new instance of {@link RecordingStatusResult}.
      */
-    public static RecordingStatusResponse create(RecordingStatusResponseInternal internalResponse) {
+    public static RecordingStatusResult create(RecordingStatusResponseInternal internalResponse) {
         if (accessor == null) {
-            new RecordingStatusResponse();
+            new RecordingStatusResult();
         }
 
         assert accessor != null;

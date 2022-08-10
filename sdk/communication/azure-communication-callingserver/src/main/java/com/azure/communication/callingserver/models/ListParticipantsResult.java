@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** The ListParticipantsResponse model. */
+/** The ListParticipantsResult model. */
 @Immutable
-public final class ListParticipantsResponse {
+public final class ListParticipantsResult {
     /*
      * The list of participants in the call.
      */
@@ -23,8 +23,8 @@ public final class ListParticipantsResponse {
         ListParticipantsResponseConstructorProxy.setAccessor(
             new ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor() {
                 @Override
-                public ListParticipantsResponse create(GetParticipantsResponseInternal internalHeaders) {
-                    return new ListParticipantsResponse(internalHeaders);
+                public ListParticipantsResult create(GetParticipantsResponseInternal internalHeaders) {
+                    return new ListParticipantsResult(internalHeaders);
                 }
             });
     }
@@ -33,7 +33,7 @@ public final class ListParticipantsResponse {
      * Public constructor.
      *
      */
-    public ListParticipantsResponse() {
+    public ListParticipantsResult() {
         this.values = null;
     }
 
@@ -42,7 +42,7 @@ public final class ListParticipantsResponse {
      *
      * @param getParticipantsResponseInternal The response from the service.
      */
-    ListParticipantsResponse(GetParticipantsResponseInternal getParticipantsResponseInternal) {
+    ListParticipantsResult(GetParticipantsResponseInternal getParticipantsResponseInternal) {
         Objects.requireNonNull(getParticipantsResponseInternal, "transferCallResponseInternal must not be null");
 
         this.values = getParticipantsResponseInternal

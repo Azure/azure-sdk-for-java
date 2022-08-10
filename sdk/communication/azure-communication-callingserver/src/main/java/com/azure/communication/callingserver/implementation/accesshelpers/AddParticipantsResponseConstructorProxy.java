@@ -4,10 +4,10 @@
 package com.azure.communication.callingserver.implementation.accesshelpers;
 
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
-import com.azure.communication.callingserver.models.AddParticipantsResponse;
+import com.azure.communication.callingserver.models.AddParticipantsResult;
 
 /**
- * Helper class to access private values of {@link AddParticipantsResponse} across package boundaries.
+ * Helper class to access private values of {@link AddParticipantsResult} across package boundaries.
  */
 public final class AddParticipantsResponseConstructorProxy {
     private static AddParticipantsResponseConstructorAccessor accessor;
@@ -20,17 +20,17 @@ public final class AddParticipantsResponseConstructorProxy {
      */
     public interface AddParticipantsResponseConstructorAccessor {
         /**
-         * Creates a new instance of {@link AddParticipantsResponse} backed by an internal instance of
-         * {@link AddParticipantsResponse}.
+         * Creates a new instance of {@link AddParticipantsResult} backed by an internal instance of
+         * {@link AddParticipantsResult}.
          *
          * @param internalResponse The internal response.
-         * @return A new instance of {@link AddParticipantsResponse}.
+         * @return A new instance of {@link AddParticipantsResult}.
          */
-        AddParticipantsResponse create(AddParticipantsResponseInternal internalResponse);
+        AddParticipantsResult create(AddParticipantsResponseInternal internalResponse);
     }
 
     /**
-     * The method called from {@link AddParticipantsResponse} to set it's accessor.
+     * The method called from {@link AddParticipantsResult} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -39,18 +39,18 @@ public final class AddParticipantsResponseConstructorProxy {
     }
 
     /**
-     * Creates a new instance of {@link AddParticipantsResponse} backed by an internal instance of
-     * {@link AddParticipantsResponse}.
+     * Creates a new instance of {@link AddParticipantsResult} backed by an internal instance of
+     * {@link AddParticipantsResult}.
      *
      * @param internalResponse The internal response.
-     * @return A new instance of {@link AddParticipantsResponse}.
+     * @return A new instance of {@link AddParticipantsResult}.
      */
-    public static AddParticipantsResponse create(AddParticipantsResponseInternal internalResponse) {
+    public static AddParticipantsResult create(AddParticipantsResponseInternal internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new AddParticipantsResponse();
+            new AddParticipantsResult();
         }
 
         assert accessor != null;

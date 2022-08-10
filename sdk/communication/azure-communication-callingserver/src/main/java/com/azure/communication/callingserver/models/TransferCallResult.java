@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
-/** The TransferCallResponse model. */
+/** The TransferCallResult model. */
 @Immutable
-public final class TransferCallResponse {
+public final class TransferCallResult {
     /*
      * The operation context provided by client.
      */
@@ -21,8 +21,8 @@ public final class TransferCallResponse {
         TransferCallResponseConstructorProxy.setAccessor(
             new TransferCallResponseConstructorProxy.TransferCallResponseConstructorAccessor() {
                 @Override
-                public TransferCallResponse create(TransferCallResponseInternal internalHeaders) {
-                    return new TransferCallResponse(internalHeaders);
+                public TransferCallResult create(TransferCallResponseInternal internalHeaders) {
+                    return new TransferCallResult(internalHeaders);
                 }
             });
     }
@@ -31,7 +31,7 @@ public final class TransferCallResponse {
      * Public constructor.
      *
      */
-    public TransferCallResponse() {
+    public TransferCallResult() {
         this.operationContext = null;
     }
 
@@ -40,7 +40,7 @@ public final class TransferCallResponse {
      *
      * @param transferCallResponseInternal The response from the service.
      */
-    TransferCallResponse(TransferCallResponseInternal transferCallResponseInternal) {
+    TransferCallResult(TransferCallResponseInternal transferCallResponseInternal) {
         Objects.requireNonNull(transferCallResponseInternal, "transferCallResponseInternal must not be null");
 
         this.operationContext = transferCallResponseInternal.getOperationContext();
