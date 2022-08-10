@@ -29,10 +29,10 @@ public class DownloadContentUnitTests {
 
     @BeforeEach
     public void setUp() {
-        CallAutomationClient callAutomationClient = CallingServerResponseMocker.getCallingServerClient(
+        CallAutomationClient callAutomationClient = CallAutomationResponseMocker.getCallingServerClient(
             new ArrayList<>(
                 Collections.singletonList(
-                    new SimpleEntry<>(CallingServerResponseMocker.generateDownloadResult(CONTENT), 200)
+                    new SimpleEntry<>(CallAutomationResponseMocker.generateDownloadResult(CONTENT), 200)
                 )));
         callRecording = callAutomationClient.getCallRecording();
     }

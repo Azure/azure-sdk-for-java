@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 
-public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
+public class DownloadContentAsyncLiveTests extends CallAutomationTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

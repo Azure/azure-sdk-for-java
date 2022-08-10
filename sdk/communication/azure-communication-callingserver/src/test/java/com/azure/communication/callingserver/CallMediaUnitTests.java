@@ -27,7 +27,7 @@ public class CallMediaUnitTests {
     @BeforeEach
     public void setup() {
         CallConnection callConnection =
-            CallingServerResponseMocker.getCallConnection(new ArrayList<>(
+            CallAutomationResponseMocker.getCallConnection(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202)))
             );
         callMedia = callConnection.getCallMedia();

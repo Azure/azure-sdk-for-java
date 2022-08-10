@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 
-public class CallingServerTestBase extends TestBase {
+public class CallAutomationTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");

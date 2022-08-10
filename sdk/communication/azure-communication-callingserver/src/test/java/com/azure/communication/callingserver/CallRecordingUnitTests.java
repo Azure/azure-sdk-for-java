@@ -27,7 +27,7 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
 
     @BeforeEach
     public void setup() {
-        CallAutomationClient callAutomationClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<>());
+        CallAutomationClient callAutomationClient = CallAutomationResponseMocker.getCallingServerClient(new ArrayList<>());
         callRecording = callAutomationClient.getCallRecording();
     }
     @Test
@@ -62,7 +62,7 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
     @Test
     public void recordingOperationsTest() {
 
-        CallAutomationClient callAutomationClient = CallingServerResponseMocker.getCallingServerClient(
+        CallAutomationClient callAutomationClient = CallAutomationResponseMocker.getCallingServerClient(
             recordingOperationsResponses
         );
         callRecording = callAutomationClient.getCallRecording();
