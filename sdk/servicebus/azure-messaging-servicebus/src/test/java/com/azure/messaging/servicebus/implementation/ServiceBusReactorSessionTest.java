@@ -44,9 +44,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -149,10 +148,9 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(reactor).update(selectable);
         when(reactor.selectable()).thenReturn(selectable);
 
-        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
-        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
-        sink1.next(EndpointState.ACTIVE);
+        final Sinks.Many<EndpointState> endpointStateReplayProcessor = Sinks.many().replay().latest();
+        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor.asFlux());
+        endpointStateReplayProcessor.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
         when(handler.getHostname()).thenReturn(HOSTNAME);
         when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
 
@@ -170,8 +168,8 @@ public class ServiceBusReactorSessionTest {
         when(sendViaEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
         when(sendEntityLinkHandler.getLinkCredits()).thenReturn(Flux.just(100));
 
-        when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor.asFlux());
+        when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor.asFlux());
 
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, VIA_ENTITY_PATH)).thenReturn(tokenManagerViaQueue);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, ENTITY_PATH)).thenReturn(tokenManagerEntity);

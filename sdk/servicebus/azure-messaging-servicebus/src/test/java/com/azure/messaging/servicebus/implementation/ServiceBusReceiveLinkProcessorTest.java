@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -185,14 +186,37 @@ class ServiceBusReceiveLinkProcessorTest {
 
         // Act
         semaphore.acquire();
-        processor.subscribe(
-            e -> System.out.println("message: " + e),
-            Assertions::fail,
-            () -> System.out.println("Complete."),
-            s -> {
+
+        processor.subscribeWith(new BaseSubscriber<Message>() {
+            @Override
+            protected void hookOnNext(Message e) {
+                System.out.println("message: " + e);
+                super.hookOnNext(e);
+            }
+
+            @Override
+            protected void hookOnError(Throwable throwable) {
+                Assertions.fail();
+                super.hookOnError(throwable);
+            }
+
+            @Override
+            protected void hookOnComplete() {
+                System.out.println("Complete.");
+                super.hookOnComplete();
+            }
+
+            @Override
+            protected void hookOnSubscribe(Subscription s) {
                 s.request(backpressure);
                 semaphore.release();
-            });
+            }
+
+            @Override
+            protected Subscription upstream() {
+                return super.upstream();
+            }
+        });
 
         // Assert
         assertTrue(semaphore.tryAcquire(10, TimeUnit.SECONDS));

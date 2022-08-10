@@ -17,7 +17,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoProcessor;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
@@ -49,7 +49,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusMessageContext> receivedMessages;
-    private final MonoProcessor<ServiceBusMessageContext> cancelReceiveProcessor = MonoProcessor.create();
+    private final Sinks.Empty<ServiceBusMessageContext> cancelReceiveProcessor = Sinks.empty();
     private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
     private final AmqpRetryOptions retryOptions;
@@ -95,7 +95,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 }
             })
             .limitRate(1)
-            .takeUntilOther(cancelReceiveProcessor)
+            .takeUntilOther(cancelReceiveProcessor.asMono())
             .map(message -> {
                 final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
                     ServiceBusReceivedMessage.class);
@@ -138,7 +138,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 messageReceivedSink.next(token);
             });
 
-        this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor);
+        this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor.asMono());
         this.subscriptions = Disposables.composite();
 
         // Creates a subscription that disposes/closes the receiver when there are no more messages in the session and
@@ -152,7 +152,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                         .addKeyValue(SESSION_ID_KEY, sessionId.get())
                         .addKeyValue("timeout", retryOptions.getTryTimeout())
                         .log("Did not a receive message within timeout.");
-                    cancelReceiveProcessor.onComplete();
+                    cancelReceiveProcessor.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
                 }));
         }
 

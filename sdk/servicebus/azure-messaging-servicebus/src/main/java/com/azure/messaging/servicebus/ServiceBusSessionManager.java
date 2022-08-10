@@ -18,10 +18,9 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
@@ -74,8 +73,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      * SessionId to receiver mapping.
      */
     private final ConcurrentHashMap<String, ServiceBusSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
-    private final EmitterProcessor<Flux<ServiceBusMessageContext>> processor;
-    private final FluxSink<Flux<ServiceBusMessageContext>> sessionReceiveSink;
+    private final Sinks.Many<Flux<ServiceBusMessageContext>> sessionReceiverSink;
 
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
@@ -105,8 +103,9 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.schedulers = Collections.unmodifiableList(schedulerList);
         this.availableSchedulers.addAll(this.schedulers);
 
-        this.processor = EmitterProcessor.create(numberOfSchedulers, false);
-        this.sessionReceiveSink = processor.sink();
+        this.sessionReceiverSink = Sinks.many()
+            .multicast()
+            .onBackpressureBuffer(numberOfSchedulers, false);
         this.receiveLink = receiveLink;
     }
 
@@ -154,12 +153,11 @@ class ServiceBusSessionManager implements AutoCloseable {
      */
     Flux<ServiceBusMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
-            this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
             if (!receiverOptions.isRollingSessionReceiver()) {
                 receiveFlux = getSession(schedulers.get(0), false);
             } else {
-                receiveFlux = Flux.merge(processor, receiverOptions.getMaxConcurrentSessions());
+                receiveFlux = Flux.merge(sessionReceiverSink.asFlux().doOnRequest(this::onSessionRequest), receiverOptions.getMaxConcurrentSessions());
             }
         }
 
@@ -228,7 +226,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             .collect(Collectors.toList());
 
         Mono.when(closeables).block(operationTimeout);
-        sessionReceiveSink.complete();
+        sessionReceiverSink.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
 
         for (Scheduler scheduler : schedulers) {
             scheduler.dispose();
@@ -363,7 +361,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
             Flux<ServiceBusMessageContext> session = getSession(scheduler, true);
 
-            sessionReceiveSink.next(session);
+            sessionReceiverSink.emitNext(session, Sinks.EmitFailureHandler.FAIL_FAST);
         }
     }
 

@@ -12,12 +12,14 @@ import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
+import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.Exceptions;
-import reactor.core.publisher.FluxProcessor;
+import reactor.core.Scannable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.core.scheduler.Schedulers;
@@ -45,8 +47,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * This is almost a carbon copy of AmqpReceiveLinkProcessor. When we can abstract it from proton-j, it would be nice to
  * unify this.
  */
-public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusReceiveLink, Message>
-    implements Subscription {
+public class ServiceBusReceiveLinkProcessor extends Flux<Message>
+    implements Processor<ServiceBusReceiveLink, Message>,
+    CoreSubscriber<ServiceBusReceiveLink>, Scannable, Disposable, Subscription {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
     private final Object lock = new Object();
     private final Object queueLock = new Object();
@@ -144,7 +147,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      *
      * @return Error associated with this processor. {@code null} if there is no error.
      */
-    @Override
     public Throwable getError() {
         return lastError;
     }
@@ -154,9 +156,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      *
      * @return {@code true} if the processor has terminated; false otherwise.
      */
-    @Override
     public boolean isTerminated() {
         return isTerminated.get() || isCancelled;
+    }
+
+    public final boolean hasError() {
+        return isTerminated() && getError() != null;
     }
 
     @Override
@@ -644,5 +649,23 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 .addKeyValue(ENTITY_PATH_KEY, link.getEntityPath())
                 .log("Unable to dispose of link.", error);
         }
+    }
+
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Object scanUnsafe(Attr key) {
+        if (key == Attr.TERMINATED) {
+            return isTerminated();
+        }
+
+        if (key == Attr.ERROR) {
+            return getError();
+        }
+
+        if (key == Attr.CAPACITY) {
+            return Integer.MAX_VALUE;
+        }
+
+        return null;
     }
 }

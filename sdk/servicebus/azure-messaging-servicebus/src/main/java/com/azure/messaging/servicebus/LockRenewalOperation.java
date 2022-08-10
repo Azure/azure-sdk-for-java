@@ -4,11 +4,9 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoProcessor;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -31,7 +29,7 @@ class LockRenewalOperation implements AutoCloseable {
     private final AtomicReference<OffsetDateTime> lockedUntil = new AtomicReference<>();
     private final AtomicReference<Throwable> throwable = new AtomicReference<>();
     private final AtomicReference<LockRenewalStatus> status = new AtomicReference<>(LockRenewalStatus.RUNNING);
-    private final MonoProcessor<Void> cancellationProcessor = MonoProcessor.create();
+    private final Sinks.Empty<Void> cancellationProcessor = Sinks.empty();
     private final Mono<Void> completionMono;
 
     private final String lockToken;
@@ -84,7 +82,7 @@ class LockRenewalOperation implements AutoCloseable {
 
         final Flux<OffsetDateTime> renewLockOperation = getRenewLockOperation(tokenLockedUntil,
             maxLockRenewalDuration)
-            .takeUntilOther(cancellationProcessor)
+            .takeUntilOther(cancellationProcessor.asMono())
             .cache(Duration.ofMinutes(2));
 
         this.completionMono = renewLockOperation.then();
@@ -93,13 +91,13 @@ class LockRenewalOperation implements AutoCloseable {
                 logger.error("Error occurred while renewing lock token.", error);
                 status.set(LockRenewalStatus.FAILED);
                 throwable.set(error);
-                cancellationProcessor.onComplete();
+                cancellationProcessor.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
             }, () -> {
                 if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
                     logger.verbose("Renewing session lock task completed.");
                 }
 
-                cancellationProcessor.onComplete();
+                cancellationProcessor.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
             });
     }
 
@@ -170,7 +168,7 @@ class LockRenewalOperation implements AutoCloseable {
             logger.verbose("Cancelled operation.");
         }
 
-        cancellationProcessor.onComplete();
+        cancellationProcessor.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
         subscription.dispose();
     }
 
@@ -189,13 +187,12 @@ class LockRenewalOperation implements AutoCloseable {
             return Flux.empty();
         }
 
-        final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
-        final FluxSink<Duration> sink = emitterProcessor.sink();
+        final Sinks.Many<Duration> emitterProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
-        sink.next(calculateRenewalDelay(initialLockedUntil));
+        emitterProcessor.emitNext(calculateRenewalDelay(initialLockedUntil), Sinks.EmitFailureHandler.FAIL_FAST);
 
-        final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
-        return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
+        final Flux<Object> cancellationSignals = Flux.firstWithSignal(cancellationProcessor.asMono(), Mono.delay(maxLockRenewalDuration));
+        return Flux.switchOnNext(emitterProcessor.asFlux().map(interval -> Mono.delay(interval)
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
@@ -211,7 +208,7 @@ class LockRenewalOperation implements AutoCloseable {
                     .addKeyValue("next", next)
                     .log("Starting lock renewal.");
 
-                sink.next(calculateRenewalDelay(offsetDateTime));
+                emitterProcessor.emitNext(calculateRenewalDelay(offsetDateTime), Sinks.EmitFailureHandler.FAIL_FAST);
                 return offsetDateTime;
             });
     }
