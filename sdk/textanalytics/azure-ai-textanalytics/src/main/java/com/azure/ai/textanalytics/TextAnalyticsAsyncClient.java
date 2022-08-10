@@ -957,7 +957,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of
      * {@link TextDocumentInput document} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
      * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
@@ -1635,7 +1635,7 @@ public final class TextAnalyticsAsyncClient {
      * Analyze healthcare entities, entity data sources, and entity relations in a list of
      * {@link String documents} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -1671,7 +1671,7 @@ public final class TextAnalyticsAsyncClient {
      * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
      * received.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions -->
      * <pre>
@@ -1767,7 +1767,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * <p>This method is supported since service API version {@code V2022_05_01}.</p>
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions -->
@@ -1924,7 +1924,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * <p>This method is supported since service API version {@code V2022_05_01}.</p>
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed AsyncClient.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions -->
@@ -2083,7 +2083,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * <p>This method is supported since service API version {@code V2022_05_01}.</p>
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
@@ -2229,7 +2229,7 @@ public final class TextAnalyticsAsyncClient {
      * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
      * {@link String documents} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions -->
@@ -2308,7 +2308,7 @@ public final class TextAnalyticsAsyncClient {
      * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
      * {@link TextDocumentInput documents} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions -->

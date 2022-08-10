@@ -283,11 +283,11 @@ class LabelClassifyAsyncClient {
                 final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
                 return service.jobStatusWithResponseAsync(operationId, showStatsValue, topValue, skipValue,
                     context)
-                    .map(this::toSingleClassifyDocumentResultCollectionPagedResponse)
+                    .map(this::toClassifyDocumentResultCollectionPagedResponse)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {
                 return service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                    .map(this::toSingleClassifyDocumentResultCollectionPagedResponse)
+                    .map(this::toClassifyDocumentResultCollectionPagedResponse)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }
         } catch (RuntimeException ex) {
@@ -295,7 +295,7 @@ class LabelClassifyAsyncClient {
         }
     }
 
-    private PagedResponse<ClassifyDocumentResultCollection> toSingleClassifyDocumentResultCollectionPagedResponse(
+    private PagedResponse<ClassifyDocumentResultCollection> toClassifyDocumentResultCollectionPagedResponse(
         Response<AnalyzeTextJobState> response) {
 
         final AnalyzeTextJobState jobState = response.getValue();
@@ -331,7 +331,7 @@ class LabelClassifyAsyncClient {
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
             final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Analyze healthcare operation failed", null, null);
+                "Classify label operation failed", null, null);
             final IterableStream<TextAnalyticsError> textAnalyticsErrors =
                 IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
