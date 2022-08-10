@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.events.AcsEventType;
 import com.azure.communication.callingserver.models.events.AddParticipantsFailedEvent;
 import com.azure.communication.callingserver.models.events.AddParticipantsSucceededEvent;
 import com.azure.communication.callingserver.models.events.CallAutomationEventBase;
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -96,7 +96,7 @@ public final class EventHandler {
             }
 
             for (CloudEvent cloudEvent : cloudEvents) {
-                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString());
+                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
                 if (temp != null) {
                     callAutomationBaseEvents.add(temp);
                 }
@@ -114,11 +114,10 @@ public final class EventHandler {
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
             JsonNode eventData = mapper.readTree(data);
-            AcsEventType type = AcsEventType.fromString(eventType);
 
-            if (type.equals(AcsEventType.SUBSCRIPTION_VALIDATION_EVENT)) {
+            if (Objects.equals(eventType, "Microsoft.EventGrid.SubscriptionValidationEvent")) {
                 ret = mapper.convertValue(eventData, SubscriptionValidationEvent.class);
-            } else if (type.equals(AcsEventType.INCOMING_CALL_EVENT)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.IncomingCall")) {
                 ret = mapper.convertValue(eventData, IncomingCallEvent.class);
             }
 
@@ -130,29 +129,27 @@ public final class EventHandler {
         }
     }
 
-    private static CallAutomationEventBase parseSingleCloudEvent(String data) {
+    private static CallAutomationEventBase parseSingleCloudEvent(String data, String eventType) {
         try {
             CallAutomationEventBase ret = null;
             ObjectMapper mapper = new ObjectMapper();
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
             JsonNode eventData = mapper.readTree(data);
-            AcsEventType type = AcsEventType.fromString(mapper
-                .convertValue(eventData.get("type"), String.class));
 
-            if (type.equals(AcsEventType.CALL_CONNECTED)) {
+            if (Objects.equals(eventType, "Microsoft.Communication.CallConnected")) {
                 ret = mapper.convertValue(eventData, CallConnectedEvent.class);
-            } else if (type.equals(AcsEventType.CALL_DISCONNECTED)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
                 ret = mapper.convertValue(eventData, CallDisconnectedEvent.class);
-            } else if (type.equals(AcsEventType.ADD_PARTICIPANTS_FAILED)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsFailed")) {
                 ret = mapper.convertValue(eventData, AddParticipantsFailedEvent.class);
-            } else if (type.equals(AcsEventType.ADD_PARTICIPANTS_SUCCEEDED)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantsSucceeded")) {
                 ret = mapper.convertValue(eventData, AddParticipantsSucceededEvent.class);
-            } else if (type.equals(AcsEventType.CALL_TRANSFER_ACCEPTED)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferAccepted")) {
                 ret = mapper.convertValue(eventData, CallTransferAcceptedEvent.class);
-            } else if (type.equals(AcsEventType.CALL_TRANSFER_FAILED)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CallTransferFailed")) {
                 ret = mapper.convertValue(eventData, CallTransferFailedEvent.class);
-            } else if (type.equals(AcsEventType.PARTICIPANTS_UPDATED)) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ParticipantsUpdated")) {
                 ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
             }
 
