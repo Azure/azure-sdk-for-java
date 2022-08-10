@@ -3,19 +3,19 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.MultiCategoryClassifyActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
+import com.azure.ai.textanalytics.implementation.SingleLabelClassifyActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link MultiCategoryClassifyActionResult} is the result for multi-category classify action analysis.
+ * The {@link SingleLabelClassifyActionResult} model.
  */
 @Immutable
-public final class MultiCategoryClassifyActionResult extends TextAnalyticsActionResult {
-    private MultiCategoryClassifyResultCollection documentsResults;
+public final class SingleLabelClassifyActionResult extends TextAnalyticsActionResult {
+    private ClassifyDocumentResultCollection documentsResults;
 
     static {
-        MultiCategoryClassifyActionResultPropertiesHelper.setAccessor(
+        SingleLabelClassifyActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
@@ -27,12 +27,12 @@ public final class MultiCategoryClassifyActionResult extends TextAnalyticsAction
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public MultiCategoryClassifyResultCollection getDocumentsResults() {
+    public ClassifyDocumentResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(MultiCategoryClassifyResultCollection documentsResults) {
+    private void setDocumentsResults(ClassifyDocumentResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

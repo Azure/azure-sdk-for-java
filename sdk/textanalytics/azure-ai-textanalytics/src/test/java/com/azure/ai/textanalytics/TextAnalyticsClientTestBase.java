@@ -24,8 +24,7 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -40,9 +39,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
-import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
-import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -661,16 +659,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomEntitiesAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+    abstract void recognizeCustomEntitiesAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void singleCategoryClassifyAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+    abstract void singleLabelClassificationAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void multiCategoryClassifyAction(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+    abstract void multiCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void singleLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -1199,17 +1203,44 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setSingleCategoryClassifyActions(
-                    new SingleCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+                .setSingleLabelClassifyActions(
+                    new SingleLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
                         AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
     void classifyCustomMultiCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setMultiCategoryClassifyActions(
-                    new MultiCategoryClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+                .setMultiLabelClassifyActions(
+                    new MultiLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
                         AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
+    }
+
+    void recognizeCustomEntitiesRunner(BiConsumer<List<String>, List<String>> testRunner) {
+        testRunner.accept(CUSTOM_ENTITIES_INPUT,
+            asList(
+                Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME),
+                Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
+        );
+    }
+
+    void classifyCustomSingleLabelRunner(BiConsumer<List<String>, List<String>> testRunner) {
+        testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
+            asList(
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME),
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
+        );
+    }
+
+    void classifyCustomMultiLabelRunner(BiConsumer<List<String>, List<String>> testRunner) {
+        testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
+            asList(
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME),
+                Configuration.getGlobalConfiguration().get(
+                    AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
     String getEndpoint() {
@@ -1478,13 +1509,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
     }
 
-    static void validateSummarySentenceList(List<SummarySentence> expect, List<SummarySentence> actual) {
-        assertEquals(expect.size(), actual.size());
-        for (int i = 0; i < expect.size(); i++) {
-            validateSummarySentence(expect.get(i), actual.get(i));
-        }
-    }
-
     /**
      * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
@@ -1504,13 +1528,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         } else {
             assertNull(actualSentiment.getOpinions());
         }
-    }
-
-    static void validateSummarySentence(SummarySentence expect, SummarySentence actual) {
-        assertEquals(expect.getText(), actual.getText());
-        assertEquals(expect.getOffset(), actual.getOffset());
-        assertEquals(expect.getLength(), actual.getLength());
-        assertNotNull(actual.getRankScore());
     }
 
     /**
@@ -1584,24 +1601,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             actualSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
-    static void validateCustomSingleCategory(SingleCategoryClassifyResult documentResult) {
+    static void validateLabelClassificationResult(ClassifyDocumentResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());
         } else {
             assertNull(documentResult.getError());
-            validateDocumentClassification(documentResult.getClassification());
-        }
-    }
-
-    static void validateCustomMultiCategory(MultiCategoryClassifyResult documentResult) {
-        assertNotNull(documentResult.getId());
-        if (documentResult.isError()) {
-            assertNotNull(documentResult.getError());
-        } else {
-            assertNull(documentResult.getError());
-            for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
-                validateDocumentClassification(classificationCategory);
+            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                validateDocumentClassification(classification);
             }
         }
     }
@@ -1972,29 +1979,5 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
         assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
         assertNotNull(actualError.getMessage());
-    }
-
-    static boolean isAscendingOrderByOffSet(List<SummarySentence> summarySentences) {
-        int currMin = Integer.MIN_VALUE;
-        for (SummarySentence summarySentence : summarySentences) {
-            if (summarySentence.getOffset() <= currMin) {
-                return false;
-            } else {
-                currMin = summarySentence.getOffset();
-            }
-        }
-        return true;
-    }
-
-    static boolean isDescendingOrderByRankScore(List<SummarySentence> summarySentences) {
-        double currentMax = Double.MAX_VALUE;
-        for (SummarySentence summarySentence : summarySentences) {
-            if (summarySentence.getRankScore() > currentMax) {
-                return false;
-            } else {
-                currentMax = summarySentence.getRankScore();
-            }
-        }
-        return true;
     }
 }

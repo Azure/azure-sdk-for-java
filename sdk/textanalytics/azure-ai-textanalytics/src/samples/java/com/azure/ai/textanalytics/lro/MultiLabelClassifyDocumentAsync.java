@@ -5,10 +5,10 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously execute a "Custom Entities Recognition".
+ * Sample demonstrates how to asynchronously execute a "Multi-label Classification".
  */
-public class RecognizeCustomEntitiesAsync {
+public class MultiLabelClassifyDocumentAsync {
     /**
-     * Main method to invoke this demo about how to analyze an "Custom Entities Recognition".
+     * Main method to invoke this demo about how to analyze an "Multi-label Classification".
      *
      * @param args Unused arguments to the program.
      */
@@ -33,29 +33,24 @@ public class RecognizeCustomEntitiesAsync {
 
         List<String> documents = new ArrayList<>();
         documents.add(
-            "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
-                + "in oil and natural gas development on federal lands over the past six years has stretched the"
-                + " staff of the BLM to a point that it has been unable to meet its environmental protection "
-                + "responsibilities.");
-        documents.add(
-            "David Schmidt, senior vice president--Food Safety, International Food"
-                + " Information Council (IFIC), Washington, D.C., discussed the physical activity component."
+            "I need a reservation for an indoor restaurant in China. Please don't stop the music."
+                + " Play music and add it to my playlist"
         );
 
-        // See the service documentation for regional support and how to train a model to recognize the custom entities,
-        // see https://aka.ms/azsdk/textanalytics/customentityrecognition
-        client.beginRecognizeCustomEntities(documents,
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        client.beginMultiLabelClassify(documents,
             "{project_name}",
             "{deployment_name}",
             "en",
             null)
             .flatMap(pollResult -> {
-                RecognizeCustomEntitiesOperationDetail operationResult = pollResult.getValue();
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
-            .flatMap(pagedFlux -> pagedFlux.byPage())
+            .flatMap(pagedFluxAsyncPollResponse -> pagedFluxAsyncPollResponse.byPage())
             .subscribe(
                 perPage -> processResult(perPage),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
@@ -71,23 +66,22 @@ public class RecognizeCustomEntitiesAsync {
         }
     }
 
-    private static void processResult(PagedResponse<RecognizeCustomEntitiesResultCollection> perPage) {
+    private static void processResult(PagedResponse<ClassifyDocumentResultCollection> perPage) {
         System.out.printf("Response code: %d, Continuation Token: %s.%n",
             perPage.getStatusCode(), perPage.getContinuationToken());
 
-        for (RecognizeCustomEntitiesResultCollection documentsResults : perPage.getElements()) {
+        for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
             System.out.printf("Project name: %s, deployment name: %s.%n",
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
-            for (RecognizeEntitiesResult documentResult : documentsResults) {
+            for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
                 if (!documentResult.isError()) {
-                    for (CategorizedEntity entity : documentResult.getEntities()) {
-                        System.out.printf(
-                            "\tText: %s, category: %s, confidence score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                    for (ClassificationCategory classification : documentResult.getClassifications()) {
+                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                            classification.getCategory(), classification.getConfidenceScore());
                     }
                 } else {
-                    System.out.printf("\tCannot recognize custom entities. Error: %s%n",
+                    System.out.printf("\tCannot classify category of document. Error: %s%n",
                         documentResult.getError().getMessage());
                 }
             }

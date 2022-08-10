@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
@@ -17,6 +18,7 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -27,6 +29,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
@@ -2421,7 +2425,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void singleCategoryClassifyAction(HttpClient httpClient,
+    public void singleLabelClassificationAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
@@ -2434,9 +2438,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getSingleCategoryClassifyResults().forEach(
+                actionsResult -> actionsResult.getSingleLabelClassifyResults().forEach(
                     customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomSingleCategory(documentResult))));
+                        documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 
@@ -2455,9 +2459,55 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
+                actionsResult -> actionsResult.getMultiLabelClassifyResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomMultiCategory(documentResult))));
+                        documentResult -> validateLabelClassificationResult(documentResult))));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeCustomEntitiesRunner((documents, parameters) -> {
+            SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable> syncPoller =
+                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            RecognizeCustomEntitiesPagedIterable pagedIterable = syncPoller.getFinalResult();
+            pagedIterable.forEach(resultCollection ->
+                resultCollection.forEach(documentResult ->
+                    validateCategorizedEntities(documentResult.getEntities().stream().collect(Collectors.toList()))));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void singleLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        classifyCustomSingleLabelRunner((documents, parameters) -> {
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            ClassifyDocumentPagedIterable pagedIterable = syncPoller.getFinalResult();
+            pagedIterable.forEach(resultCollection ->
+                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        classifyCustomMultiLabelRunner((documents, parameters) -> {
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            ClassifyDocumentPagedIterable pagedIterable = syncPoller.getFinalResult();
+            pagedIterable.forEach(resultCollection ->
+                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
     }
 }
