@@ -4,7 +4,6 @@
 module com.azure.communication.callingserver {
 
     requires transitive com.azure.communication.common;
-    requires com.azure.messaging.eventgrid;
 
     // public API surface area
     exports com.azure.communication.callingserver;

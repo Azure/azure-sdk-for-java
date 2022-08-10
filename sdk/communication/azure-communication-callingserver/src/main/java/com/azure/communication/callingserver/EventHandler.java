@@ -10,12 +10,9 @@ import com.azure.communication.callingserver.models.events.CallConnectedEvent;
 import com.azure.communication.callingserver.models.events.CallDisconnectedEvent;
 import com.azure.communication.callingserver.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callingserver.models.events.CallTransferFailedEvent;
-import com.azure.communication.callingserver.models.events.IncomingCallEvent;
 import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent;
-import com.azure.communication.callingserver.models.events.SubscriptionValidationEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventgrid.EventGridEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,10 +38,7 @@ public final class EventHandler {
      */
     public static List<CallAutomationEventBase> parseEventList(String requestBody) {
         List<CallAutomationEventBase> callAutomationBaseEvents;
-        callAutomationBaseEvents = parseEventGridEventList(requestBody);
-        if (callAutomationBaseEvents.isEmpty()) {
-            callAutomationBaseEvents = parseCloudEventList(requestBody);
-        }
+        callAutomationBaseEvents = parseCloudEventList(requestBody);
 
         return callAutomationBaseEvents;
     }
@@ -59,29 +53,6 @@ public final class EventHandler {
     public static CallAutomationEventBase parseEvent(String requestBody) {
         List<CallAutomationEventBase> callAutomationBaseEvents = parseEventList(requestBody);
         return callAutomationBaseEvents.isEmpty() ? null : callAutomationBaseEvents.get(0);
-    }
-
-    private static List<CallAutomationEventBase> parseEventGridEventList(String requestBody) {
-        try {
-            List<EventGridEvent> eventGridEvents;
-            List<CallAutomationEventBase> callAutomationBaseEvents = new ArrayList<>();
-
-            try {
-                eventGridEvents = EventGridEvent.fromString(requestBody);
-            } catch (RuntimeException e) {
-                return callAutomationBaseEvents;
-            }
-
-            for (EventGridEvent eventGridEvent : eventGridEvents) {
-                CallAutomationEventBase temp = parseSingleEventGridEvent(eventGridEvent.getData().toString(), eventGridEvent.getEventType());
-                if (temp != null) {
-                    callAutomationBaseEvents.add(temp);
-                }
-            }
-            return callAutomationBaseEvents;
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
     }
 
     private static List<CallAutomationEventBase> parseCloudEventList(String requestBody) {
@@ -104,28 +75,6 @@ public final class EventHandler {
             return callAutomationBaseEvents;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
-        }
-    }
-
-    private static CallAutomationEventBase parseSingleEventGridEvent(String data, String eventType) {
-        try {
-            CallAutomationEventBase ret = null;
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-
-            JsonNode eventData = mapper.readTree(data);
-
-            if (Objects.equals(eventType, "Microsoft.EventGrid.SubscriptionValidationEvent")) {
-                ret = mapper.convertValue(eventData, SubscriptionValidationEvent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.IncomingCall")) {
-                ret = mapper.convertValue(eventData, IncomingCallEvent.class);
-            }
-
-            return ret;
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
