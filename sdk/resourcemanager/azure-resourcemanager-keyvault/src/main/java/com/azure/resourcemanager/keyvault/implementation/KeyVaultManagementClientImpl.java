@@ -9,14 +9,12 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
-import com.azure.resourcemanager.keyvault.fluent.KeysClient;
 import com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateLinkResourcesClient;
 import com.azure.resourcemanager.keyvault.fluent.OperationsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesClient;
-import com.azure.resourcemanager.keyvault.fluent.SecretsClient;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -98,18 +96,6 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
-    }
-
-    /** The KeysClient object to access its operations. */
-    private final KeysClient keys;
-
-    /**
-     * Gets the KeysClient object to access its operations.
-     *
-     * @return the KeysClient object.
-     */
-    public KeysClient getKeys() {
-        return this.keys;
     }
 
     /** The VaultsClient object to access its operations. */
@@ -196,18 +182,6 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         return this.operations;
     }
 
-    /** The SecretsClient object to access its operations. */
-    private final SecretsClient secrets;
-
-    /**
-     * Gets the SecretsClient object to access its operations.
-     *
-     * @return the SecretsClient object.
-     */
-    public SecretsClient getSecrets() {
-        return this.secrets;
-    }
-
     /**
      * Initializes an instance of KeyVaultManagementClient client.
      *
@@ -233,7 +207,6 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2021-10-01";
-        this.keys = new KeysClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
@@ -241,6 +214,5 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.mhsmPrivateEndpointConnections = new MhsmPrivateEndpointConnectionsClientImpl(this);
         this.mhsmPrivateLinkResources = new MhsmPrivateLinkResourcesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.secrets = new SecretsClientImpl(this);
     }
 }
