@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+resource:
+  blob: azure-blob://${AZURE_STORAGE_CONTAINER_NAME_FOR_BLOB}/blob.txt

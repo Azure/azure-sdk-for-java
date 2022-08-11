@@ -33,7 +33,11 @@ public final class RunType extends ExpandableStringEnum<RunType> {
         return fromString(name, RunType.class);
     }
 
-    /** @return known RunType values. */
+    /**
+     * Gets known RunType values.
+     *
+     * @return known RunType values.
+     */
     public static Collection<RunType> values() {
         return values(RunType.class);
     }

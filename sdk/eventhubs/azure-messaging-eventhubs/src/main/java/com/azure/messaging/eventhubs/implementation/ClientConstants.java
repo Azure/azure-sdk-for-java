@@ -19,6 +19,7 @@ public final class ClientConstants {
     public static final String LINK_NAME_KEY = "linkName";
     public static final String ENTITY_PATH_KEY = "entityPath";
     public static final String SIGNAL_TYPE_KEY = "signalType";
+    public static final String CLIENT_IDENTIFIER_KEY = "clientIdentifier";
 
     // EventHubs specific logging context keys
     public static final String PARTITION_ID_KEY = "partitionId";
@@ -29,6 +30,7 @@ public final class ClientConstants {
     public static final String TRACKING_ID_KEY = "trackingId";
     public static final String WORK_ID_KEY = "workId";
     public static final String CREDITS_KEY = "credits";
+    public static final String SUBSCRIBER_ID_KEY = "subscriberId";
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.

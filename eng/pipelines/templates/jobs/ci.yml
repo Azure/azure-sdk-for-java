@@ -46,9 +46,6 @@ parameters:
   - name: TestOptions
     type: string
     default: $(TestOptions)
-  - name: AdditionalBuildOptions
-    type: string
-    default: $(AdditionalBuildOptions)
   - name: TestParallelization
     type: string
     default: '1C'
@@ -61,14 +58,11 @@ jobs:
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - name: ArtifactName
+        value: 'packages'
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
-
-    strategy:
-      matrix:
-        Client Libraries:
-          ArtifactName: 'packages'
 
     steps:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -121,19 +115,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
-          PackageName: "azure-sdk-template"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
-
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template-two"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
-
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template-three"
+          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -180,7 +162,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -218,16 +200,17 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
 
-      - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-        displayName: 'Generate SBOM'
-        condition: succeededOrFailed()
-        inputs:
-          BuildDropPath: $(Build.ArtifactStagingDirectory)
+      - ${{if eq(variables['System.TeamProject'], 'internal') }}:
+        - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+          displayName: 'Generate SBOM'
+          condition: succeededOrFailed()
+          inputs:
+            BuildDropPath: $(Build.ArtifactStagingDirectory)
 
-      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-        parameters:
-          ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
-          ArtifactName: 'manifest'
+        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+          parameters:
+            ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+            ArtifactName: 'manifest'
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
@@ -254,16 +237,11 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
             - '**/*.md'
             - '.vscode/cspell.json'
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
-
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -293,21 +271,13 @@ jobs:
           Paths: $(SparseCheckoutDirectories)
           SkipDefaultCheckout: true
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
-          PackageName: "azure-sdk-template"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+          CspellConfigPath: .vscode/cspell.json
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
-          PackageName: "azure-sdk-template-two"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
-
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template-three"
+          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -355,7 +325,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -410,6 +380,5 @@ jobs:
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
         TestOptions: ${{ parameters.TestOptions }}
-        AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}

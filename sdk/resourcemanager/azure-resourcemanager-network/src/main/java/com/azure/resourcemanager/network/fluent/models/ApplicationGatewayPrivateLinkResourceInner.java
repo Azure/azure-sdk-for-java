@@ -19,8 +19,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
     private ApplicationGatewayPrivateLinkResourceProperties innerProperties;
 
     /*
-     * Name of the private link resource that is unique within an Application
-     * Gateway.
+     * Name of the private link resource that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

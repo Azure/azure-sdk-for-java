@@ -8,17 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to an Azure ARC custom location resource. */
+/** Reference to an Azure Arc custom location resource. */
 @Fluent
 public final class CustomLocationResourceId {
     /*
-     * Azure ARC custom location resource ID.
+     * Azure Arc custom location resource ID.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
-     * Get the id property: Azure ARC custom location resource ID.
+     * Get the id property: Azure Arc custom location resource ID.
      *
      * @return the id value.
      */
@@ -27,7 +27,7 @@ public final class CustomLocationResourceId {
     }
 
     /**
-     * Set the id property: Azure ARC custom location resource ID.
+     * Set the id property: Azure Arc custom location resource ID.
      *
      * @param id the id value to set.
      * @return the CustomLocationResourceId object itself.

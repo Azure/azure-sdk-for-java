@@ -39,7 +39,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, OffsetDateTime startTime, OffsetDateTime endTime) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime);
+        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime); 
     }
 
     /**
@@ -130,7 +130,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
             })
             /* Construct the BlobChangefeedPagedResponse. */
             .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()))
-            .subscriberContext(FluxUtil.toReactorContext(this.context));
+            .contextWrite(FluxUtil.toReactorContext(this.context));
     }
 
     @Override

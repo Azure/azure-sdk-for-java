@@ -5,11 +5,13 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 
 /** The FilesUploadRangeHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -62,6 +64,33 @@ public final class FilesUploadRangeHeaders {
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of FilesUploadRangeHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public FilesUploadRangeHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        if (rawHeaders.getValue("x-ms-file-last-write-time") != null) {
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-last-write-time"));
+        }
+        if (rawHeaders.getValue("Content-MD5") != null) {
+            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+        }
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

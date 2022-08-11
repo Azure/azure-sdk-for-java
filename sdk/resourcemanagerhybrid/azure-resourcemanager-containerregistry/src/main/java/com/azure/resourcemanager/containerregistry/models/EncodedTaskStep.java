@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("EncodedTask")
 @Fluent
 public final class EncodedTaskStep extends TaskStepProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncodedTaskStep.class);
-
     /*
      * Base64 encoded value of the template/definition file content.
      */
@@ -98,6 +95,20 @@ public final class EncodedTaskStep extends TaskStepProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStep withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStep withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -107,7 +118,7 @@ public final class EncodedTaskStep extends TaskStepProperties {
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encodedTaskContent in model EncodedTaskStep"));
@@ -116,4 +127,6 @@ public final class EncodedTaskStep extends TaskStepProperties {
             values().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncodedTaskStep.class);
 }

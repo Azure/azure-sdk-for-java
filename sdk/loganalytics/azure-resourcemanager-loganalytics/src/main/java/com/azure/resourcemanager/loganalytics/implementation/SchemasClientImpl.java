@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.SchemasClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SchemasClient. */
 public final class SchemasClientImpl implements SchemasClient {
-    private final ClientLogger logger = new ClientLogger(SchemasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SchemasService service;
 
@@ -77,7 +74,7 @@ public final class SchemasClientImpl implements SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace.
+     * @return the schema for a given workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SearchGetSchemaResponseInner>> getWithResponseAsync(
@@ -101,6 +98,7 @@ public final class SchemasClientImpl implements SchemasClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -110,7 +108,7 @@ public final class SchemasClientImpl implements SchemasClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -126,7 +124,7 @@ public final class SchemasClientImpl implements SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace.
+     * @return the schema for a given workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SearchGetSchemaResponseInner>> getWithResponseAsync(
@@ -150,6 +148,7 @@ public final class SchemasClientImpl implements SchemasClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -157,7 +156,7 @@ public final class SchemasClientImpl implements SchemasClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -171,19 +170,11 @@ public final class SchemasClientImpl implements SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace.
+     * @return the schema for a given workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SearchGetSchemaResponseInner> getAsync(String resourceGroupName, String workspaceName) {
-        return getWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<SearchGetSchemaResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -210,7 +201,7 @@ public final class SchemasClientImpl implements SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema for a given workspace.
+     * @return the schema for a given workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchGetSchemaResponseInner> getWithResponse(

@@ -27,7 +27,11 @@ public final class InstancePoolLicenseType extends ExpandableStringEnum<Instance
         return fromString(name, InstancePoolLicenseType.class);
     }
 
-    /** @return known InstancePoolLicenseType values. */
+    /**
+     * Gets known InstancePoolLicenseType values.
+     *
+     * @return known InstancePoolLicenseType values.
+     */
     public static Collection<InstancePoolLicenseType> values() {
         return values(InstancePoolLicenseType.class);
     }

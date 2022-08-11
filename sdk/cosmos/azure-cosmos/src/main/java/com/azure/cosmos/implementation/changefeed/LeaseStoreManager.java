@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.changefeed.implementation.LeaseStoreManagerImpl;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,10 +32,6 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
         Mono<LeaseStoreManager> build();
     }
 
-    static LeaseStoreManagerBuilderDefinition builder() {
-        return new LeaseStoreManagerImpl();
-    }
-
     /**
      * @return List of all leases.
      */
@@ -54,6 +50,15 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
      * @return the lease.
      */
     Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the epk range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken);
 
     /**
      * DELETE the lease.

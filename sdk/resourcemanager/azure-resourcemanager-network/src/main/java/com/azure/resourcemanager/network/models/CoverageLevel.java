@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CoverageLevel. */
+/** Test coverage for the endpoint. */
 public final class CoverageLevel extends ExpandableStringEnum<CoverageLevel> {
     /** Static value Default for CoverageLevel. */
     public static final CoverageLevel DEFAULT = fromString("Default");

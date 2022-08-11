@@ -25,8 +25,7 @@ public final class ApplicationGatewayWebApplicationFirewallConfiguration {
     private ApplicationGatewayFirewallMode firewallMode;
 
     /*
-     * The type of the web application firewall rule set. Possible values are:
-     * 'OWASP'.
+     * The type of the web application firewall rule set. Possible values are: 'OWASP'.
      */
     @JsonProperty(value = "ruleSetType", required = true)
     private String ruleSetType;

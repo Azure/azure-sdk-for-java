@@ -20,8 +20,7 @@ public final class AzureFirewallNatRuleCollection extends SubResource {
     private AzureFirewallNatRuleCollectionProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within the Azure firewall. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within the Azure firewall. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

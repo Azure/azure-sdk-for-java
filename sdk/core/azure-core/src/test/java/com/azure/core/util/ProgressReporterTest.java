@@ -4,6 +4,8 @@
 package com.azure.core.util;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ProgressReporterTest {
 
@@ -93,8 +96,35 @@ public class ProgressReporterTest {
         assertEquals(Arrays.asList(1L, 8L, 1L, 4L, 15L, 20L, 9L), listener.getProgresses());
     }
 
+    @Test
+    public void testConcurrentReporting() {
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+
+        Flux.range(1, 100)
+            .parallel(10)
+            .runOn(Schedulers.boundedElastic())
+            .map(ignored -> progressReporter.createChild())
+            .doOnNext(childReporter -> {
+                childReporter.reportProgress(1L);
+                childReporter.reportProgress(3L);
+                childReporter.reportProgress(5L);
+                childReporter.reportProgress(7L);
+                childReporter.reportProgress(11L);
+            }).sequential().blockLast();
+
+        List<Long> progresses = listener.getProgresses();
+        assertEquals(2700L, progresses.get(progresses.size() - 1));
+        for (int i = 0; i < progresses.size() - 1; i++) {
+            if (progresses.get(i + 1) <= progresses.get(i)) {
+                fail("Progresses are not in raising order. "
+                    + "progress[" + (i + 1) + "]=" + progresses.get(i + 1)
+                    + " progress[" + i + "]=" + progresses.get(i));
+            }
+        }
+    }
+
     private static class ListProgressListener implements ProgressListener {
-        private final List<Long> progresses = new ArrayList<>();
+        private final List<Long> progresses = Collections.synchronizedList(new ArrayList<>());
 
         @Override
         public void handleProgress(long bytesTransferred) {

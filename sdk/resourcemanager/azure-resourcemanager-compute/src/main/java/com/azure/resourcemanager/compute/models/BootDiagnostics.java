@@ -21,9 +21,8 @@ public final class BootDiagnostics {
     private Boolean enabled;
 
     /*
-     * Uri of the storage account to use for placing the console output and
-     * screenshot. <br><br>If storageUri is not specified while enabling boot
-     * diagnostics, managed storage will be used.
+     * Uri of the storage account to use for placing the console output and screenshot. <br><br>If storageUri is not
+     * specified while enabling boot diagnostics, managed storage will be used.
      */
     @JsonProperty(value = "storageUri")
     private String storageUri;

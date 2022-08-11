@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults ListDeleted. */
 public final class VaultsListDeletedSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/listDeletedVaults.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listDeletedVaults.json
      */
     /**
      * Sample code: List deleted vaults in the specified subscription.

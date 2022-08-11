@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -29,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ServerDnsAliasesClient;
@@ -42,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerDnsAliasesClient. */
 public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient {
-    private final ClientLogger logger = new ClientLogger(ServerDnsAliasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServerDnsAliasesService service;
 
@@ -68,7 +66,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     private interface ServerDnsAliasesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/dnsAliases/{dnsAliasName}")
@@ -81,9 +79,10 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             @PathParam("dnsAliasName") String dnsAliasName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/dnsAliases/{dnsAliasName}")
@@ -96,6 +95,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             @PathParam("dnsAliasName") String dnsAliasName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -113,7 +113,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/dnsAliases")
@@ -125,6 +125,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             @PathParam("serverName") String serverName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -143,12 +144,15 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
             @BodyParam("application/json") ServerDnsAliasAcquisition parameters,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerDnsAliasListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -161,7 +165,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerDnsAliasInner>> getWithResponseAsync(
@@ -189,6 +193,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -200,8 +205,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                             dnsAliasName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -215,7 +221,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerDnsAliasInner>> getWithResponseAsync(
@@ -243,6 +249,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -252,6 +259,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                 dnsAliasName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -265,19 +273,12 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDnsAliasInner> getAsync(String resourceGroupName, String serverName, String dnsAliasName) {
         return getWithResponseAsync(resourceGroupName, serverName, dnsAliasName)
-            .flatMap(
-                (Response<ServerDnsAliasInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -308,7 +309,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerDnsAliasInner> getWithResponse(
@@ -326,7 +327,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -354,6 +355,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -365,8 +367,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                             dnsAliasName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -380,7 +383,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -408,6 +411,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -417,6 +421,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                 dnsAliasName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -430,9 +435,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link PollerFlux} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String dnsAliasName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -458,9 +463,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link PollerFlux} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String dnsAliasName, Context context) {
         context = this.client.mergeContext(context);
@@ -482,9 +487,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String dnsAliasName) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
@@ -501,9 +506,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return the {@link SyncPoller} for polling of a server DNS alias.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDnsAliasInner>, ServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String dnsAliasName, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
@@ -519,7 +524,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDnsAliasInner> createOrUpdateAsync(
@@ -540,7 +545,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
+     * @return a server DNS alias on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerDnsAliasInner> createOrUpdateAsync(
@@ -596,7 +601,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -636,7 +641,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -650,7 +655,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -700,9 +705,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String dnsAliasName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, dnsAliasName);
@@ -723,9 +728,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String dnsAliasName, Context context) {
         context = this.client.mergeContext(context);
@@ -746,9 +751,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String dnsAliasName) {
         return beginDeleteAsync(resourceGroupName, serverName, dnsAliasName).getSyncPoller();
@@ -765,9 +770,9 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String dnsAliasName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, dnsAliasName, context).getSyncPoller();
@@ -783,7 +788,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String dnsAliasName) {
@@ -803,7 +808,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String dnsAliasName, Context context) {
@@ -854,7 +859,8 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
+     * @return a list of server DNS aliases for a server along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerDnsAliasInner>> listByServerSinglePageAsync(
@@ -879,6 +885,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -889,6 +896,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                             serverName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<ServerDnsAliasInner>>map(
                 res ->
@@ -899,7 +907,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -912,7 +920,8 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
+     * @return a list of server DNS aliases for a server along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerDnsAliasInner>> listByServerSinglePageAsync(
@@ -937,6 +946,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -945,6 +955,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                 serverName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -966,7 +977,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerDnsAliasInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -985,7 +996,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerDnsAliasInner> listByServerAsync(
@@ -1004,7 +1015,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDnsAliasInner> listByServer(String resourceGroupName, String serverName) {
@@ -1021,7 +1032,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases for a server.
+     * @return a list of server DNS aliases for a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDnsAliasInner> listByServer(
@@ -1036,15 +1047,15 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1067,9 +1078,12 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-03-01-preview";
-        ServerDnsAliasAcquisition parameters = new ServerDnsAliasAcquisition();
-        parameters.withOldServerDnsAliasId(oldServerDnsAliasId);
         return FluxUtil
             .withContext(
                 context ->
@@ -1083,7 +1097,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                             apiVersion,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1093,16 +1107,20 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1125,9 +1143,12 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-03-01-preview";
-        ServerDnsAliasAcquisition parameters = new ServerDnsAliasAcquisition();
-        parameters.withOldServerDnsAliasId(oldServerDnsAliasId);
         context = this.client.mergeContext(context);
         return service
             .acquire(
@@ -1148,17 +1169,17 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginAcquireAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId);
+            acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, parameters);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1172,19 +1193,23 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginAcquireAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId, context);
+            acquireWithResponseAsync(resourceGroupName, serverName, dnsAliasName, parameters, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1197,16 +1222,16 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAcquire(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId).getSyncPoller();
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
+        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters).getSyncPoller();
     }
 
     /**
@@ -1216,18 +1241,21 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAcquire(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context) {
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId, context)
-            .getSyncPoller();
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context) {
+        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1237,16 +1265,16 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> acquireAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId)
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
+        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1258,17 +1286,21 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> acquireAsync(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context) {
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId, context)
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context) {
+        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1280,17 +1312,15 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
+     * @param parameters A server DNS alias acquisition request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> acquireAsync(String resourceGroupName, String serverName, String dnsAliasName) {
-        final String oldServerDnsAliasId = null;
-        return beginAcquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public void acquire(
+        String resourceGroupName, String serverName, String dnsAliasName, ServerDnsAliasAcquisition parameters) {
+        acquireAsync(resourceGroupName, serverName, dnsAliasName, parameters).block();
     }
 
     /**
@@ -1300,24 +1330,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server that the alias is pointing to.
      * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void acquire(String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId) {
-        acquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId).block();
-    }
-
-    /**
-     * Acquires server DNS alias from another server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server dns alias.
-     * @param oldServerDnsAliasId The id of the server alias that will be acquired to point to this server instead.
+     * @param parameters A server DNS alias acquisition request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1325,25 +1338,12 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void acquire(
-        String resourceGroupName, String serverName, String dnsAliasName, String oldServerDnsAliasId, Context context) {
-        acquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId, context).block();
-    }
-
-    /**
-     * Acquires server DNS alias from another server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server that the alias is pointing to.
-     * @param dnsAliasName The name of the server dns alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void acquire(String resourceGroupName, String serverName, String dnsAliasName) {
-        final String oldServerDnsAliasId = null;
-        acquireAsync(resourceGroupName, serverName, dnsAliasName, oldServerDnsAliasId).block();
+        String resourceGroupName,
+        String serverName,
+        String dnsAliasName,
+        ServerDnsAliasAcquisition parameters,
+        Context context) {
+        acquireAsync(resourceGroupName, serverName, dnsAliasName, parameters, context).block();
     }
 
     /**
@@ -1353,15 +1353,22 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases.
+     * @return a list of server DNS aliases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerDnsAliasInner>> listByServerNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, context))
+            .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServerDnsAliasInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1371,7 +1378,7 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1382,16 +1389,23 @@ public final class ServerDnsAliasesClientImpl implements ServerDnsAliasesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DNS aliases.
+     * @return a list of server DNS aliases along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerDnsAliasInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServerNext(nextLink, context)
+            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
@@ -16,19 +14,16 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * The task that has the ARM resource and task properties. The task will have all information to schedule a run against
  * it.
  */
-@JsonFlatten
 @Fluent
-public class TaskInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskInner.class);
-
+public final class TaskInner extends Resource {
     /*
      * Identity for the resource.
      */
@@ -36,59 +31,10 @@ public class TaskInner extends Resource {
     private IdentityProperties identity;
 
     /*
-     * The provisioning state of the task.
+     * The properties of a task.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The creation date of task.
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The current status of task.
-     */
-    @JsonProperty(value = "properties.status")
-    private TaskStatus status;
-
-    /*
-     * The platform properties against which the run has to happen.
-     */
-    @JsonProperty(value = "properties.platform")
-    private PlatformProperties platform;
-
-    /*
-     * The machine configuration of the run agent.
-     */
-    @JsonProperty(value = "properties.agentConfiguration")
-    private AgentProperties agentConfiguration;
-
-    /*
-     * Run timeout in seconds.
-     */
-    @JsonProperty(value = "properties.timeout")
-    private Integer timeout;
-
-    /*
-     * The properties of a task step.
-     */
-    @JsonProperty(value = "properties.step")
-    private TaskStepProperties step;
-
-    /*
-     * The properties that describe all triggers for the task.
-     */
-    @JsonProperty(value = "properties.trigger")
-    private TriggerProperties trigger;
-
-    /*
-     * The properties that describes a set of credentials that will be used
-     * when this run is invoked.
-     */
-    @JsonProperty(value = "properties.credentials")
-    private Credentials credentials;
+    @JsonProperty(value = "properties")
+    private TaskProperties innerProperties;
 
     /**
      * Get the identity property: Identity for the resource.
@@ -111,12 +57,35 @@ public class TaskInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: The properties of a task.
+     *
+     * @return the innerProperties value.
+     */
+    private TaskProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TaskInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TaskInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the task.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -125,7 +94,7 @@ public class TaskInner extends Resource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -134,7 +103,7 @@ public class TaskInner extends Resource {
      * @return the status value.
      */
     public TaskStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -144,7 +113,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withStatus(TaskStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -154,7 +126,7 @@ public class TaskInner extends Resource {
      * @return the platform value.
      */
     public PlatformProperties platform() {
-        return this.platform;
+        return this.innerProperties() == null ? null : this.innerProperties().platform();
     }
 
     /**
@@ -164,7 +136,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withPlatform(PlatformProperties platform) {
-        this.platform = platform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withPlatform(platform);
         return this;
     }
 
@@ -174,7 +149,7 @@ public class TaskInner extends Resource {
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
-        return this.agentConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().agentConfiguration();
     }
 
     /**
@@ -184,7 +159,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withAgentConfiguration(AgentProperties agentConfiguration) {
-        this.agentConfiguration = agentConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withAgentConfiguration(agentConfiguration);
         return this;
     }
 
@@ -194,7 +172,7 @@ public class TaskInner extends Resource {
      * @return the timeout value.
      */
     public Integer timeout() {
-        return this.timeout;
+        return this.innerProperties() == null ? null : this.innerProperties().timeout();
     }
 
     /**
@@ -204,7 +182,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withTimeout(Integer timeout) {
-        this.timeout = timeout;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withTimeout(timeout);
         return this;
     }
 
@@ -214,7 +195,7 @@ public class TaskInner extends Resource {
      * @return the step value.
      */
     public TaskStepProperties step() {
-        return this.step;
+        return this.innerProperties() == null ? null : this.innerProperties().step();
     }
 
     /**
@@ -224,7 +205,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withStep(TaskStepProperties step) {
-        this.step = step;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withStep(step);
         return this;
     }
 
@@ -234,7 +218,7 @@ public class TaskInner extends Resource {
      * @return the trigger value.
      */
     public TriggerProperties trigger() {
-        return this.trigger;
+        return this.innerProperties() == null ? null : this.innerProperties().trigger();
     }
 
     /**
@@ -244,7 +228,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withTrigger(TriggerProperties trigger) {
-        this.trigger = trigger;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withTrigger(trigger);
         return this;
     }
 
@@ -255,7 +242,7 @@ public class TaskInner extends Resource {
      * @return the credentials value.
      */
     public Credentials credentials() {
-        return this.credentials;
+        return this.innerProperties() == null ? null : this.innerProperties().credentials();
     }
 
     /**
@@ -266,7 +253,10 @@ public class TaskInner extends Resource {
      * @return the TaskInner object itself.
      */
     public TaskInner withCredentials(Credentials credentials) {
-        this.credentials = credentials;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TaskProperties();
+        }
+        this.innerProperties().withCredentials(credentials);
         return this;
     }
 
@@ -279,20 +269,8 @@ public class TaskInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (platform() != null) {
-            platform().validate();
-        }
-        if (agentConfiguration() != null) {
-            agentConfiguration().validate();
-        }
-        if (step() != null) {
-            step().validate();
-        }
-        if (trigger() != null) {
-            trigger().validate();
-        }
-        if (credentials() != null) {
-            credentials().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

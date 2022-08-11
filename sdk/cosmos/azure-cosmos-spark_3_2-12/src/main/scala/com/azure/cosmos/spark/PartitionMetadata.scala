@@ -20,7 +20,7 @@ private object PartitionMetadata {
   // scalastyle:off parameter.number
   def apply(userConfig: Map[String, String],
             cosmosClientConfig: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
             cosmosContainerConfig: CosmosContainerConfig,
             feedRange: NormalizedRange,
             documentCount: Long,
@@ -39,7 +39,7 @@ private object PartitionMetadata {
     PartitionMetadata(
       userConfig,
       cosmosClientConfig,
-      cosmosClientStateHandle,
+      cosmosClientStateHandles,
       cosmosContainerConfig,
       feedRange,
       documentCount,
@@ -58,7 +58,7 @@ private[cosmos] case class PartitionMetadata
 (
   userConfig: Map[String, String],
   cosmosClientConfig: CosmosClientConfiguration,
-  cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+  cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
   cosmosContainerConfig: CosmosContainerConfig,
   feedRange: NormalizedRange,
   documentCount: Long,
@@ -82,7 +82,7 @@ private[cosmos] case class PartitionMetadata
     new PartitionMetadata(
       this.userConfig,
       this.cosmosClientConfig,
-      this.cosmosClientStateHandle,
+      this.cosmosClientStateHandles,
       this.cosmosContainerConfig,
       subRange,
       this.documentCount,
@@ -100,7 +100,7 @@ private[cosmos] case class PartitionMetadata
     new PartitionMetadata(
       this.userConfig,
       this.cosmosClientConfig,
-      this.cosmosClientStateHandle,
+      this.cosmosClientStateHandles,
       this.cosmosContainerConfig,
       this.feedRange,
       this.documentCount,

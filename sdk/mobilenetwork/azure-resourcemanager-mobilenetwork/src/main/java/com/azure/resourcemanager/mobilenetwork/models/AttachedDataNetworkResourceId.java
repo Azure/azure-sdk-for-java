@@ -8,17 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to an Attached Data Network resource. */
+/** Reference to an attached data network resource. */
 @Fluent
 public final class AttachedDataNetworkResourceId {
     /*
-     * Attached Data Network resource ID.
+     * Attached data network resource ID.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
-     * Get the id property: Attached Data Network resource ID.
+     * Get the id property: Attached data network resource ID.
      *
      * @return the id value.
      */
@@ -27,7 +27,7 @@ public final class AttachedDataNetworkResourceId {
     }
 
     /**
-     * Set the id property: Attached Data Network resource ID.
+     * Set the id property: Attached data network resource ID.
      *
      * @param id the id value to set.
      * @return the AttachedDataNetworkResourceId object itself.

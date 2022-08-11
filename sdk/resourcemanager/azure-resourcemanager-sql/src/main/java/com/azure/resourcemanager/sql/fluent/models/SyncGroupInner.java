@@ -5,69 +5,30 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An Azure SQL Database sync group. */
-@JsonFlatten
 @Fluent
-public class SyncGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupInner.class);
-
+public final class SyncGroupInner extends ProxyResource {
     /*
-     * Sync interval of the sync group.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.interval")
-    private Integer interval;
+    @JsonProperty(value = "properties")
+    private SyncGroupProperties innerProperties;
 
-    /*
-     * Last sync time of the sync group.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastSyncTime;
-
-    /*
-     * Conflict resolution policy of the sync group.
-     */
-    @JsonProperty(value = "properties.conflictResolutionPolicy")
-    private SyncConflictResolutionPolicy conflictResolutionPolicy;
-
-    /*
-     * ARM resource id of the sync database in the sync group.
-     */
-    @JsonProperty(value = "properties.syncDatabaseId")
-    private String syncDatabaseId;
-
-    /*
-     * User name for the sync group hub database credential.
-     */
-    @JsonProperty(value = "properties.hubDatabaseUserName")
-    private String hubDatabaseUsername;
-
-    /*
-     * Password for the sync group hub database credential.
-     */
-    @JsonProperty(value = "properties.hubDatabasePassword")
-    private String hubDatabasePassword;
-
-    /*
-     * Sync state of the sync group.
-     */
-    @JsonProperty(value = "properties.syncState", access = JsonProperty.Access.WRITE_ONLY)
-    private SyncGroupState syncState;
-
-    /*
-     * Sync schema of the sync group.
-     */
-    @JsonProperty(value = "properties.schema")
-    private SyncGroupSchema schema;
+    private SyncGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the interval property: Sync interval of the sync group.
@@ -75,7 +36,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the interval value.
      */
     public Integer interval() {
-        return this.interval;
+        return this.innerProperties() == null ? null : this.innerProperties().interval();
     }
 
     /**
@@ -85,7 +46,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withInterval(Integer interval) {
-        this.interval = interval;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withInterval(interval);
         return this;
     }
 
@@ -95,7 +59,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
-        return this.lastSyncTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastSyncTime();
     }
 
     /**
@@ -104,7 +68,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the conflictResolutionPolicy value.
      */
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
-        return this.conflictResolutionPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().conflictResolutionPolicy();
     }
 
     /**
@@ -114,7 +78,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withConflictResolutionPolicy(SyncConflictResolutionPolicy conflictResolutionPolicy) {
-        this.conflictResolutionPolicy = conflictResolutionPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withConflictResolutionPolicy(conflictResolutionPolicy);
         return this;
     }
 
@@ -124,7 +91,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
-        return this.syncDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().syncDatabaseId();
     }
 
     /**
@@ -134,7 +101,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withSyncDatabaseId(String syncDatabaseId) {
-        this.syncDatabaseId = syncDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withSyncDatabaseId(syncDatabaseId);
         return this;
     }
 
@@ -144,7 +114,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the hubDatabaseUsername value.
      */
     public String hubDatabaseUsername() {
-        return this.hubDatabaseUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().hubDatabaseUsername();
     }
 
     /**
@@ -154,7 +124,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withHubDatabaseUsername(String hubDatabaseUsername) {
-        this.hubDatabaseUsername = hubDatabaseUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withHubDatabaseUsername(hubDatabaseUsername);
         return this;
     }
 
@@ -164,7 +137,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the hubDatabasePassword value.
      */
     public String hubDatabasePassword() {
-        return this.hubDatabasePassword;
+        return this.innerProperties() == null ? null : this.innerProperties().hubDatabasePassword();
     }
 
     /**
@@ -174,7 +147,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withHubDatabasePassword(String hubDatabasePassword) {
-        this.hubDatabasePassword = hubDatabasePassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withHubDatabasePassword(hubDatabasePassword);
         return this;
     }
 
@@ -184,7 +160,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the syncState value.
      */
     public SyncGroupState syncState() {
-        return this.syncState;
+        return this.innerProperties() == null ? null : this.innerProperties().syncState();
     }
 
     /**
@@ -193,7 +169,7 @@ public class SyncGroupInner extends ProxyResource {
      * @return the schema value.
      */
     public SyncGroupSchema schema() {
-        return this.schema;
+        return this.innerProperties() == null ? null : this.innerProperties().schema();
     }
 
     /**
@@ -203,7 +179,10 @@ public class SyncGroupInner extends ProxyResource {
      * @return the SyncGroupInner object itself.
      */
     public SyncGroupInner withSchema(SyncGroupSchema schema) {
-        this.schema = schema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withSchema(schema);
         return this;
     }
 
@@ -213,8 +192,8 @@ public class SyncGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schema() != null) {
-            schema().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

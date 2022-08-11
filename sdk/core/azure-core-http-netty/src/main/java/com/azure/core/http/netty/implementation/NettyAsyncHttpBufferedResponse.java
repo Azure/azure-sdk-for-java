@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,6 +25,11 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
     public NettyAsyncHttpBufferedResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body) {
         super(httpClientResponse, httpRequest);
         this.body = body;
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromBytes(body);
     }
 
     @Override

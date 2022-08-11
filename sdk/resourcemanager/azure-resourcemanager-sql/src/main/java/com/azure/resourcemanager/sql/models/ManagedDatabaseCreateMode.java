@@ -37,7 +37,11 @@ public final class ManagedDatabaseCreateMode extends ExpandableStringEnum<Manage
         return fromString(name, ManagedDatabaseCreateMode.class);
     }
 
-    /** @return known ManagedDatabaseCreateMode values. */
+    /**
+     * Gets known ManagedDatabaseCreateMode values.
+     *
+     * @return known ManagedDatabaseCreateMode values.
+     */
     public static Collection<ManagedDatabaseCreateMode> values() {
         return values(ManagedDatabaseCreateMode.class);
     }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RoleDisasterRecovery. */
+/** role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'. */
 public enum RoleDisasterRecovery {
     /** Enum value Primary. */
     PRIMARY("Primary"),
@@ -33,6 +33,9 @@ public enum RoleDisasterRecovery {
      */
     @JsonCreator
     public static RoleDisasterRecovery fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RoleDisasterRecovery[] items = RoleDisasterRecovery.values();
         for (RoleDisasterRecovery item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum RoleDisasterRecovery {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

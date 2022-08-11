@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
+import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -17,7 +18,6 @@ import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
-
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
@@ -30,9 +30,9 @@ import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
-import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
 import com.azure.storage.file.datalake.models.FileQuerySerialization
 import com.azure.storage.file.datalake.models.FileRange
@@ -41,12 +41,10 @@ import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
-
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
-
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
@@ -63,6 +61,7 @@ import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
+import spock.util.environment.Jvm
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -75,6 +74,7 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -2163,7 +2163,7 @@ class FileAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = 0
+        def prevCount = new AtomicLong()
 
         when:
         fc.readToFileWithResponse(outFile.toPath().toString(), null,
@@ -2175,26 +2175,82 @@ class FileAPITest extends APISpec {
          * Should receive at least one notification indicating completed progress, multiple notifications may be
          * received if there are empty buffers in the stream.
          */
-        (1.._) * mockReceiver.reportProgress(fileSize)
+        (1.._) * mockReceiver.handleProgress(fileSize)
 
         // There should be NO notification with a larger than expected size.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
         notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
-        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount)) {
+        (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount = bytesTransferred
+                prevCount.set(bytesTransferred)
             }
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
+    }
+
+    @LiveOnly
+    @Unroll
+    def "Download file progress listener"() {
+        def file = getRandomFile(fileSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(namer.getResourcePrefix())
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockListener = Mock(ProgressListener)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = new AtomicLong()
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressListener(mockListener),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null, null)
+
+        then:
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockListener.handleProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockListener.handleProgress({ it > fileSize })
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockListener.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount.set(bytesTransferred)
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockListener.handleProgress({ it > fileSize })
 
         cleanup:
         file.delete()
@@ -2541,6 +2597,27 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    def "Append binary data min"() {
+        when:
+        fc.append(data.defaultBinaryData, 0)
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Append binary data"() {
+        setup:
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, null, null, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+    }
+
     def "Flush data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
@@ -2847,6 +2924,19 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class FileUploadListener implements ProgressListener {
+        private long reportedByteCount
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            this.reportedByteCount = bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Upload from file reporter"() {
@@ -2866,6 +2956,37 @@ class FileAPITest extends APISpec {
             .verifyComplete()
 
         uploadReporter.getReportedByteCount() == size
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Upload from file listener"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadListener = new FileUploadListener()
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(blockSize - 1)
+
+        then:
+        StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null))
+            .verifyComplete()
+
+        uploadListener.getReportedByteCount() == size
 
         cleanup:
         file.delete()
@@ -3004,6 +3125,25 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class Listener implements ProgressListener {
+        private final long blockSize
+        private long reportingCount
+
+        Listener(long blockSize) {
+            this.blockSize = blockSize
+        }
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Buffered upload with reporter"() {
@@ -3027,6 +3167,39 @@ class FileAPITest extends APISpec {
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
                 assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
+            }).verifyComplete()
+
+        where:
+        size              | blockSize          | bufferCount
+        10 * Constants.MB | 10 * Constants.MB  | 8
+        20 * Constants.MB | 1 * Constants.MB   | 5
+        10 * Constants.MB | 5 * Constants.MB   | 2
+        10 * Constants.MB | 512 * Constants.KB | 20
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with listener"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadListener = new Listener(blockSize)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(4 * Constants.MB)
+
+        then:
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(size)),
+            parallelTransferOptions, null, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 200
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadListener.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
         where:
@@ -3188,7 +3361,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
+        StepVerifier.create(fac.upload((Flux<ByteBuffer>)null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -3259,7 +3432,7 @@ class FileAPITest extends APISpec {
     }
 
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
@@ -3274,7 +3447,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -3557,6 +3730,38 @@ class FileAPITest extends APISpec {
 
         when:
         clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.uploadWithResponse(new FileParallelUploadOptions(data.defaultBinaryData), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data overwrite"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.upload(data.defaultBinaryData, true)
 
         then:
         notThrown(Exception)
@@ -3971,7 +4176,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    @PlaybackOnly(expiryTime = "2022-05-18")
+    @PlaybackOnly(expiryTime = "2022-08-18")
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -4525,7 +4730,7 @@ class FileAPITest extends APISpec {
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
@@ -4542,7 +4747,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends

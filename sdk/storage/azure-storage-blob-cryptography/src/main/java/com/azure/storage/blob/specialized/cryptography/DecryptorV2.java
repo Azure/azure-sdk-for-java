@@ -52,7 +52,7 @@ class DecryptorV2 extends Decryptor {
                 gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
 
         return encryptedFlux
-            .flatMapSequential(stagingArea::write)
+            .flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(aggregator -> {
                 // Get the IV out of the beginning of the aggregator

@@ -27,7 +27,11 @@ public final class SearchSortEnum extends ExpandableStringEnum<SearchSortEnum> {
         return fromString(name, SearchSortEnum.class);
     }
 
-    /** @return known SearchSortEnum values. */
+    /**
+     * Gets known SearchSortEnum values.
+     *
+     * @return known SearchSortEnum values.
+     */
     public static Collection<SearchSortEnum> values() {
         return values(SearchSortEnum.class);
     }

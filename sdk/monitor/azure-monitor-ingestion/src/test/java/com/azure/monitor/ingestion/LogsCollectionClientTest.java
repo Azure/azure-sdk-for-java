@@ -42,10 +42,9 @@ public class LogsCollectionClientTest extends TestBase {
 
     @BeforeEach
     public void setup() {
-        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_ENDPOINT",
-                "https://dce.monitor.azure.com");
-        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_RULE_ID", "dcr-adec84661d05465f8532f32a04af6f98");
-        streamName = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_STREAM_NAME", "Custom-MyTableRawData");
+        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
+        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-adec84661d05465f8532f32a04af6f98");
+        streamName = "Custom-MyTableRawData";
 
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {

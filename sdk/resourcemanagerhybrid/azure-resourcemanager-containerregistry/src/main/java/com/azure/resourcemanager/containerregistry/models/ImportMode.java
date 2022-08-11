@@ -27,7 +27,11 @@ public final class ImportMode extends ExpandableStringEnum<ImportMode> {
         return fromString(name, ImportMode.class);
     }
 
-    /** @return known ImportMode values. */
+    /**
+     * Gets known ImportMode values.
+     *
+     * @return known ImportMode values.
+     */
     public static Collection<ImportMode> values() {
         return values(ImportMode.class);
     }

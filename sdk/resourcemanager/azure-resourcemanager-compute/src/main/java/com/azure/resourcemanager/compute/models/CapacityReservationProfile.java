@@ -12,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CapacityReservationProfile {
     /*
-     * Specifies the capacity reservation group resource id that should be used
-     * for allocating the virtual machine or scaleset vm instances provided
-     * enough capacity has been reserved. Please refer to
+     * Specifies the capacity reservation group resource id that should be used for allocating the virtual machine or
+     * scaleset vm instances provided enough capacity has been reserved. Please refer to
      * https://aka.ms/CapacityReservation for more details.
      */
     @JsonProperty(value = "capacityReservationGroup")

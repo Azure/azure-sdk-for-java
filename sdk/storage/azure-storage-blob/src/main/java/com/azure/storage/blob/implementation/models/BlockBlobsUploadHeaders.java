@@ -5,11 +5,13 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 
 /** The BlockBlobsUploadHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -80,6 +82,34 @@ public final class BlockBlobsUploadHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-scope")
     private String xMsEncryptionScope;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of BlockBlobsUploadHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public BlockBlobsUploadHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        if (rawHeaders.getValue("Content-MD5") != null) {
+            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+        }
+        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

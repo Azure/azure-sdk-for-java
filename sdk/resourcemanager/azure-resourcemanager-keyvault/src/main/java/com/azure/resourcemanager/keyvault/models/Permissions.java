@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Permissions the identity has for keys, secrets, certificates and storage. */
 @Fluent
 public final class Permissions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Permissions.class);
-
     /*
      * Permissions to keys
      */

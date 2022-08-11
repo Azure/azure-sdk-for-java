@@ -75,6 +75,13 @@ public interface StorageInsight {
     StorageInsightStatus status();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner object.
      *
      * @return the inner object.

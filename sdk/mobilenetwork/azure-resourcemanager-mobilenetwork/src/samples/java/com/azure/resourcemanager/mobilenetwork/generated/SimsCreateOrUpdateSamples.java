@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetworkResourceId;
-import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpPropertiesStaticIp;
@@ -15,27 +14,22 @@ import java.util.Arrays;
 /** Samples for Sims CreateOrUpdate. */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimCreate.json
      */
     /**
-     * Sample code: Create sim.
+     * Sample code: Create SIM.
      *
      * @param manager Entry point to MobileNetworkManager.
      */
-    public static void createSim(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
+    public static void createSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         manager
             .sims()
             .define("testSim")
-            .withRegion("testLocation")
-            .withExistingResourceGroup("rg1")
+            .withExistingSimGroup("rg1", "testSimGroup")
             .withInternationalMobileSubscriberIdentity("00000")
             .withIntegratedCircuitCardIdentifier("8900000000000000000")
             .withAuthenticationKey("00000000000000000000000000000000")
             .withOperatorKeyCode("00000000000000000000000000000000")
-            .withMobileNetwork(
-                new MobileNetworkResourceId()
-                    .withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
             .withDeviceType("Video camera")
             .withSimPolicy(
                 new SimPolicyResourceId()

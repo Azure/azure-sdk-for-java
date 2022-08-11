@@ -33,7 +33,7 @@ public interface BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice.
+     * @return information about a Automanage best practice along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BestPracticeInner> getWithResponse(String bestPracticeName, Context context);
@@ -43,7 +43,7 @@ public interface BestPracticesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BestPracticeInner> listByTenant();
@@ -55,7 +55,7 @@ public interface BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BestPracticeInner> listByTenant(Context context);

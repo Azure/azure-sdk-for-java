@@ -40,4 +40,11 @@ public final class CustomSingleLabelClassificationLROTask extends AnalyzeTextLRO
         this.parameters = parameters;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomSingleLabelClassificationLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

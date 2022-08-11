@@ -12,13 +12,12 @@ import com.azure.resourcemanager.loganalytics.fluent.IntelligencePacksClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.IntelligencePackInner;
 import com.azure.resourcemanager.loganalytics.models.IntelligencePack;
 import com.azure.resourcemanager.loganalytics.models.IntelligencePacks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class IntelligencePacksImpl implements IntelligencePacks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntelligencePacksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntelligencePacksImpl.class);
 
     private final IntelligencePacksClient innerClient;
 

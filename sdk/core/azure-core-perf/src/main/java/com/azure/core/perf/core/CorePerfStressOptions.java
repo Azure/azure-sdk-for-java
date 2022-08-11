@@ -8,9 +8,6 @@ import com.beust.jcommander.Parameter;
 
 public class CorePerfStressOptions extends PerfStressOptions {
 
-    @Parameter(names = { "-e", "--endpoint" }, description = "The base endpoint for rest proxy tests")
-    private String endpoint = "http://unused";
-
     @Parameter(names = { "--backend-type"}, description = "The backend type used for tests. "
         + "Options are mock, blobs or wiremock. "
         + "Defaults to mock.")
@@ -25,14 +22,6 @@ public class CorePerfStressOptions extends PerfStressOptions {
     @Parameter(names = { "--include-pipeline-policies" },
         description = "Includes a bunch of core pipeline policies in the test")
     private boolean includePipelinePolicies;
-
-    /**
-     * The base endpoint for rest proxy tests. See {@link MyRestProxyService}.
-     * @return The base endpoint for rest proxy tests.
-     */
-    public String getEndpoint() {
-        return endpoint;
-    }
 
     /**
      * The backend type used for tests. Options are mock, blobs or wiremock. Defaults to mock.
@@ -65,7 +54,6 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     public enum BinaryDataSource {
-        // TODO (kasobol-msft) add FLUX when there's an option to provide it lazily.
-        BYTES, FILE, STREAM
+        BYTES, FILE, FLUX, STREAM
     }
 }

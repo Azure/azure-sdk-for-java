@@ -27,7 +27,11 @@ public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisi
         return fromString(name, ActiveRevisionsMode.class);
     }
 
-    /** @return known ActiveRevisionsMode values. */
+    /**
+     * Gets known ActiveRevisionsMode values.
+     *
+     * @return known ActiveRevisionsMode values.
+     */
     public static Collection<ActiveRevisionsMode> values() {
         return values(ActiveRevisionsMode.class);
     }
