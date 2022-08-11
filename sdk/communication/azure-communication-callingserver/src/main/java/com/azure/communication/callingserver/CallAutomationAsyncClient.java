@@ -13,13 +13,14 @@ import com.azure.communication.callingserver.implementation.accesshelpers.ErrorC
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallSourceInternal;
 import com.azure.communication.callingserver.models.AnswerCallResult;
+import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CallRejectReason;
+import com.azure.communication.callingserver.implementation.models.CallRejectReasonInternal;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
@@ -250,7 +251,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, String callRejectReason) {
+    public Mono<Void> rejectCall(String incomingCallContext, CallRejectReason callRejectReason) {
         return rejectCallWithResponse(incomingCallContext, callRejectReason).flatMap(FluxUtil::toMono);
     }
 
@@ -264,18 +265,18 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, String callRejectReason) {
+    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, CallRejectReason callRejectReason) {
         return withContext(context -> rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context));
     }
 
-    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, String callRejectReason,
+    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, CallRejectReason callRejectReason,
                                                         Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             RejectCallRequestInternal request = new RejectCallRequestInternal()
                 .setIncomingCallContext(incomingCallContext)
-                .setCallRejectReason(CallRejectReason.fromString(callRejectReason));
+                .setCallRejectReason(CallRejectReasonInternal.fromString(callRejectReason.toString()));
 
             return serverCallingInternal.rejectCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);

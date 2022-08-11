@@ -47,12 +47,20 @@ public final class ErrorConstructorProxy {
      */
     public static CallingServerErrorException create(HttpResponseException internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
-        // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
+        // application accesses CallingServerErrorException which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
-        if (accessor == null) {
-            throw new CallingServerErrorException();
-        }
+        try {
+            if (accessor == null) {
+                throw new CallingServerErrorException();
+            }
 
-        return accessor.create(internalResponse);
+            return accessor.create(internalResponse);
+        } catch (CallingServerErrorException e) {
+            try {
+                return create(internalResponse);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 }

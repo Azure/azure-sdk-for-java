@@ -27,7 +27,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
 
     @BeforeEach
     public void setup() {
-        CallAutomationAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>());
+        CallAutomationAsyncClient callingServerClient = CallAutomationTestBase.getCallAutomationAsyncClient(new ArrayList<>());
         callRecording = callingServerClient.getCallRecordingAsync();
     }
 
@@ -56,7 +56,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
 
     @Test
     public void recordingOperationsTest() {
-        CallAutomationAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(
+        CallAutomationAsyncClient callingServerClient = CallAutomationTestBase.getCallAutomationAsyncClient(
             recordingOperationsResponses
         );
         callRecording = callingServerClient.getCallRecordingAsync();
