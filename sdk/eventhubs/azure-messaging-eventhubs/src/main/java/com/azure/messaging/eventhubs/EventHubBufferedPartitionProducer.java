@@ -118,23 +118,23 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 return;
             }
 
-            final Sinks.EmitResult emitResult1 = eventSink.tryEmitNext(eventData);
-            if (emitResult1.isSuccess()) {
+            final Sinks.EmitResult emitResult = eventSink.tryEmitNext(eventData);
+            if (emitResult.isSuccess()) {
                 sink.success();
                 return;
             }
 
-            if (emitResult1 == Sinks.EmitResult.FAIL_NON_SERIALIZED || emitResult1 == Sinks.EmitResult.FAIL_OVERFLOW) {
+            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED || emitResult == Sinks.EmitResult.FAIL_OVERFLOW) {
                 // If the draining queue is slower than the publishing queue.
                 LOGGER.atInfo()
                     .addKeyValue(PARTITION_ID_KEY, partitionId)
-                    .addKeyValue(EMIT_RESULT_KEY, emitResult1)
+                    .addKeyValue(EMIT_RESULT_KEY, emitResult)
                     .log("Event could not be published downstream. Applying retry.");
 
-                sink.error(new AmqpException(true, emitResult1 + " occurred.", errorContext));
+                sink.error(new AmqpException(true, emitResult + " occurred.", errorContext));
             } else {
-                LOGGER.atWarning().addKeyValue(EMIT_RESULT_KEY, emitResult1)
-                    .log("Event could not be published downstream. Not retrying.", emitResult1);
+                LOGGER.atWarning().addKeyValue(EMIT_RESULT_KEY, emitResult)
+                    .log("Event could not be published downstream. Not retrying.", emitResult);
 
                 sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
                     errorContext));
