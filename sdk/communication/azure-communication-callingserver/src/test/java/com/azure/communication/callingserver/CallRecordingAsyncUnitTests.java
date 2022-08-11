@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingStatus;
-import com.azure.communication.callingserver.models.RecordingStatusResult;
+import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,7 +77,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
         validateError(CallingServerErrorException.class, callRecording.getRecordingState(RECORDING_ID));
     }
 
-    private void validateRecordingStatus(Publisher<RecordingStatusResult> publisher, RecordingStatus status) {
+    private void validateRecordingStatus(Publisher<RecordingStateResult> publisher, RecordingStatus status) {
         StepVerifier.create(publisher)
             .consumeNextWith(recordingStatusResponse -> validateRecording(recordingStatusResponse, status))
             .verifyComplete();
@@ -102,7 +102,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
             .verify();
     }
 
-    private void validateRecording(RecordingStatusResult recordingStatus, RecordingStatus expectedStatus) {
+    private void validateRecording(RecordingStateResult recordingStatus, RecordingStatus expectedStatus) {
         assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
         assertEquals(expectedStatus, recordingStatus.getRecordingStatus());
     }

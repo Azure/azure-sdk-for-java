@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingStatus;
-import com.azure.communication.callingserver.models.RecordingStatusResult;
+import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.util.Context;
@@ -67,7 +67,7 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
         );
         callRecording = callAutomationClient.getCallRecording();
 
-        RecordingStatusResult recordingState = callRecording.startRecording(
+        RecordingStateResult recordingState = callRecording.startRecording(
             new ServerCallLocator(SERVER_CALL_ID),
             URI.create("https://localhost/")
         );
@@ -89,11 +89,11 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
 
     private void verifyOperationWithRecordingStatus(Runnable operation, RecordingStatus expectedStatus) {
         operation.run();
-        RecordingStatusResult recordingState = callRecording.getRecordingState(RECORDING_ID);
+        RecordingStateResult recordingState = callRecording.getRecordingState(RECORDING_ID);
         validateRecording(recordingState, expectedStatus);
     }
 
-    private void validateRecording(RecordingStatusResult recordingStatus, RecordingStatus expectedStatus) {
+    private void validateRecording(RecordingStateResult recordingStatus, RecordingStatus expectedStatus) {
         assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
         assertEquals(expectedStatus, recordingStatus.getRecordingStatus());
     }

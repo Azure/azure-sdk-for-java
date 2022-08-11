@@ -3,15 +3,15 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.callingserver.implementation.accesshelpers.RecordingStatusResponseConstructorProxy;
-import com.azure.communication.callingserver.implementation.models.RecordingStatusResponseInternal;
+import com.azure.communication.callingserver.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
+import com.azure.communication.callingserver.implementation.models.RecordingStateResponseInternal;
 import com.azure.core.annotation.Immutable;
 
 /** The response payload of start call recording operation. */
 @Immutable
-public final class RecordingStatusResult {
+public final class RecordingStateResult {
     static {
-        RecordingStatusResponseConstructorProxy.setAccessor(RecordingStatusResult::new);
+        RecordingStateResponseConstructorProxy.setAccessor(RecordingStateResult::new);
     }
     /*
      * The recording id of the started recording
@@ -42,7 +42,7 @@ public final class RecordingStatusResult {
      * Public constructor.
      *
      */
-    public RecordingStatusResult() {
+    public RecordingStateResult() {
         this.recordingId = null;
         this.recordingStatus = null;
     }
@@ -50,10 +50,10 @@ public final class RecordingStatusResult {
     /**
      * Package-private constructor of the class, used internally only.
      *
-     * @param  recordingStatusResponseInternal The response from the service
+     * @param  recordingStateResponseInternal The response from the service
      */
-    RecordingStatusResult(RecordingStatusResponseInternal recordingStatusResponseInternal) {
-        this.recordingId = recordingStatusResponseInternal.getRecordingId();
-        this.recordingStatus = RecordingStatus.fromString(recordingStatusResponseInternal.getRecordingStatus().toString());
+    RecordingStateResult(RecordingStateResponseInternal recordingStateResponseInternal) {
+        this.recordingId = recordingStateResponseInternal.getRecordingId();
+        this.recordingStatus = RecordingStatus.fromString(recordingStateResponseInternal.getRecordingState().toString());
     }
 }

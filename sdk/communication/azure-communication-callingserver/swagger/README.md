@@ -106,8 +106,8 @@ directive:
     from: RecordingIdResponse
     to: RecordingIdResponseInternal
 - rename-model:
-    from: RecordingStatusResponse
-    to: RecordingStatusResponseInternal
+    from: RecordingStateResponse
+    to: RecordingStateResponseInternal
 - rename-model:
     from: PlayResponse
     to: PlayResponseInternal
@@ -129,6 +129,9 @@ directive:
 - remove-model: CallTransferAcceptedEvent
 - remove-model: CallTransferFailedEvent
 - remove-model: ParticipantsUpdatedEvent
+- remove-model: RecordingStateChangedEvent
+- remove-model: PlayCompleted
+- remove-model: PlayFailed
 - remove-model: ResultInfo
 ```
 
@@ -193,15 +196,6 @@ directive:
   where: $.definitions.CallConnectionStateModel["x-ms-enum"]
   transform: >
     $.name = "CallConnectionStateModelInternal";
-```
-
-### Rename RecordingStatus to RecordingStatusInternal
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.RecordingStatus["x-ms-enum"]
-  transform: >
-    $.name = "RecordingStatusInternal";
 ```
 
 ### Rename AcsEventType to AcsEventTypeInternal
