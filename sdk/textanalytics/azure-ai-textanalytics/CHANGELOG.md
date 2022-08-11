@@ -8,16 +8,23 @@
 
 ### Breaking Changes
 - Removed support for `Healthcare FHIR`, and `Extractive Summarization` features.
-- Renamed 
+- Renamed
   `SingleCategoryClassifyAction` to `SingleLabelClassifyAction`,
   `MultiCategoryClassifyAction` to `MultiLabelClassifyAction`.
-- Merged 
+- Merged
   `SingleCategoryClassifyResultCollection` and `SingleCategoryClassifyResultCollection` to `ClassifyDocumentResultCollection`,
   `MultiCategoryClassifyResult` and `SingleCategoryClassifyResult` to `ClassifyDocumentResult`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.1.12 (2022-08-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
 
 ## 5.1.11 (2022-07-07)
 ### Other Changes
