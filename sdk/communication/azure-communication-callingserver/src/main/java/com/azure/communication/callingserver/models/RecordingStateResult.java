@@ -18,7 +18,7 @@ public final class RecordingStateResult {
      */
     private final String recordingId;
 
-    private final RecordingStatus recordingStatus;
+    private final RecordingState recordingState;
 
     /**
      * Get the recordingId property: The recording id of the started recording.
@@ -34,8 +34,8 @@ public final class RecordingStateResult {
      *
      * @return the recordingStatus value.
      */
-    public RecordingStatus getRecordingStatus() {
-        return this.recordingStatus;
+    public RecordingState getRecordingState() {
+        return this.recordingState;
     }
 
     /**
@@ -44,7 +44,7 @@ public final class RecordingStateResult {
      */
     public RecordingStateResult() {
         this.recordingId = null;
-        this.recordingStatus = null;
+        this.recordingState = null;
     }
 
     /**
@@ -54,6 +54,6 @@ public final class RecordingStateResult {
      */
     RecordingStateResult(RecordingStateResponseInternal recordingStateResponseInternal) {
         this.recordingId = recordingStateResponseInternal.getRecordingId();
-        this.recordingStatus = RecordingStatus.fromString(recordingStateResponseInternal.getRecordingState().toString());
+        this.recordingState = RecordingState.fromString(recordingStateResponseInternal.getRecordingState().toString());
     }
 }

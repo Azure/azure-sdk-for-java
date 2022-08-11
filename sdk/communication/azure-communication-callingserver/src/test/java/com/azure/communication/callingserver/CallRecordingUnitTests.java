@@ -7,7 +7,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
-import com.azure.communication.callingserver.models.RecordingStatus;
+import com.azure.communication.callingserver.models.RecordingState;
 import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
@@ -71,30 +71,30 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
             new ServerCallLocator(SERVER_CALL_ID),
             URI.create("https://localhost/")
         );
-        validateRecording(recordingState, RecordingStatus.ACTIVE);
+        validateRecording(recordingState, RecordingState.ACTIVE);
 
         verifyOperationWithRecordingStatus(
             () -> callRecording.pauseRecording(RECORDING_ID),
-            RecordingStatus.INACTIVE
+            RecordingState.INACTIVE
         );
 
         verifyOperationWithRecordingStatus(
             () -> callRecording.resumeRecording(RECORDING_ID),
-            RecordingStatus.ACTIVE
+            RecordingState.ACTIVE
         );
 
         callRecording.stopRecording(RECORDING_ID);
         assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(RECORDING_ID));
     }
 
-    private void verifyOperationWithRecordingStatus(Runnable operation, RecordingStatus expectedStatus) {
+    private void verifyOperationWithRecordingStatus(Runnable operation, RecordingState expectedStatus) {
         operation.run();
         RecordingStateResult recordingState = callRecording.getRecordingState(RECORDING_ID);
         validateRecording(recordingState, expectedStatus);
     }
 
-    private void validateRecording(RecordingStateResult recordingStatus, RecordingStatus expectedStatus) {
+    private void validateRecording(RecordingStateResult recordingStatus, RecordingState expectedStatus) {
         assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
-        assertEquals(expectedStatus, recordingStatus.getRecordingStatus());
+        assertEquals(expectedStatus, recordingStatus.getRecordingState());
     }
 }
