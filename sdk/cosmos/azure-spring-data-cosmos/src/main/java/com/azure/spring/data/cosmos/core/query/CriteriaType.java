@@ -96,11 +96,6 @@ public enum CriteriaType {
     CONTAINING("CONTAINS"),
 
     /**
-     * Not Contain
-     */
-    NOT_CONTAINING("NOT CONTAINS"),
-
-    /**
      * Ends with
      */
     ENDS_WITH("ENDSWITH"),
@@ -133,7 +128,12 @@ public enum CriteriaType {
     /**
      * String equals
      */
-    STRING_EQUALS("STRINGEQUALS");
+    STRING_EQUALS("STRINGEQUALS"),
+
+    /**
+     * Not Contain
+     */
+    NOT_CONTAINING("NOT CONTAINS");
 
     private String sqlKeyword;
 
