@@ -1,7 +1,7 @@
 # Azure Communication Service Common client library for Java
 
-Azure Communication Common contains data structures commonly used for communicating with Azure Communication Services. 
-It is intended to provide cross-cutting concerns, e.g. authentication. 
+Azure Communication Common contains data structures commonly used for communicating with Azure Communication Services.
+It is intended to provide cross-cutting concerns, e.g. authentication.
 
 ## Getting started
 
@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-common</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +100,7 @@ String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
 CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser)
     .setRefreshProactively(true)
     .setInitialToken(token);
-CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);     
+CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
 ```
 
 ## Troubleshooting
