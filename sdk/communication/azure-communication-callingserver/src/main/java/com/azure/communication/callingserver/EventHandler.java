@@ -11,6 +11,9 @@ import com.azure.communication.callingserver.models.events.CallDisconnectedEvent
 import com.azure.communication.callingserver.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callingserver.models.events.CallTransferFailedEvent;
 import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent;
+import com.azure.communication.callingserver.models.events.PlayCompleted;
+import com.azure.communication.callingserver.models.events.PlayFailed;
+import com.azure.communication.callingserver.models.events.RecordingStateChangedEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -100,6 +103,12 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, CallTransferFailedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ParticipantsUpdated")) {
                 ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
+                ret = mapper.convertValue(eventData, PlayCompleted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
+                ret = mapper.convertValue(eventData, PlayFailed.class);
             }
 
             return ret;
