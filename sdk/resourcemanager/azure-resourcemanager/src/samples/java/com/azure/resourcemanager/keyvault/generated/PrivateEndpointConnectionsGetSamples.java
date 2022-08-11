@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/getPrivateEndpointConnection.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/getPrivateEndpointConnection.json
      */
     /**
      * Sample code: KeyVaultGetPrivateEndpointConnection.
