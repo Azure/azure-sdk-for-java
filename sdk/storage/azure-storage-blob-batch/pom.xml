@@ -13,11 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-<<<<<<< HEAD
   <version>12.14.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
-=======
-  <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
->>>>>>> parent of 09833b18135 (Reset changes to the patch version.)
 
   <name>Microsoft Azure client library for Blob Storage batching</name>
   <description>This module contains client library for Microsoft Azure Blob Storage batching.</description>
@@ -229,11 +225,7 @@
         <dependency>
           <groupId>org.spockframework</groupId>
           <artifactId>spock-core</artifactId>
-<<<<<<< HEAD
                 <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
-=======
-          <version>2.2-M3-groovy-4.0</version> <!-- {x-version-update;groovy4_org.spockframework:spock-core;external_dependency} -->
->>>>>>> parent of 09833b18135 (Reset changes to the patch version.)
           <scope>test</scope>
         </dependency>
       </dependencies>
