@@ -298,15 +298,19 @@ public class IdentityClient {
                 return Mono.error(LOGGER.logExceptionAsWarning(new IllegalStateException(e)));
             }
 
+            if (options.getManagedIdentityType() == null) {
+                return Mono.error(LOGGER.logExceptionAsError(
+                    new CredentialUnavailableException("Managed Identity type not configured, authentication not available.")));
+            }
             applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
                 TokenRequestContext trc = new TokenRequestContext()
                     .setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
                     .setClaims(appTokenProviderParameters.claims)
                     .setTenantId(appTokenProviderParameters.tenantId);
 
-                Mono<AccessToken> accessTokenMono = getTokenFromTargetManagedIdentity(options.getManagedIdentityType(), trc);
+                Mono<AccessToken> accessTokenAsync = getTokenFromTargetManagedIdentity(trc);
 
-                return accessTokenMono.toFuture().thenApply(accessToken -> {
+                return accessTokenAsync.toFuture().thenApply(accessToken -> {
                     TokenProviderResult result =  new TokenProviderResult();
                     result.setAccessToken(accessToken.getToken());
                     result.setTenantId(trc.getTenantId());
@@ -332,21 +336,26 @@ public class IdentityClient {
         });
     }
 
-    private Mono<AccessToken> getTokenFromTargetManagedIdentity(ManagedIdentityType managedIdentityType, TokenRequestContext trc) {
+    private Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
         ManagedIdentityParameters parameters = options.getManagedIdentityParameters();
+        ManagedIdentityType managedIdentityType = options.getManagedIdentityType();
         switch (managedIdentityType) {
             case APP_SERVICE:
                 return authenticateToManagedIdentityEndpoint(parameters.getIdentityEndpoint(),
-                    parameters.getIdentityHeader(), parameters.getMsiEndpoint(), parameters.getMsiSecret(), trc);
+                    parameters.getIdentityHeader(), parameters.getMsiEndpoint(), parameters.getMsiSecret(),
+                    tokenRequestContext);
             case SERVICE_FABRIC:
                 return authenticateToServiceFabricManagedIdentityEndpoint(parameters.getIdentityEndpoint(),
-                    parameters.getIdentityHeader(), parameters.getIdentityServerThumbprint(), trc);
+                    parameters.getIdentityHeader(), parameters.getIdentityServerThumbprint(), tokenRequestContext);
             case ARC:
-                return authenticateToArcManagedIdentityEndpoint(parameters.getIdentityEndpoint(), trc);
+                return authenticateToArcManagedIdentityEndpoint(parameters.getIdentityEndpoint(), tokenRequestContext);
             case AKS:
-                return authenticateWithExchangeToken(trc);
+                return authenticateWithExchangeToken(tokenRequestContext);
+            case VM:
+                return authenticateToIMDSEndpoint(tokenRequestContext);
             default:
-                return authenticateToIMDSEndpoint(trc);
+                return Mono.error(LOGGER.logExceptionAsError(
+                    new CredentialUnavailableException("Unknown Managed Identity type, authentication not available.")));
         }
     }
 

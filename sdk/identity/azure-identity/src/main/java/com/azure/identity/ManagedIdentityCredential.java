@@ -140,7 +140,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             case AKS:
                 return clientOptions.setManagedIdentityType(ManagedIdentityType.AKS);
             default:
-                return clientOptions.setManagedIdentityType(ManagedIdentityType.NONE);
+                return clientOptions;
         }
     }
 
