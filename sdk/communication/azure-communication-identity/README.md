@@ -140,13 +140,10 @@ It's also possible to create a Communication Identity access token by customizin
 ```java readme-sample-issueTokenWithCustomExpiration
 // Define a list of Communication Identity access token scopes
 List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-
-// Create options to pass mandatory and configurable parameters to get a Communication Identity access token
-GetTokenOptions getTokenOptions = new GetTokenOptions(user, scopes);
-Duration customExpiration = Duration.ofMinutes(60);
-getTokenOptions.setExpiresInMinutes(customExpiration);
-
-AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
+// Set custom validity period of the Communication Identity access token within <60,1440>
+// minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+Duration expiresAfter = Duration.ofMinutes(60);
+AccessToken userToken = communicationIdentityClient.getToken(user, scopes, expiresAfter);
 System.out.println("User token value: " + userToken.getToken());
 System.out.println("Expires at: " + userToken.getExpiresAt());
 ```
@@ -168,13 +165,10 @@ Here it's also possible to specify the expiration time for the Communication Ide
 ```java readme-sample-createNewUserAndTokenWithCustomExpiration
 // Define a list of communication token scopes
 List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-
-// Create options to pass mandatory and configurable parameters to get a Communication Identity access token
-CreateUserAndTokenOptions createUserAndTokenOptions = new CreateUserAndTokenOptions(scopes);
-Duration customExpiration = Duration.ofMinutes(60);
-createUserAndTokenOptions.setExpiresInMinutes(customExpiration);
-
-CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes);
+// Set custom validity period of the Communication Identity access token within <60,1440>
+// minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+Duration expiresAfter = Duration.ofMinutes(60);
+CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes, expiresAfter);
 System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());
 ```
