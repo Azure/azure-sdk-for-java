@@ -49,7 +49,7 @@
   [
     { "io.projectreactor.netty:reactor-netty": "1.0.0" },
     { "io.projectreactor.netty:reactor-netty-http": "1.0.0" },
-    { "io.projectreactor:reactor-core": "3.4.4" },
-    { "io.projectreactor:reactor-test": "3.4.4" }
+    { "io.projectreactor:reactor-core": "3.4.15" },
+    { "io.projectreactor:reactor-test": "3.4.15" }
   ]
 }
