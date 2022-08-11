@@ -288,9 +288,10 @@ public class IdentityClient {
                 + "/" + tenantId;
 
             // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
-            IClientCredential credential = ClientCredentialFactory.createFromSecret("dummy-secret");
+            IClientCredential credential = ClientCredentialFactory
+                .createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
             ConfidentialClientApplication.Builder applicationBuilder =
-                ConfidentialClientApplication.builder(clientId == null ? IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID
+                ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
                     : clientId, credential);
             try {
                 applicationBuilder = applicationBuilder.authority(authorityUrl);
@@ -310,13 +311,13 @@ public class IdentityClient {
 
                 Mono<AccessToken> accessTokenAsync = getTokenFromTargetManagedIdentity(trc);
 
-                return accessTokenAsync.toFuture().thenApply(accessToken -> {
+                return accessTokenAsync.map(accessToken -> {
                     TokenProviderResult result =  new TokenProviderResult();
                     result.setAccessToken(accessToken.getToken());
                     result.setTenantId(trc.getTenantId());
                     result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
                     return result;
-                });
+                }).toFuture();
             });
 
 
@@ -336,7 +337,7 @@ public class IdentityClient {
         });
     }
 
-    private Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
+    Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext) {
         ManagedIdentityParameters parameters = options.getManagedIdentityParameters();
         ManagedIdentityType managedIdentityType = options.getManagedIdentityType();
         switch (managedIdentityType) {
