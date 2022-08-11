@@ -20,8 +20,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
     private ApplicationGatewayPrivateLinkConfigurationProperties innerProperties;
 
     /*
-     * Name of the private link configuration that is unique within an
-     * Application Gateway.
+     * Name of the private link configuration that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FlowLogStatusParameters {
     /*
-     * The target resource where getting the flow log and traffic analytics
-     * (optional) status.
+     * The target resource where getting the flow log and traffic analytics (optional) status.
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;

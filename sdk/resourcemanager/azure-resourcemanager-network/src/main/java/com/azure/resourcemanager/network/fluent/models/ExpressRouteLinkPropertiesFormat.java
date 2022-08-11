@@ -11,7 +11,11 @@ import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRouteLink Resource Properties Properties specific to ExpressRouteLink resources. */
+/**
+ * ExpressRouteLink Resource Properties
+ *
+ * <p>Properties specific to ExpressRouteLink resources.
+ */
 @Fluent
 public final class ExpressRouteLinkPropertiesFormat {
     /*
@@ -57,8 +61,9 @@ public final class ExpressRouteLinkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Definition of ExpressRouteLink Mac Security configuration. MacSec
-     * configuration.
+     * Definition of ExpressRouteLink Mac Security configuration.
+     *
+     * MacSec configuration.
      */
     @JsonProperty(value = "macSecConfig")
     private ExpressRouteLinkMacSecConfig macSecConfig;
@@ -138,7 +143,9 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration. MacSec configuration.
+     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
+     *
+     * <p>MacSec configuration.
      *
      * @return the macSecConfig value.
      */
@@ -147,7 +154,9 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration. MacSec configuration.
+     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
+     *
+     * <p>MacSec configuration.
      *
      * @param macSecConfig the macSecConfig value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.

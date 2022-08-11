@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class FileParallelUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
+    private final BinaryData data;
     private final Long length;
     private ParallelTransferOptions parallelTransferOptions;
     private PathHttpHeaders headers;
@@ -41,6 +43,20 @@ public class FileParallelUploadOptions {
         this.dataFlux = dataFlux;
         this.dataStream = null;
         this.length = null;
+        this.data = null;
+    }
+
+    /**
+     * Constructs a new {@code FileParallelUploadOptions}.
+     *
+     * @param data The {@link BinaryData} to write to the file.
+     */
+    public FileParallelUploadOptions(BinaryData data) {
+        StorageImplUtils.assertNotNull("data must not be null", data);
+        this.data = data;
+        this.length = data.getLength();
+        this.dataFlux = null;
+        this.dataStream = null;
     }
 
     /**
@@ -80,6 +96,7 @@ public class FileParallelUploadOptions {
         this.dataStream = dataStream;
         this.length = length;
         this.dataFlux = null;
+        this.data = null;
     }
 
     /**
@@ -98,6 +115,15 @@ public class FileParallelUploadOptions {
      */
     public InputStream getDataStream() {
         return this.dataStream;
+    }
+
+    /**
+     * Gets the data source.
+     *
+     * @return The data to write to the file.
+     */
+    public BinaryData getData() {
+        return this.data;
     }
 
     /**

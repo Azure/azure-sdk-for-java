@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PrivateEndpointIpConfigurationProperties {
     /*
-     * The ID of a group obtained from the remote resource that this private
-     * endpoint should connect to.
+     * The ID of a group obtained from the remote resource that this private endpoint should connect to.
      */
     @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
-     * The member name of a group obtained from the remote resource that this
-     * private endpoint should connect to.
+     * The member name of a group obtained from the remote resource that this private endpoint should connect to.
      */
     @JsonProperty(value = "memberName")
     private String memberName;

@@ -19,7 +19,7 @@ import java.util.UUID;
 /** Samples for Vaults UpdateAccessPolicy. */
 public final class VaultsUpdateAccessPolicySamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/updateAccessPoliciesAdd.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/updateAccessPoliciesAdd.json
      */
     /**
      * Sample code: Add an access policy, or update an access policy with new permissions.
