@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
-import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobContainerClient
@@ -59,7 +58,6 @@ import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.atomic.AtomicLong
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH
@@ -356,8 +354,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         where:
         dataSize              | _
         3000                  | _ // small
-        5 * 1024 * 1024 - 10  | _ // medium
-        20 * 1024 * 1024 - 10 | _ // large
+//        5 * 1024 * 1024 - 10  | _ // medium
+//        20 * 1024 * 1024 - 10 | _ // large
     }
 
     boolean encryptionTestHelper(int size, int byteBufferCount) {
@@ -1324,16 +1322,16 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         where:
         fileSize             | version
-        0                    | EncryptionVersion.V1 // empty file
-        20                   | EncryptionVersion.V1 // small file
-        16 * 1024 * 1024     | EncryptionVersion.V1 // medium file in several chunks
-        8 * 1026 * 1024 + 10 | EncryptionVersion.V1 // medium file not aligned to block
+//        0                    | EncryptionVersion.V1 // empty file
+//        20                   | EncryptionVersion.V1 // small file
+//        16 * 1024 * 1024     | EncryptionVersion.V1 // medium file in several chunks
+//        8 * 1026 * 1024 + 10 | EncryptionVersion.V1 // medium file not aligned to block
         50 * Constants.MB    | EncryptionVersion.V1 // large file requiring multiple requests
-        0                    | EncryptionVersion.V2 // empty file
-        20                   | EncryptionVersion.V2 // small file
-        16 * 1024 * 1024     | EncryptionVersion.V2 // medium file in several chunks
-        8 * 1026 * 1024 + 10 | EncryptionVersion.V2 // medium file not aligned to block
-        50 * Constants.MB    | EncryptionVersion.V2 // large file requiring multiple requests
+//        0                    | EncryptionVersion.V2 // empty file
+//        20                   | EncryptionVersion.V2 // small file
+//        16 * 1024 * 1024     | EncryptionVersion.V2 // medium file in several chunks
+//        8 * 1026 * 1024 + 10 | EncryptionVersion.V2 // medium file not aligned to block
+//        50 * Constants.MB    | EncryptionVersion.V2 // large file requiring multiple requests
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
@@ -1694,7 +1692,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = new AtomicLong()
+        def prevCount = 0
 
         when:
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1706,82 +1704,26 @@ class EncyptedBlockBlobAPITest extends APISpec {
          * Should receive at least one notification indicating completed progress, multiple notifications may be
          * received if there are empty buffers in the stream.
          */
-        (1.._) * mockReceiver.handleProgress(fileSize)
+        (1.._) * mockReceiver.reportProgress(fileSize)
 
         // There should be NO notification with a larger than expected size.
-        0 * mockReceiver.handleProgress({ it > fileSize })
+        0 * mockReceiver.reportProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
         notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
-        (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount.get())) {
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount.set(bytesTransferred)
+                prevCount = bytesTransferred
             }
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.handleProgress({ it > fileSize })
-
-        cleanup:
-        file.delete()
-        outFile.delete()
-
-        where:
-        fileSize             | _
-        100                  | _
-        8 * 1026 * 1024 + 10 | _
-    }
-
-    @LiveOnly
-    @Unroll
-    def "Download file progress listener"() {
-        def file = getRandomFile(fileSize)
-        ebc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(namer.getResourcePrefix())
-        if (outFile.exists()) {
-            assert outFile.delete()
-        }
-
-        def mockListener = Mock(ProgressListener)
-
-        def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = new AtomicLong()
-
-        when:
-        ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setProgressListener(mockListener),
-            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
-
-        then:
-        /*
-         * Should receive at least one notification indicating completed progress, multiple notifications may be
-         * received if there are empty buffers in the stream.
-         */
-        (1.._) * mockListener.handleProgress(fileSize)
-
-        // There should be NO notification with a larger than expected size.
-        0 * mockListener.handleProgress({ it > fileSize })
-
-        /*
-        We should receive at least one notification reporting an intermediary value per block, but possibly more
-        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
-        will be the total size as above. Finally, we assert that the number reported monotonically increases.
-         */
-        (numBlocks - 1.._) * mockListener.handleProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount.get())) {
-                throw new IllegalArgumentException("Reported progress should monotonically increase")
-            } else {
-                prevCount.set(bytesTransferred)
-            }
-        }
-
-        // We should receive no notifications that report more progress than the size of the file.
-        0 * mockListener.handleProgress({ it > fileSize })
+        0 * mockReceiver.reportProgress({ it > fileSize })
 
         cleanup:
         file.delete()

@@ -342,7 +342,7 @@ public class EncryptedBlobClient extends BlobClient {
         throws UncheckedIOException {
         Mono<Response<BlockBlobItem>> upload =
             this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
-                .contextWrite(FluxUtil.toReactorContext(context));
+                .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
