@@ -17,6 +17,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TestMeter implements Meter {
     private final Map<String, TestHistogram> histograms = new ConcurrentHashMap<>();
     private final Map<String, TestCounter> counters = new ConcurrentHashMap<>();
+    private final Map<String, TestCounter> upDownCounters = new ConcurrentHashMap<>();
+
+    private final boolean isEnabled;
+
+    /**
+     * Creates test meter.
+     */
+    public TestMeter() {
+        this(true);
+    }
+
+    /**
+     * Creates test meter
+     *
+     * @param isEnabled flag indicating if meter should be enabled.
+     */
+    public TestMeter(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
     @Override
     public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
         return histograms.computeIfAbsent(name, n -> new TestHistogram());
@@ -29,7 +49,7 @@ public class TestMeter implements Meter {
 
     @Override
     public LongCounter createLongUpDownCounter(String name, String description, String unit) {
-        return counters.computeIfAbsent(name, n -> new TestCounter());
+        return upDownCounters.computeIfAbsent(name, n -> new TestCounter());
     }
 
     @Override
@@ -39,7 +59,7 @@ public class TestMeter implements Meter {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     @Override
@@ -62,6 +82,15 @@ public class TestMeter implements Meter {
      */
     public Map<String, TestCounter> getCounters() {
         return counters;
+    }
+
+    /**
+     * Gets up-down counters created with this meter.
+     *
+     * @return map of counters (by counter name)
+     */
+    public Map<String, TestCounter> getUpDownCounters() {
+        return upDownCounters;
     }
 }
 

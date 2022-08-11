@@ -129,6 +129,7 @@ public class SessionHandler extends Handler {
                 String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]",
                     id, sessionName, condition), context);
 
+            metricsProvider.recordSessionError(condition);
             onError(exception);
         }
     }
@@ -142,7 +143,6 @@ public class SessionHandler extends Handler {
             .addKeyValue(SESSION_NAME_KEY, sessionName)
             .log("onSessionFinal.");
 
-        metricsProvider.recordSessionError(condition);
         close();
     }
 

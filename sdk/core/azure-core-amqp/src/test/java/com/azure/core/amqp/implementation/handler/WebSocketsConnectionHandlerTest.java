@@ -6,14 +6,18 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -33,12 +37,14 @@ import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.FRAMEWORK;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATFORM;
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.HTTPS_PORT;
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.MAX_FRAME_SIZE;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -216,5 +222,55 @@ public class WebSocketsConnectionHandlerTest {
             Assertions.assertEquals(port, connectionOptions.getPort());
             Assertions.assertEquals(port, handler.getProtocolPort());
         }
+    }
+
+    @Test
+    void onConnectionCloseMetrics() {
+        // Arrange
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
+        Event openEvent = mock(Event.class);
+        Event closeEventWithError = mock(Event.class);
+        Event closeEventNoError = mock(Event.class);
+
+        Connection connectionWithError = mock(Connection.class);
+        when(openEvent.getConnection()).thenReturn(connectionWithError);
+        when(closeEventWithError.getConnection()).thenReturn(connectionWithError);
+
+        Connection connectionNoError = mock(Connection.class);
+        when(openEvent.getConnection()).thenReturn(connectionNoError);
+        when(closeEventNoError.getConnection()).thenReturn(connectionNoError);
+
+        when(connectionWithError.getCondition()).thenReturn(errorCondition);
+        when(connectionWithError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        when(connectionNoError.getCondition()).thenReturn(new ErrorCondition(null, ""));
+        when(connectionNoError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+
+        TestMeter meter = new TestMeter();
+        WebSocketsConnectionHandler handlerWithMetrics = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
+            peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
+
+        handlerWithMetrics.onConnectionInit(openEvent);
+        handlerWithMetrics.onConnectionInit(openEvent);
+        handlerWithMetrics.onConnectionFinal(closeEventWithError);
+        handlerWithMetrics.onConnectionFinal(closeEventNoError);
+
+        // Assert
+        List<TestMeasurement<Long>> activeConnections = meter.getUpDownCounters().get("messaging.az.amqp.connections.active").getMeasurements();
+        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.connections.closed").getMeasurements();
+        assertEquals(4, activeConnections.size());
+        assertEquals(2, closedConnections.size());
+
+        assertEquals(1, activeConnections.get(0).getValue());
+        assertEquals(1, activeConnections.get(1).getValue());
+        assertEquals(-1, activeConnections.get(2).getValue());
+        assertEquals(-1, activeConnections.get(3).getValue());
+        assertEquals(1, closedConnections.get(0).getValue());
+        assertEquals(1, closedConnections.get(1).getValue());
+
+        assertEquals(HOSTNAME, activeConnections.get(0).getAttributes().get("net.peer.name"));
+        assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get("net.peer.name"));
+        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get("status"));
+        assertEquals("OK", closedConnections.get(1).getAttributes().get("status"));
     }
 }

@@ -8,10 +8,12 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import org.apache.qpid.proton.engine.Connection;
@@ -47,7 +49,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -65,6 +67,7 @@ public class ReactorHandlerProviderTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String FULLY_QUALIFIED_DOMAIN_NAME = "my-hostname.windows.com";
     private static final String HOSTNAME = "my.fake.hostname.com";
+    private static final String ENTITY_PATH = "name/and/partition";
     private static final int PORT = 1003;
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
@@ -75,7 +78,6 @@ public class ReactorHandlerProviderTest {
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER;
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
         Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
-
 
     @Mock
     private Reactor reactor;
@@ -434,5 +436,29 @@ public class ReactorHandlerProviderTest {
                     return peerDetails.getPort() == WebSocketsConnectionHandler.HTTPS_PORT;
                 }
             }));
+    }
+
+    @Test
+    public void noopMeter() {
+        TestMeter meter = new TestMeter(false);
+        ReactorHandlerProvider providerWithMetrics = new ReactorHandlerProvider(reactorProvider, meter);
+
+        AmqpMetricsProvider metricsProvider = providerWithMetrics.getMetricProvider(HOSTNAME, null);
+        metricsProvider.recordConnectionInit();
+        assertTrue(meter.getUpDownCounters().isEmpty());
+        assertTrue(meter.getCounters().isEmpty());
+        assertTrue(meter.getHistograms().isEmpty());
+    }
+
+    @Test
+    public void cachesMetrics() {
+        ReactorHandlerProvider providerWithMetrics = new ReactorHandlerProvider(reactorProvider, new TestMeter());
+
+        AmqpMetricsProvider metricsProvider1 = providerWithMetrics.getMetricProvider(HOSTNAME, ENTITY_PATH);
+        AmqpMetricsProvider metricsProvider2 = providerWithMetrics.getMetricProvider(HOSTNAME, null);
+
+        assertNotSame(metricsProvider1, metricsProvider2);
+        assertSame(metricsProvider1,  providerWithMetrics.getMetricProvider(HOSTNAME, ENTITY_PATH));
+        assertSame(metricsProvider2,  providerWithMetrics.getMetricProvider(HOSTNAME, null));
     }
 }

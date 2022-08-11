@@ -14,6 +14,9 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.test.utils.metrics.TestHistogram;
+import com.azure.core.test.utils.metrics.TestMeasurement;
+import com.azure.core.test.utils.metrics.TestMeter;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
@@ -47,6 +50,7 @@ import reactor.test.publisher.TestPublisher;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -72,6 +76,7 @@ import static org.mockito.Mockito.when;
  */
 public class ReactorSenderTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
+    private static final String HOSTNAME = "hostname";
     private static final String ENTITY_PATH = "entity-path";
     private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.createCold();
     private final TestPublisher<EndpointState> endpointStatePublisher = TestPublisher.createCold();
@@ -724,5 +729,47 @@ public class ReactorSenderTest {
         // Assert
         verify(sender).getRemoteMaxMessageSize();
         verify(scheduler).schedule(any(Runnable.class), eq(milliseconds), eq(TimeUnit.MILLISECONDS));
+    }
+
+    @Test
+    public void sendWorkMetrics() throws IOException {
+        // Arrange
+        final long milliseconds = options.getTryTimeout().toMillis();
+
+        doAnswer(invocationOnMock -> {
+            final Runnable runnable = invocationOnMock.getArgument(0);
+            runnable.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocation -> {
+            final Runnable argument = invocation.getArgument(0);
+            argument.run();
+            return null;
+        }).when(scheduler).schedule(any(Runnable.class), eq(milliseconds), eq(TimeUnit.MILLISECONDS));
+
+        final Delivery delivery = mock(Delivery.class);
+        when(sender.delivery(any())).thenReturn(delivery);
+        when(sender.advance()).thenReturn(true);
+        when(sender.send(any(), anyInt(), anyInt())).thenAnswer(invocation -> invocation.getArgument(2));
+
+        TestMeter meter = new TestMeter();
+        ReactorSender reactorSenderWithMetrics = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
+            reactorProvider, tokenManager, messageSerializer, options, scheduler,
+            new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
+
+        // Act
+        StepVerifier.create(reactorSenderWithMetrics.send(message))
+            .expectError(AmqpException.class)
+            .verify(VERIFY_TIMEOUT);
+
+        // Assert
+        TestHistogram sendDuration = meter.getHistograms().get("messaging.az.amqp.send.duration");
+        List<TestMeasurement<Double>> measurements = sendDuration.getMeasurements();
+        assertEquals(1, measurements.size());
+        assertEquals(HOSTNAME, measurements.get(0).getAttributes().get("net.peer.name"));
+        assertEquals(ENTITY_PATH, measurements.get(0).getAttributes().get("entity_name"));
+
+        // TODO: how to test retries?
     }
 }

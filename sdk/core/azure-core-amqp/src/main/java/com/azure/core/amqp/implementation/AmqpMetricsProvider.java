@@ -10,12 +10,14 @@ import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -42,6 +44,7 @@ public class AmqpMetricsProvider {
     }
 
     public AmqpMetricsProvider(Meter meter, String namespace, String entityPath) {
+        Objects.requireNonNull(namespace, "'namespace' cannot be null");
         if (meter == null) {
             meter = DEFAULT_METER;
         }
@@ -108,7 +111,8 @@ public class AmqpMetricsProvider {
             }
 
             if (closedConnections.isEnabled()) {
-                String conditionStr = condition != null ? condition.toString() : "OK";
+                Symbol conditionSymbol = condition != null ? condition.getCondition() : null;
+                String conditionStr = conditionSymbol != null ? conditionSymbol.toString() : "OK";
                 closedConnections.add(1, amqpErrorAttributeCache.getOrCreate(conditionStr), Context.NONE);
             }
         }
