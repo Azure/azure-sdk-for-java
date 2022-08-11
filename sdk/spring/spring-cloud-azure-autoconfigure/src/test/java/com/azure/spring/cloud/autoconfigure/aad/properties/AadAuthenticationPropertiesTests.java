@@ -378,6 +378,29 @@ class AadAuthenticationPropertiesTests {
     }
 
     @Test
+    void applicationTypeWithWebApplicationAndResourceServerWithWrongAuthorizationGrantTypeConfigured() {
+        resourceServerWithOboContextRunner()
+                .withPropertyValues(
+                        "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server",
+                        "spring.cloud.azure.active-directory.authorization-clients.azure.authorization-grant-type=client_credential"
+                )
+                .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+    }
+
+    @Test
+    void applicationTypeWithWebApplicationAndResourceServerWithRightAuthorizationGrantTypeConfigured() {
+        resourceServerWithOboContextRunner()
+                .withPropertyValues(
+                        "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server",
+                        "spring.cloud.azure.active-directory.authorization-clients.azure.authorization-grant-type=authorization_code"
+                )
+                .run(context -> {
+                    AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                    assertEquals(properties.getApplicationType(), AadApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
+                });
+    }
+
+    @Test
     void testInvalidApplicationType() {
         resourceServerContextRunner()
             .withPropertyValues(
