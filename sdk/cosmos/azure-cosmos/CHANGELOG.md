@@ -3,7 +3,7 @@
 ### 4.35.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added new preview APIs to `ChangeFeedProcessor` for handling all changes - See [PR 30169](https://github.com/Azure/azure-sdk-for-java/pull/30169)
+* Added new preview APIs to `ChangeFeedProcessor` for handling full fidelity / all changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
 
 #### Breaking Changes
 
