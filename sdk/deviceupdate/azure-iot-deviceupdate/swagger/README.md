@@ -43,4 +43,8 @@ credential-types: tokencredential
 credential-scopes: https://api.adu.microsoft.com/.default
 service-versions:
   - '2022-07-01-preview'
+polling:
+    default:
+        strategy: >-
+                  new OperationResourcePollingStrategyWithEndpoint<>({httpPipeline}, "https://" + this.client.getEndpoint(), null, null, {context})
 ```

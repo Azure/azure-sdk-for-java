@@ -347,6 +347,22 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
         try {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
+            // Look for cached credential in msal cache first.
+            String cachedRefreshToken = cacheAccessor.getIntelliJCredentialsFromIdentityMsalCache();
+            if (!CoreUtils.isNullOrEmpty(cachedRefreshToken)) {
+                RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
+                    RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), cachedRefreshToken);
+
+                if (request.getClaims() != null) {
+                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+                    refreshTokenParametersBuilder.claims(customClaimRequest);
+                }
+
+                return publicClientApplicationAccessor.getValue()
+                    .flatMap(pc -> Mono.fromFuture(pc.acquireToken(refreshTokenParametersBuilder.build()))
+                        .map(MsalToken::new));
+            }
+
             IntelliJAuthMethodDetails authDetails;
             try {
                 authDetails = cacheAccessor.getAuthDetailsIfAvailable();
@@ -452,9 +468,9 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        String tenant = IdentityUtil.resolveTenantId(null, request, options);
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         if (!CoreUtils.isNullOrEmpty(tenant)) {
-            azCommand.append("--tenant ").append(tenant);
+            azCommand.append(" --tenant ").append(tenant);
         }
 
         AccessToken token;

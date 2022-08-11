@@ -17,10 +17,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.implementation.models.MessageIdsDeleteResponse;
-import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.MessageIdsDeleteHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
@@ -54,7 +55,7 @@ public final class MessageIdsImpl {
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<MessageIdsUpdateResponse> update(
+        Mono<ResponseBase<MessageIdsUpdateHeaders, Void>> update(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @PathParam("messageid") String messageid,
@@ -70,7 +71,7 @@ public final class MessageIdsImpl {
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<MessageIdsDeleteResponse> delete(
+        Mono<ResponseBase<MessageIdsDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @PathParam("messageid") String messageid,
@@ -106,10 +107,10 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MessageIdsUpdateResponse> updateWithResponseAsync(
+    public Mono<ResponseBase<MessageIdsUpdateHeaders, Void>> updateWithResponseAsync(
             String queueName,
             String messageid,
             String popReceipt,
@@ -149,10 +150,10 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MessageIdsDeleteResponse> deleteWithResponseAsync(
+    public Mono<ResponseBase<MessageIdsDeleteHeaders, Void>> deleteWithResponseAsync(
             String queueName, String messageid, String popReceipt, Integer timeout, String requestId, Context context) {
         final String accept = "application/xml";
         return service.delete(

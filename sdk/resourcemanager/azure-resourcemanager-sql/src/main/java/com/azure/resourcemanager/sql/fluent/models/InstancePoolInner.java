@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.InstancePoolLicenseType;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An Azure SQL instance pool. */
-@JsonFlatten
 @Fluent
-public class InstancePoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolInner.class);
-
+public final class InstancePoolInner extends Resource {
     /*
      * The name and tier of the SKU.
      */
@@ -26,23 +21,10 @@ public class InstancePoolInner extends Resource {
     private Sku sku;
 
     /*
-     * Resource ID of the subnet to place this instance pool in.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.subnetId")
-    private String subnetId;
-
-    /*
-     * Count of vCores belonging to this instance pool.
-     */
-    @JsonProperty(value = "properties.vCores")
-    private Integer vCores;
-
-    /*
-     * The license type. Possible values are 'LicenseIncluded' (price for SQL
-     * license is included) and 'BasePrice' (without SQL license price).
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private InstancePoolLicenseType licenseType;
+    @JsonProperty(value = "properties")
+    private InstancePoolProperties innerProperties;
 
     /**
      * Get the sku property: The name and tier of the SKU.
@@ -65,12 +47,35 @@ public class InstancePoolInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private InstancePoolProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InstancePoolInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public InstancePoolInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
      *
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -80,7 +85,10 @@ public class InstancePoolInner extends Resource {
      * @return the InstancePoolInner object itself.
      */
     public InstancePoolInner withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -90,7 +98,7 @@ public class InstancePoolInner extends Resource {
      * @return the vCores value.
      */
     public Integer vCores() {
-        return this.vCores;
+        return this.innerProperties() == null ? null : this.innerProperties().vCores();
     }
 
     /**
@@ -100,7 +108,10 @@ public class InstancePoolInner extends Resource {
      * @return the InstancePoolInner object itself.
      */
     public InstancePoolInner withVCores(Integer vCores) {
-        this.vCores = vCores;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withVCores(vCores);
         return this;
     }
 
@@ -111,7 +122,7 @@ public class InstancePoolInner extends Resource {
      * @return the licenseType value.
      */
     public InstancePoolLicenseType licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -122,7 +133,10 @@ public class InstancePoolInner extends Resource {
      * @return the InstancePoolInner object itself.
      */
     public InstancePoolInner withLicenseType(InstancePoolLicenseType licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InstancePoolProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -134,6 +148,9 @@ public class InstancePoolInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

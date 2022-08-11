@@ -19,8 +19,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
-     * Name of the IP configuration that is unique within an Application
-     * Gateway.
+     * Name of the IP configuration that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

@@ -32,7 +32,9 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -351,9 +353,30 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void distinctQueryItems() throws Exception{
+
+        for (int i = 0; i < 10; i++) {
+            container.createItem(
+                getDocumentDefinition(UUID.randomUUID().toString(), "somePartitionKey")
+            );
+        }
+
+        String query = "SELECT DISTINCT c.mypk from c";
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<PartitionKeyWrapper> feedResponseIterator1 =
+            container.queryItems(query, cosmosQueryRequestOptions, PartitionKeyWrapper.class);
+
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+        long totalRecordCount = feedResponseIterator1.stream().count();
+        assertThat(totalRecordCount == 1L);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItemsWithCustomCorrelationActivityId() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -559,5 +582,20 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(expectedId);
+    }
+
+    private static class PartitionKeyWrapper {
+        private String mypk;
+
+        public PartitionKeyWrapper() {
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
     }
 }

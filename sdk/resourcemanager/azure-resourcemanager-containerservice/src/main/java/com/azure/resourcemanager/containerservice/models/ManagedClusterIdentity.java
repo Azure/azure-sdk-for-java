@@ -27,8 +27,9 @@ public class ManagedClusterIdentity {
     private String tenantId;
 
     /*
-     * The type of identity used for the managed cluster. For more information
-     * see [use managed identities in
+     * The type of identity used for the managed cluster.
+     *
+     * For more information see [use managed identities in
      * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      */
     @JsonProperty(value = "type")
@@ -62,8 +63,10 @@ public class ManagedClusterIdentity {
     }
 
     /**
-     * Get the type property: The type of identity used for the managed cluster. For more information see [use managed
-     * identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+     * Get the type property: The type of identity used for the managed cluster.
+     *
+     * <p>For more information see [use managed identities in
+     * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      *
      * @return the type value.
      */
@@ -72,8 +75,10 @@ public class ManagedClusterIdentity {
     }
 
     /**
-     * Set the type property: The type of identity used for the managed cluster. For more information see [use managed
-     * identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+     * Set the type property: The type of identity used for the managed cluster.
+     *
+     * <p>For more information see [use managed identities in
+     * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      *
      * @param type the type value to set.
      * @return the ManagedClusterIdentity object itself.

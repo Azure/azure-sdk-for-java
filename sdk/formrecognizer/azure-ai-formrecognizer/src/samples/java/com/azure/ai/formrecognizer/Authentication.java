@@ -3,14 +3,16 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.AzureAuthorityHosts;
@@ -80,7 +82,7 @@ public class Authentication {
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
-        getAccountProperties(documentModelAdminClient);
+        getResourceInfo(documentModelAdminClient);
     }
 
     private static void authenticationWithAzureActiveDirectoryDocumentModelAdministrationClient() {
@@ -88,7 +90,7 @@ public class Authentication {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildClient();
-        getAccountProperties(documentModelAdminClient);
+        getResourceInfo(documentModelAdminClient);
     }
 
     private static void beginRecognizeCustomFormsFromUrl(DocumentAnalysisClient documentAnalysisClient) {
@@ -107,7 +109,7 @@ public class Authentication {
             DocumentField merchantNameField = receiptFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (DocumentFieldType.STRING == merchantNameField.getType()) {
-                    String merchantName = merchantNameField.getValueString();
+                    String merchantName = merchantNameField.getValueAsString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
@@ -116,7 +118,7 @@ public class Authentication {
             DocumentField transactionDateField = receiptFields.get("TransactionDate");
             if (transactionDateField != null) {
                 if (DocumentFieldType.DATE == transactionDateField.getType()) {
-                    LocalDate transactionDate = transactionDateField.getValueDate();
+                    LocalDate transactionDate = transactionDateField.getValueAsDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
                 }
@@ -126,28 +128,28 @@ public class Authentication {
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
                 if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-                    List<DocumentField> receiptItems = receiptItemsField.getValueList();
+                    List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
                     receiptItems.stream()
                         .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                        .map(formField -> formField.getValueMap())
+                        .map(formField -> formField.getValueAsMap())
                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                             if ("Name".equals(key)) {
                                 if (DocumentFieldType.STRING == formField.getType()) {
-                                    String name = formField.getValueString();
+                                    String name = formField.getValueAsString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
                                         name, formField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
                                 if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float quantity = formField.getValueFloat();
+                                    Float quantity = formField.getValueAsFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
                                 if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float totalPrice = formField.getValueFloat();
+                                    Float totalPrice = formField.getValueAsFloat();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
                                         totalPrice, formField.getConfidence());
                                 }
@@ -159,10 +161,10 @@ public class Authentication {
         }
     }
 
-    private static void getAccountProperties(DocumentModelAdministrationClient documentModelAdminClient) {
-        AccountProperties accountProperties = documentModelAdminClient.getAccountProperties();
+    private static void getResourceInfo(DocumentModelAdministrationClient documentModelAdminClient) {
+        ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            accountProperties.getDocumentModelLimit());
-        System.out.printf("Current count of built custom models: %d%n", accountProperties.getDocumentModelCount());
+            resourceDetails.getDocumentModelLimit());
+        System.out.printf("Current count of built custom models: %d%n", resourceDetails.getDocumentModelCount());
     }
 }

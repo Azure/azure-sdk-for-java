@@ -27,7 +27,11 @@ public final class ManagedInstanceLicenseType extends ExpandableStringEnum<Manag
         return fromString(name, ManagedInstanceLicenseType.class);
     }
 
-    /** @return known ManagedInstanceLicenseType values. */
+    /**
+     * Gets known ManagedInstanceLicenseType values.
+     *
+     * @return known ManagedInstanceLicenseType values.
+     */
     public static Collection<ManagedInstanceLicenseType> values() {
         return values(ManagedInstanceLicenseType.class);
     }

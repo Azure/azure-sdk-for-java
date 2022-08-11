@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TableResources ListTables. */
 public final class TableResourcesListTablesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBTableList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBTableList.json
      */
     /**
      * Sample code: CosmosDBTableList.

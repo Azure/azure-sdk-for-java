@@ -12,10 +12,9 @@ import com.azure.resourcemanager.loganalytics.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.loganalytics.models.OperationStatus;
 import com.azure.resourcemanager.loganalytics.models.OperationStatuses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationStatusesImpl implements OperationStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusesImpl.class);
 
     private final OperationStatusesClient innerClient;
 

@@ -251,11 +251,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
         Range<String> effectiveTokenRange = this.currentToken.getRange();
         final Mono<Utils.ValueHolder<List<PartitionKeyRange>>> resolvedRangesTask =
-            this.tryGetOverlappingRanges(
-                partitionKeyRangeCache,
-                effectiveTokenRange.getMin(),
-                effectiveTokenRange.getMax(),
-                true);
+            this.tryGetOverlappingRanges(partitionKeyRangeCache, effectiveTokenRange, true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
             if (resolvedRanges.v != null && resolvedRanges.v.size() > 0) {
@@ -410,11 +406,16 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRanges(
-        final RxPartitionKeyRangeCache partitionKeyRangeCache, final String min, final String max,
+        final RxPartitionKeyRangeCache partitionKeyRangeCache,
+        Range<String> effectiveRange,
         final Boolean forceRefresh) {
 
-        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, this.getContainerRid(),
-            new Range<>(min, max, false, true), forceRefresh, null);
+        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(
+                null,
+                this.getContainerRid(),
+                effectiveRange,
+                forceRefresh,
+                null);
     }
 
     private static CompositeContinuationToken tryParseAsCompositeContinuationToken(

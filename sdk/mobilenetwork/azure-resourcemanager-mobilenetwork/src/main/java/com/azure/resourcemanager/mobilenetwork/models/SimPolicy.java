@@ -56,7 +56,7 @@ public interface SimPolicy {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: The provisioning state of the sim policy resource.
+     * Gets the provisioningState property: The provisioning state of the SIM policy resource.
      *
      * @return the provisioningState value.
      */
@@ -114,6 +114,13 @@ public interface SimPolicy {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner object.

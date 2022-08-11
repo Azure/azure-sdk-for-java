@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.RecommendedElasticPoolMetricInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the response to a list recommended elastic pool metrics request. */
 @Fluent
 public final class RecommendedElasticPoolListMetricsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedElasticPoolListMetricsResult.class);
-
     /*
      * The list of recommended elastic pools metrics.
      */
@@ -49,7 +46,7 @@ public final class RecommendedElasticPoolListMetricsResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model RecommendedElasticPoolListMetricsResult"));
@@ -57,4 +54,6 @@ public final class RecommendedElasticPoolListMetricsResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendedElasticPoolListMetricsResult.class);
 }

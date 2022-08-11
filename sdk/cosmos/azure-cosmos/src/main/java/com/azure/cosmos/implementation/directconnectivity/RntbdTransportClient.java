@@ -122,7 +122,7 @@ public class RntbdTransportClient extends TransportClient {
             clientTelemetry, globalEndpointManager);
     }
 
-    //  TODO (kuthapar): This constructor sets the globalEndpointmManager to null, which is not ideal.
+    //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
     //  Figure out why we need this constructor, and if it can be avoided or can be fixed.
     RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
         this.endpointProvider = endpointProvider;
@@ -347,7 +347,7 @@ public class RntbdTransportClient extends TransportClient {
                             RntbdObjectMapper.toJson(throwable));
                     }
                 });
-        }).subscriberContext(reactorContext);
+        }).contextWrite(reactorContext);
     }
 
     @Override

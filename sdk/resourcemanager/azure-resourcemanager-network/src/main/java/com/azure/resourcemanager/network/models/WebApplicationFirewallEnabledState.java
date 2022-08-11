@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallEnabledState. */
+/** The state of the policy. */
 public final class WebApplicationFirewallEnabledState extends ExpandableStringEnum<WebApplicationFirewallEnabledState> {
     /** Static value Disabled for WebApplicationFirewallEnabledState. */
     public static final WebApplicationFirewallEnabledState DISABLED = fromString("Disabled");

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlResources MigrateSqlDatabaseToManualThroughput. */
 public final class SqlResourcesMigrateSqlDatabaseToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseMigrateToManualThroughput.

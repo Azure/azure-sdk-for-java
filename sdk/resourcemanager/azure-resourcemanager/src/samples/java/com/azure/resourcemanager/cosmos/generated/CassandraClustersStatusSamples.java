@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CassandraClusters Status. */
 public final class CassandraClustersStatusSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraStatus.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBManagedCassandraStatus.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraStatus.

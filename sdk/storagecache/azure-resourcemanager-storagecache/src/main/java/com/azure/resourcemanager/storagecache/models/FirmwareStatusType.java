@@ -27,7 +27,11 @@ public final class FirmwareStatusType extends ExpandableStringEnum<FirmwareStatu
         return fromString(name, FirmwareStatusType.class);
     }
 
-    /** @return known FirmwareStatusType values. */
+    /**
+     * Gets known FirmwareStatusType values.
+     *
+     * @return known FirmwareStatusType values.
+     */
     public static Collection<FirmwareStatusType> values() {
         return values(FirmwareStatusType.class);
     }

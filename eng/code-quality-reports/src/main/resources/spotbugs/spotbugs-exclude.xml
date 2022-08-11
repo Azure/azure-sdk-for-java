@@ -149,6 +149,14 @@
         <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
         <Method name="getX509Thumbprint"/>
       </And>
+      <And>
+        <Class name="com.azure.json.DefaultJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
+      <And>
+        <Class name="com.azure.json.gson.GsonJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -600,6 +608,14 @@
       <Class name="com.azure.security.keyvault.certificates.models.CertificatePolicy"/>
       <Class name="com.azure.security.keyvault.certificates.models.LifetimeAction"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateOperation"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -1236,7 +1252,7 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.implementation.AutoCheckpointer"/>
+    <Class name="com.azure.cosmos.implementation.changefeed.common.AutoCheckpointer"/>
     <Field name="processedDocCount"/>
     <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>
@@ -1303,10 +1319,10 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentModelOperationException fields re serializable -->
+  <!-- FormRecognizerException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
-    <Field name="documentModelOperationError"/>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
+    <Field name="errorInformationList"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -2438,6 +2454,8 @@
       <Method name="getIntellijServicePrincipalDetails"/>
       <Method name="getKdbxPassword"/>
       <Method name="getCredentialFromKdbx"/>
+      <Method name="parseRefreshTokenFromJson"/>
+      <Method name="getIntelliJCredentialsFromIdentityMsalCache"/>
     </Or>
     <Bug pattern="DM_DEFAULT_ENCODING,
     REC_CATCH_EXCEPTION"/>
@@ -2602,6 +2620,12 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- Generated implementation of Personalizer is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- Some generated base clients in Purview Catalog do not send api-version -->
   <Match>
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
@@ -2689,71 +2713,30 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
   <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
-    <Or>
-      <Method name="getCustomEntitiesTaskParameters"/>
-      <Method name="getCustomMultiLabelClassificationTaskParameters"/>
-      <Method name="getCustomSingleClassificationTaskParameters"/>
-      <Method name="getEntitiesTaskParameters"/>
-      <Method name="getEntityLinkingTaskParameters"/>
-      <Method name="getExtractiveSummarizationTaskParameters"/>
-      <Method name="getHealthcareTaskParameters"/>
-      <Method name="getKeyPhraseTaskParameters"/>
-      <Method name="getPiiTaskParameters"/>
-      <Method name="getSentimentAnalysisTaskParameters"/>
-    </Or>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
-    <Or>
-      <Method name="beginAnalyzeHealthcareEntities"/>
-      <Method name="beginAnalyzeHealthcarePagedIterable"/>
-    </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
-    <Or>
-      <Method name="beginAnalyzeHealthcareEntities"/>
-      <Method name="beginAnalyzeHealthcarePagedIterable"/>
-    </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-    <Method name="getAnalyzedSentimentResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
-    <Method name="getDetectedLanguageResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
-    <Method name="getExtractedKeyPhrasesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
-    <Method name="getRecognizedEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
-    <Method name="getRecognizedLinkedEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
-    <Method name="getRecognizePiiEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
- <Match>
     <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
     <Method name="locateExceptionConstructor"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Shaded code shouldn't run Spotbugs -->
+  <Match>
+    <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
+  </Match>
+
+  <!-- Non Shipped code -->
+  <Match>
+    <Or>
+      <Package name="~com\.azure\.redisson.*"/>
+      <Package name="~com\.azure\.lettuce.*"/>
+      <Package name="~com\.azure\.jedis.*"/>
+    </Or>
+    <Bug pattern="UL_UNRELEASED_LOCK_EXCEPTION_PATH,
+                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+                  BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+                  UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+                  UPM_UNCALLED_PRIVATE_METHOD,
+                  DLS_DEAD_LOCAL_STORE,
+                  DM_STRING_TOSTRING"/>
   </Match>
 </FindBugsFilter>

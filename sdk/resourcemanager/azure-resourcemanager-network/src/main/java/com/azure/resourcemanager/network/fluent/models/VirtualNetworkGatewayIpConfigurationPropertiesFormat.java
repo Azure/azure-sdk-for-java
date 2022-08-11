@@ -38,8 +38,7 @@ public final class VirtualNetworkGatewayIpConfigurationPropertiesFormat {
     private String privateIpAddress;
 
     /*
-     * The provisioning state of the virtual network gateway IP configuration
-     * resource.
+     * The provisioning state of the virtual network gateway IP configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;

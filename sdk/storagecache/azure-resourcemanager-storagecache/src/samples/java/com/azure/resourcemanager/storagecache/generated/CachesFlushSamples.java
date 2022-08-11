@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Caches Flush. */
 public final class CachesFlushSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/Caches_Flush.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/Caches_Flush.json
      */
     /**
      * Sample code: Caches_Flush.

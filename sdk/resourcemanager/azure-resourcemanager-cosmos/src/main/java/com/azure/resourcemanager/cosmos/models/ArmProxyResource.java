@@ -6,8 +6,6 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * The resource model definition for a ARM proxy resource. It will have everything other than required location and
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Immutable
 public class ArmProxyResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmProxyResource.class);
-
     /**
      * Validates the instance.
      *

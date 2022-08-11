@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CassandraResources MigrateCassandraTableToAutoscale. */
 public final class CassandraResourcesMigrateCassandraTableToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCassandraTableMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBCassandraTableMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBCassandraTableMigrateToAutoscale.

@@ -4,12 +4,9 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
-import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import java.util.List;
-import java.util.Map;
 
 /** An immutable client-side representation of Sim. */
 public interface Sim {
@@ -35,79 +32,51 @@ public interface Sim {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the provisioningState property: The provisioning state of the sim resource.
+     * Gets the provisioningState property: The provisioning state of the SIM resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
-     * Gets the simState property: The state of the sim resource.
+     * Gets the simState property: The state of the SIM resource.
      *
      * @return the simState value.
      */
     SimState simState();
 
     /**
-     * Gets the internationalMobileSubscriberIdentity property: The International Mobile Subscriber Identity (IMSI) for
-     * the sim.
+     * Gets the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
+     * the SIM.
      *
      * @return the internationalMobileSubscriberIdentity value.
      */
     String internationalMobileSubscriberIdentity();
 
     /**
-     * Gets the integratedCircuitCardIdentifier property: The Integrated Circuit Card ID (ICC Id) for the sim.
+     * Gets the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
      *
      * @return the integratedCircuitCardIdentifier value.
      */
     String integratedCircuitCardIdentifier();
 
     /**
-     * Gets the authenticationKey property: The ki value for the sim.
+     * Gets the authenticationKey property: The Ki value for the SIM.
      *
      * @return the authenticationKey value.
      */
     String authenticationKey();
 
     /**
-     * Gets the operatorKeyCode property: The Opc value for the sim.
+     * Gets the operatorKeyCode property: The Opc value for the SIM.
      *
      * @return the operatorKeyCode value.
      */
     String operatorKeyCode();
 
     /**
-     * Gets the mobileNetwork property: Mobile network that this sim belongs to.
-     *
-     * @return the mobileNetwork value.
-     */
-    MobileNetworkResourceId mobileNetwork();
-
-    /**
      * Gets the deviceType property: An optional free-form text field that can be used to record the device type this
-     * sim is associated with, for example 'Video camera'. The Azure portal allows Sims to be grouped and filtered based
+     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based
      * on this value.
      *
      * @return the deviceType value.
@@ -115,14 +84,14 @@ public interface Sim {
     String deviceType();
 
     /**
-     * Gets the simPolicy property: The simPolicy used by this sim.
+     * Gets the simPolicy property: The SIM policy used by this SIM.
      *
      * @return the simPolicy value.
      */
     SimPolicyResourceId simPolicy();
 
     /**
-     * Gets the staticIpConfiguration property: A list of static IP addresses assigned to this sim. Each address is
+     * Gets the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
      *
      * @return the staticIpConfiguration value.
@@ -130,18 +99,11 @@ public interface Sim {
     List<SimStaticIpProperties> staticIpConfiguration();
 
     /**
-     * Gets the region of the resource.
+     * Gets the name of the resource group.
      *
-     * @return the region of the resource.
+     * @return the name of the resource group.
      */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     *
-     * @return the name of the resource region.
-     */
-    String regionName();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner object.
@@ -153,52 +115,35 @@ public interface Sim {
     /** The entirety of the Sim definition. */
     interface Definition
         extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithParentResource,
             DefinitionStages.WithInternationalMobileSubscriberIdentity,
             DefinitionStages.WithCreate {
     }
     /** The Sim definition stages. */
     interface DefinitionStages {
         /** The first stage of the Sim definition. */
-        interface Blank extends WithLocation {
-        }
-        /** The stage of the Sim definition allowing to specify location. */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(String location);
+        interface Blank extends WithParentResource {
         }
         /** The stage of the Sim definition allowing to specify parent resource. */
-        interface WithResourceGroup {
+        interface WithParentResource {
             /**
-             * Specifies resourceGroupName.
+             * Specifies resourceGroupName, simGroupName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param simGroupName The name of the SIM Group.
              * @return the next definition stage.
              */
-            WithInternationalMobileSubscriberIdentity withExistingResourceGroup(String resourceGroupName);
+            WithInternationalMobileSubscriberIdentity withExistingSimGroup(
+                String resourceGroupName, String simGroupName);
         }
         /** The stage of the Sim definition allowing to specify internationalMobileSubscriberIdentity. */
         interface WithInternationalMobileSubscriberIdentity {
             /**
-             * Specifies the internationalMobileSubscriberIdentity property: The International Mobile Subscriber
-             * Identity (IMSI) for the sim..
+             * Specifies the internationalMobileSubscriberIdentity property: The international mobile subscriber
+             * identity (IMSI) for the SIM..
              *
-             * @param internationalMobileSubscriberIdentity The International Mobile Subscriber Identity (IMSI) for the
-             *     sim.
+             * @param internationalMobileSubscriberIdentity The international mobile subscriber identity (IMSI) for the
+             *     SIM.
              * @return the next definition stage.
              */
             WithCreate withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity);
@@ -208,11 +153,9 @@ public interface Sim {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIntegratedCircuitCardIdentifier,
+            extends DefinitionStages.WithIntegratedCircuitCardIdentifier,
                 DefinitionStages.WithAuthenticationKey,
                 DefinitionStages.WithOperatorKeyCode,
-                DefinitionStages.WithMobileNetwork,
                 DefinitionStages.WithDeviceType,
                 DefinitionStages.WithSimPolicy,
                 DefinitionStages.WithStaticIpConfiguration {
@@ -231,23 +174,13 @@ public interface Sim {
              */
             Sim create(Context context);
         }
-        /** The stage of the Sim definition allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
         /** The stage of the Sim definition allowing to specify integratedCircuitCardIdentifier. */
         interface WithIntegratedCircuitCardIdentifier {
             /**
-             * Specifies the integratedCircuitCardIdentifier property: The Integrated Circuit Card ID (ICC Id) for the
-             * sim..
+             * Specifies the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the
+             * SIM..
              *
-             * @param integratedCircuitCardIdentifier The Integrated Circuit Card ID (ICC Id) for the sim.
+             * @param integratedCircuitCardIdentifier The integrated circuit card ID (ICCID) for the SIM.
              * @return the next definition stage.
              */
             WithCreate withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
@@ -255,9 +188,9 @@ public interface Sim {
         /** The stage of the Sim definition allowing to specify authenticationKey. */
         interface WithAuthenticationKey {
             /**
-             * Specifies the authenticationKey property: The ki value for the sim..
+             * Specifies the authenticationKey property: The Ki value for the SIM..
              *
-             * @param authenticationKey The ki value for the sim.
+             * @param authenticationKey The Ki value for the SIM.
              * @return the next definition stage.
              */
             WithCreate withAuthenticationKey(String authenticationKey);
@@ -265,32 +198,22 @@ public interface Sim {
         /** The stage of the Sim definition allowing to specify operatorKeyCode. */
         interface WithOperatorKeyCode {
             /**
-             * Specifies the operatorKeyCode property: The Opc value for the sim..
+             * Specifies the operatorKeyCode property: The Opc value for the SIM..
              *
-             * @param operatorKeyCode The Opc value for the sim.
+             * @param operatorKeyCode The Opc value for the SIM.
              * @return the next definition stage.
              */
             WithCreate withOperatorKeyCode(String operatorKeyCode);
-        }
-        /** The stage of the Sim definition allowing to specify mobileNetwork. */
-        interface WithMobileNetwork {
-            /**
-             * Specifies the mobileNetwork property: Mobile network that this sim belongs to.
-             *
-             * @param mobileNetwork Mobile network that this sim belongs to.
-             * @return the next definition stage.
-             */
-            WithCreate withMobileNetwork(MobileNetworkResourceId mobileNetwork);
         }
         /** The stage of the Sim definition allowing to specify deviceType. */
         interface WithDeviceType {
             /**
              * Specifies the deviceType property: An optional free-form text field that can be used to record the device
-             * type this sim is associated with, for example 'Video camera'. The Azure portal allows Sims to be grouped
+             * type this SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped
              * and filtered based on this value..
              *
-             * @param deviceType An optional free-form text field that can be used to record the device type this sim is
-             *     associated with, for example 'Video camera'. The Azure portal allows Sims to be grouped and filtered
+             * @param deviceType An optional free-form text field that can be used to record the device type this SIM is
+             *     associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
              *     based on this value.
              * @return the next definition stage.
              */
@@ -299,9 +222,9 @@ public interface Sim {
         /** The stage of the Sim definition allowing to specify simPolicy. */
         interface WithSimPolicy {
             /**
-             * Specifies the simPolicy property: The simPolicy used by this sim..
+             * Specifies the simPolicy property: The SIM policy used by this SIM..
              *
-             * @param simPolicy The simPolicy used by this sim.
+             * @param simPolicy The SIM policy used by this SIM.
              * @return the next definition stage.
              */
             WithCreate withSimPolicy(SimPolicyResourceId simPolicy);
@@ -309,10 +232,10 @@ public interface Sim {
         /** The stage of the Sim definition allowing to specify staticIpConfiguration. */
         interface WithStaticIpConfiguration {
             /**
-             * Specifies the staticIpConfiguration property: A list of static IP addresses assigned to this sim. Each
+             * Specifies the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each
              * address is assigned at a defined network scope, made up of {attached data network, slice}..
              *
-             * @param staticIpConfiguration A list of static IP addresses assigned to this sim. Each address is assigned
+             * @param staticIpConfiguration A list of static IP addresses assigned to this SIM. Each address is assigned
              *     at a defined network scope, made up of {attached data network, slice}.
              * @return the next definition stage.
              */
@@ -327,7 +250,13 @@ public interface Sim {
     Sim.Update update();
 
     /** The template for Sim update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithIntegratedCircuitCardIdentifier,
+            UpdateStages.WithAuthenticationKey,
+            UpdateStages.WithOperatorKeyCode,
+            UpdateStages.WithDeviceType,
+            UpdateStages.WithSimPolicy,
+            UpdateStages.WithStaticIpConfiguration {
         /**
          * Executes the update request.
          *
@@ -345,15 +274,72 @@ public interface Sim {
     }
     /** The Sim update stages. */
     interface UpdateStages {
-        /** The stage of the Sim update allowing to specify tags. */
-        interface WithTags {
+        /** The stage of the Sim update allowing to specify integratedCircuitCardIdentifier. */
+        interface WithIntegratedCircuitCardIdentifier {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the
+             * SIM..
              *
-             * @param tags Resource tags.
+             * @param integratedCircuitCardIdentifier The integrated circuit card ID (ICCID) for the SIM.
              * @return the next definition stage.
              */
-            Update withTags(Map<String, String> tags);
+            Update withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
+        }
+        /** The stage of the Sim update allowing to specify authenticationKey. */
+        interface WithAuthenticationKey {
+            /**
+             * Specifies the authenticationKey property: The Ki value for the SIM..
+             *
+             * @param authenticationKey The Ki value for the SIM.
+             * @return the next definition stage.
+             */
+            Update withAuthenticationKey(String authenticationKey);
+        }
+        /** The stage of the Sim update allowing to specify operatorKeyCode. */
+        interface WithOperatorKeyCode {
+            /**
+             * Specifies the operatorKeyCode property: The Opc value for the SIM..
+             *
+             * @param operatorKeyCode The Opc value for the SIM.
+             * @return the next definition stage.
+             */
+            Update withOperatorKeyCode(String operatorKeyCode);
+        }
+        /** The stage of the Sim update allowing to specify deviceType. */
+        interface WithDeviceType {
+            /**
+             * Specifies the deviceType property: An optional free-form text field that can be used to record the device
+             * type this SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped
+             * and filtered based on this value..
+             *
+             * @param deviceType An optional free-form text field that can be used to record the device type this SIM is
+             *     associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
+             *     based on this value.
+             * @return the next definition stage.
+             */
+            Update withDeviceType(String deviceType);
+        }
+        /** The stage of the Sim update allowing to specify simPolicy. */
+        interface WithSimPolicy {
+            /**
+             * Specifies the simPolicy property: The SIM policy used by this SIM..
+             *
+             * @param simPolicy The SIM policy used by this SIM.
+             * @return the next definition stage.
+             */
+            Update withSimPolicy(SimPolicyResourceId simPolicy);
+        }
+        /** The stage of the Sim update allowing to specify staticIpConfiguration. */
+        interface WithStaticIpConfiguration {
+            /**
+             * Specifies the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each
+             * address is assigned at a defined network scope, made up of {attached data network, slice}..
+             *
+             * @param staticIpConfiguration A list of static IP addresses assigned to this SIM. Each address is assigned
+             *     at a defined network scope, made up of {attached data network, slice}.
+             * @return the next definition stage.
+             */
+            Update withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration);
         }
     }
     /**

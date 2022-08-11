@@ -53,8 +53,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private String licenseType;
 
     /*
-     * Specifies the billing related details of a Azure Spot VMSS.
-     * <br><br>Minimum api-version: 2019-03-01.
+     * Specifies the billing related details of a Azure Spot VMSS. <br><br>Minimum api-version: 2019-03-01.
      */
     @JsonProperty(value = "billingProfile")
     private BillingProfile billingProfile;
@@ -66,8 +65,8 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private ScheduledEventsProfile scheduledEventsProfile;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
+     * <br><br>Minimum api-version: 2021-03-01
      */
     @JsonProperty(value = "userData")
     private String userData;

@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     /*
-     * A list of PrivateEndpointConnection resources for a specific private
-     * link service.
+     * A list of PrivateEndpointConnection resources for a specific private link service.
      */
     @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response model for a list of Vaults. */
 @Fluent
 public final class VaultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultList.class);
-
     /*
      * The value property.
      */

@@ -17,23 +17,25 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListResponse;
-import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListResponse;
-import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlResponse;
-import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLResponse;
-import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse;
-import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
@@ -73,7 +75,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsUploadResponse> upload(
+        Mono<ResponseBase<BlockBlobsUploadHeaders, Void>> upload(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -112,7 +114,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsUploadResponse> upload(
+        Mono<ResponseBase<BlockBlobsUploadHeaders, Void>> upload(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -151,7 +153,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrl(
+        Mono<ResponseBase<BlockBlobsPutBlobFromUrlHeaders, Void>> putBlobFromUrl(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -196,7 +198,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsStageBlockResponse> stageBlock(
+        Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlock(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -220,7 +222,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsStageBlockResponse> stageBlock(
+        Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlock(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -244,7 +246,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(
+        Mono<ResponseBase<BlockBlobsStageBlockFromURLHeaders, Void>> stageBlockFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -274,7 +276,7 @@ public final class BlockBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(
+        Mono<ResponseBase<BlockBlobsCommitBlockListHeaders, Void>> commitBlockList(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -313,7 +315,7 @@ public final class BlockBlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlockBlobsGetBlockListResponse> getBlockList(
+        Mono<ResponseBase<BlockBlobsGetBlockListHeaders, BlockList>> getBlockList(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -371,10 +373,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsUploadResponse> uploadWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsUploadHeaders, Void>> uploadWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -537,10 +539,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsUploadResponse> uploadWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsUploadHeaders, Void>> uploadWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -717,10 +719,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrlWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsPutBlobFromUrlHeaders, Void>> putBlobFromUrlWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -880,10 +882,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockResponse> stageBlockWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlockWithResponseAsync(
             String containerName,
             String blob,
             String blockId,
@@ -967,10 +969,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockResponse> stageBlockWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsStageBlockHeaders, Void>> stageBlockWithResponseAsync(
             String containerName,
             String blob,
             String blockId,
@@ -1065,10 +1067,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsStageBlockFromURLHeaders, Void>> stageBlockFromURLWithResponseAsync(
             String containerName,
             String blob,
             String blockId,
@@ -1188,10 +1190,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsCommitBlockListHeaders, Void>> commitBlockListWithResponseAsync(
             String containerName,
             String blob,
             BlockLookupList blocks,
@@ -1335,10 +1337,10 @@ public final class BlockBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsGetBlockListResponse> getBlockListWithResponseAsync(
+    public Mono<ResponseBase<BlockBlobsGetBlockListHeaders, BlockList>> getBlockListWithResponseAsync(
             String containerName,
             String blob,
             BlockListType listType,

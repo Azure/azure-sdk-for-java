@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The set of data plane operations permitted through this Role Definition. */
 @Fluent
 public final class Permission {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Permission.class);
-
     /*
      * An array of data actions that are allowed.
      */

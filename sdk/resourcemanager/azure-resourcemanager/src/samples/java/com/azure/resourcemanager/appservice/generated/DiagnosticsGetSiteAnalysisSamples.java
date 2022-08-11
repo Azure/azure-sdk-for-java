@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Diagnostics GetSiteAnalysis. */
 public final class DiagnosticsGetSiteAnalysisSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteAnalysisSlot.json
      */
     /**
      * Sample code: Get App Slot Analysis.
@@ -27,7 +27,7 @@ public final class DiagnosticsGetSiteAnalysisSamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteAnalysis.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteAnalysis.json
      */
     /**
      * Sample code: Get App Analysis.

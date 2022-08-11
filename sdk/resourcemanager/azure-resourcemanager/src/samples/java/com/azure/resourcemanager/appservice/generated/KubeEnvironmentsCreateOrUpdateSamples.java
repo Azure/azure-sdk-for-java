@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appservice.fluent.models.KubeEnvironmentInner;
 /** Samples for KubeEnvironments CreateOrUpdate. */
 public final class KubeEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/KubeEnvironments_CreateOrUpdate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create kube environments.

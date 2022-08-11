@@ -23,35 +23,9 @@ DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
 YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
-def sdk_automation(config: dict) -> List[dict]:
-    # priority:
-    # 1. autorestConfig from input
-    # 2. swagger/README.md in sdk repository that matches readme from input
-
+def get_or_update_sdk_readme(config: dict, readme_file_path: str) -> Optional[str]:
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-    spec_root = os.path.abspath(config['specFolder'])
-
-    packages = []
-
-    # find readme.md in spec repository
-    readme_file_paths = []
-    for file_path in config['relatedReadmeMdFiles']:
-        match = re.search(
-            r'specification/([^/]+)/data-plane(/.*)*/readme.md',
-            file_path,
-            re.IGNORECASE,
-        )
-        if match:
-            readme_file_paths.append(file_path)
-
-    # readme.md required
-    if not readme_file_paths:
-        return packages
-    # we only take first readme.md
-    readme_file_path = readme_file_paths[0]
-    logging.info('[RESOLVE] README from specification %s', readme_file_path)
-
     sdk_readme_abspath = None
 
     if 'autorestConfig' in config:
@@ -82,6 +56,40 @@ def sdk_automation(config: dict) -> List[dict]:
         # find the README.md that matches
         sdk_readme_abspath = find_sdk_readme(readme_file_path, candidate_sdk_readmes)
 
+    return sdk_readme_abspath
+
+
+def sdk_automation(config: dict) -> List[dict]:
+    # priority:
+    # 1. autorestConfig from input
+    # 2. swagger/README.md in sdk repository that matches readme from input
+
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    spec_root = os.path.abspath(config['specFolder'])
+
+    packages = []
+
+    # find readme.md in spec repository
+    readme_file_paths = []
+    for file_path in config['relatedReadmeMdFiles']:
+        match = re.search(
+            r'specification/([^/]+)/data-plane(/.*)*/readme.md',
+            file_path,
+            re.IGNORECASE,
+        )
+        if match:
+            readme_file_paths.append(file_path)
+
+    # readme.md required
+    if not readme_file_paths:
+        return packages
+    # we only take first readme.md
+    readme_file_path = readme_file_paths[0]
+    logging.info('[RESOLVE] README from specification %s', readme_file_path)
+
+    sdk_readme_abspath = get_or_update_sdk_readme(config, readme_file_path)
+
     if sdk_readme_abspath:
         spec_readme_abspath = os.path.join(spec_root, readme_file_path)
         update_readme(sdk_readme_abspath, spec_readme_abspath)
@@ -95,7 +103,7 @@ def find_sdk_readme(spec_readme: str, candidate_sdk_readmes: List[str]) -> Optio
     if 'data-plane' in segments:
         index = segments.index('data-plane')
         # include service name, exclude readme.md
-        search_target = '/' + '/'.join(segments[index-1:-1]) + '/'
+        search_target = '/' + '/'.join(segments[index-1:])
 
         for sdk_readme_path in candidate_sdk_readmes:
             spec_reference = find_sdk_spec_reference(sdk_readme_path)
@@ -267,7 +275,7 @@ def generate(
 
 
 def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:
