@@ -76,8 +76,7 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     private SubResource firewallPolicy;
 
     /*
-     * List of Host names for HTTP Listener that allows special wildcard
-     * characters as well.
+     * List of Host names for HTTP Listener that allows special wildcard characters as well.
      */
     @JsonProperty(value = "hostNames")
     private List<String> hostNames;

@@ -18,15 +18,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VpnClientIPsecParametersInner {
     /*
-     * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
-     * lifetime in seconds for P2S client.
+     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for P2S client.
      */
     @JsonProperty(value = "saLifeTimeSeconds", required = true)
     private int saLifeTimeSeconds;
 
     /*
-     * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
-     * payload size in KB for P2S client..
+     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for P2S client..
      */
     @JsonProperty(value = "saDataSizeKilobytes", required = true)
     private int saDataSizeKilobytes;

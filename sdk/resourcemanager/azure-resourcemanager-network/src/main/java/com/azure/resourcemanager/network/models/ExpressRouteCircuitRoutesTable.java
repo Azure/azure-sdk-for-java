@@ -23,8 +23,7 @@ public final class ExpressRouteCircuitRoutesTable {
     private String nextHop;
 
     /*
-     * Local preference value as set with the set local-preference route-map
-     * configuration command.
+     * Local preference value as set with the set local-preference route-map configuration command.
      */
     @JsonProperty(value = "locPrf")
     private String locPrf;

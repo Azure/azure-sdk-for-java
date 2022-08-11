@@ -51,8 +51,7 @@ public final class ExpressRouteConnectionProperties {
     private Boolean expressRouteGatewayBypass;
 
     /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
+     * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
     @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
