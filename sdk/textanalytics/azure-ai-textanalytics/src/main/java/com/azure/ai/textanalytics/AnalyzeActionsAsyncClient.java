@@ -1331,9 +1331,6 @@ class AnalyzeActionsAsyncClient {
                 case CANCELLED:
                     status = LongRunningOperationStatus.USER_CANCELLED;
                     break;
-                case PARTIALLY_SUCCEEDED:
-                    status = LongRunningOperationStatus.fromString("partiallySucceeded", true);
-                    break;
                 default:
                     status = LongRunningOperationStatus.fromString(
                         analyzeJobStateResponse.getValue().getStatus().toString(), true);

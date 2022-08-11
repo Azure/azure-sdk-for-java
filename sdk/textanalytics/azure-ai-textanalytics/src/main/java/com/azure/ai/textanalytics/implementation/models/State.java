@@ -18,9 +18,6 @@ public enum State {
     /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
 
-    /** Enum value partiallySucceeded. */
-    PARTIALLY_SUCCEEDED("partiallySucceeded"),
-
     /** Enum value failed. */
     FAILED("failed"),
 
