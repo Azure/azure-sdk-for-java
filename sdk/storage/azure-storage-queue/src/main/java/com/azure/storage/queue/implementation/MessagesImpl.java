@@ -18,19 +18,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.implementation.models.MessagesClearHeaders;
-import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesEnqueueHeaders;
-import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
-import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
+import com.azure.storage.queue.implementation.models.MessagesClearResponse;
+import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
+import com.azure.storage.queue.implementation.models.MessagesEnqueueResponse;
+import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
 import com.azure.storage.queue.implementation.models.QueueMessage;
-import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.models.QueueStorageException;
-import com.azure.storage.queue.models.SendMessageResult;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Messages. */
@@ -61,7 +56,7 @@ public final class MessagesImpl {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>>> dequeue(
+        Mono<MessagesDequeueResponse> dequeue(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("numofmessages") Integer numberOfMessages,
@@ -75,7 +70,7 @@ public final class MessagesImpl {
         @Delete("/{queueName}/messages")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesClearHeaders, Void>> clear(
+        Mono<MessagesClearResponse> clear(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("timeout") Integer timeout,
@@ -87,7 +82,7 @@ public final class MessagesImpl {
         @Post("/{queueName}/messages")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesEnqueueHeaders, List<SendMessageResult>>> enqueue(
+        Mono<MessagesEnqueueResponse> enqueue(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("visibilitytimeout") Integer visibilitytimeout,
@@ -102,7 +97,7 @@ public final class MessagesImpl {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesPeekHeaders, List<PeekedMessageItemInternal>>> peek(
+        Mono<MessagesPeekResponse> peek(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("peekonly") String peekonly,
@@ -134,11 +129,10 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object returned when calling Get Messages on a Queue along with {@link ResponseBase} on successful
-     *     completion of {@link Mono}.
+     * @return the object returned when calling Get Messages on a Queue.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>>> dequeueWithResponseAsync(
+    public Mono<MessagesDequeueResponse> dequeueWithResponseAsync(
             String queueName,
             Integer numberOfMessages,
             Integer visibilitytimeout,
@@ -171,10 +165,10 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesClearHeaders, Void>> clearWithResponseAsync(
+    public Mono<MessagesClearResponse> clearWithResponseAsync(
             String queueName, Integer timeout, String requestId, Context context) {
         final String accept = "application/xml";
         return service.clear(
@@ -207,11 +201,10 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object returned when calling Put Message on a Queue along with {@link ResponseBase} on successful
-     *     completion of {@link Mono}.
+     * @return the object returned when calling Put Message on a Queue.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesEnqueueHeaders, List<SendMessageResult>>> enqueueWithResponseAsync(
+    public Mono<MessagesEnqueueResponse> enqueueWithResponseAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -250,11 +243,10 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object returned when calling Peek Messages on a Queue along with {@link ResponseBase} on successful
-     *     completion of {@link Mono}.
+     * @return the object returned when calling Peek Messages on a Queue.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesPeekHeaders, List<PeekedMessageItemInternal>>> peekWithResponseAsync(
+    public Mono<MessagesPeekResponse> peekWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
         final String accept = "application/xml";

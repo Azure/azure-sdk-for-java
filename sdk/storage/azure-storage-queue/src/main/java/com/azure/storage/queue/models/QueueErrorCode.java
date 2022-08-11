@@ -195,11 +195,7 @@ public final class QueueErrorCode extends ExpandableStringEnum<QueueErrorCode> {
         return fromString(name, QueueErrorCode.class);
     }
 
-    /**
-     * Gets known QueueErrorCode values.
-     *
-     * @return known QueueErrorCode values.
-     */
+    /** @return known QueueErrorCode values. */
     public static Collection<QueueErrorCode> values() {
         return values(QueueErrorCode.class);
     }
