@@ -73,12 +73,12 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
         );
         validateRecording(recordingState, RecordingState.ACTIVE);
 
-        verifyOperationWithRecordingStatus(
+        verifyOperationWithRecordingState(
             () -> callRecording.pauseRecording(RECORDING_ID),
             RecordingState.INACTIVE
         );
 
-        verifyOperationWithRecordingStatus(
+        verifyOperationWithRecordingState(
             () -> callRecording.resumeRecording(RECORDING_ID),
             RecordingState.ACTIVE
         );
@@ -87,14 +87,14 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
         assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(RECORDING_ID));
     }
 
-    private void verifyOperationWithRecordingStatus(Runnable operation, RecordingState expectedStatus) {
+    private void verifyOperationWithRecordingState(Runnable operation, RecordingState expectedStatus) {
         operation.run();
         RecordingStateResult recordingState = callRecording.getRecordingState(RECORDING_ID);
         validateRecording(recordingState, expectedStatus);
     }
 
-    private void validateRecording(RecordingStateResult recordingStatus, RecordingState expectedStatus) {
-        assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
-        assertEquals(expectedStatus, recordingStatus.getRecordingState());
+    private void validateRecording(RecordingStateResult recordingState, RecordingState expectedStatus) {
+        assertEquals(RECORDING_ID, recordingState.getRecordingId());
+        assertEquals(expectedStatus, recordingState.getRecordingState());
     }
 }

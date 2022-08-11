@@ -61,33 +61,33 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
         );
         callRecording = callingServerClient.getCallRecordingAsync();
 
-        validateRecordingStatus(
+        validateRecordingState(
             callRecording.startRecording(new ServerCallLocator(SERVER_CALL_ID), URI.create("https://localhost/")),
             RecordingState.ACTIVE
         );
 
-        validateOperationWithRecordingStatus(callRecording.pauseRecording(RECORDING_ID),
+        validateOperationWithRecordingState(callRecording.pauseRecording(RECORDING_ID),
             RecordingState.INACTIVE
         );
 
-        validateOperationWithRecordingStatus(callRecording.resumeRecording(RECORDING_ID),
+        validateOperationWithRecordingState(callRecording.resumeRecording(RECORDING_ID),
             RecordingState.ACTIVE);
 
         validateOperation(callRecording.stopRecording(RECORDING_ID));
         validateError(CallingServerErrorException.class, callRecording.getRecordingState(RECORDING_ID));
     }
 
-    private void validateRecordingStatus(Publisher<RecordingStateResult> publisher, RecordingState status) {
+    private void validateRecordingState(Publisher<RecordingStateResult> publisher, RecordingState status) {
         StepVerifier.create(publisher)
-            .consumeNextWith(recordingStatusResponse -> validateRecording(recordingStatusResponse, status))
+            .consumeNextWith(recordingStateResponse -> validateRecording(recordingStateResponse, status))
             .verifyComplete();
     }
 
-    private void validateOperationWithRecordingStatus(Publisher<Void> operation, RecordingState expectedRecordingStatus) {
+    private void validateOperationWithRecordingState(Publisher<Void> operation, RecordingState expectedRecordingState) {
         validateOperation(operation);
-        validateRecordingStatus(
+        validateRecordingState(
             callRecording.getRecordingState(RECORDING_ID),
-            expectedRecordingStatus
+            expectedRecordingState
         );
     }
 
@@ -102,8 +102,8 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
             .verify();
     }
 
-    private void validateRecording(RecordingStateResult recordingStatus, RecordingState expectedStatus) {
-        assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
-        assertEquals(expectedStatus, recordingStatus.getRecordingState());
+    private void validateRecording(RecordingStateResult recordingState, RecordingState expectedStatus) {
+        assertEquals(RECORDING_ID, recordingState.getRecordingId());
+        assertEquals(expectedStatus, recordingState.getRecordingState());
     }
 }

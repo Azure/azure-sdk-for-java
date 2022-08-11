@@ -30,9 +30,9 @@ public final class RecordingStateResult {
     }
 
     /**
-     * Get the RecordingStatus property: The recording status of the recording.
+     * Get the RecordingState property: The recording status of the recording.
      *
-     * @return the recordingStatus value.
+     * @return the recordingState value.
      */
     public RecordingState getRecordingState() {
         return this.recordingState;
