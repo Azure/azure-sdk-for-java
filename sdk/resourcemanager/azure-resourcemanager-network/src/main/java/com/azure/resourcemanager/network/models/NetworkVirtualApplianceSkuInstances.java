@@ -7,7 +7,11 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network Virtual Appliance Sku Instances List of available Sku and instances. */
+/**
+ * Network Virtual Appliance Sku Instances
+ *
+ * <p>List of available Sku and instances.
+ */
 @Immutable
 public final class NetworkVirtualApplianceSkuInstances {
     /*

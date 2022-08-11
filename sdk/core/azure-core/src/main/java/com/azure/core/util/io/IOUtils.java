@@ -175,4 +175,7 @@ public final class IOUtils {
                         onErrorResume, maxRetries, updatedRetryCount));
             });
     }
+
+    private IOUtils() {
+    }
 }

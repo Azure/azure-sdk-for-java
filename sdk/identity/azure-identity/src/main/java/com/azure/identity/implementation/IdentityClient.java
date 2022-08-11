@@ -551,9 +551,9 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        String tenant = IdentityUtil.resolveTenantId(null, request, options);
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
         if (!CoreUtils.isNullOrEmpty(tenant)) {
-            azCommand.append("--tenant ").append(tenant);
+            azCommand.append(" --tenant ").append(tenant);
         }
 
         AccessToken token;

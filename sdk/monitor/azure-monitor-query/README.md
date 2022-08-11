@@ -66,7 +66,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
 </dependency>
 ```
 
@@ -87,9 +87,10 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
@@ -494,6 +495,7 @@ comments.
 [azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/java
 [changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/CHANGELOG.md
+[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [kusto_query_language]: https://docs.microsoft.com/azure/data-explorer/kusto/query/
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java

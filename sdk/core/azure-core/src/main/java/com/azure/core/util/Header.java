@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Represents a single header to be set on a request.
@@ -21,7 +22,9 @@ public class Header {
     private final List<String> values;
 
     // but we also cache it to faster serve our public API
-    private String cachedStringValue;
+    private volatile String cachedStringValue;
+    private static final AtomicReferenceFieldUpdater<Header, String> CACHED_STRING_VALUE_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(Header.class, String.class, "cachedStringValue");
 
     /**
      * Create a Header instance using the provided name and value.
@@ -80,7 +83,7 @@ public class Header {
      */
     public String getValue() {
         checkCachedStringValue();
-        return cachedStringValue;
+        return CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     /**
@@ -108,7 +111,7 @@ public class Header {
      */
     public void addValue(String value) {
         this.values.add(value);
-        this.cachedStringValue = null;
+        CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
 
     /**
@@ -119,12 +122,10 @@ public class Header {
     @Override
     public String toString() {
         checkCachedStringValue();
-        return name + ":" + cachedStringValue;
+        return name + ":" + CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     private void checkCachedStringValue() {
-        if (cachedStringValue == null) {
-            cachedStringValue = String.join(",", values);
-        }
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, String.join(",", values));
     }
 }

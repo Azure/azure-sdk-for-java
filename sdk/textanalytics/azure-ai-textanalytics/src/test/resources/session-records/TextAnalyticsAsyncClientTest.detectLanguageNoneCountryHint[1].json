@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2113eb84-ec6f-4d21-8fde-38b312d25bdc",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "db4de009-9cff-46b0-9c15-890a7ce7865a",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,11 +13,11 @@
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "07086b2a-0967-47e7-af8b-8c85698695d2",
+      "apim-request-id" : "acdebbe3-64ed-404f-baa4-2e099a2c7a9b",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":0.84},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
-      "Date" : "Fri, 06 May 2022 17:51:18 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:41:33 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

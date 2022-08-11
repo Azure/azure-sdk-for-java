@@ -25,23 +25,19 @@ public final class CapacityReservationInner extends Resource {
     private CapacityReservationProperties innerProperties;
 
     /*
-     * SKU of the resource for which capacity needs be reserved. The SKU name
-     * and capacity is required to be set. Currently VM Skus with the
-     * capability called 'CapacityReservationSupported' set to true are
-     * supported. Refer to List Microsoft.Compute SKUs in a region
-     * (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for
+     * SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set.
+     * Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. Refer to
+     * List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for
      * supported values.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
-     * Availability Zone to use for this capacity reservation. The zone has to
-     * be single value and also should be part for the list of zones specified
-     * during the capacity reservation group creation. The zone can be assigned
-     * only during creation. If not provided, the reservation supports only
-     * non-zonal deployments. If provided, enforces VM/VMSS using this capacity
-     * reservation to be in same zone.
+     * Availability Zone to use for this capacity reservation. The zone has to be single value and also should be part
+     * for the list of zones specified during the capacity reservation group creation. The zone can be assigned only
+     * during creation. If not provided, the reservation supports only non-zonal deployments. If provided, enforces
+     * VM/VMSS using this capacity reservation to be in same zone.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;

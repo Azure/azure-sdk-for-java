@@ -324,14 +324,7 @@ public final class AvailabilitySetsClientImpl
     public Mono<AvailabilitySetInner> createOrUpdateAsync(
         String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, parameters)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -500,14 +493,7 @@ public final class AvailabilitySetsClientImpl
     public Mono<AvailabilitySetInner> updateAsync(
         String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, availabilitySetName, parameters)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -655,8 +641,7 @@ public final class AvailabilitySetsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
-        return deleteWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, availabilitySetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -803,14 +788,7 @@ public final class AvailabilitySetsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> getByResourceGroupAsync(String resourceGroupName, String availabilitySetName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1360,7 +1338,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1397,7 +1376,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1435,7 +1415,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1471,7 +1452,8 @@ public final class AvailabilitySetsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
