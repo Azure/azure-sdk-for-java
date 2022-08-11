@@ -19,21 +19,19 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
-import com.azure.storage.file.share.implementation.models.ListSharesResponse;
-import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
-import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentNextHeaders;
-import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentNextResponse;
+import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
@@ -64,7 +62,7 @@ public final class ServicesImpl {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(
+        Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -77,7 +75,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>> getProperties(
+        Mono<ServicesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -89,7 +87,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse>> listSharesSegment(
+        Mono<ServicesListSharesSegmentResponse> listSharesSegment(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix,
@@ -104,7 +102,7 @@ public final class ServicesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse>> listSharesSegmentNext(
+        Mono<ServicesListSharesSegmentNextResponse> listSharesSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -124,10 +122,10 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
             ShareServiceProperties shareServiceProperties, Integer timeout, Context context) {
         final String restype = "service";
         final String comp = "properties";
@@ -155,12 +153,10 @@ public final class ServicesImpl {
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
-     *     and CORS (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     *     and CORS (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>> getPropertiesWithResponseAsync(
-            Integer timeout, Context context) {
+    public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(Integer timeout, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
@@ -199,9 +195,7 @@ public final class ServicesImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                (include == null)
-                        ? null
-                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listSharesSegment(
                         this.client.getUrl(),
                         comp,

@@ -12,7 +12,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -26,12 +25,11 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -2088,8 +2086,7 @@ public class ShareDirectoryAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private static Response<ShareDirectoryInfo> createWithRestResponse(
-        final ResponseBase<DirectoriesCreateHeaders, Void> response) {
+    private static Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -2097,8 +2094,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private static Response<ShareDirectoryProperties> getPropertiesResponse(
-        ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
+    private static Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
         Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
@@ -2109,8 +2105,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
-    private static Response<ShareDirectoryInfo> setPropertiesResponse(
-        final ResponseBase<DirectoriesSetPropertiesHeaders, Void> response) {
+    private static Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -2119,7 +2114,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     private static Response<ShareDirectorySetMetadataInfo> setMetadataResponse(
-        final ResponseBase<DirectoriesSetMetadataHeaders, Void> response) {
+        final DirectoriesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
@@ -2128,15 +2123,15 @@ public class ShareDirectoryAsyncClient {
     }
 
     private static List<ShareFileItem> convertResponseAndGetNumOfResults(
-        ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse> res) {
+        DirectoriesListFilesAndDirectoriesSegmentResponse response) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
-        if (res.getValue().getSegment() != null) {
-            res.getValue().getSegment().getDirectoryItems()
+        if (response.getValue().getSegment() != null) {
+            response.getValue().getSegment().getDirectoryItems()
                 .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(), true,
                     directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
                     NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
                     null)));
-            res.getValue().getSegment().getFileItems()
+            response.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> shareFileItems.add(new ShareFileItem(fileItem.getName(), false,
                     fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
                     NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),

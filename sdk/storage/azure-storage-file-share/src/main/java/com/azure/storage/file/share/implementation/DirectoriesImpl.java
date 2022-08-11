@@ -17,29 +17,26 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesDeleteHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesRenameHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesCreateResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesDeleteResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesRenameResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
-import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Directories. */
@@ -71,7 +68,7 @@ public final class DirectoriesImpl {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesCreateHeaders, Void>> create(
+        Mono<DirectoriesCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -91,7 +88,7 @@ public final class DirectoriesImpl {
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> getProperties(
+        Mono<DirectoriesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -105,7 +102,7 @@ public final class DirectoriesImpl {
         @Delete("/{shareName}/{directory}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesDeleteHeaders, Void>> delete(
+        Mono<DirectoriesDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -118,7 +115,7 @@ public final class DirectoriesImpl {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> setProperties(
+        Mono<DirectoriesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -138,7 +135,7 @@ public final class DirectoriesImpl {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesSetMetadataHeaders, Void>> setMetadata(
+        Mono<DirectoriesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -153,28 +150,27 @@ public final class DirectoriesImpl {
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse>>
-                listFilesAndDirectoriesSegment(
-                        @HostParam("url") String url,
-                        @PathParam("shareName") String shareName,
-                        @PathParam("directory") String directory,
-                        @QueryParam("restype") String restype,
-                        @QueryParam("comp") String comp,
-                        @QueryParam("prefix") String prefix,
-                        @QueryParam("sharesnapshot") String sharesnapshot,
-                        @QueryParam("marker") String marker,
-                        @QueryParam("maxresults") Integer maxresults,
-                        @QueryParam("timeout") Integer timeout,
-                        @HeaderParam("x-ms-version") String version,
-                        @QueryParam("include") String include,
-                        @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
-                        @HeaderParam("Accept") String accept,
-                        Context context);
+        Mono<DirectoriesListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegment(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("directory") String directory,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("sharesnapshot") String sharesnapshot,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @QueryParam("include") String include,
+                @HeaderParam("x-ms-file-extended-info") Boolean includeExtendedInfo,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse>> listHandles(
+        Mono<DirectoriesListHandlesResponse> listHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -191,7 +187,7 @@ public final class DirectoriesImpl {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesForceCloseHandlesHeaders, Void>> forceCloseHandles(
+        Mono<DirectoriesForceCloseHandlesResponse> forceCloseHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -208,7 +204,7 @@ public final class DirectoriesImpl {
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<DirectoriesRenameHeaders, Void>> rename(
+        Mono<DirectoriesRenameResponse> rename(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("directory") String directory,
@@ -256,10 +252,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesCreateHeaders, Void>> createWithResponseAsync(
+    public Mono<DirectoriesCreateResponse> createWithResponseAsync(
             String shareName,
             String directory,
             String fileAttributes,
@@ -306,10 +302,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(
+    public Mono<DirectoriesGetPropertiesResponse> getPropertiesWithResponseAsync(
             String shareName, String directory, String sharesnapshot, Integer timeout, Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
@@ -337,10 +333,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesDeleteHeaders, Void>> deleteWithResponseAsync(
+    public Mono<DirectoriesDeleteResponse> deleteWithResponseAsync(
             String shareName, String directory, Integer timeout, Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
@@ -378,10 +374,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
+    public Mono<DirectoriesSetPropertiesResponse> setPropertiesWithResponseAsync(
             String shareName,
             String directory,
             String fileAttributes,
@@ -426,10 +422,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesSetMetadataHeaders, Void>> setMetadataWithResponseAsync(
+    public Mono<DirectoriesSetMetadataResponse> setMetadataWithResponseAsync(
             String shareName, String directory, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
         final String comp = "metadata";
@@ -471,29 +467,25 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of directories and files along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * @return an enumeration of directories and files on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse>>
-            listFilesAndDirectoriesSegmentWithResponseAsync(
-                    String shareName,
-                    String directory,
-                    String prefix,
-                    String sharesnapshot,
-                    String marker,
-                    Integer maxresults,
-                    Integer timeout,
-                    List<ListFilesIncludeType> include,
-                    Boolean includeExtendedInfo,
-                    Context context) {
+    public Mono<DirectoriesListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithResponseAsync(
+            String shareName,
+            String directory,
+            String prefix,
+            String sharesnapshot,
+            String marker,
+            Integer maxresults,
+            Integer timeout,
+            List<ListFilesIncludeType> include,
+            Boolean includeExtendedInfo,
+            Context context) {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                (include == null)
-                        ? null
-                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listFilesAndDirectoriesSegment(
                 this.client.getUrl(),
                 shareName,
@@ -534,10 +526,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of handles along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return an enumeration of handles on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse>> listHandlesWithResponseAsync(
+    public Mono<DirectoriesListHandlesResponse> listHandlesWithResponseAsync(
             String shareName,
             String directory,
             String marker,
@@ -585,10 +577,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesForceCloseHandlesHeaders, Void>> forceCloseHandlesWithResponseAsync(
+    public Mono<DirectoriesForceCloseHandlesResponse> forceCloseHandlesWithResponseAsync(
             String shareName,
             String directory,
             String handleId,
@@ -645,10 +637,10 @@ public final class DirectoriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DirectoriesRenameHeaders, Void>> renameWithResponseAsync(
+    public Mono<DirectoriesRenameResponse> renameWithResponseAsync(
             String shareName,
             String directory,
             String renameSource,
