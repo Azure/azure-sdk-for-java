@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLanguageDetectionInput;
@@ -36,14 +36,14 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 class DetectLanguageAsyncClient {
     private final ClientLogger logger = new ClientLogger(DetectLanguageAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
-    private final MicrosoftCognitiveLanguageServiceImpl service;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
     DetectLanguageAsyncClient(TextAnalyticsClientImpl legacyService) {
         this.legacyService = legacyService;
         this.service = null;
     }
 
-    DetectLanguageAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+    DetectLanguageAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
         this.legacyService = null;
         this.service = service;
     }
