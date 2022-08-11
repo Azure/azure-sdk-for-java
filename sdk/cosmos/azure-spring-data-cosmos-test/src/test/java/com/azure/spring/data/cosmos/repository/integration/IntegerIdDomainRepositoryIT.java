@@ -192,7 +192,7 @@ public class IntegerIdDomainRepositoryIT {
         final Page<IntegerIdDomain> page2 = this.repository.findAll(new CosmosPageRequest(1, 1, null));
         final Iterator<IntegerIdDomain> page2Iterator = page2.iterator();
         Assert.assertTrue(page2Iterator.hasNext());
-        Assert.assertEquals(DOMAIN, page2Iterator.next());
+        Assert.assertEquals(other, page2Iterator.next());
     }
 
     private static class InvalidDomain {

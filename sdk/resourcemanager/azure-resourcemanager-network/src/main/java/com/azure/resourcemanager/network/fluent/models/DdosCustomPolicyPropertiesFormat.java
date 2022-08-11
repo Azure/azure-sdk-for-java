@@ -15,9 +15,8 @@ import java.util.List;
 @Fluent
 public final class DdosCustomPolicyPropertiesFormat {
     /*
-     * The resource GUID property of the DDoS custom policy resource. It
-     * uniquely identifies the resource, even if the user changes its name or
-     * migrate the resource across subscriptions or resource groups.
+     * The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if the
+     * user changes its name or migrate the resource across subscriptions or resource groups.
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
@@ -29,8 +28,7 @@ public final class DdosCustomPolicyPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The list of public IPs associated with the DDoS custom policy resource.
-     * This list is read-only.
+     * The list of public IPs associated with the DDoS custom policy resource. This list is read-only.
      */
     @JsonProperty(value = "publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> publicIpAddresses;

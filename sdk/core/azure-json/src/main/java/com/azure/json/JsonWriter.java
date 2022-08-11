@@ -6,6 +6,7 @@ package com.azure.json;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
@@ -60,8 +61,11 @@ public abstract class JsonWriter implements Closeable {
      *
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
     public final JsonWriter writeStartObject(String fieldName) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
         return writeFieldName(fieldName).writeStartObject();
     }
 
@@ -89,8 +93,11 @@ public abstract class JsonWriter implements Closeable {
      *
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
     public final JsonWriter writeStartArray(String fieldName) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
         return writeFieldName(fieldName).writeStartArray();
     }
 
@@ -106,15 +113,14 @@ public abstract class JsonWriter implements Closeable {
      *
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
     public abstract JsonWriter writeFieldName(String fieldName);
 
     /**
      * Writes a {@link JsonSerializable} object.
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeJson(JsonSerializable, boolean)} to indicate whether null should be
-     * written.
+     * If {@code value} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeJsonField(String, JsonSerializable)} when the value needs to be written
      * to the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
@@ -123,7 +129,7 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public final JsonWriter writeJson(JsonSerializable<?> value) {
-        return (value == null) ? writeNull() : value.toJson(this);
+        return (value == null) ? this : value.toJson(this);
     }
 
     /**
@@ -132,8 +138,7 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
      * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
-     * If the passed {@code array} is null JSON null will be written. If null shouldn't be written use
-     * {@link #writeArray(Object[], boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeArrayField(String, Object[], BiConsumer)} when the value needs to be
      * written to the root of the JSON value, as an element in an array, or after a call to
@@ -143,32 +148,13 @@ public abstract class JsonWriter implements Closeable {
      * @param elementWriterFunc The function that writes each element of the array.
      * @param <T> The array element type.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code elementWriterFunc} is null.
      */
     public final <T> JsonWriter writeArray(T[] array, BiConsumer<JsonWriter, T> elementWriterFunc) {
-        return writeArray(array, true, elementWriterFunc);
-    }
+        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
-    /**
-     * Writes a JSON array.
-     * <p>
-     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
-     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
-     * <p>
-     * {@code writeNull} determines whether JSON null should be written if {@code array} is null.
-     * <p>
-     * This API is used instead of {@link #writeArrayField(String, Object[], boolean, BiConsumer)} when the value needs
-     * to be written to the root of the JSON value, as an element in an array, or after a call to
-     * {@link #writeFieldName(String)}.
-     *
-     * @param array The array being written.
-     * @param writeNull Whether JSON null should be written if {@code array} is null.
-     * @param elementWriterFunc The function that writes each element of the array.
-     * @param <T> The array element type.
-     * @return The updated JsonWriter object.
-     */
-    public final <T> JsonWriter writeArray(T[] array, boolean writeNull, BiConsumer<JsonWriter, T> elementWriterFunc) {
         if (array == null) {
-            return writeNull ? writeNull() : this;
+            return this;
         }
 
         writeStartArray();
@@ -186,8 +172,7 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
      * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
-     * If the passed {@code array} is null JSON null will be written. If null shouldn't be written use
-     * {@link #writeArray(Iterable, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeArrayField(String, Iterable, BiConsumer)} when the value needs to be
      * written to the root of the JSON value, as an element in an array, or after a call to
@@ -197,32 +182,13 @@ public abstract class JsonWriter implements Closeable {
      * @param elementWriterFunc The function that writes each element of the array.
      * @param <T> The array element type.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code elementWriterFunc} is null.
      */
     public final <T> JsonWriter writeArray(Iterable<T> array, BiConsumer<JsonWriter, T> elementWriterFunc) {
-        return writeArray(array, true, elementWriterFunc);
-    }
+        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
-    /**
-     * Writes a JSON array.
-     * <p>
-     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
-     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
-     * <p>
-     * {@code writeNull} determines whether JSON null should be written if {@code map} is null.
-     * <p>
-     * This API is used instead of {@link #writeArrayField(String, Iterable, boolean, BiConsumer)} when the value needs
-     * to be written to the root of the JSON value, as an element in an array, or after a call to
-     * {@link #writeFieldName(String)}.
-     *
-     * @param array The array being written.
-     * @param writeNull Whether JSON null should be written if {@code array} is null.
-     * @param elementWriterFunc The function that writes each element of the array.
-     * @param <T> The array element type.
-     * @return The updated JsonWriter object.
-     */
-    public final <T> JsonWriter writeArray(Iterable<T> array, boolean writeNull, BiConsumer<JsonWriter, T> elementWriterFunc) {
         if (array == null) {
-            return writeNull ? writeNull() : this;
+            return this;
         }
 
         writeStartArray();
@@ -240,8 +206,7 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the start object ({@code &#123;}) followed by key-value fields in the map using
      * the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
      * <p>
-     * If the passed {@code map} is null JSON null will be written. If null shouldn't be written use
-     * {@link #writeMap(Map, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * If {@code map} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeMapField(String, Map, BiConsumer)} when the value needs to be written to
      * the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
@@ -250,33 +215,13 @@ public abstract class JsonWriter implements Closeable {
      * @param valueWriterFunc The function that writes value of each key-value pair in the map.
      * @param <T> The value element type.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code valueWriterFunc} is null.
      */
     public final <T> JsonWriter writeMap(Map<String, T> map, BiConsumer<JsonWriter, T> valueWriterFunc) {
-        return writeMap(map, true, valueWriterFunc);
-    }
+        Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
-    /**
-     * Writes a JSON map.
-     * <p>
-     * This API will begin by writing the start object ({@code &#123;}) followed by key-value fields in the map using
-     * the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
-     * <p>
-     * {@code writeNull} determines whether JSON null should be written if {@code map} is null.
-     * <p>
-     * This API is used instead of {@link #writeMapField(String, Map, boolean, BiConsumer)} when the value needs to be
-     * written to the root of the JSON value, as an element in an array, or after a call to
-     * {@link #writeFieldName(String)}.
-     *
-     * @param map The map being written.
-     * @param writeNull Whether JSON null should be written if {@code map} is null.
-     * @param valueWriterFunc The function that writes value of each key-value pair in the map.
-     * @param <T> The value element type.
-     * @return The updated JsonWriter object.
-     */
-    public final <T> JsonWriter writeMap(Map<String, T> map, boolean writeNull,
-        BiConsumer<JsonWriter, T> valueWriterFunc) {
         if (map == null) {
-            return writeNull ? writeNull() : this;
+            return writeNull();
         }
 
         writeStartObject();
@@ -290,32 +235,9 @@ public abstract class JsonWriter implements Closeable {
     }
 
     /**
-     * Writes a {@link JsonSerializable} object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeJsonField(String, JsonSerializable, boolean)} when the value needs to be
-     * written to the root of the JSON value, as an element in an array, or after a call to
-     * {@link #writeFieldName(String)}.
-     *
-     * @param value {@link JsonSerializable} object to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeJson(JsonSerializable<?> value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : value.toJson(this);
-    }
-
-    /**
      * Writes a JSON binary value.
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeBinary(byte[], boolean)} to indicate whether null should be written.
+     * If {@code value} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeBinaryField(String, byte[])} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
@@ -324,27 +246,6 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeBinary(byte[] value);
-
-    /**
-     * Writes a JSON binary value.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeBinaryField(String, byte[], boolean)} when the value needs to be written
-     * to the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     *
-     * @param value Binary value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeBinary(byte[] value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeBinary(value);
-    }
 
     /**
      * Writes a JSON boolean value ({@code true} or {@code false}).
@@ -362,9 +263,7 @@ public abstract class JsonWriter implements Closeable {
     /**
      * Writes a nullable JSON boolean value ({@code true}, {@code false}, or {@code null}).
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeBoolean(Boolean, boolean)} to indicate whether null should be
-     * written.
+     * If {@code value} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeBooleanField(String, Boolean)} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
@@ -379,34 +278,12 @@ public abstract class JsonWriter implements Closeable {
     }
 
     /**
-     * Writes a nullable JSON boolean value ({@code true}, {@code false}, or {@code null}).
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeBooleanField(String, Boolean, boolean)} when the value needs to be
-     * written to the root of the JSON value, as an element in an array, or after a call to
-     * {@link #writeFieldName(String)}.
-     *
-     * @param value Boolean value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeBoolean(Boolean value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeBoolean(value.booleanValue());
-    }
-
-    /**
      * Writes a JSON double value.
      * <p>
      * This API is used instead of {@link #writeDoubleField(String, double)} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      * <p>
-     * For the nullable {@code Double} use {@link #writeDouble(Double)}.
+     * For the nullable {@code Double} use {@link #writeNumber(Number)}.
      *
      * @param value double value to write.
      * @return The updated JsonWriter object.
@@ -414,51 +291,12 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeDouble(double value);
 
     /**
-     * Writes a nullable JSON double value.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeDouble(Double, boolean)} to indicate whether null should be written.
-     * <p>
-     * This API is used instead of {@link #writeDoubleField(String, Double)} when the value needs to be written to the
-     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     * <p>
-     * For the primitive {@code double} use {@link #writeDouble(double)}.
-     *
-     * @param value Double value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeDouble(Double value) {
-        return (value == null) ? writeNull() : writeDouble(value.doubleValue());
-    }
-
-    /**
-     * Writes a nullable JSON double value.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeDoubleField(String, Double, boolean)} when the value needs to be written
-     * to the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     *
-     * @param value Double value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeDouble(Double value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeDouble(value);
-    }
-
-    /**
      * Writes a JSON float value.
      * <p>
      * This API is used instead of {@link #writeFloatField(String, float)} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      * <p>
-     * For the nullable {@code Float} use {@link #writeFloat(Float)}.
+     * For the nullable {@code Float} use {@link #writeNumber(Number)}.
      *
      * @param value float value to write.
      * @return The updated JsonWriter object.
@@ -466,51 +304,12 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeFloat(float value);
 
     /**
-     * Writes a nullable JSON float value.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeFloat(Float, boolean)} to indicate whether null should be written.
-     * <p>
-     * This API is used instead of {@link #writeFloatField(String, Float)} when the value needs to be written to the
-     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     * <p>
-     * For the primitive {@code float} use {@link #writeFloat(float)}.
-     *
-     * @param value Float value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeFloat(Float value) {
-        return (value == null) ? writeNull() : writeFloat(value.floatValue());
-    }
-
-    /**
-     * Writes a nullable JSON float value.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeFloatField(String, Float, boolean)} when the value needs to be written
-     * to the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     *
-     * @param value Float value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeFloat(Float value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeFloat(value.floatValue());
-    }
-
-    /**
      * Writes a JSON int value.
      * <p>
      * This API is used instead of {@link #writeIntField(String, int)} when the value needs to be written to the root of
      * the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      * <p>
-     * For the nullable {@code Integer} use {@link #writeInteger(Integer)}.
+     * For the nullable {@code Integer} use {@link #writeNumber(Number)}.
      *
      * @param value int value to write.
      * @return The updated JsonWriter object.
@@ -518,97 +317,17 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeInt(int value);
 
     /**
-     * Writes a nullable JSON int value.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeInteger(Integer, boolean)} to indicate whether null should be
-     * written.
-     * <p>
-     * This API is used instead of {@link #writeIntegerField(String, Integer)} when the value needs to be written to the
-     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     * <p>
-     * For the primitive {@code int} use {@link #writeInt(int)}.
-     *
-     * @param value Integer value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeInteger(Integer value) {
-        return (value == null) ? writeNull() : writeInt(value);
-    }
-
-    /**
-     * Writes a nullable JSON integer value.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeIntegerField(String, Integer, boolean)} when the value needs to be
-     * written to the root of the JSON value, as an element in an array, or after a call to
-     * {@link #writeFieldName(String)}.
-     *
-     * @param value Integer value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeInteger(Integer value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeInt(value);
-    }
-
-    /**
      * Writes a JSON long value.
      * <p>
      * This API is used instead of {@link #writeLongField(String, long)} when the value needs to be written to the root
      * of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
      * <p>
-     * For the nullable {@code Long} use {@link #writeLong(Long)}.
+     * For the nullable {@code Long} use {@link #writeNumber(Number)}.
      *
      * @param value long value to write.
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeLong(long value);
-
-    /**
-     * Writes a nullable JSON long value.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeLong(Long, boolean)} to indicate whether null should be written.
-     * <p>
-     * This API is used instead of {@link #writeLongField(String, Long)} when the value needs to be written to the root
-     * of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     * <p>
-     * For the primitive {@code long} use {@link #writeLong(long)}.
-     *
-     * @param value Long value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeLong(Long value) {
-        return (value == null) ? writeNull() : writeLong(value.longValue());
-    }
-
-    /**
-     * Writes a nullable JSON long value.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeLongField(String, Long, boolean)} when the value needs to be written to
-     * the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     *
-     * @param value Long value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeLong(Long value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeLong(value.longValue());
-    }
 
     /**
      * Writes a JSON null.
@@ -621,10 +340,36 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeNull();
 
     /**
+     * Writes a nullable JSON number value.
+     * <p>
+     * If {@code value} is null {@link JsonToken#NULL} will be written.
+     * <p>
+     * This API is used instead of {@link #writeNumberField(String, Number)} when the value needs to be written to the
+     * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     *
+     * @param value Number value to write.
+     * @return The updated JsonWriter object.
+     */
+    public final JsonWriter writeNumber(Number value) {
+        if (value == null) {
+            return writeNull();
+        } else if (value instanceof Byte || value instanceof Short || value instanceof Integer) {
+            return writeInt(value.intValue());
+        } else if (value instanceof Long) {
+            return writeLong(value.longValue());
+        } else if (value instanceof Float) {
+            return writeFloat(value.floatValue());
+        } else if (value instanceof Double) {
+            return writeDouble(value.doubleValue());
+        } else {
+            return writeRawValue(value.toString());
+        }
+    }
+
+    /**
      * Writes a JSON String value.
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeString(String, boolean)} to indicate whether null should be written.
+     * If {@code value} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeStringField(String, String)} when the value needs to be written to the
      * root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
@@ -633,27 +378,6 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeString(String value);
-
-    /**
-     * Writes a nullable JSON String value.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null a value won't be written, effectively treating the call
-     * as a no-op.
-     * <p>
-     * This API is used instead of {@link #writeStringField(String, String, boolean)} when the value needs to be written
-     * to the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
-     *
-     * @param value String value to write.
-     * @param writeNull Whether a null value should be written.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeString(String value, boolean writeNull) {
-        if (value == null && !writeNull) {
-            return this;
-        }
-
-        return (value == null) ? writeNull() : writeString(value);
-    }
 
     /**
      * Writes the passed value literally without any additional handling.
@@ -667,8 +391,35 @@ public abstract class JsonWriter implements Closeable {
      *
      * @param value The raw JSON value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code value} is null.
      */
     public abstract JsonWriter writeRawValue(String value);
+
+    /**
+     * Writes a nullable JSON field.
+     * <p>
+     * When the {@code value} is null this effectively is the same as {@link #writeNullField(String)}. When the
+     * {@code value} isn't null this will write the JSON field name and call the {@code writerFunc} that is supplied
+     * with the non-null nullable value and this {@link JsonWriter} to perform the write operation.
+     *
+     * @param fieldName The field name.
+     * @param nullable The nullable JSON value.
+     * @param writerFunc The non-null JSON value writer function.
+     * @param <T> Type of the nullable value.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code writerFunc} is null.
+     */
+    public final <T> JsonWriter writeNullableField(String fieldName, T nullable, BiConsumer<JsonWriter, T> writerFunc) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        Objects.requireNonNull(writerFunc, "'writerFunc' cannot be null.");
+
+        if (nullable == null) {
+            return writeNullField(fieldName);
+        }
+
+        writerFunc.accept(writeFieldName(fieldName), nullable);
+        return this;
+    }
 
     /**
      * Writes a {@link JsonSerializable} field.
@@ -676,16 +427,18 @@ public abstract class JsonWriter implements Closeable {
      * Combines {@link #writeFieldName(String)} and {@link #writeJson(JsonSerializable)} to simplify adding a key-value
      * to a JSON object.
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeJsonField(String, JsonSerializable, boolean)} to indicate whether null
-     * should be written.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value {@link JsonSerializable} object to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
     public final JsonWriter writeJsonField(String fieldName, JsonSerializable<?> value) {
-        return writeJsonField(fieldName, value, true);
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
+        return (value == null) ? this : value.toJson(writeFieldName(fieldName));
     }
 
     /**
@@ -694,8 +447,8 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
      * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
-     * If the passed {@code array} is null a JSON null field will be written. If a null field shouldn't be written use
-     * {@link #writeArrayField(String, Object[], boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], BiConsumer)} to simplify adding a
      * key-value to a JSON object.
@@ -705,34 +458,15 @@ public abstract class JsonWriter implements Closeable {
      * @param elementWriterFunc The function that writes each element of the array.
      * @param <T> The array element type.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code elementWriterFunc} is null.
      */
     public final <T> JsonWriter writeArrayField(String fieldName, T[] array,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
-        return writeArrayField(fieldName, array, true, elementWriterFunc);
-    }
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
-    /**
-     * Writes a JSON array field.
-     * <p>
-     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
-     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
-     * <p>
-     * {@code writeNull} determines whether a JSON null field should be written if {@code array} is null.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], boolean, BiConsumer)} to simplify
-     * adding a key-value to a JSON object.
-     *
-     * @param fieldName The field name.
-     * @param array The array being written.
-     * @param writeNull Whether JSON null should be written if {@code array} is null.
-     * @param elementWriterFunc The function that writes each element of the array.
-     * @param <T> The array element type.
-     * @return The updated JsonWriter object.
-     */
-    public final <T> JsonWriter writeArrayField(String fieldName, T[] array, boolean writeNull,
-        BiConsumer<JsonWriter, T> elementWriterFunc) {
         if (array == null) {
-            return writeNull ? writeNullField(fieldName) : this;
+            return this;
         }
 
         writeStartArray(fieldName);
@@ -750,8 +484,8 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
      * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
-     * If the passed {@code array} is null a JSON null field will be written. If a null field shouldn't be written use
-     * {@link #writeArrayField(String, Iterable, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, BiConsumer)} to simplify adding a
      * key-value to a JSON object.
@@ -761,34 +495,15 @@ public abstract class JsonWriter implements Closeable {
      * @param elementWriterFunc The function that writes each element of the array.
      * @param <T> The array element type.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code elementWriterFunc} is null.
      */
     public final <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
-        return writeArrayField(fieldName, array, true, elementWriterFunc);
-    }
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
-    /**
-     * Writes a JSON array field.
-     * <p>
-     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
-     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
-     * <p>
-     * {@code writeNull} determines whether a JSON null field should be written if {@code array} is null.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], boolean, BiConsumer)} to simplify
-     * adding a key-value to a JSON object.
-     *
-     * @param fieldName The field name.
-     * @param array The array being written.
-     * @param writeNull Whether JSON null should be written if {@code array} is null.
-     * @param elementWriterFunc The function that writes each element of the array.
-     * @param <T> The array element type.
-     * @return The updated JsonWriter object.
-     */
-    public final <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array, boolean writeNull,
-        BiConsumer<JsonWriter, T> elementWriterFunc) {
         if (array == null) {
-            return writeNull ? writeNullField(fieldName) : this;
+            return this;
         }
 
         writeStartArray(fieldName);
@@ -806,8 +521,8 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the field name and start object ({@code &#123;}) followed by key-value fields in
      * the map using the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
      * <p>
-     * If the passed {@code map} is null a JSON null field will be written. If a null field shouldn't be written use
-     * {@link #writeMapField(String, Map, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, BiConsumer)} to simplify adding a key-value to
      * a JSON object.
@@ -817,34 +532,15 @@ public abstract class JsonWriter implements Closeable {
      * @param valueWriterFunc The function that writes each value of the map.
      * @param <T> The value element type.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code valueWriterFunc} is null.
      */
     public final <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
         BiConsumer<JsonWriter, T> valueWriterFunc) {
-        return writeMapField(fieldName, map, true, valueWriterFunc);
-    }
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
-    /**
-     * Writes a JSON map field.
-     * <p>
-     * This API will begin by writing the field name and start object ({@code &#123;}) followed by key-value fields in
-     * the map using the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
-     * <p>
-     * {@code writeNull} determines whether a JSON null field should be written if {@code map} is null.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, boolean, BiConsumer)} to simplify
-     * adding a key-value to a JSON object.
-     *
-     * @param fieldName The field name.
-     * @param map The map being written.
-     * @param writeNull Whether JSON null should be written if {@code map} is null.
-     * @param valueWriterFunc The function that writes each value of the map.
-     * @param <T> The value element type.
-     * @return The updated JsonWriter object.
-     */
-    public final <T> JsonWriter writeMapField(String fieldName, Map<String, T> map, boolean writeNull,
-        BiConsumer<JsonWriter, T> valueWriterFunc) {
         if (map == null) {
-            return writeNull ? writeNullField(fieldName) : this;
+            return this;
         }
 
         writeStartObject(fieldName);
@@ -858,65 +554,27 @@ public abstract class JsonWriter implements Closeable {
     }
 
     /**
-     * Writes a {@link JsonSerializable} field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeJson(JsonSerializable)} to simplify adding a key-value
-     * to a JSON object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value {@link JsonSerializable} object to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeJsonField(String fieldName, JsonSerializable<?> value, boolean writeNull) {
-        if (!writeNull && value == null) {
-            return this;
-        }
-
-        return (value == null) ? writeNullField(fieldName) : value.toJson(writeFieldName(fieldName));
-    }
-
-    /**
      * Writes a JSON binary field.
      * <p>
      * Combines {@link #writeFieldName(String)} and {@link #writeBinary(byte[])} to simplify adding a key-value to a
      * JSON object.
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeBinaryField(String, byte[], boolean)} to indicate whether null should
-     * be written.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value Binary value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeBinaryField(String fieldName, byte[] value);
+    public final JsonWriter writeBinaryField(String fieldName, byte[] value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a JSON binary field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeBinary(byte[])} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value Binary value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeBinaryField(String fieldName, byte[] value, boolean writeNull) {
-        if (!writeNull && value == null) {
+        if (value == null) {
             return this;
         }
 
-        return (value == null) ? writeNullField(fieldName) : writeBinaryField(fieldName, value);
+        return writeFieldName(fieldName).writeBinary(value);
     }
 
     /**
@@ -928,25 +586,12 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value boolean value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeBooleanField(String fieldName, boolean value);
+    public final JsonWriter writeBooleanField(String fieldName, boolean value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a nullable JSON boolean field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeBoolean(Boolean)} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeBooleanField(String, Boolean, boolean)} to indicate whether null
-     * should be written.
-     *
-     * @param fieldName The field name.
-     * @param value Boolean value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeBooleanField(String fieldName, Boolean value) {
-        return writeBooleanField(fieldName, value, true);
+        return writeFieldName(fieldName).writeBoolean(value);
     }
 
     /**
@@ -955,21 +600,18 @@ public abstract class JsonWriter implements Closeable {
      * Combines {@link #writeFieldName(String)} and {@link #writeBoolean(Boolean)} to simplify adding a key-value to a
      * JSON object.
      * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value Boolean value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public final JsonWriter writeBooleanField(String fieldName, Boolean value, boolean writeNull) {
-        if (!writeNull && value == null) {
-            return this;
-        }
+    public final JsonWriter writeBooleanField(String fieldName, Boolean value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-        return (value == null) ? writeNullField(fieldName) : writeBooleanField(fieldName, value.booleanValue());
+        return (value == null) ? this : writeBooleanField(fieldName, value.booleanValue());
     }
 
     /**
@@ -981,48 +623,12 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value double value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeDoubleField(String fieldName, double value);
+    public final JsonWriter writeDoubleField(String fieldName, double value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a nullable JSON double field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeDouble(Double)} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeDoubleField(String, Double, boolean)} to indicate whether null should
-     * be written.
-     *
-     * @param fieldName The field name.
-     * @param value Double value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeDoubleField(String fieldName, Double value) {
-        return writeDoubleField(fieldName, value, true);
-    }
-
-    /**
-     * Writes a nullable JSON double field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeDouble(Double)} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value Double value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeDoubleField(String fieldName, Double value, boolean writeNull) {
-        if (!writeNull && value == null) {
-            return this;
-        }
-
-        return (value == null) ? writeNullField(fieldName) : writeDoubleField(fieldName, value.doubleValue());
+        return writeFieldName(fieldName).writeDouble(value);
     }
 
     /**
@@ -1034,48 +640,12 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value float value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeFloatField(String fieldName, float value);
+    public final JsonWriter writeFloatField(String fieldName, float value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a nullable JSON float field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeFloat(Float)} to simplify adding a key-value to a JSON
-     * object.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeFloatField(String, Float, boolean)} to indicate whether null should be
-     * written.
-     *
-     * @param fieldName The field name.
-     * @param value Float value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeFloatField(String fieldName, Float value) {
-        return writeFloatField(fieldName, value, true);
-    }
-
-    /**
-     * Writes a nullable JSON float field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeFloat(Float)} to simplify adding a key-value to a JSON
-     * object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value Float value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeFloatField(String fieldName, Float value, boolean writeNull) {
-        if (!writeNull && value == null) {
-            return this;
-        }
-
-        return (value == null) ? writeNullField(fieldName) : writeFloatField(fieldName, value.floatValue());
+        return writeFieldName(fieldName).writeFloat(value);
     }
 
     /**
@@ -1087,48 +657,12 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value int value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeIntField(String fieldName, int value);
+    public final JsonWriter writeIntField(String fieldName, int value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a nullable JSON int field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeInteger(Integer)} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeIntegerField(String, Integer, boolean)} to indicate whether null
-     * should be written.
-     *
-     * @param fieldName The field name.
-     * @param value Integer value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeIntegerField(String fieldName, Integer value) {
-        return writeIntegerField(fieldName, value, true);
-    }
-
-    /**
-     * Writes a nullable JSON int field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeInteger(Integer)} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value Integer value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeIntegerField(String fieldName, Integer value, boolean writeNull) {
-        if (!writeNull && value == null) {
-            return this;
-        }
-
-        return (value == null) ? writeNullField(fieldName) : writeIntField(fieldName, value);
+        return writeFieldName(fieldName).writeInt(value);
     }
 
     /**
@@ -1140,48 +674,12 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value long value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeLongField(String fieldName, long value);
+    public final JsonWriter writeLongField(String fieldName, long value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a nullable JSON long field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeLong(Long)} to simplify adding a key-value to a JSON
-     * object.
-     * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeLongField(String, Long, boolean)} to indicate whether null should be
-     * written.
-     *
-     * @param fieldName The field name.
-     * @param value Long value to write.
-     * @return The updated JsonWriter object.
-     */
-    public final JsonWriter writeLongField(String fieldName, Long value) {
-        return writeLongField(fieldName, value, true);
-    }
-
-    /**
-     * Writes a nullable JSON long field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeLong(Long)} to simplify adding a key-value to a JSON
-     * object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value Long value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeLongField(String fieldName, Long value, boolean writeNull) {
-        if (!writeNull && value == null) {
-            return this;
-        }
-
-        return (value == null) ? writeNullField(fieldName) : writeLongField(fieldName, value.longValue());
+        return writeFieldName(fieldName).writeLong(value);
     }
 
     /**
@@ -1192,8 +690,36 @@ public abstract class JsonWriter implements Closeable {
      *
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeNullField(String fieldName);
+    public final JsonWriter writeNullField(String fieldName) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
+        return writeFieldName(fieldName).writeNull();
+    }
+
+    /**
+     * Writes a nullable JSON number field.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeNumber(Number)} to simplify adding a key-value to a
+     * JSON object.
+     * <p>
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
+     *
+     * @param fieldName The field name.
+     * @param value Number value to write.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
+     */
+    public final JsonWriter writeNumberField(String fieldName, Number value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        if (value == null) {
+            return this;
+        }
+
+        return writeFieldName(fieldName).writeNumber(value);
+    }
 
     /**
      * Writes a JSON String field.
@@ -1201,37 +727,22 @@ public abstract class JsonWriter implements Closeable {
      * Combines {@link #writeFieldName(String)} and {@link #writeString(String)} to simplify adding a key-value to a
      * JSON object.
      * <p>
-     * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeStringField(String, String, boolean)} to indicate whether null should
-     * be written.
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, BiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value String value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
-    public abstract JsonWriter writeStringField(String fieldName, String value);
+    public final JsonWriter writeStringField(String fieldName, String value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
-    /**
-     * Writes a JSON String field.
-     * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeString(String)} to simplify adding a key-value to a
-     * JSON object.
-     * <p>
-     * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
-     * effectively treating the call as a no-op.
-     *
-     * @param fieldName The field name.
-     * @param value String value to write.
-     * @param writeNull Whether a null field should be written.
-     * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
-     * JsonWriter.
-     */
-    public final JsonWriter writeStringField(String fieldName, String value, boolean writeNull) {
-        if (!writeNull && value == null) {
+        if (value == null) {
             return this;
         }
 
-        return (value == null) ? writeNullField(fieldName) : writeStringField(fieldName, value);
+        return writeFieldName(fieldName).writeString(value);
     }
 
     /**
@@ -1247,8 +758,14 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value The raw JSON value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code value} is null.
      */
-    public abstract JsonWriter writeRawField(String fieldName, String value);
+    public final JsonWriter writeRawField(String fieldName, String value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
+        return writeFieldName(fieldName).writeRawValue(value);
+    }
 
     /**
      * Writes the unknown type {@code value} field.
@@ -1276,8 +793,11 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @param value The value to write.
      * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} is null.
      */
     public JsonWriter writeUntypedField(String fieldName, Object value) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
         return writeFieldName(fieldName).writeUntyped(value);
     }
 

@@ -36,8 +36,7 @@ public final class CustomIpPrefixInner extends Resource {
     private String etag;
 
     /*
-     * A list of availability zones denoting the IP allocated for the resource
-     * needs to come from.
+     * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -263,6 +262,29 @@ public final class CustomIpPrefixInner extends Resource {
             this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withCommissionedState(commissionedState);
+        return this;
+    }
+
+    /**
+     * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @return the noInternetAdvertise value.
+     */
+    public Boolean noInternetAdvertise() {
+        return this.innerProperties() == null ? null : this.innerProperties().noInternetAdvertise();
+    }
+
+    /**
+     * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @param noInternetAdvertise the noInternetAdvertise value to set.
+     * @return the CustomIpPrefixInner object itself.
+     */
+    public CustomIpPrefixInner withNoInternetAdvertise(Boolean noInternetAdvertise) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
+        }
+        this.innerProperties().withNoInternetAdvertise(noInternetAdvertise);
         return this;
     }
 

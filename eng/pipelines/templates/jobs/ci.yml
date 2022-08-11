@@ -46,9 +46,6 @@ parameters:
   - name: TestOptions
     type: string
     default: $(TestOptions)
-  - name: AdditionalBuildOptions
-    type: string
-    default: ''
   - name: TestParallelization
     type: string
     default: '1C'
@@ -165,7 +162,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -328,7 +325,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -383,6 +380,5 @@ jobs:
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
         TestOptions: ${{ parameters.TestOptions }}
-        AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}

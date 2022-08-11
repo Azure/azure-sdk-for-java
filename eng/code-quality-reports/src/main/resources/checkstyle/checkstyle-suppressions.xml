@@ -48,6 +48,12 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.test.*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.test.*"/>
 
+  <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
+  <!-- Suppress the v3 package name in Form Recognizer samples for V2 endpoints -->
+  <suppress checks="PackageName" files="com.azure.ai.formrecognizer.v3" />
+
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
@@ -415,7 +421,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="481,515,529"/>
+            lines="497,531,545"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
