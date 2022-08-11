@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.DocTypeInfoHelper;
+import com.azure.ai.formrecognizer.implementation.util.DocumentTypeDetailsHelper;
 
 import java.util.Map;
 
 /**
- * The DocTypeInfo model.
+ * The DocumentTypeDetails model representing detailed information about the document type.
  */
-public final class DocTypeInfo {
+public final class DocumentTypeDetails {
     /*
      * Model description.
      */
@@ -97,25 +97,25 @@ public final class DocTypeInfo {
     }
 
     static {
-        DocTypeInfoHelper.setAccessor(new DocTypeInfoHelper.DocTypeInfoAccessor() {
+        DocumentTypeDetailsHelper.setAccessor(new DocumentTypeDetailsHelper.DocumentTypeDetailsAccessor() {
             @Override
-            public void setDescription(DocTypeInfo docTypeInfo, String description) {
-                docTypeInfo.setDescription(description);
+            public void setDescription(DocumentTypeDetails documentTypeDetails, String description) {
+                documentTypeDetails.setDescription(description);
             }
 
             @Override
-            public void setFieldSchema(DocTypeInfo docTypeInfo, Map<String, DocumentFieldSchema> fieldSchema) {
-                docTypeInfo.setFieldSchema(fieldSchema);
+            public void setFieldSchema(DocumentTypeDetails documentTypeDetails, Map<String, DocumentFieldSchema> fieldSchema) {
+                documentTypeDetails.setFieldSchema(fieldSchema);
             }
 
             @Override
-            public void setFieldConfidence(DocTypeInfo docTypeInfo, Map<String, Float> fieldConfidence) {
-                docTypeInfo.setFieldConfidence(fieldConfidence);
+            public void setFieldConfidence(DocumentTypeDetails documentTypeDetails, Map<String, Float> fieldConfidence) {
+                documentTypeDetails.setFieldConfidence(fieldConfidence);
             }
 
             @Override
-            public void setBuildMode(DocTypeInfo docTypeInfo, DocumentModelBuildMode buildMode) {
-                docTypeInfo.setBuildMode(buildMode);
+            public void setBuildMode(DocumentTypeDetails documentTypeDetails, DocumentModelBuildMode buildMode) {
+                documentTypeDetails.setBuildMode(buildMode);
             }
         });
     }
