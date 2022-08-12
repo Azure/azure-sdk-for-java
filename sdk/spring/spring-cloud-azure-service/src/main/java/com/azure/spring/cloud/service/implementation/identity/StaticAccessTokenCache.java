@@ -10,16 +10,27 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Implementation of {@link Cache} that provide static cache.
  */
-public class StaticAccessTokenCache implements Cache<String, AccessToken> {
-    private static final Map<String, AccessToken> CACHE = new ConcurrentHashMap<>();
+public final class StaticAccessTokenCache implements Cache<String, AccessToken> {
+    private static StaticAccessTokenCache singleInstance;
+    private final Map<String, AccessToken> cache = new ConcurrentHashMap<>();
 
     @Override
     public void put(String key, AccessToken value) {
-        CACHE.put(key, value);
+        cache.put(key, value);
     }
 
     @Override
     public AccessToken get(String key) {
-        return CACHE.get(key);
+        return cache.get(key);
+    }
+
+    private StaticAccessTokenCache() {
+    }
+
+    public static StaticAccessTokenCache getInstance() {
+        if (singleInstance == null) {
+            singleInstance = new StaticAccessTokenCache();
+        }
+        return singleInstance;
     }
 }

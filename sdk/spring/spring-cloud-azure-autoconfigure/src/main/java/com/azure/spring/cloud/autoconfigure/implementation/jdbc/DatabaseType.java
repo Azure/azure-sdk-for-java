@@ -20,7 +20,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 
 /**
  * The type of database URL.
- *
+ * <p>
  * A connection string could be follow
  * <p>
  * <i>scheme://authority/path?query#fragment</i>
@@ -68,11 +68,11 @@ public enum DatabaseType {
     }
 
     // TODO (zhihaoguo): refactor with interfaces.
-    public boolean isDatabasePluginEnabled() {
+    public boolean isDatabasePluginAvailable() {
         if (DatabaseType.POSTGRESQL == this) {
-            return isPostgresqlPluginEnabled();
+            return isPostgresqlPluginAvailable();
         } else if (DatabaseType.MYSQL == this) {
-            return isMySqlPluginEnabled();
+            return isMySqlPluginAvailable();
         }
         return false;
     }
@@ -95,19 +95,19 @@ public enum DatabaseType {
         map.putAll(getDefaultEnhancedProperties());
     }
 
-    private static boolean isPostgresqlPluginEnabled() {
+    private boolean isPostgresqlPluginAvailable() {
         return isOnClasspath(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.POSTGRES_DRIVER_CLASS_NAME);
     }
 
-    private static boolean isMySqlPluginEnabled() {
+    private boolean isMySqlPluginAvailable() {
         return isOnClasspath(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_INTERFACE_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.MYSQL_DRIVER_CLASS_NAME);
     }
 
-    private static boolean isOnClasspath(String className) {
+    private boolean isOnClasspath(String className) {
         return ClassUtils.isPresent(className, null);
     }
 }

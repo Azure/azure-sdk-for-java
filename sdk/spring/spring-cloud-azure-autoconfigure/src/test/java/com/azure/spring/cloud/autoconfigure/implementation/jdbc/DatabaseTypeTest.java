@@ -26,21 +26,21 @@ class DatabaseTypeTest {
     private static final String SQLSERVER_QUERY_DELIMITER = ";";
 
     @Test
-    void testMySQL() {
+    void testDatabaseTypeMySqlConstructor() {
         assertEquals(DatabaseType.MYSQL.getSchema(), MYSQL_SCHEMA);
         assertEquals(DatabaseType.MYSQL.getPathQueryDelimiter(), MYSQL_PATH_QUERY_DELIMITER);
         assertEquals(DatabaseType.MYSQL.getQueryDelimiter(), MYSQL_QUERY_DELIMITER);
     }
 
     @Test
-    void testPostgreSQL() {
+    void testDatabaseTypePostgreSqlConstructor() {
         assertEquals(DatabaseType.POSTGRESQL.getSchema(), POSTGRESQL_SCHEMA);
         assertEquals(DatabaseType.POSTGRESQL.getPathQueryDelimiter(), POSTGRESQL_PATH_QUERY_DELIMITER);
         assertEquals(DatabaseType.POSTGRESQL.getQueryDelimiter(), POSTGRESQL_QUERY_DELIMITER);
     }
 
     @Test
-    void testSqlServer() {
+    void testDatabaseTypeSqlServerConstructor() {
         assertEquals(DatabaseType.SQLSERVER.getSchema(), SQLSERVER_SCHEMA);
         assertEquals(DatabaseType.SQLSERVER.getPathQueryDelimiter(), SQLSERVER_PATH_QUERY_DELIMITER);
         assertEquals(DatabaseType.SQLSERVER.getQueryDelimiter(), SQLSERVER_QUERY_DELIMITER);
@@ -48,21 +48,19 @@ class DatabaseTypeTest {
 
     @Test
     void testMySqlPlugin() {
-        assertTrue(DatabaseType.MYSQL.isDatabasePluginEnabled());
+        assertTrue(DatabaseType.MYSQL.isDatabasePluginAvailable());
         new ApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader("com.mysql.cj.protocol.AuthenticationPlugin"))
-            .run(context -> {
-                assertFalse(DatabaseType.MYSQL.isDatabasePluginEnabled());
-            });
+            .run(context -> assertFalse(DatabaseType.MYSQL.isDatabasePluginAvailable()));
     }
 
     @Test
     void testPostgreSqlPlugin() {
-        assertTrue(DatabaseType.POSTGRESQL.isDatabasePluginEnabled());
+        assertTrue(DatabaseType.POSTGRESQL.isDatabasePluginAvailable());
         new ApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader("org.postgresql.plugin.AuthenticationPlugin"))
             .run(context -> {
-                assertFalse(DatabaseType.POSTGRESQL.isDatabasePluginEnabled());
+                assertFalse(DatabaseType.POSTGRESQL.isDatabasePluginAvailable());
             });
     }
 

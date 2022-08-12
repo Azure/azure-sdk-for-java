@@ -8,17 +8,17 @@ import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticatio
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;
-
 import java.util.Properties;
-
 import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 
 /**
  * The authentication plugin that enables Azure AD managed identity support.
  */
-public class AzureIdentityPostgresqlAuthenticationPlugin extends AzureAuthenticationTemplate implements AuthenticationPlugin {
+public class AzureIdentityPostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 
     private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
+
+    private final AzureAuthenticationTemplate azureAuthenticationTemplate = new AzureAuthenticationTemplate();
 
     /**
      * Constructor with properties.
@@ -27,7 +27,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin extends AzureAuthentica
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
         AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
-        init(properties);
+        azureAuthenticationTemplate.init(properties);
     }
 
     /**
@@ -40,7 +40,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin extends AzureAuthentica
     //TODO (zhihaoguo): We need to know the usage of AuthenticationRequestType.
     @Override
     public char[] getPassword(AuthenticationRequestType art) throws PSQLException {
-        String password = getTokenAsPassword();
+        String password = azureAuthenticationTemplate.getTokenAsPassword();
         if (password != null) {
             return password.toCharArray();
         } else {

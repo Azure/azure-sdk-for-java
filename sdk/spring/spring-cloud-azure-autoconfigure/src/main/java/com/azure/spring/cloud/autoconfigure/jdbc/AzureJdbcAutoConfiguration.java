@@ -5,9 +5,12 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,16 +25,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(DataSourceProperties.class)
 @ConditionalOnClass(AzureAuthenticationTemplate.class)
-//TODO (zhihaoguo): Add test cases.
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
 public class AzureJdbcAutoConfiguration {
 
     @Bean
-    static JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor(
+    @ConditionalOnMissingBean
+    JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor(
         AzureGlobalProperties azureGlobalProperties) {
         return new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     SpringTokenCredentialProviderContextProvider springTokenCredentialProviderContextProvider() {
         return new SpringTokenCredentialProviderContextProvider();
     }

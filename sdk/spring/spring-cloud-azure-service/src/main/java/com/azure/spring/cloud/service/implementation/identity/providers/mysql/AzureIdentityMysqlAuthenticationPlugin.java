@@ -19,11 +19,13 @@ import java.util.Properties;
 /**
  * The authentication plugin that enables Azure AD managed identity support.
  */
-public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationTemplate implements AuthenticationPlugin<NativePacketPayload> {
+public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
     public static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
     private static final String PLUGIN_NAME = "mysql_clear_password";
+
+    private final AzureAuthenticationTemplate azureAuthenticationTemplate = new AzureAuthenticationTemplate();
 
     /**
      * Stores the protocol.SharedTokenCacheCredential
@@ -44,7 +46,7 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
         this.protocol = protocol;
         Properties properties = protocol.getPropertySet().exposeAsProperties();
         AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
-        init(properties);
+        azureAuthenticationTemplate.init(properties);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class AzureIdentityMysqlAuthenticationPlugin extends AzureAuthenticationT
         } else {
             if (protocol.getSocketConnection().isSSLEstablished()) {
                 try {
-                    String password = getTokenAsPassword();
+                    String password = azureAuthenticationTemplate.getTokenAsPassword();
                     byte[] content = password.getBytes(
                         protocol.getServerSession()
                             .getCharsetSettings()

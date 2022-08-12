@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class TokenCredentialProvidersTest {
-    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME
-        = "com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider";
+
+    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProvider.class.getName();
 
     @Test
     void shouldCreateDefaultTokenCredentialProvider() {

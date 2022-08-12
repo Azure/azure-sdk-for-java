@@ -67,7 +67,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             }
 
             DatabaseType databaseType = connectionString.getDatabaseType();
-            if (!databaseType.isDatabasePluginEnabled()) {
+            if (!databaseType.isDatabasePluginAvailable()) {
                 LOGGER.debug("The jdbc plugin with provided jdbc schema is not on the classpath, skip enhancing jdbc url.");
                 return bean;
             }

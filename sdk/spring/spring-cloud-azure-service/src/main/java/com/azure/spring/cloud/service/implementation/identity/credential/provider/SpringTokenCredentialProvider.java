@@ -24,11 +24,10 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
     private static ApplicationContext globalApplicationContext;
     private ApplicationContext applicationContext;
     private TokenCredentialProviderOptions options;
-    private final StaticAccessTokenCache cache = new StaticAccessTokenCache();
+    private final StaticAccessTokenCache cache = StaticAccessTokenCache.getInstance();
     private String tokenCredentialBeanName = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
     public SpringTokenCredentialProvider() {
-
     }
 
     public SpringTokenCredentialProvider(TokenCredentialProviderOptions options) {

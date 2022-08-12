@@ -28,12 +28,11 @@ public class AzureAuthenticationTemplate {
 
     private AccessTokenResolver accessTokenResolver;
 
-    private Properties properties;
+    private Properties properties = new Properties();
 
     public AzureAuthenticationTemplate() {
         this.tokenCredentialProvider = null;
         this.accessTokenResolver = null;
-        this.properties = new Properties();
     }
 
     public AzureAuthenticationTemplate(TokenCredentialProvider tokenCredentialProvider,
@@ -44,31 +43,30 @@ public class AzureAuthenticationTemplate {
 
     public AzureAuthenticationTemplate(Properties properties) {
         this();
-        this.properties = properties;
-    }
-
-    public AccessTokenResolver getAccessTokenResolver() {
-        return accessTokenResolver;
-    }
-
-    public TokenCredentialProvider getTokenCredentialProvider() {
-        return tokenCredentialProvider;
+        if (properties != null) {
+            this.properties = properties;
+        }
     }
 
     public void init(Properties properties) {
         if (isInitialized.compareAndSet(false, true)) {
-            LOGGER.info("Initializing AzureAuthenticationTemplate.");
+            LOGGER.verbose("Initializing AzureAuthenticationTemplate.");
 
-            this.properties.putAll(properties);
+            if (properties != null) {
+                this.properties.putAll(properties);
+            }
 
             if (getTokenCredentialProvider() == null) {
-                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(this.properties));
+                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(
+                    new TokenCredentialProviderOptions(this.properties));
             }
 
             if (getAccessTokenResolver() == null) {
-                this.accessTokenResolver = AccessTokenResolver.createDefault(new AccessTokenResolverOptions(this.properties));
+                this.accessTokenResolver = AccessTokenResolver.createDefault(
+                    new AccessTokenResolverOptions(this.properties));
             }
-            LOGGER.info("Initialized AzureAuthenticationTemplate.");
+
+            LOGGER.verbose("Initialized AzureAuthenticationTemplate.");
         } else {
             LOGGER.info("AzureAuthenticationTemplate has already initialized.");
         }
@@ -79,16 +77,24 @@ public class AzureAuthenticationTemplate {
             throw new IllegalStateException("must call init() first");
         }
         return Mono.fromSupplier(getTokenCredentialProvider())
-            .flatMap(getAccessTokenResolver())
-            .filter(token -> !token.isExpired())
-            .map(AccessToken::getToken);
+                   .flatMap(getAccessTokenResolver())
+                   .filter(token -> !token.isExpired())
+                   .map(AccessToken::getToken);
     }
 
     public String getTokenAsPassword() {
         return getTokenAsPasswordAsync().block(getBlockTimeout());
     }
 
-    public Duration getBlockTimeout() {
+    protected AccessTokenResolver getAccessTokenResolver() {
+        return accessTokenResolver;
+    }
+
+    protected TokenCredentialProvider getTokenCredentialProvider() {
+        return tokenCredentialProvider;
+    }
+
+    protected Duration getBlockTimeout() {
         return Duration.ofSeconds(30);
     }
 

@@ -9,39 +9,45 @@ import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 class AzureJdbcAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                                            .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
-                                                AzureGlobalProperties.class));
+        .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
+            DataSourceAutoConfiguration.class,
+            AzureGlobalProperties.class));
 
     @Test
     void testHasSingleBean() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> mock(DataSourceProperties.class))
             .run((context) -> {
-                assertThat(context).hasSingleBean(DataSourceProperties.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
             });
     }
 
     @Test
+    void testEnhancedUrl() {
+        this.contextRunner
+            .withPropertyValues("spring.datasource.url = jdbc:postgresql://postgre:5432/test")
+            .run((context) -> {
+                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+                assertTrue(isEnhancedUrl(dataSourceProperties.getUrl()));
+            });
+    }
+
+    @Test
     void testNoAzureAuthenticationTemplate() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> mock(DataSourceProperties.class))
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
@@ -60,12 +66,9 @@ class AzureJdbcAutoConfigurationTest {
     }
 
     @Test
-    void testPostgreSqlPluginOnClassPath() throws Exception {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:postgresql://postgre:5432/test");
-        properties.afterPropertiesSet();
+    void testPostgreSqlPluginOnClassPath() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> properties)
+            .withPropertyValues("spring.datasource.url = jdbc:postgresql://postgre:5432/test")
             .withClassLoader(new FilteredClassLoader("com.mysql.cj.protocol.AuthenticationPlugin"))
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
@@ -75,12 +78,9 @@ class AzureJdbcAutoConfigurationTest {
     }
 
     @Test
-    void testNoPostgreSqlPluginOnClassPath() throws Exception {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:postgresql://postgre:5432/test");
-        properties.afterPropertiesSet();
+    void testNoPostgreSqlPluginOnClassPath() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> properties)
+            .withPropertyValues("spring.datasource.url = jdbc:postgresql://postgre:5432/test")
             .withClassLoader(new FilteredClassLoader("org.postgresql.plugin.AuthenticationPlugin"))
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
@@ -90,12 +90,9 @@ class AzureJdbcAutoConfigurationTest {
     }
 
     @Test
-    void testMySqlPluginOnClassPath() throws Exception {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:mysql://mysql:1234/test");
-        properties.afterPropertiesSet();
+    void testMySqlPluginOnClassPath() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> properties)
+            .withPropertyValues("spring.datasource.url = jdbc:mysql://mysql:1234/test")
             .withClassLoader(new FilteredClassLoader("org.postgresql.plugin.AuthenticationPlugin"))
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
@@ -105,12 +102,9 @@ class AzureJdbcAutoConfigurationTest {
     }
 
     @Test
-    void testWrongPostgreSqlUrl() throws Exception {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:postgr://postgre:5432/test");
-        properties.afterPropertiesSet();
+    void testWrongPostgreSqlUrl() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> properties)
+            .withPropertyValues("spring.datasource.url = jdbc:postgr://postgre:5432/test")
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
                 assertFalse(isEnhancedUrl(dataSourceProperties.getUrl()));
@@ -119,12 +113,9 @@ class AzureJdbcAutoConfigurationTest {
     }
 
     @Test
-    void testUnSupportDatabaseType() throws Exception {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:h2:~/test,sa,password");
-        properties.afterPropertiesSet();
+    void testUnSupportDatabaseType() {
         this.contextRunner
-            .withBean(DataSourceProperties.class, () -> properties)
+            .withPropertyValues("spring.datasource.url = jdbc:h2:~/test,sa,password")
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
                 assertFalse(isEnhancedUrl(dataSourceProperties.getUrl()));
@@ -132,20 +123,10 @@ class AzureJdbcAutoConfigurationTest {
             });
     }
 
-    @Test
-    void testEnhancedUrl() throws Exception {
-        DataSourceProperties properties = new DataSourceProperties();
-        properties.setUrl("jdbc:postgresql://postgre:5432/test");
-        properties.afterPropertiesSet();
-        this.contextRunner
-            .withBean(DataSourceProperties.class, () -> properties)
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                assertTrue(isEnhancedUrl(dataSourceProperties.getUrl()));
-            });
-    }
-
     private boolean isEnhancedUrl(String url) {
+        if (url == null) {
+            return false;
+        }
         if (!url.contains(AuthProperty.TENANT_ID.getPropertyKey())) {
             return false;
         }

@@ -31,7 +31,7 @@ import org.springframework.util.StringUtils;
 public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredentialProviderOptions options;
-    private final StaticAccessTokenCache cache = new StaticAccessTokenCache();
+    private final StaticAccessTokenCache cache = StaticAccessTokenCache.getInstance();
 
     DefaultTokenCredentialProvider() {
         this.options = new TokenCredentialProviderOptions();

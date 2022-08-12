@@ -14,7 +14,6 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * {@code java.lang.Class} utility methods.
  * Mainly for internal use.
- * //TODO (zhihaoguo): Libraries in package ...implementation.identity should be reorganized when shipped independently.
+ * // TODO (zhihaoguo): Libraries in package ...implementation.identity should be reorganized when shipped independently.
  */
 public final class ClassUtil {
 
@@ -51,10 +50,8 @@ public final class ClassUtil {
         PRIMITIVE_WRAPPER_TYPE_MAP.put(Long.class, Long.TYPE);
         PRIMITIVE_WRAPPER_TYPE_MAP.put(Short.class, Short.TYPE);
         PRIMITIVE_WRAPPER_TYPE_MAP.put(Void.class, Void.TYPE);
-        Iterator<Map.Entry<Class<?>, Class<?>>> iterator = PRIMITIVE_WRAPPER_TYPE_MAP.entrySet().iterator();
 
-        while (iterator.hasNext()) {
-            Map.Entry<Class<?>, Class<?>> entry = iterator.next();
+        for (Map.Entry<Class<?>, Class<?>> entry : PRIMITIVE_WRAPPER_TYPE_MAP.entrySet()) {
             PRIMITIVE_TYPE_TO_WRAPPER_MAP.put(entry.getValue(), entry.getKey());
         }
     }

@@ -54,7 +54,7 @@ public final class JdbcConnectionString {
             this.properties.put("servername", hostInfoArray[0]);
             this.properties.put("port", hostInfoArray[1]);
         } else {
-            this.properties.put("port", hostInfo);
+            this.properties.put("servername", hostInfo);
         }
 
         String properties = this.jdbcURL.substring(pathQueryDelimiterIndex + 1);
@@ -79,7 +79,7 @@ public final class JdbcConnectionString {
         if (enhancedProperties == null || enhancedProperties.isEmpty()) {
             return this.jdbcURL;
         }
-        LOGGER.debug("Trying to enhance url for {}", databaseType);
+        LOGGER.debug("Trying to enhance jdbc url for {}", databaseType);
 
         StringBuilder builder = new StringBuilder(this.jdbcURL);
 
