@@ -5,15 +5,16 @@ stages:
     parameters:
       SupportedClouds: 'Public,UsGov,China'
       TestResourceDirectories:
-        - spring-3/spring-cloud-azure-test-eventhubs-binder
-        - spring-3/spring-cloud-azure-test-servicebus-binder
+        - spring-3/spring-cloud-azure-integration-tests/test-resources/appconfiguration
+        - spring-3/spring-cloud-azure-integration-tests/test-resources/cosmos
+        - spring-3/spring-cloud-azure-integration-tests/test-resources/eventhubs
+        - spring-3/spring-cloud-azure-integration-tests/test-resources/keyvault
+        - spring-3/spring-cloud-azure-integration-tests/test-resources/servicebus
+        - spring-3/spring-cloud-azure-integration-tests/test-resources/storage
       Artifacts:
-        - name: spring-cloud-azure-test-eventhubs-binder
+        - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
-          safeName: springcloudazuretesteventhubsbinder
-        - name: spring-cloud-azure-test-servicebus-binder
-          groupId: com.azure.spring
-          safeName: springcloudazuretestservicebusbinder
+          safeName: springcloudazureintegrationtests
       TimeoutInMinutes: 240
       ServiceDirectory: spring-3
       TestName: IntegrationTestInAzureGlobal
