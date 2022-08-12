@@ -13,11 +13,10 @@ import com.azure.resourcemanager.automation.fluent.JobSchedulesClient;
 import com.azure.resourcemanager.automation.fluent.models.JobScheduleInner;
 import com.azure.resourcemanager.automation.models.JobSchedule;
 import com.azure.resourcemanager.automation.models.JobSchedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class JobSchedulesImpl implements JobSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobSchedulesImpl.class);
 
     private final JobSchedulesClient innerClient;
 
@@ -80,7 +79,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     public JobSchedule getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -88,7 +87,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,13 +95,19 @@ public final class JobSchedulesImpl implements JobSchedules {
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
         UUID jobScheduleId = UUID.fromString(Utils.getValueFromIdByName(id, "jobSchedules"));
+        if (jobScheduleId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobSchedules'.", id)));
+        }
         return this.getWithResponse(resourceGroupName, automationAccountName, jobScheduleId, Context.NONE).getValue();
     }
 
     public Response<JobSchedule> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +115,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,13 +123,19 @@ public final class JobSchedulesImpl implements JobSchedules {
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
         UUID jobScheduleId = UUID.fromString(Utils.getValueFromIdByName(id, "jobSchedules"));
+        if (jobScheduleId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobSchedules'.", id)));
+        }
         return this.getWithResponse(resourceGroupName, automationAccountName, jobScheduleId, context);
     }
 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +143,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,13 +151,19 @@ public final class JobSchedulesImpl implements JobSchedules {
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
         UUID jobScheduleId = UUID.fromString(Utils.getValueFromIdByName(id, "jobSchedules"));
-        this.deleteWithResponse(resourceGroupName, automationAccountName, jobScheduleId, Context.NONE).getValue();
+        if (jobScheduleId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobSchedules'.", id)));
+        }
+        this.deleteWithResponse(resourceGroupName, automationAccountName, jobScheduleId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +171,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,6 +179,12 @@ public final class JobSchedulesImpl implements JobSchedules {
                                 "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
         UUID jobScheduleId = UUID.fromString(Utils.getValueFromIdByName(id, "jobSchedules"));
+        if (jobScheduleId == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobSchedules'.", id)));
+        }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, jobScheduleId, context);
     }
 
