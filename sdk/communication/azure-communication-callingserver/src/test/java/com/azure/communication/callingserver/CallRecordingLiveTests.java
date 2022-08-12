@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.RecordingStatus;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.models.RecordingState;
+import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -16,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class CallRecordingLiveTests extends CallAutomationTestBase {
+public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -33,7 +36,7 @@ public class CallRecordingLiveTests extends CallAutomationTestBase {
             String ngrok = "https://localhost";
             String serverCallId = "serverCallId";
             CallRecording callRecording = client.getCallRecording();
-            RecordingStatusResponse recordingResponse = callRecording.startRecording(
+            RecordingStateResult recordingResponse = callRecording.startRecording(
                 new ServerCallLocator(serverCallId),
                 new URI(ngrok));
             assertNotNull(recordingResponse);
@@ -42,17 +45,17 @@ public class CallRecordingLiveTests extends CallAutomationTestBase {
 
             recordingResponse = callRecording.getRecordingState(recordingId);
             assertNotNull(recordingResponse);
-            assertEquals(RecordingStatus.ACTIVE, recordingResponse.getRecordingStatus());
+            assertEquals(RecordingState.ACTIVE, recordingResponse.getRecordingState());
 
             callRecording.pauseRecording(recordingId);
             recordingResponse = callRecording.getRecordingState(recordingId);
             assertNotNull(recordingResponse);
-            assertEquals(RecordingStatus.INACTIVE, recordingResponse.getRecordingStatus());
+            assertEquals(RecordingState.INACTIVE, recordingResponse.getRecordingState());
 
             callRecording.resumeRecording(recordingId);
             recordingResponse = callRecording.getRecordingState(recordingId);
             assertNotNull(recordingResponse);
-            assertEquals(RecordingStatus.ACTIVE, recordingResponse.getRecordingStatus());
+            assertEquals(RecordingState.ACTIVE, recordingResponse.getRecordingState());
 
             callRecording.stopRecording(recordingId);
             assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(recordingId));
