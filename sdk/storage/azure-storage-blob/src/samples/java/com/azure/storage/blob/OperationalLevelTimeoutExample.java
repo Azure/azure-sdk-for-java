@@ -35,7 +35,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 /**
- * This example shows how to start using the Azure Storage Blob SDK for Java.
+ * This example shows how to use read/write operation level timeouts for storage client using the Azure Storage Blob
+ * SDK for Java.
  */
 public class OperationalLevelTimeoutExample {
 
@@ -66,27 +67,13 @@ public class OperationalLevelTimeoutExample {
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
         /*
-         * Set up a HttpPipelinePolicy that sets duration timeout per call of 5 seconds.
-         */
-        HttpPipelinePolicy mockPolicy = new HttpPipelinePolicy() {
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                return next.process().delayElement(Duration.ofSeconds(5L));
-            }
-
-            public HttpPipelinePosition getPipelinePosition() {
-                return HttpPipelinePosition.PER_CALL;
-            }
-        };
-
-        /*
          * Create a BlobServiceClient object that wraps the service endpoint, credential, policy with
          * timeout per call, and a request pipeline.
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .addPolicy(mockPolicy)
+            .addPolicy(new TimeoutPolicy())
             .buildClient();
 
         /*
@@ -130,5 +117,21 @@ public class OperationalLevelTimeoutExample {
          * Delete the container we created earlier.
          */
         blobContainerClient.delete();
+    }
+
+    /**
+     * A simple policy that sets duration timeout per call of 5 seconds.
+     */
+    static class TimeoutPolicy implements HttpPipelinePolicy {
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().delayElement(Duration.ofSeconds(5L));
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
+        }
+
     }
 }

@@ -10,33 +10,25 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 /**
- * This example shows how to start using the Azure Storage Blob SDK for Java.
+ * This example shows how to use read/write request level timeouts for storage client using the Azure Storage Blob
+ * SDK for Java.
  */
-public class ServiceClientBuilderWithTimeoutExample {
+public class RequestLevelTimeoutExample {
 
     /**
      * Entry point into the basic examples for Storage blobs.

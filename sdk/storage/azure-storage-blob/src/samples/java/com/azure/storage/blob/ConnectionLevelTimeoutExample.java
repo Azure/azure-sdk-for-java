@@ -4,16 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.HttpClientOptions;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Random;
@@ -21,9 +14,10 @@ import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 /**
- * This example shows how to start using the Azure Storage Blob SDK for Java.
+ * This example shows how to use read/write connection level timeouts for storage client using the Azure Storage Blob
+ * SDK for Java.
  */
-public class HttpClientBuilderWithTimeoutExample {
+public class ConnectionLevelTimeoutExample {
 
     /**
      * Entry point into the basic examples for Storage blobs.
