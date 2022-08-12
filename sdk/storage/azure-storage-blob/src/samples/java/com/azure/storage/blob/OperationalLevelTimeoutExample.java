@@ -88,8 +88,9 @@ public class OperationalLevelTimeoutExample {
         BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
 
         /*
-         * Create a container in Storage blob account with a timeout duration of 3 seconds, below the timeout duration
-         * passed in the policy. This will trigger a timeout exception.
+         * Create a container in Storage blob account with a timeout duration of 3 seconds. A timeout exception will
+         * occur if the blob create container call takes longer than 3 seconds to complete as this could not throw if
+         * it took 2 seconds.
          */
         try {
             blobContainerClient.createIfNotExistsWithResponse(new BlobContainerCreateOptions(), Duration.ofSeconds(3L), Context.NONE);
