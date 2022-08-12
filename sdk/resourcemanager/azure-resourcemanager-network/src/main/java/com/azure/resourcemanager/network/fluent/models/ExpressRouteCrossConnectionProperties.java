@@ -51,8 +51,7 @@ public final class ExpressRouteCrossConnectionProperties {
     private ExpressRouteCircuitReference expressRouteCircuit;
 
     /*
-     * The provisioning state of the circuit in the connectivity provider
-     * system.
+     * The provisioning state of the circuit in the connectivity provider system.
      */
     @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;

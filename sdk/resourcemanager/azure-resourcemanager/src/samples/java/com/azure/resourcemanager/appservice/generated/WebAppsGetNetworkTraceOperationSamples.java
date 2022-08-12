@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps GetNetworkTraceOperation. */
 public final class WebAppsGetNetworkTraceOperationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraceOperation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Get the current status of a network trace operation for a site.

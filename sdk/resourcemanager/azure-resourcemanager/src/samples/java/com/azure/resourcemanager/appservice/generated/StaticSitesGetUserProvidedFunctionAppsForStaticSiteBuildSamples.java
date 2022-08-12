@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites GetUserProvidedFunctionAppsForStaticSiteBuild. */
 public final class StaticSitesGetUserProvidedFunctionAppsForStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetUserProvidedFunctionAppsForStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetUserProvidedFunctionAppsForStaticSiteBuild.json
      */
     /**
      * Sample code: Get details of the user provided function apps registered with a static site build.

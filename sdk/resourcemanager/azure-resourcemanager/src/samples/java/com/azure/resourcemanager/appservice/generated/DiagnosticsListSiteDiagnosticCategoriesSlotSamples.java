@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Diagnostics ListSiteDiagnosticCategoriesSlot. */
 public final class DiagnosticsListSiteDiagnosticCategoriesSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
      */
     /**
      * Sample code: List App Slot Diagnostic Categories.
@@ -26,7 +26,7 @@ public final class DiagnosticsListSiteDiagnosticCategoriesSlotSamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
      */
     /**
      * Sample code: List App Diagnostic Categories.

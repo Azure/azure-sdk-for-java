@@ -428,7 +428,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    @PlaybackOnly(expiryTime = "2022-05-18")
+    @PlaybackOnly(expiryTime = "2022-08-18")
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()

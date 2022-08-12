@@ -39,4 +39,11 @@ public final class PiiLROTask extends AnalyzeTextLROTask {
         this.parameters = parameters;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PiiLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

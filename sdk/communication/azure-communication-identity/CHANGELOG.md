@@ -1,5 +1,24 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2022-08-10)
+
+### Features Added
+- Added `String getRawId()` and `static CommunicationIdentifier fromRawId(String rawId)` to `CommunicationIdentifier` to translate between a `CommunicationIdentifier` and its underlying canonical rawId representation. Developers can now use the rawId as an encoded format for identifiers to store in their databases or as stable keys in general.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-communication-common` from `1.1.5` to version `1.2.0`.
+
 ## 1.2.0 (2022-07-21)
 
 ### Features Added

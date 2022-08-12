@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed;
 /**
  * Factory class used to create instance(s) of {@link PartitionProcessor}.
  */
-public interface PartitionProcessorFactory {
+public interface PartitionProcessorFactory<T> {
     /**
      * Creates an instance of a {@link PartitionProcessor}.
      *
@@ -13,5 +13,5 @@ public interface PartitionProcessorFactory {
      * @param changeFeedObserver the observer instace to be used.
      * @return an instance of {@link PartitionProcessor}.
      */
-    PartitionProcessor create(Lease lease, ChangeFeedObserver changeFeedObserver);
+    PartitionProcessor create(Lease lease, ChangeFeedObserver<T> changeFeedObserver);
 }

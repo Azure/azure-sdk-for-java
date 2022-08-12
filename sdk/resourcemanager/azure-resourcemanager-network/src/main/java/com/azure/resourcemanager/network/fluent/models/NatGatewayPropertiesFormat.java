@@ -20,8 +20,7 @@ public final class NatGatewayPropertiesFormat {
     private Integer idleTimeoutInMinutes;
 
     /*
-     * An array of public ip addresses associated with the nat gateway
-     * resource.
+     * An array of public ip addresses associated with the nat gateway resource.
      */
     @JsonProperty(value = "publicIpAddresses")
     private List<SubResource> publicIpAddresses;

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharingState. */
+/**
+ * The sharing state of the gallery.
+ *
+ * <p>The sharing state of the gallery, which only appears in the response.
+ */
 public final class SharingState extends ExpandableStringEnum<SharingState> {
     /** Static value Succeeded for SharingState. */
     public static final SharingState SUCCEEDED = fromString("Succeeded");

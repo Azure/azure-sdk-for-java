@@ -104,8 +104,7 @@ public final class DeviceUpdateClientBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
     @Generated private ClientOptions clientOptions;
 
@@ -139,8 +138,7 @@ public final class DeviceUpdateClientBuilder
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
     @Generated private Configuration configuration;
 
@@ -213,8 +211,7 @@ public final class DeviceUpdateClientBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
 
@@ -237,19 +234,16 @@ public final class DeviceUpdateClientBuilder
      */
     @Generated
     private DeviceUpdateClientImpl buildInnerClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serviceVersion == null) {
-            this.serviceVersion = DeviceUpdateServiceVersion.getLatest();
-        }
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        DeviceUpdateServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : DeviceUpdateServiceVersion.getLatest();
         DeviceUpdateClientImpl client =
                 new DeviceUpdateClientImpl(
-                        pipeline,
+                        localPipeline,
                         JacksonAdapter.createDefaultSerializerAdapter(),
                         endpoint,
                         instanceId,
-                        serviceVersion);
+                        localServiceVersion);
         return client;
     }
 
