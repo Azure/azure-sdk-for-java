@@ -1,7 +1,6 @@
 # Release History
 
-## 5.2.0-beta.4 (Unreleased)
-
+## 5.2.0-beta.4 (2022-08-12)
 ### Features Added
 - We are now targeting the service's `2022-05-01` API as the default.
 - Added bespoke methods for the custom entity recognition, and single-label and multi-label classification features,
@@ -15,10 +14,6 @@
 - Merged
   `SingleCategoryClassifyResultCollection` and `SingleCategoryClassifyResultCollection` to `ClassifyDocumentResultCollection`,
   `MultiCategoryClassifyResult` and `SingleCategoryClassifyResult` to `ClassifyDocumentResult`.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 5.1.12 (2022-08-11)
 ### Other Changes

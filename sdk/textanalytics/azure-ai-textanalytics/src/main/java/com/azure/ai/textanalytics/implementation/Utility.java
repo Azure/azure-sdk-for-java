@@ -1273,7 +1273,7 @@ public final class Utility {
             singleClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
-        // Single category classification will only have one category.
+        // Single-label classification will only have one category.
         ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult,
             IterableStream.of(toDocumentClassifications(classificationResult)));
         ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,

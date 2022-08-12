@@ -413,8 +413,8 @@ set of documents. Currently, the supported features are:
 - Sentiment Analysis
 - Healthcare Analysis
 - Custom Entity Recognition (see sample [here][custom_entities_sample])
-- Custom Single Category Classification (see sample [here][custom_single_classification_sample])
-- Custom Multi Category Classification (see sample [here][custom_multi_classification_sample])
+- Custom Single-Label Classification (see sample [here][custom_single_classification_sample])
+- Custom Multi-Label Classification (see sample [here][custom_multi_classification_sample])
 
 ```java readme-sample-analyzeActions
     List<TextDocumentInput> documents = Arrays.asList(
@@ -568,7 +568,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 [custom_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
-[custom_single_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategory.java
-[custom_multi_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategory.java
+[custom_single_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/SingleLabelClassifyDocument.java
+[custom_multi_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/MultiLabelClassifyDocument.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
