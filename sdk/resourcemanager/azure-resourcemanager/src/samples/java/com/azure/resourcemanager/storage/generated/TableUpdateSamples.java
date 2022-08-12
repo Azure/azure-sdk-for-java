@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for Table Update. */
 public final class TableUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/TableOperationPutOrPatchAcls.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/TableOperationPutOrPatchAcls.json
      */
     /**
      * Sample code: TableOperationPutOrPatchAcls.
@@ -53,7 +53,7 @@ public final class TableUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/TableOperationPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/TableOperationPatch.json
      */
     /**
      * Sample code: TableOperationPatch.
