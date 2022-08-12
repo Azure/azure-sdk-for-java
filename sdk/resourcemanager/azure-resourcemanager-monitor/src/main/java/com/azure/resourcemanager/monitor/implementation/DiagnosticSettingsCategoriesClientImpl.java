@@ -26,8 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsCategoriesClient;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategoryResourceCollection;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiagnosticSettingsCategoriesClient. */
@@ -74,7 +74,7 @@ public final class DiagnosticSettingsCategoriesClientImpl implements DiagnosticS
         @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettingsCategories")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiagnosticSettingsCategoryResourceCollection>> list(
+        Mono<Response<DiagnosticSettingsCategoryResourceCollectionInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,

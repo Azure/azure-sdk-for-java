@@ -254,7 +254,7 @@ public final class ActionGroupsClientImpl
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/actionGroups/{actionGroupName}/subscribe")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 409})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> enableReceiver(
             @HostParam("$host") String endpoint,
