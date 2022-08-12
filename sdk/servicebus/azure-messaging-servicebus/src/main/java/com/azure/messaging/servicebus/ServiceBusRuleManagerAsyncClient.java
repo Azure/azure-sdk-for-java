@@ -107,15 +107,19 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     /**
      * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
      *
-     * @param name Name of rule.
+     * @param ruleName Name of rule.
      * @param options The options for the rule to create.
      * @return A Mono that completes when the rule is created.
+     *
+     * @throws NullPointerException if {@code options}, {@code ruleName} is null.
+     * @throws IllegalStateException if client is disposed.
+     * @throws IllegalArgumentException if {@code ruleName} is empty string.
      */
-    public Mono<Void> createRule(String name, CreateRuleOptions options) {
+    public Mono<Void> createRule(String ruleName, CreateRuleOptions options) {
         if (Objects.isNull(options)) {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
-        return createRuleInternal(name, options);
+        return createRuleInternal(ruleName, options);
     }
 
     /**
@@ -124,6 +128,10 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @param name Name of rule.
      * @param filter The filter expression against which messages will be matched.
      * @return A Mono that completes when the rule is created.
+     *
+     * @throws NullPointerException if {@code options}, {@code name} is null.
+     * @throws IllegalStateException if client is disposed.
+     * @throws IllegalArgumentException if name is empty string.
      */
     public Mono<Void> createRule(String name, RuleFilter filter) {
         CreateRuleOptions options = new CreateRuleOptions(filter);
@@ -134,6 +142,8 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * Fetches all rules associated with the topic and subscription.
      *
      * @return A collection of rules associated with the topic and subscription.
+     *
+     * @throws IllegalStateException if client is disposed.
      */
     public Mono<Collection<RuleProperties>> getRules() {
         if (isDisposed.get()) {
@@ -152,6 +162,10 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @param ruleName Name of rule to delete.
      * @return A Mono that completes when the rule is deleted.
+     *
+     * @throws NullPointerException if {@code ruleName} is null.
+     * @throws IllegalStateException if client is disposed.
+     * @throws IllegalArgumentException if {@code ruleName} is empty string.
      */
     public Mono<Void> deleteRule(String ruleName) {
         if (isDisposed.get()) {
