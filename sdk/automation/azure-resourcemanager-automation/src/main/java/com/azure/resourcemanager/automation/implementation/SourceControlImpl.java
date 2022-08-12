@@ -66,6 +66,10 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
         return this.innerModel().lastModifiedTime();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SourceControlInner innerModel() {
         return this.innerObject;
     }

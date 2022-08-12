@@ -48,6 +48,10 @@ public final class VariableImpl implements Variable, Variable.Definition, Variab
         return this.innerModel().description();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VariableInner innerModel() {
         return this.innerObject;
     }

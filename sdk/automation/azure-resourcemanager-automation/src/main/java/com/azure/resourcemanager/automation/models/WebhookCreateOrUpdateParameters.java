@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.WebhookCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The parameters supplied to the create or update webhook operation. */
-@JsonFlatten
 @Fluent
-public class WebhookCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookCreateOrUpdateParameters.class);
-
+public final class WebhookCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the webhook.
      */
@@ -25,41 +21,10 @@ public class WebhookCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the value of the enabled flag of webhook.
+     * Gets or sets the properties of the webhook.
      */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
-
-    /*
-     * Gets or sets the uri.
-     */
-    @JsonProperty(value = "properties.uri")
-    private String uri;
-
-    /*
-     * Gets or sets the expiry time.
-     */
-    @JsonProperty(value = "properties.expiryTime")
-    private OffsetDateTime expiryTime;
-
-    /*
-     * Gets or sets the parameters of the job.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
-
-    /*
-     * Gets or sets the runbook.
-     */
-    @JsonProperty(value = "properties.runbook")
-    private RunbookAssociationProperty runbook;
-
-    /*
-     * Gets or sets the name of the hybrid worker group the webhook job will
-     * run on.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
+    @JsonProperty(value = "properties", required = true)
+    private WebhookCreateOrUpdateProperties innerProperties = new WebhookCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the webhook.
@@ -82,12 +47,21 @@ public class WebhookCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the webhook.
+     *
+     * @return the innerProperties value.
+     */
+    private WebhookCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
      *
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -97,7 +71,10 @@ public class WebhookCreateOrUpdateParameters {
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
     public WebhookCreateOrUpdateParameters withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookCreateOrUpdateProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -107,7 +84,7 @@ public class WebhookCreateOrUpdateParameters {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**
@@ -117,7 +94,10 @@ public class WebhookCreateOrUpdateParameters {
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
     public WebhookCreateOrUpdateParameters withUri(String uri) {
-        this.uri = uri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookCreateOrUpdateProperties();
+        }
+        this.innerProperties().withUri(uri);
         return this;
     }
 
@@ -127,7 +107,7 @@ public class WebhookCreateOrUpdateParameters {
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
-        return this.expiryTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryTime();
     }
 
     /**
@@ -137,7 +117,10 @@ public class WebhookCreateOrUpdateParameters {
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
     public WebhookCreateOrUpdateParameters withExpiryTime(OffsetDateTime expiryTime) {
-        this.expiryTime = expiryTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookCreateOrUpdateProperties();
+        }
+        this.innerProperties().withExpiryTime(expiryTime);
         return this;
     }
 
@@ -147,7 +130,7 @@ public class WebhookCreateOrUpdateParameters {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -157,7 +140,10 @@ public class WebhookCreateOrUpdateParameters {
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
     public WebhookCreateOrUpdateParameters withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookCreateOrUpdateProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -167,7 +153,7 @@ public class WebhookCreateOrUpdateParameters {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -177,7 +163,10 @@ public class WebhookCreateOrUpdateParameters {
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
     public WebhookCreateOrUpdateParameters withRunbook(RunbookAssociationProperty runbook) {
-        this.runbook = runbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookCreateOrUpdateProperties();
+        }
+        this.innerProperties().withRunbook(runbook);
         return this;
     }
 
@@ -187,7 +176,7 @@ public class WebhookCreateOrUpdateParameters {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -197,7 +186,10 @@ public class WebhookCreateOrUpdateParameters {
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
     public WebhookCreateOrUpdateParameters withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookCreateOrUpdateProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -208,13 +200,20 @@ public class WebhookCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model WebhookCreateOrUpdateParameters"));
         }
-        if (runbook() != null) {
-            runbook().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model WebhookCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebhookCreateOrUpdateParameters.class);
 }
