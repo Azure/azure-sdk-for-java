@@ -20,8 +20,7 @@ public final class BlobInventoryPolicyProperties {
     private OffsetDateTime lastModifiedTime;
 
     /*
-     * The storage account blob inventory policy object. It is composed of
-     * policy rules.
+     * The storage account blob inventory policy object. It is composed of policy rules.
      */
     @JsonProperty(value = "policy", required = true)
     private BlobInventoryPolicySchema policy;
