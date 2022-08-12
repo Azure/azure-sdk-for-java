@@ -15,7 +15,7 @@
     }
   },
   "variables": {
-    "azureKeyVaultName": "[concat(parameters('baseName'),'-test-keyvault')]",
+    "azureKeyVaultName": "[concat(parameters('baseName'),'testkv')]",
     "azureKeyVaultUri": "[concat('https://', variables('azureKeyVaultName'), '.vault.azure.net/')]",
     "location": "[resourceGroup().location]"
   },
