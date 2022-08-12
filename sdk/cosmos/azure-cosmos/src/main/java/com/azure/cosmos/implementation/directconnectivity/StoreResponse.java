@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.azure.cosmos.implementation.Utils;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -33,6 +35,7 @@ public class StoreResponse {
     private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
+    private final List<String> replicaStatusList;
 
     public StoreResponse(
             int status,
@@ -48,6 +51,7 @@ public class StoreResponse {
         if (this.content != null) {
             this.responsePayloadLength = this.content.length;
         }
+        replicaStatusList = new ArrayList<>();
     }
 
     public int getStatus() {
@@ -178,5 +182,9 @@ public class StoreResponse {
             }
         }
         return subStatusCode;
+    }
+
+    public List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
 }

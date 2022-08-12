@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -170,7 +171,7 @@ public class StoreReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
         dsr.requestContext.timeoutHelper = timeoutHelper;
         dsr.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("1");
         Mono<List<StoreResult>> res = storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong);
@@ -187,6 +188,10 @@ public class StoreReaderTest {
         subscriber.assertNotComplete();
         assertThat(subscriber.errorCount()).isEqualTo(1);
         failureValidator.validate(subscriber.errors().get(0));
+
+        if (expectedStatusCode == 410) {
+            assertThat(dsr.requestContext.getFailedEndpoints().size()).isEqualTo(1);
+        }
     }
 
     /**
@@ -631,7 +636,13 @@ public class StoreReaderTest {
                 .withGlobalCommittedLsn(bigLsn)
                 .build();
 
-        StoreResult result = storeReader.createStoreResult(storeResponse, null, false, false, null);
+        StoreResult result = storeReader.createStoreResult(
+            storeResponse,
+            null,
+            false,
+            false,
+            null,
+            Arrays.asList(primaryURI.getHealthStatusDiagnosticString()));
         assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
         assertThat(result.lsn).isEqualTo(bigLsn);
     }
@@ -886,6 +897,33 @@ public class StoreReaderTest {
 
         String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
         assertThat(this.getMatchingElementCount(cosmosDiagnostics, "storeResult") >= 1).isTrue();
+
+        // validate failed endpoints in request context
+        if (ex != null) {
+            // validate failed endpoints based on exception type.
+            if (ex instanceof CosmosException) {
+                try {
+                    StoreReader.verifyCanContinueOnException((CosmosException) ex);
+
+                    // for continuable exception, SDK will retry on all other replicas, so the failed endpoints should match replica counts.
+                    List<Uri> expectedFailedEndpoints = Arrays.asList(primaryUri, secondaryUri1, secondaryUri2, secondaryUri3);
+                    assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(expectedFailedEndpoints.size()).containsAll(expectedFailedEndpoints);
+
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(1);
+                    } else {
+                        assertThat(dsr.requestContext.getFailedEndpoints()).isEmpty();
+                    }
+                }
+            } else {
+                // Not a cosmosException, so the failed endpoints should be empty.
+                assertThat(dsr.requestContext.getFailedEndpoints()).isEmpty();
+            }
+        } else {
+            // There is no exception, so the failedEndpoints should be empty.
+            assertThat(dsr.requestContext.getFailedEndpoints()).isEmpty();
+        }
     }
 
     @Test(groups = "unit")
@@ -894,7 +932,7 @@ public class StoreReaderTest {
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
-        StoreResult storeResult = storeReader.createStoreResult(null, new IllegalStateException("Test"), false, false, null);
+        StoreResult storeResult = storeReader.createStoreResult(null, new IllegalStateException("Test"), false, false, null, null);
         assertThat(storeResult.getException().toString()).contains("\"causeInfo\":\"[class: class java.lang.IllegalStateException, message:" +
             " Test]\"");
     }

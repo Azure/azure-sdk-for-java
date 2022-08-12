@@ -88,6 +88,7 @@ public interface DiagnosticsClientContext {
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
         private String machineId;
+        private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
 
         public void withMachineId(String machineId) {
             this.machineId = machineId;
@@ -170,9 +171,10 @@ public interface DiagnosticsClientContext {
 
         public String otherConnectionConfig() {
             if (this.otherCfgAsString == null) {
-                this.otherCfgAsString = Strings.lenientFormat("(ed: %s, cs: %s)",
+                this.otherCfgAsString = Strings.lenientFormat("(ed: %s, cs: %s, rv: %s)",
                     this.endpointDiscoveryEnabled,
-                    this.connectionSharingAcrossClientsEnabled);
+                    this.connectionSharingAcrossClientsEnabled,
+                    this.replicaValidationEnabled);
             }
 
             return this.otherCfgAsString;

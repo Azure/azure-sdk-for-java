@@ -768,7 +768,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         for (RntbdRequestRecord record : this.pendingRequests.values()) {
 
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
-            final String requestUri = record.args().physicalAddress().toString();
+            final String requestUri = record.args().physicalAddressUri().toString();
 
             final GoneException error = new GoneException(message, cause, null, requestUri);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
@@ -843,8 +843,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Create CosmosException based on status and sub-status codes
 
-            final String resourceAddress = requestRecord.args().physicalAddress() != null ?
-                requestRecord.args().physicalAddress().toString() : null;
+            final String resourceAddress = requestRecord.args().physicalAddressUri() != null ?
+                requestRecord.args().physicalAddressUri().toString() : null;
 
             switch (status.code()) {
 
