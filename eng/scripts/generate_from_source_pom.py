@@ -215,6 +215,8 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
+        if '.git' in root:
+            continue
         # Ignore sdk/resourcemanagerhybrid
         if 'resourcemanagerhybrid' in root:
             continue
@@ -348,9 +350,8 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
 def is_spring_child_pom(tree_root: ET.Element):
     group_id_node = element_find(tree_root, 'groupId')
     artifact_id_node = element_find(tree_root, 'artifactId')
-    return group_id_node and group_id_node.text == 'com.azure.spring' \
-           and artifact_id_node \
-           and artifact_id_node.text != 'spring-cloud-azure' \
+    return group_id_node is not None and group_id_node.text == 'com.azure.spring' \
+           and artifact_id_node is not None and artifact_id_node.text != 'spring-cloud-azure' \
            and artifact_id_node.text != 'spring-cloud-azure-experimental' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
 
 def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
