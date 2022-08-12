@@ -10,8 +10,6 @@
 ### Breaking Changes
 - Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
 
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 - Upgraded `msal4j` from `1.12.0` to version `1.13.0`.
