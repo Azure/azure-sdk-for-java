@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for PacketCoreControlPlanes UpdateTags. */
 public final class PacketCoreControlPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/PacketCoreControlPlaneUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneUpdateTags.json
      */
     /**
      * Sample code: Update packet core control plane tags.

@@ -3,20 +3,26 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPasswordRequestBodyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphWebApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ApplicationAccountType;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+import reactor.util.retry.RetryBackoffSpec;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,21 +65,34 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
+        Retry retry = backoffRetryFor404();
+
         return manager
             .serviceClient()
             .getApplicationsApplications()
             .createApplicationAsync(innerModel())
             .map(innerToFluentMap(this))
-            .flatMap(app -> submitCredentialAsync().doOnComplete(this::postRequest).then(refreshAsync()));
+            .flatMap(app -> submitCredentialAsync(retry).doOnComplete(this::postRequest)
+                .then(refreshAsync().retryWhen(retry)));
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
         return manager.serviceClient().getApplicationsApplications().updateApplicationAsync(id(), innerModel())
-            .then(submitCredentialAsync().doOnComplete(this::postRequest).then(refreshAsync()));
+            .then(submitCredentialAsync(null).doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
-    void refreshCredentials(MicrosoftGraphApplicationInner inner) {
+    static RetryBackoffSpec backoffRetryFor404() {
+        return Retry
+            // 10 + 20 + 40 = 70 seconds
+            .backoff(3, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
+            .filter(e -> (e instanceof HttpResponseException)
+                && (((HttpResponseException) e).getResponse().getStatusCode() == 404))
+            // do not convert to RetryExhaustedException
+            .onRetryExhaustedThrow((spec, signal) -> signal.failure());
+    }
+
+    private void refreshCredentials(MicrosoftGraphApplicationInner inner) {
         cachedCertificateCredentials.clear();
         cachedPasswordCredentials.clear();
 
@@ -92,18 +111,23 @@ class ActiveDirectoryApplicationImpl
         }
     }
 
-    Flux<?> submitCredentialAsync() {
-        return Flux.defer(() ->
-                Flux.fromIterable(passwordCredentialToCreate)
-                .flatMap(passwordCredential -> manager().serviceClient().getApplications()
-                    .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
-                        .withPasswordCredential(passwordCredential.innerModel()))
-                    .doOnNext(passwordCredential::setInner)
-                )
-            );
+    private Flux<?> submitCredentialAsync(Retry retry) {
+        return Flux.defer(() -> Flux.fromIterable(passwordCredentialToCreate)
+            .flatMap(passwordCredential -> {
+                Mono<MicrosoftGraphPasswordCredentialInner> monoAddPassword =
+                    manager().serviceClient().getApplications()
+                        .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
+                            .withPasswordCredential(passwordCredential.innerModel()));
+
+                if (retry != null) {
+                    monoAddPassword = monoAddPassword.retryWhen(retry);
+                }
+                monoAddPassword = monoAddPassword.doOnNext(passwordCredential::setInner);
+                return monoAddPassword;
+            }));
     }
 
-    void postRequest() {
+    private void postRequest() {
         passwordCredentialToCreate.forEach(passwordCredential -> passwordCredential.exportAuthFile(this));
         passwordCredentialToCreate.forEach(PasswordCredentialImpl::consumeSecret);
         passwordCredentialToCreate.clear();

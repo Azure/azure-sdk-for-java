@@ -101,9 +101,6 @@ parameters:
 - name: TestOptions
   type: string
   default: $(TestOptions)
-- name: AdditionalBuildOptions
-  type: string
-  default: $(AdditionalBuildOptions)
 - name: LtsVersion
   type: string
   default: $(JavaTestVersion)

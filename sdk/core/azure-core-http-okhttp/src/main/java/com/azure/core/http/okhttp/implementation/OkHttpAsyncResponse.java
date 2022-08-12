@@ -5,7 +5,7 @@ package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.IOUtils;
+import com.azure.core.util.io.IOUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;

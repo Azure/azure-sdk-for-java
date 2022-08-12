@@ -57,7 +57,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListOperations.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListOperations.json
      */
     /**
      * Sample code: ListOperations.
@@ -78,7 +78,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResourcesOperation Get. */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GetPrivateLinkResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GetPrivateLinkResources.json
      */
     /**
      * Sample code: Get PrivateLinkResource.
@@ -102,7 +102,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResourcesOperation List. */
 public final class PrivateLinkResourcesOperationListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListPrivateLinkResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListPrivateLinkResources.json
      */
     /**
      * Sample code: List PrivateLinkResources.
@@ -125,7 +125,7 @@ import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityPa
 /** Samples for RecoveryServices CheckNameAvailability. */
 public final class RecoveryServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: Availability status of Resource Name when no resource with same name, type and subscription exists,
@@ -148,7 +148,7 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/CheckNameAvailability_NotAvailable.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/CheckNameAvailability_NotAvailable.json
      */
     /**
      * Sample code: Availability status of Resource Name when resource with same name, type and subscription exists.
@@ -178,7 +178,7 @@ import com.azure.core.util.Context;
 /** Samples for RegisteredIdentities Delete. */
 public final class RegisteredIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/DeleteRegisteredIdentities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/DeleteRegisteredIdentities.json
      */
     /**
      * Sample code: Delete registered Identity.
@@ -200,7 +200,7 @@ import com.azure.core.util.Context;
 /** Samples for ReplicationUsages List. */
 public final class ReplicationUsagesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListReplicationUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListReplicationUsages.json
      */
     /**
      * Sample code: Gets Replication usages of vault.
@@ -222,7 +222,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceProvider GetOperationResult. */
 public final class ResourceProviderGetOperationResultSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GetOperationResult.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GetOperationResult.json
      */
     /**
      * Sample code: Get Operation Result.
@@ -249,7 +249,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceProvider GetOperationStatus. */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GetOperationStatus.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GetOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status.
@@ -276,7 +276,7 @@ import com.azure.core.util.Context;
 /** Samples for Usages ListByVaults. */
 public final class UsagesListByVaultsSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListUsages.json
      */
     /**
      * Sample code: Gets vault usages.
@@ -298,7 +298,7 @@ import com.azure.resourcemanager.recoveryservices.models.RawCertificateData;
 /** Samples for VaultCertificates Create. */
 public final class VaultCertificatesCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PUTVaultCred.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PUTVaultCred.json
      */
     /**
      * Sample code: Download vault credential file.
@@ -330,7 +330,7 @@ import com.azure.core.util.Context;
 /** Samples for VaultExtendedInfo CreateOrUpdate. */
 public final class VaultExtendedInfoCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: Put ExtendedInfo of Resource.
@@ -354,7 +354,7 @@ import com.azure.core.util.Context;
 /** Samples for VaultExtendedInfo Get. */
 public final class VaultExtendedInfoGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GETVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GETVaultExtendedInfo.json
      */
     /**
      * Sample code: Get ExtendedInfo of Resource.
@@ -378,7 +378,7 @@ import com.azure.core.util.Context;
 /** Samples for VaultExtendedInfo Update. */
 public final class VaultExtendedInfoUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: PATCH ExtendedInfo of Resource.
@@ -397,10 +397,14 @@ public final class VaultExtendedInfoUpdateSamples {
 ### Vaults_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.recoveryservices.models.AlertsState;
+import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettings;
+import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
+import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.SkuName;
@@ -413,7 +417,7 @@ import java.util.Map;
 /** Samples for Vaults CreateOrUpdate. */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PUTVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
@@ -452,7 +456,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PUTVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
@@ -473,7 +477,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
@@ -499,6 +503,34 @@ public final class VaultsCreateOrUpdateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PUTVault_WithMonitoringSettings.json
+     */
+    /**
+     * Sample code: Create or Update Vault With Monitoring Setting.
+     *
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithMonitoringSetting(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager
+            .vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(
+                new VaultProperties()
+                    .withMonitoringSettings(
+                        new MonitoringSettings()
+                            .withAzureMonitorAlertSettings(
+                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
+                            .withClassicAlertSettings(
+                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -520,7 +552,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults Delete. */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/DeleteVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/DeleteVault.json
      */
     /**
      * Sample code: Delete Recovery Services Vault.
@@ -542,7 +574,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults GetByResourceGroup. */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/GETVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/GETVault.json
      */
     /**
      * Sample code: Get Recovery Services Resource.
@@ -566,7 +598,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults List. */
 public final class VaultsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListBySubscriptionIds.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListBySubscriptionIds.json
      */
     /**
      * Sample code: List of Recovery Services Resources in SubscriptionId.
@@ -588,7 +620,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults ListByResourceGroup. */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/ListResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListResources.json
      */
     /**
      * Sample code: List of Recovery Services Resources in ResourceGroup.
@@ -606,10 +638,14 @@ public final class VaultsListByResourceGroupSamples {
 
 ```java
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.recoveryservices.models.AlertsState;
+import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettings;
+import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
+import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
@@ -621,7 +657,33 @@ import java.util.Map;
 /** Samples for Vaults Update. */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithMonitoringSettings.json
+     */
+    /**
+     * Sample code: Update Vault With Monitoring Setting.
+     *
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void updateVaultWithMonitoringSetting(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource =
+            manager.vaults().getByResourceGroupWithResponse("HelloWorld", "swaggerExample", Context.NONE).getValue();
+        resource
+            .update()
+            .withTags(mapOf("PatchKey", "PatchKeyUpdated"))
+            .withProperties(
+                new VaultProperties()
+                    .withMonitoringSettings(
+                        new MonitoringSettings()
+                            .withAzureMonitorAlertSettings(
+                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
+                            .withClassicAlertSettings(
+                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
@@ -659,7 +721,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PatchVault_WithCMK2.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
@@ -683,7 +745,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault_WithCMK3.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
@@ -716,7 +778,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
@@ -730,7 +792,7 @@ public final class VaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2021-08-01/examples/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.

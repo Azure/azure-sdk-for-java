@@ -27,7 +27,11 @@ public final class TrafficControlPermission extends ExpandableStringEnum<Traffic
         return fromString(name, TrafficControlPermission.class);
     }
 
-    /** @return known TrafficControlPermission values. */
+    /**
+     * Gets known TrafficControlPermission values.
+     *
+     * @return known TrafficControlPermission values.
+     */
     public static Collection<TrafficControlPermission> values() {
         return values(TrafficControlPermission.class);
     }

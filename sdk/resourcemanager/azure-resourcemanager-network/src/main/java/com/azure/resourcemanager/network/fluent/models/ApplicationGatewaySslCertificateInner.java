@@ -19,8 +19,7 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     private ApplicationGatewaySslCertificatePropertiesFormat innerProperties;
 
     /*
-     * Name of the SSL certificate that is unique within an Application
-     * Gateway.
+     * Name of the SSL certificate that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

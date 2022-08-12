@@ -4,11 +4,28 @@
 
 ### Features Added
 
+- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`. 
+
 ### Breaking Changes
+- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.4 (2022-08-08)
+
+### Bugs Fixed
+
+- Fixes IntelliJCredential [21150](https://github.com/Azure/azure-sdk-for-java/issues/21150)
+- Fixes AzureCliCredential to properly respect tenant IDs.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
 
 ## 1.5.3 (2022-06-30)
 

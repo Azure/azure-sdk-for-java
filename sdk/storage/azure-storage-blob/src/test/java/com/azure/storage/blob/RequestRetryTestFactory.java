@@ -53,6 +53,8 @@ class RequestRetryTestFactory {
 
     static final int RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR = 11;
 
+    static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES_WITH_EXCEPTION = 12;
+
     // Cancelable
 
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
@@ -258,6 +260,9 @@ class RequestRetryTestFactory {
 
                 case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES:
                     return retryTestTemporaryErrorResponse;
+
+                case RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES_WITH_EXCEPTION:
+                    return Mono.error(new IOException("Exception number " + this.factory.tryNumber));
 
                 case RETRY_TEST_SCENARIO_NON_RETRYABLE:
                     if (this.factory.tryNumber == 1) {

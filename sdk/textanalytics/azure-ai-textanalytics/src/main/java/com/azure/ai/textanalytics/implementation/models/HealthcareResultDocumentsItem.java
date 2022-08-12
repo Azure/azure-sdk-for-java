@@ -4,10 +4,44 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import java.util.List;
 
 /** The HealthcareResultDocumentsItem model. */
-@Immutable
+@Fluent
 public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocumentResult {
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareResultDocumentsItem setEntities(List<HealthcareEntity> entities) {
+        super.setEntities(entities);
+        return this;
+    }
 
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareResultDocumentsItem setRelations(List<HealthcareRelation> relations) {
+        super.setRelations(relations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareResultDocumentsItem setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareResultDocumentsItem setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

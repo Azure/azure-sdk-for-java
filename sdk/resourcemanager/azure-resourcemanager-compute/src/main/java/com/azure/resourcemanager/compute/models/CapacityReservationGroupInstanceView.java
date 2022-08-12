@@ -12,8 +12,7 @@ import java.util.List;
 @Immutable
 public final class CapacityReservationGroupInstanceView {
     /*
-     * List of instance view of the capacity reservations under the capacity
-     * reservation group.
+     * List of instance view of the capacity reservations under the capacity reservation group.
      */
     @JsonProperty(value = "capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
     private List<CapacityReservationInstanceViewWithName> capacityReservations;

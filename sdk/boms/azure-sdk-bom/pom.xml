@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-bom</artifactId>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
   <packaging>pom</packaging>
   <name>Azure Java SDK BOM (Bill of Materials)</name>
   <description>Azure Java SDK BOM (Bill of Materials)</description>

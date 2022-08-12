@@ -296,13 +296,14 @@ public class AuthorizationChallengeHandler {
      * increment and return the nonce count tracking, otherwise this will begin a new nonce tracking and return 1.
      */
     private int getNc(Map<String, String> challenge) {
-        String nonce = challenge.get(NONCE);
-        if (nonceTracker.containsKey(nonce)) {
-            return nonceTracker.get(nonce).incrementAndGet();
-        } else {
-            nonceTracker.put(nonce, new AtomicInteger(1));
-            return 1;
-        }
+        return nonceTracker.compute(challenge.get(NONCE), (ignored, value) -> {
+            if (value == null) {
+                return new AtomicInteger(1);
+            }
+
+            value.incrementAndGet();
+            return value;
+        }).get();
     }
 
     /*
@@ -468,9 +469,10 @@ public class AuthorizationChallengeHandler {
      */
     private static String buildAuthorizationHeader(String username, String realm, String uri, String algorithm,
         String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
-        StringBuilder authorizationBuilder = new StringBuilder(DIGEST);
+        StringBuilder authorizationBuilder = new StringBuilder(512);
 
-        authorizationBuilder.append("username=\"").append(username).append("\", ")
+        authorizationBuilder.append(DIGEST)
+            .append("username=\"").append(username).append("\", ")
             .append("realm=\"").append(realm).append("\", ")
             .append("nonce=\"").append(nonce).append("\", ")
             .append("uri=\"").append(uri).append("\", ")

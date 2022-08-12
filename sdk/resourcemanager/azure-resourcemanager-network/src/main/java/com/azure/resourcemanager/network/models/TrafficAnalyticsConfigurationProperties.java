@@ -35,8 +35,7 @@ public final class TrafficAnalyticsConfigurationProperties {
     private String workspaceResourceId;
 
     /*
-     * The interval in minutes which would decide how frequently TA service
-     * should do flow analytics.
+     * The interval in minutes which would decide how frequently TA service should do flow analytics.
      */
     @JsonProperty(value = "trafficAnalyticsInterval")
     private Integer trafficAnalyticsInterval;

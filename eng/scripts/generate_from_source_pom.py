@@ -50,6 +50,7 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 # File path where the aggregate POM will be written.
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
+sdk_string = "/sdk/"
 service_directories_dict = {"spring": ["spring-3"]}
 # { service directory name: (version tag prefix, group id, the artifact id name for service directory) }
 multi_service_directory_prefix_dict = {"spring-3": ("spring3_", "com.azure.spring", "spring-cloud-azure")}
@@ -114,7 +115,6 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
     # directory. This will also trim the number of paths down considerably.
     sparse_checkout_directories: Set[str] = set()
     service_directories: Set[str] = set()
-    sdk_string = "/sdk/"
     for p in source_projects:
         # get the service directory, which is one level up from the library's directory
         sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
@@ -150,8 +150,33 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
 
     # output the ServiceDirectories environment variable
     service_dirs = list(sorted(service_directories))
-    print('setting env variable ServiceDirectories = {}'.format(service_dirs))
-    print('##vso[task.setvariable variable=ServiceDirectories;]{}'.format(json.dumps(service_dirs)))
+    # Create service_directory_full_path which will add root_path and service_directory_sdk_relative_path
+    # which doesn't remove the SDK string. These are necessary because inline powershell within the yml
+    # won't work correctly if the results, in the yml, are in single quotes that necessary in case the
+    # path contains spaces.
+    service_dirs_sdk_rel_path = ""
+    service_dirs_full_path = ""
+    service_dirs_plain = ""
+    first = True
+    for sd in service_dirs:
+        sdk_rel_path = sdk_string + sd
+        sdk_full_path = os.path.normpath(root_path + sdk_rel_path)
+        if first:
+            first = False
+            service_dirs_sdk_rel_path = sdk_rel_path
+            service_dirs_full_path = sdk_full_path
+            service_dirs_plain = sd
+        else:
+            service_dirs_sdk_rel_path += "," + sdk_rel_path
+            service_dirs_full_path += "," + sdk_full_path
+            service_dirs_plain += "," + sd
+
+    print('setting env variable ServiceDirectories = {}'.format(service_dirs_plain))
+    print('##vso[task.setvariable variable=ServiceDirectories;]{}'.format(service_dirs_plain))
+    print('setting env variable ServiceDirectoriesRelPath = {}'.format(service_dirs_sdk_rel_path))
+    print('##vso[task.setvariable variable=ServiceDirectoriesRelPath;]{}'.format(service_dirs_sdk_rel_path))
+    print('setting env variable ServiceDirectoriesFullPath = {}'.format(service_dirs_full_path))
+    print('##vso[task.setvariable variable=ServiceDirectoriesFullPath;]{}'.format(service_dirs_full_path))
 
     # Sets the DevOps variable that is used to skip certain projects during linting validation.
     if set_skip_linting_projects:
@@ -330,7 +355,6 @@ def is_spring_child_pom(tree_root: ET.Element):
 
 def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
     for project_identifier in project_identifiers:
-        print(project_identifier)
         project = projects[project_identifier]
         source_projects.add(project)
 

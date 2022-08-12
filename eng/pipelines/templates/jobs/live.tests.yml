@@ -20,7 +20,6 @@ parameters:
   BuildParallelization: '2C'
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
-  AdditionalBuildOptions: $(AdditionalBuildOptions)
   TestParallelization: '1'
   BuildProfile: 'default'
 
@@ -96,7 +95,6 @@ jobs:
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
-          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}

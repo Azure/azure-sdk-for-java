@@ -34,8 +34,7 @@ public final class FrontendIpConfigurationPropertiesFormatInner {
     private List<SubResource> outboundRules;
 
     /*
-     * An array of references to load balancing rules that use this frontend
-     * IP.
+     * An array of references to load balancing rules that use this frontend IP.
      */
     @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
@@ -53,8 +52,7 @@ public final class FrontendIpConfigurationPropertiesFormatInner {
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken
-     * as IPv4.
+     * Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;

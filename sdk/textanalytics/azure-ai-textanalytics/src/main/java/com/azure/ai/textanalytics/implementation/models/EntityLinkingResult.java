@@ -36,4 +36,25 @@ public final class EntityLinkingResult extends PreBuiltResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EntityLinkingResult setModelVersion(String modelVersion) {
+        super.setModelVersion(modelVersion);
+        return this;
+    }
 }
