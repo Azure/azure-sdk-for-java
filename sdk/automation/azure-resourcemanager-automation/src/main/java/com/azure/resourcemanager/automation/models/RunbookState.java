@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunbookState. */
+/** Gets or sets the state of the runbook. */
 public final class RunbookState extends ExpandableStringEnum<RunbookState> {
     /** Static value New for RunbookState. */
     public static final RunbookState NEW = fromString("New");
@@ -30,7 +30,11 @@ public final class RunbookState extends ExpandableStringEnum<RunbookState> {
         return fromString(name, RunbookState.class);
     }
 
-    /** @return known RunbookState values. */
+    /**
+     * Gets known RunbookState values.
+     *
+     * @return known RunbookState values.
+     */
     public static Collection<RunbookState> values() {
         return values(RunbookState.class);
     }

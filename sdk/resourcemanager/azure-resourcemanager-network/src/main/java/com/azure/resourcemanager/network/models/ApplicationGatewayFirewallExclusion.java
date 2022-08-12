@@ -18,15 +18,15 @@ public final class ApplicationGatewayFirewallExclusion {
     private String matchVariable;
 
     /*
-     * When matchVariable is a collection, operate on the selector to specify
-     * which elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+     * exclusion applies to.
      */
     @JsonProperty(value = "selectorMatchOperator", required = true)
     private String selectorMatchOperator;
 
     /*
-     * When matchVariable is a collection, operator used to specify which
-     * elements in the collection this exclusion applies to.
+     * When matchVariable is a collection, operator used to specify which elements in the collection this exclusion
+     * applies to.
      */
     @JsonProperty(value = "selector", required = true)
     private String selector;

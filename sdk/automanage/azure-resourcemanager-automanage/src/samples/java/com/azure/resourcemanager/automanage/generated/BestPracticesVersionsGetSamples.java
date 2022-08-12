@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BestPracticesVersions Get. */
 public final class BestPracticesVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/getBestPracticeVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/getBestPracticeVersion.json
      */
     /**
      * Sample code: Get an Automanage best practice version.

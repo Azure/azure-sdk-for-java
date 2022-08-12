@@ -7,7 +7,6 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /** The HealthcareEntitiesDocumentResult model. */
 @Fluent
@@ -23,14 +22,6 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
      */
     @JsonProperty(value = "relations", required = true)
     private List<HealthcareRelation> relations;
-
-    /*
-     * JSON bundle containing a FHIR compatible object for consumption in other
-     * Healthcare tools. For additional information see
-     * https://www.hl7.org/fhir/overview.html.
-     */
-    @JsonProperty(value = "fhirBundle")
-    private Map<String, Object> fhirBundle;
 
     /**
      * Get the entities property: Healthcare entities.
@@ -72,25 +63,24 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
         return this;
     }
 
-    /**
-     * Get the fhirBundle property: JSON bundle containing a FHIR compatible object for consumption in other Healthcare
-     * tools. For additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @return the fhirBundle value.
-     */
-    public Map<String, Object> getFhirBundle() {
-        return this.fhirBundle;
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
     }
 
-    /**
-     * Set the fhirBundle property: JSON bundle containing a FHIR compatible object for consumption in other Healthcare
-     * tools. For additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @param fhirBundle the fhirBundle value to set.
-     * @return the HealthcareEntitiesDocumentResult object itself.
-     */
-    public HealthcareEntitiesDocumentResult setFhirBundle(Map<String, Object> fhirBundle) {
-        this.fhirBundle = fhirBundle;
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HealthcareEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

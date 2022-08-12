@@ -187,6 +187,13 @@ public interface Meter extends AutoCloseable {
     TelemetryAttributes createAttributes(Map<String, Object> attributeMap);
 
     /**
+     * Checks if Meter implementation was found, and it's enabled.
+     *
+     * @return true if Meter is enabled, false otherwise.
+     */
+    boolean isEnabled();
+
+    /**
      * {@inheritDoc}
      */
     @Override

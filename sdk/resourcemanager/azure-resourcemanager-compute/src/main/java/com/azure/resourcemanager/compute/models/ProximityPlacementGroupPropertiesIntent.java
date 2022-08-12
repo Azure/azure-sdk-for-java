@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class ProximityPlacementGroupPropertiesIntent {
     /*
-     * Specifies possible sizes of virtual machines that can be created in the
-     * proximity placement group.
+     * Specifies possible sizes of virtual machines that can be created in the proximity placement group.
      */
     @JsonProperty(value = "vmSizes")
     private List<String> vmSizes;

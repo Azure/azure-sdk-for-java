@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.administration;
+package com.azure.ai.formrecognizer.documentanalysis.administration;
 
-import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -39,11 +39,13 @@ public class BuildModel {
             .buildClient();
 
         // Build custom document analysis model
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String prefix = "{blob_name_prefix}";
         SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-            client.beginBuildModel(trainingFilesUrl,
+            client.beginBuildModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
+                prefix,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("model desc"),
@@ -57,11 +59,11 @@ public class BuildModel {
         System.out.printf("Model created on: %s%n%n", documentModelDetails.getCreatedOn());
 
         System.out.println("Document Fields:");
-        documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
-            docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+        documentModelDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+            documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
-                System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
             });
         });
     }

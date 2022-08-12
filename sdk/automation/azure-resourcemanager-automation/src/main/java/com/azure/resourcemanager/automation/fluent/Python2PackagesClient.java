@@ -38,7 +38,7 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -68,7 +68,7 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ModuleInner> getWithResponse(
@@ -104,7 +104,7 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ModuleInner> createOrUpdateWithResponse(
@@ -144,7 +144,7 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ModuleInner> updateWithResponse(
@@ -162,7 +162,7 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list module operation.
+     * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ModuleInner> listByAutomationAccount(String resourceGroupName, String automationAccountName);
@@ -176,7 +176,7 @@ public interface Python2PackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list module operation.
+     * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ModuleInner> listByAutomationAccount(

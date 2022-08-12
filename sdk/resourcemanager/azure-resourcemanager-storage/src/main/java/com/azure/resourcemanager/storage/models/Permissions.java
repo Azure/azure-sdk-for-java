@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Permissions. */
+/**
+ * The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add
+ * (a), Create (c), Update (u) and Process (p).
+ */
 public final class Permissions extends ExpandableStringEnum<Permissions> {
     /** Static value r for Permissions. */
     public static final Permissions R = fromString("r");

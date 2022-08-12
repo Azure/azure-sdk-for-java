@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImmutabilityPolicyUpdateType. */
+/** The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend. */
 public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<ImmutabilityPolicyUpdateType> {
     /** Static value put for ImmutabilityPolicyUpdateType. */
     public static final ImmutabilityPolicyUpdateType PUT = fromString("put");

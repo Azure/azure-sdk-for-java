@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -53,7 +55,7 @@ public class AnalyzeTaxW2 {
             DocumentField w2FormVariantField = taxFields.get("W2FormVariant");
             if (w2FormVariantField != null) {
                 if (DocumentFieldType.STRING == w2FormVariantField.getType()) {
-                    String merchantName = w2FormVariantField.getValueString();
+                    String merchantName = w2FormVariantField.getValueAsString();
                     System.out.printf("Form variant: %s, confidence: %.2f%n",
                         merchantName, w2FormVariantField.getConfidence());
                 }
@@ -63,11 +65,11 @@ public class AnalyzeTaxW2 {
             if (employeeField != null) {
                 System.out.println("Employee Data: ");
                 if (DocumentFieldType.MAP == employeeField.getType()) {
-                    Map<String, DocumentField> employeeDataFieldMap = employeeField.getValueMap();
+                    Map<String, DocumentField> employeeDataFieldMap = employeeField.getValueAsMap();
                     DocumentField employeeName = employeeDataFieldMap.get("Name");
                     if (employeeName != null) {
                         if (DocumentFieldType.STRING == employeeName.getType()) {
-                            String merchantAddress = employeeName.getValueString();
+                            String merchantAddress = employeeName.getValueAsString();
                             System.out.printf("Employee Name: %s, confidence: %.2f%n",
                                 merchantAddress, employeeName.getConfidence());
                         }
@@ -75,7 +77,7 @@ public class AnalyzeTaxW2 {
                     DocumentField employeeAddrField = employeeDataFieldMap.get("Address");
                     if (employeeAddrField != null) {
                         if (DocumentFieldType.STRING == employeeAddrField.getType()) {
-                            String employeeAddress = employeeAddrField.getValueString();
+                            String employeeAddress = employeeAddrField.getValueAsString();
                             System.out.printf("Employee Address: %s, confidence: %.2f%n",
                                 employeeAddress, employeeAddrField.getConfidence());
                         }
@@ -87,11 +89,11 @@ public class AnalyzeTaxW2 {
             if (employerField != null) {
                 System.out.println("Employer Data: ");
                 if (DocumentFieldType.MAP == employerField.getType()) {
-                    Map<String, DocumentField> employerDataFieldMap = employerField.getValueMap();
+                    Map<String, DocumentField> employerDataFieldMap = employerField.getValueAsMap();
                     DocumentField employerNameField = employerDataFieldMap.get("Name");
                     if (employerNameField != null) {
                         if (DocumentFieldType.STRING == employerNameField.getType()) {
-                            String employerName = employerNameField.getValueString();
+                            String employerName = employerNameField.getValueAsString();
                             System.out.printf("Employee Name: %s, confidence: %.2f%n",
                                 employerName, employerNameField.getConfidence());
                         }
@@ -100,7 +102,7 @@ public class AnalyzeTaxW2 {
                     DocumentField employerIDNumberField = employerDataFieldMap.get("IdNumber");
                     if (employerIDNumberField != null) {
                         if (DocumentFieldType.STRING == employerIDNumberField.getType()) {
-                            String employerIdNumber = employerIDNumberField.getValueString();
+                            String employerIdNumber = employerIDNumberField.getValueAsString();
                             System.out.printf("Employee ID Number: %s, confidence: %.2f%n",
                                 employerIdNumber, employerIDNumberField.getConfidence());
                         }
@@ -112,11 +114,11 @@ public class AnalyzeTaxW2 {
             if (localTaxInfosField != null) {
                 System.out.println("Local Tax Info data:");
                 if (DocumentFieldType.LIST == localTaxInfosField.getType()) {
-                    Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueMap();
+                    Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueAsMap();
                     DocumentField localWagesTips = localTaxInfoDataFields.get("LocalWagesTipsEtc");
                     if (DocumentFieldType.FLOAT == localTaxInfosField.getType()) {
                         System.out.printf("Local Wages Tips Value: %.2f, confidence: %.2f%n",
-                            localWagesTips.getValueFloat(), localTaxInfosField.getConfidence());
+                            localWagesTips.getValueAsFloat(), localTaxInfosField.getConfidence());
                     }
                 }
             }
@@ -124,7 +126,7 @@ public class AnalyzeTaxW2 {
             DocumentField taxYearField = taxFields.get("TaxYear");
             if (taxYearField != null) {
                 if (DocumentFieldType.STRING == taxYearField.getType()) {
-                    String taxYear = taxYearField.getValueString();
+                    String taxYear = taxYearField.getValueAsString();
                     System.out.printf("Tax year: %s, confidence: %.2f%n",
                         taxYear, taxYearField.getConfidence());
                 }
@@ -133,7 +135,7 @@ public class AnalyzeTaxW2 {
             DocumentField taxDateField = taxFields.get("TaxDate");
             if (employeeField != null) {
                 if (DocumentFieldType.DATE == taxDateField.getType()) {
-                    LocalDate taxDate = taxDateField.getValueDate();
+                    LocalDate taxDate = taxDateField.getValueAsDate();
                     System.out.printf("Tax Date: %s, confidence: %.2f%n",
                         taxDate, taxDateField.getConfidence());
                 }
@@ -142,7 +144,7 @@ public class AnalyzeTaxW2 {
             DocumentField socialSecurityTaxField = taxFields.get("SocialSecurityTaxWithheld");
             if (localTaxInfosField != null) {
                 if (DocumentFieldType.FLOAT == socialSecurityTaxField.getType()) {
-                    Float socialSecurityTax = socialSecurityTaxField.getValueFloat();
+                    Float socialSecurityTax = socialSecurityTaxField.getValueAsFloat();
                     System.out.printf("Social Security Tax withheld: %.2f, confidence: %.2f%n",
                         socialSecurityTax, socialSecurityTaxField.getConfidence());
                 }

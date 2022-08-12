@@ -12,15 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UserArtifactSource {
     /*
-     * Required. The mediaLink of the artifact, must be a readable storage page
-     * blob.
+     * Required. The mediaLink of the artifact, must be a readable storage page blob.
      */
     @JsonProperty(value = "mediaLink", required = true)
     private String mediaLink;
 
     /*
-     * Optional. The defaultConfigurationLink of the artifact, must be a
-     * readable storage page blob.
+     * Optional. The defaultConfigurationLink of the artifact, must be a readable storage page blob.
      */
     @JsonProperty(value = "defaultConfigurationLink")
     private String defaultConfigurationLink;

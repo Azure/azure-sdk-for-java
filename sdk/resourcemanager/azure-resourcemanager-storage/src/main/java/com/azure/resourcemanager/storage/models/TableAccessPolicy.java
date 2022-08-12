@@ -25,8 +25,7 @@ public final class TableAccessPolicy {
     private OffsetDateTime expiryTime;
 
     /*
-     * Required. List of abbreviated permissions. Supported permission values
-     * include 'r','a','u','d'
+     * Required. List of abbreviated permissions. Supported permission values include 'r','a','u','d'
      */
     @JsonProperty(value = "permission", required = true)
     private String permission;

@@ -30,8 +30,7 @@ public final class AzureFirewallNatRule {
     private List<String> sourceAddresses;
 
     /*
-     * List of destination IP addresses for this rule. Supports IP ranges,
-     * prefixes, and service tags.
+     * List of destination IP addresses for this rule. Supports IP ranges, prefixes, and service tags.
      */
     @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
