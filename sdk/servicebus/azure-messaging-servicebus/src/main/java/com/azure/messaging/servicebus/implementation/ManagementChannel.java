@@ -643,6 +643,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @SuppressWarnings("unchecked")
     private Collection<RuleProperties> getRuleProperties(AmqpValue messageBody) {
         try {
+            if (messageBody == null) {
+                return Collections.emptyList();
+            }
             List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
                 .get(ManagementConstants.RULES);
             if (rules == null) {

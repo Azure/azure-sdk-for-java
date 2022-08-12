@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.*;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
@@ -43,6 +44,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -522,6 +524,30 @@ class ManagementChannelTests {
         // Arrange, act, assert
         StepVerifier.create(managementChannel.cancelScheduledMessages(new ArrayList<>(), null))
                 .verifyComplete();
+    }
+
+    @Test
+    void createRule() {
+        // Arrange, act, assert
+        final String ruleName = "foo-bar";
+        CreateRuleOptions options = new CreateRuleOptions();
+        StepVerifier.create(managementChannel.createRule(ruleName, options))
+            .verifyComplete();
+    }
+
+    @Test
+    void getRules() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.getRules())
+            .expectNext(Collections.emptyList())
+            .verifyComplete();
+    }
+
+    @Test
+    void deleteRule() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.deleteRule("exist-rule"))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> updateDisposition() {
