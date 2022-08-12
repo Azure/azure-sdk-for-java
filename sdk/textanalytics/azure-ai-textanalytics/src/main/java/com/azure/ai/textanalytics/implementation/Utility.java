@@ -311,7 +311,7 @@ public final class Utility {
 
     /**
      * Extracts the operation ID from the 'operation-location' URL. An example of 'operation-location' is
-     * https://[...]/language/analyze-text/jobs/36c9e042-77df-4cba-a87e-21ba2f50205a?api-version=2022-04-01-preview
+     * https://[...]/language/analyze-text/jobs/36c9e042-77df-4cba-a87e-21ba2f50205a?api-version=2022-05-01
      *
      * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
      * operation ID used to track the progress and obtain the ID of the analyze operation.
@@ -354,7 +354,7 @@ public final class Utility {
                     parameterMap.put(key, Integer.valueOf(value));
                 } else if ("skip".equals(key) || "top".equals(key)) {
                     // Language API no longer has '$' in front of the 'top' and 'skip'.
-                    // https://[...]?showStats=False&top=2&skip=20&api-version=2022-04-01-preview
+                    // https://[...]?showStats=False&top=2&skip=20&api-version=2022-05-01
                     parameterMap.put("$" + key, Integer.valueOf(value));
                 }
             }

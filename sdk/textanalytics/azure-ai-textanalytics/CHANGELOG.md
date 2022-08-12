@@ -3,6 +3,7 @@
 ## 5.2.0-beta.4 (Unreleased)
 
 ### Features Added
+- We are now targeting the service's `2022-05-01` API as the default.
 - Added bespoke methods for the custom entity recognition, and single-label and multi-label classification features,
   such as, `beginRecognizeCustomEntities()`, `beginSingleLabelClassify()` and `beginMultiLabelClassify()`.
 

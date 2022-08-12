@@ -65,13 +65,13 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `2022-04-01-preview` version of the service.
+**Note:** This version of the client library defaults to the `2022-05-01` version of the service.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.2.x | 3.0, 3.1, 2022-04-01-preview (default)
+|5.2.x | 3.0, 3.1, 2022-05-01 (default)
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
