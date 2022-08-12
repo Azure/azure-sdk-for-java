@@ -28,6 +28,7 @@ add the direct dependency to your project as follows.
   <version>1.0.0-beta.2</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Authenticate the client
 
