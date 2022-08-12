@@ -22,6 +22,12 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
+    /*
+     * Media Streaming Configuration.
+     */
+    @JsonProperty(value = "mediaStreamingConfiguration")
+    private MediaStreamingConfigurationDto mediaStreamingConfiguration;
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *
@@ -59,6 +65,27 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
+     *
+     * @return the mediaStreamingConfiguration value.
+     */
+    public MediaStreamingConfigurationDto getMediaStreamingConfiguration() {
+        return this.mediaStreamingConfiguration;
+    }
+
+    /**
+     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
+     *
+     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setMediaStreamingConfiguration(
+            MediaStreamingConfigurationDto mediaStreamingConfiguration) {
+        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }
 }

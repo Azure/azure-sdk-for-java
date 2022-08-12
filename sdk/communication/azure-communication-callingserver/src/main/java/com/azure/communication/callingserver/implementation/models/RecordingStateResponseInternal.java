@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecordingStatusResponseInternal model. */
+/** The RecordingStateResponseInternal model. */
 @Fluent
-public final class RecordingStatusResponseInternal {
+public final class RecordingStateResponseInternal {
     /*
      * The recordingId property.
      */
@@ -17,10 +17,10 @@ public final class RecordingStatusResponseInternal {
     private String recordingId;
 
     /*
-     * The recordingStatus property.
+     * The recordingState property.
      */
-    @JsonProperty(value = "recordingStatus")
-    private RecordingStatusInternal recordingStatus;
+    @JsonProperty(value = "recordingState")
+    private RecordingStateInternal recordingState;
 
     /**
      * Get the recordingId property: The recordingId property.
@@ -35,30 +35,30 @@ public final class RecordingStatusResponseInternal {
      * Set the recordingId property: The recordingId property.
      *
      * @param recordingId the recordingId value to set.
-     * @return the RecordingStatusResponseInternal object itself.
+     * @return the RecordingStateResponseInternal object itself.
      */
-    public RecordingStatusResponseInternal setRecordingId(String recordingId) {
+    public RecordingStateResponseInternal setRecordingId(String recordingId) {
         this.recordingId = recordingId;
         return this;
     }
 
     /**
-     * Get the recordingStatus property: The recordingStatus property.
+     * Get the recordingState property: The recordingState property.
      *
-     * @return the recordingStatus value.
+     * @return the recordingState value.
      */
-    public RecordingStatusInternal getRecordingStatus() {
-        return this.recordingStatus;
+    public RecordingStateInternal getRecordingState() {
+        return this.recordingState;
     }
 
     /**
-     * Set the recordingStatus property: The recordingStatus property.
+     * Set the recordingState property: The recordingState property.
      *
-     * @param recordingStatus the recordingStatus value to set.
-     * @return the RecordingStatusResponseInternal object itself.
+     * @param recordingState the recordingState value to set.
+     * @return the RecordingStateResponseInternal object itself.
      */
-    public RecordingStatusResponseInternal setRecordingStatus(RecordingStatusInternal recordingStatus) {
-        this.recordingStatus = recordingStatus;
+    public RecordingStateResponseInternal setRecordingState(RecordingStateInternal recordingState) {
+        this.recordingState = recordingState;
         return this;
     }
 }
