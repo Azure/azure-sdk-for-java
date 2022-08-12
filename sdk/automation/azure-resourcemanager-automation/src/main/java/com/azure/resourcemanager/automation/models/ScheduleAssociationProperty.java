@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The schedule property associated with the entity. */
 @Fluent
 public final class ScheduleAssociationProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleAssociationProperty.class);
-
     /*
      * Gets or sets the name of the Schedule.
      */

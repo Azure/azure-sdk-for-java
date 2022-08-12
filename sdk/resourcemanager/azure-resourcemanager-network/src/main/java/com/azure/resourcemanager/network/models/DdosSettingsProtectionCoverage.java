@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DdosSettingsProtectionCoverage. */
+/**
+ * The DDoS protection policy customizability of the public IP. Only standard coverage will have the ability to be
+ * customized.
+ */
 public final class DdosSettingsProtectionCoverage extends ExpandableStringEnum<DdosSettingsProtectionCoverage> {
     /** Static value Basic for DdosSettingsProtectionCoverage. */
     public static final DdosSettingsProtectionCoverage BASIC = fromString("Basic");

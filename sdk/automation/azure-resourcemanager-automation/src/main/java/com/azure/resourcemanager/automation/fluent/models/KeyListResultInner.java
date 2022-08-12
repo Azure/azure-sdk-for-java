@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.Key;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The KeyListResult model. */
 @Fluent
 public final class KeyListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyListResultInner.class);
-
     /*
      * Lists the automation keys.
      */

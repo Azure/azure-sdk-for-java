@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinuxUpdateClasses. */
+/** Update classifications included in the software update configuration. */
 public final class LinuxUpdateClasses extends ExpandableStringEnum<LinuxUpdateClasses> {
     /** Static value Unclassified for LinuxUpdateClasses. */
     public static final LinuxUpdateClasses UNCLASSIFIED = fromString("Unclassified");
@@ -33,7 +33,11 @@ public final class LinuxUpdateClasses extends ExpandableStringEnum<LinuxUpdateCl
         return fromString(name, LinuxUpdateClasses.class);
     }
 
-    /** @return known LinuxUpdateClasses values. */
+    /**
+     * Gets known LinuxUpdateClasses values.
+     *
+     * @return known LinuxUpdateClasses values.
+     */
     public static Collection<LinuxUpdateClasses> values() {
         return values(LinuxUpdateClasses.class);
     }

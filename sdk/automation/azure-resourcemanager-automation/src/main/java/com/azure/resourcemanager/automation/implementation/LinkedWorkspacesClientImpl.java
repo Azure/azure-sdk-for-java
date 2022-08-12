@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.LinkedWorkspacesClient;
 import com.azure.resourcemanager.automation.fluent.models.LinkedWorkspaceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LinkedWorkspacesClient. */
 public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient {
-    private final ClientLogger logger = new ClientLogger(LinkedWorkspacesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LinkedWorkspacesService service;
 
@@ -78,7 +75,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
+     * @return definition of the linked workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LinkedWorkspaceInner>> getWithResponseAsync(
@@ -103,7 +100,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -129,7 +126,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
+     * @return definition of the linked workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LinkedWorkspaceInner>> getWithResponseAsync(
@@ -154,7 +151,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -176,19 +173,12 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
+     * @return definition of the linked workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LinkedWorkspaceInner> getAsync(String resourceGroupName, String automationAccountName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName)
-            .flatMap(
-                (Response<LinkedWorkspaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -215,7 +205,7 @@ public final class LinkedWorkspacesClientImpl implements LinkedWorkspacesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the linked workspace.
+     * @return definition of the linked workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LinkedWorkspaceInner> getWithResponse(
