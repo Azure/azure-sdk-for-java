@@ -226,7 +226,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForMSICodeFlow(tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
@@ -246,7 +246,7 @@ public class IdentityClientTests {
                 .setIdentityEndpoint(endpoint));
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForArcCodeFlow(401, () -> {
-            client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
+            client.getTokenFromTargetManagedIdentity(request).block();
         });
     }
 
@@ -264,7 +264,7 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
         mockForArcCodeFlow(200, () -> {
-            client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
+            client.getTokenFromTargetManagedIdentity(request).block();
         });
     }
 
@@ -288,7 +288,7 @@ public class IdentityClientTests {
         // mock
         mockForIMDSCodeFlow(IdentityConstants.DEFAULT_IMDS_ENDPOINT, tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToIMDSEndpoint(request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
@@ -312,7 +312,7 @@ public class IdentityClientTests {
         // mock
         mockForIMDSCodeFlow(endpoint, tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToIMDSEndpoint(request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });

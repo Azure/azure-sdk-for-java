@@ -112,7 +112,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
         LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
     }
 
-    private IdentityClientOptions updateIdentityClientOptions(ManagedIdentityType managedIdentityType,
+    IdentityClientOptions updateIdentityClientOptions(ManagedIdentityType managedIdentityType,
                                              IdentityClientOptions clientOptions, Configuration configuration) {
         switch (managedIdentityType) {
             case APP_SERVICE:

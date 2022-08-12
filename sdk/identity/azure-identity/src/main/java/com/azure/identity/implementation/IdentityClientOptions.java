@@ -426,11 +426,28 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    /**
+     * Set the Managed Identity Type
+     * @param managedIdentityType the Managed Identity Type
+     * @return the updated identity client options
+     */
     public IdentityClientOptions setManagedIdentityType(ManagedIdentityType managedIdentityType) {
         this.managedIdentityType = managedIdentityType;
         return this;
     }
 
+    /**
+     * Get the Managed Identity Type
+     * @return the Managed Identity Type
+     */
+    public ManagedIdentityType getManagedIdentityType() {
+        return managedIdentityType;
+    }
+
+    /**
+     * Get the Managed Identity parameters
+     * @return the Managed Identity Parameters
+     */
     public ManagedIdentityParameters getManagedIdentityParameters() {
         return managedIdentityParameters;
     }
@@ -439,15 +456,11 @@ public final class IdentityClientOptions {
      * Configure the managed identity parameters.
      *
      * @param managedIdentityParameters the managed identity parameters to use for authentication.
-     * @return the identity log options.
+     * @return the updated identity client options
      */
     public IdentityClientOptions setManagedIdentityParameters(ManagedIdentityParameters managedIdentityParameters) {
         this.managedIdentityParameters = managedIdentityParameters;
         return this;
-    }
-
-    public ManagedIdentityType getManagedIdentityType() {
-        return managedIdentityType;
     }
 
     /**

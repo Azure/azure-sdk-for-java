@@ -371,7 +371,6 @@ public class IdentityClient {
                         + " It should be provided to authenticate with client assertion."
                 ));
             }
-
         });
     }
 
@@ -1141,7 +1140,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
+    private Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
                                                                       TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
@@ -1236,7 +1235,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
+    private Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
 
         return clientAssertionAccessor.getValue()
             .flatMap(assertionToken -> Mono.fromCallable(() -> {
@@ -1295,7 +1294,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
+    private Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
                                                                                 String identityHeader,
                                                                                 String thumbprint,
                                                                                 TokenRequestContext request) {
@@ -1365,7 +1364,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+    private Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
                                                                    String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
@@ -1451,7 +1450,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
+    private Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
