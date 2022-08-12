@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.1 (2022-08-11)
+## 12.4.1 (2022-08-12)
 
 ### Other Changes
 

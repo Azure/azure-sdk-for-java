@@ -1,6 +1,6 @@
 # Release History
 
-## 12.12.0 (2022-08-11)
+## 12.12.0 (2022-08-12)
 
 ### Features Added
 - Added upload and append methods on DataLakeFileClient and DataLakeFileAsyncClient that support BinaryData.
