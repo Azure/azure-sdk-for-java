@@ -20,7 +20,7 @@ public final class RejectCallRequestInternal {
      * The rejection reason.
      */
     @JsonProperty(value = "callRejectReason")
-    private CallRejectReason callRejectReason;
+    private CallRejectReasonInternal callRejectReason;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -47,7 +47,7 @@ public final class RejectCallRequestInternal {
      *
      * @return the callRejectReason value.
      */
-    public CallRejectReason getCallRejectReason() {
+    public CallRejectReasonInternal getCallRejectReason() {
         return this.callRejectReason;
     }
 
@@ -57,7 +57,7 @@ public final class RejectCallRequestInternal {
      * @param callRejectReason the callRejectReason value to set.
      * @return the RejectCallRequestInternal object itself.
      */
-    public RejectCallRequestInternal setCallRejectReason(CallRejectReason callRejectReason) {
+    public RejectCallRequestInternal setCallRejectReason(CallRejectReasonInternal callRejectReason) {
         this.callRejectReason = callRejectReason;
         return this;
     }

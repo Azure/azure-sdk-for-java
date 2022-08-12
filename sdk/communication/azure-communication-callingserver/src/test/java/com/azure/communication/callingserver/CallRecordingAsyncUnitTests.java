@@ -22,12 +22,12 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
+public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     private CallRecordingAsync callRecording;
 
     @BeforeEach
     public void setup() {
-        CallAutomationAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>());
+        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>());
         callRecording = callingServerClient.getCallRecordingAsync();
     }
 
@@ -56,7 +56,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
 
     @Test
     public void recordingOperationsTest() {
-        CallAutomationAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(
+        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
             recordingOperationsResponses
         );
         callRecording = callingServerClient.getCallRecordingAsync();

@@ -206,3 +206,12 @@ directive:
   transform: >
     $.name = "AcsEventTypeInternal";
 ```
+
+### Rename CallRejectReason to CallRejectReasonInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallRejectReason["x-ms-enum"]
+  transform: >
+    $.name = "CallRejectReasonInternal";
+```

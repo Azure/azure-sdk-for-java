@@ -98,8 +98,7 @@ public class CallConnectionAsync {
                     try {
                         return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
                     } catch (URISyntaxException e) {
-                        logger.logExceptionAsError(new RuntimeException(e));
-                        return null;
+                        throw logger.logExceptionAsError(new RuntimeException(e));
                     }
                 });
         } catch (RuntimeException ex) {
@@ -303,16 +302,13 @@ public class CallConnectionAsync {
                 .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
             AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
-                .setParticipantsToAdd(participantModels);
+                .setParticipantsToAdd(participantModels)
+                .setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()))
+                .setOperationContext(addParticipantsOptions.getOperationContext());
 
-            if (addParticipantsOptions.getSourceCallerId() != null) {
-                request.setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()));
-            }
+            // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
             if (addParticipantsOptions.getInvitationTimeout() != null) {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
-            }
-            if (addParticipantsOptions.getOperationContext() != null) {
-                request.setOperationContext(addParticipantsOptions.getOperationContext());
             }
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)

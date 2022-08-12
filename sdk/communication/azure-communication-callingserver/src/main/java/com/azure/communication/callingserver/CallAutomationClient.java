@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 
 import com.azure.communication.callingserver.models.AnswerCallResult;
+import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
@@ -129,7 +130,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void rejectCall(String incomingCallContext, String callRejectReason) {
+    public Void rejectCall(String incomingCallContext, CallRejectReason callRejectReason) {
         return callAutomationAsyncClient.rejectCall(incomingCallContext, callRejectReason).block();
     }
 
@@ -144,7 +145,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(String incomingCallContext, String callRejectReason,
+    public Response<Void> rejectCallWithResponse(String incomingCallContext, CallRejectReason callRejectReason,
                                                  Context context) {
         return callAutomationAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
     }
@@ -164,8 +165,6 @@ public final class CallAutomationClient {
     //endregion
 
     //region Recording Management actions
-
-
     /***
      * Returns an object of CallRecording
      *
