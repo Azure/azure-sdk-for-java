@@ -58,6 +58,7 @@ public class ConnectionHandler extends Handler {
      *
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the AMQP connection.
+     * @deprecated use {@link ConnectionHandler#ConnectionHandler(String, ConnectionOptions, SslPeerDetails, AmqpMetricsProvider)} instead.
      */
     @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,

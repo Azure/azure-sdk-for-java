@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
-import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;

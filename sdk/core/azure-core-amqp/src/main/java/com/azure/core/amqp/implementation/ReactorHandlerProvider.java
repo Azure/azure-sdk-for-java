@@ -150,7 +150,7 @@ public class ReactorHandlerProvider {
      */
     public SendLinkHandler createSendLinkHandler(String connectionId, String hostname,
         String senderName, String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, getMetricProvider (hostname, entityPath));
+        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, getMetricProvider(hostname, entityPath));
     }
 
     /**

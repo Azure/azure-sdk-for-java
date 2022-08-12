@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.util.metrics.Meter;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslPeerDetails;

@@ -14,7 +14,6 @@ import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;

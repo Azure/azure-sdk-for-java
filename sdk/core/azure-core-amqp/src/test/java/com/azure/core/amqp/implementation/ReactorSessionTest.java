@@ -18,8 +18,6 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.*;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
-import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.metrics.MeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;

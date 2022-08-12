@@ -21,11 +21,11 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AmqpMetricsProviderTest {
-    private final static Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("tests", "version", null);
-    private final static Symbol TIMEOUT_SYMBOL = Symbol.valueOf(AmqpErrorCode.TIMEOUT_ERROR.toString());
-    private final static String NAMESPACE = "namespace";
-    private final static String ENTITY_NAME = "name";
-    private final static String ENTITY_PATH = "name/and/partition";
+    private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("tests", "version", null);
+    private static final Symbol TIMEOUT_SYMBOL = Symbol.valueOf(AmqpErrorCode.TIMEOUT_ERROR.toString());
+    private static final String NAMESPACE = "namespace";
+    private static final String ENTITY_NAME = "name";
+    private static final String ENTITY_PATH = "name/and/partition";
 
 
     @Test

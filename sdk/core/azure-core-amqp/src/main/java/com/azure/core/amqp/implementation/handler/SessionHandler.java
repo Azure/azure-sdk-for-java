@@ -10,7 +10,6 @@ import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.util.logging.LoggingEventBuilder;
-import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;

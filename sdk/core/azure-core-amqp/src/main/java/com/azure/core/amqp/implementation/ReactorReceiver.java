@@ -10,7 +10,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;

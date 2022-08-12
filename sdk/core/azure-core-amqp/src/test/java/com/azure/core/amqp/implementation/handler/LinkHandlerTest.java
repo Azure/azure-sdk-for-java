@@ -10,11 +10,6 @@ import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
-import com.azure.core.util.Context;
-import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.metrics.DoubleHistogram;
-import com.azure.core.util.metrics.LongCounter;
-import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -34,12 +29,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.exception.AmqpErrorCondition.LINK_STOLEN;

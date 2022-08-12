@@ -9,7 +9,6 @@ import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.metrics.Meter;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
