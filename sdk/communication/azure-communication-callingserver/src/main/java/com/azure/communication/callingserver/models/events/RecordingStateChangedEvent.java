@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
 
 /** The RecordingStateChangedEvent model. */
 @Immutable
-public class RecordingStateChangedEvent extends CallAutomationEventBase {
+public final class RecordingStateChangedEvent extends CallAutomationEventBase {
 
     /**
      * Recording Id.

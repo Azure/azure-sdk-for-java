@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PlayCompleted model. */
 @Immutable
-public class PlayCompleted extends CallAutomationEventBase {
+public final class PlayCompleted extends CallAutomationEventBase {
     /*
      * Operation context
      */
