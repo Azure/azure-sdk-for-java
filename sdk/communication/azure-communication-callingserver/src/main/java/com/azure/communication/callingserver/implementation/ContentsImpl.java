@@ -13,6 +13,7 @@ import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -51,31 +52,31 @@ public final class ContentsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface ContentsService {
-        @Post("/calling/callConnections:play")
+        @Post("/calling/callConnections/{callConnectionId}:play")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> play(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("callConnectionId") String callConnectionId,
+                @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
                 Context context);
 
-        @Post("/calling/callConnections:cancelAllMediaOperations")
+        @Post("/calling/callConnections/{callConnectionId}:cancelAllMediaOperations")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> cancelAllMediaOperations(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("callConnectionId") String callConnectionId,
+                @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/calling/callConnections:recognize")
+        @Post("/calling/callConnections/{callConnectionId}:recognize")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> recognize(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("callConnectionId") String callConnectionId,
+                @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RecognizeRequest recognizeRequest,
                 Context context);

@@ -53,6 +53,12 @@ public final class CallConnectionPropertiesInternal {
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
+    /*
+     * SubscriptionId for media streaming
+     */
+    @JsonProperty(value = "mediaSubscriptionId")
+    private String mediaSubscriptionId;
+
     /**
      * Get the callConnectionId property: The call connection id.
      *
@@ -191,6 +197,26 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
+     *
+     * @return the mediaSubscriptionId value.
+     */
+    public String getMediaSubscriptionId() {
+        return this.mediaSubscriptionId;
+    }
+
+    /**
+     * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
+     *
+     * @param mediaSubscriptionId the mediaSubscriptionId value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
+        this.mediaSubscriptionId = mediaSubscriptionId;
         return this;
     }
 }
