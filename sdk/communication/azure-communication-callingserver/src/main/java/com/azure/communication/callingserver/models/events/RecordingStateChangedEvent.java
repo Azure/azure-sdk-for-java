@@ -9,9 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 /** The RecordingStateChangedEvent model. */
 @Immutable
@@ -37,7 +36,7 @@ public final class RecordingStateChangedEvent extends CallAutomationEventBase {
 
     @JsonCreator
     private RecordingStateChangedEvent(@JsonProperty("startDateTime") String startDateTime) {
-        this.startDateTime = LocalDateTime.parse(startDateTime).atOffset(ZoneOffset.UTC);
+        this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         recordingId = null;
         recordingState = null;
     }
