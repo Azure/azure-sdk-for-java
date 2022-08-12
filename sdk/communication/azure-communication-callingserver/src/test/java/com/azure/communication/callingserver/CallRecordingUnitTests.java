@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingStatus;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.models.RecordingStatusResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.util.Context;
@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CallRecordingUnitTests extends CallRecordingTestBase {
+public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
     private CallRecording callRecording;
 
     @BeforeEach
     public void setup() {
-        CallAutomationClient callAutomationClient = CallAutomationResponseMocker.getCallingServerClient(new ArrayList<>());
+        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>());
         callRecording = callAutomationClient.getCallRecording();
     }
     @Test
@@ -62,12 +62,12 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
     @Test
     public void recordingOperationsTest() {
 
-        CallAutomationClient callAutomationClient = CallAutomationResponseMocker.getCallingServerClient(
+        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(
             recordingOperationsResponses
         );
         callRecording = callAutomationClient.getCallRecording();
 
-        RecordingStatusResponse recordingState = callRecording.startRecording(
+        RecordingStatusResult recordingState = callRecording.startRecording(
             new ServerCallLocator(SERVER_CALL_ID),
             URI.create("https://localhost/")
         );
@@ -89,11 +89,11 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
 
     private void verifyOperationWithRecordingStatus(Runnable operation, RecordingStatus expectedStatus) {
         operation.run();
-        RecordingStatusResponse recordingState = callRecording.getRecordingState(RECORDING_ID);
+        RecordingStatusResult recordingState = callRecording.getRecordingState(RECORDING_ID);
         validateRecording(recordingState, expectedStatus);
     }
 
-    private void validateRecording(RecordingStatusResponse recordingStatus, RecordingStatus expectedStatus) {
+    private void validateRecording(RecordingStatusResult recordingStatus, RecordingStatus expectedStatus) {
         assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
         assertEquals(expectedStatus, recordingStatus.getRecordingStatus());
     }

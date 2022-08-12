@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingStatus;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.models.RecordingStatusResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,12 +22,12 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
+public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     private CallRecordingAsync callRecording;
 
     @BeforeEach
     public void setup() {
-        CallAutomationAsyncClient callingServerClient = CallAutomationResponseMocker.getCallingServerAsyncClient(new ArrayList<>());
+        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>());
         callRecording = callingServerClient.getCallRecordingAsync();
     }
 
@@ -56,7 +56,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
 
     @Test
     public void recordingOperationsTest() {
-        CallAutomationAsyncClient callingServerClient = CallAutomationResponseMocker.getCallingServerAsyncClient(
+        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
             recordingOperationsResponses
         );
         callRecording = callingServerClient.getCallRecordingAsync();
@@ -77,7 +77,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
         validateError(CallingServerErrorException.class, callRecording.getRecordingState(RECORDING_ID));
     }
 
-    private void validateRecordingStatus(Publisher<RecordingStatusResponse> publisher, RecordingStatus status) {
+    private void validateRecordingStatus(Publisher<RecordingStatusResult> publisher, RecordingStatus status) {
         StepVerifier.create(publisher)
             .consumeNextWith(recordingStatusResponse -> validateRecording(recordingStatusResponse, status))
             .verifyComplete();
@@ -102,7 +102,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingTestBase {
             .verify();
     }
 
-    private void validateRecording(RecordingStatusResponse recordingStatus, RecordingStatus expectedStatus) {
+    private void validateRecording(RecordingStatusResult recordingStatus, RecordingStatus expectedStatus) {
         assertEquals(RECORDING_ID, recordingStatus.getRecordingId());
         assertEquals(expectedStatus, recordingStatus.getRecordingStatus());
     }

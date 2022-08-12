@@ -35,14 +35,14 @@ public class MockHttpClient extends NoOpHttpClient {
         if (responses.size() > 0) {
             SimpleEntry<String, Integer> entry = responses.get(0);
             responses.remove(entry);
-            HttpResponse response = CallAutomationResponseMocker.generateMockResponse(entry.getKey(), request, entry.getValue());
+            HttpResponse response = CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue());
             if (entry.getKey().startsWith(THROW_TEST_EXCEPTION)) {
                 return Mono.error(ErrorConstructorProxy.create(new HttpResponseException("Mock error", response)));
             }
 
-            return Mono.just(CallAutomationResponseMocker.generateMockResponse(entry.getKey(), request, entry.getValue()));
+            return Mono.just(CallAutomationUnitTestBase.generateMockResponse(entry.getKey(), request, entry.getValue()));
         }
 
-        return Mono.just(CallAutomationResponseMocker.generateMockResponse("", request, 500));
+        return Mono.just(CallAutomationUnitTestBase.generateMockResponse("", request, 500));
     }
 }

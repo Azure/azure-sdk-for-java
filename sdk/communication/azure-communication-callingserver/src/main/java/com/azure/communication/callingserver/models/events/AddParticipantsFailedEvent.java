@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 /** The AddParticipantsFailedEvent model. */
 @Immutable
-public final class AddParticipantsFailedEvent implements CallingServerBaseEvent {
+public final class AddParticipantsFailedEvent extends CallAutomationEventBase {
     /*
      * Operation context
      */
@@ -39,38 +39,8 @@ public final class AddParticipantsFailedEvent implements CallingServerBaseEvent 
     @JsonIgnore
     private final List<CommunicationIdentifier> participants;
 
-    /*
-     * The event types.
-     */
-    @JsonProperty(value = "type")
-    private final AcsEventType type;
-
-    /*
-     * Call connection ID.
-     */
-    @JsonProperty(value = "callConnectionId")
-    private final String callConnectionId;
-
-    /*
-     * Server call ID.
-     */
-    @JsonProperty(value = "serverCallId")
-    private final String serverCallId;
-
-    /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
-     */
-    @JsonProperty(value = "correlationId")
-    private final String correlationId;
-
-
     @JsonCreator
     private AddParticipantsFailedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
-        this.serverCallId = null;
-        this.callConnectionId = null;
-        this.correlationId = null;
-        this.type = null;
         this.operationContext = null;
         this.resultInfo = null;
 
@@ -110,42 +80,5 @@ public final class AddParticipantsFailedEvent implements CallingServerBaseEvent 
      */
     public List<CommunicationIdentifier> getParticipants() {
         return this.participants;
-    }
-
-    /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    public AcsEventType getType() {
-        return this.type;
-    }
-
-    /**
-     * Get the callConnectionId property: Call connection ID.
-     *
-     * @return the callConnectionId value.
-     */
-    public String getCallConnectionId() {
-        return this.callConnectionId;
-    }
-
-    /**
-     * Get the serverCallId property: Server call ID.
-     *
-     * @return the serverCallId value.
-     */
-    public String getServerCallId() {
-        return this.serverCallId;
-    }
-
-    /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
-     * @return the correlationId value.
-     */
-    public String getCorrelationId() {
-        return this.correlationId;
     }
 }

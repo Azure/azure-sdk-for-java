@@ -4,7 +4,6 @@
 module com.azure.communication.callingserver {
 
     requires transitive com.azure.communication.common;
-    requires com.azure.messaging.eventgrid;
 
     // public API surface area
     exports com.azure.communication.callingserver;
@@ -15,4 +14,5 @@ module com.azure.communication.callingserver {
     opens com.azure.communication.callingserver.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.communication.callingserver to com.fasterxml.jackson.databind;
     opens com.azure.communication.callingserver.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.communication.callingserver.models.events to com.fasterxml.jackson.databind;
 }

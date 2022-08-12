@@ -24,8 +24,7 @@ public final class RoutingConfiguration {
     private PropagatedRouteTable propagatedRouteTables;
 
     /*
-     * List of routes that control routing from VirtualHub into a virtual
-     * network connection.
+     * List of routes that control routing from VirtualHub into a virtual network connection.
      */
     @JsonProperty(value = "vnetRoutes")
     private VnetRoute vnetRoutes;

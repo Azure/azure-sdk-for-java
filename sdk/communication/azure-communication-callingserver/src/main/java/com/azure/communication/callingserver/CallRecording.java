@@ -7,7 +7,7 @@ import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.GroupCallLocator;
-import com.azure.communication.callingserver.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.models.RecordingStatusResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -44,7 +44,7 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStatusResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+    public RecordingStatusResult startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
         return callRecordingAsync.startRecording(callLocator, recordingStateCallbackUri).block();
     }
 
@@ -61,7 +61,7 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStatusResponse> startRecordingWithResponse(
+    public Response<RecordingStatusResult> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
         StartRecordingOptions options,
@@ -160,7 +160,7 @@ public class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStatusResponse getRecordingState(String recordingId) {
+    public RecordingStatusResult getRecordingState(String recordingId) {
         return callRecordingAsync.getRecordingState(recordingId).block();
     }
 
@@ -174,7 +174,7 @@ public class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStatusResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<RecordingStatusResult> getRecordingStateWithResponse(String recordingId, Context context) {
         return callRecordingAsync.getRecordingStateWithResponseInternal(recordingId, context).block();
     }
 

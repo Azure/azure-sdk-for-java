@@ -1647,6 +1647,36 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     row.getLong(0) shouldEqual colVal1
   }
 
+  "timestamp in current ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val current = "current"
+    val colName1 = "_ts"
+    val colVal1 = 123456789
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val currentNode: ObjectNode = objectNode.putObject(current)
+    currentNode.put(colName1, colVal1)
+    objectNode.set(current, currentNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.TimestampAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
+  "timestamp in previous ObjectNode" should "translate to (Change Feed V1) Row" in {
+    val previous = "previous"
+    val colName1 = "_ts"
+    val colVal1 = 123456789
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val previousNode: ObjectNode = objectNode.putObject(previous)
+    previousNode.put(colName1, colVal1)
+    objectNode.set(previous, previousNode)
+
+    val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.TimestampAttributeName, LongType)))
+    val row = defaultRowConverter.fromObjectNodeToChangeFeedRowV1(schema, objectNode, SchemaConversionModes.Relaxed)
+    row.getLong(0) shouldEqual colVal1
+  }
+
   "operationType in metadata ObjectNode" should "translate to (Change Feed V1) Row" in {
     val metadata = "metadata"
     val colName1 = "operationType"
