@@ -34,6 +34,15 @@ public final class AcsEventTypeInternal extends ExpandableStringEnum<AcsEventTyp
     /** Static value participantsUpdated for AcsEventTypeInternal. */
     public static final AcsEventTypeInternal PARTICIPANTS_UPDATED = fromString("participantsUpdated");
 
+    /** Static value recordingStateChanged for AcsEventTypeInternal. */
+    public static final AcsEventTypeInternal RECORDING_STATE_CHANGED = fromString("recordingStateChanged");
+
+    /** Static value playCompleted for AcsEventTypeInternal. */
+    public static final AcsEventTypeInternal PLAY_COMPLETED = fromString("playCompleted");
+
+    /** Static value playFailed for AcsEventTypeInternal. */
+    public static final AcsEventTypeInternal PLAY_FAILED = fromString("playFailed");
+
     /**
      * Creates or finds a AcsEventTypeInternal from its string representation.
      *

@@ -35,6 +35,12 @@ public final class CreateCallRequestInternal {
     @JsonProperty(value = "callbackUri", required = true)
     private String callbackUri;
 
+    /*
+     * Media Streaming Configuration.
+     */
+    @JsonProperty(value = "mediaStreamingConfiguration")
+    private MediaStreamingConfigurationDto mediaStreamingConfiguration;
+
     /**
      * Get the targets property: The targets of the call.
      *
@@ -112,6 +118,27 @@ public final class CreateCallRequestInternal {
      */
     public CreateCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
+     *
+     * @return the mediaStreamingConfiguration value.
+     */
+    public MediaStreamingConfigurationDto getMediaStreamingConfiguration() {
+        return this.mediaStreamingConfiguration;
+    }
+
+    /**
+     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
+     *
+     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setMediaStreamingConfiguration(
+            MediaStreamingConfigurationDto mediaStreamingConfiguration) {
+        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }
 }

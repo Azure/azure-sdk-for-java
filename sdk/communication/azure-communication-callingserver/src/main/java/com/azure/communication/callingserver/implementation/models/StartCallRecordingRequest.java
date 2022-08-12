@@ -6,6 +6,7 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The request payload start for call recording operation with call locator. */
 @Fluent
@@ -39,6 +40,12 @@ public final class StartCallRecordingRequest {
      */
     @JsonProperty(value = "recordingFormatType")
     private RecordingFormatInternal recordingFormatType;
+
+    /*
+     * The channel affinity of call recording.
+     */
+    @JsonProperty(value = "channelAffinity")
+    private List<ChannelAffinity> channelAffinity;
 
     /**
      * Get the callLocator property: The call locator.
@@ -137,6 +144,26 @@ public final class StartCallRecordingRequest {
      */
     public StartCallRecordingRequest setRecordingFormatType(RecordingFormatInternal recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
+        return this;
+    }
+
+    /**
+     * Get the channelAffinity property: The channel affinity of call recording.
+     *
+     * @return the channelAffinity value.
+     */
+    public List<ChannelAffinity> getChannelAffinity() {
+        return this.channelAffinity;
+    }
+
+    /**
+     * Set the channelAffinity property: The channel affinity of call recording.
+     *
+     * @param channelAffinity the channelAffinity value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setChannelAffinity(List<ChannelAffinity> channelAffinity) {
+        this.channelAffinity = channelAffinity;
         return this;
     }
 }
