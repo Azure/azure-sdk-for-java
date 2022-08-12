@@ -1,9 +1,8 @@
 # Release History
 
-## 12.0.0-beta.19 (Unreleased)
+## 12.0.0-beta.19 (2022-08-12)
 
 ### Features Added
-- GA release for STG 83
 
 ### Breaking Changes
 

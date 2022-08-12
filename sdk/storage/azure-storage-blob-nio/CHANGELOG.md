@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.20 (Unreleased)
+## 12.0.0-beta.20 (2022-08-12)
 
 ### Features Added
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.19.0 (2022-08-11)
+## 12.19.0 (2022-08-12)
 
 ### Features Added
 - Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
