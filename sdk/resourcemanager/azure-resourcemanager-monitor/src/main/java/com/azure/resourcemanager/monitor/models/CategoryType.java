@@ -4,44 +4,35 @@
 
 package com.azure.resourcemanager.monitor.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for CategoryType. */
-public enum CategoryType {
-    /** Enum value Metrics. */
-    METRICS("Metrics"),
+/** The type of the diagnostic settings category. */
+public final class CategoryType extends ExpandableStringEnum<CategoryType> {
+    /** Static value Metrics for CategoryType. */
+    public static final CategoryType METRICS = fromString("Metrics");
 
-    /** Enum value Logs. */
-    LOGS("Logs");
+    /** Static value Logs for CategoryType. */
+    public static final CategoryType LOGS = fromString("Logs");
 
-    /** The actual serialized value for a CategoryType instance. */
-    private final String value;
-
-    CategoryType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a CategoryType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding CategoryType.
+     */
+    @JsonCreator
+    public static CategoryType fromString(String name) {
+        return fromString(name, CategoryType.class);
     }
 
     /**
-     * Parses a serialized value to a CategoryType instance.
+     * Gets known CategoryType values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed CategoryType object, or null if unable to parse.
+     * @return known CategoryType values.
      */
-    @JsonCreator
-    public static CategoryType fromString(String value) {
-        CategoryType[] items = CategoryType.values();
-        for (CategoryType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<CategoryType> values() {
+        return values(CategoryType.class);
     }
 }
