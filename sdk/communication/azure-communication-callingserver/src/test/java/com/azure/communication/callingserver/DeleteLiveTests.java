@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class DeleteLiveTests extends CallAutomationLiveTestBase {
@@ -48,8 +49,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
                 .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
             assertThat(response.getStatusCode(), is(equalTo(200)));
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            throw e;
+            fail("Unexpected exception received", e);
         }
     }
 

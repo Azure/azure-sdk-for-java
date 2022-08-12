@@ -24,6 +24,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doThrow;
 
 public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
@@ -58,8 +59,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
             String metadata = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
             assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            throw e;
+            fail("Unexpected exception received", e);
         }
     }
 
@@ -86,8 +86,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
                 Integer.parseInt(response.getHeaders().getValue("Content-Length")),
                 is(equalTo(byteArrayOutputStream.size())));
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            throw e;
+            fail("Unexpected exception received", e);
         }
     }
 
