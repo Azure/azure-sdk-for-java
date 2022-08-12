@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.models.events.CallAutomationEventBa
 import com.azure.communication.callingserver.models.events.CallConnectedEvent;
 import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent;
 import com.azure.communication.callingserver.models.events.PlayCompleted;
+import com.azure.communication.callingserver.models.events.PlayFailed;
 import com.azure.communication.callingserver.models.events.RecordingStateChangedEvent;
 import org.junit.jupiter.api.Test;
 
@@ -73,12 +74,61 @@ public class EventHandlerUnitTests {
 
     @Test
     public void parsePlayCompletedEvent() {
-        String receivedEvent = "";
+        String receivedEvent = "[{\n"
+            + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayCompleted\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayCompleted\",\n"
+            + "\"data\": {\n"
+            + "\"resultInfo\": {\n"
+            + "\"code\": 200,\n"
+            + "\"subCode\": 0,\n"
+            + "\"message\": \"Action completed successfully.\"\n"
+            + "},\n"
+            + "\"type\": \"playCompleted\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n"
+            + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId/PlayCompleted\"\n"
+            + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
         PlayCompleted playCompleted = (PlayCompleted) event;
         assertNotNull(playCompleted);
         assertEquals("serverCallId", playCompleted.getServerCallId());
         assertEquals(200, playCompleted.getResultInfo().getCode());
+    }
+
+    @Test
+    public void parsePlayFailedEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayFailed\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayFailed\",\n"
+            + "\"data\": {\n"
+            + "\"resultInfo\": {\n"
+            + "\"code\": 404,\n"
+            + "\"subCode\": 0,\n"
+            + "\"message\": \"File source was not found\"\n"
+            + "},\n"
+            + "\"type\": \"playFailed\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n"
+            + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId/PlayFailed\"\n"
+            + "}]";
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        assertNotNull(event);
+        PlayFailed playFailed = (PlayFailed) event;
+        assertNotNull(playFailed);
+        assertEquals("serverCallId", playFailed.getServerCallId());
+        assertEquals(404, playFailed.getResultInfo().getCode());
     }
 }
