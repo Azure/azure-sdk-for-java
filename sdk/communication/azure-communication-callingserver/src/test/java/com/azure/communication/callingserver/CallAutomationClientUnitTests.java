@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-public class CallAutomationClientUnitTests extends CallAutomationTestBase {
+public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
 
     @Test
     public void createCall() throws URISyntaxException {

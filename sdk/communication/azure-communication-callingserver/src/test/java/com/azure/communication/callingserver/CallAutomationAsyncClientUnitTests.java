@@ -22,7 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CallAutomationAsyncClientUnitTests extends CallAutomationTestBase {
+public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBase {
     @Test
     public void createCall() throws URISyntaxException {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(

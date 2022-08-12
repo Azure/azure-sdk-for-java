@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CallRecordingUnitTests extends CallRecordingTestBase {
+public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
     private CallRecording callRecording;
 
     @BeforeEach
     public void setup() {
-        CallAutomationClient callAutomationClient = CallAutomationTestBase.getCallAutomationClient(new ArrayList<>());
+        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>());
         callRecording = callAutomationClient.getCallRecording();
     }
     @Test
@@ -62,7 +62,7 @@ public class CallRecordingUnitTests extends CallRecordingTestBase {
     @Test
     public void recordingOperationsTest() {
 
-        CallAutomationClient callAutomationClient = CallAutomationTestBase.getCallAutomationClient(
+        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(
             recordingOperationsResponses
         );
         callRecording = callAutomationClient.getCallRecording();

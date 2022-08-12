@@ -26,7 +26,7 @@ public class CallMediaAsyncUnitTests {
     @BeforeEach
     public void setup() {
         CallConnectionAsync callConnection =
-            CallAutomationTestBase.getCallConnectionAsync(new ArrayList<>(
+            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202)))
             );
         callMedia = callConnection.getCallMediaAsync();

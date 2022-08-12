@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class CallAutomationTestBase {
+public class CallAutomationUnitTestBase {
     static final String MOCK_ENDPOINT = "https://REDACTED.communication.azure.com/";
     static final String MOCK_CONNECTION_STRING = String.format("endpoint=%s;accesskey=eyJhbG", MOCK_ENDPOINT);
     static final String CALL_CONNECTION_ID = "callConnectionId";

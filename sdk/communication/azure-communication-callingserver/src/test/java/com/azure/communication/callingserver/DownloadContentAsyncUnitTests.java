@@ -39,9 +39,9 @@ public class DownloadContentAsyncUnitTests {
     @BeforeEach
     public void setup() {
         CallAutomationAsyncClient callingServerClient =
-            CallAutomationTestBase.getCallAutomationAsyncClient(new ArrayList<>(
+            CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
                 Collections.singletonList(
-                    new SimpleEntry<>(CallAutomationTestBase.generateDownloadResult(CONTENTS), 200)
+                    new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENTS), 200)
                 )));
         callRecording = callingServerClient.getCallRecordingAsync();
     }
@@ -71,7 +71,7 @@ public class DownloadContentAsyncUnitTests {
     @Test
     public void downloadStreamWithResponseThrowException() {
         CallAutomationAsyncClient callingServerClient =
-            CallAutomationTestBase.getCallAutomationAsyncClient(new ArrayList<>(
+            CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
                 Collections.singletonList(
                     new SimpleEntry<>("", 416)
                 )));
