@@ -211,6 +211,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;4.3.0;4.4.0-be
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;4.3.0;4.4.0-beta.1
 com.azure.spring:spring-cloud-azure-trace-sleuth;4.3.0;4.4.0-beta.1
 com.azure.spring:spring-cloud-azure-native-configuration;4.0.0-beta.1;4.0.0-beta.2
+com.azure.spring:spring-cloud-azure-integration-tests;1.0-SNAPSHOT;1.0-SNAPSHOT
 com.azure.resourcemanager:azure-resourcemanager;2.17.0;2.18.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.17.0;2.18.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.17.0;2.18.0-beta.1
@@ -426,3 +427,4 @@ spring3_com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;5.0.0-beta.1
 spring3_com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;5.0.0-beta.1;5.0.0-beta.1
 spring3_com.azure.spring:spring-cloud-azure-stream-binder-servicebus;5.0.0-beta.1;5.0.0-beta.1
 spring3_com.azure.spring:spring-cloud-azure-trace-sleuth;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-integration-tests;2.0-SNAPSHOT;2.0-SNAPSHOT
