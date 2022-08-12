@@ -20,8 +20,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

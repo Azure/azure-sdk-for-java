@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class PrivateDnsZoneConfig {
     /*
-     * Name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

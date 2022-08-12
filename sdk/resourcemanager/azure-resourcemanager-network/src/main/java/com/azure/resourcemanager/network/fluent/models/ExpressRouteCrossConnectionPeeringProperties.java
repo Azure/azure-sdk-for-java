@@ -82,8 +82,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
-     * The provisioning state of the express route cross connection peering
-     * resource.
+     * The provisioning state of the express route cross connection peering resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;

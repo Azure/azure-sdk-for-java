@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BastionConnectProtocol. */
+/** The protocol used to connect to the target. */
 public final class BastionConnectProtocol extends ExpandableStringEnum<BastionConnectProtocol> {
     /** Static value SSH for BastionConnectProtocol. */
     public static final BastionConnectProtocol SSH = fromString("SSH");

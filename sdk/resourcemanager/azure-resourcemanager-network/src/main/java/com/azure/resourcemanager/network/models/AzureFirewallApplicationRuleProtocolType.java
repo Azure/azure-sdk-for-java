@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallApplicationRuleProtocolType. */
+/** The protocol type of a Application Rule resource. */
 public final class AzureFirewallApplicationRuleProtocolType
     extends ExpandableStringEnum<AzureFirewallApplicationRuleProtocolType> {
     /** Static value Http for AzureFirewallApplicationRuleProtocolType. */

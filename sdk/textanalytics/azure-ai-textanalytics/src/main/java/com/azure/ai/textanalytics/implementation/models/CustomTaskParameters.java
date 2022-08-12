@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class CustomTaskParameters extends TaskParameters {
     /*
-     * The projectName property.
+     * This field indicates the project name for the model.
      */
     @JsonProperty(value = "projectName", required = true)
     private String projectName;
 
     /*
-     * The deploymentName property.
+     * This field indicates the deployment name for the model.
      */
     @JsonProperty(value = "deploymentName", required = true)
     private String deploymentName;
 
     /**
-     * Get the projectName property: The projectName property.
+     * Get the projectName property: This field indicates the project name for the model.
      *
      * @return the projectName value.
      */
@@ -32,7 +32,7 @@ public class CustomTaskParameters extends TaskParameters {
     }
 
     /**
-     * Set the projectName property: The projectName property.
+     * Set the projectName property: This field indicates the project name for the model.
      *
      * @param projectName the projectName value to set.
      * @return the CustomTaskParameters object itself.
@@ -43,7 +43,7 @@ public class CustomTaskParameters extends TaskParameters {
     }
 
     /**
-     * Get the deploymentName property: The deploymentName property.
+     * Get the deploymentName property: This field indicates the deployment name for the model.
      *
      * @return the deploymentName value.
      */
@@ -52,7 +52,7 @@ public class CustomTaskParameters extends TaskParameters {
     }
 
     /**
-     * Set the deploymentName property: The deploymentName property.
+     * Set the deploymentName property: This field indicates the deployment name for the model.
      *
      * @param deploymentName the deploymentName value to set.
      * @return the CustomTaskParameters object itself.

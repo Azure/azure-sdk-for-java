@@ -4,10 +4,10 @@ package com.azure.cosmos.implementation.changefeed.fullfidelity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
@@ -58,7 +58,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             Mono.just(this)
             .flatMap( value -> this.tryReplaceLease(cachedLease, itemId, partitionKey))
             .map(leaseDocument -> {
-                cachedLease.setServiceItemLease(ServiceItemLease.fromDocument(leaseDocument));
+                cachedLease.setServiceItemLease(ServiceItemLeaseV1.fromDocument(leaseDocument));
                 return cachedLease;
             })
             .hasElement()
@@ -71,9 +71,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException ex = (CosmosException) throwable;
-                            if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
-                                logger.info(
-                                    "Partition {} could not be found.", cachedLease.getLeaseToken());
+                            if (Exceptions.isNotFound(ex)) {
+                                logger.info("Partition {} could not be found.", cachedLease.getLeaseToken());
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
@@ -82,7 +81,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     .map(cosmosItemResponse -> {
                         InternalObjectNode document =
                             BridgeInternal.getProperties(cosmosItemResponse);
-                        ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
+                        ServiceItemLeaseV1 serverLease = ServiceItemLeaseV1.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
                             cachedLease.getLeaseToken(),
@@ -92,7 +91,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
 
                         // Check if we still have the expected ownership on the target lease.
                         if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(cachedLease.getOwner())) {
-                            logger.info("Partition {} lease was acquired already by owner '{}'", serverLease.getLeaseToken(), serverLease.getOwner());
+                            logger.info("Partition {} lease was acquired already by owner '{}'",
+                                serverLease.getLeaseToken(), serverLease.getOwner());
                             throw new LeaseLostException(serverLease);
                         }
 
@@ -120,7 +120,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         cachedLease.getLeaseToken(),
                         cachedLease.getConcurrencyToken(),
                         cachedLease.getOwner(),
-                        cachedLease.getContinuationToken(), throwable);
+                        cachedLease.getReadableContinuationToken(), throwable);
 
                     return Mono.just(cachedLease);
                 }
