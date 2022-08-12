@@ -149,7 +149,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinke
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
 import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED;
-import static com.azure.ai.textanalytics.implementation.models.State.PARTIALLY_COMPLETED;
 import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
 import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -1236,8 +1235,6 @@ class AnalyzeActionsAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
             } else if (CANCELLED.equals(state)) {
                 status = LongRunningOperationStatus.USER_CANCELLED;
-            } else if (PARTIALLY_COMPLETED.equals(state)) {
-                status = LongRunningOperationStatus.fromString("partiallySucceeded", true);
             } else {
                 status = LongRunningOperationStatus.fromString(
                     analyzeJobStateResponse.getValue().getStatus().toString(), true);
