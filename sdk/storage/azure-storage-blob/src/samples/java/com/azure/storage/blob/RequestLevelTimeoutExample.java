@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -25,8 +26,11 @@ import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 /**
- * This example shows how to use read/write request level timeouts for storage client using the Azure Storage Blob
- * SDK for Java.
+ * This example shows how to use request level timeouts. These timeouts relate to the round trip time for an individual
+ * request. It is the time between the request leaving the client and the response headers being received by the client.
+ * These options offer a mid-level granularity. If one of these values times out, it will be automatically retried.
+ * Note that for write operations in particular, this includes the time it takes to complete writing the body as the
+ * service will not return a response until this is finished.
  */
 public class RequestLevelTimeoutExample {
 
@@ -63,15 +67,6 @@ public class RequestLevelTimeoutExample {
         RequestRetryOptions retryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 3, 1000L, 1500L, null);
         HttpResponse mockHttpResponse = new MockHttpResponse(new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")), 202);
 
-        HttpPipelinePolicy mockPolicy = new HttpPipelinePolicy() {
-            int count = 0;
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                System.out.println("Number of retries: " + ++count);
-                return Mono.just(mockHttpResponse).delayElement(Duration.ofSeconds(5L));
-            }
-        };
-
         /*
          * Create a BlobServiceClient object that wraps the service endpoint, credential, retry options, and a request pipeline.
          */
@@ -79,7 +74,7 @@ public class RequestLevelTimeoutExample {
             .endpoint(endpoint)
             .credential(credential)
             .retryOptions(retryOptions)
-            .addPolicy(mockPolicy)
+            .addPolicy(new TimeoutPolicy(mockHttpResponse))
             .buildClient();
 
         /*
@@ -91,6 +86,31 @@ public class RequestLevelTimeoutExample {
             if (ex.getCause() instanceof TimeoutException) {
                 System.out.println("Operation failed due to timeout: " + ex.getMessage());
             }
+        }
+    }
+
+    /**
+     * A simple policy that sets duration timeout per call of 5 seconds.
+     */
+    static class TimeoutPolicy implements HttpPipelinePolicy {
+
+        HttpResponse mockHttpResponse;
+        int count;
+
+        TimeoutPolicy(HttpResponse httpResponse) {
+            mockHttpResponse = httpResponse;
+            count = 0;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            System.out.println("Number of retries: " + ++count);
+            return Mono.just(mockHttpResponse).delayElement(Duration.ofSeconds(5L));
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
         }
     }
 

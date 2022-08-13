@@ -9,13 +9,13 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 /**
- * This example shows how to use read/write connection level timeouts for storage client using the Azure Storage Blob
- * SDK for Java.
+ * This example shows how to use connection level timeouts. These timeouts relate to discrete sections of the
+ * connection/request/response process such as time to receive headers or time between reading bytes. These options
+ * offer the most granular control. If one of these values times out, it will be automatically retried.
+ * Please see {@link HttpClientOptions} for more detailed information on each option.
  */
 public class ConnectionLevelTimeoutExample {
 
@@ -75,13 +75,5 @@ public class ConnectionLevelTimeoutExample {
                 System.out.println("Operation failed due to timeout: " + ex.getMessage());
             }
         }
-    }
-
-    private static byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(UUID.randomUUID().toString()).getMostSignificantBits() & Long.MAX_VALUE;
-        Random rand = new Random(seed);
-        byte[] data = new byte[size];
-        rand.nextBytes(data);
-        return data;
     }
 }

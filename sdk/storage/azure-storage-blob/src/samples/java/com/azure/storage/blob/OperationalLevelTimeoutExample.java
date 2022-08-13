@@ -3,40 +3,26 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.concurrent.TimeoutException;
 
 /**
- * This example shows how to use read/write operation level timeouts for storage client using the Azure Storage Blob
- * SDK for Java.
+ * This example shows how to use connection level timeouts. These timeouts relate to the entire operation to complete
+ * and return, including retries, so any TimeoutException thrown will not be retried. It may be thought of as the amount
+ * of time a given sync api call may wait before timing out and allowing the application to proceed. This is
+ * highest-level form of retries.
  */
 public class OperationalLevelTimeoutExample {
 
@@ -69,6 +55,8 @@ public class OperationalLevelTimeoutExample {
         /*
          * Create a BlobServiceClient object that wraps the service endpoint, credential, policy with
          * timeout per call, and a request pipeline.
+         * Note: this is not necessary to implement timeouts. This is only here to allow the sample to be independently
+         * runnable and demonstrate behavior.
          */
         BlobServiceClient storageClient = new BlobServiceClientBuilder()
             .endpoint(endpoint)
@@ -133,6 +121,5 @@ public class OperationalLevelTimeoutExample {
         public HttpPipelinePosition getPipelinePosition() {
             return HttpPipelinePosition.PER_CALL;
         }
-
     }
 }
