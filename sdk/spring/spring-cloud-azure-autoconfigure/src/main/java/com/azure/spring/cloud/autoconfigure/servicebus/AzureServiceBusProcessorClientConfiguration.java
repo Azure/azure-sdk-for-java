@@ -15,6 +15,7 @@ import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceB
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
+import com.azure.spring.messaging.servicebus.implementation.core.ServiceBusProcessorClientSupport;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +36,14 @@ import org.springframework.util.StringUtils;
     AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
 })
 class AzureServiceBusProcessorClientConfiguration {
+
+    @ConditionalOnBean(ServiceBusProcessorClient.class)
+    @ConditionalOnMissingBean(ServiceBusProcessorClientSupport.class)
+    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
+        matchIfMissing = true)
+    ServiceBusProcessorClientSupport processorClientSupport(ServiceBusProcessorClient processorClient){
+        return new ServiceBusProcessorClientSupport(processorClient);
+    }
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-enabled", havingValue = "false",
