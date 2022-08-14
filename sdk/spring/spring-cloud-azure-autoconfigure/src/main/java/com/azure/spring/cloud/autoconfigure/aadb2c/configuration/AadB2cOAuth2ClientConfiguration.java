@@ -25,7 +25,6 @@ import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationF
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,12 +58,12 @@ public class AadB2cOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        final List<ClientRegistration> clientRegistrations = new ArrayList<>();
-        clientRegistrations.addAll(properties.getUserFlows()
+        final List<ClientRegistration> clientRegistrations = properties.getUserFlows()
                   .entrySet()
                   .stream()
                   .map(this::buildUserFlowClientRegistration)
-                  .collect(Collectors.toList()));
+                  .collect(Collectors.toList());
+        
         clientRegistrations.addAll(properties.getAuthorizationClients()
                                              .entrySet()
                                              .stream()

@@ -4,9 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,12 +34,7 @@ class ResourceRetrieverTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(ResourceRetriever.class);
                 final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
-                assertThat(retriever).isInstanceOf(DefaultResourceRetriever.class);
-
-                final DefaultResourceRetriever defaultRetriever = (DefaultResourceRetriever) retriever;
-                assertThat(defaultRetriever.getConnectTimeout()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
-                assertThat(defaultRetriever.getReadTimeout()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
-                assertThat(defaultRetriever.getSizeLimit()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT);
+                assertThat(retriever).isInstanceOf(RestOperationsResourceRetriever.class);
             });
     }
 
@@ -55,12 +49,7 @@ class ResourceRetrieverTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(ResourceRetriever.class);
                 final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
-                assertThat(retriever).isInstanceOf(DefaultResourceRetriever.class);
-
-                final DefaultResourceRetriever defaultRetriever = (DefaultResourceRetriever) retriever;
-                assertThat(defaultRetriever.getConnectTimeout()).isEqualTo(1234);
-                assertThat(defaultRetriever.getReadTimeout()).isEqualTo(1234);
-                assertThat(defaultRetriever.getSizeLimit()).isEqualTo(123400);
+                assertThat(retriever).isInstanceOf(RestOperationsResourceRetriever.class);
             });
     }
 }

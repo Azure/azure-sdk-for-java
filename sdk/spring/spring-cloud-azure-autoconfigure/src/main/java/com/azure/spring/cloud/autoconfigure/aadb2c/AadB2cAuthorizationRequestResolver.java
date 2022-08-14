@@ -38,7 +38,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private static final AntPathRequestMatcher REQUEST_MATCHER = new AntPathRequestMatcher(MATCHER_PATTERN);
 
-    private final OAuth2AuthorizationRequestResolver defaultResolver;
+    private final OAuth2AuthorizationRequestResolver delegateResolver;
 
     private final String passwordResetUserFlow;
 
@@ -52,9 +52,14 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
      */
     public AadB2cAuthorizationRequestResolver(ClientRegistrationRepository repository,
                                               AadB2cProperties properties) {
+        this(properties, new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI));
+    }
+
+    public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
+                                              OAuth2AuthorizationRequestResolver delegateResolver) {
         this.properties = properties;
         this.passwordResetUserFlow = this.properties.getPasswordReset();
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
+        this.delegateResolver = delegateResolver;
     }
 
     /**
@@ -82,12 +87,12 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     @Override
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String registrationId) {
         if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
-            final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
+            final OAuth2AuthorizationRequest authRequest = delegateResolver.resolve(request, passwordResetUserFlow);
             return getB2cAuthorizationRequest(authRequest, passwordResetUserFlow);
         }
 
         if (StringUtils.hasText(registrationId) && REQUEST_MATCHER.matches(request)) {
-            return getB2cAuthorizationRequest(defaultResolver.resolve(request), registrationId);
+            return getB2cAuthorizationRequest(delegateResolver.resolve(request), registrationId);
         }
 
         // Return null may not be the good practice, but we need to align with oauth2.client.web

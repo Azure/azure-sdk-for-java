@@ -7,22 +7,25 @@ import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfi
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
-import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
 
@@ -98,19 +101,23 @@ public class AadAuthenticationFilterAutoConfiguration {
         );
     }
 
+    @Bean
+    @ConditionalOnMissingBean(RestOperations.class)
+    public RestOperations restOperations(ObjectProvider<RestTemplateBuilder> builderObjectProvider) {
+        RestTemplateBuilder builder = builderObjectProvider.getIfAvailable(RestTemplateBuilder::new);
+        return builder.build();
+    }
+
     /**
      * Declare JWT ResourceRetriever bean.
      *
+     * @param restOperations the rest operations used by the resource retriever.
      * @return JWT ResourceRetriever bean
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever() {
-        return new DefaultResourceRetriever(
-            (int) properties.getJwtConnectTimeout().toMillis(),
-            (int) properties.getJwtReadTimeout().toMillis(),
-            properties.getJwtSizeLimit()
-        );
+    public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
+        return new RestOperationsResourceRetriever(restOperations);
     }
 
     /**
