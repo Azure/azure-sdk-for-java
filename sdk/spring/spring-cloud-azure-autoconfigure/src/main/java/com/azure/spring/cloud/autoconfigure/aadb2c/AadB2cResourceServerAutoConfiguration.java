@@ -73,7 +73,7 @@ public class AadB2cResourceServerAutoConfiguration {
     }
     @Bean
     @ConditionalOnMissingBean(RestOperations.class)
-    public RestOperations restOperations(ObjectProvider<RestTemplateBuilder> builderObjectProvider) {
+    public RestOperations aadAuthRestOperations(ObjectProvider<RestTemplateBuilder> builderObjectProvider) {
         RestTemplateBuilder builder = builderObjectProvider.getIfAvailable(RestTemplateBuilder::new);
         return builder.build();
     }

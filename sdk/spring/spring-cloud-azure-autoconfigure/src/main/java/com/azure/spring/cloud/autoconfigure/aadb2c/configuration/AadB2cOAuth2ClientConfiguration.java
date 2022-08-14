@@ -28,6 +28,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -58,17 +59,18 @@ public class AadB2cOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        final List<ClientRegistration> clientRegistrations = properties.getUserFlows()
-                  .entrySet()
-                  .stream()
-                  .map(this::buildUserFlowClientRegistration)
-                  .collect(Collectors.toList());
-        
-        clientRegistrations.addAll(properties.getAuthorizationClients()
-                                             .entrySet()
-                                             .stream()
-                                             .map(this::buildClientRegistration)
-                                             .collect(Collectors.toList()));
+        Stream<ClientRegistration> clientRegistrationStream = properties.getUserFlows()
+                                                                        .entrySet()
+                                                                        .stream()
+                                                                        .map(this::buildUserFlowClientRegistration);
+
+        Stream<ClientRegistration> authorizationClientRegistrations = properties.getAuthorizationClients()
+                                                                                .entrySet()
+                                                                                .stream()
+                                                                                .map(this::buildClientRegistration);
+        final List<ClientRegistration> clientRegistrations = Stream.concat(clientRegistrationStream,
+                                                                       authorizationClientRegistrations)
+                                                                   .collect(Collectors.toList());
         return new AadB2cClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
     }
 
