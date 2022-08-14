@@ -55,6 +55,12 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         this(properties, new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI));
     }
 
+    /**
+     * Creates a new instance of {@link AadB2cAuthorizationRequestResolver}.
+     *
+     * @param properties the AAD B2C properties.
+     * @param delegateResolver the delegate resolver.
+     */
     public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
                                               OAuth2AuthorizationRequestResolver delegateResolver) {
         this.properties = properties;

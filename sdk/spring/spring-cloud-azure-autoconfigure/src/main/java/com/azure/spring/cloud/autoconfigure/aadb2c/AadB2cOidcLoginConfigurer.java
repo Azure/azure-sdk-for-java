@@ -35,7 +35,13 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
     public AadB2cOidcLoginConfigurer(AadB2cLogoutSuccessHandler handler, AadB2cAuthorizationRequestResolver resolver) {
         this(handler, resolver, null);
     }
-
+    /**
+     * Creates a new instance of {@link AadB2cOidcLoginConfigurer}.
+     *
+     * @param handler the AAD B2C logout success handler
+     * @param resolver the AAD B2C authorization request resolver
+     * @param accessTokenResponseClient the AAD B2C access token response client
+     */
     public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler, OAuth2AuthorizationRequestResolver resolver, OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient) {
         this.handler = handler;
         this.resolver = resolver;

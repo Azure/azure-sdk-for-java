@@ -71,6 +71,13 @@ public class AadB2cResourceServerAutoConfiguration {
     public AadTrustedIssuerRepository trustedIssuerRepository() {
         return new AadB2cTrustedIssuerRepository(properties);
     }
+
+    /**
+     * Declare RestOperations bean used by various Nimbus JWT components.
+     *
+     * @param builderObjectProvider the optional rest template builder bean.
+     * @return JWT ResourceRetriever bean
+     */
     @Bean
     @ConditionalOnMissingBean(RestOperations.class)
     public RestOperations aadAuthRestOperations(ObjectProvider<RestTemplateBuilder> builderObjectProvider) {
