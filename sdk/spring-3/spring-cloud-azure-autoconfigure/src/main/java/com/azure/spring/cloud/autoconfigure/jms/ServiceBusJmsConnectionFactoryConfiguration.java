@@ -56,7 +56,7 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
                                                           AzureServiceBusJmsProperties properties,
                                                           ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
                 ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
-                CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
+                CachingConnectionFactory connectionFactory = new CachingConnectionFactory((ConnectionFactory) factory);
                 JmsProperties.Cache cacheProperties = jmsProperties.getCache();
                 connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
                 connectionFactory.setCacheProducers(cacheProperties.isProducers());
@@ -77,7 +77,7 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
                                                           ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
             ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
             return new JmsPoolConnectionFactoryFactory(properties.getPool())
-                .createPooledConnectionFactory(factory);
+                .createPooledConnectionFactory((ConnectionFactory) factory);
         }
     }
 }

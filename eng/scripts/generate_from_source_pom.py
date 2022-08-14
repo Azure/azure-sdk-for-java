@@ -53,13 +53,14 @@ client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 sdk_string = "/sdk/"
 service_directories_dict = {"spring": ["spring-3"]}
 # { service directory name: (version tag prefix, group id, the artifact id name for service directory) }
-multi_service_directory_prefix_dict = {"spring-3": ("spring3_", "com.azure.spring", "spring-cloud-azure")}
+multi_service_directory_prefix_dict = {"spring-3": ("spring3_", "com.azure.spring", "spring-cloud-azure"), "spring": ("placeholder", "com.azure.spring", "spring-cloud-azure")}
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool,
                            service_directory: str):
     project_list_identifiers = project_list.split(',')
 
+    # process the project list identifiers under 'spring-3'
     for sd in service_directories_dict.items():
         if service_directory in sd[1]:
             for pli in project_list_identifiers:
@@ -71,6 +72,19 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
                     artifact_id = pli_list[pli_list.index('sdk') + 2]
                 pli_tag = multi_service_directory_prefix_dict[sd_name][0] + multi_service_directory_prefix_dict[sd_name][1] + ':' + artifact_id
                 project_list_identifiers[project_list_identifiers.index(pli)] = pli_tag
+
+    # process the project list identifiers under 'spring'
+    if service_directory in service_directories_dict.keys():
+        for pli in project_list_identifiers:
+            pli_list = pli.split('/')
+            sdk_idx = pli_list.index('sdk')
+            sd_name = pli_list[sdk_idx + 1]
+            if len(pli_list) == 3:
+                artifact_id = multi_service_directory_prefix_dict[sd_name][2]
+            else:
+                artifact_id = pli_list[pli_list.index('sdk') + 2]
+            pli_tag = multi_service_directory_prefix_dict[sd_name][1] + ':' + artifact_id
+            project_list_identifiers[project_list_identifiers.index(pli)] = pli_tag
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
@@ -230,6 +244,8 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
+                if "sdk" in file_path and "spring" in file_path:
+                    print("aaaaa")
                 project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_version, match_any_version, service_directory)
                 if project is not None:
                     projects[project.identifier] = project
@@ -356,6 +372,9 @@ def is_spring_child_pom(tree_root: ET.Element):
 
 def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
     for project_identifier in project_identifiers:
+        print("****", project_identifier)
+        if "./sdk/spring/spring-cloud-azure-core" == project_identifier or "./sdk/spring-3/spring-cloud-azure-core" == project_identifier:
+            print("found")
         project = projects[project_identifier]
         source_projects.add(project)
 

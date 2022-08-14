@@ -9,6 +9,7 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessag
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Disabled("Enable when the service bus sdk version is upgraded higher than 7.10.0")
 public class DefaultServiceBusNamespaceProcessorFactoryTests {
     private ServiceBusProcessorFactory processorFactory;
     private final String entityName = "test";
