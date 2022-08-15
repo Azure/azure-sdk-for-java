@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.ConnectionsClient;
 import com.azure.resourcemanager.automation.fluent.models.ConnectionInner;
 import com.azure.resourcemanager.automation.models.Connection;
 import com.azure.resourcemanager.automation.models.Connections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectionsImpl implements Connections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionsImpl.class);
 
     private final ConnectionsClient innerClient;
 
@@ -79,7 +78,7 @@ public final class ConnectionsImpl implements Connections {
     public Connection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -87,7 +86,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,7 +95,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
@@ -107,7 +106,7 @@ public final class ConnectionsImpl implements Connections {
     public Response<Connection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
@@ -135,7 +134,7 @@ public final class ConnectionsImpl implements Connections {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,18 +151,18 @@ public final class ConnectionsImpl implements Connections {
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, connectionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, connectionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +170,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class ConnectionsImpl implements Connections {
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));

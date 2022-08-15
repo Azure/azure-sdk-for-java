@@ -39,6 +39,7 @@
       --add-reads com.azure.core=ALL-UNNAMED
       --add-reads com.azure.core.test=ALL-UNNAMED
       --add-reads com.azure.core.http.netty=ALL-UNNAMED
+      --add-reads com.azure.containers.containerregistry=com.azure.http.netty
     </javaModulesSurefireArgLine>
   </properties>
 

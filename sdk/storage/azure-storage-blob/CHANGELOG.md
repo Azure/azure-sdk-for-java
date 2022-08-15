@@ -1,6 +1,16 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
+## 12.20.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.19.0 (2022-08-12)
 
 ### Features Added
 - Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
@@ -12,10 +22,6 @@
   `BlockBlobAsyncClient.upload(BinaryData)`, `BlockBlobAsyncClient.upload(BinaryData, boolean)`,
   `BlockBlobClient.stageBlock(String, BinaryData)`, `BlockBlobClient.stageBlockWithResponse(BlockBlobStageBlockOptions, Duration, Context)`,
   `BlockBlobClient.upload(BinaryData)`, `BlockBlobClient.upload(BinaryData, boolean)`
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 - `com.azure.storage.blob.ProgressReceiver` and `com.azure.storage.blob.ProgressReporter` are deprecated
