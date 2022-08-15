@@ -15,7 +15,7 @@ public class CdnSampleTests extends SamplesTestBase {
     // results in an UnknownHostException.
     // https://github.com/Azure/azure-sdk-for-java/issues/30229
     @Test
-    @DisabledOnOs(value = OS.LINUX)
+//    @DisabledOnOs(value = OS.LINUX)
     public void testManageCdnProfileWithCustomDomain() {
         Assertions.assertTrue(ManageCdnWithCustomDomain.runSample(azureResourceManager));
     }
