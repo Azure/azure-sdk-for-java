@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -70,6 +70,7 @@ class EventHubsBinderManualModeIT {
 
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubBinderManualModeIT begin.");
         EventHubsBinderManualModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

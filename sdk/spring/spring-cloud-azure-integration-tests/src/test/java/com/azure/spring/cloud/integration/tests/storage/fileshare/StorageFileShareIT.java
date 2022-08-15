@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.fileshare;
 
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class StorageFileShareIT {
 
     @Test
     public void testStorageFileShareOperation() throws IOException {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("StorageFileShareIT begin.");
         try (OutputStream os = ((WritableResource) storageFileResource).getOutputStream()) {
             os.write(DATA.getBytes());

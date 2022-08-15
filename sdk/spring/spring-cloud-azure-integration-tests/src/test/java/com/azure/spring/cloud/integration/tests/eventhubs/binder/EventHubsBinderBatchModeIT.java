@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -67,6 +67,7 @@ class EventHubsBinderBatchModeIT {
 
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubBinderBatchModeIT begin.");
         EventHubsBinderBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

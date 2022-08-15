@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.queue;
 
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +24,7 @@ public class StorageQueueIT {
 
     @Test
     public void testStorageQueueOperation() {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("StorageQueueIT begin.");
         client.create();
         client.sendMessage(DATA);

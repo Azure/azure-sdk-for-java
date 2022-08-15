@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.blob;
 
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class StorageBlobIT {
 
     @Test
     public void testStorageBlobOperation() throws IOException {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("StorageBlobIT begin.");
         try (OutputStream os = ((WritableResource)storageBlobResource).getOutputStream()) {
             os.write(DATA.getBytes());

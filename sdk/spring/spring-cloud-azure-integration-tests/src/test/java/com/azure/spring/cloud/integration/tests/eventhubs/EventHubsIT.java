@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
@@ -73,6 +74,7 @@ public class EventHubsIT {
 
     @Test
     public void testEventHubOperation() throws InterruptedException {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubsIT begin.");
         producerClient.send(Arrays.asList(new EventData(DATA)));
         producerClient.close();

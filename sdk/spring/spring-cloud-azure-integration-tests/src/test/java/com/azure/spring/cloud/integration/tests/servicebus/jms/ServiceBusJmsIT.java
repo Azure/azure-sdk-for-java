@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.servicebus.jms;
 
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -29,6 +30,7 @@ public class ServiceBusJmsIT {
     @Test
     @Timeout(70)
     public void testServiceBusJmsOperation() throws InterruptedException {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("ServiceBusJmsIT begin.");
         jmsTemplate.convertAndSend(QUEUE_NAME, DATA);
         LOGGER.info("Send message: {}", DATA);

@@ -4,6 +4,7 @@ package com.azure.spring.cloud.integration.tests.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class AppConfigurationIT {
 
     @Test
     public void testAppConfigurationOperation() {
+        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("AppConfigurationIT begin.");
         client.addConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL, SAMPLE_VALUE);
         ConfigurationSetting configurationSetting = client.getConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL);
