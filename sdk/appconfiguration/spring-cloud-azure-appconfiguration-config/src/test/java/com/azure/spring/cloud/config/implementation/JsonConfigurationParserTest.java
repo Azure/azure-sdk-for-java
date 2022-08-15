@@ -54,7 +54,7 @@ public class JsonConfigurationParserTest {
     public void parseSettingTest() throws IOException {
         String currentKey = "config.object";
         JsonNode json = jsonMapper.readValue(new File(JSON_CONTENT_TYPE_DATA), JsonNode.class);
-        HashMap<String, Object> settings = new HashMap<String, Object>();
+        HashMap<String, Object> settings = new HashMap<>();
 
         JsonConfigurationParser.parseSetting(currentKey, json, settings);
 

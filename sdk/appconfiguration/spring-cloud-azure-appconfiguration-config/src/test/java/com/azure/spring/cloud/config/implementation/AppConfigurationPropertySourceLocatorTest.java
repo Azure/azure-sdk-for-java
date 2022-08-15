@@ -19,11 +19,7 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,8 +35,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -109,18 +103,9 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ConfigStore configStoreMockError;
 
     @Mock
-    private Iterator<ConfigStore> configStoreIterator;
-
-    @Mock
     private AppConfigurationProviderProperties appPropertiesMock;
 
     private AppConfigurationProperties properties;
-
-    @Mock
-    HttpPipelineCallContext contextMock;
-
-    @Mock
-    HttpPipelineNextPolicy nextMock;
 
     @Mock
     private PagedIterable<ConfigurationSetting> pagedFluxMock;
@@ -179,9 +164,9 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(iterableMock.iterator()).thenReturn(iteratorMock);
         when(iteratorMock.hasNext()).thenReturn(true).thenReturn(false);
         when(iteratorMock.next()).thenReturn(pagedMock);
-        when(pagedMock.getItems()).thenReturn(new ArrayList<ConfigurationSetting>());
+        when(pagedMock.getItems()).thenReturn(new ArrayList<>());
 
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator());
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true)))
             .thenReturn(Arrays.asList(replicaClientMock));
@@ -275,9 +260,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void storeCreatedWithFeatureFlags() throws MalformedURLException {
-        // when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1)
-        // .thenReturn(FEATURE_ITEM);
-
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(true);
 
@@ -407,8 +389,8 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void awaitOnError() throws Exception {
-        List<ConfigStore> configStores = new ArrayList<ConfigStore>();
+    public void awaitOnError()  {
+        List<ConfigStore> configStores = new ArrayList<>();
         configStores.add(configStoreMockError);
         AppConfigurationProperties properties = new AppConfigurationProperties();
         properties.setStores(configStores);

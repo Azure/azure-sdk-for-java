@@ -36,6 +36,20 @@ public class AppConfigurationReplicaClientFactory {
             }
         }
     }
+    
+    /**
+     * @return the connections
+     */
+    public Map<String, ConnectionManager> getConnections() {
+        return CONNECTIONS;
+    }
+
+    /**
+     * @return the configStores
+     */
+    List<ConfigStore> getConfigStores() {
+        return configStores;
+    }
 
     /**
      * Returns the current used endpoint for a given config store.

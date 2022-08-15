@@ -23,9 +23,7 @@ import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 /**
  * Enables checking of Configuration updates.
@@ -36,8 +34,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
     private final AtomicBoolean running = new AtomicBoolean(false);
-
-    private final List<ConfigStore> configStores;
 
     private ApplicationEventPublisher publisher;
 
@@ -56,11 +52,10 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @param appProperties Library properties for configuring backoff
      * @param clientFactory Clients stores used to connect to App Configuration.
      */
-    public AppConfigurationPullRefresh(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
+    public AppConfigurationPullRefresh(AppConfigurationProviderProperties appProperties,
+        AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval) {
         this.appProperties = appProperties;
-        this.configStores = properties.getStores();
-        this.refreshInterval = properties.getRefreshInterval();
+        this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
 
     }
@@ -113,7 +108,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
             try {
 
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties,
-                    clientFactory, configStores, refreshInterval, profiles);
+                    clientFactory, refreshInterval, profiles);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;

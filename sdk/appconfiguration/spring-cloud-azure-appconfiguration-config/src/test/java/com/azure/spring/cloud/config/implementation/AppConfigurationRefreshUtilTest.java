@@ -11,8 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +51,9 @@ public class AppConfigurationRefreshUtilTest {
     @Mock
     private StateHolder currentStateMock;
 
+    @Mock
+    private ConnectionManager connectionManagerMock;
+
     private ConfigStore configStore;
 
     private AppConfigurationProviderProperties appProperties;
@@ -62,8 +64,6 @@ public class AppConfigurationRefreshUtilTest {
 
     private List<AppConfigurationReplicaClient> clients = new ArrayList<>();
 
-    private List<ConfigStore> stores = new ArrayList<>();
-
     private List<ConfigurationSetting> watchKeys = generateWatchKeys();
 
     private List<ConfigurationSetting> watchKeysFeatureFlags = generateFeatureFlagWatchKeys();
@@ -73,7 +73,7 @@ public class AppConfigurationRefreshUtilTest {
     private FeatureFlagStore featureStore = new FeatureFlagStore();
 
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
         configStore = new ConfigStore();
 
@@ -105,7 +105,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -124,7 +124,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -137,7 +137,7 @@ public class AppConfigurationRefreshUtilTest {
             .setETag("updated");
 
         State newState = new State(watchKeys, Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
-        
+
         List<ConfigurationSetting> listedKeys = new ArrayList<>();
         listedKeys.add(watchKeysFeatureFlags.get(0));
 
@@ -151,7 +151,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -167,7 +167,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -183,7 +183,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -208,7 +208,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertFalse(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
 
     }
@@ -236,7 +236,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertTrue(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -247,7 +247,7 @@ public class AppConfigurationRefreshUtilTest {
 
         // Config Store doesn't return a value, Feature Flag was deleted
         when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(flagsPagedIterableMock);
-        when(flagsPagedIterableMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(flagsPagedIterableMock.iterator()).thenReturn(Collections.emptyIterator());
 
         State newState = new State(watchKeysFeatureFlags, Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
             endpoint);
@@ -258,7 +258,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertTrue(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -284,7 +284,7 @@ public class AppConfigurationRefreshUtilTest {
 
             assertTrue(
                 AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(featureStore, clientMock, endpoint,
-                    new ArrayList<String>()));
+                    new ArrayList<>()));
         }
     }
 
@@ -294,8 +294,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
 
@@ -307,8 +312,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
             // Monitor is disabled
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -321,9 +326,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setMonitoring(monitoring);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
 
@@ -333,8 +342,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(false);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -347,9 +356,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setMonitoring(monitoring);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         // Not Refresh Time
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
@@ -360,8 +373,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -374,9 +387,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setMonitoring(monitoring);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         // Refresh Time, but failed watch request
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
@@ -387,8 +404,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -401,9 +418,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setMonitoring(monitoring);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         // Refresh Time, but no change
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
@@ -416,8 +437,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getLoadState(endpoint)).thenReturn(true);
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
 
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -430,9 +451,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setMonitoring(monitoring);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         // Refresh Time, trigger refresh
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
@@ -449,8 +474,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getState(endpoint)).thenReturn(newState);
             stateHolderMock.when(() -> StateHolder.getCurrentState()).thenReturn(currentStateMock);
 
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -464,9 +489,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setFeatureFlags(featureStore);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
 
@@ -479,7 +508,7 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             // Monitor is disabled
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
                 Duration.ofMinutes(10), new ArrayList<String>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
@@ -493,9 +522,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setFeatureFlags(featureStore);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
 
@@ -508,8 +541,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
 
             // Monitor is disabled
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -526,10 +559,16 @@ public class AppConfigurationRefreshUtilTest {
         configStore.setFeatureFlags(featureStore);
         monitoring.setEnabled(false);
         configStore.setMonitoring(monitoring);
-        stores.add(configStore);
 
         List<ConfigurationSetting> listedKeys = new ArrayList<>();
         listedKeys.add(watchKeysFeatureFlags.get(0));
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
         when(clientOriginMock.listSettings(Mockito.any())).thenReturn(flagsPagedIterableMock);
@@ -545,8 +584,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getCurrentState()).thenReturn(currentStateMock);
 
             // Monitor is disabled
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
@@ -561,9 +600,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         clients.add(clientOriginMock);
-        configStore.setEndpoint(endpoint);
-        configStore.setFeatureFlags(featureStore);
-        stores.add(configStore);
+
+        Map<String, ConnectionManager> connections = new HashMap<>();
+        connections.put(endpoint, connectionManagerMock);
+
+        when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
+        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(featureStore);
+        when(clientFactoryMock.getConnections()).thenReturn(connections);
 
         List<ConfigurationSetting> listedKeys = new ArrayList<>();
 
@@ -586,8 +629,8 @@ public class AppConfigurationRefreshUtilTest {
             stateHolderMock.when(() -> StateHolder.getCurrentState()).thenReturn(currentStateMock);
 
             // Monitor is disabled
-            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock, stores,
-                Duration.ofMinutes(10), new ArrayList<String>());
+            eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties, clientFactoryMock,
+                Duration.ofMinutes(10), new ArrayList<>());
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());

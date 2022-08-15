@@ -19,27 +19,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
-import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 public class ConnectionManagerTest {
-
-    @Mock
-    private ConfigurationClientBuilder builderMock;
-
-    @Mock
-    private AppConfigurationCredentialProvider tokenProviderMock;
-
-    @Mock
-    private TokenCredential credentialMock;
-
-    @Mock
-    private ConfigurationClientBuilderSetup modifierMock;
 
     @Mock
     private AppConfigurationReplicaClientsBuilder clientBuilderMock;

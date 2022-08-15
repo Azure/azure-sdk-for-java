@@ -47,25 +47,19 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
 
-    private final AppConfigurationCredentialProvider tokenCredentialProvider;
+    private AppConfigurationCredentialProvider tokenCredentialProvider;
 
-    private final ConfigurationClientBuilderSetup clientProvider;
+    private ConfigurationClientBuilderSetup clientProvider;
 
     private boolean isDev;
 
-    private final boolean isKeyVaultConfigured;
+    private boolean isKeyVaultConfigured;
 
-    private final String clientId;
+    private String clientId;
 
     private final int maxRetries;
 
-    public AppConfigurationReplicaClientsBuilder(AppConfigurationCredentialProvider tokenCredentialProvider,
-        ConfigurationClientBuilderSetup clientProvider, Boolean isKeyVaultConfigured, String clientId,
-        int maxRetries) {
-        this.tokenCredentialProvider = tokenCredentialProvider;
-        this.clientProvider = clientProvider;
-        this.isKeyVaultConfigured = isKeyVaultConfigured;
-        this.clientId = clientId;
+    public AppConfigurationReplicaClientsBuilder(int maxRetries) {
         this.maxRetries = maxRetries;
     }
 
@@ -88,6 +82,41 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         Assert.hasText(endpoint, String.format(NON_EMPTY_MSG, "Endpoint"));
 
         return endpoint;
+    }
+
+    /**
+     * @param tokenCredentialProvider the tokenCredentialProvider to set
+     */
+    public void setTokenCredentialProvider(AppConfigurationCredentialProvider tokenCredentialProvider) {
+        this.tokenCredentialProvider = tokenCredentialProvider;
+    }
+
+    /**
+     * @param clientProvider the clientProvider to set
+     */
+    public void setClientProvider(ConfigurationClientBuilderSetup clientProvider) {
+        this.clientProvider = clientProvider;
+    }
+
+    /**
+     * @param isDev the isDev to set
+     */
+    public void setDev(boolean isDev) {
+        this.isDev = isDev;
+    }
+
+    /**
+     * @param isKeyVaultConfigured the isKeyVaultConfigured to set
+     */
+    public void setKeyVaultConfigured(boolean isKeyVaultConfigured) {
+        this.isKeyVaultConfigured = isKeyVaultConfigured;
+    }
+
+    /**
+     * @param clientId the clientId to set
+     */
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     /**

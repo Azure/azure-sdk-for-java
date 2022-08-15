@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
+import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
 
 /**
  * Holds a set of connections to an app configuration store with zero to many geo-replications.
@@ -159,5 +161,13 @@ public class ConnectionManager {
      */
     void updateSyncToken(String syncToken) {
         client.updateSyncToken(syncToken);
+    }
+    
+    AppConfigurationStoreMonitoring getMonitoring() {
+        return configStore.getMonitoring();
+    }
+
+    FeatureFlagStore getFeatureFlagStore() {
+        return configStore.getFeatureFlags();
     }
 }

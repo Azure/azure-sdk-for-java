@@ -33,7 +33,7 @@ public class AppConfigurationAutoConfiguration {
         @Bean
         public AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
-            return new AppConfigurationPullRefresh(properties, appProperties, clientFactory);
+            return new AppConfigurationPullRefresh(appProperties, clientFactory, properties.getRefreshInterval());
         }
     }
 }
