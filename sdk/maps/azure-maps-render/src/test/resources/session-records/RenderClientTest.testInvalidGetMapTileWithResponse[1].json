@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/tile?api-version=2.1&tilesetId=microsoft.base.road&zoom=-1000&x=10&y=22",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 15:40:44 GMT",
+      "content-length" : "114",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 44B0A4423F4E4F2C81048E6CBC30130D Ref B: SIN30EDGE0506 Ref C: 2022-05-31T15:40:45Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided values in (x, y, zoom) do not constitute a valid tile\"}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

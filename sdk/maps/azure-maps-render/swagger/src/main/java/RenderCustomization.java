@@ -1,0 +1,62 @@
+import org.slf4j.Logger;
+
+import java.util.Arrays;
+
+import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.PackageCustomization;
+import com.azure.autorest.customization.JavadocCustomization;
+import com.azure.autorest.customization.LibraryCustomization;
+
+public class RenderCustomization extends Customization {
+    @Override
+    public void customize(LibraryCustomization customization, Logger logger) {
+        PackageCustomization models = customization.getPackage("com.azure.maps.render.models");
+
+        // customize maptileset
+        customizeMapTileset(models);
+
+        // customize tilesetid
+        customizeTilesetId(models);
+    }
+
+    // Customizes the MapTileset class
+    private void customizeMapTileset(PackageCustomization models) {
+        final String getBoundsMethod =
+            "public GeoBoundingBox getBounds() {" +
+            "    return new GeoBoundingBox(this.bounds.get(0), this.bounds.get(1), this.bounds.get(2), this.bounds.get(3));" +
+            "}";
+        final String getCenterMethod =
+            "public GeoPosition getCenter() {" +
+            "    return new GeoPosition(this.center.get(0).doubleValue(), this.center.get(1).doubleValue(), this.center.get(2).doubleValue());" +
+            "}";
+        ClassCustomization classCustomization = models.getClass("MapTileset");
+        classCustomization.removeMethod("getBounds");
+        classCustomization.removeMethod("setBounds");
+        classCustomization.removeMethod("getCenter");
+        classCustomization.removeMethod("setCenter");
+        classCustomization.addMethod(getBoundsMethod, Arrays.asList("com.azure.core.models.GeoBoundingBox"));
+        classCustomization.addMethod(getCenterMethod, Arrays.asList("com.azure.core.models.GeoPosition"));
+
+        // javadoc customization to pass Checkstyle
+        final String getCenterJavadocDescription = "Get the center property: The default location of the " +
+            "tileset in the form [longitutde, latitude, zoom]. The zoom level must be between minzoom and " +
+            "maxzoom. Implementation can use this value to set the default location.";
+        JavadocCustomization centerDoc = classCustomization.getMethod("getCenter").getJavadoc();
+        centerDoc.setDescription(getCenterJavadocDescription);
+        centerDoc.setReturn("a {@code GeoPosition} representing the center.");
+
+        final String getBoundsJavadocDescription = "Bounds must define an area covered by all zoom levels. " +
+            "The bounds are represented in WGS:84 latitude and longitude values " +
+            "in the order left, bottom, right, top. Values may be integers or floating point numbers.";
+        JavadocCustomization boundsDoc = classCustomization.getMethod("getBounds").getJavadoc();
+        boundsDoc.setDescription(getBoundsJavadocDescription);
+        boundsDoc.setReturn("a {@code GeoBoundingBox} representing the bounding box.");
+    }
+
+     // Customizes the TilesetId class
+     private void customizeTilesetId(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TilesetID");
+        classCustomization.rename("TilesetId");
+     }
+}

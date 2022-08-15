@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.microsoft.com/route/matrix/json?api-version=1.0&waitForResults=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 23:54:58 GMT",
+      "content-length" : "1047",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: B46B47A085C849A2A8FFEDB9DE6E8E25 Ref B: SIN30EDGE0110 Ref C: 2022-05-31T23:54:58Z",
+      "vary" : "Accept-Encoding,User-Agent",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"formatVersion\":\"0.0.1\",\"matrix\":[[{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":495,\"travelTimeInSeconds\":128,\"trafficDelayInSeconds\":0,\"trafficLengthInMeters\":0,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T01:57:07+02:00\"}}},{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":669269,\"travelTimeInSeconds\":20741,\"trafficDelayInSeconds\":137,\"trafficLengthInMeters\":10183,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T07:40:40+02:00\"}}}],[{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":338,\"travelTimeInSeconds\":107,\"trafficDelayInSeconds\":0,\"trafficLengthInMeters\":0,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T01:56:46+02:00\"}}},{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":669112,\"travelTimeInSeconds\":20686,\"trafficDelayInSeconds\":132,\"trafficLengthInMeters\":10183,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T07:39:45+02:00\"}}}]],\"summary\":{\"successfulRoutes\":4,\"totalRoutes\":4}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

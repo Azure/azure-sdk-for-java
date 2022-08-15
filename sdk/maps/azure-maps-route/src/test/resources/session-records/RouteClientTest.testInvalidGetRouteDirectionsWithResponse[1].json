@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/route/directions/json?api-version=1.0&query=13.42936%2C-1000000.0%3A13.43872%2C52.50274",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 23:54:58 GMT",
+      "content-length" : "138",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: B56DAC8179264196936008DDE2EEBC59 Ref B: SIN30EDGE0113 Ref C: 2022-05-31T23:54:59Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided coordinates in query are invalid, out of range, or not in the expected format\"}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
