@@ -3,7 +3,7 @@ trigger: none
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      Clouds: 'Public'
+      Clouds: 'Public,UsGov,China'
 #      SupportedClouds: 'Public,UsGov,China'
       TestResourceDirectories:
 #        - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
