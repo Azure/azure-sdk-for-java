@@ -217,6 +217,7 @@ class AadOAuth2ClientConfigurationTests {
             });
     }
 
+    @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertParameters(JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
                                                             ClientRegistrationRepository clientRepository) {
         OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> client =
