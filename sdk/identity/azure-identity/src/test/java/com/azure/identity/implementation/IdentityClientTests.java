@@ -189,11 +189,16 @@ public class IdentityClientTests {
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.toEpochSecond() + "\" }";
 
         // mock
-        IdentityClient client = new IdentityClientBuilder().build();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setManagedIdentityType(ManagedIdentityType.SERVICE_FABRIC)
+            .setManagedIdentityParameters(new ManagedIdentityParameters()
+                .setIdentityEndpoint(endpoint)
+                .setIdentityHeader(secret)
+                .setIdentityServerThumbprint(thumbprint));
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForServiceFabricCodeFlow(tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToServiceFabricManagedIdentityEndpoint(endpoint, secret,
-                thumbprint, request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
@@ -213,10 +218,15 @@ public class IdentityClientTests {
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
         // mock
-        IdentityClient client = new IdentityClientBuilder().build();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setManagedIdentityType(ManagedIdentityType.APP_SERVICE)
+            .setManagedIdentityParameters(new ManagedIdentityParameters()
+                .setIdentityEndpoint(endpoint)
+                .setIdentityHeader(secret));
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForMSICodeFlow(tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
@@ -230,9 +240,13 @@ public class IdentityClientTests {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         configuration.put("IDENTITY_ENDPOINT", endpoint);
         // mock
-        IdentityClient client = new IdentityClientBuilder().build();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setManagedIdentityType(ManagedIdentityType.ARC)
+            .setManagedIdentityParameters(new ManagedIdentityParameters()
+                .setIdentityEndpoint(endpoint));
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         mockForArcCodeFlow(401, () -> {
-            client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
+            client.getTokenFromTargetManagedIdentity(request).block();
         });
     }
 
@@ -243,10 +257,14 @@ public class IdentityClientTests {
         String endpoint = "http://localhost";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         configuration.put("IDENTITY_ENDPOINT", endpoint);
-        IdentityClient client = new IdentityClientBuilder().build();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setManagedIdentityType(ManagedIdentityType.ARC)
+            .setManagedIdentityParameters(new ManagedIdentityParameters()
+                .setIdentityEndpoint(endpoint));
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
         mockForArcCodeFlow(200, () -> {
-            client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
+            client.getTokenFromTargetManagedIdentity(request).block();
         });
     }
 
@@ -264,11 +282,13 @@ public class IdentityClientTests {
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
 
-        IdentityClient client = new IdentityClientBuilder().build();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setManagedIdentityType(ManagedIdentityType.VM);
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
         mockForIMDSCodeFlow(IdentityConstants.DEFAULT_IMDS_ENDPOINT, tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToIMDSEndpoint(request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
@@ -286,11 +306,13 @@ public class IdentityClientTests {
         String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
 
 
-        IdentityClient client = new IdentityClientBuilder().build();
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setManagedIdentityType(ManagedIdentityType.VM);
+        IdentityClient client = new IdentityClientBuilder().identityClientOptions(options).build();
         // mock
         mockForIMDSCodeFlow(endpoint, tokenJson, () -> {
             // test
-            AccessToken token = client.authenticateToIMDSEndpoint(request).block();
+            AccessToken token = client.getTokenFromTargetManagedIdentity(request).block();
             Assert.assertEquals("token1", token.getToken());
             Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
         });
@@ -393,7 +415,61 @@ public class IdentityClientTests {
         }
     }
 
+    @Test
+    public void testAuthWithManagedIdentityFlow() throws Exception {
+        // setup
+        String secret = "SYSTEM-ASSIGNED-CLIENT-SECRET";
+        String clientId = "SYSTEM-ASSIGNED-CLIENT-ID";
+        String accessToken = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        mockForManagedIdentityFlow(secret, clientId, request, accessToken, expiresOn, () -> {
+            // test
+            IdentityClient client = new IdentityClientBuilder()
+                .tenantId(TENANT_ID)
+                .clientId(clientId)
+                .clientSecret(secret)
+                .identityClientOptions(new IdentityClientOptions()
+                    .setManagedIdentityType(ManagedIdentityType.VM))
+                .build();
+            AccessToken token = client.authenticateWithManagedIdentityConfidentialClient(request).block();
+            Assert.assertEquals(accessToken, token.getToken());
+            Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+        });
+    }
+
     /****** mocks ******/
+    private void mockForManagedIdentityFlow(String secret, String clientId, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
+
+        try (MockedStatic<ConfidentialClientApplication> staticConfidentialClientApplicationMock = mockStatic(ConfidentialClientApplication.class); MockedConstruction<ConfidentialClientApplication.Builder> confidentialClientApplicationBuilderMock = mockConstruction(ConfidentialClientApplication.Builder.class, (builder, context) -> {
+
+            when(builder.authority(any())).thenReturn(builder);
+            when(builder.httpClient(any())).thenReturn(builder);
+            when(builder.appTokenProvider(any())).thenReturn(builder);
+            ConfidentialClientApplication application = Mockito.mock(ConfidentialClientApplication.class);
+            when(application.acquireToken(any(ClientCredentialParameters.class))).thenAnswer(invocation -> {
+                ClientCredentialParameters argument = (ClientCredentialParameters) invocation.getArguments()[0];
+                if (argument.scopes().size() == 1 && request.getScopes().get(0).equals(argument.scopes().iterator().next())) {
+                    return TestUtils.getMockAuthenticationResult(accessToken, expiresOn);
+                } else {
+                    return CompletableFuture.runAsync(() -> {
+                        throw new MsalServiceException("Invalid request", "InvalidScopes");
+                    });
+                }
+            });
+            when(builder.build()).thenReturn(application);
+        })) {
+            // Mocking the static builder to ensure we pass the right thing to it.
+            staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(eq(clientId), argThat(cred -> ((IClientSecret) cred).clientSecret().equals(secret)))).thenCallRealMethod();
+            staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(anyString(), argThat(cred -> !((IClientSecret) cred).clientSecret().equals(secret)))).thenThrow(new MsalServiceException("Invalid clientSecret", "InvalidClientSecret"));
+            staticConfidentialClientApplicationMock.when(() -> ConfidentialClientApplication.builder(AdditionalMatchers.not(eq(clientId)), any(IClientSecret.class))).thenThrow(new MsalServiceException("Invalid CLIENT_ID", "InvalidClientId"));
+
+            test.run();
+            Assert.assertNotNull(confidentialClientApplicationBuilderMock);
+        }
+    }
 
     private void mockForClientSecret(String secret, TokenRequestContext request, String accessToken, OffsetDateTime expiresOn, Runnable test) throws Exception {
 

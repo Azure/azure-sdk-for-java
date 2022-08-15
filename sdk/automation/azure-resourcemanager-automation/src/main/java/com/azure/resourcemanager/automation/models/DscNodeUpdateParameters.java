@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the update dsc node operation. */
 @Fluent
 public final class DscNodeUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscNodeUpdateParameters.class);
-
     /*
      * Gets or sets the id of the dsc node.
      */

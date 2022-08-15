@@ -15,11 +15,10 @@ import com.azure.resourcemanager.automation.fluent.models.JobStreamInner;
 import com.azure.resourcemanager.automation.models.DscCompilationJob;
 import com.azure.resourcemanager.automation.models.DscCompilationJobs;
 import com.azure.resourcemanager.automation.models.JobStream;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class DscCompilationJobsImpl implements DscCompilationJobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscCompilationJobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DscCompilationJobsImpl.class);
 
     private final DscCompilationJobsClient innerClient;
 
@@ -100,7 +99,7 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
     public DscCompilationJob getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
         }
         String compilationJobName = Utils.getValueFromIdByName(id, "compilationjobs");
         if (compilationJobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
     public Response<DscCompilationJob> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +138,7 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class DscCompilationJobsImpl implements DscCompilationJobs {
         }
         String compilationJobName = Utils.getValueFromIdByName(id, "compilationjobs");
         if (compilationJobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
