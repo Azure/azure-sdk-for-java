@@ -3,12 +3,11 @@
 ## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added filter to DeviceManagementOperations.listDeviceClasses method
+- Updated description for some methods to be more descriptive and less ambiguous
 
 ### Other Changes
+- Removed filter from DeviceManagementOperations.listBestUpdatesForGroup method
 
 ## 1.0.0-beta.3 (2022-07-12)
 

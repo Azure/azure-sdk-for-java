@@ -429,7 +429,7 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -523,7 +523,7 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -616,7 +616,7 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -699,7 +699,7 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -783,7 +783,7 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -877,7 +877,8 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
-     * @param updateToImport The update to be imported.
+     * @param updateToImport The update to be imported (see schema
+     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -928,7 +929,8 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
-     * @param updateToImport The update to be imported.
+     * @param updateToImport The update to be imported (see schema
+     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -978,7 +980,8 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
-     * @param updateToImport The update to be imported.
+     * @param updateToImport The update to be imported (see schema
+     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1031,7 +1034,8 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
-     * @param updateToImport The update to be imported.
+     * @param updateToImport The update to be imported (see schema
+     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1085,7 +1089,8 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
-     * @param updateToImport The update to be imported.
+     * @param updateToImport The update to be imported (see schema
+     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1876,7 +1881,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1936,7 +1941,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -1995,7 +2000,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2041,7 +2046,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2089,7 +2094,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2576,7 +2581,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
      *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
@@ -2665,7 +2670,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
      *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
@@ -2754,7 +2759,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
      *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
@@ -2831,7 +2836,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
      *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
@@ -2909,7 +2914,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
      *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *

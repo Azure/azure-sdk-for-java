@@ -5,7 +5,7 @@ package com.azure.iot.deviceupdate;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -22,11 +22,39 @@ public class GetDeviceSample {
         // END: com.azure.iot.deviceupdate.DeviceManagementClient.instantiate
 
         try {
-            Response<BinaryData> response = client.getDeviceWithResponse(
-                Configuration.getGlobalConfiguration().get("DEVICEUPDATE_DEVICE"),
-                null);
+            System.out.println("Devices:");
+            // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDevices
+            PagedIterable<BinaryData> devices = client.listDevices(null);
+            for (BinaryData d: devices) {
+                System.out.println(d);
+            }
+            // END: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDevices
 
-            System.out.println(response.getValue());
+            System.out.println("\nDevice groups:");
+            // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateGroups
+            PagedIterable<BinaryData> groups = client.listGroups(null);
+            for (BinaryData g: groups) {
+                System.out.println(g);
+            }
+            // END: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateGroups
+
+            System.out.println("\nDevice classes:");
+            // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDeviceClasses
+            PagedIterable<BinaryData> deviceClasses = client.listDeviceClasses(null);
+            for (BinaryData dc: deviceClasses) {
+                System.out.println(dc);
+            }
+            // END: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDeviceClasses
+
+            String groupId = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_DEVICE_GROUP");
+            System.out.println("\nFor group '" + groupId + "' the best updates are:");
+            // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
+            PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, null);
+            for (BinaryData bu: bestUpdates) {
+                System.out.println(bu);
+            }
+            // END: com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
+
         } catch (HttpResponseException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 // update does not exist

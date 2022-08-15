@@ -3,17 +3,17 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/updates/providers?api-version=2022-07-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (11.0.15; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a9a1ab9f-5969-4702-8fe8-18c1800c9982"
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "aed800d1-ed5b-42bd-a4ad-f6f5cda0b34c"
     },
     "Response" : {
       "content-length" : "22",
-      "traceparent" : "00-df78bd35a1631d4593d04c8d00eb853e-e185ea97b7c56647-00",
-      "mise-correlation-id" : "fd71ec70-2663-4b9a-9f61-7c8219133f97",
+      "traceparent" : "00-1f8464d480b3e145aab9db4fd0702252-ec65861a056e9d42-00",
+      "mise-correlation-id" : "ae8cfcbc-8c76-4909-963f-e69c06bb02c3",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[\"fabrikam\"]}",
-      "Date" : "Fri, 01 Jul 2022 22:41:47 GMT",
+      "Date" : "Mon, 15 Aug 2022 21:03:07 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
