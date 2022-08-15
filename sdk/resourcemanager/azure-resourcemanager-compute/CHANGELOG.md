@@ -2,13 +2,9 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fix a bug that `withDataFromDisk(Disk managedDisk)` in `Snapshot` throws Exception.
 
 ## 2.17.0 (2022-07-25)
 
