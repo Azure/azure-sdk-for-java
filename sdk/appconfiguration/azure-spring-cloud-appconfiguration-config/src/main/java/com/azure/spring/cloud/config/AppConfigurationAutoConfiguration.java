@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +31,11 @@ public class AppConfigurationAutoConfiguration {
     static class AppConfigurationWatchAutoConfiguration {
 
         @Bean
-        public AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
+        @ConditionalOnMissingBean
+        public AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
-            return new AppConfigurationPullRefresh(appProperties, clientFactory, properties.getRefreshInterval());
+            return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
+                appProperties.getDefaultMinBackoff());
         }
     }
 }

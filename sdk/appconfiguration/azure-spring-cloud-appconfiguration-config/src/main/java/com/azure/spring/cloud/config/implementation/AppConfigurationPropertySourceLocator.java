@@ -81,6 +81,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
+
+        BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
 
     @Override
@@ -148,7 +150,16 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         // Setting new ETag values for Watch
                         List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
                             configStore.getMonitoring().getTriggers());
-                        getFeatureFlagWatchKeys(client, configStore, newState);
+                        List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(client, configStore,
+                            newState);
+
+                        if (watchKeysFeatures.size() > 0) {
+                            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+                                configStore.getMonitoring().getFeatureFlagRefreshInterval());
+                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
+                        } else {
+                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
+                        }
 
                         newState.setState(configStore.getEndpoint(), watchKeysSettings,
                             configStore.getMonitoring().getRefreshInterval());
@@ -207,7 +218,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return watchKeysSettings;
     }
 
-    private void getFeatureFlagWatchKeys(AppConfigurationReplicaClient client, ConfigStore configStore,
+    private List<ConfigurationSetting> getFeatureFlagWatchKeys(AppConfigurationReplicaClient client,
+        ConfigStore configStore,
         StateHolder newState) {
         List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
 
@@ -216,15 +228,12 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 .setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
 
-            PagedIterable<ConfigurationSetting> watchKeys = client.listSettings(settingSelector);
+            PagedIterable<ConfigurationSetting> watchKeys = client.listConfigurationSettings(settingSelector);
 
             watchKeys
                 .forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
-
-            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
-                configStore.getMonitoring().getFeatureFlagRefreshInterval());
-            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
         }
+        return watchKeysFeatures;
     }
 
     private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e) {
@@ -237,7 +246,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             if (properties.getRefreshInterval() != null) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties.getDefaultMinBackoff());
             }
             throw new RuntimeException(message, e);
         } else if (configStore.isFailFast()) {

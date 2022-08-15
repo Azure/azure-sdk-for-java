@@ -73,22 +73,22 @@ public class AppConfigurationReplicaClientTest {
 
         when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
 
-        assertEquals(settingsMock, client.listSettings(new SettingSelector()));
+        assertEquals(settingsMock, client.listConfigurationSettings(new SettingSelector()));
 
         when(clientMock.listConfigurationSettings(Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listConfigurationSettings(new SettingSelector()));
         
 
         when(responseMock.getStatusCode()).thenReturn(408);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listConfigurationSettings(new SettingSelector()));
         
         when(responseMock.getStatusCode()).thenReturn(500);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listConfigurationSettings(new SettingSelector()));
         
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector()));
+        assertThrows(HttpResponseException.class, () -> client.listConfigurationSettings(new SettingSelector()));
     }
 
 }

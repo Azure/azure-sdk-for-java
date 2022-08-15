@@ -14,7 +14,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 
@@ -28,8 +27,8 @@ class AppConfigurationRefreshUtil {
      *
      * @return If a refresh event is called.
      */
-    static RefreshEventData refreshStoresCheck(AppConfigurationProviderProperties appProperties,
-        AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval) {
+    static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
+        Duration refreshInterval, Long defaultMinBackoff) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
@@ -109,7 +108,7 @@ class AppConfigurationRefreshUtil {
 
         Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
-            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
+            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, defaultMinBackoff);
             throw e;
         }
         return eventData;
@@ -205,7 +204,7 @@ class AppConfigurationRefreshUtil {
         if (date.isAfter(state.getNextRefreshCheck())) {
             SettingSelector selector = new SettingSelector().setKeyFilter(featureStore.getKeyFilter())
                 .setLabelFilter(featureStore.getLabelFilter());
-            PagedIterable<ConfigurationSetting> currentKeys = client.listSettings(selector);
+            PagedIterable<ConfigurationSetting> currentKeys = client.listConfigurationSettings(selector);
 
             int watchedKeySize = 0;
 
@@ -250,7 +249,7 @@ class AppConfigurationRefreshUtil {
         throws AppConfigurationStatusException {
         SettingSelector selector = new SettingSelector().setKeyFilter(featureStore.getKeyFilter())
             .setLabelFilter(featureStore.getLabelFilter());
-        PagedIterable<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
+        PagedIterable<ConfigurationSetting> currentTriggerConfigurations = client.listConfigurationSettings(selector);
 
         int watchedKeySize = 0;
 

@@ -170,7 +170,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         if (featureStore.getEnabled()) {
             settingSelector.setKeyFilter(featureStore.getKeyFilter()).setLabelFilter(featureStore.getLabelFilter());
 
-            features = replicaClient.listSettings(settingSelector);
+            features = replicaClient.listConfigurationSettings(settingSelector);
         }
 
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
@@ -181,7 +181,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(label);
 
             // * for wildcard match
-            PagedIterable<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector);
+            PagedIterable<ConfigurationSetting> settings = replicaClient.listConfigurationSettings(settingSelector);
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
@@ -194,7 +194,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                     }
                 } else if (StringUtils.hasText(setting.getContentType())
                     && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
-                    HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+                    Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
                         key = jsonSetting.getKey().trim().substring(selectedKeys.getKeyFilter().length());
                         properties.put(key, jsonSetting.getValue());

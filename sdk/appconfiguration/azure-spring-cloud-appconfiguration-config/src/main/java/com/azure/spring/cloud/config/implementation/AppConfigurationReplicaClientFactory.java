@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
 /**
@@ -24,14 +23,13 @@ public class AppConfigurationReplicaClientFactory {
      * Sets up Connections to all configuration stores.
      *
      * @param properties client properties
-     * @param appProperties library properties
      */
     public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
-        AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
+        AppConfigurationProperties properties) {
         this.configStores = properties.getStores();
         if (CONNECTIONS.size() == 0) {
             for (ConfigStore store : properties.getStores()) {
-                ConnectionManager manager = new ConnectionManager(clientBuilder, store, appProperties);
+                ConnectionManager manager = new ConnectionManager(clientBuilder, store);
                 CONNECTIONS.put(manager.getOriginEndpoint(), manager);
             }
         }

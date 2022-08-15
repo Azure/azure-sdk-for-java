@@ -19,7 +19,6 @@ import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
 /**
  * Enables checking of Configuration updates.
@@ -33,7 +32,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
     private ApplicationEventPublisher publisher;
 
-    private final AppConfigurationProviderProperties appProperties;
+    private final Long defaultMinBackoff;
 
     private final AppConfigurationReplicaClientFactory clientFactory;
 
@@ -42,13 +41,13 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     /**
      * Component used for checking for and triggering configuration refreshes.
      *
-     * @param properties Client properties to check against.
      * @param appProperties Library properties for configuring backoff
      * @param clientFactory Clients stores used to connect to App Configuration.
+     * @param defaultMinBackoff default minimum backoff time
      */
-    public AppConfigurationPullRefresh(AppConfigurationProviderProperties appProperties,
-        AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval) {
-        this.appProperties = appProperties;
+    public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
+        Long defaultMinBackoff) {
+        this.defaultMinBackoff = defaultMinBackoff;
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
 
@@ -101,15 +100,16 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
 
-                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties,
-                    clientFactory, refreshInterval);
+                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
+                    refreshInterval, defaultMinBackoff);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;
                 }
             } catch (Exception e) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
+                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval,
+                    defaultMinBackoff);
                 throw e;
             } finally {
                 running.set(false);

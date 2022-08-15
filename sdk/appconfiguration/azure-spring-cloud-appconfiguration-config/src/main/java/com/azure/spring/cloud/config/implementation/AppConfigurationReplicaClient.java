@@ -75,7 +75,7 @@ class AppConfigurationReplicaClient {
      * @return The first returned configuration.
      */
     ConfigurationSetting getWatchKey(String key, String label)
-        throws HttpResponseException, AppConfigurationStatusException {
+        throws HttpResponseException {
         try {
             ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(client.getConfigurationSetting(key, label));
@@ -97,8 +97,8 @@ class AppConfigurationReplicaClient {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @return List of Configuration Settings.
      */
-    PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
-        throws HttpResponseException, AppConfigurationStatusException {
+    PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector settingSelector)
+        throws HttpResponseException {
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
             this.failedAttempts = 0;

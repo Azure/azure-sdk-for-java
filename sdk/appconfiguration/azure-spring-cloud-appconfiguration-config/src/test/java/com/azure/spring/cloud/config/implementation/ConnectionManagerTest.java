@@ -20,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
 public class ConnectionManagerTest {
@@ -38,8 +37,6 @@ public class ConnectionManagerTest {
 
     private ConfigStore configStore;
 
-    private AppConfigurationProviderProperties providerProperties;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -49,16 +46,12 @@ public class ConnectionManagerTest {
 
         configStore.validateAndInit();
 
-        providerProperties = new AppConfigurationProviderProperties();
-        providerProperties.setDefaultMaxBackoff((long) 1000);
-        providerProperties.setDefaultMinBackoff((long) 1000);
-
         connectionManager = null;
     }
 
     @Test
     public void getStoreIdentifierTest() {
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         assertEquals(TEST_ENDPOINT, connectionManager.getOriginEndpoint());
 
@@ -71,7 +64,7 @@ public class ConnectionManagerTest {
         configStore.setEndpoints(endpoints);
         configStore.validateAndInit();
 
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         assertEquals("first.endpoint", connectionManager.getOriginEndpoint());
     }
@@ -88,7 +81,7 @@ public class ConnectionManagerTest {
 
         configStore.validateAndInit();
 
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         clients.add(replicaClient1);

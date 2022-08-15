@@ -18,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationEventPublisher;
 
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
 import net.jcip.annotations.NotThreadSafe;
 
@@ -27,8 +26,6 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private ApplicationEventPublisher publisher;
-
-    private AppConfigurationProviderProperties providerProperties;
 
     private Duration refreshInterval = Duration.ofMinutes(10);
 
@@ -42,7 +39,6 @@ public class AppConfigurationPullRefreshTest {
         MockitoAnnotations.openMocks(this);
 
         eventData = new RefreshEventData();
-        providerProperties = new AppConfigurationProviderProperties();
     }
 
     @AfterEach
@@ -54,12 +50,13 @@ public class AppConfigurationPullRefreshTest {
     public void refreshNoChange() throws InterruptedException, ExecutionException {
         try (MockedStatic<AppConfigurationRefreshUtil> refreshUtils = Mockito
             .mockStatic(AppConfigurationRefreshUtil.class)) {
-            refreshUtils.when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(providerProperties),
-                Mockito.eq(clientFactoryMock), Mockito.eq(refreshInterval)))
+            refreshUtils
+                .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
+                    Mockito.eq(refreshInterval), Mockito.any()))
                 .thenReturn(eventData);
 
-            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(providerProperties, clientFactoryMock,
-                refreshInterval);
+            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock,
+                refreshInterval, (long) 0);
             assertFalse(refresh.refreshConfigurations().get());
         }
     }
@@ -69,12 +66,13 @@ public class AppConfigurationPullRefreshTest {
         eventData.setMessage("Updated");
         try (MockedStatic<AppConfigurationRefreshUtil> refreshUtils = Mockito
             .mockStatic(AppConfigurationRefreshUtil.class)) {
-            refreshUtils.when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(providerProperties),
-                Mockito.eq(clientFactoryMock), Mockito.eq(refreshInterval)))
+            refreshUtils
+                .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
+                    Mockito.eq(refreshInterval), Mockito.any()))
                 .thenReturn(eventData);
 
-            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(providerProperties, clientFactoryMock,
-                refreshInterval);
+            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock,
+                refreshInterval, (long) 0);
             refresh.setApplicationEventPublisher(publisher);
             assertTrue(refresh.refreshConfigurations().get());
         }

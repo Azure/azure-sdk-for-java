@@ -173,7 +173,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true)))
             .thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
+        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         when(replicaClientMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
@@ -339,7 +339,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
-        when(replicaClientMock.listSettings(any())).thenThrow(new RuntimeException());
+        when(replicaClientMock.listConfigurationSettings(any())).thenThrow(new RuntimeException());
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadState(Mockito.anyString())).thenReturn(true);
@@ -426,7 +426,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMockError.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenThrow(new NullPointerException(""));
+        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 

@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
 final class StateHolder {
 
@@ -161,12 +160,12 @@ final class StateHolder {
      * Sets a minimum value until the next refresh. If a refresh interval has passed or is smaller than the calculated
      * backoff time, the refresh interval is set to the backoff time.
      * @param refreshInterval period between refresh checks.
-     * @param properties Provider properties for min and max backoff periods.
+     * @param defaultMinBackoff min backoff between checks
      */
-    void updateNextRefreshTime(Duration refreshInterval, AppConfigurationProviderProperties properties) {
+    void updateNextRefreshTime(Duration refreshInterval, Long defaultMinBackoff) {
         if (refreshInterval != null) {
-            Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
-                clientRefreshAttempts, refreshInterval.getSeconds(), properties);
+            Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh, clientRefreshAttempts,
+                refreshInterval.getSeconds(), defaultMinBackoff);
 
             if (newForcedRefresh.compareTo(nextForcedRefresh) != 0) {
                 clientRefreshAttempts += 1;
@@ -176,8 +175,8 @@ final class StateHolder {
 
         for (Entry<String, State> entry : state.entrySet()) {
             State state = entry.getValue();
-            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
-                state.getRefreshAttempt(), (long) state.getRefreshInterval(), properties);
+            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(), state.getRefreshAttempt(),
+                (long) state.getRefreshInterval(), defaultMinBackoff);
 
             if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
                 state.incrementRefreshAttempt();
@@ -193,11 +192,11 @@ final class StateHolder {
      * @param nextRefreshCheck next refresh for the whole client
      * @param attempt refresh attempt for the client
      * @param interval the Refresh Interval
-     * @param properties App Configuration Provider Properties
+     * @param defaultMinBackoff min backoff between checks
      * @return new Refresh Date
      */
     private Instant getNextRefreshCheck(Instant nextRefreshCheck, Integer attempt, Long interval,
-        AppConfigurationProviderProperties properties) {
+        Long defaultMinBackoff) {
         // The refresh interval is only updated if it is expired.
         if (!Instant.now().isAfter(nextRefreshCheck)) {
             return nextRefreshCheck;
@@ -207,13 +206,12 @@ final class StateHolder {
 
         Instant now = Instant.now();
 
-        if (durationPeriod <= properties.getDefaultMinBackoff()) {
+        if (durationPeriod <= defaultMinBackoff) {
             return now.plusSeconds(interval);
         }
 
         return now.plusNanos(
-            BackoffTimeCalculator.calculateBackoff(attempt, properties.getDefaultMaxBackoff(),
-                properties.getDefaultMinBackoff()));
+            BackoffTimeCalculator.calculateBackoff(attempt));
     }
 
 }

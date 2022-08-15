@@ -34,6 +34,10 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
      */
     public static final String NON_EMPTY_MSG = "%s property should not be null or empty in the connection string of Azure Config Service.";
 
+    private static final Duration DEFAULT_MIN_RETRY_POLICY = Duration.ofMillis(800);
+
+    private static final Duration DEFAULT_MAX_RETRY_POLICY = Duration.ofSeconds(8);
+
     /**
      * Connection String Regex format
      */
@@ -211,8 +215,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint) {
-        ExponentialBackoff retryPolicy = new ExponentialBackoff(maxRetries, Duration.ofMillis(800),
-            Duration.ofSeconds(8));
+        ExponentialBackoff retryPolicy = new ExponentialBackoff(maxRetries, DEFAULT_MIN_RETRY_POLICY,
+            DEFAULT_MAX_RETRY_POLICY);
 
         builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured))
             .retryPolicy(new RetryPolicy(retryPolicy));

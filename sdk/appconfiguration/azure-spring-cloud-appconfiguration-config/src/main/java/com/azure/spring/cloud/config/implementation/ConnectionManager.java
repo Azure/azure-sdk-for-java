@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config.implementation;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
@@ -25,13 +23,6 @@ public class ConnectionManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionManager.class);
 
     private final String originEndpoint;
-
-    private final Long defaultMinBackoff;
-
-    private final Long defaultMaxBackoff;
-
-    // Used if only one connection method is given.
-    private AppConfigurationReplicaClient client;
 
     // Used if multiple connection method is given.
     private List<AppConfigurationReplicaClient> clients;
@@ -47,13 +38,9 @@ public class ConnectionManager {
     /**
      * Creates a set of connections to an app configuration store.
      * @param configStore Connection info for the store
-     * @param appProperties Properties for setting up the connection
      */
-    ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore,
-        AppConfigurationProviderProperties appProperties) {
+    ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore) {
         this.clientBuilder = clientBuilder;
-        this.defaultMaxBackoff = appProperties.getDefaultMaxBackoff();
-        this.defaultMinBackoff = appProperties.getDefaultMinBackoff();
         this.configStore = configStore;
         this.originEndpoint = configStore.getEndpoint();
         this.health = AppConfigurationStoreHealth.NOT_LOADED;
@@ -95,12 +82,7 @@ public class ConnectionManager {
         if (clients == null) {
             clients = clientBuilder.buildClients(configStore);
 
-            if (clients.size() == 1) {
-                client = clients.get(0);
-                clients.clear();
-            }
-
-            if (client == null && clients.size() == 0) {
+            if (clients.size() == 0) {
                 this.health = AppConfigurationStoreHealth.NOT_LOADED;
             }
         }
@@ -108,8 +90,9 @@ public class ConnectionManager {
         List<AppConfigurationReplicaClient> availableClients = new ArrayList<>();
         boolean foundCurrent = !useCurrent;
 
-        if (client != null) {
-            availableClients.add(client);
+        if (clients.size() == 1) {
+            // If only one client was setup it isn't backed off and always available.
+            availableClients.add(clients.get(0));
         } else if (clients.size() > 0) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getEndpoint().equals(currentReplica)) {
@@ -131,9 +114,6 @@ public class ConnectionManager {
     }
 
     List<String> getAllEndpoints() {
-        if (client != null) {
-            return Arrays.asList(client.getEndpoint());
-        }
         return clients.stream().map(client -> client.getEndpoint()).collect(Collectors.toList());
     }
 
@@ -145,8 +125,7 @@ public class ConnectionManager {
         for (AppConfigurationReplicaClient client : clients) {
             if (client.getEndpoint().equals(endpoint)) {
                 int failedAttempt = client.getFailedAttempts();
-                long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt, defaultMaxBackoff,
-                    defaultMinBackoff);
+                long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
                 client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
                 break;
             }
@@ -159,7 +138,10 @@ public class ConnectionManager {
      * @param syncToken App Configuration sync token
      */
     void updateSyncToken(String syncToken) {
-        client.updateSyncToken(syncToken);
+        // Currently sync tokens aren't supported in geo-replication
+        if (clients.size() == 1) {
+            clients.get(0).updateSyncToken(syncToken);
+        }
     }
     
     AppConfigurationStoreMonitoring getMonitoring() {

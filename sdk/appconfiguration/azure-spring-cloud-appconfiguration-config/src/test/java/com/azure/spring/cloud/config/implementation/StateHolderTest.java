@@ -21,21 +21,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
 public class StateHolderTest {
-
-    private AppConfigurationProviderProperties providerProperties;
 
     private List<ConfigurationSetting> watchKeys = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-
-        providerProperties = new AppConfigurationProviderProperties();
-        providerProperties.setDefaultMaxBackoff((long) 10);
-        providerProperties.setDefaultMinBackoff((long) 0);
 
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
 
@@ -104,7 +97,7 @@ public class StateHolderTest {
 
         State originalState = StateHolder.getState(endpoint);
 
-        stateHolder.updateNextRefreshTime(null, providerProperties);
+        stateHolder.updateNextRefreshTime(null, (long) 0);
         StateHolder.updateState(stateHolder);
         State newState = StateHolder.getState(endpoint);
         assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
@@ -127,7 +120,7 @@ public class StateHolderTest {
         } catch (InterruptedException e) {
             fail("Sleep failed");
         }
-        stateHolder.updateNextRefreshTime(null, providerProperties);
+        stateHolder.updateNextRefreshTime(null, (long) 0);
         State newState = StateHolder.getState(endpoint);
         assertNotEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
         assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
@@ -141,24 +134,18 @@ public class StateHolderTest {
         StateHolder.updateState(stateHolder);
         State originalState = StateHolder.getState(endpoint);
 
-        providerProperties.setDefaultMinBackoff((long) -120);
-
         // Duration is less than the minBackOff
         try (MockedStatic<BackoffTimeCalculator> backoffTimeCalculatorMock = Mockito
             .mockStatic(BackoffTimeCalculator.class)) {
             Long ns = Long.valueOf("300000000000");
-            backoffTimeCalculatorMock.when(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(), Mockito.any(),
-                Mockito.any())).thenReturn(ns);
+            backoffTimeCalculatorMock.when(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt())).thenReturn(ns);
 
-            stateHolder.updateNextRefreshTime(null, providerProperties);
+            stateHolder.updateNextRefreshTime(null, (long) -120);
             State newState = StateHolder.getState(endpoint);
 
             assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
-            backoffTimeCalculatorMock.verify(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt(),
-                Mockito.any(), Mockito.any()), times(1));
+            backoffTimeCalculatorMock.verify(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt()), times(1));
         }
-
-        providerProperties.setDefaultMinBackoff((long) 0);
 
         stateHolder = new StateHolder();
         Duration duration = Duration.ofMinutes((long) -1);
@@ -171,7 +158,7 @@ public class StateHolderTest {
 
         Instant originalForcedRefresh = StateHolder.getNextForcedRefresh();
 
-        stateHolder.updateNextRefreshTime(Duration.ofMinutes((long) 11), providerProperties);
+        stateHolder.updateNextRefreshTime(Duration.ofMinutes((long) 11), (long) 0);
 
         Instant newForcedRefresh = StateHolder.getNextForcedRefresh();
 

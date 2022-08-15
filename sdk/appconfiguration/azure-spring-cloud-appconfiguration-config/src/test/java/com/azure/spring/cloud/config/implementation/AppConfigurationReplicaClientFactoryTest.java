@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
 public class AppConfigurationReplicaClientFactoryTest {
@@ -30,8 +29,6 @@ public class AppConfigurationReplicaClientFactoryTest {
     private AppConfigurationReplicaClientsBuilder clientBuilderMock;
 
     private AppConfigurationProperties properties;
-
-    private AppConfigurationProviderProperties clientProperties;
 
     private String originEndpoint = "clientfactorytest.azconfig.io";
 
@@ -62,15 +59,11 @@ public class AppConfigurationReplicaClientFactoryTest {
 
         properties = new AppConfigurationProperties();
         properties.setStores(stores);
-        
-        clientProperties = new AppConfigurationProviderProperties();
-        clientProperties.setDefaultMaxBackoff((long) 600);
-        clientProperties.setDefaultMinBackoff((long) 30);
 
         HashMap<String, ConnectionManager> connections = new HashMap<>();
         connections.put(originEndpoint, connectionManagerMock);
 
-        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, properties, clientProperties);
+        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, properties);
     }
 
     @Test

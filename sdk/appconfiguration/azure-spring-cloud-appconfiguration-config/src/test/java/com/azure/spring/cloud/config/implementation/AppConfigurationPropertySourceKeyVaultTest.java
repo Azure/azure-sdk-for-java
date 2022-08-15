@@ -126,7 +126,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
         when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
