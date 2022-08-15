@@ -11,7 +11,7 @@ import com.azure.communication.email.models.SendStatusResult;
 import com.azure.communication.email.models.EmailAttachment;
 import com.azure.communication.email.models.EmailAttachmentType;
 
-
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -20,6 +20,18 @@ import java.nio.file.Files;
 import java.util.Base64;
 
 public class ReadmeSamples {
+    public EmailClient createEmailClientUsingTokenCredential() {
+        // BEGIN: readme-sample-createEmailClientUsingTokenCredential
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        EmailClient emailClient = new EmailClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        // END: readme-sample-createEmailClientUsingTokenCredential
+
+        return emailClient;
+    }
 
     public EmailClient createEmailClientUsingAzureKeyCredential() {
         // BEGIN: readme-sample-createEmailClientUsingAzureKeyCredential

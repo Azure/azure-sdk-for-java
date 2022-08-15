@@ -66,7 +66,21 @@ add the direct dependency to your project as follows.
 
 ### Client Creation and Authentication
 
-Email clients can be created and authenticated using the connection string acquired from an Azure Communication Resource in the [Azure Portal][azure_portal].
+Email clients can be created and authenticated using Azure Active Directory Token Authentication.
+
+`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
+are needed to create a DefaultAzureCredential object.
+
+```java readme-sample-createEmailClientUsingTokenCredential
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+EmailClient emailClient = new EmailClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
+
+Email clients can also be created and authenticated using the connection string acquired from an Azure Communication Resource in the [Azure Portal][azure_portal].
 
 ```java readme-sample-createEmailClientWithConnectionString
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
