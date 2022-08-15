@@ -41,7 +41,7 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnMissingBean(ServiceBusProcessorClientSupport.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
         matchIfMissing = true)
-    ServiceBusProcessorClientSupport processorClientSupport(ServiceBusProcessorClient processorClient){
+    ServiceBusProcessorClientSupport processorClientSupport(ServiceBusProcessorClient processorClient) {
         return new ServiceBusProcessorClientSupport(processorClient);
     }
 
