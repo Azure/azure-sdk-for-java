@@ -28,10 +28,13 @@ public class ApplicationConfiguration {
         if (usGovAuthorityHost.equals(azureAuthorityHost)) {
             System.out.println("US GOVERNMENT");
             azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+            System.out.println(azureGlobalProperties.getProfile().getCloudType());
         }
         if (chinaAuthorityHost.equals(azureAuthorityHost)) {
             System.out.println("CHINA");
             azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+            System.out.println(azureGlobalProperties.getProfile().getCloudType());
+
         }
     }
 }
