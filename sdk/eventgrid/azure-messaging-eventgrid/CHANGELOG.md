@@ -1,14 +1,12 @@
 # Release History
 
-## 4.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.12.1 (2022-08-15)
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
 
 ## 4.12.0 (2022-07-08)
 
