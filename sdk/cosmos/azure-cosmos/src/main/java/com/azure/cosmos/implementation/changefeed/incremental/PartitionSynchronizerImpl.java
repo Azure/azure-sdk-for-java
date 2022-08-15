@@ -3,14 +3,14 @@
 package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -122,7 +122,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 return this.leaseManager.createLeaseIfNotExist(addedRangeId, lastContinuationToken);
             }, this.degreeOfParallelism)
             .map(newLease -> {
-                logger.info("Partition {} split into new partition with lease token {} and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
+                logger.info("Partition {} split into new partition and continuation token {}.", leaseToken, newLease.getLeaseToken(), lastContinuationToken);
                 return newLease;
             });
     }

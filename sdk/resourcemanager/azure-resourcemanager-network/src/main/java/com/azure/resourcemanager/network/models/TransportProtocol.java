@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TransportProtocol. */
+/** The transport protocol for the endpoint. */
 public final class TransportProtocol extends ExpandableStringEnum<TransportProtocol> {
     /** Static value Udp for TransportProtocol. */
     public static final TransportProtocol UDP = fromString("Udp");

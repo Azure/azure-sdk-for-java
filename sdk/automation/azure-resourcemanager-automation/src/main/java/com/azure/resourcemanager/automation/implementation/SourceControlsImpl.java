@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.SourceControlsClient;
 import com.azure.resourcemanager.automation.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.automation.models.SourceControl;
 import com.azure.resourcemanager.automation.models.SourceControls;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SourceControlsImpl implements SourceControls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlsImpl.class);
 
     private final SourceControlsClient innerClient;
 
@@ -81,7 +80,7 @@ public final class SourceControlsImpl implements SourceControls {
     public SourceControl getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,7 +88,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -98,7 +97,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class SourceControlsImpl implements SourceControls {
     public Response<SourceControl> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,7 +119,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class SourceControlsImpl implements SourceControls {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,19 +157,19 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'sourceControls'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class SourceControlsImpl implements SourceControls {
         }
         String sourceControlName = Utils.getValueFromIdByName(id, "sourceControls");
         if (sourceControlName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

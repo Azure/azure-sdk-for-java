@@ -639,6 +639,96 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testContainsCriteria() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        Person TEST_PERSON_4 = new Person("id-4", "NEW_FIRST_NAME", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+
+        Criteria containsCaseSensitive = Criteria.getInstance(CriteriaType.CONTAINING, "firstName",
+            Collections.singletonList("first"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
+
+        Criteria containsNotCaseSensitive = Criteria.getInstance(CriteriaType.CONTAINING, "firstName",
+            Collections.singletonList("first"), Part.IgnoreCaseType.ALWAYS);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsNotCaseSensitive), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+    }
+
+    @Test
+    public void testContainsCriteria2() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        Criteria containsCaseSensitive = Criteria.getInstance(CriteriaType.CONTAINING, "id",
+            Collections.singletonList("1"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON);
+
+        Criteria containsCaseSensitive2 = Criteria.getInstance(CriteriaType.CONTAINING, "id",
+            Collections.singletonList("2"), Part.IgnoreCaseType.NEVER);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive2), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON_2);
+
+        Criteria containsCaseSensitive3 = Criteria.getInstance(CriteriaType.CONTAINING, "id",
+            Collections.singletonList("3"), Part.IgnoreCaseType.NEVER);
+        List<Person> people3 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive3), Person.class,
+            containerName));
+        assertThat(people3).containsExactly(TEST_PERSON_3);
+    }
+
+    @Test
+    public void testNotContainsCriteria() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        Person TEST_PERSON_4 = new Person("id-4", "NEW_FIRST_NAME", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+
+        Criteria notContainsCaseSensitive = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "firstName",
+            Collections.singletonList("li"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+
+        Criteria notContainsNotCaseSensitive = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "firstName",
+            Collections.singletonList("new"), Part.IgnoreCaseType.ALWAYS);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsNotCaseSensitive), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testNotContainsCriteria2() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        Criteria notContainsCaseSensitive = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "id",
+            Collections.singletonList("1"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON_2, TEST_PERSON_3);
+
+        Criteria notContainsCaseSensitive2 = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "id",
+            Collections.singletonList("2"), Part.IgnoreCaseType.NEVER);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive2), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON, TEST_PERSON_3);
+
+        Criteria notContainsCaseSensitive3 = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "id",
+            Collections.singletonList("3"), Part.IgnoreCaseType.NEVER);
+        List<Person> people3 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive3), Person.class,
+            containerName));
+        assertThat(people3).containsExactly(TEST_PERSON, TEST_PERSON_2);
+    }
+
+    @Test
     public void testIsNotNullCriteriaCaseSensitive() {
         Criteria hasLastName = Criteria.getInstance(CriteriaType.IS_NOT_NULL, "lastName",
             Collections.emptyList(),

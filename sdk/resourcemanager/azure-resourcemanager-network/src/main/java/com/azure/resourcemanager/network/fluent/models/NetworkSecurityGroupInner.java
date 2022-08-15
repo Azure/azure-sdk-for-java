@@ -85,6 +85,31 @@ public final class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
+     * Get the flushConnection property: When enabled, flows created from Network Security Group connections will be
+     * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
+     *
+     * @return the flushConnection value.
+     */
+    public Boolean flushConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().flushConnection();
+    }
+
+    /**
+     * Set the flushConnection property: When enabled, flows created from Network Security Group connections will be
+     * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
+     *
+     * @param flushConnection the flushConnection value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withFlushConnection(Boolean flushConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkSecurityGroupPropertiesFormat();
+        }
+        this.innerProperties().withFlushConnection(flushConnection);
+        return this;
+    }
+
+    /**
      * Get the securityRules property: A collection of security rules of the network security group.
      *
      * @return the securityRules value.

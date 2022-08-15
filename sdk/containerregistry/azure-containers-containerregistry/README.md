@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -256,7 +256,7 @@ try {
 
 ## Troubleshooting
 
-See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/0eb74418dc7a5ca2e40f954b3d7ce865321b6d86/sdk/containerregistry/azure-containers-containerregistry/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/containerregistry/azure-containers-containerregistry/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 

@@ -1620,10 +1620,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
 
-            if (this.getStoreProxy(request) == this.gatewayProxy) {
-                this.gatewayProxy.prepareRequestForAuth(request, resourceName);
-            }
-
             String authorization = this.getUserAuthorizationToken(
                 resourceName, request.getResourceType(), httpMethod, request.getHeaders(),
                     AuthorizationTokenType.PrimaryMasterKey, request.properties);

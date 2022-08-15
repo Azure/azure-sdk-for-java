@@ -32,7 +32,7 @@ public interface DscNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, Context context);
@@ -60,7 +60,7 @@ public interface DscNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
+     * @return definition of a DscNode along with {@link Response}.
      */
     Response<DscNode> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, Context context);
@@ -94,7 +94,7 @@ public interface DscNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
+     * @return definition of a DscNode along with {@link Response}.
      */
     Response<DscNode> updateWithResponse(
         String resourceGroupName,
@@ -111,7 +111,7 @@ public interface DscNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DscNode> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -128,7 +128,7 @@ public interface DscNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DscNode> listByAutomationAccount(
         String resourceGroupName,
