@@ -13,7 +13,6 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
@@ -54,8 +53,6 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -66,11 +63,11 @@ import java.util.stream.IntStream;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -132,7 +129,7 @@ class ServiceBusSenderAsyncClientTest {
     private ArgumentCaptor<Iterable<Long>> sequenceNumberCaptor;
 
     private final MessageSerializer serializer = new ServiceBusMessageSerializer();
-    private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+    private final ServiceBusSenderTracer tracer = new ServiceBusSenderTracer(NAMESPACE, ENTITY_NAME);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
@@ -170,7 +167,7 @@ class ServiceBusSenderAsyncClientTest {
                 connectionOptions.getRetry()));
 
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+            retryOptions, tracer, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));
@@ -327,7 +324,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer, null, null);
+            errorContextProvider, tracer, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
@@ -366,7 +363,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer, null, null);
+            errorContextProvider, tracer, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
@@ -398,38 +395,37 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
-        TracerProvider tracerProvider1 = new TracerProvider(Arrays.asList(tracer1));
+        String traceparent = "traceparent";
+        ServiceBusSenderTracer sbTracer1 = new ServiceBusSenderTracer(tracer1, NAMESPACE, ENTITY_NAME);
 
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider1, serializer, null, null);
+            errorContextProvider, sbTracer1, serializer, null, null);
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider1, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+            retryOptions, sbTracer1, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
-        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND)))
+        when(tracer1.start(eq("ServiceBus.send"), any(Context.class), eq(ProcessKind.SEND)))
             .thenAnswer(invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value");
             });
 
-        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE)))
+        when(tracer1.extractContext(eq(traceparent), any(Context.class))).thenAnswer(invocation -> {
+            Context passed = invocation.getArgument(1, Context.class);
+            return passed.addData(SPAN_CONTEXT_KEY, "span-context");
+        });
+
+        when(tracer1.start(eq("ServiceBus.message"), any(Context.class), eq(ProcessKind.MESSAGE)))
             .thenAnswer(invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value").addData(DIAGNOSTIC_ID_KEY, traceparent);
             });
 
-        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_BUILDER_KEY, "value");
-            }
-        );
-
-        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
+        when(tracer1.getSharedSpanBuilder(eq("ServiceBus.send"), any(Context.class))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_BUILDER_KEY, "value");
@@ -447,9 +443,9 @@ class ServiceBusSenderAsyncClientTest {
 
         // Assert
         verify(tracer1, times(4))
-            .start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE));
+            .start(eq("ServiceBus.message"), any(Context.class), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(1))
-            .start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND));
+            .start(eq("ServiceBus.send"), any(Context.class), eq(ProcessKind.SEND));
         verify(tracer1, times(5)).end(eq("success"), isNull(), any(Context.class));
     }
 

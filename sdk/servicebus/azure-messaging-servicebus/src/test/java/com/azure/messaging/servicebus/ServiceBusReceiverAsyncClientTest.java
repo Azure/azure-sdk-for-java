@@ -11,7 +11,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -26,6 +25,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.models.AbandonOptions;
@@ -132,8 +132,8 @@ class ServiceBusReceiverAsyncClientTest {
     private TokenCredential tokenCredential;
     @Mock
     private MessageSerializer messageSerializer;
-    @Mock
-    private TracerProvider tracerProvider;
+
+    private ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(NAMESPACE, ENTITY_PATH, false);
     @Mock
     private ServiceBusManagementNode managementNode;
     @Mock
@@ -192,12 +192,12 @@ class ServiceBusReceiverAsyncClientTest {
 
         receiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false),
-            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            connectionProcessor, CLEANUP_INTERVAL, tracer, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID,
                 null),
-            connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            connectionProcessor, CLEANUP_INTERVAL, tracer, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
     }
 
     @AfterEach
@@ -327,7 +327,7 @@ class ServiceBusReceiverAsyncClientTest {
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
                 false, SESSION_ID, null), connectionProcessor,
-            CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            CLEANUP_INTERVAL, tracer, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
@@ -419,7 +419,7 @@ class ServiceBusReceiverAsyncClientTest {
     void completeInReceiveAndDeleteMode() {
         final ReceiverOptions options = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         final String lockToken1 = UUID.randomUUID().toString();
@@ -439,7 +439,7 @@ class ServiceBusReceiverAsyncClientTest {
     void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken() {
         final ReceiverOptions options = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(null);
@@ -557,7 +557,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Act & Assert
@@ -582,7 +582,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID,
             null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracer, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         // Act & Assert
         StepVerifier.create(sessionReceiver2.renewSessionLock(SESSION_ID))
@@ -654,7 +654,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
@@ -702,7 +702,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
@@ -1238,7 +1238,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true);
         final ServiceBusReceiverAsyncClient receiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
@@ -1272,7 +1272,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
             true, SESSION_ID, null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracer,
             messageSerializer, onClientClose, CLIENT_IDENTIFIER);
 
         final ServiceBusReceivedMessage receivedMessage3 = mock(ServiceBusReceivedMessage.class);

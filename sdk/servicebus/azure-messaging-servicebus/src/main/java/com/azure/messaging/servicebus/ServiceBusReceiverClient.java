@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -64,6 +65,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
     private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
 
+    private final ServiceBusReceiverTracer tracer;
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -77,6 +79,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.tracer = asyncClient.getTracer();
     }
 
     /**
@@ -396,9 +399,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
-        messages.subscribe();
+        messages
+            .doOnError(t -> tracer.reportReceiveSpan(null, "ServiceBus.peekMessages", t))
+            .subscribe();
 
-        return new IterableStream<>(messages);
+        IterableStream<ServiceBusReceivedMessage> messageStream = new IterableStream<>(messages);
+        tracer.reportReceiveSpan(messageStream, "ServiceBus.peekMessages", null);
+        return messageStream;
     }
 
     /**
@@ -446,9 +453,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
-        messages.subscribe();
+        messages
+            .doOnError(t -> tracer.reportReceiveSpan(null, "ServiceBus.peekMessages", t))
+            .subscribe();
 
-        return new IterableStream<>(messages);
+        IterableStream<ServiceBusReceivedMessage> messageStream = new IterableStream<>(messages);
+        tracer.reportReceiveSpan(messageStream, "ServiceBus.peekMessages", null);
+        return messageStream;
     }
 
     /**
@@ -502,9 +513,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
         final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
+
         queueWork(maxMessages, maxWaitTime, emitter);
 
-        return new IterableStream<>(emitter.asFlux());
+        Flux<ServiceBusReceivedMessage> messagesFlux = emitter.asFlux();
+        messagesFlux
+            .doOnError(t -> tracer.reportReceiveSpan(null, "ServiceBus.receiveMessages", t));
+        IterableStream<ServiceBusReceivedMessage> messageStream = new IterableStream<>(messagesFlux);
+        tracer.reportReceiveSpan(messageStream, "ServiceBus.receiveMessages", null);
+        return messageStream;
     }
 
     /**
@@ -571,13 +588,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
+
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessages(sequenceNumbers,
             sessionId).timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
-        messages.subscribe();
+        messages
+            .doOnError(t -> tracer.reportReceiveSpan(null, "ServiceBus.receiveDeferredMessageBatch", t))
+            .subscribe();
 
-        return new IterableStream<>(messages);
+        IterableStream<ServiceBusReceivedMessage> messageStream = new IterableStream<>(messages);
+        tracer.reportReceiveSpan(messageStream, "ServiceBus.receiveDeferredMessageBatch", null);
+        return messageStream;
     }
 
     /**

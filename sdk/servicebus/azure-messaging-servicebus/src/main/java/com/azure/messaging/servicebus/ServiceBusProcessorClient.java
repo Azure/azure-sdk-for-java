@@ -3,38 +3,25 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
-import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.context.Context;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer.PROCESSING_ERROR_CONTEXT_KEY;
 
 /**
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
@@ -133,7 +120,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final Map<Subscription, Subscription> receiverSubscriptions = new ConcurrentHashMap<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
-    private final TracerProvider tracerProvider;
     private final String queueName;
     private final String topicName;
     private final String subscriptionName;
@@ -162,7 +148,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.asyncClient.set(sessionReceiverBuilder.buildAsyncClientForProcessor());
         this.receiverBuilder = null;
-        this.tracerProvider = processorOptions.getTracerProvider();
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
@@ -189,7 +174,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.asyncClient.set(receiverBuilder.buildAsyncClient());
         this.sessionReceiverBuilder = null;
-        this.tracerProvider = processorOptions.getTracerProvider();
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
@@ -332,6 +316,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
             subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
                 private Subscription subscription = null;
+                private reactor.util.context.Context context = reactor.util.context.Context.empty();
 
                 @Override
                 public void onSubscribe(Subscription subscription) {
@@ -345,22 +330,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     if (serviceBusMessageContext.hasError()) {
                         handleError(serviceBusMessageContext.getThrowable());
                     } else {
-                        Context processSpanContext = null;
                         try {
                             ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
                                 new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
 
-                            processSpanContext =
-                                startProcessTracingSpan(serviceBusMessageContext.getMessage(),
-                                    receiverClient.getEntityPath(), receiverClient.getFullyQualifiedNamespace());
-                            if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
-                                serviceBusMessageContext.getMessage().addContext(SPAN_CONTEXT_KEY, processSpanContext);
-                            }
                             processMessage.accept(serviceBusReceivedMessageContext);
-                            endProcessTracingSpan(processSpanContext, Signal.complete());
                         } catch (Exception ex) {
                             handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
-                            endProcessTracingSpan(processSpanContext, Signal.error(ex));
+                            context = context.put(PROCESSING_ERROR_CONTEXT_KEY, ex);
                             if (!processorOptions.isDisableAutoComplete()) {
                                 LOGGER.warning("Error when processing message. Abandoning message.", ex);
                                 abandonMessage(serviceBusMessageContext, receiverClient);
@@ -389,6 +366,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                         restartMessageReceiver(subscription);
                     }
                 }
+
+                @Override
+                public Context currentContext() {
+                    return context;
+                }
             };
         }
 
@@ -405,54 +387,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             receiverClient.receiveMessagesWithContext()
                 .subscribe(subscribers[0]);
         }
-    }
-
-    private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
-        if (processSpanContext == null) {
-            return;
-        }
-
-        Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
-        // Disposes of the scope when the trace span closes.
-        if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
-            return;
-        }
-        if (spanScope.get() instanceof AutoCloseable) {
-            AutoCloseable close = (AutoCloseable) processSpanContext.getData(SCOPE_KEY).get();
-            try {
-                close.close();
-            } catch (Exception exception) {
-                LOGGER.error("endTracingSpan().close() failed with an error {}", exception);
-            }
-
-        } else {
-            LOGGER.warning(String.format(Locale.US,
-                "Process span scope type is not of type AutoCloseable, but type: %s. Not closing the scope"
-                    + " and span", spanScope.get() != null ? spanScope.getClass() : "null"));
-        }
-        tracerProvider.endSpan(processSpanContext, signal);
-    }
-
-    private Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage, String entityPath,
-        String fullyQualifiedNamespace) {
-
-        Object diagnosticId = receivedMessage.getApplicationProperties().get(DIAGNOSTIC_ID_KEY);
-        if (tracerProvider == null || !tracerProvider.isEnabled()) {
-            return Context.NONE;
-        }
-
-        Context spanContext = Objects.isNull(diagnosticId) ? Context.NONE : tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
-
-        spanContext = spanContext
-            .addData(ENTITY_PATH_KEY, entityPath)
-            .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
-            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
-        spanContext = receivedMessage.getEnqueuedTime() == null
-            ? spanContext
-            : spanContext.addData(MESSAGE_ENQUEUED_TIME,
-            receivedMessage.getEnqueuedTime().toInstant().getEpochSecond());
-
-        return tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, spanContext, ProcessKind.PROCESS);
     }
 
     private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
