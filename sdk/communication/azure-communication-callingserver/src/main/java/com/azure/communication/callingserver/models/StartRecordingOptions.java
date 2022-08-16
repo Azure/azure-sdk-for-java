@@ -5,63 +5,144 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.net.URI;
+import java.util.List;
+
 /**
  * The options for creating a call.
  */
 @Fluent
 public class StartRecordingOptions {
     /**
-     * The channel property.
+     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
-    private final RecordingChannel channel;
+    private final CallLocator callLocator;
 
-    /**
-     * The content property.
-     */
-    private final RecordingContent content;
+    private URI recordingStateCallbackUri;
 
-    /**
-     * The recording format.
-     */
-    private final RecordingFormat format;
+    private RecordingChannel recordingChannel;
+
+    private RecordingContent recordingContent;
+
+    private RecordingFormat recordingFormat;
+
+    private List<ChannelAffinity> channelAffinity;
 
     /**
      * Constructor
      *
-     * @param content The source property.
-     * @param format The targets of the call.
-     * @param channel The call back URI.
+     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
-    public StartRecordingOptions(RecordingContent content, RecordingFormat format, RecordingChannel channel) {
-        this.channel = channel;
-        this.content = content;
-        this.format = format;
+    public StartRecordingOptions(CallLocator callLocator) {
+        this.callLocator = callLocator;
     }
 
     /**
-     * Get the channel.
+     * Get the call locator.
      *
-     * @return the channel value.
+     * @return the call locator.
+     */
+    public CallLocator getCallLocator() {
+        return this.callLocator;
+    }
+
+    /**
+     * Uri to send state change callbacks.
+     *
+     * @return {@link URI} to send state change callbacks.
+     */
+    public URI getRecordingStateCallbackUri() {
+        return recordingStateCallbackUri;
+    }
+
+    /**
+     * Set the recordingStateCallbackUri
+     *
+     * @param recordingStateCallbackUri a {@link URI} to send state change callbacks.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setRecordingStateCallbackUri(URI recordingStateCallbackUri) {
+        this.recordingStateCallbackUri = recordingStateCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the channel property.
+     *
+     * @return the channel property.
      */
     public RecordingChannel getRecordingChannel() {
-        return channel;
+        return recordingChannel;
     }
 
     /**
-     * Get the content.
+     * Set the channel property.
      *
-     * @return the content value.
+     * @param recordingChannel the {@link RecordingChannel}.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setRecordingChannel(RecordingChannel recordingChannel) {
+        this.recordingChannel = recordingChannel;
+        return this;
+    }
+
+    /**
+     * Get the content property.
+     *
+     * @return the content property.
      */
     public RecordingContent getRecordingContent() {
-        return content;
+        return recordingContent;
     }
 
     /**
-     * Get the format.
+     * Set the content property.
      *
-     * @return the format value.
+     * @param recordingContent the {@link RecordingContent}.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setRecordingContent(RecordingContent recordingContent) {
+        this.recordingContent = recordingContent;
+        return this;
+    }
+
+    /**
+     * Get the recording format.
+     *
+     * @return the recording format.
      */
     public RecordingFormat getRecordingFormat() {
-        return format;
+        return recordingFormat;
+    }
+
+    /**
+     * Set the recording format property.
+     *
+     * @param recordingFormat the {@link RecordingFormat}.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setRecordingFormat(RecordingFormat recordingFormat) {
+        this.recordingFormat = recordingFormat;
+        return this;
+    }
+
+    /**
+     * Get the channel affinity.
+     *
+     * @return the channel affinity.
+     */
+    public List<ChannelAffinity> getChannelAffinity() {
+        return channelAffinity;
+    }
+
+    /**
+     * Sets the channel affinity.
+     *
+     * @param channelAffinity the list of {@link ChannelAffinity}.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
+        this.channelAffinity = channelAffinity;
+        return this;
     }
 }

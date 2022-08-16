@@ -7,6 +7,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.RecordingState;
 import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,8 +38,8 @@ public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
             String serverCallId = "serverCallId";
             CallRecording callRecording = client.getCallRecording();
             RecordingStateResult recordingResponse = callRecording.startRecording(
-                new ServerCallLocator(serverCallId),
-                new URI(ngrok));
+                new StartRecordingOptions(new ServerCallLocator(serverCallId))
+                    .setRecordingStateCallbackUri(new URI(ngrok)));
             assertNotNull(recordingResponse);
             String recordingId = recordingResponse.getRecordingId();
             assertNotNull(recordingId);

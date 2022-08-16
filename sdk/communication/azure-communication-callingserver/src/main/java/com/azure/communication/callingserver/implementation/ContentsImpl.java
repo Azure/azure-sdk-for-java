@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation;
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
 import com.azure.communication.callingserver.implementation.models.RecognizeRequest;
 import com.azure.communication.callingserver.implementation.models.RecordingStateResponseInternal;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -87,7 +87,7 @@ public final class ContentsImpl {
         Mono<Response<RecordingStateResponseInternal>> recording(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartCallRecordingRequest startCallRecording,
+                @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -401,7 +401,7 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequest startCallRecording) {
+            StartCallRecordingRequestInternal startCallRecording) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -425,7 +425,7 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequest startCallRecording, Context context) {
+            StartCallRecordingRequestInternal startCallRecording, Context context) {
         final String accept = "application/json";
         return service.recording(
                 this.client.getEndpoint(), this.client.getApiVersion(), startCallRecording, accept, context);
@@ -441,7 +441,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResponseInternal> recordingAsync(StartCallRecordingRequest startCallRecording) {
+    public Mono<RecordingStateResponseInternal> recordingAsync(StartCallRecordingRequestInternal startCallRecording) {
         return recordingWithResponseAsync(startCallRecording)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
@@ -465,7 +465,7 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> recordingAsync(
-            StartCallRecordingRequest startCallRecording, Context context) {
+            StartCallRecordingRequestInternal startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
@@ -487,7 +487,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponseInternal recording(StartCallRecordingRequest startCallRecording) {
+    public RecordingStateResponseInternal recording(StartCallRecordingRequestInternal startCallRecording) {
         return recordingAsync(startCallRecording).block();
     }
 
@@ -503,7 +503,7 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStateResponseInternal> recordingWithResponse(
-            StartCallRecordingRequest startCallRecording, Context context) {
+            StartCallRecordingRequestInternal startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context).block();
     }
 }
