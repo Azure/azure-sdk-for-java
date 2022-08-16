@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /** The JobState model. */
 @Fluent
@@ -35,13 +34,13 @@ public class JobState {
      * The jobId property.
      */
     @JsonProperty(value = "jobId", required = true)
-    private UUID jobId;
+    private String jobId;
 
     /*
-     * The lastUpdateDateTime property.
+     * The lastUpdatedDateTime property.
      */
-    @JsonProperty(value = "lastUpdateDateTime", required = true)
-    private OffsetDateTime lastUpdateDateTime;
+    @JsonProperty(value = "lastUpdatedDateTime", required = true)
+    private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * The status property.
@@ -126,7 +125,7 @@ public class JobState {
      *
      * @return the jobId value.
      */
-    public UUID getJobId() {
+    public String getJobId() {
         return this.jobId;
     }
 
@@ -136,28 +135,28 @@ public class JobState {
      * @param jobId the jobId value to set.
      * @return the JobState object itself.
      */
-    public JobState setJobId(UUID jobId) {
+    public JobState setJobId(String jobId) {
         this.jobId = jobId;
         return this;
     }
 
     /**
-     * Get the lastUpdateDateTime property: The lastUpdateDateTime property.
+     * Get the lastUpdatedDateTime property: The lastUpdatedDateTime property.
      *
-     * @return the lastUpdateDateTime value.
+     * @return the lastUpdatedDateTime value.
      */
-    public OffsetDateTime getLastUpdateDateTime() {
-        return this.lastUpdateDateTime;
+    public OffsetDateTime getLastUpdatedDateTime() {
+        return this.lastUpdatedDateTime;
     }
 
     /**
-     * Set the lastUpdateDateTime property: The lastUpdateDateTime property.
+     * Set the lastUpdatedDateTime property: The lastUpdatedDateTime property.
      *
-     * @param lastUpdateDateTime the lastUpdateDateTime value to set.
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the JobState object itself.
      */
-    public JobState setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
-        this.lastUpdateDateTime = lastUpdateDateTime;
+    public JobState setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
         return this;
     }
 

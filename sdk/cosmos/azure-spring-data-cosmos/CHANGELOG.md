@@ -3,6 +3,7 @@
 ### 3.26.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for NOT CONTAINS. - See [PR 30379](https://github.com/Azure/azure-sdk-for-java/pull/30379)
 
 #### Breaking Changes
 

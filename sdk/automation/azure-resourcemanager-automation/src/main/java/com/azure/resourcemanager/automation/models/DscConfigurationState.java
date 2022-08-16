@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DscConfigurationState. */
+/** Gets or sets the state of the configuration. */
 public final class DscConfigurationState extends ExpandableStringEnum<DscConfigurationState> {
     /** Static value New for DscConfigurationState. */
     public static final DscConfigurationState NEW = fromString("New");
@@ -30,7 +30,11 @@ public final class DscConfigurationState extends ExpandableStringEnum<DscConfigu
         return fromString(name, DscConfigurationState.class);
     }
 
-    /** @return known DscConfigurationState values. */
+    /**
+     * Gets known DscConfigurationState values.
+     *
+     * @return known DscConfigurationState values.
+     */
     public static Collection<DscConfigurationState> values() {
         return values(DscConfigurationState.class);
     }

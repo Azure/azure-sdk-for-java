@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StorageAccountRegenerateKeyParameters {
     /*
-     * The name of storage keys that want to be regenerated, possible values
-     * are key1, key2, kerb1, kerb2.
+     * The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      */
     @JsonProperty(value = "keyName", required = true)
     private String keyName;

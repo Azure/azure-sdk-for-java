@@ -11,6 +11,7 @@ import com.azure.core.util.polling.SyncPoller
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
@@ -45,7 +46,6 @@ import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 
 import static com.azure.storage.file.share.FileTestHelper.assertExceptionStatusCodeAndMessage
 import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
@@ -417,7 +417,7 @@ class FileAPITests extends APISpec {
 
         data.defaultBytes == stream.toByteArray()
     }
-
+    
     def "Download all null"() {
         given:
         primaryFileClient.create(data.defaultDataSizeLong)
@@ -1822,6 +1822,32 @@ class FileAPITests extends APISpec {
 
         then:
         thrown(ShareStorageException)
+    }
+
+    def "Rename sas token"() {
+        setup:
+        def permissions = new ShareFileSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+
+        def sas = shareClient.generateSas(sasValues)
+        def client = getFileClient(sas, primaryFileClient.getFileUrl())
+        primaryFileClient.create(1024)
+
+        when:
+        def fileName = generatePathName()
+        def destClient = client.rename(fileName)
+
+        then:
+        notThrown(ShareStorageException)
+        destClient.getProperties()
+        destClient.getFilePath() == fileName
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

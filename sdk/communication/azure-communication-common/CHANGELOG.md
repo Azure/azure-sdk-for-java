@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.1 (2022-08-12)
+
+### Other Changes
+- Opened the package to the new `azure-communication-rooms` library by modifying the `module-info.java` file.
 
 ## 1.2.0 (2022-08-09)
 

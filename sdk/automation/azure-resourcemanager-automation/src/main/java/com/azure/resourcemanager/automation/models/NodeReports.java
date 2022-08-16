@@ -19,7 +19,7 @@ public interface NodeReports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DscNodeReport> listByNode(String resourceGroupName, String automationAccountName, String nodeId);
 
@@ -34,7 +34,7 @@ public interface NodeReports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DscNodeReport> listByNode(
         String resourceGroupName, String automationAccountName, String nodeId, String filter, Context context);
@@ -64,7 +64,7 @@ public interface NodeReports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type.
+     * @return definition of the dsc node report type along with {@link Response}.
      */
     Response<DscNodeReport> getWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context);
@@ -94,7 +94,7 @@ public interface NodeReports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     Response<Object> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String nodeId, String reportId, Context context);

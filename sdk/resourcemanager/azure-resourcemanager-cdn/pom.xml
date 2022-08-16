@@ -43,6 +43,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.cdn/com.azure.resourcemanager.cdn=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

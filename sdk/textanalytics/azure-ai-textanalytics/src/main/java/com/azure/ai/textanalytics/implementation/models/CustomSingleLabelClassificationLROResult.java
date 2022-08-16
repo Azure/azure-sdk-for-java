@@ -19,14 +19,14 @@ public final class CustomSingleLabelClassificationLROResult extends AnalyzeTextL
      * The results property.
      */
     @JsonProperty(value = "results", required = true)
-    private CustomSingleLabelClassificationResult results;
+    private CustomLabelClassificationResult results;
 
     /**
      * Get the results property: The results property.
      *
      * @return the results value.
      */
-    public CustomSingleLabelClassificationResult getResults() {
+    public CustomLabelClassificationResult getResults() {
         return this.results;
     }
 
@@ -36,7 +36,7 @@ public final class CustomSingleLabelClassificationLROResult extends AnalyzeTextL
      * @param results the results value to set.
      * @return the CustomSingleLabelClassificationLROResult object itself.
      */
-    public CustomSingleLabelClassificationLROResult setResults(CustomSingleLabelClassificationResult results) {
+    public CustomSingleLabelClassificationLROResult setResults(CustomLabelClassificationResult results) {
         this.results = results;
         return this;
     }

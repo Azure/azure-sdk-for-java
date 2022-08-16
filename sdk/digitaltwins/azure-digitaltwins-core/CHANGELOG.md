@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.3.1 (2022-08-10)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.31.0`
+- Upgraded `azure-core-http-netty` dependency to `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` dependency to `1.2.20`.
+
 ## 1.3.0 (2022-07-11)
 
 ### Features Added

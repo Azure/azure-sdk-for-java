@@ -1,17 +1,28 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
 
-- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`. 
-
 ### Breaking Changes
-- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.1 (2022-08-12)
+
+### Features Added
+
+- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`. 
+-  Added support for in-memory token caching in `ManagedIdentityCredential`. 
+
+### Breaking Changes
+- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` from `1.12.0` to version `1.13.0`.
 
 ## 1.5.4 (2022-08-08)
 

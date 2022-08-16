@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageAccounts GetByResourceGroup. */
 public final class StorageAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetProperties.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/StorageAccountGetProperties.json
      */
     /**
      * Sample code: StorageAccountGetProperties.
@@ -26,7 +26,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKVersionExpirationTime.
@@ -44,7 +44,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
      */
     /**
      * Sample code: StorageAccountGetAsyncSkuConversionStatus.
@@ -61,7 +61,7 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountGetPropertiesCMKEnabled.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-05-01/examples/StorageAccountGetPropertiesCMKEnabled.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKEnabled.
