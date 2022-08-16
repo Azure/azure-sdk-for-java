@@ -42,6 +42,7 @@
 
       --add-opens com.azure.resourcemanager.cosmos/com.azure.resourcemanager.cosmos=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

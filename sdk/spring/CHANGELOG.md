@@ -7,6 +7,7 @@ Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies 
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
+- Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
 
 ## 4.3.0 (2022-06-29)

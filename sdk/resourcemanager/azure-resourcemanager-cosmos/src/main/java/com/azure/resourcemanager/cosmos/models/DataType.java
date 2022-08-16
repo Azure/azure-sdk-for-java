@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataType. */
+/** The datatype for which the indexing behavior is applied to. */
 public final class DataType extends ExpandableStringEnum<DataType> {
     /** Static value String for DataType. */
     public static final DataType STRING = fromString("String");

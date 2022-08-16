@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems model. */
+/** The WafMetricsResponseSeriesItemData model. */
 @Fluent
-public final class Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems.class);
-
+public final class WafMetricsResponseSeriesItemData {
     /*
      * The dateTime property.
      */
@@ -42,10 +36,9 @@ public final class Components18OrqelSchemasWafmetricsresponsePropertiesSeriesIte
      * Set the dateTime property: The dateTime property.
      *
      * @param dateTime the dateTime value to set.
-     * @return the Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems object itself.
+     * @return the WafMetricsResponseSeriesItemData object itself.
      */
-    public Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems withDateTime(
-        OffsetDateTime dateTime) {
+    public WafMetricsResponseSeriesItemData withDateTime(OffsetDateTime dateTime) {
         this.dateTime = dateTime;
         return this;
     }
@@ -63,9 +56,9 @@ public final class Components18OrqelSchemasWafmetricsresponsePropertiesSeriesIte
      * Set the value property: The value property.
      *
      * @param value the value value to set.
-     * @return the Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems object itself.
+     * @return the WafMetricsResponseSeriesItemData object itself.
      */
-    public Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems withValue(Float value) {
+    public WafMetricsResponseSeriesItemData withValue(Float value) {
         this.value = value;
         return this;
     }

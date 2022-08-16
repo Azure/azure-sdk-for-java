@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the Web Application Firewall policy for the endpoint (if applicable). */
 @Fluent
 public final class EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink.class);
-
     /*
      * Resource ID.
      */
