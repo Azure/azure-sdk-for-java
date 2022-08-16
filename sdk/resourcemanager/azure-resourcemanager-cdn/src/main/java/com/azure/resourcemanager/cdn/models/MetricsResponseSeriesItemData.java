@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems model. */
+/** The MetricsResponseSeriesItemData model. */
 @Fluent
-public final class Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems.class);
-
+public final class MetricsResponseSeriesItemData {
     /*
      * The dateTime property.
      */
@@ -42,10 +36,9 @@ public final class Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsP
      * Set the dateTime property: The dateTime property.
      *
      * @param dateTime the dateTime value to set.
-     * @return the Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems object itself.
+     * @return the MetricsResponseSeriesItemData object itself.
      */
-    public Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems withDateTime(
-        OffsetDateTime dateTime) {
+    public MetricsResponseSeriesItemData withDateTime(OffsetDateTime dateTime) {
         this.dateTime = dateTime;
         return this;
     }
@@ -63,9 +56,9 @@ public final class Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsP
      * Set the value property: The value property.
      *
      * @param value the value value to set.
-     * @return the Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems object itself.
+     * @return the MetricsResponseSeriesItemData object itself.
      */
-    public Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems withValue(Float value) {
+    public MetricsResponseSeriesItemData withValue(Float value) {
         this.value = value;
         return this;
     }

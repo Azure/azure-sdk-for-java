@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A rule that specifies a set of actions and conditions. */
 @Fluent
 public final class DeliveryRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRule.class);
-
     /*
      * Name of the rule
      */
@@ -22,11 +19,9 @@ public final class DeliveryRule {
     private String name;
 
     /*
-     * The order in which the rules are applied for the endpoint. Possible
-     * values {0,1,2,3,………}. A rule with a lesser order will be applied before
-     * a rule with a greater order. Rule with order 0 is a special rule. It
-     * does not require any condition and actions listed in it will always be
-     * applied.
+     * The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser
+     * order will be applied before a rule with a greater order. Rule with order 0 is a special rule. It does not
+     * require any condition and actions listed in it will always be applied.
      */
     @JsonProperty(value = "order", required = true)
     private int order;
@@ -38,8 +33,7 @@ public final class DeliveryRule {
     private List<DeliveryRuleCondition> conditions;
 
     /*
-     * A list of actions that are executed when all the conditions of a rule
-     * are satisfied.
+     * A list of actions that are executed when all the conditions of a rule are satisfied.
      */
     @JsonProperty(value = "actions", required = true)
     private List<DeliveryRuleAction> actions;
@@ -138,11 +132,13 @@ public final class DeliveryRule {
             conditions().forEach(e -> e.validate());
         }
         if (actions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property actions in model DeliveryRule"));
         } else {
             actions().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeliveryRule.class);
 }

@@ -1,5 +1,16 @@
 # Release History
 
+## 12.16.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a file share/directory share while authenticating with a sas.
+
+### Other Changes
+
 ## 12.15.0 (2022-08-12)
 
 ### Other Changes
