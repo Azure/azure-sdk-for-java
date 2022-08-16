@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the cache-key query string action. */
 @Fluent
 public final class CacheKeyQueryStringActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheKeyQueryStringActionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -104,10 +101,12 @@ public final class CacheKeyQueryStringActionParameters {
      */
     public void validate() {
         if (queryStringBehavior() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property queryStringBehavior in model CacheKeyQueryStringActionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CacheKeyQueryStringActionParameters.class);
 }

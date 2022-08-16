@@ -53,7 +53,7 @@ import java.util.Map;
  * <pre>
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -62,33 +62,33 @@ import java.util.Map;
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link CertificateClientBuilder}.</p>
  *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withHttpClient -->
  * <pre>
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation -->
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withHttpClient -->
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link
  * CertificateClient}</p>
  *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation -->
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
  *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build
  * {@link CertificateClient}
@@ -98,7 +98,7 @@ import java.util.Map;
  * <pre>
  * CertificateClient certificateClient = new CertificateClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>

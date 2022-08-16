@@ -4,8 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.Constants;
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImplBuilder;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -262,8 +262,8 @@ public final class TextAnalyticsClientBuilder implements
 
             return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
         } else {
-            final MicrosoftCognitiveLanguageServiceImpl batchApiTextAnalyticsClient =
-                new MicrosoftCognitiveLanguageServiceImplBuilder()
+            final MicrosoftCognitiveLanguageServiceTextAnalysisImpl batchApiTextAnalyticsClient =
+                new MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder()
                     .endpoint(endpoint)
                     .apiVersion(serviceVersion.getVersion())
                     .pipeline(pipeline)
@@ -552,7 +552,7 @@ public final class TextAnalyticsClientBuilder implements
 
     private boolean isConsolidatedServiceVersion(TextAnalyticsServiceVersion serviceVersion) {
         if (serviceVersion == null) {
-            serviceVersion = TextAnalyticsServiceVersion.V2022_04_01_PREVIEW;
+            serviceVersion = TextAnalyticsServiceVersion.V2022_05_01;
         }
         return !(TextAnalyticsServiceVersion.V3_0 == serviceVersion
                      || TextAnalyticsServiceVersion.V3_1 == serviceVersion);

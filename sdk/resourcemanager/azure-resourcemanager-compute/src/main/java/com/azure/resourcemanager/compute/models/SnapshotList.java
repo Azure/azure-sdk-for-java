@@ -20,8 +20,7 @@ public final class SnapshotList {
     private List<SnapshotInner> value;
 
     /*
-     * The uri to fetch the next page of snapshots. Call ListNext() with this
-     * to fetch the next page of snapshots.
+     * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

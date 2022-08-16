@@ -20,9 +20,8 @@ public final class CommunityGalleryImageVersionList {
     private List<CommunityGalleryImageVersionInner> value;
 
     /*
-     * The uri to fetch the next page of community gallery image versions. Call
-     * ListNext() with this to fetch the next page of community gallery image
-     * versions.
+     * The uri to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next
+     * page of community gallery image versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

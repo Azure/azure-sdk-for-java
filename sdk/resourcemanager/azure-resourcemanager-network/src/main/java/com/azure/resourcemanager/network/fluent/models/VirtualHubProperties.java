@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
+import com.azure.resourcemanager.network.models.VirtualRouterAutoScaleConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -136,6 +137,12 @@ public final class VirtualHubProperties {
      */
     @JsonProperty(value = "hubRoutingPreference")
     private HubRoutingPreference hubRoutingPreference;
+
+    /*
+     * The VirtualHub Router autoscale configuration.
+     */
+    @JsonProperty(value = "virtualRouterAutoScaleConfiguration")
+    private VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration;
 
     /**
      * Get the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
@@ -496,6 +503,27 @@ public final class VirtualHubProperties {
     }
 
     /**
+     * Get the virtualRouterAutoScaleConfiguration property: The VirtualHub Router autoscale configuration.
+     *
+     * @return the virtualRouterAutoScaleConfiguration value.
+     */
+    public VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration() {
+        return this.virtualRouterAutoScaleConfiguration;
+    }
+
+    /**
+     * Set the virtualRouterAutoScaleConfiguration property: The VirtualHub Router autoscale configuration.
+     *
+     * @param virtualRouterAutoScaleConfiguration the virtualRouterAutoScaleConfiguration value to set.
+     * @return the VirtualHubProperties object itself.
+     */
+    public VirtualHubProperties withVirtualRouterAutoScaleConfiguration(
+        VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration) {
+        this.virtualRouterAutoScaleConfiguration = virtualRouterAutoScaleConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -506,6 +534,9 @@ public final class VirtualHubProperties {
         }
         if (virtualHubRouteTableV2S() != null) {
             virtualHubRouteTableV2S().forEach(e -> e.validate());
+        }
+        if (virtualRouterAutoScaleConfiguration() != null) {
+            virtualRouterAutoScaleConfiguration().validate();
         }
     }
 }

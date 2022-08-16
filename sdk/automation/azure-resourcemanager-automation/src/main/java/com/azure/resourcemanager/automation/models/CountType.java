@@ -27,7 +27,11 @@ public final class CountType extends ExpandableStringEnum<CountType> {
         return fromString(name, CountType.class);
     }
 
-    /** @return known CountType values. */
+    /**
+     * Gets known CountType values.
+     *
+     * @return known CountType values.
+     */
     public static Collection<CountType> values() {
         return values(CountType.class);
     }

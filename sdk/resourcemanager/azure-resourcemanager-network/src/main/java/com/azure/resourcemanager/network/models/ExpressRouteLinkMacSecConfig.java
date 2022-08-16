@@ -7,7 +7,11 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of ExpressRouteLink Mac Security configuration. ExpressRouteLink Mac Security Configuration. */
+/**
+ * Definition of ExpressRouteLink Mac Security configuration.
+ *
+ * <p>ExpressRouteLink Mac Security Configuration.
+ */
 @Fluent
 public final class ExpressRouteLinkMacSecConfig {
     /*

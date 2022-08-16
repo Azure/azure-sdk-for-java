@@ -4,23 +4,26 @@ package com.azure.cosmos.implementation.changefeed.incremental;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.changefeed.Lease;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ExceptionClassifier;
+import com.azure.cosmos.implementation.changefeed.common.StatusCodeErrorType;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -44,7 +47,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private static final int DefaultMaxItemCount = 100;
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
-    private final ChangeFeedObserver observer;
+    private final ChangeFeedObserver<JsonNode> observer;
     private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
     private final Lease lease;
@@ -53,7 +56,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile String lastServerContinuationToken;
     private volatile boolean isFirstQueryForChangeFeeds;
 
-    public PartitionProcessorImpl(ChangeFeedObserver observer,
+    public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
                                   ProcessorSettings settings,
                                   PartitionCheckpointer checkpointer,
@@ -96,7 +99,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
             })
             .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
-                                                                                this.options)
+                                                                                this.options, JsonNode.class)
                 .limitRequest(1)
             )
             .flatMap(documentFeedResponse -> {
@@ -263,7 +266,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         FeedResponse<JsonNode> response,
         ChangeFeedState continuationState) {
 
-        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
+        ChangeFeedObserverContext<JsonNode> context = new ChangeFeedObserverContextImpl<>(
             this.getPkRangeFeedRangeFromStartState().getPartitionKeyRangeId(),
             response,
             continuationState,

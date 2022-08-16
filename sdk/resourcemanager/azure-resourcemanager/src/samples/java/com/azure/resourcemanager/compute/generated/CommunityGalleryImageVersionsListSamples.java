@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CommunityGalleryImageVersions List. */
 public final class CommunityGalleryImageVersionsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/communityGalleryExamples/CommunityGalleryImageVersion_List.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/communityGalleryExamples/CommunityGalleryImageVersion_List.json
      */
     /**
      * Sample code: List community gallery image versions.

@@ -58,8 +58,7 @@ public final class VpnGatewayProperties {
     private Boolean enableBgpRouteTranslationForNat;
 
     /*
-     * Enable Routing Preference property for the Public IP Interface of the
-     * VpnGateway.
+     * Enable Routing Preference property for the Public IP Interface of the VpnGateway.
      */
     @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;

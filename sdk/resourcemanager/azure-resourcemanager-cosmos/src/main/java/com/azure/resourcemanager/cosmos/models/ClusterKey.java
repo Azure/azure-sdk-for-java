@@ -17,8 +17,7 @@ public final class ClusterKey {
     private String name;
 
     /*
-     * Order of the Cosmos DB Cassandra table cluster key, only support "Asc"
-     * and "Desc"
+     * Order of the Cosmos DB Cassandra table cluster key, only support "Asc" and "Desc"
      */
     @JsonProperty(value = "orderBy")
     private String orderBy;

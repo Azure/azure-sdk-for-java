@@ -99,7 +99,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public byte[] getBinaryValue() {
+    public byte[] getBinary() {
         try {
             if (currentToken == JsonToken.NULL) {
                 reader.nextNull();
@@ -113,7 +113,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean getBooleanValue() {
+    public boolean getBoolean() {
         try {
             return reader.nextBoolean();
         } catch (IOException e) {
@@ -122,7 +122,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public double getDoubleValue() {
+    public double getDouble() {
         try {
             return reader.nextDouble();
         } catch (IOException e) {
@@ -131,7 +131,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public float getFloatValue() {
+    public float getFloat() {
         try {
             return (float) reader.nextDouble();
         } catch (IOException e) {
@@ -140,7 +140,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public int getIntValue() {
+    public int getInt() {
         try {
             return reader.nextInt();
         } catch (IOException e) {
@@ -149,7 +149,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public long getLongValue() {
+    public long getLong() {
         try {
             return reader.nextLong();
         } catch (IOException e) {
@@ -158,7 +158,7 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public String getStringValue() {
+    public String getString() {
         try {
             if (currentToken == JsonToken.NULL) {
                 return null;
@@ -218,13 +218,13 @@ public final class GsonJsonReader extends JsonReader {
                 } else {
                     if (token == JsonToken.STRING) {
                         // String fields need to have quotes added.
-                        bufferedObject.append("\"").append(getStringValue()).append("\"");
+                        bufferedObject.append("\"").append(getString()).append("\"");
                     } else if (isStartArrayOrObject()) {
                         // Structures use readChildren.
                         readChildren(bufferedObject);
                     } else {
                         // All other value types use text value.
-                        bufferedObject.append(getTextValue());
+                        bufferedObject.append(getText());
                     }
 
                     // Comas should happen after a field value.

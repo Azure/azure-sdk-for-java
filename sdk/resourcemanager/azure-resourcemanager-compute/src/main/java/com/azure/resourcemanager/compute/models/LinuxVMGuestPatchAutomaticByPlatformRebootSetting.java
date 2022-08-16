@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */
+/** Specifies the reboot setting for all AutomaticByPlatform patch installation operations. */
 public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<LinuxVMGuestPatchAutomaticByPlatformRebootSetting> {
     /** Static value Unknown for LinuxVMGuestPatchAutomaticByPlatformRebootSetting. */

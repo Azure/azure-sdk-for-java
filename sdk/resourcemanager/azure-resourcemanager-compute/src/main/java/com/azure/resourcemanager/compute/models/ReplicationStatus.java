@@ -12,8 +12,7 @@ import java.util.List;
 @Immutable
 public final class ReplicationStatus {
     /*
-     * This is the aggregated replication status based on all the regional
-     * replication status flags.
+     * This is the aggregated replication status based on all the regional replication status flags.
      */
     @JsonProperty(value = "aggregatedState", access = JsonProperty.Access.WRITE_ONLY)
     private AggregatedReplicationState aggregatedState;

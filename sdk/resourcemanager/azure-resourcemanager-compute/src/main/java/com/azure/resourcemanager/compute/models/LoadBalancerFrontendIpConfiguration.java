@@ -15,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LoadBalancerFrontendIpConfiguration {
     /*
-     * The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to
-     * access the resource.
+     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
+     * This name can be used to access the resource.
      */
     @JsonProperty(value = "name", required = true)
     private String name;

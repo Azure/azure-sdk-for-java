@@ -7,7 +7,6 @@ package com.azure.resourcemanager.privatedns.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClient;
 import com.azure.resourcemanager.privatedns.fluent.PrivateZonesClient;
@@ -19,8 +18,6 @@ import java.time.Duration;
 /** Initializes a new instance of the PrivateDnsManagementClientImpl type. */
 @ServiceClient(builder = PrivateDnsManagementClientBuilder.class)
 public final class PrivateDnsManagementClientImpl extends AzureServiceClient implements PrivateDnsManagementClient {
-    private final ClientLogger logger = new ClientLogger(PrivateDnsManagementClientImpl.class);
-
     /**
      * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
@@ -157,7 +154,7 @@ public final class PrivateDnsManagementClientImpl extends AzureServiceClient imp
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-09-01";
+        this.apiVersion = "2020-06-01";
         this.privateZones = new PrivateZonesClientImpl(this);
         this.virtualNetworkLinks = new VirtualNetworkLinksClientImpl(this);
         this.recordSets = new RecordSetsClientImpl(this);

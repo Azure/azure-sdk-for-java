@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayCookieBasedAffinity. */
+/** Cookie based affinity. */
 public final class ApplicationGatewayCookieBasedAffinity
     extends ExpandableStringEnum<ApplicationGatewayCookieBasedAffinity> {
     /** Static value Enabled for ApplicationGatewayCookieBasedAffinity. */
