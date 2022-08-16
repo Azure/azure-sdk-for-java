@@ -13,6 +13,7 @@
     <module>eng/jacoco-test-coverage</module>
     <module>sdk/advisor</module>
     <module>sdk/agrifood</module>
+    <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
     <module>sdk/aot</module>
     <module>sdk/apimanagement</module>
@@ -71,8 +72,8 @@
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
-    <module>sdk/formrecognizer</module>
     <module>sdk/fluidrelay</module>
+    <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
     <module>sdk/hanaonazure</module>
     <module>sdk/hardwaresecuritymodules</module>
