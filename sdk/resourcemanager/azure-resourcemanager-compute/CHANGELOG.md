@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Fix a bug that `withDataFromDisk(Disk managedDisk)` in `Snapshot` throws Exception.
+- Fixed bug where `withDataFromDisk(Disk managedDisk)` in `Snapshot` mistakenly used SKU from Disk. ([#29811](https://github.com/Azure/azure-sdk-for-java/issues/29811))
 
 ## 2.17.0 (2022-07-25)
 
