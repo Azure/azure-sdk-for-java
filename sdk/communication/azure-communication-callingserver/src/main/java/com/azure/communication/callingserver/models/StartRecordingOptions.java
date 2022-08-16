@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The options for creating a call.
@@ -34,6 +35,8 @@ public class StartRecordingOptions {
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     public StartRecordingOptions(CallLocator callLocator) {
+        Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
+
         this.callLocator = callLocator;
     }
 

@@ -105,6 +105,8 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResult>> startRecordingWithResponse(StartRecordingOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
         return startRecordingWithResponseInternal(options, null);
     }
 
@@ -145,28 +147,26 @@ public class CallRecordingAsync {
         StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal()
             .setCallLocator(callLocatorInternal);
 
-        if (options != null) {
-            if (options.getRecordingContent() != null) {
-                request.setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
-            }
-            if (options.getRecordingFormat() != null) {
-                request.setRecordingFormatType(RecordingFormatInternal.fromString(options.getRecordingFormat().toString()));
-            }
-            if (options.getRecordingChannel() != null) {
-                request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
-            }
-            if (options.getRecordingStateCallbackUri() != null) {
-                request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUri().toString());
-            }
-            if (options.getChannelAffinity() != null) {
-                List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()
-                    .stream()
-                    .map(c -> new ChannelAffinityInternal()
-                        .setChannel(c.getChannel())
-                        .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
-                    .collect(Collectors.toList());
-                request.setChannelAffinity(channelAffinityInternal);
-            }
+        if (options.getRecordingContent() != null) {
+            request.setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
+        }
+        if (options.getRecordingFormat() != null) {
+            request.setRecordingFormatType(RecordingFormatInternal.fromString(options.getRecordingFormat().toString()));
+        }
+        if (options.getRecordingChannel() != null) {
+            request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
+        }
+        if (options.getRecordingStateCallbackUri() != null) {
+            request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUri().toString());
+        }
+        if (options.getChannelAffinity() != null) {
+            List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()
+                .stream()
+                .map(c -> new ChannelAffinityInternal()
+                    .setChannel(c.getChannel())
+                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
+                .collect(Collectors.toList());
+            request.setChannelAffinity(channelAffinityInternal);
         }
 
         return request;
