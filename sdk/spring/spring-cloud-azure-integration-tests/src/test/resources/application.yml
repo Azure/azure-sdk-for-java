@@ -11,6 +11,8 @@ spring:
         client-secret: ${AZURE_SPRING_CLIENT_SECRET}
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
+        cloud-type: AZURE_US_GOVERNMENT
+
 logging:
   level:
     com.azure:
