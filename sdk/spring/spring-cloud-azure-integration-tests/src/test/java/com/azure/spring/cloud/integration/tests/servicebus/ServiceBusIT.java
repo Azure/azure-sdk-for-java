@@ -71,7 +71,7 @@ public class ServiceBusIT {
     }
 
     @BeforeAll
-    public void ensureCloudType() {
+    static void ensureCloudType() {
         String usGovAuthorityHost = "https://login.microsoftonline.us";
         String chinaAuthorityHost = "https://login.chinacloudapi.cn";
         AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
