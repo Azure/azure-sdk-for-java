@@ -396,18 +396,55 @@ resourcemanager_com.jcraft:jsch;0.1.55
 storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\spring\azure-spring-boot\pom.xml
+
+spring3_org.javatuples:javatuples;1.2
+
+spring3_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.3
+spring3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.3
+spring3_com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.3
 spring_com.microsoft.azure:azure;1.34.0
 
 spring3_io.micrometer:micrometer-core;1.10.0-M2
 spring3_io.micrometer:micrometer-registry-azure-monitor;1.10.0-M2
 spring3_io.micrometer:micrometer-registry-graphite;1.10.0-M2
-spring3_jakarta.servlet:jakarta.servlet-api;6.0.0
-spring3_jakarta.validation:jakarta.validation-api;3.0.0
+spring3_jakarta.activation:jakarta.activation-api;2.0.1
+spring3_jakarta.annotation:jakarta.annotation-api;2.0.0
+spring3_jakarta.jms:jakarta.jms-api;3.0.0
+spring3_jakarta.json.bind:jakarta.json.bind-api;2.0.0
+spring3_jakarta.json:jakarta.json-api;2.0.1
+spring3_jakarta.mail:jakarta.mail-api;2.0.1
+spring3_jakarta.management.j2ee:jakarta.management.j2ee-api;1.1.4
+spring3_jakarta.persistence:jakarta.persistence-api;3.0.0
+spring3_jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api;2.0.0
+spring3_jakarta.servlet:jakarta.servlet-api;5.0.0
+spring3_jakarta.transaction:jakarta.transaction-api;2.0.1
+spring3_jakarta.validation:jakarta.validation-api;3.0.1
+spring3_jakarta.websocket:jakarta.websocket-api;2.0.0
+spring3_jakarta.ws.rs:jakarta.ws.rs-api;3.0.0
 spring3_jakarta.xml.bind:jakarta.xml.bind-api;3.0.1
+spring3_jakarta.xml.soap:jakarta.xml.soap-api;2.0.1
+spring3_jakarta.xml.ws:jakarta.xml.ws-api;3.0.1
+spring3_javax.cache:cache-api;1.1.1
+spring3_javax.money:money-api;1.1
+spring3_javax.servlet:javax.servlet-api;4.0.1
+spring3_javax.servlet:jstl;1.2
+spring3_jaxen:jaxen;1.2.0
+spring3_junit:junit;4.13.2
+spring3_org.apache.commons:commons-lang3;3.12.0
 spring3_org.apache.kafka:kafka-clients;3.2.0
 spring3_org.apache.qpid:qpid-jms-client;2.0.0
 spring3_org.hibernate.validator:hibernate-validator;7.0.4.Final
 spring3_org.messaginghub:pooled-jms;3.0.0
+spring3_org.slf4j:jcl-over-slf4j;1.7.36
+spring3_org.slf4j:jul-to-slf4j;1.7.36
+spring3_org.slf4j:log4j-over-slf4j;1.7.36
+spring3_org.slf4j:slf4j-api;1.7.36
+spring3_org.slf4j:slf4j-ext;1.7.36
+spring3_org.slf4j:slf4j-jcl;1.7.36
+spring3_org.slf4j:slf4j-jdk14;1.7.36
+spring3_org.slf4j:slf4j-log4j12;1.7.36
+spring3_org.slf4j:slf4j-nop;1.7.36
+spring3_org.slf4j:slf4j-simple;1.7.36
 
 spring3_org.springframework.boot:spring-boot-dependencies;3.0.0-M3
 spring3_org.springframework.boot:spring-boot-actuator;3.0.0-M3

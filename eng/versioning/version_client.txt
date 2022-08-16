@@ -385,6 +385,8 @@ unreleased_com.azure:azure-ai-formrecognizer;4.0.0-beta.6
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 
 # Spring Cloud Azure 5.x release
+spring3_com.azure:azure-spring-data-cosmos;3.26.0-beta.3;3.26.0-beta.3
+
 spring3_com.azure.spring:spring-cloud-azure-dependencies;5.0.0-beta.1;5.0.0-beta.1
 spring3_com.azure.spring:spring-messaging-azure;5.0.0-beta.1;5.0.0-beta.1
 spring3_com.azure.spring:spring-messaging-azure-eventhubs;5.0.0-beta.1;5.0.0-beta.1
