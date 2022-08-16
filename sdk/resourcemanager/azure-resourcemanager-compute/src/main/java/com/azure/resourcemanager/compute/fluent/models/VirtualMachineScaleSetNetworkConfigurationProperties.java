@@ -17,15 +17,13 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfigurationProperties {
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
+     * Specifies whether the network interface is accelerated networking-enabled.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;

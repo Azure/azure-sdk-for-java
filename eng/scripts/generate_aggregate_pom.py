@@ -132,7 +132,10 @@ def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: s
             if project_id not in project_list_identifiers:
                 continue
 
-            aggregatePom.write('    <module>{}</module>\n'.format(project.module_path))
+            module_path = project.module_path.replace("/pom.xml", "")
+            if module_path.startswith("/"):
+                module_path = module_path[1:]
+            aggregatePom.write('    <module>{}</module>\n'.format(module_path))
 
             dependency_id = artifact_identifier_to_version[project_id]
             dependencies += dependency_template.format(dependency_id.group_id, dependency_id.artifact_id, dependency_id.current_version)
@@ -223,7 +226,7 @@ def writeJavadocConfiguration(aggregatePom: TextIOWrapper):
             aggregatePom.write(url)
             aggregatePom.write('</url>\n')
             aggregatePom.write(indent_3 + '<location>')
-            aggregatePom.write(location)
+            aggregatePom.write("${project.basedir}/" + location)
             aggregatePom.write('</location>\n')
             aggregatePom.write(indent_2 + '</offlineLink>\n')
         aggregatePom.write(indent_1 + '</offlineLinks>\n')

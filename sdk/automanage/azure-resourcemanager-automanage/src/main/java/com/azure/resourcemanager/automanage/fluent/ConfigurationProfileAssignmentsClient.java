@@ -45,7 +45,8 @@ public interface ConfigurationProfileAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration profile assignment is an association between a VM and automanage profile configuration.
+     * @return configuration profile assignment is an association between a VM and automanage profile configuration
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConfigurationProfileAssignmentInner> createOrUpdateWithResponse(
@@ -80,7 +81,7 @@ public interface ConfigurationProfileAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile assignment.
+     * @return information about a configuration profile assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConfigurationProfileAssignmentInner> getWithResponse(
@@ -109,7 +110,7 @@ public interface ConfigurationProfileAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -119,10 +120,38 @@ public interface ConfigurationProfileAssignmentsClient {
      * Get list of configuration profile assignments.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConfigurationProfileAssignmentInner> listByVirtualMachines(String resourceGroupName, String vmName);
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConfigurationProfileAssignmentInner> listByVirtualMachines(
+        String resourceGroupName, String vmName, Context context);
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationProfileAssignmentInner> listByResourceGroup(String resourceGroupName);
@@ -135,7 +164,7 @@ public interface ConfigurationProfileAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationProfileAssignmentInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -145,7 +174,8 @@ public interface ConfigurationProfileAssignmentsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationProfileAssignmentInner> list();
@@ -157,8 +187,65 @@ public interface ConfigurationProfileAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationProfileAssignmentInner> list(Context context);
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConfigurationProfileAssignmentInner> listByMachineName(String resourceGroupName, String machineName);
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConfigurationProfileAssignmentInner> listByMachineName(
+        String resourceGroupName, String machineName, Context context);
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConfigurationProfileAssignmentInner> listByClusterName(String resourceGroupName, String clusterName);
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConfigurationProfileAssignmentInner> listByClusterName(
+        String resourceGroupName, String clusterName, Context context);
 }

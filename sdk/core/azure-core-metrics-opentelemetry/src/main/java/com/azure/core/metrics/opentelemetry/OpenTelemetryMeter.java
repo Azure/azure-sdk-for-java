@@ -116,6 +116,11 @@ class OpenTelemetryMeter implements Meter {
     }
 
     @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    @Override
     public void close() {
     }
 

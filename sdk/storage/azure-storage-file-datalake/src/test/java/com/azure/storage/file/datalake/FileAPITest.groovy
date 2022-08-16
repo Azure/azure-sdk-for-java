@@ -18,7 +18,6 @@ import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
-
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
@@ -31,9 +30,9 @@ import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
-import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
 import com.azure.storage.file.datalake.models.FileQuerySerialization
 import com.azure.storage.file.datalake.models.FileRange
@@ -42,12 +41,10 @@ import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
-
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
-
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
@@ -64,6 +61,7 @@ import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
+import spock.util.environment.Jvm
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -2599,6 +2597,27 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    def "Append binary data min"() {
+        when:
+        fc.append(data.defaultBinaryData, 0)
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Append binary data"() {
+        setup:
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, null, null, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+    }
+
     def "Flush data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
@@ -3342,7 +3361,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
+        StepVerifier.create(fac.upload((Flux<ByteBuffer>)null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -3413,7 +3432,7 @@ class FileAPITest extends APISpec {
     }
 
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
@@ -3428,7 +3447,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -3711,6 +3730,38 @@ class FileAPITest extends APISpec {
 
         when:
         clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.uploadWithResponse(new FileParallelUploadOptions(data.defaultBinaryData), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data overwrite"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.upload(data.defaultBinaryData, true)
 
         then:
         notThrown(Exception)
@@ -4125,7 +4176,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    @PlaybackOnly(expiryTime = "2022-05-18")
+    @PlaybackOnly(expiryTime = "2022-08-18")
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -4679,7 +4730,7 @@ class FileAPITest extends APISpec {
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
@@ -4696,7 +4747,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends

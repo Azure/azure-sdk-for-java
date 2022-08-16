@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedOriginGroupProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +16,6 @@ import java.util.List;
  */
 @Fluent
 public final class DeepCreatedOriginGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeepCreatedOriginGroup.class);
-
     /*
      * Origin group name which must be unique within the endpoint.
      */
@@ -177,7 +174,7 @@ public final class DeepCreatedOriginGroup {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model DeepCreatedOriginGroup"));
         }
@@ -185,4 +182,6 @@ public final class DeepCreatedOriginGroup {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeepCreatedOriginGroup.class);
 }

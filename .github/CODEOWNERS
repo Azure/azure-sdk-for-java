@@ -102,7 +102,7 @@
 /sdk/eventgrid/                                     @mssfang @srnagar @lmolkova @billwert
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
+/sdk/eventhubs/                                     @conniey @anuchandy @liukun-msft @ZejiaJiang @anushkasingh16
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
@@ -151,7 +151,7 @@
 /sdk/search/                                        @alzimmermsft
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/servicebus/                                    @anuchandy @ki1729 @conniey @liukun-msft @ZejiaJiang
 
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal

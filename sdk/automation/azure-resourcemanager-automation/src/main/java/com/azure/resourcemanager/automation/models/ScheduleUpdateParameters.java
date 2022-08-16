@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.ScheduleUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the update schedule operation. */
-@JsonFlatten
 @Fluent
-public class ScheduleUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleUpdateParameters.class);
-
+public final class ScheduleUpdateParameters {
     /*
      * Gets or sets the name of the Schedule.
      */
@@ -23,16 +18,10 @@ public class ScheduleUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the description of the schedule.
+     * Gets or sets the list of schedule properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Gets or sets a value indicating whether this schedule is enabled.
-     */
-    @JsonProperty(value = "properties.isEnabled")
-    private Boolean isEnabled;
+    @JsonProperty(value = "properties")
+    private ScheduleUpdateProperties innerProperties;
 
     /**
      * Get the name property: Gets or sets the name of the Schedule.
@@ -55,12 +44,21 @@ public class ScheduleUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the list of schedule properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ScheduleUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the schedule.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -70,7 +68,10 @@ public class ScheduleUpdateParameters {
      * @return the ScheduleUpdateParameters object itself.
      */
     public ScheduleUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -80,7 +81,7 @@ public class ScheduleUpdateParameters {
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
-        return this.isEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
     }
 
     /**
@@ -90,7 +91,10 @@ public class ScheduleUpdateParameters {
      * @return the ScheduleUpdateParameters object itself.
      */
     public ScheduleUpdateParameters withIsEnabled(Boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleUpdateProperties();
+        }
+        this.innerProperties().withIsEnabled(isEnabled);
         return this;
     }
 
@@ -100,5 +104,8 @@ public class ScheduleUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

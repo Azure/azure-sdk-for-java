@@ -1,5 +1,13 @@
 # Release History
 
+## 2.18.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2020-06-01`.
+
 ## 2.17.0 (2022-07-25)
 
 ### Other Changes

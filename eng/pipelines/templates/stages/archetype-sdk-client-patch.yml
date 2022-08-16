@@ -1,0 +1,322 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20220329.1
+
+parameters:
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: SDKType
+  type: string
+  default: client
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
+- name: SkipAggregateReports
+  type: boolean
+  default: false
+- name: BuildParallelization
+  type: string
+  default: '2C'
+- name: UseEsrpRelease
+  type: boolean
+  default: true
+- name: JavaBuildVersion
+  type: string
+  default: $(JavaBuildVersion)
+- name: TestPipeline
+  type: boolean
+  default: false
+
+
+stages:
+  - stage: Build
+    jobs:
+    - job: 'Build'
+
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+        - name: ArtifactName
+          value: 'packages'
+
+      pool:
+        name: azsdk-pool-mms-ubuntu-2004-general
+
+      steps:
+        # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+        # as we require the github service connection to be loaded.
+        - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              Paths:
+                - '**/*.xml'
+                - '**/*.md'
+                - '!sdk/**/test-recordings/*'
+                - '!sdk/**/session-records/*'
+
+        - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+          parameters:
+            Artifacts: ${{parameters.Artifacts}}
+            AdditionalModules: ${{parameters.AdditionalModules}}
+            JobType: 'Build'
+
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+            ServiceDirectory: "template"
+            TestPipeline: ${{parameters.TestPipeline}}
+
+        - task: UsePythonVersion@0
+          displayName: 'Use Python 3.6'
+          inputs:
+            versionSpec: '3.6'
+
+        - task: PythonScript@0
+          displayName: 'Set versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/set_versions.py'
+            arguments: '--build-type client --pst'
+
+        - task: PythonScript@0
+          displayName: 'Update versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/update_versions.py'
+            arguments: '--update-type library --build-type client --sr'
+
+        - task: PythonScript@0
+          displayName: 'Generate FromSource POM and directories for sparse checkout'
+          inputs:
+            scriptPath: 'eng/scripts/generate_from_source_pom.py'
+            arguments: '--project-list $(ProjectList)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(SparseCheckoutDirectories)
+            SkipDefaultCheckout: true
+
+        - script: |
+            pip install markdown2 BeautifulSoup4
+          displayName: 'pip install markdown2 and BeautifulSoup4'
+
+        # Save the Package Properties
+        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is
+        # output by the generate_from_source_pom script above.
+        - pwsh: |
+            $ServiceDirs = '$(ServiceDirectories)'
+            foreach($ServiceDir in $ServiceDirs.Split(',')) {
+              $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+            }
+          workingDirectory: $(Pipeline.Workspace)
+          displayName: "Save Package Properties"
+
+        # Why is this necessary? Normal build and release jobs don't install reporting tools prior
+        # to building however they're still able to find the the build tools through the root aggregate
+        # pom file. The ClientFromSourcePom only contains what is necessary for the list of libraries
+        # and needs to have them installed explicitly otherwise the checkstyle plugin will fail to find
+        # com.azure:sdk-build-tools which is a dependency. It does this in spite of the fact that we're
+        # not running actually running checkstyle, it loads it to skip it...well done.
+        - template: ../steps/install-reporting-tools.yml
+          parameters:
+            JdkVersion: ${{ parameters.JavaBuildVersion }}
+
+        - task: Maven@3
+          displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
+          inputs:
+            mavenPomFile: ClientFromSourcePom.xml
+            goals: 'deploy'
+            options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+
+        - task: PowerShell@2
+          displayName: 'Verify Required Maven Artifacts'
+          inputs:
+            pwsh: true
+            workingDirectory: $(Agent.BuildDirectory)
+            filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
+            arguments: >
+              -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
+              -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+              -InformationAction Continue
+
+        - task: PowerShell@2
+          displayName: 'Copy artifacts to staging'
+          inputs:
+            pwsh: true
+            workingDirectory: $(Agent.BuildDirectory)
+            filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+            arguments: >
+              -SourceDirectory $(System.DefaultWorkingDirectory)/build
+              -TargetDirectory $(Build.ArtifactStagingDirectory)
+              -InformationAction Continue
+
+        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+          parameters:
+            ArtifactPath: $(Build.ArtifactStagingDirectory)
+            ArtifactName: '$(ArtifactName)'
+
+        - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+          displayName: 'Generate SBOM'
+          condition: succeededOrFailed()
+          inputs:
+            BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+          parameters:
+            ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+            ArtifactName: 'manifest'
+
+        - template: ../steps/upload-repository-on-failure.yml
+
+    - job: 'AnalyzeAndVerify'
+      condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+
+      pool:
+        name: azsdk-pool-mms-ubuntu-2004-general
+        vmImage: MMSUbuntu20.04
+
+      steps:
+        - task: UsePythonVersion@0
+          displayName: 'Use Python 3.6'
+          inputs:
+            versionSpec: '3.6'
+
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - '**/*.xml'
+              - '**/*.md'
+              - '.vscode/cspell.json'
+              - '!sdk/**/test-recordings/*'
+              - '!sdk/**/session-records/*'
+
+        - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+          parameters:
+            Artifacts: ${{ parameters.Artifacts }}
+            AdditionalModules: ${{ parameters.AdditionalModules }}
+            JobType: 'AnalyzeAndVerify'
+
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+            ServiceDirectory: "template"
+            TestPipeline: ${{parameters.TestPipeline}}
+
+        - task: PythonScript@0
+          displayName: 'Set versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/set_versions.py'
+            arguments: '--build-type client --pst'
+
+        - task: PythonScript@0
+          displayName: 'Update versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/update_versions.py'
+            arguments: '--update-type library --build-type client --sr'
+
+        - task: PythonScript@0
+          displayName: 'Generate FromSource POM and directories for sparse checkout'
+          inputs:
+            scriptPath: 'eng/scripts/generate_from_source_pom.py'
+            arguments: '--project-list $(ProjectList)'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(SparseCheckoutDirectories)
+            SkipDefaultCheckout: true
+
+        - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+          parameters:
+            CspellConfigPath: .vscode/cspell.json
+
+        - task: PowerShell@2
+          displayName: 'Verify versions in POM files'
+          inputs:
+            pwsh: true
+            workingDirectory: $(Agent.BuildDirectory)
+            filePath: eng/versioning/pom_file_version_scanner.ps1
+            arguments: -Debug:$$(IsDebug)
+
+        # Do all the verifications for all the artifacts after the sparse-checkout
+        - pwsh: |
+            $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+            $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+            python --version
+            foreach($artifact in $ArtifactsList) {
+              python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
+            }
+          displayName: 'Verify artifact versions for release'
+
+        # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
+        # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
+        # validation, so omit uberJars from the artifacts list to verify.
+        # Note: This is different from the Batch release verification step because the ServiceDirectory, for this
+        # pipeline, is attached to each Artifact. It needs to be in the query so it can be passed into the script
+        - pwsh: |
+            $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, ServiceDirectory, uberJar | Where-Object -Not "uberJar")
+            $ArtifactsList | Format-Table -Property GroupId, Name, ServiceDirectory | Out-String | Write-Host
+            foreach($artifact in $ArtifactsList) {
+              $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/$($artifact.ServiceDirectory)
+            }
+          displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
+
+        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+          parameters:
+            # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of
+            # what's going on below
+            ScanPaths: $(ServiceDirectoriesFullPath)
+
+        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+          parameters:
+            ServiceDirectories: $(ServiceDirectories)
+
+        # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+        - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+          parameters:
+            SourceDirectory: $(Build.SourcesDirectory)
+            BasePathLength: 38
+
+        # Verify changelog, the way it currently works would
+        # require a complete overhaul in order to be able to deal with multiple artifacts and
+        # multiple service directories. Even ignoring this, there's still the fact that each artifact's
+        # metadata can cause this step to be skipped so we still need to loop over this.
+        - ${{if ne(parameters.SDKType, 'data')}}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceName: ${{artifact.ServiceDirectory}}
+                  # Note, for the patch release pipeline there's no point in verifying the non-release
+                  # changelog since the only time this pipeline should run is for a patch release.
+                  ForRelease: true
+
+        - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  # This pipeline should never get kicked off outside of an internal, manual run. Put the checks here
+  # so the pipeline never gets to the signing/release portions unless this is the case.
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+    - template: archetype-java-release-patch.yml
+      parameters:
+        DependsOn:
+          - Build
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
+        TestPipeline: ${{ parameters.TestPipeline }}
+        ArtifactName: packages
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}

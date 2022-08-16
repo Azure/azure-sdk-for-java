@@ -1,5 +1,11 @@
 # Release History
 
+## 2.18.0-beta.1 (Unreleased)
+
+### Breaking Changes
+
+- Fixed incorrect class name of `CassandraClusterPublicStatusDataCentersItemNode`.
+
 ## 2.17.0 (2022-07-25)
 
 ### Other Changes

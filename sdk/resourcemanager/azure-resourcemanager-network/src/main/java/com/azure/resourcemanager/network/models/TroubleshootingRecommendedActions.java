@@ -23,15 +23,13 @@ public final class TroubleshootingRecommendedActions {
     private String actionText;
 
     /*
-     * The uri linking to a documentation for the recommended troubleshooting
-     * actions.
+     * The uri linking to a documentation for the recommended troubleshooting actions.
      */
     @JsonProperty(value = "actionUri")
     private String actionUri;
 
     /*
-     * The information from the URI for the recommended troubleshooting
-     * actions.
+     * The information from the URI for the recommended troubleshooting actions.
      */
     @JsonProperty(value = "actionUriText")
     private String actionUriText;

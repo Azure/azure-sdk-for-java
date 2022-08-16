@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of usage counter name. */
 @Fluent
 public final class UsageCounterName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageCounterName.class);
-
     /*
      * Gets or sets the usage counter name.
      */

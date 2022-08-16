@@ -6,14 +6,11 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs to be reset. */
 @Fluent
 public final class RegenerateAccessKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateAccessKeyParameters.class);
-
     /*
      * The access key to regenerate.
      */
@@ -21,8 +18,7 @@ public final class RegenerateAccessKeyParameters {
     private KeyType keyType;
 
     /*
-     * Optional, if the key value provided, is reset for KeyType value or
-     * autogenerate Key value set for keyType
+     * Optional, if the key value provided, is reset for KeyType value or autogenerate Key value set for keyType
      */
     @JsonProperty(value = "key")
     private String key;
@@ -76,10 +72,12 @@ public final class RegenerateAccessKeyParameters {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyType in model RegenerateAccessKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegenerateAccessKeyParameters.class);
 }

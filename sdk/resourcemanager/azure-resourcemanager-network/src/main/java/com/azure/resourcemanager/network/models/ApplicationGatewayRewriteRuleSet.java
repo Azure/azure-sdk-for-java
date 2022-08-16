@@ -20,8 +20,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties;
 
     /*
-     * Name of the rewrite rule set that is unique within an Application
-     * Gateway.
+     * Name of the rewrite rule set that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
