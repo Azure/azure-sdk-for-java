@@ -19,7 +19,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +40,7 @@ import java.util.concurrent.TimeUnit;
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
     })
 @ActiveProfiles("servicebus")
-public class ServiceBusIT {
+public class ServiceBusIT implements BeanFactoryPostProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private static final String DATA1 = "service bus test1";
     private static final String DATA2 = "service bus test2";
@@ -53,6 +56,28 @@ public class ServiceBusIT {
     @Autowired
     private ServiceBusProcessorClient processorClient;
 
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        String usGovAuthorityHost = "https://login.microsoftonline.us";
+        String chinaAuthorityHost = "https://login.chinacloudapi.cn";
+        AzureGlobalProperties azureGlobalProperties = beanFactory.getBean("AzureGlobalProperties",
+            AzureGlobalProperties.class);
+        AzureProfileConfigurationProperties azureProfileConfigurationProperties = azureGlobalProperties.getProfile();
+        System.out.println("CloudType"+azureProfileConfigurationProperties.getCloudType());
+        String azureAuthorityHost = System.getenv("AZURE_AUTHORITY_HOST");
+        System.out.println("azureAuthorityHost"+azureAuthorityHost);
+        if (usGovAuthorityHost.equals(azureAuthorityHost)) {
+            System.out.println("US GOVERNMENT");
+            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+            System.out.println(azureGlobalProperties.getProfile().getCloudType());
+        }
+        if (chinaAuthorityHost.equals(azureAuthorityHost)) {
+            System.out.println("CHINA");
+            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+            System.out.println(azureGlobalProperties.getProfile().getCloudType());
+        }
+    }
+
     @TestConfiguration
     static class TestConfig {
         @Bean
@@ -67,28 +92,6 @@ public class ServiceBusIT {
         ServiceBusErrorHandler errorHandler() {
             return errorContext -> {
             };
-        }
-    }
-
-    @BeforeAll
-    static void ensureCloudType() {
-        String usGovAuthorityHost = "https://login.microsoftonline.us";
-        String chinaAuthorityHost = "https://login.chinacloudapi.cn";
-        AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
-        AzureProfileConfigurationProperties azureProfileConfigurationProperties = azureGlobalProperties.getProfile();
-        System.out.println("CloudType"+azureProfileConfigurationProperties.getCloudType());
-        String azureAuthorityHost = System.getenv("AZURE_AUTHORITY_HOST");
-        System.out.println("azureAuthorityHost"+azureAuthorityHost);
-        if (usGovAuthorityHost.equals(azureAuthorityHost)) {
-            System.out.println("US GOVERNMENT");
-            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-            System.out.println(azureGlobalProperties.getProfile().getCloudType());
-        }
-        if (chinaAuthorityHost.equals(azureAuthorityHost)) {
-            System.out.println("CHINA");
-            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
-            System.out.println(azureGlobalProperties.getProfile().getCloudType());
-
         }
     }
 
