@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommunicationServicesProvisioningState. */
+/** Provisioning state of the resource. */
 public final class CommunicationServicesProvisioningState
     extends ExpandableStringEnum<CommunicationServicesProvisioningState> {
     /** Static value Unknown for CommunicationServicesProvisioningState. */
