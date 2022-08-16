@@ -368,12 +368,6 @@
         },
         {
           "regex": true,
-          "code": "java\\.method\\.addedToInterface",
-          "new": "method .* com\\.azure\\.spring\\.data\\.cosmos\\.repository\\..*",
-          "justification": "Keep the methods of CrudRepository and ReactiveCrudRepository (2.x)."
-        },
-        {
-          "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
           "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
