@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems model. */
+/** The CassandraClusterPublicStatusDataCentersItemNode model. */
 @Fluent
-public final class ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems {
+public final class CassandraClusterPublicStatusDataCentersItemNode {
     /*
      * The node's IP address.
      */
@@ -30,10 +30,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
     private String status;
 
     /*
-     * The amount of file system data in the data directory (e.g., 47.66 kB),
-     * excluding all content in the snapshots subdirectories. Because all
-     * SSTable data files are included, any data that is not cleaned up (such
-     * as TTL-expired cells or tombstones) is counted.
+     * The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots
+     * subdirectories. Because all SSTable data files are included, any data that is not cleaned up (such as
+     * TTL-expired cells or tombstones) is counted.
      */
     @JsonProperty(value = "load")
     private String load;
@@ -87,8 +86,8 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
     private Long memoryUsedKB;
 
     /*
-     * Memory used by kernel buffers (Buffers in /proc/meminfo) and page cache
-     * and slabs (Cached and SReclaimable in /proc/meminfo), in kB.
+     * Memory used by kernel buffers (Buffers in /proc/meminfo) and page cache and slabs (Cached and SReclaimable in
+     * /proc/meminfo), in kB.
      */
     @JsonProperty(value = "memoryBuffersAndCachedKB")
     private Long memoryBuffersAndCachedKB;
@@ -106,8 +105,7 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
     private Long memoryTotalKB;
 
     /*
-     * A float representing the current system-wide CPU utilization as a
-     * percentage.
+     * A float representing the current system-wide CPU utilization as a percentage.
      */
     @JsonProperty(value = "cpuUsage")
     private Double cpuUsage;
@@ -125,11 +123,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the address property: The node's IP address.
      *
      * @param address the address value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withAddress(String address) {
+    public CassandraClusterPublicStatusDataCentersItemNode withAddress(String address) {
         this.address = address;
         return this;
     }
@@ -147,11 +143,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the state property: The state of the node in Cassandra ring.
      *
      * @param state the state value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withState(
-        NodeState state) {
+    public CassandraClusterPublicStatusDataCentersItemNode withState(NodeState state) {
         this.state = state;
         return this;
     }
@@ -169,11 +163,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the status property: The status property.
      *
      * @param status the status value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withStatus(
-        String status) {
+    public CassandraClusterPublicStatusDataCentersItemNode withStatus(String status) {
         this.status = status;
         return this;
     }
@@ -195,11 +187,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * cleaned up (such as TTL-expired cells or tombstones) is counted.
      *
      * @param load the load value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withLoad(
-        String load) {
+    public CassandraClusterPublicStatusDataCentersItemNode withLoad(String load) {
         this.load = load;
         return this;
     }
@@ -217,11 +207,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the tokens property: List of tokens this node covers.
      *
      * @param tokens the tokens value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withTokens(
-        List<String> tokens) {
+    public CassandraClusterPublicStatusDataCentersItemNode withTokens(List<String> tokens) {
         this.tokens = tokens;
         return this;
     }
@@ -239,11 +227,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the size property: The size property.
      *
      * @param size the size value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withSize(
-        Integer size) {
+    public CassandraClusterPublicStatusDataCentersItemNode withSize(Integer size) {
         this.size = size;
         return this;
     }
@@ -261,11 +247,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the hostId property: The network ID of the node.
      *
      * @param hostId the hostId value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withHostId(
-        String hostId) {
+    public CassandraClusterPublicStatusDataCentersItemNode withHostId(String hostId) {
         this.hostId = hostId;
         return this;
     }
@@ -283,11 +267,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the rack property: The rack this node is part of.
      *
      * @param rack the rack value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems withRack(
-        String rack) {
+    public CassandraClusterPublicStatusDataCentersItemNode withRack(String rack) {
         this.rack = rack;
         return this;
     }
@@ -305,11 +287,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the timestamp property: The timestamp when these statistics were captured.
      *
      * @param timestamp the timestamp value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withTimestamp(String timestamp) {
+    public CassandraClusterPublicStatusDataCentersItemNode withTimestamp(String timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -327,11 +307,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the diskUsedKB property: The amount of disk used, in kB, of the directory /var/lib/cassandra.
      *
      * @param diskUsedKB the diskUsedKB value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withDiskUsedKB(Long diskUsedKB) {
+    public CassandraClusterPublicStatusDataCentersItemNode withDiskUsedKB(Long diskUsedKB) {
         this.diskUsedKB = diskUsedKB;
         return this;
     }
@@ -349,11 +327,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the diskFreeKB property: The amount of disk free, in kB, of the directory /var/lib/cassandra.
      *
      * @param diskFreeKB the diskFreeKB value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withDiskFreeKB(Long diskFreeKB) {
+    public CassandraClusterPublicStatusDataCentersItemNode withDiskFreeKB(Long diskFreeKB) {
         this.diskFreeKB = diskFreeKB;
         return this;
     }
@@ -371,11 +347,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the memoryUsedKB property: Used memory (calculated as total - free - buffers - cache), in kB.
      *
      * @param memoryUsedKB the memoryUsedKB value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withMemoryUsedKB(Long memoryUsedKB) {
+    public CassandraClusterPublicStatusDataCentersItemNode withMemoryUsedKB(Long memoryUsedKB) {
         this.memoryUsedKB = memoryUsedKB;
         return this;
     }
@@ -395,11 +369,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * cache and slabs (Cached and SReclaimable in /proc/meminfo), in kB.
      *
      * @param memoryBuffersAndCachedKB the memoryBuffersAndCachedKB value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withMemoryBuffersAndCachedKB(Long memoryBuffersAndCachedKB) {
+    public CassandraClusterPublicStatusDataCentersItemNode withMemoryBuffersAndCachedKB(Long memoryBuffersAndCachedKB) {
         this.memoryBuffersAndCachedKB = memoryBuffersAndCachedKB;
         return this;
     }
@@ -417,11 +389,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the memoryFreeKB property: Unused memory (MemFree and SwapFree in /proc/meminfo), in kB.
      *
      * @param memoryFreeKB the memoryFreeKB value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withMemoryFreeKB(Long memoryFreeKB) {
+    public CassandraClusterPublicStatusDataCentersItemNode withMemoryFreeKB(Long memoryFreeKB) {
         this.memoryFreeKB = memoryFreeKB;
         return this;
     }
@@ -439,11 +409,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the memoryTotalKB property: Total installed memory (MemTotal and SwapTotal in /proc/meminfo), in kB.
      *
      * @param memoryTotalKB the memoryTotalKB value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withMemoryTotalKB(Long memoryTotalKB) {
+    public CassandraClusterPublicStatusDataCentersItemNode withMemoryTotalKB(Long memoryTotalKB) {
         this.memoryTotalKB = memoryTotalKB;
         return this;
     }
@@ -461,11 +429,9 @@ public final class ComponentsM9L909SchemasCassandraclusterpublicstatusProperties
      * Set the cpuUsage property: A float representing the current system-wide CPU utilization as a percentage.
      *
      * @param cpuUsage the cpuUsage value to set.
-     * @return the ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-     *     object itself.
+     * @return the CassandraClusterPublicStatusDataCentersItemNode object itself.
      */
-    public ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems
-        withCpuUsage(Double cpuUsage) {
+    public CassandraClusterPublicStatusDataCentersItemNode withCpuUsage(Double cpuUsage) {
         this.cpuUsage = cpuUsage;
         return this;
     }

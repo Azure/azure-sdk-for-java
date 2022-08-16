@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HostnameOperator. */
+/** Describes operator to be matched. */
 public final class HostnameOperator extends ExpandableStringEnum<HostnameOperator> {
     /** Static value Any for HostnameOperator. */
     public static final HostnameOperator ANY = fromString("Any");
@@ -51,7 +51,11 @@ public final class HostnameOperator extends ExpandableStringEnum<HostnameOperato
         return fromString(name, HostnameOperator.class);
     }
 
-    /** @return known HostnameOperator values. */
+    /**
+     * Gets known HostnameOperator values.
+     *
+     * @return known HostnameOperator values.
+     */
     public static Collection<HostnameOperator> values() {
         return values(HostnameOperator.class);
     }

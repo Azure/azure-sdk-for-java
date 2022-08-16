@@ -7,14 +7,11 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedOriginProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The main origin of CDN content which is added when creating a CDN endpoint. */
 @Fluent
 public final class DeepCreatedOrigin {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeepCreatedOrigin.class);
-
     /*
      * Origin name which must be unique within the endpoint.
      */
@@ -343,7 +340,7 @@ public final class DeepCreatedOrigin {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model DeepCreatedOrigin"));
         }
@@ -351,4 +348,6 @@ public final class DeepCreatedOrigin {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeepCreatedOrigin.class);
 }
