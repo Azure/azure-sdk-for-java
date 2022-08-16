@@ -120,6 +120,12 @@ directive:
 - rename-model:
     from: PlayOptions
     to: PlayOptionsInternal
+- rename-model:
+    from: StartCallRecordingRequest
+    to: StartCallRecordingRequestInternal
+- rename-model:
+    from: ChannelAffinity
+    to: ChannelAffinityInternal        
     
 # Remove models
 - remove-model: AddParticipantsFailedEvent

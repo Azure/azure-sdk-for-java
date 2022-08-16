@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The request payload start for call recording operation with call locator. */
 @Fluent
-public final class StartCallRecordingRequest {
+public final class StartCallRecordingRequestInternal {
     /*
      * The call locator.
      */
@@ -45,7 +45,7 @@ public final class StartCallRecordingRequest {
      * The channel affinity of call recording.
      */
     @JsonProperty(value = "channelAffinity")
-    private List<ChannelAffinity> channelAffinity;
+    private List<ChannelAffinityInternal> channelAffinity;
 
     /**
      * Get the callLocator property: The call locator.
@@ -60,9 +60,9 @@ public final class StartCallRecordingRequest {
      * Set the callLocator property: The call locator.
      *
      * @param callLocator the callLocator value to set.
-     * @return the StartCallRecordingRequest object itself.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequest setCallLocator(CallLocatorInternal callLocator) {
+    public StartCallRecordingRequestInternal setCallLocator(CallLocatorInternal callLocator) {
         this.callLocator = callLocator;
         return this;
     }
@@ -80,9 +80,9 @@ public final class StartCallRecordingRequest {
      * Set the recordingStateCallbackUri property: The uri to send notifications to.
      *
      * @param recordingStateCallbackUri the recordingStateCallbackUri value to set.
-     * @return the StartCallRecordingRequest object itself.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequest setRecordingStateCallbackUri(String recordingStateCallbackUri) {
+    public StartCallRecordingRequestInternal setRecordingStateCallbackUri(String recordingStateCallbackUri) {
         this.recordingStateCallbackUri = recordingStateCallbackUri;
         return this;
     }
@@ -100,9 +100,9 @@ public final class StartCallRecordingRequest {
      * Set the recordingContentType property: The content type of call recording.
      *
      * @param recordingContentType the recordingContentType value to set.
-     * @return the StartCallRecordingRequest object itself.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequest setRecordingContentType(RecordingContentInternal recordingContentType) {
+    public StartCallRecordingRequestInternal setRecordingContentType(RecordingContentInternal recordingContentType) {
         this.recordingContentType = recordingContentType;
         return this;
     }
@@ -120,9 +120,9 @@ public final class StartCallRecordingRequest {
      * Set the recordingChannelType property: The channel type of call recording.
      *
      * @param recordingChannelType the recordingChannelType value to set.
-     * @return the StartCallRecordingRequest object itself.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequest setRecordingChannelType(RecordingChannelInternal recordingChannelType) {
+    public StartCallRecordingRequestInternal setRecordingChannelType(RecordingChannelInternal recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
         return this;
     }
@@ -140,9 +140,9 @@ public final class StartCallRecordingRequest {
      * Set the recordingFormatType property: The format type of call recording.
      *
      * @param recordingFormatType the recordingFormatType value to set.
-     * @return the StartCallRecordingRequest object itself.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequest setRecordingFormatType(RecordingFormatInternal recordingFormatType) {
+    public StartCallRecordingRequestInternal setRecordingFormatType(RecordingFormatInternal recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
         return this;
     }
@@ -152,7 +152,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the channelAffinity value.
      */
-    public List<ChannelAffinity> getChannelAffinity() {
+    public List<ChannelAffinityInternal> getChannelAffinity() {
         return this.channelAffinity;
     }
 
@@ -160,9 +160,9 @@ public final class StartCallRecordingRequest {
      * Set the channelAffinity property: The channel affinity of call recording.
      *
      * @param channelAffinity the channelAffinity value to set.
-     * @return the StartCallRecordingRequest object itself.
+     * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequest setChannelAffinity(List<ChannelAffinity> channelAffinity) {
+    public StartCallRecordingRequestInternal setChannelAffinity(List<ChannelAffinityInternal> channelAffinity) {
         this.channelAffinity = channelAffinity;
         return this;
     }

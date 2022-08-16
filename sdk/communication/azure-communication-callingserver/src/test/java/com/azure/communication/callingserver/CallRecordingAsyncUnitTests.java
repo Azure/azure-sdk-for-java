@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.ChannelAffinity;
 import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
@@ -11,6 +12,7 @@ import com.azure.communication.callingserver.models.RecordingState;
 import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
@@ -19,6 +21,7 @@ import reactor.test.StepVerifier;
 import java.net.URI;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,25 +36,24 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     @Test
     public void startRecordingRelativeUriFails() {
-        validateError(InvalidParameterException.class, callRecording.startRecording(
-            new ServerCallLocator(SERVER_CALL_ID),
-            URI.create("/not/absolute/uri")
+        validateError(InvalidParameterException.class,
+            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+                .setRecordingStateCallbackUri(URI.create("/not/absolute/uri"))
         ));
     }
 
     @Test
     public void startRecordingWithFullParamsFails() {
-        StartRecordingOptions startRecordingOptions = new StartRecordingOptions(
-            RecordingContent.AUDIO_VIDEO,
-            RecordingFormat.MP4,
-            RecordingChannel.MIXED
-        );
+        StartRecordingOptions startRecordingOptions = new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            .setRecordingContent(RecordingContent.AUDIO_VIDEO)
+            .setRecordingChannel(RecordingChannel.MIXED)
+            .setRecordingFormat(RecordingFormat.MP4)
+            .setRecordingStateCallbackUri(URI.create("/not/absolute/uri"))
+            .setChannelAffinity(new ArrayList<ChannelAffinity>(Arrays.asList(
+                new ChannelAffinity(0, new CommunicationUserIdentifier("rawId1")),
+                new ChannelAffinity(1, new CommunicationUserIdentifier("rawId2")))));
 
-        validateError(InvalidParameterException.class, callRecording.startRecordingWithResponse(
-            new ServerCallLocator(SERVER_CALL_ID),
-            URI.create("/not/absolute/uri"),
-            startRecordingOptions
-        ));
+        validateError(InvalidParameterException.class, callRecording.startRecordingWithResponse(startRecordingOptions));
     }
 
     @Test
@@ -62,7 +64,8 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
         callRecording = callingServerClient.getCallRecordingAsync();
 
         validateRecordingState(
-            callRecording.startRecording(new ServerCallLocator(SERVER_CALL_ID), URI.create("https://localhost/")),
+            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+                    .setRecordingStateCallbackUri(URI.create("https://localhost/"))),
             RecordingState.ACTIVE
         );
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Channel affinity for a participant. */
 @Fluent
-public final class ChannelAffinity {
+public final class ChannelAffinityInternal {
     /*
      * Channel number to which bitstream from a particular participant will be
      * written.
@@ -38,9 +38,9 @@ public final class ChannelAffinity {
      * Set the channel property: Channel number to which bitstream from a particular participant will be written.
      *
      * @param channel the channel value to set.
-     * @return the ChannelAffinity object itself.
+     * @return the ChannelAffinityInternal object itself.
      */
-    public ChannelAffinity setChannel(Integer channel) {
+    public ChannelAffinityInternal setChannel(Integer channel) {
         this.channel = channel;
         return this;
     }
@@ -60,9 +60,9 @@ public final class ChannelAffinity {
      * represented by the channel number.
      *
      * @param participant the participant value to set.
-     * @return the ChannelAffinity object itself.
+     * @return the ChannelAffinityInternal object itself.
      */
-    public ChannelAffinity setParticipant(CommunicationIdentifierModel participant) {
+    public ChannelAffinityInternal setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;
         return this;
     }

@@ -3,12 +3,9 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.DownloadToFileOptions;
-import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.RecordingStateResult;
-import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,7 +15,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.Objects;
@@ -36,23 +32,20 @@ public class CallRecording {
     /**
      * Start recording of the call.
      *
-     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
-     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResult startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
-        return callRecordingAsync.startRecording(callLocator, recordingStateCallbackUri).block();
+    public RecordingStateResult startRecording(StartRecordingOptions options) {
+        return callRecordingAsync.startRecording(options).block();
     }
 
     /**
      * Start recording of the call.
      *
-     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
-     * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
@@ -61,16 +54,8 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResult> startRecordingWithResponse(
-        CallLocator callLocator,
-        URI recordingStateCallbackUri,
-        StartRecordingOptions options,
-        Context context) {
-        return callRecordingAsync.startRecordingWithResponseInternal(
-            callLocator,
-            recordingStateCallbackUri,
-            options,
-            context).block();
+    public Response<RecordingStateResult> startRecordingWithResponse(StartRecordingOptions options, Context context) {
+        return callRecordingAsync.startRecordingWithResponseInternal(options, context).block();
     }
 
     /**

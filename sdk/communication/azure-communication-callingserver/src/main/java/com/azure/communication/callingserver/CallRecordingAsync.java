@@ -7,12 +7,14 @@ import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallLocatorInternal;
 import com.azure.communication.callingserver.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callingserver.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callingserver.implementation.models.ChannelAffinityInternal;
 import com.azure.communication.callingserver.implementation.models.RecordingContentInternal;
 import com.azure.communication.callingserver.implementation.models.RecordingFormatInternal;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallLocatorKind;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -40,7 +42,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -49,8 +50,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -79,54 +82,45 @@ public class CallRecordingAsync {
     /**
      * Start recording of the call.
      *
-     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
-     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResult> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
-        return startRecordingWithResponse(callLocator, recordingStateCallbackUri, null)
+    public Mono<RecordingStateResult> startRecording(StartRecordingOptions options) {
+        return startRecordingWithResponse(options)
             .flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
      * Start recording of the call.
      *
-     * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
-     * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param options Recording options, i.e. format, channel, content.
+     * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResult>> startRecordingWithResponse(
-        CallLocator callLocator,
-        URI recordingStateCallbackUri,
-        StartRecordingOptions options) {
-        return startRecordingWithResponseInternal(callLocator, recordingStateCallbackUri, options, null);
+    public Mono<Response<RecordingStateResult>> startRecordingWithResponse(StartRecordingOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        return startRecordingWithResponseInternal(options, null);
     }
 
-    Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(
-        CallLocator callLocator,
-        URI recordingStateCallbackUri,
-        StartRecordingOptions options,
-        Context context) {
+    Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
-            if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
+            if (!Boolean.TRUE.equals(options.getRecordingStateCallbackUri().isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
-            StartCallRecordingRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
-                recordingStateCallbackUri, options);
+            StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
-                    .recordingWithResponseAsync(requestWithCallLocator, contextValue)
+                    .recordingWithResponseAsync(request, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
@@ -137,9 +131,8 @@ public class CallRecordingAsync {
         }
     }
 
-    private StartCallRecordingRequest getStartCallRecordingWithCallLocatorRequest(CallLocator callLocator,
-                                                                                  URI recordingStateCallbackUri,
-                                                                                  StartRecordingOptions options) {
+    private StartCallRecordingRequestInternal getStartCallRecordingRequest(StartRecordingOptions options) {
+        CallLocator callLocator = options.getCallLocator();
         CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
             .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
@@ -151,20 +144,29 @@ public class CallRecordingAsync {
             throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
         }
 
-        StartCallRecordingRequest request = new StartCallRecordingRequest()
-            .setCallLocator(callLocatorInternal)
-            .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
+        StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal()
+            .setCallLocator(callLocatorInternal);
 
-        if (options != null) {
-            if (options.getRecordingContent() != null) {
-                request.setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
-            }
-            if (options.getRecordingFormat() != null) {
-                request.setRecordingFormatType(RecordingFormatInternal.fromString(options.getRecordingFormat().toString()));
-            }
-            if (options.getRecordingChannel() != null) {
-                request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
-            }
+        if (options.getRecordingContent() != null) {
+            request.setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
+        }
+        if (options.getRecordingFormat() != null) {
+            request.setRecordingFormatType(RecordingFormatInternal.fromString(options.getRecordingFormat().toString()));
+        }
+        if (options.getRecordingChannel() != null) {
+            request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
+        }
+        if (options.getRecordingStateCallbackUri() != null) {
+            request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUri().toString());
+        }
+        if (options.getChannelAffinity() != null) {
+            List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()
+                .stream()
+                .map(c -> new ChannelAffinityInternal()
+                    .setChannel(c.getChannel())
+                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
+                .collect(Collectors.toList());
+            request.setChannelAffinity(channelAffinityInternal);
         }
 
         return request;
