@@ -41,10 +41,10 @@ public class ApplicationConfiguration {
                 LOGGER.info("authorityHost"+authorityHost);
                 LOGGER.info("AZURE_GOVERNMENT"+AzureAuthorityHosts.AZURE_GOVERNMENT);
                 LOGGER.info("AZURE_CHINA"+AzureAuthorityHosts.AZURE_CHINA);
-                if (AzureAuthorityHosts.AZURE_GOVERNMENT.equals(authorityHost)) {
+                if ("https://login.microsoftonline.us".equals(authorityHost)) {
                     LOGGER.info("US Gov authority host set");
                     azureGlobalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-                } else if (AzureAuthorityHosts.AZURE_CHINA.equals(authorityHost)) {
+                } else if ("https://login.chinacloudapi.cn".equals(authorityHost)) {
                     LOGGER.info("China authority host set");
                     azureGlobalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
                 } else {
