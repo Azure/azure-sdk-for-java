@@ -23,8 +23,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
     private String description;
 
     /*
-     * Any action that is required beyond basic workflow (approve/ reject/
-     * disconnect)
+     * Any action that is required beyond basic workflow (approve/ reject/ disconnect)
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;

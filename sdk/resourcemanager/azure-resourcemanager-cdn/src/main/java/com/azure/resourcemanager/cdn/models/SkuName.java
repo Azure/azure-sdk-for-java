@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/** Name of the pricing tier. */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Standard_Verizon for SkuName. */
     public static final SkuName STANDARD_VERIZON = fromString("Standard_Verizon");
@@ -62,7 +62,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
         return fromString(name, SkuName.class);
     }
 
-    /** @return known SkuName values. */
+    /**
+     * Gets known SkuName values.
+     *
+     * @return known SkuName values.
+     */
     public static Collection<SkuName> values() {
         return values(SkuName.class);
     }

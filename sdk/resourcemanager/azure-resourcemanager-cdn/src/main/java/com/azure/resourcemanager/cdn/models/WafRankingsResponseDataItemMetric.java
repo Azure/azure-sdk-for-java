@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems model. */
+/** The WafRankingsResponseDataItemMetric model. */
 @Fluent
-public final class ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems.class);
-
+public final class WafRankingsResponseDataItemMetric {
     /*
      * The metric property.
      */
@@ -47,10 +41,9 @@ public final class ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItems
      * Set the metric property: The metric property.
      *
      * @param metric the metric value to set.
-     * @return the ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems object itself.
+     * @return the WafRankingsResponseDataItemMetric object itself.
      */
-    public ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems withMetric(
-        String metric) {
+    public WafRankingsResponseDataItemMetric withMetric(String metric) {
         this.metric = metric;
         return this;
     }
@@ -68,9 +61,9 @@ public final class ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItems
      * Set the value property: The value property.
      *
      * @param value the value value to set.
-     * @return the ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems object itself.
+     * @return the WafRankingsResponseDataItemMetric object itself.
      */
-    public ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems withValue(Long value) {
+    public WafRankingsResponseDataItemMetric withValue(Long value) {
         this.value = value;
         return this;
     }
@@ -88,10 +81,9 @@ public final class ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItems
      * Set the percentage property: The percentage property.
      *
      * @param percentage the percentage value to set.
-     * @return the ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems object itself.
+     * @return the WafRankingsResponseDataItemMetric object itself.
      */
-    public ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems withPercentage(
-        Double percentage) {
+    public WafRankingsResponseDataItemMetric withPercentage(Double percentage) {
         this.percentage = percentage;
         return this;
     }

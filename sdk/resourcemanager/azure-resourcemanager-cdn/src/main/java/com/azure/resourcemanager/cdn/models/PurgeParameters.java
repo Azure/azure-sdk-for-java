@@ -6,18 +6,14 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters required for content purge. */
 @Fluent
 public final class PurgeParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurgeParameters.class);
-
     /*
-     * The path to the content to be purged. Can describe a file path or a wild
-     * card directory.
+     * The path to the content to be purged. Can describe a file path or a wild card directory.
      */
     @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
@@ -51,9 +47,11 @@ public final class PurgeParameters {
      */
     public void validate() {
         if (contentPaths() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contentPaths in model PurgeParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PurgeParameters.class);
 }
