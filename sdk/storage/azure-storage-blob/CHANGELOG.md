@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-
+- `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
 ### Bugs Fixed
 
 ### Other Changes

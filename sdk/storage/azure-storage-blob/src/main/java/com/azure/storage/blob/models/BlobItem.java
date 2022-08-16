@@ -10,6 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * An Azure Storage blob.
@@ -297,7 +298,7 @@ public final class BlobItem {
      * @return the BlobItem object itself.
      */
     public BlobItem setIsPrefix(Boolean isPrefix) {
-        this.isPrefix = isPrefix;
+        this.isPrefix = Objects.requireNonNullElse(isPrefix, false);
         return this;
     }
 }
