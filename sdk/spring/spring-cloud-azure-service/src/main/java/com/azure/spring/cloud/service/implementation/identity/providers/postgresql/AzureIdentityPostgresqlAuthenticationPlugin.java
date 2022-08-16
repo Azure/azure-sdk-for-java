@@ -18,7 +18,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
 
     private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
-    private final AzureAuthenticationTemplate azureAuthenticationTemplate = new AzureAuthenticationTemplate();
+    private AzureAuthenticationTemplate azureAuthenticationTemplate = new AzureAuthenticationTemplate();
 
     /**
      * Constructor with properties.
@@ -29,6 +29,13 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
         AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         azureAuthenticationTemplate.init(properties);
     }
+
+    AzureIdentityPostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate, Properties properties) {
+        this.azureAuthenticationTemplate = azureAuthenticationTemplate;
+        AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
+        this.azureAuthenticationTemplate.init(properties);
+    }
+
 
     /**
      * Get the password.
@@ -47,5 +54,4 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
             throw new PSQLException("Unable to acquire access token", INVALID_PASSWORD);
         }
     }
-
 }

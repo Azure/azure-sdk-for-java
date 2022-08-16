@@ -3,6 +3,10 @@
 
 package com.azure.spring.cloud.service.implementation.identity.providers.mysql;
 
+import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
+import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
+import com.azure.spring.cloud.service.implementation.identity.providers.AbstractAuthenticationPluginTest;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativePacketPayload;
@@ -15,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AzureIdentityMysqlAuthenticationPluginTest {
+class AzureIdentityMysqlAuthenticationPluginTest extends AbstractAuthenticationPluginTest {
     private static final String CLEAR_PASSWORD = "mysql_clear_password";
 
     Protocol<NativePacketPayload> protocol;
@@ -42,4 +46,14 @@ class AzureIdentityMysqlAuthenticationPluginTest {
         String protocolPluginName = plugin.getProtocolPluginName();
         assertEquals(CLEAR_PASSWORD, protocolPluginName);
     }
+
+    @Override
+    protected void tokenAudienceShouldConfig() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template);
+        plugin.init(protocol);
+        Properties properties = (Properties) ReflectionUtils.getField(template.getClass(), "properties", template);
+        assertEquals(OSSRDBMS_SCOPES, properties.getProperty(AuthProperty.SCOPES.getPropertyKey()));
+    }
+
 }

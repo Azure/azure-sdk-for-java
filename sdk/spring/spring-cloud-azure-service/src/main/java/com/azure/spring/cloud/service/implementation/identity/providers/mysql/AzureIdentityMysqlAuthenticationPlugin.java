@@ -21,16 +21,23 @@ import java.util.Properties;
  */
 public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
-    public static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
-
+    private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
     private static final String PLUGIN_NAME = "mysql_clear_password";
 
-    private final AzureAuthenticationTemplate azureAuthenticationTemplate = new AzureAuthenticationTemplate();
+    private AzureAuthenticationTemplate azureAuthenticationTemplate;
 
     /**
      * Stores the protocol.SharedTokenCacheCredential
      */
     private Protocol<NativePacketPayload> protocol;
+
+    public AzureIdentityMysqlAuthenticationPlugin() {
+        this(new AzureAuthenticationTemplate());
+    }
+
+    AzureIdentityMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate) {
+        this.azureAuthenticationTemplate = azureAuthenticationTemplate;
+    }
 
     @Override
     public void destroy() {

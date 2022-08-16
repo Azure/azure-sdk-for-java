@@ -4,11 +4,9 @@
 package com.azure.spring.cloud.service.implementation.identity.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProviderOptions;
-import com.azure.spring.cloud.service.implementation.identity.StaticAccessTokenCache;
-import com.azure.spring.cloud.service.implementation.identity.credential.CacheableTokenCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableSpringTokenCredential;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,16 +21,10 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
     private static ApplicationContext globalApplicationContext;
     private ApplicationContext applicationContext;
-    private TokenCredentialProviderOptions options;
-    private final StaticAccessTokenCache cache = StaticAccessTokenCache.getInstance();
     private String tokenCredentialBeanName = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
-    public SpringTokenCredentialProvider() {
-    }
-
     public SpringTokenCredentialProvider(TokenCredentialProviderOptions options) {
-        this.options = options;
-        String beanName = options.getTokenCredentialBeanName();
+        String beanName = options == null ? null : options.getTokenCredentialBeanName();
         if (beanName != null && !beanName.isEmpty()) {
             this.tokenCredentialBeanName = beanName;
         }
@@ -43,11 +35,8 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
         Objects.requireNonNull(context);
 
         TokenCredential tokenCredential = context.getBean(this.tokenCredentialBeanName, TokenCredential.class);
-        CacheableSpringTokenCredential delegate = new CacheableSpringTokenCredential(options, tokenCredential);
-
-        boolean cachedEnabled = options.isCachedEnabled();
-        if (cachedEnabled) {
-            return new CacheableTokenCredential(cache, delegate);
+        if (tokenCredential == null) {
+            return new DefaultAzureCredentialBuilder().build();
         } else {
             return tokenCredential;
         }

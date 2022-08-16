@@ -7,11 +7,9 @@ import com.azure.core.credential.AccessToken;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
-import com.azure.spring.cloud.service.implementation.identity.StaticAccessTokenCache;
-import com.azure.spring.cloud.service.implementation.identity.credential.CacheableTokenCredential;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProviderOptions;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableClientSecretCredential;
+import com.azure.spring.cloud.service.implementation.identity.credential.provider.CacheableTokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.token.AccessTokenResolver;
 import com.azure.spring.cloud.service.implementation.identity.token.AccessTokenResolverOptions;
 import org.junit.jupiter.api.Test;
@@ -46,10 +44,6 @@ class AzureAuthenticationTemplateTest {
         template.init(properties);
         assertTrue(isInitialized.get());
         assertFalse(isInitialized.compareAndSet(false, true));
-    }
-
-    @Test
-    void shouldCallInitOnly() {
     }
 
     @Test
@@ -129,22 +123,18 @@ class AzureAuthenticationTemplateTest {
 
     private static TokenCredentialProvider getCachedTokenCredentialProvider() {
         TokenCredentialProviderOptions providerOptions = getProviderOptions();
-        ClientSecretCredential delegate = getClientSecretCredential();
+        ClientSecretCredential credential = getClientSecretCredential();
 
-        TokenCredentialProvider tokenCredentialProvider = mock(TokenCredentialProvider.class);
-        when(tokenCredentialProvider.get())
-            .thenReturn(
-                new CacheableTokenCredential(
-                    StaticAccessTokenCache.getInstance(),
-                    new CacheableClientSecretCredential(providerOptions, delegate)));
-        return tokenCredentialProvider;
+        TokenCredentialProvider provider = mock(TokenCredentialProvider.class);
+        when(provider.get()).thenReturn(credential);
+        return new CacheableTokenCredentialProvider(provider, providerOptions);
     }
 
     private static TokenCredentialProvider getTokenCredentialProvider() {
-        ClientSecretCredential delegate = getClientSecretCredential();
+        ClientSecretCredential credential = getClientSecretCredential();
 
         TokenCredentialProvider tokenCredentialProvider = mock(TokenCredentialProvider.class);
-        when(tokenCredentialProvider.get()).thenReturn(delegate);
+        when(tokenCredentialProvider.get()).thenReturn(credential);
         return tokenCredentialProvider;
     }
 
@@ -161,6 +151,7 @@ class AzureAuthenticationTemplateTest {
         providerOptions.setClientId("fake-client-id");
         providerOptions.setClientSecret("fake-client-secret");
         providerOptions.setAuthorityHost("fake-authority-host");
+        providerOptions.setCachedEnabled(true);
         return providerOptions;
     }
 }

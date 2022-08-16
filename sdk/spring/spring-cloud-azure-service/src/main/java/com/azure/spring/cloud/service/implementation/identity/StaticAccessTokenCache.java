@@ -28,8 +28,13 @@ public final class StaticAccessTokenCache implements Cache<String, AccessToken> 
     }
 
     public static StaticAccessTokenCache getInstance() {
+
         if (singleInstance == null) {
-            singleInstance = new StaticAccessTokenCache();
+            synchronized (StaticAccessTokenCache.class) {
+                if (singleInstance == null) {
+                    singleInstance = new StaticAccessTokenCache();
+                }
+            }
         }
         return singleInstance;
     }

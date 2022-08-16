@@ -4,25 +4,13 @@
 package com.azure.spring.cloud.service.implementation.identity.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProviderOptions;
-import com.azure.spring.cloud.service.implementation.identity.StaticAccessTokenCache;
-import com.azure.spring.cloud.service.implementation.identity.credential.CacheableTokenCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableClientCertificateCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableClientSecretCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableDefaultAzureCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableManageIdentityCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.adapter.CacheableUsernamePasswordCredential;
 import org.springframework.util.StringUtils;
 
 /**
@@ -31,7 +19,6 @@ import org.springframework.util.StringUtils;
 public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredentialProviderOptions options;
-    private final StaticAccessTokenCache cache = StaticAccessTokenCache.getInstance();
 
     DefaultTokenCredentialProvider() {
         this.options = new TokenCredentialProviderOptions();
@@ -42,18 +29,16 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
     }
 
     @Override
+    public TokenCredential get() {
+        return get(this.options);
+    }
+
+    @Override
     public TokenCredential get(TokenCredentialProviderOptions options) {
         if (options == null) {
             return new DefaultAzureCredentialBuilder().build();
         }
-
-        TokenCredential tokenCredential = resolveTokenCredential(options);
-        boolean cachedEnabled = options.isCachedEnabled();
-        if (cachedEnabled) {
-            return new CacheableTokenCredential(cache, tokenCredential);
-        } else {
-            return tokenCredential;
-        }
+        return resolveTokenCredential(options);
     }
 
     private TokenCredential resolveTokenCredential(TokenCredentialProviderOptions options) {
@@ -64,16 +49,15 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
         if (StringUtils.hasText(tenantId)) {
             String clientSecret = options.getClientSecret();
             if (isClientIdSet && StringUtils.hasText(clientSecret)) {
-                ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder().clientId(clientId)
+                return new ClientSecretCredentialBuilder().clientId(clientId)
                         .authorityHost(authorityHost)
                         .clientSecret(clientSecret)
                         .tenantId(tenantId)
                         .build();
-                return new CacheableClientSecretCredential(options, clientSecretCredential);
             }
 
             String clientCertificatePath = options.getClientCertificatePath();
-            if (StringUtils.hasText(clientCertificatePath)) {
+            if (isClientIdSet && StringUtils.hasText(clientCertificatePath)) {
                 ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
                         .authorityHost(authorityHost)
                         .tenantId(tenantId)
@@ -85,20 +69,18 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
                     builder.pemCertificate(clientCertificatePath);
                 }
 
-                ClientCertificateCredential clientCertificateCredential = builder.build();
-                return new CacheableClientCertificateCredential(options, clientCertificateCredential);
+                return builder.build();
             }
         }
 
         if (isClientIdSet && StringUtils.hasText(options.getUsername())
                 && StringUtils.hasText(options.getPassword())) {
-            UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder().username(options.getUsername())
+            return new UsernamePasswordCredentialBuilder().username(options.getUsername())
                     .authorityHost(authorityHost)
                     .password(options.getPassword())
                     .clientId(clientId)
                     .tenantId(tenantId)
                     .build();
-            return new CacheableUsernamePasswordCredential(options, usernamePasswordCredential);
         }
 
         if (options.isManagedIdentityEnabled()) {
@@ -106,20 +88,13 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
             if (isClientIdSet) {
                 builder.clientId(clientId);
             }
-            ManagedIdentityCredential managedIdentityCredential = builder.build();
-            return new CacheableManageIdentityCredential(options, managedIdentityCredential);
+            return builder.build();
         }
 
-        DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
+        return new DefaultAzureCredentialBuilder()
                 .authorityHost(authorityHost)
                 .tenantId(tenantId)
                 .managedIdentityClientId(clientId)
                 .build();
-        return new CacheableDefaultAzureCredential(options, defaultAzureCredential);
-    }
-
-    @Override
-    public TokenCredential get() {
-        return get(this.options);
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
@@ -46,12 +47,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
-            boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
-
-            if (isPasswordProvided) {
-                LOGGER.debug("Value of 'spring.datasource.password' is provided, skip enhancing jdbc url.");
-                return bean;
-            }
 
             String url = dataSourceProperties.getUrl();
             if (!StringUtils.hasText(url)) {
@@ -61,8 +56,19 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             JdbcConnectionString connectionString = JdbcConnectionString.resolve(url);
             if (connectionString == null) {
-                //
                 LOGGER.debug("Can not resolve jdbc connection string from provided {}, skip enhancing jdbc url.", url);
+                return bean;
+            }
+
+            boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
+
+            if (isPasswordProvided) {
+                if (isAzureHostedDatabaseService(url)) {
+                    LOGGER.info("Azure managed database services with password detected, it is encouraged to use the"
+                        + "credntial-free feature. Please refer to https://aka.ms/spring/credentail-free.");
+                } else {
+                    LOGGER.debug("Value of 'spring.datasource.password' is provided, skip enhancing jdbc url.");
+                }
                 return bean;
             }
 
@@ -107,8 +113,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         AuthProperty.USERNAME.setProperty(result, properties.getCredential().getUsername());
         AuthProperty.PASSWORD.setProperty(result, properties.getCredential().getPassword());
         AuthProperty.MANAGED_IDENTITY_ENABLED.setProperty(result, String.valueOf(properties.getCredential().isManagedIdentityEnabled()));
-        AuthProperty.AUTHORITY_HOST.setProperty(result, String.valueOf(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint()));
-        AuthProperty.TENANT_ID.setProperty(result, String.valueOf(properties.getProfile().getTenantId()));
+        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        AuthProperty.TENANT_ID.setProperty(result, properties.getProfile().getTenantId());
 
         databaseType.setDefaultEnhancedProperties(result);
 
@@ -120,4 +126,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         this.environment = environment;
     }
 
+    private boolean isAzureHostedDatabaseService(String url) {
+        //Global
+        return Pattern.matches("^jdbc:mysql://.*.mysql.database.azure.com.*", url)
+            || Pattern.matches("^jdbc:postgresql://.*.postgres.database.azure.com.*", url);
+    }
 }

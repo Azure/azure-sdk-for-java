@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class JdbcPropertiesBeanPostProcessorTest {
+abstract class AbstractJdbcPropertiesBeanPostProcessorTest {
 
     private static final String SPRING_CLOUD_AZURE_DATASOURCE_PREFIX = "spring.datasource.azure";
     private static final String CLIENT_ID = "credential.client-id";
