@@ -25,7 +25,6 @@ public class KeyVaultSecretIT {
 
     @Test
     public void testKeyVaultSecretOperation() {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("KeyVaultSecretIT begin.");
         client.setSecret(NAME, VALUE);
         KeyVaultSecret secret = client.getSecret(NAME);

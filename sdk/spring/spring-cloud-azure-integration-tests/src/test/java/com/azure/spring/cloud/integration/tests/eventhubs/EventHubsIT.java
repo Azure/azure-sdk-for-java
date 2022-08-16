@@ -74,7 +74,6 @@ public class EventHubsIT {
 
     @Test
     public void testEventHubOperation() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubsIT begin.");
         producerClient.send(Arrays.asList(new EventData(DATA)));
         producerClient.close();

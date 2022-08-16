@@ -70,7 +70,6 @@ class EventHubsBinderManualModeIT {
 
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubBinderManualModeIT begin.");
         EventHubsBinderManualModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

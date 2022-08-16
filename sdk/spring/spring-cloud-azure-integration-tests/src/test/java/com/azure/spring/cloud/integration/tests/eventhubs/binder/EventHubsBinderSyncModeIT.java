@@ -64,7 +64,6 @@ class EventHubsBinderSyncModeIT {
 
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubBinderSyncModeIT begin.");
         EventHubsBinderSyncModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

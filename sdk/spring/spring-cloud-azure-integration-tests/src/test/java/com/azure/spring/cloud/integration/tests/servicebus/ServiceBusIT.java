@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeUnit;
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
     })
 @ActiveProfiles("servicebus")
-public class ServiceBusIT implements BeanFactoryPostProcessor {
+public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private static final String DATA1 = "service bus test1";
     private static final String DATA2 = "service bus test2";
@@ -56,27 +57,8 @@ public class ServiceBusIT implements BeanFactoryPostProcessor {
     @Autowired
     private ServiceBusProcessorClient processorClient;
 
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        String usGovAuthorityHost = "https://login.microsoftonline.us";
-        String chinaAuthorityHost = "https://login.chinacloudapi.cn";
-        AzureGlobalProperties azureGlobalProperties = beanFactory.getBean("AzureGlobalProperties",
-            AzureGlobalProperties.class);
-        AzureProfileConfigurationProperties azureProfileConfigurationProperties = azureGlobalProperties.getProfile();
-        System.out.println("CloudType"+azureProfileConfigurationProperties.getCloudType());
-        String azureAuthorityHost = System.getenv("AZURE_AUTHORITY_HOST");
-        System.out.println("azureAuthorityHost"+azureAuthorityHost);
-        if (usGovAuthorityHost.equals(azureAuthorityHost)) {
-            System.out.println("US GOVERNMENT");
-            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-            System.out.println(azureGlobalProperties.getProfile().getCloudType());
-        }
-        if (chinaAuthorityHost.equals(azureAuthorityHost)) {
-            System.out.println("CHINA");
-            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
-            System.out.println(azureGlobalProperties.getProfile().getCloudType());
-        }
-    }
+    @Autowired
+    private AzureGlobalProperties azureGlobalProperties;
 
     @TestConfiguration
     static class TestConfig {
@@ -97,8 +79,7 @@ public class ServiceBusIT implements BeanFactoryPostProcessor {
 
     @Test
     public void testServiceBusOperation() throws InterruptedException {
-//        ApplicationConfiguration.ensureCloudType();
-        System.out.println(new AzureGlobalProperties().getProfile().getCloudType());
+        System.out.println(azureGlobalProperties.getProfile().getCloudType());
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);

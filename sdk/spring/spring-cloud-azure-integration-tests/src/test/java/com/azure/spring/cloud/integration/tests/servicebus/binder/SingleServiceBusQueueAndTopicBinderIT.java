@@ -94,7 +94,6 @@ class SingleServiceBusQueueAndTopicBinderIT {
 
     @Test
     void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
 

@@ -78,7 +78,6 @@ class EventHubsBinderConsumeErrorIT {
     @Test
     @Timeout(70)
     void integrationTest() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         // Wait for eventhub initialization to complete
         Thread.sleep(15000);
         one.emitValue(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);

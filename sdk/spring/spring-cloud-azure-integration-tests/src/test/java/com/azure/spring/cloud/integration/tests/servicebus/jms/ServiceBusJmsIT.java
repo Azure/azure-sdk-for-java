@@ -30,7 +30,6 @@ public class ServiceBusJmsIT {
     @Test
     @Timeout(70)
     public void testServiceBusJmsOperation() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("ServiceBusJmsIT begin.");
         jmsTemplate.convertAndSend(QUEUE_NAME, DATA);
         LOGGER.info("Send message: {}", DATA);

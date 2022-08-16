@@ -24,7 +24,6 @@ public class StorageQueueIT {
 
     @Test
     public void testStorageQueueOperation() {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("StorageQueueIT begin.");
         client.create();
         client.sendMessage(DATA);

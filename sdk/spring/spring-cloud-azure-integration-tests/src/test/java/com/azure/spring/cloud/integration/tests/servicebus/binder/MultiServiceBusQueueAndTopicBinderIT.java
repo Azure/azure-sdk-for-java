@@ -94,7 +94,6 @@ class MultiServiceBusQueueAndTopicBinderIT {
 
     @Test
     void testMultiServiceBusSendAndReceiveMessage() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("MultiServiceBusQueueAndTopicBinderIT begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(message);
 

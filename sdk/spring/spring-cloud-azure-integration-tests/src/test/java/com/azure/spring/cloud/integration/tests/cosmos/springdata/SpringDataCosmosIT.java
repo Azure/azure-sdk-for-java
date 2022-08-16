@@ -25,7 +25,6 @@ public class SpringDataCosmosIT {
 
     @Test
     public void testSpringDataCosmosOperation() {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("SpringDataCosmosIT begin.");
         User testUser = new User(USER_ID, "testFirstName", "testLastName", "test address line one");
         userRepository.save(testUser);

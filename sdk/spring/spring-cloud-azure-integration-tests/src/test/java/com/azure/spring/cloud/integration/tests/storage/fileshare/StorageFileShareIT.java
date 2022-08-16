@@ -29,7 +29,6 @@ public class StorageFileShareIT {
 
     @Test
     public void testStorageFileShareOperation() throws IOException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("StorageFileShareIT begin.");
         try (OutputStream os = ((WritableResource) storageFileResource).getOutputStream()) {
             os.write(DATA.getBytes());

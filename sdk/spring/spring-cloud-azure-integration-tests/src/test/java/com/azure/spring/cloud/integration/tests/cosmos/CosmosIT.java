@@ -28,7 +28,6 @@ public class CosmosIT {
 
     @Test
     public void testCosmosOperation() {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("CosmosIT begin.");
         User testUser = new User(
             "testCosmos",

@@ -29,7 +29,6 @@ public class StorageBlobIT {
 
     @Test
     public void testStorageBlobOperation() throws IOException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("StorageBlobIT begin.");
         try (OutputStream os = ((WritableResource)storageBlobResource).getOutputStream()) {
             os.write(DATA.getBytes());

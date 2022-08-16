@@ -63,7 +63,6 @@ class EventHubsBinderRecordModeIT {
 
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
         LOGGER.info("EventHubBinderRecordModeIT begin.");
         EventHubsBinderRecordModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
