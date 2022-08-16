@@ -377,24 +377,6 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
           "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
-        },
-        {
-          "ignore": true,
-          "code": "java.method.added",
-          "new": "method com.azure.communication.common.CommunicationIdentifier com.azure.communication.common.CommunicationIdentifier::fromRawId(java.lang.String)",
-          "justification": "To support ChatThreadProperties"
-        },
-        {
-        "ignore": true,
-        "code": "java.method.added",
-        "new": "method java.lang.String com.azure.communication.common.CommunicationIdentifier::getRawId()",
-        "justification": "To support ChatThreadProperties"
-        },
-        {
-          "ignore": true,
-          "code": "java.method.added",
-          "new": "method com.azure.communication.common.CommunicationIdentifier com.azure.communication.common.CommunicationIdentifier::setRawId(java.lang.String)",
-          "justification": "To support ChatThreadProperties"
         }
       ]
     }
