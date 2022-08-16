@@ -38,8 +38,9 @@ public class ApplicationConfiguration {
             if (bean instanceof AzureGlobalProperties) {
                 AzureGlobalProperties azureGlobalProperties = (AzureGlobalProperties) bean;
                 String authorityHost = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-                LOGGER.info(authorityHost);
-                LOGGER.info(AzureAuthorityHosts.AZURE_GOVERNMENT);
+                LOGGER.info("authorityHost"+authorityHost);
+                LOGGER.info("AZURE_GOVERNMENT"+AzureAuthorityHosts.AZURE_GOVERNMENT);
+                LOGGER.info("AZURE_CHINA"+AzureAuthorityHosts.AZURE_CHINA);
                 if (AzureAuthorityHosts.AZURE_GOVERNMENT.equals(authorityHost)) {
                     LOGGER.info("US Gov authority host set");
                     azureGlobalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
