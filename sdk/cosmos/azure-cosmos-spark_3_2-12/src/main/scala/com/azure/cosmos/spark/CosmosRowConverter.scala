@@ -317,10 +317,14 @@ private[cosmos] class CosmosRowConverter(
                 .atStartOfDay()
                 .toInstant(ZoneOffset.UTC).toEpochMilli)
             case SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone =>
-              convertToJsonNodeConditionally(LocalDate
+              val localDate = LocalDate
                 .ofEpochDay(rowData.asInstanceOf[Long])
                 .atStartOfDay()
-                .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(Instant.now)).toEpochMilli)
+              val localTimestampInstant = Timestamp.valueOf(localDate).toInstant
+
+              convertToJsonNodeConditionally(
+                localDate
+                .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(localTimestampInstant)).toEpochMilli)
           }
         case DateType if rowData.isInstanceOf[java.lang.Integer] =>
           serializationConfig.serializationDateTimeConversionMode match {
@@ -332,10 +336,13 @@ private[cosmos] class CosmosRowConverter(
                 .atStartOfDay()
                 .toInstant(ZoneOffset.UTC).toEpochMilli)
             case SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone =>
-              convertToJsonNodeConditionally(LocalDate
+              val localDate = LocalDate
                 .ofEpochDay(rowData.asInstanceOf[java.lang.Integer].longValue())
                 .atStartOfDay()
-                .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(Instant.now)).toEpochMilli)
+              val localTimestampInstant = Timestamp.valueOf(localDate).toInstant
+              convertToJsonNodeConditionally(
+                localDate
+                .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(localTimestampInstant)).toEpochMilli)
           }
         case DateType => convertToJsonNodeConditionally(rowData.asInstanceOf[Date].getTime)
         case TimestampType if rowData.isInstanceOf[java.lang.Long] =>
@@ -358,7 +365,7 @@ private[cosmos] class CosmosRowConverter(
             case SerializationDateTimeConversionModes.Default =>
               convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Integer])
             case SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone |
-                 SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone =>
+                 SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone =>
               val microsSinceEpoch = rowData.asInstanceOf[java.lang.Integer].longValue()
               convertToJsonNodeConditionally(
                 Instant.ofEpochSecond(
@@ -444,13 +451,14 @@ private[cosmos] class CosmosRowConverter(
                       .toInstant(ZoneOffset.UTC).toEpochMilli,
                     classOf[JsonNode])
                 case SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone =>
+                  val localDate = LocalDate
+                    .ofEpochDay(rowData.asInstanceOf[java.lang.Long])
+                    .atStartOfDay()
+                  val localTimestampInstant = Timestamp.valueOf(localDate).toInstant
                   objectMapper.convertValue(
-                    LocalDate
-                      .ofEpochDay(rowData.asInstanceOf[java.lang.Long])
-                      .atStartOfDay()
-                      .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(Instant.now)).toEpochMilli,
+                    localDate
+                      .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(localTimestampInstant)).toEpochMilli,
                     classOf[JsonNode])
-
               }
 
             case DateType if rowData.isInstanceOf[java.lang.Integer] =>
@@ -465,11 +473,13 @@ private[cosmos] class CosmosRowConverter(
                       .toInstant(ZoneOffset.UTC).toEpochMilli,
                     classOf[JsonNode])
                 case SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone =>
+                  val localDate = LocalDate
+                    .ofEpochDay(rowData.asInstanceOf[java.lang.Integer].longValue())
+                    .atStartOfDay()
+                  val localTimestampInstant = Timestamp.valueOf(localDate).toInstant
                   objectMapper.convertValue(
-                    LocalDate
-                      .ofEpochDay(rowData.asInstanceOf[java.lang.Integer].longValue())
-                      .atStartOfDay()
-                      .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(Instant.now)).toEpochMilli,
+                    localDate
+                      .toInstant(java.time.ZoneId.systemDefault.getRules().getOffset(localTimestampInstant)).toEpochMilli,
                     classOf[JsonNode])
               }
             case DateType => objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
@@ -709,6 +719,15 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
+    private def parseTimestamp(objectNode: ObjectNode): Long = {
+      val currentNode = getCurrentOrPreviousNode(objectNode)
+      currentNode.get(TimestampAttributeName) match {
+        case valueNode: JsonNode =>
+          Option(valueNode).fold(-1L)(v => v.asLong(-1))
+        case _ => -1L
+      }
+    }
+
     private def parseETag(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         currentNode.get(ETagAttributeName) match {
@@ -726,10 +745,9 @@ private[cosmos] class CosmosRowConverter(
       currentNode
     }
 
-    //  Timestamp always returns the crts (conflict resolution timestamp).
     //  For single-master, crts will always be same as _ts
     //  For multi-master, crts will be the latest resolution timestamp of any conflicts
-    private def parseTimestamp(objectNode: ObjectNode): Long = {
+    private def parseCrts(objectNode: ObjectNode): Long = {
         objectNode.get(MetadataJsonBodyAttributeName) match {
             case metadataNode: JsonNode =>
                 metadataNode.get(CrtsAttributeName) match {
@@ -810,7 +828,7 @@ private[cosmos] class CosmosRowConverter(
             case StructField(CosmosTableSchemaInferrer.OperationTypeAttributeName, StringType, _, _) =>
               parseOperationType(objectNode)
             case StructField(CosmosTableSchemaInferrer.CrtsAttributeName, LongType, _, _) =>
-              parseTimestamp(objectNode)
+              parseCrts(objectNode)
             case StructField(CosmosTableSchemaInferrer.PreviousImageLsnAttributeName, LongType, _, _) =>
               parsePreviousImageLsn(objectNode)
             case StructField(name, dataType, _, _) =>

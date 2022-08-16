@@ -49,8 +49,7 @@ public final class ApplicationGatewayInner extends Resource {
     private String etag;
 
     /*
-     * A list of availability zones denoting where the resource needs to come
-     * from.
+     * A list of availability zones denoting where the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;

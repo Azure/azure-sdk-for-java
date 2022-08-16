@@ -19,7 +19,7 @@ public interface ObjectDataTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list fields operation.
+     * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TypeField> listFieldsByModuleAndType(
         String resourceGroupName, String automationAccountName, String moduleName, String typeName);
@@ -35,7 +35,7 @@ public interface ObjectDataTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list fields operation.
+     * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TypeField> listFieldsByModuleAndType(
         String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context);
@@ -49,7 +49,7 @@ public interface ObjectDataTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list fields operation.
+     * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TypeField> listFieldsByType(String resourceGroupName, String automationAccountName, String typeName);
 
@@ -63,7 +63,7 @@ public interface ObjectDataTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list fields operation.
+     * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TypeField> listFieldsByType(
         String resourceGroupName, String automationAccountName, String typeName, Context context);

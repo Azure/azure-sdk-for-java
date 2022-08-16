@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IkeIntegrity. */
+/** The IKE integrity algorithm (IKE phase 2). */
 public final class IkeIntegrity extends ExpandableStringEnum<IkeIntegrity> {
     /** Static value MD5 for IkeIntegrity. */
     public static final IkeIntegrity MD5 = fromString("MD5");

@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -26,19 +28,19 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      * Code snippet for creating a {@link DocumentAnalysisClient}
      */
     public void createDocumentAnalysisClient() {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.instantiation
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.instantiation
         DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
-        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.instantiation
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.instantiation
     }
 
     /**
      * Code snippet for creating a {@link DocumentAnalysisClient} with pipeline
      */
     public void createDocumentAnalysisClientWithPipeline() {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.pipeline.instantiation
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(/* add policies */)
             .build();
@@ -48,7 +50,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
-        // END:  com.azure.ai.formrecognizer.DocumentAnalysisClient.pipeline.instantiation
+        // END:  com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.pipeline.instantiation
     }
 
 
@@ -58,7 +60,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentAnalysisClient#beginAnalyzeDocumentFromUrl(String, String)}
      */
     public void beginAnalyzeDocumentFromUrl() {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string
         String documentUrl = "{document_url}";
         String modelId = "{custom_trained_model_id}";
 
@@ -71,14 +73,14 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
 
-        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string
     }
 
     /**
      * Code snippet for {@link DocumentAnalysisClient#beginAnalyzeDocumentFromUrl(String, String, AnalyzeDocumentOptions, Context)}
      */
     public void beginAnalyzeDocumentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
 
@@ -92,7 +94,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
-        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context
     }
 
     /**
@@ -102,7 +104,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocument() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         byte[] fileContent = Files.readAllBytes(document.toPath());
@@ -117,7 +119,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
     }
-    // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long
+    // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long
 
 
     /**
@@ -127,7 +129,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         byte[] fileContent = Files.readAllBytes(document.toPath());
@@ -142,6 +144,6 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
-        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
     }
 }

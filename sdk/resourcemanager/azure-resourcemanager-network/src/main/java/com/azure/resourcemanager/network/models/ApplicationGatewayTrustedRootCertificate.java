@@ -19,8 +19,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     private ApplicationGatewayTrustedRootCertificatePropertiesFormat innerProperties;
 
     /*
-     * Name of the trusted root certificate that is unique within an
-     * Application Gateway.
+     * Name of the trusted root certificate that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

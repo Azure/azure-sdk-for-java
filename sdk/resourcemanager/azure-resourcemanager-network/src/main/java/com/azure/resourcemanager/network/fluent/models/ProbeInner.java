@@ -21,8 +21,8 @@ public final class ProbeInner extends SubResource {
     private ProbePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of probes used by
-     * the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be
+     * used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

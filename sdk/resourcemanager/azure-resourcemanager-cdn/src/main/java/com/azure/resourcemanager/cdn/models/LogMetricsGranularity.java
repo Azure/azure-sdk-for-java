@@ -30,7 +30,11 @@ public final class LogMetricsGranularity extends ExpandableStringEnum<LogMetrics
         return fromString(name, LogMetricsGranularity.class);
     }
 
-    /** @return known LogMetricsGranularity values. */
+    /**
+     * Gets known LogMetricsGranularity values.
+     *
+     * @return known LogMetricsGranularity values.
+     */
     public static Collection<LogMetricsGranularity> values() {
         return values(LogMetricsGranularity.class);
     }

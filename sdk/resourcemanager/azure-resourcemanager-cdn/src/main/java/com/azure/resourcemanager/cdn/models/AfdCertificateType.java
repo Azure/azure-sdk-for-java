@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AfdCertificateType. */
+/** Defines the source of the SSL certificate. */
 public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificateType> {
     /** Static value CustomerCertificate for AfdCertificateType. */
     public static final AfdCertificateType CUSTOMER_CERTIFICATE = fromString("CustomerCertificate");
@@ -31,7 +31,11 @@ public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificat
         return fromString(name, AfdCertificateType.class);
     }
 
-    /** @return known AfdCertificateType values. */
+    /**
+     * Gets known AfdCertificateType values.
+     *
+     * @return known AfdCertificateType values.
+     */
     public static Collection<AfdCertificateType> values() {
         return values(AfdCertificateType.class);
     }

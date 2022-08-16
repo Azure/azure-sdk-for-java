@@ -28,8 +28,7 @@ public final class RouteFilterRulePropertiesFormat {
     private RouteFilterRuleType routeFilterRuleType;
 
     /*
-     * The collection for bgp community values to filter on. e.g.
-     * ['12076:5010','12076:5020'].
+     * The collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020'].
      */
     @JsonProperty(value = "communities", required = true)
     private List<String> communities;

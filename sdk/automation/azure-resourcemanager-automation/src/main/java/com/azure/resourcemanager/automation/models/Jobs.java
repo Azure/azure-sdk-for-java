@@ -34,7 +34,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<String> getOutputWithResponse(
         String resourceGroupName,
@@ -67,7 +67,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<String> getRunbookContentWithResponse(
         String resourceGroupName,
@@ -99,7 +99,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> suspendWithResponse(
         String resourceGroupName,
@@ -131,7 +131,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> stopWithResponse(
         String resourceGroupName,
@@ -164,7 +164,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job.
+     * @return definition of the job along with {@link Response}.
      */
     Response<Job> getWithResponse(
         String resourceGroupName,
@@ -181,7 +181,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobCollectionItem> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -196,7 +196,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobCollectionItem> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, String filter, String clientRequestId, Context context);
@@ -224,7 +224,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> resumeWithResponse(
         String resourceGroupName,
@@ -240,7 +240,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job.
+     * @return definition of the job along with {@link Response}.
      */
     Job getById(String id);
 
@@ -253,7 +253,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job.
+     * @return definition of the job along with {@link Response}.
      */
     Response<Job> getByIdWithResponse(String id, String clientRequestId, Context context);
 

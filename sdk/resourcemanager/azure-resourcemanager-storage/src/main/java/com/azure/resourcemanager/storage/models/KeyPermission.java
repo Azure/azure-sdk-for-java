@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KeyPermission. */
+/** Permissions for the key -- read-only or full permissions. */
 public enum KeyPermission {
     /** Enum value Read. */
     READ("Read"),
@@ -30,6 +30,9 @@ public enum KeyPermission {
      */
     @JsonCreator
     public static KeyPermission fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyPermission[] items = KeyPermission.values();
         for (KeyPermission item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum KeyPermission {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {
