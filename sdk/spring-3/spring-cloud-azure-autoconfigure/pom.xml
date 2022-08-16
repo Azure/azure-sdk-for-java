@@ -313,7 +313,7 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.0.0</version> <!-- {x-version-update;spring3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+      <version>5.0.0</version> <!-- {x-version-update;spring3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -326,7 +326,7 @@
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
-      <version>3.0.0</version> <!-- {x-version-update;spring3_jakarta.validation:jakarta.validation-api;external_dependency} -->
+      <version>3.0.1</version> <!-- {x-version-update;spring3_jakarta.validation:jakarta.validation-api;external_dependency} -->
     </dependency>
 
     <!-- TEST-->
@@ -390,8 +390,8 @@
                 <include>com.nimbusds:nimbus-jose-jwt:[9.22]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[3.0.0]</include> <!-- {x-include-update;spring3_org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;spring3_org.apache.qpid:qpid-jms-client;external_dependency} -->
-                <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;spring3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
-                <include>jakarta.validation:jakarta.validation-api:[3.0.0]</include> <!-- {x-include-update;spring3_jakarta.validation:jakarta.validation-api;external_dependency} -->
+                <include>jakarta.servlet:jakarta.servlet-api:[5.0.0]</include> <!-- {x-include-update;spring3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+                <include>jakarta.validation:jakarta.validation-api:[3.0.1]</include> <!-- {x-include-update;spring3_jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[7.0.4.Final]</include> <!-- {x-include-update;spring3_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.0.0-M3]</include> <!-- {x-include-update;spring3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[3.0.0-M3]</include> <!-- {x-include-update;spring3_org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
