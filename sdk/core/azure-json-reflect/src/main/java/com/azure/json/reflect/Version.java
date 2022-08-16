@@ -13,15 +13,14 @@ public class Version implements Comparable<Version> {
         UNKNOWN = false;
     }
 
-    public Version(String ver) throws Exception {
+    public Version(String ver) {
         try {
             String[] verInts = ver.split(".");
             _major = Integer.parseInt(verInts[0]);
             _minor = Integer.parseInt(verInts[1]);
             _patch = Integer.parseInt(verInts[2]);
             UNKNOWN = false;
-        } catch (Exception e) {
-            new Version();
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException();
         }
     }
@@ -33,14 +32,6 @@ public class Version implements Comparable<Version> {
         UNKNOWN = unknown;
     }
 
-    public Version() {
-        new Version(0, 0, 0, true);
-    }
-
-    public static boolean getUnknown() { return UNKNOWN; }
-    public int getMajor() { return _major; }
-    public int getMinor() { return _minor; }
-    public int getPatch() { return _patch; }
     @Override
     public String toString() {
         return _major + "." + _minor + "." + _patch;
@@ -48,15 +39,16 @@ public class Version implements Comparable<Version> {
 
     @Override
     public int compareTo(Version other) {
-        if (other == this) return 0;
-
         int diff = _major - other._major;
+
         if (diff == 0) {
             diff = _minor - other._minor;
-            if (diff == 0) {
-                diff = _patch - other._patch;
-            }
         }
+
+        if (diff == 0) {
+            diff = _patch - other._patch;
+        }
+
         return diff;
     }
 }

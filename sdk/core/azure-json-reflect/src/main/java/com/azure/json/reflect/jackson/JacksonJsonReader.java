@@ -1,11 +1,17 @@
-package com.azure.json.reflect.gson;
+package com.azure.json.reflect.jackson;
+
 
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
 import java.io.IOException;
+import java.io.Reader;
 
-public class JsonGsonReader extends JsonReader {
+public class JacksonJsonReader extends JsonReader {
+    public JacksonJsonReader(Reader reader) {
+
+    }
+
     @Override
     public JsonToken currentToken() {
         return null;
@@ -17,37 +23,37 @@ public class JsonGsonReader extends JsonReader {
     }
 
     @Override
-    public byte[] getBinaryValue() {
+    public byte[] getBinary() {
         return new byte[0];
     }
 
     @Override
-    public boolean getBooleanValue() {
+    public boolean getBoolean() {
         return false;
     }
 
     @Override
-    public float getFloatValue() {
+    public float getFloat() {
         return 0;
     }
 
     @Override
-    public double getDoubleValue() {
+    public double getDouble() {
         return 0;
     }
 
     @Override
-    public int getIntValue() {
+    public int getInt() {
         return 0;
     }
 
     @Override
-    public long getLongValue() {
+    public long getLong() {
         return 0;
     }
 
     @Override
-    public String getStringValue() {
+    public String getString() {
         return null;
     }
 
