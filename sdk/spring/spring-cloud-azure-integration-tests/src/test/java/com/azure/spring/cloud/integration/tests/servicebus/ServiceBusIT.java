@@ -8,10 +8,14 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,9 +70,32 @@ public class ServiceBusIT {
         }
     }
 
+    @BeforeAll
+    public void ensureCloudType() {
+        String usGovAuthorityHost = "https://login.microsoftonline.us";
+        String chinaAuthorityHost = "https://login.chinacloudapi.cn";
+        AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
+        AzureProfileConfigurationProperties azureProfileConfigurationProperties = azureGlobalProperties.getProfile();
+        System.out.println("CloudType"+azureProfileConfigurationProperties.getCloudType());
+        String azureAuthorityHost = System.getenv("AZURE_AUTHORITY_HOST");
+        System.out.println("azureAuthorityHost"+azureAuthorityHost);
+        if (usGovAuthorityHost.equals(azureAuthorityHost)) {
+            System.out.println("US GOVERNMENT");
+            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+            System.out.println(azureGlobalProperties.getProfile().getCloudType());
+        }
+        if (chinaAuthorityHost.equals(azureAuthorityHost)) {
+            System.out.println("CHINA");
+            azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
+            System.out.println(azureGlobalProperties.getProfile().getCloudType());
+
+        }
+    }
+
     @Test
     public void testServiceBusOperation() throws InterruptedException {
-        ApplicationConfiguration.ensureCloudType();
+//        ApplicationConfiguration.ensureCloudType();
+        System.out.println(new AzureGlobalProperties().getProfile().getCloudType());
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
