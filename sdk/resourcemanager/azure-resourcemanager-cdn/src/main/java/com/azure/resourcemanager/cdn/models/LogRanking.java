@@ -36,7 +36,11 @@ public final class LogRanking extends ExpandableStringEnum<LogRanking> {
         return fromString(name, LogRanking.class);
     }
 
-    /** @return known LogRanking values. */
+    /**
+     * Gets known LogRanking values.
+     *
+     * @return known LogRanking values.
+     */
     public static Collection<LogRanking> values() {
         return values(LogRanking.class);
     }

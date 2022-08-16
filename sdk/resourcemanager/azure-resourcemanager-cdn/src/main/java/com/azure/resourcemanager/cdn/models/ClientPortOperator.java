@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClientPortOperator. */
+/** Describes operator to be matched. */
 public final class ClientPortOperator extends ExpandableStringEnum<ClientPortOperator> {
     /** Static value Any for ClientPortOperator. */
     public static final ClientPortOperator ANY = fromString("Any");
@@ -51,7 +51,11 @@ public final class ClientPortOperator extends ExpandableStringEnum<ClientPortOpe
         return fromString(name, ClientPortOperator.class);
     }
 
-    /** @return known ClientPortOperator values. */
+    /**
+     * Gets known ClientPortOperator values.
+     *
+     * @return known ClientPortOperator values.
+     */
     public static Collection<ClientPortOperator> values() {
         return values(ClientPortOperator.class);
     }

@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
-import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -13,14 +13,19 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -30,8 +35,12 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -77,7 +86,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
-    private final MicrosoftCognitiveLanguageServiceImpl service;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
@@ -91,6 +100,8 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
+    final RecognizeCustomEntitiesAsyncClient recognizeCustomEntitiesAsyncClient;
+    final LabelClassifyAsyncClient labelClassifyAsyncClient;
     final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
     final AnalyzeActionsAsyncClient analyzeActionsAsyncClient;
 
@@ -116,12 +127,14 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(legacyService);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(legacyService);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(legacyService);
+        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(null);
         this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService);
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService);
+        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null);
     }
 
-    TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceImpl service, TextAnalyticsServiceVersion serviceVersion,
-        String defaultCountryHint, String defaultLanguage) {
+    TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion, String defaultCountryHint, String defaultLanguage) {
         this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -133,8 +146,10 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
+        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(new AnalyzeTextsImpl(service));
         this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(new AnalyzeTextsImpl(service));
         this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service));
+        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service));
     }
 
     /**
@@ -942,7 +957,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of
      * {@link TextDocumentInput document} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
      * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
@@ -1620,11 +1635,7 @@ public final class TextAnalyticsAsyncClient {
      * Analyze healthcare entities, entity data sources, and entity relations in a list of
      * {@link String documents} with provided request options.
      *
-     * Note: In order to use this functionality, request to access public preview is required.
-     * Azure Active Directory (AAD) is not currently supported. For more information see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
-     *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -1656,18 +1667,11 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Analyze healthcare entities, entity data sources, and entity relations in a list of
-     * {@link TextDocumentInput documents} with provided request options.
-     *
-     * Note: In order to use this functionality, request to access public preview is required.
-     * Azure Active Directory (AAD) is not currently supported. For more information see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
-     *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
-     *
-     * <p>Analyze healthcare entities, entity data sources, and entity relations in a list of
      * {@link TextDocumentInput document} and provided request options to
      * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
-     * received.</p>
+     * received.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions -->
      * <pre>
@@ -1758,10 +1762,474 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
+     * Returns a list of custom entities for the provided list of {@link TextDocumentInput document} with provided
+     * request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+     *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+     *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+     *             + &quot;responsibilities.&quot;
+     *     &#41;;
+     * &#125;
+     * RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginRecognizeCustomEntities&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         RecognizeCustomEntitiesOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFlux -&gt; pagedFlux.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;RecognizeCustomEntitiesResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;RecognizeEntitiesResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;CategorizedEntity entity : documentResult.getEntities&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;
+     *                             &quot;&#92;tText: %s, category: %s, confidence score: %f.%n&quot;,
+     *                             entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link RecognizeCustomEntitiesOptions options} that may be passed
+     * when recognizing custom entities.
+     *
+     * @return A {@link PollerFlux} that polls the recognize custom entities operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link RecognizeCustomEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux>
+        beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName,
+            String language, RecognizeCustomEntitiesOptions options) {
+        return beginRecognizeCustomEntities(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), projectName, deploymentName, options);
+    }
+
+    /**
+     * Returns a list of custom entities for the provided list of {@link TextDocumentInput document} with provided
+     * request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-RecognizeCustomEntitiesOptions -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+     *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+     *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+     *             + &quot;responsibilities.&quot;&#41;&#41;;
+     * &#125;
+     * RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginRecognizeCustomEntities&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         RecognizeCustomEntitiesOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFlux -&gt; pagedFlux.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;RecognizeCustomEntitiesResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;RecognizeEntitiesResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;CategorizedEntity entity : documentResult.getEntities&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;
+     *                             &quot;&#92;tText: %s, category: %s, confidence score: %f.%n&quot;,
+     *                             entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-RecognizeCustomEntitiesOptions -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     * @param options The additional configurable {@link RecognizeCustomEntitiesOptions options} that may be passed
+     * when recognizing custom entities.
+     *
+     * @return A {@link PollerFlux} that polls the recognize custom entities until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link RecognizeCustomEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux>
+        beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
+            RecognizeCustomEntitiesOptions options) {
+        return recognizeCustomEntitiesAsyncClient.recognizeCustomEntities(documents, projectName, deploymentName,
+            options, Context.NONE);
+    }
+
+    // Single Label Classification
+
+    /**
+     * Returns a list of single-label classification for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+     *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+     *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+     *             + &quot;responsibilities.&quot;
+     *     &#41;;
+     * &#125;
+     * SingleLabelClassifyOptions options = new SingleLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * &#47;&#47; See the service documentation for regional support and how to train a model to classify your documents,
+     * &#47;&#47; see https:&#47;&#47;aka.ms&#47;azsdk&#47;textanalytics&#47;customfunctionalities
+     * textAnalyticsAsyncClient.beginSingleLabelClassify&#40;documents,
+     *     &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
+     * when analyzing single-label classification.
+     *
+     * @return A {@link PollerFlux} that polls the single-label classification operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginSingleLabelClassify(
+        Iterable<String> documents, String projectName, String deploymentName, String language,
+        SingleLabelClassifyOptions options) {
+        return beginSingleLabelClassify(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), projectName, deploymentName, options);
+    }
+
+    /**
+     * Returns a list of single-label classification for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+     *         + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+     *         + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+     *         + &quot;responsibilities.&quot;&#41;&#41;;
+     * &#125;
+     * SingleLabelClassifyOptions options = new SingleLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * &#47;&#47; See the service documentation for regional support and how to train a model to classify your documents,
+     * &#47;&#47; see https:&#47;&#47;aka.ms&#47;azsdk&#47;textanalytics&#47;customfunctionalities
+     * textAnalyticsAsyncClient.beginSingleLabelClassify&#40;documents,
+     *     &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
+     * when analyzing single-label classification.
+     *
+     * @return A {@link PollerFlux} that polls the single-label classification operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginSingleLabelClassify(
+        Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
+        SingleLabelClassifyOptions options) {
+        return labelClassifyAsyncClient.singleLabelClassify(documents, projectName, deploymentName,
+            options, Context.NONE);
+    }
+
+    // Multi-label Classification
+
+    /**
+     * Returns a list of multi-label classification for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, &quot;en&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
+     * when analyzing multi-label classification.
+     *
+     * @return A {@link PollerFlux} that polls the multi-label classification operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginMultiLabelClassify(
+        Iterable<String> documents, String projectName, String deploymentName, String language,
+        MultiLabelClassifyOptions options) {
+        return beginMultiLabelClassify(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), projectName, deploymentName, options);
+    }
+
+    /**
+     * Returns a list of multi-label classification for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+     *             + &quot; Play music and add it to my playlist&quot;&#41;&#41;;
+     * &#125;
+     * MultiLabelClassifyOptions options = new MultiLabelClassifyOptions&#40;&#41;.setIncludeStatistics&#40;true&#41;;
+     * textAnalyticsAsyncClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;,
+     *     &quot;&#123;deployment_name&#125;&quot;, options&#41;
+     *     .flatMap&#40;pollResult -&gt; &#123;
+     *         ClassifyDocumentOperationDetail operationResult = pollResult.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
+     *             operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
+     *         return pollResult.getFinalResult&#40;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;pagedFluxAsyncPollResponse -&gt; pagedFluxAsyncPollResponse.byPage&#40;&#41;&#41;
+     *     .subscribe&#40;
+     *         perPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Response code: %d, Continuation Token: %s.%n&quot;,
+     *                 perPage.getStatusCode&#40;&#41;, perPage.getContinuationToken&#40;&#41;&#41;;
+     *             for &#40;ClassifyDocumentResultCollection documentsResults : perPage.getElements&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+     *                     documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+     *                 for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+     *                     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+     *                     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+     *                         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+     *                             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;
+     *             &#125;
+     *         &#125;,
+     *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment being consumed.
+     * @param options The additional configurable {@link SingleLabelClassifyOptions options} that may be passed
+     * when analyzing multi-label classification.
+     *
+     * @return A {@link PollerFlux} that polls the multi-label classification operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link ClassifyDocumentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> beginMultiLabelClassify(
+        Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
+        MultiLabelClassifyOptions options) {
+        return labelClassifyAsyncClient.multiLabelClassify(documents, projectName, deploymentName,
+            options, Context.NONE);
+    }
+
+    /**
      * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
      * {@link String documents} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions -->
@@ -1840,7 +2308,7 @@ public final class TextAnalyticsAsyncClient {
      * Execute actions, such as, entities recognition, PII entities recognition and key phrases extraction for a list of
      * {@link TextDocumentInput documents} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-AnalyzeActionsOptions -->

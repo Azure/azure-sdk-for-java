@@ -1,6 +1,6 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
+## 1.15.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.0-beta.1 (2022-08-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.0-beta.1`.
 
 ## 1.14.0 (2022-07-07)
 

@@ -17,7 +17,7 @@ import java.util.Arrays;
 /** Samples for GalleryApplicationVersions CreateOrUpdate. */
 public final class GalleryApplicationVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Create.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryApplicationVersion_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery Application Version.

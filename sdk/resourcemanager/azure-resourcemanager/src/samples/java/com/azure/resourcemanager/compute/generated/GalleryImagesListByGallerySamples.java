@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for GalleryImages ListByGallery. */
 public final class GalleryImagesListByGallerySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_ListByGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImage_ListByGallery.json
      */
     /**
      * Sample code: List gallery images in a gallery.

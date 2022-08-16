@@ -3,11 +3,11 @@
 
 package com.azure.ai.formrecognizer.perf.core;
 
-import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
-import com.azure.ai.formrecognizer.DocumentAnalysisClient;
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient;
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;

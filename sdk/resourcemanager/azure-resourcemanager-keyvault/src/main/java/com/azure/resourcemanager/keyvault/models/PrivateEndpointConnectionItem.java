@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.keyvault.fluent.models.PrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private endpoint connection item. */
 @Fluent
 public final class PrivateEndpointConnectionItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionItem.class);
-
     /*
      * Id of private endpoint connection.
      */
@@ -22,8 +18,7 @@ public final class PrivateEndpointConnectionItem {
     private String id;
 
     /*
-     * Modified whenever there is a change in the state of private endpoint
-     * connection.
+     * Modified whenever there is a change in the state of private endpoint connection.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -137,6 +132,21 @@ public final class PrivateEndpointConnectionItem {
      */
     public PrivateEndpointConnectionProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the private endpoint connection.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the PrivateEndpointConnectionItem object itself.
+     */
+    public PrivateEndpointConnectionItem withProvisioningState(
+        PrivateEndpointConnectionProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

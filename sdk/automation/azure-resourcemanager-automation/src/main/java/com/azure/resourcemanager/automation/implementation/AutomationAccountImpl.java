@@ -5,16 +5,23 @@
 package com.azure.resourcemanager.automation.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.AutomationAccountInner;
+import com.azure.resourcemanager.automation.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.automation.models.AutomationAccount;
 import com.azure.resourcemanager.automation.models.AutomationAccountCreateOrUpdateParameters;
 import com.azure.resourcemanager.automation.models.AutomationAccountState;
 import com.azure.resourcemanager.automation.models.AutomationAccountUpdateParameters;
+import com.azure.resourcemanager.automation.models.EncryptionProperties;
+import com.azure.resourcemanager.automation.models.Identity;
+import com.azure.resourcemanager.automation.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.automation.models.Sku;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class AutomationAccountImpl
     implements AutomationAccount, AutomationAccount.Definition, AutomationAccount.Update {
@@ -51,6 +58,14 @@ public final class AutomationAccountImpl
         return this.innerModel().etag();
     }
 
+    public Identity identity() {
+        return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public Sku sku() {
         return this.innerModel().sku();
     }
@@ -75,12 +90,46 @@ public final class AutomationAccountImpl
         return this.innerModel().description();
     }
 
+    public EncryptionProperties encryption() {
+        return this.innerModel().encryption();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Boolean publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
+    }
+
+    public String automationHybridServiceUrl() {
+        return this.innerModel().automationHybridServiceUrl();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AutomationAccountInner innerModel() {
@@ -214,12 +263,52 @@ public final class AutomationAccountImpl
         }
     }
 
+    public AutomationAccountImpl withIdentity(Identity identity) {
+        if (isInCreateMode()) {
+            this.createParameters.withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public AutomationAccountImpl withSku(Sku sku) {
         if (isInCreateMode()) {
             this.createParameters.withSku(sku);
             return this;
         } else {
             this.updateParameters.withSku(sku);
+            return this;
+        }
+    }
+
+    public AutomationAccountImpl withEncryption(EncryptionProperties encryption) {
+        if (isInCreateMode()) {
+            this.createParameters.withEncryption(encryption);
+            return this;
+        } else {
+            this.updateParameters.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public AutomationAccountImpl withPublicNetworkAccess(Boolean publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.createParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public AutomationAccountImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (isInCreateMode()) {
+            this.createParameters.withDisableLocalAuth(disableLocalAuth);
+            return this;
+        } else {
+            this.updateParameters.withDisableLocalAuth(disableLocalAuth);
             return this;
         }
     }

@@ -19,8 +19,7 @@ public final class PrivateDnsZonePropertiesFormat {
     private String privateDnsZoneId;
 
     /*
-     * A collection of information regarding a recordSet, holding information
-     * to identify private resources.
+     * A collection of information regarding a recordSet, holding information to identify private resources.
      */
     @JsonProperty(value = "recordSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecordSet> recordSets;

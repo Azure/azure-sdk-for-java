@@ -2,13 +2,10 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Fixed incorrect class names of `MetricsResponseSeriesItemData`, `WafMetricsResponseSeriesItemData`, `WafRankingsResponseDataItemMetric`.
+- Removed classes not supported in backend `ManagedServiceIdentity`, `UserAssignedIdentity`, `ManagedServiceIdentityType`.
 
 ## 2.17.0 (2022-07-25)
 

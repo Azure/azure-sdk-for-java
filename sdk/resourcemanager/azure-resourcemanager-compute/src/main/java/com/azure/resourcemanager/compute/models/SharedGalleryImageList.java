@@ -20,8 +20,8 @@ public final class SharedGalleryImageList {
     private List<SharedGalleryImageInner> value;
 
     /*
-     * The uri to fetch the next page of shared gallery images. Call ListNext()
-     * with this to fetch the next page of shared gallery images.
+     * The uri to fetch the next page of shared gallery images. Call ListNext() with this to fetch the next page of
+     * shared gallery images.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

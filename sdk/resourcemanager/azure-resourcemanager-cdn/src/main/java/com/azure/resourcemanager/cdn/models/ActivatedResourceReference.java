@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to another resource along with its state. */
 @Fluent
 public final class ActivatedResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivatedResourceReference.class);
-
     /*
      * Resource ID.
      */

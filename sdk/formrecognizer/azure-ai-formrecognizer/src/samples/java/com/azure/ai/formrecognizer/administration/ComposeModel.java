@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.administration;
+package com.azure.ai.formrecognizer.documentanalysis.administration;
 
-import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;

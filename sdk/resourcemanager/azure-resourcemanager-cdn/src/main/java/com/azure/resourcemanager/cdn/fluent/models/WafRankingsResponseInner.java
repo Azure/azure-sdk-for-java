@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.WafRankingsResponseDataItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.List;
 /** Waf Rankings Response. */
 @Fluent
 public final class WafRankingsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WafRankingsResponseInner.class);
-
     /*
      * The dateTimeBegin property.
      */

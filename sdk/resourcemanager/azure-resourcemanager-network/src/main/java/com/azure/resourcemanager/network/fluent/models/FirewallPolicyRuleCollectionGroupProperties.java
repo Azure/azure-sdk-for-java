@@ -26,8 +26,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
     private List<FirewallPolicyRuleCollection> ruleCollections;
 
     /*
-     * The provisioning state of the firewall policy rule collection group
-     * resource.
+     * The provisioning state of the firewall policy rule collection group resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
