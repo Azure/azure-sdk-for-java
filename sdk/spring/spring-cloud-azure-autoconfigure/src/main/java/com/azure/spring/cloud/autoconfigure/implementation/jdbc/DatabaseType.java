@@ -67,7 +67,6 @@ public enum DatabaseType {
         return queryDelimiter;
     }
 
-    // TODO (zhihaoguo): refactor with interfaces.
     public boolean isDatabasePluginAvailable() {
         if (DatabaseType.POSTGRESQL == this) {
             return isPostgresqlPluginAvailable();

@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.service.implementation.identity.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProviderOptions;
 import org.springframework.beans.BeansException;
@@ -34,12 +33,7 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
         ApplicationContext context = getApplicationContext();
         Objects.requireNonNull(context);
 
-        TokenCredential tokenCredential = context.getBean(this.tokenCredentialBeanName, TokenCredential.class);
-        if (tokenCredential == null) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return tokenCredential;
-        }
+        return context.getBean(this.tokenCredentialBeanName, TokenCredential.class);
     }
 
     @Override
