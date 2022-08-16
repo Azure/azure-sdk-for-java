@@ -120,6 +120,7 @@ public class ServiceBusConstants {
     public static final UnsignedLong FALSE_FILTER_NAME = new UnsignedLong(0x000001370000008L);
     public static final UnsignedLong EMPTY_RULE_ACTION_NAME = new UnsignedLong(0x0000013700000005L);
     public static final UnsignedLong SQL_RULE_ACTION_NAME = new UnsignedLong(0x0000013700000006L);
+
     /**
      * Amqp symbol for specific type.
      */

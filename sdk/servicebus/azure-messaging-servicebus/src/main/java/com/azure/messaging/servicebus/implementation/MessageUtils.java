@@ -383,8 +383,8 @@ public final class MessageUtils {
     /**
      * Create a map and put {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info into map for management request.
      *
-     * @param name rule name.
-     * @param options rule options.
+     * @param name name of rule.
+     * @param options The options for the rule to add.
      * @return A map with {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info to put into management message body.
      */
     public static Map<String, Object> encodeRuleOptionToMap(String name, CreateRuleOptions options) {

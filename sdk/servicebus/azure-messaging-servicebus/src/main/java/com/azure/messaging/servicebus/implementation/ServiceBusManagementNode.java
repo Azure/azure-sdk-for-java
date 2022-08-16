@@ -129,7 +129,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * Create a rule with the {@link CreateRuleOptions} for Service Bus subscription.
      *
      * @param ruleName Name of the rule.
-     * @param ruleOptions Information about the rule to create.
+     * @param ruleOptions The options for the rule to add.
      * @return Mono that create rule successfully.
      */
     Mono<Void> createRule(String ruleName, CreateRuleOptions ruleOptions);

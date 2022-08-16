@@ -108,7 +108,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
      *
      * @param ruleName Name of rule.
-     * @param options The options for the rule to create.
+     * @param options The options for the rule to add.
      * @return A Mono that completes when the rule is created.
      *
      * @throws NullPointerException if {@code options}, {@code ruleName} is null.
