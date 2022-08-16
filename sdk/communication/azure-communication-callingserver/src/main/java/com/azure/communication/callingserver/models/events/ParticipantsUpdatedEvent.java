@@ -4,87 +4,48 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
-import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
-import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-/**
- * The participants updated event.
- */
+/** The ParticipantsUpdatedEvent model. */
 @Immutable
-public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
-    /**
-     * The call connection id.
+public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
+    /*
+     * List of current participants in the call.
      */
-    private final String callConnectionId;
+    @JsonIgnore
+    private final List<CommunicationIdentifier> participants;
 
-    /**
-     * The participants.
-     */
-    private final List<CallParticipant> participants;
+    @JsonCreator
+    private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
 
-    /**
-     * Get the callConnectionId property: The call connection id.
-     *
-     * @return the callConnectionId value.
-     */
-    public String getCallConnectionId() {
-        return callConnectionId;
-    }
-
-
-    /**
-     * Get the participants.
-     *
-     * @return the list of participants value.
-     */
-    public List<CallParticipant> getParticipants() {
-        return participants;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this.participants = participants
+            .stream()
+            .map(item -> mapper.convertValue(item, CommunicationIdentifierModel.class))
+            .collect(Collectors.toList())
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
     }
 
     /**
-     * Initializes a new instance of ParticipantsUpdatedEvent.
+     * Get the participants property: List of current participants in the call.
      *
-     * @param callConnectionId The call connection id.
-     * @param participants The participants
-     * @throws IllegalArgumentException if any parameter is null or empty.
+     * @return the participants value.
      */
-    ParticipantsUpdatedEvent(String callConnectionId, List<CallParticipant> participants) {
-        if (callConnectionId == null || callConnectionId.isEmpty()) {
-            throw new IllegalArgumentException("object callConnectionId cannot be null or empty");
-        }
-        if (participants == null) {
-            throw new IllegalArgumentException("object participants cannot be null");
-        }
-        this.callConnectionId = callConnectionId;
-        this.participants = participants;
-    }
-
-    /**
-     * Deserialize {@link ParticipantsUpdatedEvent} event.
-     *
-     * @param eventData binary data for event
-     * @return {@link ParticipantsUpdatedEvent} event.
-     */
-    public static ParticipantsUpdatedEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        ParticipantsUpdatedEventInternal internalEvent = eventData.toObject(ParticipantsUpdatedEventInternal.class);
-        List<CallParticipant> participants = new LinkedList<>();
-        for (CallParticipantInternal callParticipantInternal : internalEvent.getParticipants()) {
-            participants.add(
-                new CallParticipant(
-                    CommunicationIdentifierConverter.convert(callParticipantInternal.getIdentifier()),
-                    callParticipantInternal.getParticipantId(),
-                    callParticipantInternal.isMuted()));
-        }
-
-        return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(), participants);
+    public List<CommunicationIdentifier> getParticipants() {
+        return this.participants;
     }
 }
