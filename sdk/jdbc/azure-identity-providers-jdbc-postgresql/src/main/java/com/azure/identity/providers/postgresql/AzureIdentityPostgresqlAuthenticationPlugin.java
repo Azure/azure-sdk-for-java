@@ -38,7 +38,6 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
         this.azureAuthenticationTemplate.init(properties);
     }
 
-
     /**
      * Get the password.
      *
@@ -46,7 +45,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      * @return the password.
      * @throws PSQLException when an error occurs.
      */
-    //TODO (zhihaoguo): We need to know the usage of AuthenticationRequestType.
+    // TODO (zhihaoguo): We need to know the usage of AuthenticationRequestType.
     @Override
     public char[] getPassword(AuthenticationRequestType art) throws PSQLException {
         String password = azureAuthenticationTemplate.getTokenAsPassword();

@@ -285,7 +285,6 @@
       <version>2.0.2</version> <!-- {x-version-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
     </dependency>
 
-    <!-- todo check the maven scopes-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-jdbc-mysql</artifactId>

@@ -40,4 +40,14 @@ class AzureIdentityPostgresqlAuthenticationPluginTest {
         AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(template, properties);
         assertThrowsExactly(PSQLException.class, () -> plugin.getPassword(AuthenticationRequestType.MD5_PASSWORD));
     }
+
+    @Test
+    void testGetPassword() throws PSQLException {
+        Properties properties = new Properties();
+        AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
+        when(template.getTokenAsPassword()).thenReturn("fake-password");
+        AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(template, properties);
+        assertEquals(new String(plugin.getPassword(AuthenticationRequestType.MD5_PASSWORD)), template.getTokenAsPassword());
+    }
+
 }

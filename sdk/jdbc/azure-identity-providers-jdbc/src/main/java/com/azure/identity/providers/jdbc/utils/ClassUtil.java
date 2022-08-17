@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 /**
  * {@code java.lang.Class} utility methods.
  * Mainly for internal use.
- * // TODO (zhihaoguo): Libraries in package ...implementation.identity should be reorganized when shipped independently.
  */
 public final class ClassUtil {
 

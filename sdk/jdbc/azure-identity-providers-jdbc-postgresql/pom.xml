@@ -32,7 +32,6 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.3.6</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
-      <optional>true</optional>
     </dependency>
 
     <!-- test   -->
