@@ -40,6 +40,8 @@
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
