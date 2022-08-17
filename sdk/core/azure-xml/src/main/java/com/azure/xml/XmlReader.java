@@ -238,7 +238,7 @@ public abstract class XmlReader implements Closeable {
      * the expected {@code startTagName}
      */
     public final <T> T readObject(String localName, Function<XmlReader, T> converter) {
-        return readObject(new QName(null, localName), converter);
+        return readObject(null, localName, converter);
     }
 
     /**

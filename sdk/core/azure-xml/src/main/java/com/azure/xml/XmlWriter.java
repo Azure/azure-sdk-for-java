@@ -161,11 +161,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML attribute cannot be written.
      */
     public final XmlWriter writeBinaryAttribute(String localName, byte[] value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStringAttribute(localName, convertBytesToString(value));
+        return writeBinaryAttribute(null, localName, value);
     }
 
     /**
@@ -223,11 +219,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML attribute cannot be written.
      */
     public final XmlWriter writeBooleanAttribute(String localName, Boolean value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStringAttribute(localName, String.valueOf(value));
+        return writeBooleanAttribute(null, localName, value);
     }
 
     /**
@@ -358,11 +350,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML attribute cannot be written.
      */
     public final XmlWriter writeNumberAttribute(String localName, Number value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStringAttribute(localName, String.valueOf(value));
+        return writeNumberAttribute(null, localName, value);
     }
 
     /**
@@ -393,13 +381,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeBinaryElement(String localName, byte[] value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStartElement(localName)
-            .writeBinary(value)
-            .writeEndElement();
+        return writeBinaryElement(null, localName, value);
     }
 
     /**
@@ -432,9 +414,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeBooleanElement(String localName, boolean value) {
-        return writeStartElement(localName)
-            .writeBoolean(value)
-            .writeEndElement();
+        return writeBooleanElement(null, localName, value);
     }
 
     /**
@@ -463,13 +443,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeBooleanElement(String localName, Boolean value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStartElement(localName)
-            .writeBoolean(value.booleanValue())
-            .writeEndElement();
+        return writeBooleanElement(null, localName, value);
     }
 
     /**
@@ -502,9 +476,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeDoubleElement(String localName, double value) {
-        return writeStartElement(localName)
-            .writeDouble(value)
-            .writeEndElement();
+        return writeDoubleElement(null, localName, value);
     }
 
     /**
@@ -531,9 +503,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeFloatElement(String localName, float value) {
-        return writeStartElement(localName)
-            .writeFloat(value)
-            .writeEndElement();
+        return writeFloatElement(null, localName, value);
     }
 
     /**
@@ -560,9 +530,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeIntElement(String localName, int value) {
-        return writeStartElement(localName)
-            .writeInt(value)
-            .writeEndElement();
+        return writeIntElement(null, localName, value);
     }
 
     /**
@@ -589,9 +557,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeLongElement(String localName, long value) {
-        return writeStartElement(localName)
-            .writeLong(value)
-            .writeEndElement();
+        return writeLongElement(null, localName, value);
     }
 
     /**
@@ -620,13 +586,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeNumberElement(String localName, Number value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStartElement(localName)
-            .writeNumber(value)
-            .writeEndElement();
+        return writeNumberElement(null, localName, value);
     }
 
     /**
@@ -661,13 +621,7 @@ public abstract class XmlWriter implements Closeable {
      * @throws RuntimeException If the XML element and value cannot be written.
      */
     public final XmlWriter writeStringElement(String localName, String value) {
-        if (value == null) {
-            return this;
-        }
-
-        return writeStartElement(localName)
-            .writeString(value)
-            .writeEndElement();
+        return writeStringElement(null, localName, value);
     }
 
     /**
