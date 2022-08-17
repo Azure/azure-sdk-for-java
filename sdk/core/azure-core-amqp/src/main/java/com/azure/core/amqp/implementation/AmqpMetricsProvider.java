@@ -36,7 +36,7 @@ public class AmqpMetricsProvider {
     private AttributeCache sendDeliveryAttributeCache = null;
     private AttributeCache amqpErrorAttributeCache = null;
     private TelemetryAttributes commonAttributes = null;
-    private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", "xxx", new MetricsOptions());
+    private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", null, new MetricsOptions());
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider();
 
     private AmqpMetricsProvider() {
@@ -52,28 +52,28 @@ public class AmqpMetricsProvider {
         isEnabled = meter.isEnabled();
         if (isEnabled) {
             Map<String, Object> commonAttributesMap = new HashMap<>();
-            commonAttributesMap.put("net.peer.name", namespace);
+            commonAttributesMap.put(ClientConstants.HOSTNAME_KEY, namespace);
 
             if (entityPath != null) {
                 int entityNameEnd = entityPath.indexOf('/');
                 if (entityNameEnd > 0) {
-                    commonAttributesMap.put("entity_name",  entityPath.substring(0, entityNameEnd));
-                    commonAttributesMap.put("entity_path", entityPath);
+                    commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY,  entityPath.substring(0, entityNameEnd));
+                    commonAttributesMap.put(ClientConstants.ENTITY_PATH_KEY, entityPath);
                 } else {
-                    commonAttributesMap.put("entity_name",  entityPath);
+                    commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY,  entityPath);
                 }
             }
 
             this.commonAttributes = meter.createAttributes(commonAttributesMap);
-            this.sendDeliveryAttributeCache = new AttributeCache(meter, "status", commonAttributesMap);
-            this.amqpErrorAttributeCache = new AttributeCache(meter, "status", commonAttributesMap);
-            this.sendDuration = meter.createDoubleHistogram("messaging.az.amqp.send.duration", "Send AMQP message duration", "ms");
-            this.activeConnections = meter.createLongUpDownCounter("messaging.az.amqp.connections.active", "Active connections", null);
-            this.closedConnections = meter.createLongCounter("messaging.az.amqp.connections.closed", "Closed connections", null);
-            this.sessionErrors = meter.createLongCounter("messaging.az.amqp.session.errors", "AMQP session errors", null);
-            this.linkErrors = meter.createLongCounter("messaging.az.amqp.link.errors", "AMQP link errors", null);
-            this.receivedMessages = meter.createLongCounter("messaging.az.amqp.messages.received", "Number of received messages", null);
-            this.addCredits = meter.createLongCounter("messaging.az.amqp.credit.requested", "Number of requested credits", null);
+            this.sendDeliveryAttributeCache = new AttributeCache(meter, ClientConstants.AMQP_ERROR_KEY, commonAttributesMap);
+            this.amqpErrorAttributeCache = new AttributeCache(meter, ClientConstants.AMQP_ERROR_KEY, commonAttributesMap);
+            this.sendDuration = meter.createDoubleHistogram("messaging.az.amqp.producer.send.duration", "Send AMQP message duration", "ms");
+            this.activeConnections = meter.createLongUpDownCounter("messaging.az.amqp.client.connections.usage", "Active connections", "connections");
+            this.closedConnections = meter.createLongCounter("messaging.az.amqp.client.connections.closed", "Closed connections", "connections");
+            this.sessionErrors = meter.createLongCounter("messaging.az.amqp.client.session.errors", "AMQP session errors", "errors");
+            this.linkErrors = meter.createLongCounter("messaging.az.amqp.client.link.errors", "AMQP link errors", "errors");
+            this.receivedMessages = meter.createLongCounter("messaging.az.amqp.consumer.messages.received", "Number of received messages", "messages");
+            this.addCredits = meter.createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits", "credits");
         }
     }
 
@@ -112,7 +112,7 @@ public class AmqpMetricsProvider {
 
             if (closedConnections.isEnabled()) {
                 Symbol conditionSymbol = condition != null ? condition.getCondition() : null;
-                String conditionStr = conditionSymbol != null ? conditionSymbol.toString() : "OK";
+                String conditionStr = conditionSymbol != null ? conditionSymbol.toString() : "ok";
                 closedConnections.add(1, amqpErrorAttributeCache.getOrCreate(conditionStr), Context.NONE);
             }
         }

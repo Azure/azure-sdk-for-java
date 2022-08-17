@@ -270,8 +270,8 @@ public class ConnectionHandlerTest {
         handlerWithMetrics.onConnectionFinal(closeEventNoError);
 
         // Assert
-        List<TestMeasurement<Long>> activeConnections = meter.getUpDownCounters().get("messaging.az.amqp.connections.active").getMeasurements();
-        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.connections.closed").getMeasurements();
+        List<TestMeasurement<Long>> activeConnections = meter.getUpDownCounters().get("messaging.az.amqp.client.connections.usage").getMeasurements();
+        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
         assertEquals(4, activeConnections.size());
         assertEquals(2, closedConnections.size());
 
@@ -282,9 +282,9 @@ public class ConnectionHandlerTest {
         assertEquals(1, closedConnections.get(0).getValue());
         assertEquals(1, closedConnections.get(1).getValue());
 
-        assertEquals(HOSTNAME, activeConnections.get(0).getAttributes().get("net.peer.name"));
-        assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get("net.peer.name"));
-        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get("status"));
-        assertEquals("OK", closedConnections.get(1).getAttributes().get("status"));
+        assertEquals(HOSTNAME, activeConnections.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
+        assertEquals("ok", closedConnections.get(1).getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
     }
 }

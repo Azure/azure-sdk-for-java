@@ -7,6 +7,8 @@ import com.azure.core.util.TelemetryAttributes;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -14,6 +16,19 @@ import java.util.Objects;
  * OpenTelemetry-specific implementation of {@link TelemetryAttributes}
  */
 class OpenTelemetryAttributes implements TelemetryAttributes {
+    private final static Map<String, String> ATTRIBUTE_MAPPING = getMappings();
+
+    private static Map<String, String> getMappings() {
+        Map<String, String> mappings = new HashMap<>();
+        // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
+        mappings.put("entityName", "messaging.destination");
+        mappings.put("entityPath", "messaging.az.destination.path");
+        mappings.put("hostName", "net.peer.name");
+        mappings.put("amqpError", "amqp.error_code");
+
+        return Collections.unmodifiableMap(mappings);
+    }
+
     private final Attributes attributes;
     OpenTelemetryAttributes(Map<String, Object> attributeMap) {
         Objects.requireNonNull(attributeMap, "'attributeMap' cannot be null.");
@@ -23,7 +38,13 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
             Objects.requireNonNull(kvp.getKey(), "'key' cannot be null.");
             Objects.requireNonNull(kvp.getValue(), "'value' cannot be null.");
 
-            OpenTelemetryUtils.addAttribute(builder, kvp.getKey(), kvp.getValue());
+            // TODO: by GA we need to figure out default naming (when no mapping is defined)
+            // and follow otel attributes conventions if we can or make sure mapping is defined
+            // for all attributes
+
+            String azKey = kvp.getKey();
+            String otelKey = ATTRIBUTE_MAPPING.getOrDefault(azKey, azKey);
+            OpenTelemetryUtils.addAttribute(builder, otelKey, kvp.getValue());
         }
 
         attributes = builder.build();

@@ -817,16 +817,16 @@ class ReactorReceiverTest {
             .verify(VERIFY_TIMEOUT);
 
         // Assert
-        List<TestMeasurement<Long>> receivedMessages = meter.getCounters().get("messaging.az.amqp.messages.received").getMeasurements();
+        List<TestMeasurement<Long>> receivedMessages = meter.getCounters().get("messaging.az.amqp.consumer.messages.received").getMeasurements();
         assertEquals(1, receivedMessages.size());
         TestMeasurement<Long> measurement = receivedMessages.get(0);
         assertEquals(1, measurement.getValue());
         assertEquals(Context.NONE, measurement.getContext());
-        assertEquals("namespace", measurement.getAttributes().get("net.peer.name"));
-        assertEquals("name", measurement.getAttributes().get("entity_name"));
-        assertEquals("name/and/partition", measurement.getAttributes().get("entity_path"));
+        assertEquals("namespace", measurement.getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals("name", measurement.getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
+        assertEquals("name/and/partition", measurement.getAttributes().get(ClientConstants.ENTITY_PATH_KEY));
 
-        List<TestMeasurement<Long>> requestedCredits = meter.getCounters().get("messaging.az.amqp.credit.requested").getMeasurements();
+        List<TestMeasurement<Long>> requestedCredits = meter.getCounters().get("messaging.az.amqp.consumer.credits.requested").getMeasurements();
         assertEquals(1, requestedCredits.size());
         TestMeasurement<Long> measurement2 = requestedCredits.get(0);
         assertEquals(creditsToAdd, measurement2.getValue());

@@ -15,7 +15,8 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.implementation.handler.*;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -46,8 +47,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
@@ -319,12 +322,12 @@ public class ReactorSessionTest {
         handlerWithMetrics.onSessionRemoteClose(event);
 
         // Assert
-        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.session.errors").getMeasurements();
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
         assertEquals(1, errors.size());
         assertEquals(1, errors.get(0).getValue());
-        assertEquals("amqp:resource-limit-exceeded", errors.get(0).getAttributes().get("status"));
-        assertEquals(HOST, errors.get(0).getAttributes().get("net.peer.name"));
-        assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get("entity_name"));
+        assertEquals("amqp:resource-limit-exceeded", errors.get(0).getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
+        assertEquals(HOST, errors.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
     }
 
     /**
@@ -343,7 +346,7 @@ public class ReactorSessionTest {
         handlerWithMetrics.onSessionRemoteClose(event);
 
         // Assert
-        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.session.errors").getMeasurements();
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
         assertEquals(0, errors.size());
     }
 }

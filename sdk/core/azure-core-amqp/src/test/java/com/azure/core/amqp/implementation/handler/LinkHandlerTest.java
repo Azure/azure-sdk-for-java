@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -259,13 +260,13 @@ public class LinkHandlerTest {
         handlerWithMetrics.onLinkRemoteClose(event);
 
         // Assert
-        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.link.errors").getMeasurements();
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.link.errors").getMeasurements();
         assertEquals(1, errors.size());
         assertEquals(1, errors.get(0).getValue());
-        assertEquals("amqp:link:stolen", errors.get(0).getAttributes().get("status"));
-        assertEquals(HOSTNAME, errors.get(0).getAttributes().get("net.peer.name"));
-        assertEquals(ENTITY_NAME, errors.get(0).getAttributes().get("entity_name"));
-        assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get("entity_path"));
+        assertEquals("amqp:link:stolen", errors.get(0).getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
+        assertEquals(HOSTNAME, errors.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals(ENTITY_NAME, errors.get(0).getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
+        assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get(ClientConstants.ENTITY_PATH_KEY));
     }
 
     /**
@@ -285,7 +286,7 @@ public class LinkHandlerTest {
         handlerWithMetrics.onLinkRemoteClose(event);
 
         // Assert
-        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.link.errors").getMeasurements();
+        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.link.errors").getMeasurements();
         assertEquals(0, errors.size());
     }
 

@@ -136,7 +136,7 @@ public class ReactorHandlerProvider {
         Duration openTimeout) {
 
         return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(),
-            openTimeout, getMetricProvider(hostname, null));
+            openTimeout, getMetricProvider(hostname, sessionName));
     }
 
     /**

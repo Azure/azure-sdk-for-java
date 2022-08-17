@@ -18,7 +18,11 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AmqpMetricsProviderTest {
     private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("tests", "version", null);
@@ -74,8 +78,8 @@ public class AmqpMetricsProviderTest {
         provider.recordAddCredits(2);
         provider.recordAddCredits(100);
 
-        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.credit.requested"));
-        TestCounter counter = meter.getCounters().get("messaging.az.amqp.credit.requested");
+        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.consumer.credits.requested"));
+        TestCounter counter = meter.getCounters().get("messaging.az.amqp.consumer.credits.requested");
 
         assertEquals(3, counter.getMeasurements().size());
         TestMeasurement<Long> measurement1 = counter.getMeasurements().get(0);
@@ -106,23 +110,23 @@ public class AmqpMetricsProviderTest {
         provider.recordSendDelivery(start, DeliveryState.DeliveryStateType.Accepted);
         provider.recordSendDelivery(start, null);
 
-        assertTrue(meter.getHistograms().containsKey("messaging.az.amqp.send.duration"));
-        TestHistogram histogram = meter.getHistograms().get("messaging.az.amqp.send.duration");
+        assertTrue(meter.getHistograms().containsKey("messaging.az.amqp.producer.send.duration"));
+        TestHistogram histogram = meter.getHistograms().get("messaging.az.amqp.producer.send.duration");
 
         assertEquals(3, histogram.getMeasurements().size());
 
         TestMeasurement<Double> measurement1 = histogram.getMeasurements().get(0);
         assertEquals(Context.NONE, measurement1.getContext());
         assertCommonAttributes(measurement1.getAttributes(), NAMESPACE, ENTITY_NAME, null);
-        assertEquals("Rejected", measurement1.getAttributes().get("status"));
+        assertEquals("Rejected", measurement1.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
         assertTrue(100 <= measurement1.getValue());
         assertTrue(end - start >= measurement1.getValue());
 
         TestMeasurement<Double> measurement2 = histogram.getMeasurements().get(1);
-        assertEquals("Accepted", measurement2.getAttributes().get("status"));
+        assertEquals("Accepted", measurement2.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
 
         TestMeasurement<Double> measurement3 = histogram.getMeasurements().get(2);
-        assertEquals("other", measurement3.getAttributes().get("status"));
+        assertEquals("other", measurement3.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
     }
 
     @Test
@@ -136,11 +140,11 @@ public class AmqpMetricsProviderTest {
         provider.recordConnectionClosed(null);
         provider.recordConnectionClosed(new ErrorCondition(TIMEOUT_SYMBOL, ""));
 
-        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.connections.closed"));
-        TestCounter closedCounter = meter.getCounters().get("messaging.az.amqp.connections.closed");
+        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.client.connections.closed"));
+        TestCounter closedCounter = meter.getCounters().get("messaging.az.amqp.client.connections.closed");
 
-        assertTrue(meter.getUpDownCounters().containsKey("messaging.az.amqp.connections.active"));
-        TestCounter activeCounter = meter.getUpDownCounters().get("messaging.az.amqp.connections.active");
+        assertTrue(meter.getUpDownCounters().containsKey("messaging.az.amqp.client.connections.usage"));
+        TestCounter activeCounter = meter.getUpDownCounters().get("messaging.az.amqp.client.connections.usage");
 
         assertEquals(5, activeCounter.getMeasurements().size());
         assertEquals(2, closedCounter.getMeasurements().size());
@@ -156,10 +160,10 @@ public class AmqpMetricsProviderTest {
         assertEquals(-1, activeCounter.getMeasurements().get(4).getValue());
 
         TestMeasurement<Long> closed1 = closedCounter.getMeasurements().get(0);
-        assertEquals("OK", closed1.getAttributes().get("status"));
+        assertEquals("ok", closed1.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
 
         TestMeasurement<Long> closed2 = closedCounter.getMeasurements().get(1);
-        assertEquals("com.microsoft:timeout", closed2.getAttributes().get("status"));
+        assertEquals("com.microsoft:timeout", closed2.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
     }
 
     @Test
@@ -170,8 +174,8 @@ public class AmqpMetricsProviderTest {
         provider.recordReceivedMessage();
         provider.recordReceivedMessage();
 
-        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.messages.received"));
-        TestCounter counter = meter.getCounters().get("messaging.az.amqp.messages.received");
+        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.consumer.messages.received"));
+        TestCounter counter = meter.getCounters().get("messaging.az.amqp.consumer.messages.received");
 
         assertEquals(2, counter.getMeasurements().size());
         TestMeasurement<Long> measurement1 = counter.getMeasurements().get(0);
@@ -190,15 +194,15 @@ public class AmqpMetricsProviderTest {
         provider.recordLinkError(null);
         provider.recordLinkError(new ErrorCondition(TIMEOUT_SYMBOL, ""));
 
-        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.link.errors"));
-        TestCounter counter = meter.getCounters().get("messaging.az.amqp.link.errors");
+        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.client.link.errors"));
+        TestCounter counter = meter.getCounters().get("messaging.az.amqp.client.link.errors");
 
         assertEquals(1, counter.getMeasurements().size());
         TestMeasurement<Long> measurement1 = counter.getMeasurements().get(0);
         assertEquals(1, measurement1.getValue());
         assertEquals(Context.NONE, measurement1.getContext());
         assertCommonAttributes(measurement1.getAttributes(), NAMESPACE, ENTITY_NAME, ENTITY_PATH);
-        assertEquals("com.microsoft:timeout", measurement1.getAttributes().get("status"));
+        assertEquals("com.microsoft:timeout", measurement1.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
     }
 
     @Test
@@ -209,24 +213,24 @@ public class AmqpMetricsProviderTest {
         provider.recordSessionError(null);
         provider.recordSessionError(new ErrorCondition(TIMEOUT_SYMBOL, ""));
 
-        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.session.errors"));
-        TestCounter counter = meter.getCounters().get("messaging.az.amqp.session.errors");
+        assertTrue(meter.getCounters().containsKey("messaging.az.amqp.client.session.errors"));
+        TestCounter counter = meter.getCounters().get("messaging.az.amqp.client.session.errors");
 
         assertEquals(1, counter.getMeasurements().size());
         TestMeasurement<Long> measurement1 = counter.getMeasurements().get(0);
         assertEquals(1, measurement1.getValue());
         assertEquals(Context.NONE, measurement1.getContext());
         assertCommonAttributes(measurement1.getAttributes(), NAMESPACE, ENTITY_NAME, ENTITY_PATH);
-        assertEquals("com.microsoft:timeout", measurement1.getAttributes().get("status"));
+        assertEquals("com.microsoft:timeout", measurement1.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
     }
 
     public void assertCommonAttributes(Map<String, Object> actual, String expectedNamespace, String expectedEntityName, String expectedEntityPath) {
-        assertEquals(expectedNamespace, actual.get("net.peer.name"));
+        assertEquals(expectedNamespace, actual.get(ClientConstants.HOSTNAME_KEY));
         if (expectedEntityName != null) {
-            assertEquals(expectedEntityName, actual.get("entity_name"));
+            assertEquals(expectedEntityName, actual.get(ClientConstants.ENTITY_NAME_KEY));
         }
         if (expectedEntityPath != null) {
-            assertEquals(expectedEntityPath, actual.get("entity_path"));
+            assertEquals(expectedEntityPath, actual.get(ClientConstants.ENTITY_PATH_KEY));
         }
     }
 }

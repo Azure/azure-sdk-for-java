@@ -764,11 +764,11 @@ public class ReactorSenderTest {
             .verify(VERIFY_TIMEOUT);
 
         // Assert
-        TestHistogram sendDuration = meter.getHistograms().get("messaging.az.amqp.send.duration");
+        TestHistogram sendDuration = meter.getHistograms().get("messaging.az.amqp.producer.send.duration");
         List<TestMeasurement<Double>> measurements = sendDuration.getMeasurements();
         assertEquals(1, measurements.size());
-        assertEquals(HOSTNAME, measurements.get(0).getAttributes().get("net.peer.name"));
-        assertEquals(ENTITY_PATH, measurements.get(0).getAttributes().get("entity_name"));
+        assertEquals(HOSTNAME, measurements.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
+        assertEquals(ENTITY_PATH, measurements.get(0).getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
 
         // TODO: how to test retries?
     }
