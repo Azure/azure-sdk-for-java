@@ -71,8 +71,8 @@
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
-    <module>sdk/formrecognizer</module>
     <module>sdk/fluidrelay</module>
+    <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
     <module>sdk/hanaonazure</module>
     <module>sdk/hardwaresecuritymodules</module>
@@ -130,6 +130,7 @@
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>
+    <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
     <module>sdk/resourcehealth</module>
