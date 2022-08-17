@@ -21,20 +21,27 @@ This package contains a Java SDK for Azure Communication CallingServer Service. 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callingserver</artifactId>
-    <version>1.0.0-alpha.20220805.1</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
+This is the restart of CallingServer Service. It is renamed to Call Automation service and being more intuitive to use.
 
-`CallAutomationClient` provides the functionality to make call connection, join call connection, answer incoming call or initialize a server call.
+`CallAutomationClient` provides the functionality to make call, answer/reject incoming call and redirect a call.
 
-`EventHandler` provides the functionality to handle event grid events as well as callback events from the ACS resource.
+`CallConnection` provides the functionality to perform actions in an established call connection such as adding participants and terminate the call.
+
+`CallMedia` introduces media related functionalities into the call.
+
+`CallRecording` provides the functionality of recording the call.
+
+`EventHandler` provides the functionality to handle events from the ACS resource.
 
 ## Examples
 
-To be Determined
+A simple call center scenario example: https://paste.microsoft.com/357de189-b0c0-4a2b-81c2-a2ee25fe4f20
 
 ## Troubleshooting
 
