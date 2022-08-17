@@ -3,9 +3,15 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedIterable;
+import com.azure.core.util.paging.PageRetriever;
+import com.azure.core.util.paging.SyncPageRetriever;
+import reactor.core.publisher.Mono;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -68,5 +74,16 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends Continuabl
     @SuppressWarnings("deprecation")
     public PagedIterableBase(PagedFluxBase<T, P> pagedFluxBase) {
         super(pagedFluxBase);
+    }
+
+    /**
+     * PACKAGE INTERNAL CONSTRUCTOR, exists only to support the PRIVATE PagedIterable.ctr(Supplier, boolean) use case.
+     *
+     * Create PagedIterable backed by Page Retriever Function Supplier.
+     *
+     * @param provider the Page Retrieval Provider
+     */
+    PagedIterableBase(Supplier<SyncPageRetriever<String, P>> provider) {
+        super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
 }

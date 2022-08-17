@@ -4,8 +4,12 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.paging.SyncPageRetriever;
 
+import java.util.Collections;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -66,6 +70,80 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     public PagedIterable(PagedFlux<T> pagedFlux) {
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
+    }
+
+    /**
+     * Creates an instance of {@link PagedIterable} that consists of only a single page. This constructor takes a {@code
+     * Supplier} that return the single page of {@code T}.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     *
+     * @param firstPageRetriever Supplier that retrieves the first page.
+     */
+    public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever) {
+        this(firstPageRetriever, null);
+    }
+
+    /**
+     * Creates an instance of {@link PagedIterable} that consists of only a single page with a given element count.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     *
+     * @param firstPageRetriever Function that retrieves the first page.
+     */
+    public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever) {
+        this(firstPageRetriever, (token, pageSize) -> null);
+    }
+
+    /**
+     * Creates an instance of {@link PagedIterable}. The constructor takes a {@code Supplier} and {@code Function}. The
+     * {@code Supplier} returns the first page of {@code T}, the {@code Function} retrieves subsequent pages of {@code
+     * T}.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * @param firstPageRetriever Supplier that retrieves the first page
+     * @param nextPageRetriever Function that retrieves the next page given a continuation token
+     */
+    public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
+                     Function<String, PagedResponse<T>> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) ->
+            continuationToken == null
+                 ? toIterable(firstPageRetriever.get())
+                 : toIterable(nextPageRetriever.apply(continuationToken)), true);
+    }
+
+    private static <T> IterableStream<PagedResponse<T>> toIterable(PagedResponse<T> pagedResponse) {
+        if (pagedResponse == null) {
+            return IterableStream.of(null);
+        }
+        return IterableStream.of(Collections.singletonList(pagedResponse));
+    }
+
+    /**
+     * Creates an instance of {@link PagedIterable} that is capable of retrieving multiple pages with of a given page size.
+     *
+     * @param firstPageRetriever Function that retrieves the first page.
+     * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
+     */
+    public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
+                     BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+             ? toIterable(firstPageRetriever.apply(pageSize))
+             : toIterable(nextPageRetriever.apply(continuationToken, pageSize)), true);
+    }
+
+    /**
+     * Create PagedIterable backed by Page Retriever Function Supplier.
+     *
+     * @param provider the Page Retrieval Provider
+     * @param ignored param is ignored, exists in signature only to avoid conflict with first ctr
+     */
+    private PagedIterable(Supplier<SyncPageRetriever<String, PagedResponse<T>>> provider, boolean ignored) {
+        super(provider);
+        this.pagedFlux = null;
     }
 
     /**

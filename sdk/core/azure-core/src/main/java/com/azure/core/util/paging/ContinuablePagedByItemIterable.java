@@ -24,6 +24,9 @@ import java.util.function.Predicate;
  */
 final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>> implements Iterable<T> {
     private final PageRetriever<C, P> pageRetriever;
+
+    private final SyncPageRetriever<C, P> syncPageRetriever;
+
     private final C continuationToken;
     private final Predicate<C> continuationPredicate;
     private final Integer preferredPageSize;
@@ -34,11 +37,25 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
         this.continuationToken = continuationToken;
         this.continuationPredicate = continuationPredicate;
         this.preferredPageSize = preferredPageSize;
+        this.syncPageRetriever = null;
+    }
+
+    ContinuablePagedByItemIterable(SyncPageRetriever<C, P> syncPageRetriever, C continuationToken,
+                                   Predicate<C> continuationPredicate, Integer preferredPageSize) {
+        this.syncPageRetriever = syncPageRetriever;
+        this.continuationToken = continuationToken;
+        this.continuationPredicate = continuationPredicate;
+        this.preferredPageSize = preferredPageSize;
+        this.pageRetriever = null;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new ContinuablePagedByItemIterator<>(pageRetriever, continuationToken, continuationPredicate,
+        if (pageRetriever != null) {
+            return new ContinuablePagedByItemIterator<>(pageRetriever, continuationToken, continuationPredicate,
+                preferredPageSize);
+        }
+        return new ContinuablePagedByItemIterator<>(syncPageRetriever, continuationToken, continuationPredicate,
             preferredPageSize);
     }
 
@@ -56,6 +73,14 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
                 LOGGER);
 
             requestPage();
+        }
+
+        ContinuablePagedByItemIterator(SyncPageRetriever<C, P> syncPageRetriever, C continuationToken,
+                                       Predicate<C> continuationPredicate, Integer preferredPageSize) {
+            super(syncPageRetriever, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
+                LOGGER);
+
+            requestPageSync();
         }
 
         @Override

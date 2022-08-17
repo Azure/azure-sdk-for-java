@@ -55,6 +55,16 @@ public class PagedIterableTest {
     }
 
     @ParameterizedTest
+    @ValueSource(ints = {5})
+    public void streamByPagePagedIterable(int numberOfPages) {
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        List<PagedResponse<Integer>> pages = pagedIterable.streamByPage().collect(Collectors.toList());
+
+        assertEquals(numberOfPages, pages.size());
+        assertEquals(pagedResponses, pages);
+    }
+
+    @ParameterizedTest
     @ValueSource(ints = {0, 5})
     public void iterateByPage(int numberOfPages) {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
@@ -71,6 +81,16 @@ public class PagedIterableTest {
     public void streamByT(int numberOfPages) {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
+        List<Integer> values = pagedIterable.stream().collect(Collectors.toList());
+
+        assertEquals(numberOfPages * 3, values.size());
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).collect(Collectors.toList()), values);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 5})
+    public void streamByTPagedIterable(int numberOfPages) {
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
         List<Integer> values = pagedIterable.stream().collect(Collectors.toList());
 
         assertEquals(numberOfPages * 3, values.size());
@@ -233,6 +253,14 @@ public class PagedIterableTest {
             continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
+    private PagedIterable<Integer> getIntegerPagedIterable(int numberOfPages) {
+        createPagedResponse(numberOfPages);
+
+        return new PagedIterable<>(() -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
+            continuationToken -> getNextPageSync(continuationToken, pagedResponses));
+    }
+
+
     private TestPagedFlux<Integer> getTestPagedFlux(int numberOfPages) {
         createPagedResponse(numberOfPages);
 
@@ -274,6 +302,21 @@ public class PagedIterableTest {
         }
 
         return Mono.just(pagedResponses.get(parsedToken));
+    }
+
+    private PagedResponse<Integer> getNextPageSync(String continuationToken,
+                                                     List<PagedResponse<Integer>> pagedResponses) {
+
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return null;
+        }
+
+        int parsedToken = Integer.parseInt(continuationToken);
+        if (parsedToken >= pagedResponses.size()) {
+            return null;
+        }
+
+        return pagedResponses.get(parsedToken);
     }
 
     private List<Integer> getItems(int i) {
