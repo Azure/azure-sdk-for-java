@@ -438,6 +438,7 @@ public final class MessageUtils {
         if (properties.getValue() == null) {
             return statusCode;
         }
+
         Object codeObject = properties.getValue().get(ManagementConstants.STATUS_CODE);
         if (codeObject == null) {
             codeObject = properties.getValue().get(ManagementConstants.LEGACY_STATUS_CODE);
@@ -445,6 +446,7 @@ public final class MessageUtils {
         if (codeObject != null) {
             statusCode = (int) codeObject;
         }
+
         return statusCode;
     }
 
@@ -462,6 +464,7 @@ public final class MessageUtils {
         if (!(ruleDescribedType.getDescriptor()).equals(ServiceBusConstants.RULE_DESCRIPTION_NAME)) {
             return null;
         }
+
         RuleProperties ruleProperties = new RuleProperties();
         if (ruleDescribedType.getDescribed() instanceof ArrayList) {
             ArrayList<Object> describedRule = (ArrayList<Object>) ruleDescribedType.getDescribed();
@@ -538,6 +541,7 @@ public final class MessageUtils {
         } else {
             throw new UnsupportedOperationException("This client doesn't support filter with descriptor: " + describedFilter.getDescriptor());
         }
+
         return null;
     }
 

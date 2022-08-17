@@ -474,11 +474,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
     public Mono<Void> createRule(String ruleName, CreateRuleOptions ruleOptions) {
         return isAuthorized(OPERATION_ADD_RULE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_ADD_RULE, null);
+
             final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.RULE_NAME, ruleName);
             body.put(ManagementConstants.RULE_DESCRIPTION, MessageUtils.encodeRuleOptionToMap(ruleName, ruleOptions));
 
             message.setBody(new AmqpValue(body));
+
             return sendWithVerify(channel, message, null);
         })).then();
     }
@@ -490,9 +492,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
     public Mono<Void> deleteRule(String ruleName) {
         return isAuthorized(OPERATION_REMOVE_RULE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_REMOVE_RULE, null);
+
             final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.RULE_NAME, ruleName);
+
             message.setBody(new AmqpValue(body));
+
             return sendWithVerify(channel, message, null);
         })).then();
     }
@@ -504,14 +509,17 @@ public class ManagementChannel implements ServiceBusManagementNode {
     public Mono<Collection<RuleProperties>> getRules() {
         return isAuthorized(OPERATION_GET_RULES).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_GET_RULES, null);
+
             final Map<String, Object> body = new HashMap<>();
             body.put(ManagementConstants.SKIP, 0);
             body.put(ManagementConstants.TOP, Integer.MAX_VALUE);
 
             message.setBody(new AmqpValue(body));
+
             return sendWithVerify(channel, message, null);
         })).map(response -> {
             int statusCode = MessageUtils.getMessageStatus(response.getApplicationProperties());
+
             Collection<RuleProperties> collection;
             if (statusCode == ManagementConstants.OK_STATUS_CODE) {
                 collection = getRuleProperties((AmqpValue) response.getBody());
@@ -522,6 +530,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     "Get rules response error. Could not get rules.",
                     getErrorContext())));
             }
+
             return collection;
         });
     }
