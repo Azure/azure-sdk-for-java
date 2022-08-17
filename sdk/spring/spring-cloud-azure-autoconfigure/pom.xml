@@ -275,7 +275,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-jdbc</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -288,14 +288,15 @@
     <!-- todo check the maven scopes-->
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
       <optional>true</optional>
     </dependency>
+
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;current} -->
       <optional>true</optional>
     </dependency>
 

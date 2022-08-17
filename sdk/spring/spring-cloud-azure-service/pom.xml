@@ -108,7 +108,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-jdbc</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -156,6 +156,7 @@
                 <include>org.apache.kafka:kafka-clients:[3.1.1]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
                 <include>mysql:mysql-connector-java:[8.0.29]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.3.6]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>com.azure:azure-identity-providers-jdbc:[1.0.0-beta.1]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
