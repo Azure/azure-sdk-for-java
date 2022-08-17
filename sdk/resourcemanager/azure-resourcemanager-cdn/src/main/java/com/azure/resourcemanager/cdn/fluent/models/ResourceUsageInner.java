@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.cdn.models.ResourceUsageUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Output of check resource usage API. */
 @Immutable
 public final class ResourceUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceUsageInner.class);
-
     /*
      * Resource type for which the usage is provided.
      */
@@ -21,10 +18,10 @@ public final class ResourceUsageInner {
     private String resourceType;
 
     /*
-     * Unit of the usage. e.g. Count.
+     * Unit of the usage. e.g. count.
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
+    private ResourceUsageUnit unit;
 
     /*
      * Actual value of usage on the specified resource type.
@@ -48,11 +45,11 @@ public final class ResourceUsageInner {
     }
 
     /**
-     * Get the unit property: Unit of the usage. e.g. Count.
+     * Get the unit property: Unit of the usage. e.g. count.
      *
      * @return the unit value.
      */
-    public String unit() {
+    public ResourceUsageUnit unit() {
         return this.unit;
     }
 

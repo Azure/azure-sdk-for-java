@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import reactor.core.scheduler.Scheduler;
 
@@ -18,17 +19,17 @@ import reactor.core.scheduler.Scheduler;
  * Implementation for the partition supervisor factory.
  */
 class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
-    private final ChangeFeedObserverFactory observerFactory;
+    private final ChangeFeedObserverFactory<ChangeFeedProcessorItem> observerFactory;
     private final LeaseManager leaseManager;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private final PartitionProcessorFactory partitionProcessorFactory;
+    private final PartitionProcessorFactory<ChangeFeedProcessorItem> partitionProcessorFactory;
     private final Scheduler scheduler;
 
 
     public PartitionSupervisorFactoryImpl(
-            ChangeFeedObserverFactory observerFactory,
+            ChangeFeedObserverFactory<ChangeFeedProcessorItem> observerFactory,
             LeaseManager leaseManager,
-            PartitionProcessorFactory partitionProcessorFactory,
+            PartitionProcessorFactory<ChangeFeedProcessorItem> partitionProcessorFactory,
             ChangeFeedProcessorOptions options,
             Scheduler scheduler) {
 
@@ -61,7 +62,7 @@ class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
             throw new IllegalArgumentException("lease");
         }
 
-        ChangeFeedObserver changeFeedObserver = this.observerFactory.createObserver();
+        ChangeFeedObserver<ChangeFeedProcessorItem> changeFeedObserver = this.observerFactory.createObserver();
         PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver);
         LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval());
 

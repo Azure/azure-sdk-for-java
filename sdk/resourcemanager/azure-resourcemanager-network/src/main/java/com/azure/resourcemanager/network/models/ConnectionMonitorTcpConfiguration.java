@@ -17,8 +17,7 @@ public final class ConnectionMonitorTcpConfiguration {
     private Integer port;
 
     /*
-     * Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Value indicating whether path evaluation with trace route should be disabled.
      */
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;

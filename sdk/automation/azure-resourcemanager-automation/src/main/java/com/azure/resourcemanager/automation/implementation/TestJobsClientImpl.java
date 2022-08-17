@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.TestJobsClient;
 import com.azure.resourcemanager.automation.fluent.models.TestJobInner;
 import com.azure.resourcemanager.automation.models.TestJobCreateParameters;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TestJobsClient. */
 public final class TestJobsClientImpl implements TestJobsClient {
-    private final ClientLogger logger = new ClientLogger(TestJobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TestJobsService service;
 
@@ -149,7 +146,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestJobInner>> createWithResponseAsync(
@@ -185,7 +182,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -215,7 +212,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestJobInner>> createWithResponseAsync(
@@ -252,7 +249,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -278,7 +275,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TestJobInner> createAsync(
@@ -287,14 +284,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         String runbookName,
         TestJobCreateParameters parameters) {
         return createWithResponseAsync(resourceGroupName, automationAccountName, runbookName, parameters)
-            .flatMap(
-                (Response<TestJobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -329,7 +319,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TestJobInner> createWithResponse(
@@ -351,7 +341,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestJobInner>> getWithResponseAsync(
@@ -379,7 +369,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -407,7 +397,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestJobInner>> getWithResponseAsync(
@@ -435,7 +425,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -459,19 +449,12 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TestJobInner> getAsync(String resourceGroupName, String automationAccountName, String runbookName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap(
-                (Response<TestJobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -500,7 +483,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the test job.
+     * @return definition of the test job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TestJobInner> getWithResponse(
@@ -517,7 +500,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resumeWithResponseAsync(
@@ -545,7 +528,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -573,7 +556,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resumeWithResponseAsync(
@@ -601,7 +584,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -625,12 +608,12 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeAsync(String resourceGroupName, String automationAccountName, String runbookName) {
         return resumeWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -658,7 +641,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resumeWithResponse(
@@ -675,7 +658,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> stopWithResponseAsync(
@@ -703,7 +686,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -731,7 +714,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> stopWithResponseAsync(
@@ -759,7 +742,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -783,12 +766,12 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String automationAccountName, String runbookName) {
         return stopWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -816,7 +799,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(
@@ -833,7 +816,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> suspendWithResponseAsync(
@@ -861,7 +844,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -889,7 +872,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> suspendWithResponseAsync(
@@ -917,7 +900,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -941,12 +924,12 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendAsync(String resourceGroupName, String automationAccountName, String runbookName) {
         return suspendWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -974,7 +957,7 @@ public final class TestJobsClientImpl implements TestJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> suspendWithResponse(

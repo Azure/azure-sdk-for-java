@@ -19,8 +19,7 @@ public final class ManagedRuleGroupOverride {
     private String ruleGroupName;
 
     /*
-     * List of rules that will be disabled. If none specified, all rules in the
-     * group will be disabled.
+     * List of rules that will be disabled. If none specified, all rules in the group will be disabled.
      */
     @JsonProperty(value = "rules")
     private List<ManagedRuleOverride> rules;

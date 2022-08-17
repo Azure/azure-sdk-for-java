@@ -25,8 +25,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
     private NetworkVirtualAppliancePropertiesFormat innerProperties;
 
     /*
-     * The service principal that has read access to cloud-init and config
-     * blob.
+     * The service principal that has read access to cloud-init and config blob.
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;

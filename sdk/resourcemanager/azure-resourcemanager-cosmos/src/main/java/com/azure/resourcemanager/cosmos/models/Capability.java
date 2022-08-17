@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Capability {
     /*
-     * Name of the Cosmos DB capability. For example, "name":
-     * "EnableCassandra". Current values also include "EnableTable" and
-     * "EnableGremlin".
+     * Name of the Cosmos DB capability. For example, "name": "EnableCassandra". Current values also include
+     * "EnableTable" and "EnableGremlin".
      */
     @JsonProperty(value = "name")
     private String name;

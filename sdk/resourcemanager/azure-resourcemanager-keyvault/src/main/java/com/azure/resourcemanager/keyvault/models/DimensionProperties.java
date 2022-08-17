@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Type of operation: get, read, delete, etc. */
 @Fluent
 public final class DimensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionProperties.class);
-
     /*
      * Name of dimension.
      */
@@ -27,8 +23,7 @@ public final class DimensionProperties {
     private String displayName;
 
     /*
-     * Property to specify whether the dimension should be exported for
-     * shoebox.
+     * Property to specify whether the dimension should be exported for Shoebox.
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
@@ -75,7 +70,7 @@ public final class DimensionProperties {
 
     /**
      * Get the toBeExportedForShoebox property: Property to specify whether the dimension should be exported for
-     * shoebox.
+     * Shoebox.
      *
      * @return the toBeExportedForShoebox value.
      */
@@ -85,7 +80,7 @@ public final class DimensionProperties {
 
     /**
      * Set the toBeExportedForShoebox property: Property to specify whether the dimension should be exported for
-     * shoebox.
+     * Shoebox.
      *
      * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
      * @return the DimensionProperties object itself.

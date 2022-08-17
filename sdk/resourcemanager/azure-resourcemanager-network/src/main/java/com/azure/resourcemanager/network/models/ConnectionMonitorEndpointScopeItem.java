@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectionMonitorEndpointScopeItem {
     /*
-     * The address of the endpoint item. Supported types are IPv4/IPv6 subnet
-     * mask or IPv4/IPv6 IP address.
+     * The address of the endpoint item. Supported types are IPv4/IPv6 subnet mask or IPv4/IPv6 IP address.
      */
     @JsonProperty(value = "address")
     private String address;

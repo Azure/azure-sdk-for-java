@@ -19,9 +19,8 @@ public final class EncryptionScopeListResult {
     private List<EncryptionScopeInner> value;
 
     /*
-     * Request URL that can be used to query next page of encryption scopes.
-     * Returned when total number of requested encryption scopes exceeds the
-     * maximum page size.
+     * Request URL that can be used to query next page of encryption scopes. Returned when total number of requested
+     * encryption scopes exceeds the maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

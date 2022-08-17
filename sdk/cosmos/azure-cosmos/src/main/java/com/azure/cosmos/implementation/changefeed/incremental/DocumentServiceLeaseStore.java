@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
-import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -25,10 +24,10 @@ import java.time.Duration;
  */
 class DocumentServiceLeaseStore implements LeaseStore {
     private final Logger logger = LoggerFactory.getLogger(BootstrapperImpl.class);
-    private ChangeFeedContextClient client;
-    private String containerNamePrefix;
-    private CosmosAsyncContainer leaseCollectionLink;
-    private RequestOptionsFactory requestOptionsFactory;
+    private final ChangeFeedContextClient client;
+    private final String containerNamePrefix;
+    private final CosmosAsyncContainer leaseCollectionLink;
+    private final RequestOptionsFactory requestOptionsFactory;
     private volatile String lockETag;
 
     //  TODO: rename to LeaseStoreImpl

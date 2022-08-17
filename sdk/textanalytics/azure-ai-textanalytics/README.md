@@ -65,13 +65,13 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-**Note:** This version of the client library defaults to the `2022-04-01-preview` version of the service.
+**Note:** This version of the client library defaults to the `2022-05-01` version of the service.
 
 This table shows the relationship between SDK services and supported API versions of the service:
 
 |SDK version|Supported API version of service
 |-|-
-|5.2.x | 3.0, 3.1, 2022-04-01-preview (default)
+|5.2.x | 3.0, 3.1, 2022-05-01 (default)
 |5.1.x | 3.0, 3.1 
 |5.0.x | 3.0
 
@@ -161,7 +161,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -412,10 +412,9 @@ set of documents. Currently, the supported features are:
 - Key Phrase Extraction
 - Sentiment Analysis
 - Healthcare Analysis
-- Extractive Summarization (see sample [here][extractive_summarization_sample])
 - Custom Entity Recognition (see sample [here][custom_entities_sample])
-- Custom Single Category Classification (see sample [here][custom_single_classification_sample])
-- Custom Multi Category Classification (see sample [here][custom_multi_classification_sample])
+- Custom Single-Label Classification (see sample [here][custom_single_classification_sample])
+- Custom Multi-Label Classification (see sample [here][custom_multi_classification_sample])
 
 ```java readme-sample-analyzeActions
     List<TextDocumentInput> documents = Arrays.asList(
@@ -568,9 +567,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
-[extractive_summarization_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarization.java
 [custom_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
-[custom_single_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategory.java
-[custom_multi_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategory.java
+[custom_single_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/SingleLabelClassifyDocument.java
+[custom_multi_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/MultiLabelClassifyDocument.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

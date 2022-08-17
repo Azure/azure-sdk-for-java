@@ -36,7 +36,11 @@ public final class LogMetricsGroupBy extends ExpandableStringEnum<LogMetricsGrou
         return fromString(name, LogMetricsGroupBy.class);
     }
 
-    /** @return known LogMetricsGroupBy values. */
+    /**
+     * Gets known LogMetricsGroupBy values.
+     *
+     * @return known LogMetricsGroupBy values.
+     */
     public static Collection<LogMetricsGroupBy> values() {
         return values(LogMetricsGroupBy.class);
     }
