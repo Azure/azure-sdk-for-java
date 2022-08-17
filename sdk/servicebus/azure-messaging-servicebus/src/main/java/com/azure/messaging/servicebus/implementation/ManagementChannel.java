@@ -506,7 +506,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Collection<RuleProperties>> getRules() {
+    public Mono<List<RuleProperties>> getRules() {
         return isAuthorized(OPERATION_GET_RULES).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_GET_RULES, null);
 
@@ -520,18 +520,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
         })).map(response -> {
             int statusCode = MessageUtils.getMessageStatus(response.getApplicationProperties());
 
-            Collection<RuleProperties> collection;
+            List<RuleProperties> list;
             if (statusCode == ManagementConstants.OK_STATUS_CODE) {
-                collection = getRuleProperties((AmqpValue) response.getBody());
+                list = getRuleProperties((AmqpValue) response.getBody());
             } else if (statusCode == ManagementConstants.NO_CONTENT_STATUS_CODE) {
-                collection = Collections.emptyList();
+                list = Collections.emptyList();
             } else {
                 throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
                     "Get rules response error. Could not get rules.",
                     getErrorContext())));
             }
 
-            return collection;
+            return list;
         });
     }
 
@@ -647,22 +647,21 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * @param messageBody A message body which is {@link AmqpValue} type.
      * @return A collection of {@link RuleProperties}.
      *
-     * @throws RuntimeException Get @{@link RuleProperties} from message body failed.
+     * @throws AmqpException Get @{@link RuleProperties} from message body failed.
      */
-    @SuppressWarnings("unchecked")
-    private Collection<RuleProperties> getRuleProperties(AmqpValue messageBody) {
+    private List<RuleProperties> getRuleProperties(AmqpValue messageBody) {
         try {
             if (messageBody == null) {
                 return Collections.emptyList();
             }
 
-            List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
+            @SuppressWarnings("unchecked") List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
                 .get(ManagementConstants.RULES);
             if (rules == null) {
                 return Collections.emptyList();
             }
 
-            Collection<RuleProperties> ruleProperties = new ArrayList<>();
+            List<RuleProperties> ruleProperties = new ArrayList<>();
             for (Map<String, DescribedType> rule : rules) {
                 DescribedType ruleDescription = rule.get(ManagementConstants.RULE_DESCRIPTION);
                 ruleProperties.add(MessageUtils.decodeRuleDescribedType(ruleDescription));
@@ -671,7 +670,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return ruleProperties;
         } catch (RuntimeException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
-                String.format("Get rules failed. err: %s", ex.getMessage()),
+                String.format("Get rules failed. %s", ex.getMessage()),
                 getErrorContext())));
         }
     }

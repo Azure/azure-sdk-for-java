@@ -44,6 +44,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -388,14 +389,14 @@ public final class MessageUtils {
      * @return A map with {@link SqlRuleFilter} or {@link CorrelationRuleFilter} info to put into management message body.
      */
     public static Map<String, Object> encodeRuleOptionToMap(String name, CreateRuleOptions options) {
-        HashMap<String, Object> descriptionMap = new HashMap<>();
+        Map<String, Object> descriptionMap = new HashMap<>();
         if (options.getFilter() instanceof SqlRuleFilter) {
-            HashMap<String, Object> filterMap = new HashMap<>();
+            Map<String, Object> filterMap = new HashMap<>();
             filterMap.put(ManagementConstants.EXPRESSION, ((SqlRuleFilter) options.getFilter()).getSqlExpression());
             descriptionMap.put(ManagementConstants.SQL_RULE_FILTER, filterMap);
         } else if (options.getFilter() instanceof CorrelationRuleFilter) {
             CorrelationRuleFilter correlationFilter = (CorrelationRuleFilter) options.getFilter();
-            HashMap<String, Object> filterMap = new HashMap<>();
+            Map<String, Object> filterMap = new HashMap<>();
             filterMap.put(ManagementConstants.CORRELATION_ID, correlationFilter.getCorrelationId());
             filterMap.put(ManagementConstants.MESSAGE_ID, correlationFilter.getMessageId());
             filterMap.put(ManagementConstants.TO, correlationFilter.getTo());
@@ -415,7 +416,7 @@ public final class MessageUtils {
         if (action == null) {
             descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, null);
         } else if (action instanceof SqlRuleAction) {
-            HashMap<String, Object> sqlActionMap = new HashMap<>();
+            Map<String, Object> sqlActionMap = new HashMap<>();
             sqlActionMap.put(ManagementConstants.EXPRESSION, ((SqlRuleAction) action).getSqlExpression());
             descriptionMap.put(ManagementConstants.SQL_RULE_ACTION, sqlActionMap);
         } else {
@@ -443,7 +444,7 @@ public final class MessageUtils {
         if (codeObject == null) {
             codeObject = properties.getValue().get(ManagementConstants.LEGACY_STATUS_CODE);
         }
-        if (codeObject != null) {
+        if (codeObject instanceof Integer) {
             statusCode = (int) codeObject;
         }
 
@@ -456,7 +457,6 @@ public final class MessageUtils {
      * @param ruleDescribedType A {@link DescribedType} with rule information.
      * @return A {@link RuleProperties} contains name, {@link RuleAction} and {@link RuleFilter}.
      */
-    @SuppressWarnings("unchecked")
     public static RuleProperties decodeRuleDescribedType(DescribedType ruleDescribedType) {
         if (ruleDescribedType == null) {
             return null;
@@ -467,7 +467,7 @@ public final class MessageUtils {
 
         RuleProperties ruleProperties = new RuleProperties();
         if (ruleDescribedType.getDescribed() instanceof ArrayList) {
-            ArrayList<Object> describedRule = (ArrayList<Object>) ruleDescribedType.getDescribed();
+            @SuppressWarnings("unchecked") List<Object> describedRule = (ArrayList<Object>) ruleDescribedType.getDescribed();
             int count = describedRule.size();
             if (count-- > 0) {
                 ruleProperties.setFilter(decodeFilter((DescribedType) describedRule.get(0)));
@@ -551,12 +551,11 @@ public final class MessageUtils {
      * @param describedAction A {@link DescribedType} with rule action information.
      * @return A {@link RuleAction}.
      */
-    @SuppressWarnings("unchecked")
     private static RuleAction decodeRuleAction(DescribedType describedAction) {
         if (describedAction.getDescriptor().equals(ServiceBusConstants.EMPTY_RULE_ACTION_NAME)) {
             return null;
         } else if (describedAction.getDescriptor().equals(ServiceBusConstants.SQL_RULE_ACTION_NAME)) {
-            ArrayList<Object> describedSqlAction = (ArrayList<Object>) describedAction.getDescribed();
+            @SuppressWarnings("unchecked") List<Object> describedSqlAction = (ArrayList<Object>) describedAction.getDescribed();
             if (describedSqlAction.size() > 0) {
                 return new SqlRuleAction((String) describedSqlAction.get(0));
             }

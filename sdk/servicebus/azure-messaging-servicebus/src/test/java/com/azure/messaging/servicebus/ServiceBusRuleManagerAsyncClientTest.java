@@ -36,7 +36,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Collection;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -73,7 +73,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private Runnable onClientClose;
 
     @Mock
-    private Collection<RuleProperties> rules;
+    private List<RuleProperties> rules;
 
     @BeforeAll
     static void beforeAll() {

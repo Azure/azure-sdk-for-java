@@ -12,7 +12,6 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.List;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -147,7 +146,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return A collection of {@link RuleProperties rules}.
      */
-    Mono<Collection<RuleProperties>> getRules();
+    Mono<List<RuleProperties>> getRules();
 
     @Override
     void close();

@@ -6,9 +6,12 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
@@ -113,7 +116,9 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code options}, {@code ruleName} is null.
      * @throws IllegalStateException if client is disposed.
-     * @throws IllegalArgumentException if {@code ruleName} is empty string.
+     * @throws IllegalArgumentException if {@code ruleName} is empty string, action of {@code options} is not null and not
+     * instanceof {@link SqlRuleAction}, filter of {@code options} is not instanceof {@link SqlRuleFilter} or
+     * {@link CorrelationRuleFilter}.
      */
     public Mono<Void> createRule(String ruleName, CreateRuleOptions options) {
         if (Objects.isNull(options)) {
@@ -125,17 +130,18 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     /**
      * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
      *
-     * @param name Name of rule.
+     * @param ruleName Name of rule.
      * @param filter The filter expression against which messages will be matched.
      * @return A Mono that completes when the rule is created.
      *
-     * @throws NullPointerException if {@code options}, {@code name} is null.
+     * @throws NullPointerException if {@code filter}, {@code ruleName} is null.
      * @throws IllegalStateException if client is disposed.
-     * @throws IllegalArgumentException if name is empty string.
+     * @throws IllegalArgumentException if ruleName is empty string, {@code filter} is not instanceof {@link SqlRuleFilter} or
+     * {@link CorrelationRuleFilter}.
      */
-    public Mono<Void> createRule(String name, RuleFilter filter) {
+    public Mono<Void> createRule(String ruleName, RuleFilter filter) {
         CreateRuleOptions options = new CreateRuleOptions(filter);
-        return createRuleInternal(name, options);
+        return createRuleInternal(ruleName, options);
     }
 
     /**
@@ -198,21 +204,21 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
         onClientClose.run();
     }
 
-    private Mono<Void> createRuleInternal(String name, CreateRuleOptions options) {
+    private Mono<Void> createRuleInternal(String ruleName, CreateRuleOptions options) {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "addRule")
             ));
         }
 
-        if (name == null) {
-            return monoError(LOGGER, new NullPointerException("'name' cannot be null."));
-        } else if (name.isEmpty()) {
-            return monoError(LOGGER, new IllegalArgumentException("'name' cannot be an empty string."));
+        if (ruleName == null) {
+            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null."));
+        } else if (ruleName.isEmpty()) {
+            return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(managementNode -> managementNode.createRule(name, options));
+            .flatMap(managementNode -> managementNode.createRule(ruleName, options));
     }
 }

@@ -212,7 +212,6 @@ public class RuleProperties {
      * Initializes a new instance
      */
     public RuleProperties() {
-
     }
 
     /**
