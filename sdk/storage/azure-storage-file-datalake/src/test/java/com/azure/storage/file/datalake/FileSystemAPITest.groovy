@@ -251,7 +251,7 @@ class FileSystemAPITest extends APISpec {
         fsc.exists()
     }
 
-    def "Does not exist"() {
+    def "Exists not exists"() {
         when:
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
 
