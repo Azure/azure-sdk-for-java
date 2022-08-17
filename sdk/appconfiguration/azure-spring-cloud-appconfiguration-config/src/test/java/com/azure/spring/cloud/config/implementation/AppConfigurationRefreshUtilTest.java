@@ -192,7 +192,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         ConfigurationSetting updatedWatchKey = new FeatureFlagConfigurationSetting("Alpha", false)
-            .setETag("updated");
+            .setETag("updated").setLabel(EMPTY_LABEL);
 
         List<ConfigurationSetting> listedKeys = new ArrayList<>();
         listedKeys.add(updatedWatchKey);
@@ -622,7 +622,7 @@ public class AppConfigurationRefreshUtilTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<>();
 
         FeatureFlagConfigurationSetting currentWatchKey = new FeatureFlagConfigurationSetting("Alpha", false)
-            .setETag("current");
+            .setETag("current").setLabel(EMPTY_LABEL);
         watchKeys.add(currentWatchKey);
         return watchKeys;
     }

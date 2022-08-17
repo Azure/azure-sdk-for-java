@@ -215,14 +215,13 @@ class AppConfigurationRefreshUtil {
 
                     // If there is no result, etag will be considered empty.
                     // A refresh will trigger once the selector returns a value.
-                    if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())) {
+                    if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())
+                        && watchFlag.getLabel().equals(currentKey.getLabel())) {
                         checkETag(watchFlag, currentKey, client.getEndpoint(), eventData);
                         if (eventData.getDoRefresh()) {
                             break keyCheck;
 
                         }
-                    } else {
-                        break keyCheck;
                     }
 
                 }
@@ -259,7 +258,8 @@ class AppConfigurationRefreshUtil {
 
                 // If there is no result, etag will be considered empty.
                 // A refresh will trigger once the selector returns a value.
-                if (watchFlag != null && watchFlag.getKey().equals(currentTriggerConfiguration.getKey())) {
+                if (watchFlag != null && watchFlag.getKey().equals(currentTriggerConfiguration.getKey())
+                    && watchFlag.getLabel().equals(currentTriggerConfiguration.getLabel())) {
                     checkETag(watchFlag, currentTriggerConfiguration, client.getEndpoint(), eventData);
                     if (eventData.getDoRefresh()) {
                         return;
