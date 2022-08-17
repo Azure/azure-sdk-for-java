@@ -218,7 +218,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
         if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
             if (request.getBody() != null) {
-                context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
+                context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBodyAsBinaryData());
                 context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
                     request.getHeaders().getValue(CONTENT_LENGTH_HEADER));
                 request.setHeader(CONTENT_LENGTH_HEADER, "0");
@@ -235,7 +235,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         Optional<Object> contentLengthOptional = context.getData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
 
         if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
-            request.setBody(BinaryData.fromObject(contentOptional.get()));
+            request.setBody((BinaryData) (contentOptional.get()));
             request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
         }
 
