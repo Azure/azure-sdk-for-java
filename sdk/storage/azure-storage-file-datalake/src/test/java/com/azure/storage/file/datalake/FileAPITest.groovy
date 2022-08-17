@@ -152,7 +152,7 @@ class FileAPITest extends APISpec {
         fc.exists()
     }
 
-    def "Does not exist"() {
+    def "Exists not exists"() {
         expect:
         !fsc.getFileClient(generatePathName()).exists()
     }

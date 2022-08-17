@@ -525,7 +525,7 @@ public class DataLakeFileSystemClient {
      * @return true if the path exists, false if it doesn't
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Boolean exists() {
+    public boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
