@@ -30,13 +30,14 @@ public abstract class PersonalizerTestBase extends TestBase {
         durationTestMode = interceptorManager.isPlaybackMode() ? ONE_NANO_DURATION : DEFAULT_POLL_INTERVAL;
     }
 
-    public PersonalizerClientBuilder getPersonalizerClientBuilder(HttpClient httpClient,
-                                                                  PersonalizerServiceVersion serviceVersion,
-                                                                  boolean isSingleSlot) {
+    public PersonalizerClientBuilderBase setBuilderProperties(PersonalizerClientBuilderBase builder,
+                                                        HttpClient httpClient,
+                                                        PersonalizerServiceVersion serviceVersion,
+                                                        boolean isSingleSlot) {
         String endpoint = getEndpoint(isSingleSlot);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
-        PersonalizerClientBuilder builder = new PersonalizerClientBuilder()
+        builder = builder
             .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -53,7 +54,15 @@ public abstract class PersonalizerTestBase extends TestBase {
                 builder.credential(new AzureKeyCredential(PERSONALIZER_API_KEY_MULTI_SLOT));
             }
         }
+
         return builder;
+    }
+
+    public PersonalizerClientBuilder getPersonalizerClientBuilder(HttpClient httpClient,
+                                                                  PersonalizerServiceVersion serviceVersion,
+                                                                  boolean isSingleSlot) {
+        PersonalizerClientBuilder builder = new PersonalizerClientBuilder();
+        return (PersonalizerClientBuilder) setBuilderProperties(builder, httpClient, serviceVersion, isSingleSlot);
     }
 
     protected PersonalizerClient getClient(
@@ -69,11 +78,27 @@ public abstract class PersonalizerTestBase extends TestBase {
             .buildClient();
     }
 
+    protected PersonalizerAdminClientBuilder getAdministrationClientBuilder(
+        HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion,
+        boolean isSingleSlot) {
+        PersonalizerAdminClientBuilder builder = new PersonalizerAdminClientBuilder();
+        return (PersonalizerAdminClientBuilder) setBuilderProperties(builder, httpClient, serviceVersion, isSingleSlot);
+    }
+
+    protected PersonalizerAdminAsyncClient getAdministrationAsyncClient(
+        HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion,
+        boolean isSingleSlot) {
+        return getAdministrationClientBuilder(httpClient, serviceVersion, isSingleSlot)
+            .buildAdminAsyncClient();
+    }
+
     protected PersonalizerAdminClient getAdministrationClient(
         HttpClient httpClient,
         PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
-        return getPersonalizerClientBuilder(httpClient, serviceVersion, isSingleSlot)
+        return getAdministrationClientBuilder(httpClient, serviceVersion, isSingleSlot)
             .buildAdminClient();
     }
 

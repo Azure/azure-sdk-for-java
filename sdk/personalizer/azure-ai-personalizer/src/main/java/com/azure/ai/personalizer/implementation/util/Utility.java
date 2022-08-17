@@ -71,6 +71,21 @@ public final class Utility {
             .map(ByteBuffer::duplicate);
     }
 
+    public static String parseResultId(String operationLocation) {
+
+        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
+            int lastIndex = operationLocation.lastIndexOf('/');
+            int firstIndex = operationLocation.indexOf('?');
+            if (firstIndex != -1 && lastIndex != -1) {
+                return operationLocation.substring(operationLocation.lastIndexOf('/') + 1,
+                    operationLocation.indexOf('?'));
+            }
+        }
+        throw LOGGER.logExceptionAsError(
+            new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
+    }
+
+
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
                                                  Configuration configuration, RetryPolicy retryPolicy,
                                                  RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,

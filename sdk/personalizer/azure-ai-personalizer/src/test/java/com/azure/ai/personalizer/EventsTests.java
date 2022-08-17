@@ -18,13 +18,11 @@ public class EventsTests extends PersonalizerTestBase {
         activate(client);
     }
 
-    private void reward(PersonalizerClient client)
-    {
+    private void reward(PersonalizerClient client) {
         client.reward("123456789", (float) 0.5);
     }
 
-    private void activate(PersonalizerClient client)
-    {
+    private void activate(PersonalizerClient client) {
         client.activate("123456789");
     }
 }

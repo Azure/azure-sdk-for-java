@@ -5,6 +5,8 @@ package com.azure.ai.personalizer.implementation.util;
 
 import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
 import com.azure.ai.personalizer.implementation.models.PersonalizerError;
+import com.azure.ai.personalizer.models.EvaluationOperationException;
+import com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 
@@ -38,5 +40,9 @@ public class Transforms {
                 .append(innerError.getCode()).append("]");
         }
         return new ResponseError(error.getCode().toString(), errorInformationStringBuilder.toString());
+    }
+
+    public static EvaluationOperationException toEvaluationFailedException(PersonalizerEvaluationJobStatus status) {
+        return new EvaluationOperationException(status);
     }
 }

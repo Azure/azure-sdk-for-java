@@ -20,14 +20,12 @@ public class LogsTests extends PersonalizerTestBase {
         getLogProperties(client);
     }
 
-    private void getLogProperties(PersonalizerAdminClient client)
-    {
+    private void getLogProperties(PersonalizerAdminClient client) {
         PersonalizerLogProperties properties = client.getLogsProperties();
         assertNull(properties.getDateRange());
     }
 
-    private void deleteLogs(PersonalizerAdminClient client)
-    {
+    private void deleteLogs(PersonalizerAdminClient client) {
         client.deleteLogs();
     }
 }

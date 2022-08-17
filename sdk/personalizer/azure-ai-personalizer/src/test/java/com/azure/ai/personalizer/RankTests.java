@@ -24,15 +24,13 @@ public class RankTests extends PersonalizerTestBase {
         singleSlotRankTests(client);
     }
 
-    private void singleSlotRankTests(PersonalizerClient client)
-    {
+    private void singleSlotRankTests(PersonalizerClient client) {
         rankNullParameters(client);
         rankServerFeatures(client);
         rankWithNoOptions(client);
     }
 
-    private void rankNullParameters(PersonalizerClient client)
-    {
+    private void rankNullParameters(PersonalizerClient client) {
         List<Object> features = new ArrayList<Object>() {
             {
                 add(new Object() { String videoType = "documentary"; Integer videoLength = 35; String director = "CarlSagan"; });
@@ -45,14 +43,12 @@ public class RankTests extends PersonalizerTestBase {
         PersonalizerRankResult response = client.rank(request);
         // Assert
         assertEquals(actions.size(), response.getRanking().size());
-        for (int i = 0; i < response.getRanking().size(); i++)
-        {
+        for (int i = 0; i < response.getRanking().size(); i++) {
             assertEquals(actions.get(i).getId(), response.getRanking().get(i).getId());
         }
     }
 
-    private void rankServerFeatures(PersonalizerClient client)
-    {
+    private void rankServerFeatures(PersonalizerClient client) {
         List<Object> contextFeatures = new ArrayList<Object>() {
             {
                 add(new Object() { Object features = new Object() { String day = "Tuesday"; String time = "Night"; String weather = "rainy"; }; });
@@ -101,14 +97,12 @@ public class RankTests extends PersonalizerTestBase {
         // Assert
         assertEquals(eventId, response.getEventId());
         assertEquals(actions.size(), response.getRanking().size());
-        for (int i = 0; i < response.getRanking().size(); i++)
-        {
+        for (int i = 0; i < response.getRanking().size(); i++) {
             assertEquals(actions.get(i).getId(), response.getRanking().get(i).getId());
         }
     }
 
-    private void rankWithNoOptions(PersonalizerClient client)
-    {
+    private void rankWithNoOptions(PersonalizerClient client) {
         List<Object> contextFeatures = new ArrayList<Object>() {
             {
                 add(new Object() { Object features = new Object() { String day = "tuesday"; String time = "night"; String weather = "rainy"; }; });

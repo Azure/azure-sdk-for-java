@@ -37,8 +37,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         resetPolicy(client);
     }
 
-    private void testGetProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
-    {
+    private void testGetProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties) {
         PersonalizerServiceProperties result = client.getProperties();
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
         assertTrue(Math.abs(properties.getExplorationPercentage() - result.getExplorationPercentage()) < 1e-3);
@@ -47,8 +46,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void testUpdateProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties)
-    {
+    private void testUpdateProperties(PersonalizerAdminClient client, PersonalizerServiceProperties properties) {
         PersonalizerServiceProperties result = client.updateProperties(properties);
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
         assertTrue(Math.abs(properties.getExplorationPercentage() - result.getExplorationPercentage()) < 1e-3);
@@ -57,8 +55,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(properties.getRewardWaitTime(), result.getRewardWaitTime());
     }
 
-    private void updateAndGetPolicy(PersonalizerAdminClient client)
-    {
+    private void updateAndGetPolicy(PersonalizerAdminClient client) {
         PersonalizerPolicy newPolicy = new PersonalizerPolicy()
             .setName("app1")
             .setArguments("--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2");
@@ -71,8 +68,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
         assertEquals(newPolicy.getArguments(), policy.getArguments().substring(0, length));
     }
 
-    private void resetPolicy(PersonalizerAdminClient client)
-    {
+    private void resetPolicy(PersonalizerAdminClient client) {
         PersonalizerPolicy policy = client.resetPolicy();
         assertEquals("--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::",
             policy.getArguments());

@@ -28,8 +28,7 @@ public class MultiSlotTests extends PersonalizerTestBase {
             .buildClient();
     }
 
-    private void multiSlotTestInner(PersonalizerClient client)
-    {
+    private void multiSlotTestInner(PersonalizerClient client) {
         rankMultiSlotNullParameters(client);
         rankMultiSlotNoOptions(client);
         rankMultiSlot(client);
@@ -54,8 +53,7 @@ public class MultiSlotTests extends PersonalizerTestBase {
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
 
-    private void rankMultiSlotNoOptions(PersonalizerClient client)
-    {
+    private void rankMultiSlotNoOptions(PersonalizerClient client) {
         PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures());
         // Action
         PersonalizerRankMultiSlotResult response = client.rankMultiSlot(getActions(), getSlots(), getContextFeatures());
@@ -71,8 +69,7 @@ public class MultiSlotTests extends PersonalizerTestBase {
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
 
-    private void rankMultiSlot(PersonalizerClient client)
-    {
+    private void rankMultiSlot(PersonalizerClient client) {
         String eventId = "sdkTestEventId";
         PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(getActions()).setSlots(getSlots()).setContextFeatures(getContextFeatures()).setEventId(eventId);
         // Action
@@ -89,19 +86,16 @@ public class MultiSlotTests extends PersonalizerTestBase {
         assertEquals("SportsArticle", responseSlot2.getRewardActionId());
     }
 
-    private void reward(PersonalizerClient client)
-    {
+    private void reward(PersonalizerClient client) {
         PersonalizerSlotReward slotReward = new PersonalizerSlotReward().setSlotId("testSlot1").setValue(1);
         client.rewardMultiSlot("123456789", "testSlot1", 1);
     }
 
-    private void rewardForOneSlot(PersonalizerClient client)
-    {
+    private void rewardForOneSlot(PersonalizerClient client) {
         client.rewardMultiSlot("123456789", "testSlot", 1);
     }
 
-    private void activate(PersonalizerClient client)
-    {
+    private void activate(PersonalizerClient client) {
         client.activateMultiSlot("123456789");
     }
 

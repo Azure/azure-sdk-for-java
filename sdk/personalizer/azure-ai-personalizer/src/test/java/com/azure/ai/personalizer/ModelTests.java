@@ -31,24 +31,20 @@ public class ModelTests extends PersonalizerTestBase {
         importSignedModel(model, client);
     }
 
-    private BinaryData exportModel(boolean isSigned, PersonalizerAdminClient client)
-    {
+    private BinaryData exportModel(boolean isSigned, PersonalizerAdminClient client) {
         return client.exportModel(isSigned);
     }
 
-    private void importSignedModel(BinaryData modelBody, PersonalizerAdminClient client)
-    {
+    private void importSignedModel(BinaryData modelBody, PersonalizerAdminClient client) {
         client.importModel(modelBody);
     }
 
 
-    private void resetModel(PersonalizerAdminClient client)
-    {
+    private void resetModel(PersonalizerAdminClient client) {
         client.resetModel();
     }
 
-    private void getModelProperties(PersonalizerAdminClient client)
-    {
+    private void getModelProperties(PersonalizerAdminClient client) {
         PersonalizerModelProperties modelProperties = client.getModelProperties();
         assertTrue(modelProperties.getCreationTime() != null);
         assertTrue(modelProperties.getLastModifiedTime() != null);
