@@ -1,14 +1,16 @@
 # Release History
 
-## 11.5.0-beta.12 (Unreleased)
+## 11.5.0-beta.12 (2022-08-17)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added multi-cloud support via `SearchAudience` to allow users to select the Azure cloud where the resource is located. ([#30331](https://github.com/Azure/azure-sdk-for-java/pull/30331))
+- Added new languages to `ImageAnalysisSkillLanguage` and `OcrSkillLanguage`. ([#30363](https://github.com/Azure/azure-sdk-for-java/pull/30363))
 
 ### Other Changes
+
+- Added fluent setter overloads to subclasses that return the subclass type instead of the super class type
+  allowing for fluent calls to maintain type instead of requiring a type cast.
 
 ## 11.5.0-beta.11 (2022-07-01)
 
