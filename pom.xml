@@ -166,8 +166,5 @@
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
-    <module>sdk/jdbc/azure-identity-providers-jdbc</module>
-    <module>sdk/jdbc/azure-identity-providers-jdbc-mysql</module>
-    <module>sdk/jdbc/azure-identity-providers-jdbc-postgresql</module>
   </modules>
 </project>
