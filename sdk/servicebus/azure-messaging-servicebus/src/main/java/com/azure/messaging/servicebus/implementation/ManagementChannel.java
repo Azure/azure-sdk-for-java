@@ -655,16 +655,19 @@ public class ManagementChannel implements ServiceBusManagementNode {
             if (messageBody == null) {
                 return Collections.emptyList();
             }
+
             List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
                 .get(ManagementConstants.RULES);
             if (rules == null) {
                 return Collections.emptyList();
             }
+
             Collection<RuleProperties> ruleProperties = new ArrayList<>();
             for (Map<String, DescribedType> rule : rules) {
                 DescribedType ruleDescription = rule.get(ManagementConstants.RULE_DESCRIPTION);
                 ruleProperties.add(MessageUtils.decodeRuleDescribedType(ruleDescription));
             }
+
             return ruleProperties;
         } catch (RuntimeException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
