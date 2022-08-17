@@ -145,12 +145,6 @@
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
       <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
