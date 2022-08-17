@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
-import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

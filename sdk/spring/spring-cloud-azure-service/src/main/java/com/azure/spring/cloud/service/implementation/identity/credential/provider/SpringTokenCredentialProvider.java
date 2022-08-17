@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.service.implementation.identity.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProvider;
-import com.azure.spring.cloud.service.implementation.identity.credential.TokenCredentialProviderOptions;
+import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
+import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

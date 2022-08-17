@@ -3,12 +3,12 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.providers.jdbc.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
-import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             if (isPasswordProvided) {
                 if (isAzureHostedDatabaseService(url)) {
                     LOGGER.info("Azure managed database services with password detected, it is encouraged to use the"
-                        + "credntial-free feature. Please refer to https://aka.ms/spring/credentail-free.");
+                        + "credential-free feature. Please refer to https://aka.ms/spring/credentail-free.");
                 } else {
                     LOGGER.debug("Value of 'spring.datasource.password' is provided, skip enhancing jdbc url.");
                 }

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
+import com.azure.identity.providers.jdbc.enums.AuthProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 

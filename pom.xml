@@ -86,6 +86,7 @@
     <module>sdk/imagebuilder</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iothub</module>
+    <module>sdk/jdbc</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
@@ -165,5 +166,8 @@
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
+      <module>sdk/jdbc/azure-identity-providers-jdbc</module>
+    <module>sdk/jdbc/azure-identity-providers-jdbc-mysql</module>
+    <module>sdk/jdbc/azure-identity-providers-jdbc-postgresql</module>
   </modules>
 </project>

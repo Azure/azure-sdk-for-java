@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
-import com.azure.spring.cloud.service.implementation.identity.AzureAuthenticationTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

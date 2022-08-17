@@ -4,9 +4,9 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 
 import java.util.Map;
 
+import com.azure.identity.providers.jdbc.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.service.implementation.identity.AuthProperty;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.AutoConfigurations;
