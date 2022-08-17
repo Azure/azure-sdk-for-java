@@ -16,7 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.implementation.models.ErrorResponseException;
-import com.azure.maps.search.models.Polygon;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.FuzzySearchOptions;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.ReverseSearchAddressOptions;
@@ -96,7 +96,7 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Polygon call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<Polygon> getPolygons(List<String> geometryIds) {
+    public List<MapsPolygon> getPolygons(List<String> geometryIds) {
         return this.asyncClient.getPolygons(geometryIds).block();
     }
 
@@ -133,7 +133,7 @@ public final class MapsSearchClient {
      * @return this object is returned from a successful Search Polygon call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<Polygon>> getPolygonsWithResponse(List<String> geometryIds, Context context) {
+    public Response<List<MapsPolygon>> getPolygonsWithResponse(List<String> geometryIds, Context context) {
         return this.asyncClient.getPolygonsWithResponse(geometryIds, context).block();
     }
 

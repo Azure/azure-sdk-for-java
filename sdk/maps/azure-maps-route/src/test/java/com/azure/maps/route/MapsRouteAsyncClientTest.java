@@ -380,7 +380,7 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             .setTravelMode(TravelMode.PEDESTRIAN);
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
         PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> pollerFlux =
-            client.beginGetRouteDirectionsBatch(optionsList);
+            client.beginRequestRouteDirectionsBatch(optionsList);
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> syncPoller = setPollInterval(pollerFlux.getSyncPoller());
         RouteDirectionsBatchResult actualResult = syncPoller.getFinalResult();
         RouteDirectionsBatchResult expectedResult = TestUtils.getExpectedBeginRequestRouteDirectionsBatch();
@@ -412,7 +412,7 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             .setTravelMode(TravelMode.PEDESTRIAN);
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
         PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> pollerFlux =
-            client.beginGetRouteDirectionsBatch(optionsList, null);
+            client.beginRequestRouteDirectionsBatch(optionsList, null);
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> syncPoller = setPollInterval(pollerFlux.getSyncPoller());
         RouteDirectionsBatchResult actualResult = syncPoller.getFinalResult();
         RouteDirectionsBatchResult expectedResult = TestUtils.getExpectedBeginRequestRouteDirectionsBatch();

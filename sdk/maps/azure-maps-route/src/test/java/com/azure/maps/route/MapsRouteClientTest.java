@@ -348,7 +348,7 @@ public class MapsRouteClientTest extends MapsRouteTestBase {
             .setTravelMode(TravelMode.PEDESTRIAN);
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> syncPoller =
-            client.beginGetRouteDirectionsBatch(optionsList);
+            client.beginRequestRouteDirectionsBatch(optionsList);
         syncPoller = setPollInterval(syncPoller);
         syncPoller.waitForCompletion();
         RouteDirectionsBatchResult actualResult = syncPoller.getFinalResult();
@@ -381,7 +381,7 @@ public class MapsRouteClientTest extends MapsRouteTestBase {
             .setTravelMode(TravelMode.PEDESTRIAN);
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> syncPoller =
-            client.beginGetRouteDirectionsBatch(optionsList, null);
+            client.beginRequestRouteDirectionsBatch(optionsList, null);
         syncPoller = setPollInterval(syncPoller);
         syncPoller.waitForCompletion();
         RouteDirectionsBatchResult actualResult = syncPoller.getFinalResult();

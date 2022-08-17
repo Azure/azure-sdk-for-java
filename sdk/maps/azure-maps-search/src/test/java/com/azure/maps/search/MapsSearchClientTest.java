@@ -19,7 +19,7 @@ import com.azure.core.models.GeoObject;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.maps.search.models.Polygon;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.FuzzySearchOptions;
@@ -60,8 +60,8 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
         client = getMapsSearchClient(httpClient, serviceVersion);
         List<String> geometryIds = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5",
                 "00005858-5800-1200-0000-0000773694ca");
-        List<Polygon> actualResult = client.getPolygons(geometryIds);
-        List<Polygon> expectedResult = TestUtils.getMultiPolygonsResults();
+        List<MapsPolygon> actualResult = client.getPolygons(geometryIds);
+        List<MapsPolygon> expectedResult = TestUtils.getMultiPolygonsResults();
         validateGetPolygons(expectedResult, actualResult);
     }
 

@@ -420,7 +420,7 @@ public final class MapsRouteClient {
      *
      * List&lt;RouteDirectionsOptions&gt; optionsList = Arrays.asList&#40;options1, options2, options3&#41;;
      * SyncPoller&lt;RouteDirectionsBatchResult, RouteDirectionsBatchResult&gt; poller =
-     *     client.beginGetRouteDirectionsBatch&#40;optionsList&#41;;
+     *     client.beginRequestRouteDirectionsBatch&#40;optionsList&#41;;
      * poller.getFinalResult&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.sync.begin_request_route_directions_batch -->
@@ -432,8 +432,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
-        return this.beginGetRouteDirectionsBatch(optionsList, null);
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
+        return this.beginRequestRouteDirectionsBatch(optionsList, null);
     }
 
     /**
@@ -465,7 +465,7 @@ public final class MapsRouteClient {
      *
      * List&lt;RouteDirectionsOptions&gt; optionsList = Arrays.asList&#40;options1, options2, options3&#41;;
      * SyncPoller&lt;RouteDirectionsBatchResult, RouteDirectionsBatchResult&gt; poller =
-     *     client.beginGetRouteDirectionsBatch&#40;optionsList&#41;;
+     *     client.beginRequestRouteDirectionsBatch&#40;optionsList&#41;;
      * poller.getFinalResult&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.sync.begin_request_route_directions_batch -->
@@ -478,9 +478,9 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
         return this.asyncClient
-            .beginGetRouteDirectionsBatch(optionsList, context).getSyncPoller();
+            .beginRequestRouteDirectionsBatch(optionsList, context).getSyncPoller();
     }
 
     /**

@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.search.models.Polygon;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
@@ -43,26 +42,21 @@ public class TestUtils {
     static final String FAKE_API_KEY = "1234567890";
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
-    static Polygon getPolygon(InputStream is) throws IOException {
-        String text = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        JSONObject json = new JSONObject(text);   
-        JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-        TypeReference<Polygon> interimType = new TypeReference<Polygon>() { };
+    static MapsPolygon getPolygon(InputStream is) throws IOException { 
+        JsonSerializer serializer = JsonSerializerProviders.createInstance(true);
+        TypeReference<MapsPolygon> interimType = new TypeReference<MapsPolygon>() { };
         byte[] data = null;
         data = toByteArray(is);
-        Polygon polygon = null;
-        polygon = SERIALIZER.deserializeFromBytes(data, interimType);
-        // polygon = jacksonAdapter.<GeoPolygon>deserialize(data, interimType.getJavaType(),
-            // SerializerEncoding.JSON);
+        MapsPolygon polygon = serializer.deserializeFromBytes(data, interimType);
         return polygon;
     }
 
-    static List<Polygon> getMultiPolygonsResults() throws IOException {
-        List<Polygon> result = new ArrayList<>();
+    static List<MapsPolygon> getMultiPolygonsResults() throws IOException {
+        List<MapsPolygon> result = new ArrayList<>();
         InputStream is = ClassLoader.getSystemResourceAsStream("polygon1.json");
-        Polygon polygon1 = TestUtils.getPolygon(is);
+        MapsPolygon polygon1 = TestUtils.getPolygon(is);
         InputStream is2 = ClassLoader.getSystemResourceAsStream("polygon2.json");
-        Polygon polygon2 = TestUtils.getPolygon(is2);
+        MapsPolygon polygon2 = TestUtils.getPolygon(is2);
         result.add(polygon1);
         result.add(polygon2);
         return result;

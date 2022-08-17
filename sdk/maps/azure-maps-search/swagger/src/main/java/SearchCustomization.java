@@ -208,6 +208,10 @@ public class SearchCustomization extends Customization {
         // getProviderId
         MethodCustomization providerIdNameCustomization = classCustomization.getMethod("getProviderID");
         MethodCustomization providerIdCustomization = providerIdNameCustomization.rename("getProviderId");
+
+        // Change Polygon class name
+        ClassCustomization classCustomization2 = models.getClass("Polygon");
+        classCustomization2.rename("MapsPolygon");
     }
 
     // Customizes the OperatingHoursTime class

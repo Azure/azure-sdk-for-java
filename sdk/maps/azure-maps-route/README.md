@@ -182,7 +182,7 @@ System.out.println("Get Route Directions Batch");
 
 List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
 SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> poller =
-    client.beginGetRouteDirectionsBatch(optionsList);
+    client.beginRequestRouteDirectionsBatch(optionsList);
 poller.getFinalResult();
 ```
 

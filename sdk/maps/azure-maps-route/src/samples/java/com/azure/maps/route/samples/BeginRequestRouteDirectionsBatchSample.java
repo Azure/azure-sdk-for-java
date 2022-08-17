@@ -71,7 +71,7 @@ public class BeginRequestRouteDirectionsBatchSample {
 
         List<RouteDirectionsOptions> optionsList = Arrays.asList(options1, options2, options3);
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> poller =
-            client.beginGetRouteDirectionsBatch(optionsList);
+            client.beginRequestRouteDirectionsBatch(optionsList);
         poller.getFinalResult();
         // END: com.azure.maps.search.sync.begin_request_route_directions_batch
 
@@ -117,7 +117,7 @@ public class BeginRequestRouteDirectionsBatchSample {
 
         List<RouteDirectionsOptions> optionsList2 = Arrays.asList(options5, options6, options7);
         SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> poller2 =
-            asyncClient.beginGetRouteDirectionsBatch(optionsList2).getSyncPoller();
+            asyncClient.beginRequestRouteDirectionsBatch(optionsList2).getSyncPoller();
         poller2.getFinalResult();
         // END: com.azure.maps.search.async.begin_request_route_directions_batch        
     }

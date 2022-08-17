@@ -765,7 +765,7 @@ public final class MapsRouteAsyncClient {
      *
      * List&lt;RouteDirectionsOptions&gt; optionsList2 = Arrays.asList&#40;options5, options6, options7&#41;;
      * SyncPoller&lt;RouteDirectionsBatchResult, RouteDirectionsBatchResult&gt; poller2 =
-     *     asyncClient.beginGetRouteDirectionsBatch&#40;optionsList2&#41;.getSyncPoller&#40;&#41;;
+     *     asyncClient.beginRequestRouteDirectionsBatch&#40;optionsList2&#41;.getSyncPoller&#40;&#41;;
      * poller2.getFinalResult&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.begin_request_route_directions_batch -->
@@ -777,8 +777,8 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
-        return this.beginGetRouteDirectionsBatch(optionsList, null);
+    public PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
+        return this.beginRequestRouteDirectionsBatch(optionsList, null);
     }
 
     /**
@@ -810,7 +810,7 @@ public final class MapsRouteAsyncClient {
      *
      * List&lt;RouteDirectionsOptions&gt; optionsList2 = Arrays.asList&#40;options5, options6, options7&#41;;
      * SyncPoller&lt;RouteDirectionsBatchResult, RouteDirectionsBatchResult&gt; poller2 =
-     *     asyncClient.beginGetRouteDirectionsBatch&#40;optionsList2&#41;.getSyncPoller&#40;&#41;;
+     *     asyncClient.beginRequestRouteDirectionsBatch&#40;optionsList2&#41;.getSyncPoller&#40;&#41;;
      * poller2.getFinalResult&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.begin_request_route_directions_batch -->
@@ -823,7 +823,7 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
+    PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
 
         // convert list to batch request

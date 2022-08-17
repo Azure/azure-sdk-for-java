@@ -28,7 +28,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.maps.search.models.Polygon;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.PointOfInterestCategory;
@@ -115,14 +115,14 @@ public class MapsSearchClientTestBase extends TestBase {
         return syncPoller.setPollInterval(durationTestMode);
     }
 
-    static void validateGetPolygons(List<Polygon> expected, List<Polygon> actual) {
+    static void validateGetPolygons(List<MapsPolygon> expected, List<MapsPolygon> actual) {
         assertEquals(expected.size(), actual.size());
         List<String> ids = Arrays.asList(actual.get(0).getProviderId(), actual.get(1).getProviderId());
         assertTrue(ids.contains(expected.get(0).getProviderId()));
     }
 
-    static void validateGetPolygonsWithResponse(List<Polygon> expected, int expectedStatusCode,
-            Response<List<Polygon>> response) {
+    static void validateGetPolygonsWithResponse(List<MapsPolygon> expected, int expectedStatusCode,
+            Response<List<MapsPolygon>> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetPolygons(expected, response.getValue());

@@ -143,9 +143,6 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress IO exception for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.java"/>
-   <!-- Suppress checks on AutoRest generated Azure Maps service code -->
-  <suppress checks="WhitespaceAround" files="com.azure.maps.route.implementation.models.*\.java"/>
-  <suppress checks="WhitespaceAround" files="com.azure.maps.search.implementation.models.*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.storage.blob.specialized.(BlobInputStream|BlobOutputStream).java"/>
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
@@ -493,6 +490,7 @@ the main ServiceBusClientBuilder. -->
   <!-- EncryptedBlobAsyncClient and EncryptedBlobClient overriding methods for download behavior; cannot change signature -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.storage.blob.specialized.cryptography.(EncryptedBlobAsyncClient|EncryptedBlobClient)"/>
+
   <!-- azure-json doesn't have a dependency on azure-core -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.json..*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.json..*"/>

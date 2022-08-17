@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Polygon model. */
 @Fluent
-public final class Polygon {
+public final class MapsPolygon {
     /*
      * ID of the returned entity
      */

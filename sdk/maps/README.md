@@ -1,6 +1,6 @@
-# Azure Maps Resource Manager SDK client library for Java
+# Azure Maps SDK client library for Java
 
-Azure Maps Resource Manager SDK Client library for Java.
+Azure Maps SDK Client library for Java.
 
 Microsoft Azure Maps provides developers from all industries with powerful geospatial capabilities. Those geospatial capabilities are packed with the freshest mapping data. Azure Maps is available for both web and mobile applications. Azure Maps is an Azure One API compliant set of REST APIs. For more information please see [Azure Maps Overview](https://docs.microsoft.com/azure/azure-maps/)
 
@@ -15,12 +15,7 @@ To get started with a specific library, see the **README.md** file located in th
 
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
-## Examples
-
-## Troubleshooting
-
-## Next steps
-
-## Contributing
-
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+
+<!-- LINKS -->
+[design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md

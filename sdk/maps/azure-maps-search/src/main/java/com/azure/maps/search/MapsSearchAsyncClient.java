@@ -31,7 +31,7 @@ import com.azure.maps.search.implementation.models.BatchRequestItem;
 import com.azure.maps.search.implementation.models.GeoJsonLineString;
 import com.azure.maps.search.implementation.models.GeoJsonObject;
 import com.azure.maps.search.implementation.models.JsonFormat;
-import com.azure.maps.search.models.Polygon;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.implementation.models.PolygonResult;
 import com.azure.maps.search.implementation.models.ResponseFormat;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
@@ -150,8 +150,8 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Search Polygon call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<Polygon>> getPolygons(List<String> geometryIds) {
-        Mono<Response<List<Polygon>>> result = this.getPolygonsWithResponse(geometryIds);
+    public Mono<List<MapsPolygon>> getPolygons(List<String> geometryIds) {
+        Mono<Response<List<MapsPolygon>>> result = this.getPolygonsWithResponse(geometryIds);
         return result.flatMap(response -> {
             return Mono.just(response.getValue());
         });
@@ -184,7 +184,7 @@ public final class MapsSearchAsyncClient {
      * @return this object is returned from a successful Search Polygon call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<Polygon>>> getPolygonsWithResponse(List<String> geometryIds) {
+    public Mono<Response<List<MapsPolygon>>> getPolygonsWithResponse(List<String> geometryIds) {
         return this.getPolygonsWithResponse(geometryIds, null);
     }
 
@@ -215,7 +215,7 @@ public final class MapsSearchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Polygon call.
      */
-    Mono<Response<List<Polygon>>> getPolygonsWithResponse(List<String> geometryIds,
+    Mono<Response<List<MapsPolygon>>> getPolygonsWithResponse(List<String> geometryIds,
             Context context) {
         Mono<Response<PolygonResult>> result = this.serviceClient.listPolygonsWithResponseAsync(JsonFormat.JSON,
             geometryIds, context).onErrorMap(throwable -> {
@@ -226,7 +226,7 @@ public final class MapsSearchAsyncClient {
                 return new HttpResponseException(exception.getMessage(), exception.getResponse());
             });
         return result.flatMap(response -> {
-            Response<List<Polygon>> simpleResponse = new SimpleResponse<List<Polygon>>(response,
+            Response<List<MapsPolygon>> simpleResponse = new SimpleResponse<List<MapsPolygon>>(response,
                 response.getValue().getPolygons());
             return Mono.just(simpleResponse);
         });
