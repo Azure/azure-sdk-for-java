@@ -12,6 +12,12 @@
 - Added fluent setter overloads to subclasses that return the subclass type instead of the super class type
   allowing for fluent calls to maintain type instead of requiring a type cast.
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
+
 ## 11.5.0-beta.11 (2022-07-01)
 
 ### Features Added
