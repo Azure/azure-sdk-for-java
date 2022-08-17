@@ -44,10 +44,6 @@
             "_justification": "Javadoc in azure-resourcemanager-datafactory"
         },
         {
-            "hash": "5xqbOibUfwZBkXt/GTBHBYTtsO7fuQIg6P7yK27TI5Y=",
-            "_justification": "Java class in spring-cloud-azure-service."
-        },
-        {
             "file":[
                 "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
