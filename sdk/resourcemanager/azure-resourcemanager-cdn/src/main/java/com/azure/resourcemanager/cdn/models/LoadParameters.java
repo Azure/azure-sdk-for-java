@@ -6,18 +6,14 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters required for content load. */
 @Fluent
 public final class LoadParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadParameters.class);
-
     /*
-     * The path to the content to be loaded. Path should be a relative file URL
-     * of the origin.
+     * The path to the content to be loaded. Path should be a relative file URL of the origin.
      */
     @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
@@ -51,9 +47,11 @@ public final class LoadParameters {
      */
     public void validate() {
         if (contentPaths() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contentPaths in model LoadParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadParameters.class);
 }

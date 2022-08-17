@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class CustomIpPrefixPropertiesFormat {
     /*
-     * The prefix range in CIDR notation. Should include the start address and
-     * the prefix length.
+     * The prefix range in CIDR notation. Should include the start address and the prefix length.
      */
     @JsonProperty(value = "cidr")
     private String cidr;
@@ -50,6 +49,12 @@ public final class CustomIpPrefixPropertiesFormat {
      */
     @JsonProperty(value = "commissionedState")
     private CommissionedState commissionedState;
+
+    /*
+     * Whether to Advertise the range to Internet.
+     */
+    @JsonProperty(value = "noInternetAdvertise")
+    private Boolean noInternetAdvertise;
 
     /*
      * The list of all referenced PublicIpPrefixes.
@@ -181,6 +186,26 @@ public final class CustomIpPrefixPropertiesFormat {
      */
     public CustomIpPrefixPropertiesFormat withCommissionedState(CommissionedState commissionedState) {
         this.commissionedState = commissionedState;
+        return this;
+    }
+
+    /**
+     * Get the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @return the noInternetAdvertise value.
+     */
+    public Boolean noInternetAdvertise() {
+        return this.noInternetAdvertise;
+    }
+
+    /**
+     * Set the noInternetAdvertise property: Whether to Advertise the range to Internet.
+     *
+     * @param noInternetAdvertise the noInternetAdvertise value to set.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
+     */
+    public CustomIpPrefixPropertiesFormat withNoInternetAdvertise(Boolean noInternetAdvertise) {
+        this.noInternetAdvertise = noInternetAdvertise;
         return this;
     }
 

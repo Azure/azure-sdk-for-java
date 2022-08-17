@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Task properties of the software update configuration. */
 @Fluent
 public final class TaskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskProperties.class);
-
     /*
      * Gets or sets the parameters of the task.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IpsecIntegrity. */
+/** The IPSec integrity algorithm (IKE phase 1). */
 public final class IpsecIntegrity extends ExpandableStringEnum<IpsecIntegrity> {
     /** Static value MD5 for IpsecIntegrity. */
     public static final IpsecIntegrity MD5 = fromString("MD5");

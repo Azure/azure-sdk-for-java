@@ -664,8 +664,7 @@ public class AadAuthenticationProperties implements InitializingBean {
                 + " is valid.", registrationId);
         }
 
-        if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
-            && AUTHORIZATION_CODE != grantType) {
+        if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId) && !AUTHORIZATION_CODE.equals(grantType)) {
             throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
                 + AZURE_CLIENT_REGISTRATION_ID
                 + ".authorization-grant-type must be configured to 'authorization_code'.");

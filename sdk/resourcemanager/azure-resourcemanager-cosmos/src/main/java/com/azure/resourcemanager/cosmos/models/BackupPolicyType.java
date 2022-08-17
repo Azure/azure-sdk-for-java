@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupPolicyType. */
+/** Describes the mode of backups. */
 public final class BackupPolicyType extends ExpandableStringEnum<BackupPolicyType> {
     /** Static value Periodic for BackupPolicyType. */
     public static final BackupPolicyType PERIODIC = fromString("Periodic");

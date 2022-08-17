@@ -34,8 +34,7 @@ import java.util.Map;
 @Fluent
 public final class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     /*
-     * Indicates the type of database account. This can only be set at database
-     * account creation.
+     * Indicates the type of database account. This can only be set at database account creation.
      */
     @JsonProperty(value = "kind")
     private DatabaseAccountKind kind;

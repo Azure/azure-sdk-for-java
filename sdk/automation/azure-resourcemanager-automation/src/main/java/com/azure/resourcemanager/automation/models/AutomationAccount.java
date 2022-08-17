@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.AutomationAccountInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of AutomationAccount. */
@@ -55,6 +57,20 @@ public interface AutomationAccount {
     String etag();
 
     /**
+     * Gets the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
+     * Gets the systemData property: Resource system metadata.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the sku property: Gets or sets the SKU of account.
      *
      * @return the sku value.
@@ -97,6 +113,44 @@ public interface AutomationAccount {
     String description();
 
     /**
+     * Gets the encryption property: Encryption properties for the automation account.
+     *
+     * @return the encryption value.
+     */
+    EncryptionProperties encryption();
+
+    /**
+     * Gets the privateEndpointConnections property: List of Automation operations supported by the Automation resource
+     * provider.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
+     * allowed from the public internet.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    Boolean publicNetworkAccess();
+
+    /**
+     * Gets the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
+     *
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
+
+    /**
+     * Gets the automationHybridServiceUrl property: URL of automation hybrid service which is used for hybrid worker
+     * on-boarding.
+     *
+     * @return the automationHybridServiceUrl value.
+     */
+    String automationHybridServiceUrl();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -109,6 +163,13 @@ public interface AutomationAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.AutomationAccountInner object.
@@ -144,7 +205,11 @@ public interface AutomationAccount {
             extends DefinitionStages.WithLocation,
                 DefinitionStages.WithTags,
                 DefinitionStages.WithName,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithSku,
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithDisableLocalAuth {
             /**
              * Executes the create request.
              *
@@ -198,6 +263,16 @@ public interface AutomationAccount {
              */
             WithCreate withName(String name);
         }
+        /** The stage of the AutomationAccount definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Sets the identity property for automation account.
+             *
+             * @param identity Sets the identity property for automation account.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
+        }
         /** The stage of the AutomationAccount definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -208,6 +283,39 @@ public interface AutomationAccount {
              */
             WithCreate withSku(Sku sku);
         }
+        /** The stage of the AutomationAccount definition allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Set the encryption properties for the automation account.
+             *
+             * @param encryption Set the encryption properties for the automation account.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryption(EncryptionProperties encryption);
+        }
+        /** The stage of the AutomationAccount definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint
+             * (Webhook/Agent) is allowed from the public internet.
+             *
+             * @param publicNetworkAccess Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed
+             *     from the public internet.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(Boolean publicNetworkAccess);
+        }
+        /** The stage of the AutomationAccount definition allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: Indicates whether requests using non-AAD authentication are
+             * blocked.
+             *
+             * @param disableLocalAuth Indicates whether requests using non-AAD authentication are blocked.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
     }
     /**
      * Begins update for the AutomationAccount resource.
@@ -217,7 +325,14 @@ public interface AutomationAccount {
     AutomationAccount.Update update();
 
     /** The template for AutomationAccount update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithName, UpdateStages.WithSku {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithName,
+            UpdateStages.WithIdentity,
+            UpdateStages.WithSku,
+            UpdateStages.WithEncryption,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithDisableLocalAuth {
         /**
          * Executes the update request.
          *
@@ -255,6 +370,16 @@ public interface AutomationAccount {
              */
             Update withName(String name);
         }
+        /** The stage of the AutomationAccount update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Sets the identity property for automation account.
+             *
+             * @param identity Sets the identity property for automation account.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
+        }
         /** The stage of the AutomationAccount update allowing to specify sku. */
         interface WithSku {
             /**
@@ -264,6 +389,39 @@ public interface AutomationAccount {
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
+        }
+        /** The stage of the AutomationAccount update allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Set the encryption properties for the automation account.
+             *
+             * @param encryption Set the encryption properties for the automation account.
+             * @return the next definition stage.
+             */
+            Update withEncryption(EncryptionProperties encryption);
+        }
+        /** The stage of the AutomationAccount update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint
+             * (Webhook/Agent) is allowed from the public internet.
+             *
+             * @param publicNetworkAccess Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed
+             *     from the public internet.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(Boolean publicNetworkAccess);
+        }
+        /** The stage of the AutomationAccount update allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: Indicates whether requests using non-AAD authentication are
+             * blocked.
+             *
+             * @param disableLocalAuth Indicates whether requests using non-AAD authentication are blocked.
+             * @return the next definition stage.
+             */
+            Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
     }
     /**

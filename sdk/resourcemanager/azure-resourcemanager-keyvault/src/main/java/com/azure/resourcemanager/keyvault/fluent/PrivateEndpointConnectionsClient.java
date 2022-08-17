@@ -6,6 +6,8 @@ package com.azure.resourcemanager.keyvault.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -28,7 +30,8 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
+     * @return the specified private endpoint connection associated with the key vault along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -43,7 +46,8 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
+     * @return the specified private endpoint connection associated with the key vault on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> getAsync(
@@ -74,7 +78,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the key vault.
+     * @return the specified private endpoint connection associated with the key vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -90,7 +94,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionsPutResponse> putWithResponseAsync(
@@ -109,7 +113,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> putAsync(
@@ -167,7 +171,8 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return private endpoint connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -182,7 +187,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDeleteAsync(
@@ -197,7 +202,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
@@ -213,7 +218,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDelete(
@@ -228,7 +233,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
+     * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> deleteAsync(
@@ -264,4 +269,45 @@ public interface PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateEndpointConnectionInner delete(
         String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * The List operation gets information about the private endpoint connections associated with the vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of private endpoint connections as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(String resourceGroupName, String vaultName);
+
+    /**
+     * The List operation gets information about the private endpoint connections associated with the vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of private endpoint connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateEndpointConnectionInner> listByResource(String resourceGroupName, String vaultName);
+
+    /**
+     * The List operation gets information about the private endpoint connections associated with the vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of private endpoint connections as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateEndpointConnectionInner> listByResource(
+        String resourceGroupName, String vaultName, Context context);
 }

@@ -21,6 +21,7 @@ parameters:
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
   TestParallelization: '1'
+  TestVersionSupport: $(TestVersionSupport)
 
 jobs:
   - job:
@@ -94,8 +95,10 @@ jobs:
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
+          TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
+            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 

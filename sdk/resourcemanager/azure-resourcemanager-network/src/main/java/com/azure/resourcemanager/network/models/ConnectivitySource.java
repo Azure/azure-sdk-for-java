@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectivitySource {
     /*
-     * The ID of the resource from which a connectivity check will be
-     * initiated.
+     * The ID of the resource from which a connectivity check will be initiated.
      */
     @JsonProperty(value = "resourceId", required = true)
     private String resourceId;

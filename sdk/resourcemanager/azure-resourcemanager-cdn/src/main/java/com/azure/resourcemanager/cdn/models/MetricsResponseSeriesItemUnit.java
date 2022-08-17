@@ -33,7 +33,11 @@ public final class MetricsResponseSeriesItemUnit extends ExpandableStringEnum<Me
         return fromString(name, MetricsResponseSeriesItemUnit.class);
     }
 
-    /** @return known MetricsResponseSeriesItemUnit values. */
+    /**
+     * Gets known MetricsResponseSeriesItemUnit values.
+     *
+     * @return known MetricsResponseSeriesItemUnit values.
+     */
     public static Collection<MetricsResponseSeriesItemUnit> values() {
         return values(MetricsResponseSeriesItemUnit.class);
     }
