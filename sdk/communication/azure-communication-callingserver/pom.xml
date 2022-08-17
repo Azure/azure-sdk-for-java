@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-callingserver</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+  <version>1.0.0-alpha.20220805.1</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
 
   <name>Microsoft Azure client library for CallingServer service</name>
   <description>
@@ -24,11 +24,54 @@
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <repositories>
+<!--    <repository>-->
+<!--      <id>azure-sdk-for-java-communication</id>-->
+<!--      <url>https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-communication/maven/v1</url>-->
+<!--      <releases>-->
+<!--        <enabled>true</enabled>-->
+<!--      </releases>-->
+<!--      <snapshots>-->
+<!--        <enabled>true</enabled>-->
+<!--      </snapshots>-->
+<!--    </repository>-->
+    <repository>
+      <id>azure-sdk-for-java-communication-interaction</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java-communication-interaction/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
+<!--    <repository>-->
+<!--      <id>azure-sdk-for-java-communication</id>-->
+<!--      <url>https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-communication/maven/v1</url>-->
+<!--      <releases>-->
+<!--        <enabled>true</enabled>-->
+<!--      </releases>-->
+<!--      <snapshots>-->
+<!--        <enabled>true</enabled>-->
+<!--      </snapshots>-->
+<!--    </repository>-->
+    <repository>
+      <id>azure-sdk-for-java-communication-interaction</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java-communication-interaction/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </distributionManagement>
 
   <scm>
@@ -40,12 +83,13 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.65</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.callingserver/com.azure.communication.callingserver.implementation=ALL-UNNAMED
+      --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -126,9 +170,16 @@
       <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <classifier>runtime</classifier>
+      <scope>test</scope>
+      <version>0.8.8</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+    </dependency>
   </dependencies>
   <build>
-      <plugins>
+    <plugins>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
