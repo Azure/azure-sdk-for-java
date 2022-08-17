@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RULE_MANAGER;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -147,11 +147,11 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     /**
      * Fetches all rules associated with the topic and subscription.
      *
-     * @return A collection of rules associated with the topic and subscription.
+     * @return A list of rules associated with the topic and subscription.
      *
      * @throws IllegalStateException if client is disposed.
      */
-    public Mono<Collection<RuleProperties>> getRules() {
+    public Mono<List<RuleProperties>> getRules() {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")
