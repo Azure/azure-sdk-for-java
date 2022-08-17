@@ -40,8 +40,6 @@ public class CteTestHelper {
             .get("COMMUNICATION_MSAL_PASSWORD", "Sanitized");
     private static final String COMMUNICATION_EXPIRED_TEAMS_TOKEN = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_EXPIRED_TEAMS_TOKEN", "Sanitized");
-    private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
-            .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "false");
 
     /**
      * Gets a test mode for unit tests.
@@ -71,7 +69,7 @@ public class CteTestHelper {
      */
     private static GetTokenForTeamsUserOptions createTeamsUserExchangeTokenRequest() throws MalformedURLException, ExecutionException, InterruptedException {
         GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions("Sanitized", "Sanitized", "Sanitized");
-        if (!skipExchangeAadTeamsTokenTest() && TEST_MODE != TestMode.PLAYBACK) {
+        if (TEST_MODE != TestMode.PLAYBACK) {
             try {
                 IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
                         .authority(COMMUNICATION_M365_AAD_AUTHORITY + "/" + COMMUNICATION_M365_AAD_TENANT)
@@ -94,10 +92,6 @@ public class CteTestHelper {
             }
         }
         return options;
-    }
-
-    static boolean skipExchangeAadTeamsTokenTest() {
-        return Boolean.parseBoolean(COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST);
     }
 
     /**

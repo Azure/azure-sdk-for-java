@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
@@ -230,9 +229,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithValidParams(GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithValidParamsSync");
@@ -244,9 +240,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithValidParamsWithResponse(GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
@@ -260,9 +253,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest(name = "when {3} is null")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getNullParams")
     public void getTokenForTeamsUserWithNullParams(GetTokenForTeamsUserOptions options, String exceptionMessage) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "getTokenForTeamsUserWithNullSync: when " + exceptionMessage + " is null");
@@ -280,9 +270,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidTokens")
     public void getTokenForTeamsUserWithInvalidToken(String testName, GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, testName + TEST_SUFFIX);
@@ -300,9 +287,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidAppIds")
     public void getTokenForTeamsUserWithInvalidAppId(String testName, GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, testName + TEST_SUFFIX);
@@ -320,9 +304,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest(name = "{0}")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getInvalidUserIds")
     public void getTokenForTeamsUserWithInvalidUserId(String testName, GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, testName + TEST_SUFFIX);

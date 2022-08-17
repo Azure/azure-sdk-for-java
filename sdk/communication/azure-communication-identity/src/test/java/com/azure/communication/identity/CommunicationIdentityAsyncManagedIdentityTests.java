@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 
 public class CommunicationIdentityAsyncManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
@@ -169,10 +168,6 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
     public void getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserUsingManagedIdentity");
@@ -186,10 +181,6 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     @ParameterizedTest
     @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
     public void getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentity");
