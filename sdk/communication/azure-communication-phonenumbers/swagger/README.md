@@ -89,3 +89,95 @@ directive:
         from: PhoneNumberOperation
         to: PhoneNumberRawOperation
 ```
+
+### Add readonly attribute to AreaCodeResult properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AreaCodeResult
+    transform: >
+      $["properties"]["areaCode"].readOnly = true;
+```
+
+### Add readonly attribute to AreaCodes properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.AreaCodes
+    transform: >
+      $["properties"]["areaCodes"].readOnly = true;
+      $["properties"]["nextLink"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberAdministrativeDivision properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberAdministrativeDivision
+    transform: >
+      $["properties"]["abbreivatedName"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberAdministrativeDivision properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberAdministrativeDivision
+    transform: >
+      $["properties"]["abbreivatedName"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberCountries properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCountries
+    transform: >
+      $["properties"]["countryCode"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberLocality properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberLocality
+    transform: >
+      $["properties"]["administrativeDivision"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+
+### Add readonly attribute to PhoneNumberLocalities properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberLocalities
+    transform: >
+      $["properties"]["nextLink"].readOnly = true;
+      $["properties"]["phoneNumberLocalities"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberOffering properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberOffering
+    transform: >
+      $["properties"]["assignmentType"].readOnly = true;
+      $["properties"]["availableCapabilities"].readOnly = true;
+      $["properties"]["cost"].readOnly = true;
+      $["properties"]["phoneNumberType"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberOfferings properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberOfferings
+    transform: >
+      $["properties"]["nextLink"].readOnly = true;
+      $["properties"]["phoneNumberOfferings"].readOnly = true;
+```
