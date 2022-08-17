@@ -291,7 +291,6 @@ public final class PhoneNumbersClient {
      * Gets the list of the available Toll-Free area codes for a given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
      * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -303,7 +302,6 @@ public final class PhoneNumbersClient {
      * Gets the list of the available Toll-Free area codes for a given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
      * @param context A {@link Context} representing the request context.
      * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing available area codes.
      */
