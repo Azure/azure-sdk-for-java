@@ -175,6 +175,7 @@ public final class EmailClientBuilder
      * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link EmailClientBuilder} object.
      */
+    @Override
     public EmailClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;

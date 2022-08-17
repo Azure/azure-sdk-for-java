@@ -6,7 +6,6 @@ package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Message payload for sending an email. */
 @Fluent
@@ -15,7 +14,7 @@ public final class EmailMessage {
      * Custom email headers to be passed.
      */
     @JsonProperty(value = "headers")
-    private List<EmailCustomHeader> customHeaders;
+    private Iterable<EmailCustomHeader> customHeaders;
 
     /*
      * Sender email address from a verified domain.
@@ -76,7 +75,7 @@ public final class EmailMessage {
      *
      * @return the customHeaders value.
      */
-    public List<EmailCustomHeader> getCustomHeaders() {
+    public Iterable<EmailCustomHeader> getCustomHeaders() {
         return this.customHeaders;
     }
 
@@ -86,7 +85,7 @@ public final class EmailMessage {
      * @param customHeaders the customHeaders value to set.
      * @return the EmailMessage object itself.
      */
-    public EmailMessage setCustomHeaders(List<EmailCustomHeader> customHeaders) {
+    public EmailMessage setCustomHeaders(Iterable<EmailCustomHeader> customHeaders) {
         this.customHeaders = customHeaders;
         return this;
     }
@@ -164,7 +163,7 @@ public final class EmailMessage {
      * @param attachments the attachments value to set.
      * @return the EmailMessage object itself.
      */
-    public EmailMessage setAttachments(List<EmailAttachment> attachments) {
+    public EmailMessage setAttachments(Iterable<EmailAttachment> attachments) {
         this.attachments = attachments;
         return this;
     }
