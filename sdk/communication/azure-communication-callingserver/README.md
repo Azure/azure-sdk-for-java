@@ -41,7 +41,7 @@ This is the restart of CallingServer Service. It is renamed to Call Automation s
 
 ## Examples
 
-A simple call center scenario example: https://paste.microsoft.com/357de189-b0c0-4a2b-81c2-a2ee25fe4f20
+To be determined.
 
 ## Troubleshooting
 
