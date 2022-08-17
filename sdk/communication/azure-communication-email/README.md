@@ -110,10 +110,7 @@ To send an email message, call the `send` function from the `EmailClient`.
 ```java readme-sample-sendEmailToSingleRecipient
 EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
-ArrayList<EmailAddress> addressList = new ArrayList<>();
-addressList.add(emailAddress);
-
-EmailRecipients emailRecipients = new EmailRecipients(addressList);
+EmailRecipients emailRecipients = new EmailRecipients(emailAddress);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
@@ -175,10 +172,7 @@ String b64file = Base64.getEncoder().encodeToString(fileContent);
 
 EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
-ArrayList<EmailAddress> addressList = new ArrayList<>();
-addressList.add(emailAddress);
-
-EmailRecipients emailRecipients = new EmailRecipients(addressList);
+EmailRecipients emailRecipients = new EmailRecipients(emailAddress);
 
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");

@@ -7,6 +7,9 @@ package com.azure.communication.email.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Recipients of the email. */
 @Fluent
 public final class EmailRecipients {
@@ -29,11 +32,21 @@ public final class EmailRecipients {
     private Iterable<EmailAddress> bcc;
 
     /**
-     * Constructor for EmailRecipients
+     * Constructor for EmailRecipients that takes in list of addresses.
      * @param to the email to recipients
      */
     public EmailRecipients(Iterable<EmailAddress> to) {
         this.to = to;
+    }
+
+    /**
+     * Constructor for EmailRecipients that takes in a single address.
+     * @param to the email to recipient
+     */
+    public EmailRecipients(EmailAddress to) {
+        List<EmailAddress> emailAddressList = new ArrayList<>();
+        emailAddressList.add(to);
+        this.to = emailAddressList;
     }
 
     /**
@@ -66,6 +79,19 @@ public final class EmailRecipients {
     }
 
     /**
+     * Set the cc property: Email CC recipients.
+     *
+     * @param cc the cc value to set.
+     * @return the EmailRecipients object itself.
+     */
+    public EmailRecipients setCc(EmailAddress cc) {
+        List<EmailAddress> emailAddressList = new ArrayList<>();
+        emailAddressList.add(cc);
+        this.cc = emailAddressList;
+        return this;
+    }
+
+    /**
      * Get the bcc property: Email BCC recipients.
      *
      * @return the bcc value.
@@ -82,6 +108,19 @@ public final class EmailRecipients {
      */
     public EmailRecipients setBcc(Iterable<EmailAddress> bcc) {
         this.bcc = bcc;
+        return this;
+    }
+
+    /**
+     * Set the bcc property: Email BCC recipients.
+     *
+     * @param bcc the bcc value to set.
+     * @return the EmailRecipients object itself.
+     */
+    public EmailRecipients setBcc(EmailAddress bcc) {
+        List<EmailAddress> emailAddressList = new ArrayList<>();
+        emailAddressList.add(bcc);
+        this.bcc = emailAddressList;
         return this;
     }
 }

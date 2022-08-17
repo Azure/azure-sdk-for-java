@@ -65,10 +65,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-sendEmailToSingleRecipient
         EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients(emailAddress);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
@@ -131,10 +128,7 @@ public class ReadmeSamples {
 
         EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients(emailAddress);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
