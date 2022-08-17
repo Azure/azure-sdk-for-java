@@ -9,6 +9,7 @@ import org.postgresql.util.PSQLException;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,10 +22,7 @@ class AzureIdentityPostgresqlAuthenticationPluginTest {
     void testTokenCredentialProvider() {
         Properties properties = new Properties();
         AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(properties);
-        // TODO
-        // AzureAuthenticationTemplate authenticationTemplate
-        //      = (AzureAuthenticationTemplate) ReflectionTestUtils.getField(plugin, "azureAuthenticationTemplate");
-        //  assertNotNull(authenticationTemplate);
+        assertNotNull(plugin.getAzureAuthenticationTemplate());
     }
 
     @Test

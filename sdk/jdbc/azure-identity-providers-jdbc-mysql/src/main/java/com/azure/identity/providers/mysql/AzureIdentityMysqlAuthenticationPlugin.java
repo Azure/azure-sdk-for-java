@@ -39,6 +39,12 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
     }
 
+    AzureIdentityMysqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate,
+                                           Protocol<NativePacketPayload> protocol) {
+        this.azureAuthenticationTemplate = azureAuthenticationTemplate;
+        this.protocol = protocol;
+    }
+
     @Override
     public void destroy() {
     }

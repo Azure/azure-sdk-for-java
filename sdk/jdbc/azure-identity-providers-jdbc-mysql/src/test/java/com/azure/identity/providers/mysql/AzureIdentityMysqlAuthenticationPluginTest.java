@@ -1,16 +1,22 @@
 package com.azure.identity.providers.mysql;
 
-
+import com.azure.identity.providers.jdbc.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativePacketPayload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,8 +38,9 @@ class AzureIdentityMysqlAuthenticationPluginTest {
 
     @Test
     void testThrowIllegalStateException() {
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
-//        assertThrows(IllegalStateException.class, () -> ReflectionTestUtils.invokeMethod(plugin, "getTokenAsPasswordAsync"));
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        new AzureIdentityMysqlAuthenticationPlugin(template);
+        assertThrows(IllegalStateException.class, () -> template.getTokenAsPasswordAsync());
     }
 
     @Test
@@ -44,12 +51,40 @@ class AzureIdentityMysqlAuthenticationPluginTest {
     }
 
     @Test
-    protected void tokenAudienceShouldConfig() {
-        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+    void tokenAudienceShouldConfig() {
+        Properties properties = new Properties();
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate(properties);
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template);
         plugin.init(protocol);
-//        Properties properties = (Properties) ReflectionUtils.getField(template.getClass(), "properties", template);
-//        assertEquals(OSSRDBMS_SCOPES, properties.getProperty(AuthProperty.SCOPES.getPropertyKey()));
+        assertEquals(OSSRDBMS_SCOPES, properties.getProperty(AuthProperty.SCOPES.getPropertyKey()));
+    }
+
+    @Test
+    void testRequiresConfidentiality() {
+        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
+        assertTrue(plugin.requiresConfidentiality());
+    }
+
+    @Test
+    void testIsReusable() {
+        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin();
+        assertTrue(plugin.isReusable());
+    }
+
+    @Test
+    void testNextAuthenticationStep() throws UnsupportedEncodingException {
+        AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
+        when(template.getTokenAsPassword()).thenReturn("fake-password");
+
+        Protocol<NativePacketPayload> protocol = mock(Protocol.class, Answers.RETURNS_DEEP_STUBS);
+        when(protocol.getSocketConnection().isSSLEstablished()).thenReturn(true);
+        when(protocol.getServerSession().getCharsetSettings().getPasswordCharacterEncoding()).thenReturn("utf-8");
+
+        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template,protocol);
+        NativePacketPayload fromServer = new NativePacketPayload(new byte[0]);
+        List<NativePacketPayload> toServer = new ArrayList<>();
+        plugin.nextAuthenticationStep(fromServer, toServer);
+        assertTrue(new String(toServer.get(0).getByteBuffer(),"utf-8").startsWith("fake-password"));
     }
 
 }

@@ -56,4 +56,8 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
             throw new PSQLException("Unable to acquire access token", INVALID_PASSWORD);
         }
     }
+
+    AzureAuthenticationTemplate getAzureAuthenticationTemplate() {
+        return azureAuthenticationTemplate;
+    }
 }

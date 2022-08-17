@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
