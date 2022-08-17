@@ -148,7 +148,7 @@
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft
+/sdk/search/                                        @alzimmermsft @jairmyree
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @anuchandy @ki1729 @conniey @liukun-msft @ZejiaJiang
@@ -160,7 +160,7 @@
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft @ibrahimrabab
 
 # PRLabel: %Tables
-/sdk/tables/                                        @vcolin7 @conniey @kasobol-msft
+/sdk/tables/                                        @vcolin7 @conniey @kasobol-msft @jairmyree
 
 # PRLabel: %EngSys
 /sdk/template/                                      @hallipr @weshaggard @JimSuplizio
