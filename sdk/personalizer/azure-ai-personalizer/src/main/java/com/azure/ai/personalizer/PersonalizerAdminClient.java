@@ -19,7 +19,14 @@ import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
- * Client to perform administrative operations on Personalizer instance in a synchronous manner.
+ * This class provides a synchronous client that contains the operations that apply to Azure Personalizer.
+ * Operations allowed by the client are viewing and editing the properties, policy, model, running evaluations.
+ *
+ * <p><strong>Instantiating a synchronous Personalizer Admin Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.personalizer.PersonalizerAdminClient.instantiation}
+ *
+ * @see PersonalizerAdminClientBuilder
  */
 @ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = false)
 public final class PersonalizerAdminClient {

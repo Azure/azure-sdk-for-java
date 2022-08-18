@@ -51,7 +51,14 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Client to perform administrative operations on Personalizer instance in an asynchronous manner.
+ * This class provides an asynchronous client that contains the operations that apply to Azure Personalizer.
+ * Operations allowed by the client are viewing and editing the properties, policy, model, running evaluations.
+ *
+ * <p><strong>Instantiating an asynchronous Personalizer Admin Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.personalizer.PersonalizerAdminAsyncClient.instantiation}
+ *
+ * @see PersonalizerAdminClientBuilder
  */
 @ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = true)
 public final class PersonalizerAdminAsyncClient {

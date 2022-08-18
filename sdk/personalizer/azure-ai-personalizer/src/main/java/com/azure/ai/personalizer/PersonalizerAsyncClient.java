@@ -26,7 +26,15 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Client to call the Personalizer instance in an asynchronous manner.
+ * This class provides an asynchronous client that contains the operations that apply to Azure Personalizer.
+ * Operations allowed by the client are ranking a set of actions, activation and sending rewards for a single
+ * slot as well as multi-slot scenarios.
+ *
+ * <p><strong>Instantiating an asynchronous Personalizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.personalizer.PersonalizerAsyncClient.instantiation}
+ *
+ * @see PersonalizerClientBuilder
  */
 @ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = true)
 public final class PersonalizerAsyncClient {

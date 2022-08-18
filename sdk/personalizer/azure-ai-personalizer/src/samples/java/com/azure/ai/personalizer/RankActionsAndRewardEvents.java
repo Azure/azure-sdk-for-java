@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sample for analyzing business card information from a document given through a file.
+ * Demonstrates the use of a Personalizer client to rank actions for multiple slots and reward the presented action.
  */
 public class RankActionsAndRewardEvents {
 
@@ -37,7 +37,7 @@ public class RankActionsAndRewardEvents {
                 result.getRewardActionId()));
 
         // The event response will be determined by how the user interacted with the action that was presented to them.
-        // Let us say that they like the action and so we associate a reward of 1.
+        // Let us say that they like the action. So we associate a reward of 1.
         System.out.println("Sending reward for event");
         client.reward(rankOptions.getEventId(), 1);
         System.out.println("Completed sending reward for event");
