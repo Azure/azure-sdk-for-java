@@ -22,7 +22,7 @@ public class LogsIngestionClientBuilderTest {
     public void testBuilderWithoutCredential() {
         IllegalStateException ex = Assertions.assertThrows(IllegalStateException.class,
                 () -> new LogsIngestionClientBuilder()
-                .endpoint("https://example.com" )
+                .endpoint("https://example.com")
                 .buildClient());
         Assertions.assertEquals("credential is required to build the client.", ex.getMessage());
     }
@@ -31,7 +31,7 @@ public class LogsIngestionClientBuilderTest {
     public void testBuilderWithInvalidEndpoint() {
         IllegalArgumentException ex = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new LogsIngestionClientBuilder()
-                        .endpoint("example.com" )
+                        .endpoint("example.com")
                         .buildClient());
         Assertions.assertEquals("'endpoint' must be a valid URL.", ex.getMessage());
     }

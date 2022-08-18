@@ -176,7 +176,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      */
     public LogsIngestionAsyncClient buildAsyncClient() {
         if (endpoint == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("endpoint is required to build the client." ));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("endpoint is required to build the client."));
         }
         if (tokenCredential == null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("credential is required to build the client."));
