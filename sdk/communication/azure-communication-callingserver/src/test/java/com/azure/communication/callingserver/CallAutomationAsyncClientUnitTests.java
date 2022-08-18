@@ -60,20 +60,20 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
-    public void answerCall() {
+    public void answerCall() throws URISyntaxException {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new AbstractMap.SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
                     CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 200)
             )));
 
-        AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URI).block();
+        AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI)).block();
 
         assertNotNull(answerCallResult);
     }
 
     @Test
-    public void answerCallWithResponse() {
+    public void answerCallWithResponse() throws URISyntaxException {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<AbstractMap.SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new AbstractMap.SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
@@ -81,7 +81,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
 
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URI).block();
+            CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI)).block();
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());

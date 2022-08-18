@@ -63,20 +63,20 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void answerCall() {
+    public void answerCall() throws URISyntaxException {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
                     CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 200)
             )));
 
-        AnswerCallResult answerCallResult = callAutomationClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URI);
+        AnswerCallResult answerCallResult = callAutomationClient.answerCall(CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI));
 
         assertNotNull(answerCallResult);
     }
 
     @Test
-    public void answerCallWithResponse() {
+    public void answerCallWithResponse() throws URISyntaxException {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
@@ -84,7 +84,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             )));
 
         Response<AnswerCallResult> answerCallResult = callAutomationClient.answerCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URI, Context.NONE);
+            CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI), Context.NONE);
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
