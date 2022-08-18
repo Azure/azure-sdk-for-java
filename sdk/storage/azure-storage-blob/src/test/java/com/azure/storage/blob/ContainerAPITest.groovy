@@ -1840,6 +1840,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly(expiryTime = "2022-08-28")
     def "Find blobs query"() {
         setup:
         def blobClient = cc.getBlobClient(generateBlobName())
