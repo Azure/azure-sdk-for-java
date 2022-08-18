@@ -64,10 +64,12 @@ public final class EmailMessage {
      * Constructor for EmailMessage
      * @param sender the sender email address from a verified domain
      * @param content the email content to be sent
+     * @param recipients the recipients for the email
      */
-    public EmailMessage(String sender, EmailContent content) {
+    public EmailMessage(String sender, EmailContent content, EmailRecipients recipients) {
         this.sender = sender;
         this.content = content;
+        this.recipients = recipients;
     }
 
     /**
@@ -135,17 +137,6 @@ public final class EmailMessage {
      */
     public EmailRecipients getRecipients() {
         return this.recipients;
-    }
-
-    /**
-     * Set the recipients property: Recipients for the email.
-     *
-     * @param recipients the recipients value to set.
-     * @return the EmailMessage object itself.
-     */
-    public EmailMessage setRecipients(EmailRecipients recipients) {
-        this.recipients = recipients;
-        return this;
     }
 
     /**
