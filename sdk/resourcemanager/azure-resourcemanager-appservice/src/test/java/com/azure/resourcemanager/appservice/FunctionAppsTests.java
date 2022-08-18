@@ -26,6 +26,8 @@ import java.io.File;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -226,7 +228,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions
             .assertTrue(
                 Arrays
-                    .asList(functionApp1.innerModel().kind().split(","))
+                    .asList(functionApp1.innerModel().kind().split(Pattern.quote(",")))
                     .containsAll(Arrays.asList("linux", "functionapp")));
 
         PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
@@ -349,17 +351,20 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCRUDLinuxFunctionAppJava11() throws Exception {
         rgName2 = null;
 
+        String runtimeVersion = "~4";
+
         // function app with consumption plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName1)
             .withNewLinuxConsumptionPlan()
             .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
+            .withRuntimeVersion(runtimeVersion)
             .withHttpsOnly(true)
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11);
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11, runtimeVersion);
 
         assertRunning(functionApp1);
     }
@@ -399,21 +404,28 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, FunctionRuntimeStack stack) {
+        return assertLinuxJava(functionApp, stack, null);
+    }
+
+    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, FunctionRuntimeStack stack,
+                                                           String runtimeVersion) {
         Assertions.assertEquals(stack.getLinuxFxVersion(), functionApp.linuxFxVersion());
         Assertions
             .assertTrue(
                 Arrays
-                    .asList(functionApp.innerModel().kind().split(","))
+                    .asList(functionApp.innerModel().kind().split(Pattern.quote(",")))
                     .containsAll(Arrays.asList("linux", "functionapp")));
         Assertions.assertTrue(functionApp.innerModel().reserved());
 
         Map<String, AppSetting> appSettings = functionApp.getAppSettings();
         Assertions.assertNotNull(appSettings);
         Assertions.assertNotNull(appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE));
-        Assertions
-            .assertEquals(stack.runtime(), appSettings.get(KEY_FUNCTIONS_WORKER_RUNTIME).value());
-        Assertions
-            .assertEquals(stack.version(), appSettings.get(KEY_FUNCTIONS_EXTENSION_VERSION).value());
+        Assertions.assertEquals(
+            stack.runtime(),
+            appSettings.get(KEY_FUNCTIONS_WORKER_RUNTIME).value());
+        Assertions.assertEquals(
+            runtimeVersion == null ? stack.version() : runtimeVersion,
+            appSettings.get(KEY_FUNCTIONS_EXTENSION_VERSION).value());
 
         return appSettings;
     }
