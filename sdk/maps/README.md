@@ -17,5 +17,32 @@ See [API design][design] for general introduction on design and key concepts on 
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
+## Examples
+
+For examples of each module please see:
+- [Azure Maps Search Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-search/src/samples) 
+- [Azure Maps Route Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-route/src/samples)
+) 
+- [Azure Maps Render Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-render/src/samples)
+) 
+
+## Troubleshooting
+When you interact with the Azure Maps Services, errors returned by the Language service correspond to the same HTTP status codes returned for REST API requests.
+
+For example, if you search with an invalid coordinate, a error is returned, indicating "Bad Request".400
+
+## Next steps
+
+Several Azure Maps Java SDK samples are available to you in the SDK's GitHub repository.
+- [Azure Maps Search Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-search/src/samples) 
+- [Azure Maps Route Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-route/src/samples)
+) 
+- [Azure Maps Render Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-render/src/samples)
+)
+
+## Contributing
+
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+
 <!-- LINKS -->
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
