@@ -260,39 +260,39 @@ class AzureServiceBusProcessorClientConfigurationTests {
     @Test
     void autoStartupDisabledShouldNotConfigureLifecycleManager() {
         contextRunner
-                .withPropertyValues(
-                        "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
-                        "spring.cloud.azure.servicebus.processor.entity-type=queue",
-                        "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
-                        "spring.cloud.azure.servicebus.processor.auto-startup=false"
-                )
-                .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-                .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
-                .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
-                    assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
-                    assertThat(context).doesNotHaveBean(ServiceBusProcessorClientLifecycleManager.class);
-                });
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue",
+                "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.servicebus.processor.auto-startup=false"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
+                assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
+                assertThat(context).doesNotHaveBean(ServiceBusProcessorClientLifecycleManager.class);
+            });
     }
 
     @Test
     void externalProcessorBeanShouldConfigureLifecycleManager() {
         contextRunner
-                .withPropertyValues(
-                        "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
-                        "spring.cloud.azure.servicebus.processor.entity-type=queue",
-                        "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-                )
-                .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-                .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
-                .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
-                .withBean(ServiceBusProcessorClient.class, () -> mock(ServiceBusProcessorClient.class))
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
-                    assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
-                    assertThat(context).hasSingleBean(ServiceBusProcessorClientLifecycleManager.class);
-                });
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue",
+                "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .withBean(ServiceBusProcessorClient.class, () -> mock(ServiceBusProcessorClient.class))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
+                assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
+                assertThat(context).hasSingleBean(ServiceBusProcessorClientLifecycleManager.class);
+            });
     }
 
     private static class ServiceBusProcessorClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> {

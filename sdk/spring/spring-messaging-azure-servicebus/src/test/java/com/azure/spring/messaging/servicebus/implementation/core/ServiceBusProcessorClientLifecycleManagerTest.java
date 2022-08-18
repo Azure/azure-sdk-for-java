@@ -11,24 +11,24 @@ import static org.mockito.Mockito.verify;
 
 class ServiceBusProcessorClientLifecycleManagerTest {
 
-	private final ServiceBusProcessorClient processor = mock(ServiceBusProcessorClient.class);
-	private final ServiceBusProcessorClientLifecycleManager manager = new ServiceBusProcessorClientLifecycleManager(processor);
+    private final ServiceBusProcessorClient processor = mock(ServiceBusProcessorClient.class);
+    private final ServiceBusProcessorClientLifecycleManager manager = new ServiceBusProcessorClientLifecycleManager(processor);
 
-	@Test
-	void testStarting() {
-		manager.start();
-		verify(processor, times(1)).start();
-	}
+    @Test
+    void testStarting() {
+        manager.start();
+        verify(processor, times(1)).start();
+    }
 
-	@Test
-	void testStopping() {
-		manager.stop();
-		verify(processor, times(1)).stop();
-	}
+    @Test
+    void testStopping() {
+        manager.stop();
+        verify(processor, times(1)).stop();
+    }
 
-	@Test
-	void testIsRunning() {
-		manager.isRunning();
-		verify(processor, times(1)).isRunning();
-	}
+    @Test
+    void testIsRunning() {
+        manager.isRunning();
+        verify(processor, times(1)).isRunning();
+    }
 }
