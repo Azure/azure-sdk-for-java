@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServiceRoleInstances Restart. */
 public final class CloudServiceRoleInstancesRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Restart.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Restart.json
      */
     /**
      * Sample code: Restart Cloud Service Role Instance.

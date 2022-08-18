@@ -71,10 +71,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-/** Implementation of the ApplicationGateway interface. */
+/**
+ * Implementation of the ApplicationGateway interface.
+ */
 class ApplicationGatewayImpl
     extends GroupableParentResourceWithTagsImpl<
-        ApplicationGateway, ApplicationGatewayInner, ApplicationGatewayImpl, NetworkManager>
+    ApplicationGateway, ApplicationGatewayInner, ApplicationGatewayImpl, NetworkManager>
     implements ApplicationGateway, ApplicationGateway.Definition, ApplicationGateway.Update {
 
     private Map<String, ApplicationGatewayIpConfiguration> ipConfigs;
@@ -588,7 +590,7 @@ class ApplicationGatewayImpl
      *
      * @param byName object found by name
      * @param byPort object found by port
-     * @param name the desired name of the object
+     * @param name   the desired name of the object
      * @return CreationState
      */
     <T> CreationState needToCreate(T byName, T byPort, String name) {
@@ -812,6 +814,14 @@ class ApplicationGatewayImpl
             this.innerModel().withSku(new ApplicationGatewaySku().withCapacity(1));
         }
         this.innerModel().sku().withTier(skuTier);
+        if (skuTier == ApplicationGatewayTier.WAF_V2 && this.innerModel().webApplicationFirewallConfiguration() == null) {
+            this.innerModel().withWebApplicationFirewallConfiguration(
+                new ApplicationGatewayWebApplicationFirewallConfiguration()
+                    .withEnabled(true)
+                    .withFirewallMode(ApplicationGatewayFirewallMode.DETECTION)
+                    .withRuleSetType("OWASP")
+                    .withRuleSetVersion("3.0"));
+        }
         return this;
     }
 
@@ -976,11 +986,11 @@ class ApplicationGatewayImpl
                     .getDeclaredConstructor(innerClass, ApplicationGatewayImpl.class)
                     .newInstance(inner, this);
             } catch (InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException
-                | NoSuchMethodException
-                | SecurityException e1) {
+                     | IllegalAccessException
+                     | IllegalArgumentException
+                     | InvocationTargetException
+                     | NoSuchMethodException
+                     | SecurityException e1) {
                 return null;
             }
         } else {

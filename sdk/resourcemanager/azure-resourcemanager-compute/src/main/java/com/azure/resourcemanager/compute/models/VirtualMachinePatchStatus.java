@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class VirtualMachinePatchStatus {
     /*
-     * The available patch summary of the latest assessment operation for the
-     * virtual machine.
+     * The available patch summary of the latest assessment operation for the virtual machine.
      */
     @JsonProperty(value = "availablePatchSummary")
     private AvailablePatchSummary availablePatchSummary;
 
     /*
-     * The installation summary of the latest installation operation for the
-     * virtual machine.
+     * The installation summary of the latest installation operation for the virtual machine.
      */
     @JsonProperty(value = "lastPatchInstallationSummary")
     private LastPatchInstallationSummary lastPatchInstallationSummary;

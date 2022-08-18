@@ -7,17 +7,17 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Communication Services error. */
+/** The Communication Services error response. */
 @Fluent
 public final class CommunicationErrorResponse {
     /*
-     * The Communication Services error.
+     * The error property.
      */
     @JsonProperty(value = "error", required = true)
     private CommunicationError error;
 
     /**
-     * Get the error property: The Communication Services error.
+     * Get the error property: The error property.
      *
      * @return the error value.
      */
@@ -26,7 +26,7 @@ public final class CommunicationErrorResponse {
     }
 
     /**
-     * Set the error property: The Communication Services error.
+     * Set the error property: The error property.
      *
      * @param error the error value to set.
      * @return the CommunicationErrorResponse object itself.

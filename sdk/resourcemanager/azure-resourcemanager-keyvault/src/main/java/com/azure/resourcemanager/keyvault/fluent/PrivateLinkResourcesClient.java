@@ -21,7 +21,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault.
+     * @return the private link resources supported for the key vault along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
@@ -35,7 +36,7 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault.
+     * @return the private link resources supported for the key vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkResourceListResultInner> listByVaultAsync(String resourceGroupName, String vaultName);
@@ -62,7 +63,7 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the key vault.
+     * @return the private link resources supported for the key vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkResourceListResultInner> listByVaultWithResponse(

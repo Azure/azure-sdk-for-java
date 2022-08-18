@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.automation.fluent.RunbooksClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RunbooksClient. */
 public final class RunbooksClientImpl implements RunbooksClient {
-    private final ClientLogger logger = new ClientLogger(RunbooksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RunbooksService service;
 
@@ -92,7 +89,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
                 + "/automationAccounts/{automationAccountName}/runbooks/{runbookName}/content")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<String>> getContent(
+        Mono<Response<Flux<ByteBuffer>>> getContent(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -203,7 +200,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> publishWithResponseAsync(
@@ -231,7 +228,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -259,7 +256,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> publishWithResponseAsync(
@@ -287,7 +284,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,16 +308,17 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPublishAsync(
         String resourceGroupName, String automationAccountName, String runbookName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             publishWithResponseAsync(resourceGroupName, automationAccountName, runbookName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -333,9 +331,9 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPublishAsync(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         context = this.client.mergeContext(context);
@@ -355,9 +353,9 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPublish(
         String resourceGroupName, String automationAccountName, String runbookName) {
         return beginPublishAsync(resourceGroupName, automationAccountName, runbookName).getSyncPoller();
@@ -373,9 +371,9 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPublish(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return beginPublishAsync(resourceGroupName, automationAccountName, runbookName, context).getSyncPoller();
@@ -390,7 +388,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> publishAsync(String resourceGroupName, String automationAccountName, String runbookName) {
@@ -409,7 +407,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> publishAsync(
@@ -459,10 +457,10 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> getContentWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(
         String resourceGroupName, String automationAccountName, String runbookName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -487,7 +485,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "text/powershell";
         return FluxUtil
             .withContext(
@@ -515,10 +513,10 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> getContentWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> getContentWithResponseAsync(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -543,7 +541,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "text/powershell";
         context = this.client.mergeContext(context);
         return service
@@ -567,19 +565,13 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> getContentAsync(String resourceGroupName, String automationAccountName, String runbookName) {
+    private Mono<Flux<ByteBuffer>> getContentAsync(
+        String resourceGroupName, String automationAccountName, String runbookName) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -594,7 +586,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getContent(String resourceGroupName, String automationAccountName, String runbookName) {
+    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
         return getContentAsync(resourceGroupName, automationAccountName, runbookName).block();
     }
 
@@ -608,10 +600,10 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getContentWithResponse(
+    public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, runbookName, context).block();
     }
@@ -625,7 +617,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunbookInner>> getWithResponseAsync(
@@ -653,7 +645,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -681,7 +673,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunbookInner>> getWithResponseAsync(
@@ -709,7 +701,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -733,19 +725,12 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RunbookInner> getAsync(String resourceGroupName, String automationAccountName, String runbookName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap(
-                (Response<RunbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -774,7 +759,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunbookInner> getWithResponse(
@@ -793,7 +778,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunbookInner>> createOrUpdateWithResponseAsync(
@@ -829,7 +814,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -860,7 +845,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunbookInner>> createOrUpdateWithResponseAsync(
@@ -897,7 +882,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -924,7 +909,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RunbookInner> createOrUpdateAsync(
@@ -933,14 +918,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         String runbookName,
         RunbookCreateOrUpdateParametersInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, runbookName, parameters)
-            .flatMap(
-                (Response<RunbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -977,7 +955,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunbookInner> createOrUpdateWithResponse(
@@ -1001,7 +979,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunbookInner>> updateWithResponseAsync(
@@ -1037,7 +1015,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1067,7 +1045,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RunbookInner>> updateWithResponseAsync(
@@ -1104,7 +1082,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1130,7 +1108,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RunbookInner> updateAsync(
@@ -1139,14 +1117,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         String runbookName,
         RunbookUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, runbookName, parameters)
-            .flatMap(
-                (Response<RunbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1181,7 +1152,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type.
+     * @return definition of the runbook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunbookInner> updateWithResponse(
@@ -1203,7 +1174,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1231,7 +1202,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1259,7 +1230,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1287,7 +1258,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
         if (runbookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runbookName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1311,12 +1282,12 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String automationAccountName, String runbookName) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, runbookName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1344,7 +1315,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1360,7 +1331,8 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunbookInner>> listByAutomationAccountSinglePageAsync(
@@ -1385,7 +1357,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1420,7 +1392,8 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunbookInner>> listByAutomationAccountSinglePageAsync(
@@ -1445,7 +1418,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2018-06-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1476,7 +1449,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RunbookInner> listByAutomationAccountAsync(
@@ -1495,7 +1468,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RunbookInner> listByAutomationAccountAsync(
@@ -1513,7 +1486,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunbookInner> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
@@ -1529,7 +1502,7 @@ public final class RunbooksClientImpl implements RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RunbookInner> listByAutomationAccount(
@@ -1540,11 +1513,13 @@ public final class RunbooksClientImpl implements RunbooksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunbookInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1576,12 +1551,14 @@ public final class RunbooksClientImpl implements RunbooksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list runbook operation.
+     * @return the response model for the list runbook operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunbookInner>> listByAutomationAccountNextSinglePageAsync(

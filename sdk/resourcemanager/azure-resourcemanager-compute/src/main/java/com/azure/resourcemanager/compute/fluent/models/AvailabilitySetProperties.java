@@ -32,9 +32,8 @@ public final class AvailabilitySetProperties {
     private List<SubResource> virtualMachines;
 
     /*
-     * Specifies information about the proximity placement group that the
-     * availability set should be assigned to. <br><br>Minimum api-version:
-     * 2018-04-01.
+     * Specifies information about the proximity placement group that the availability set should be assigned to.
+     * <br><br>Minimum api-version: 2018-04-01.
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;

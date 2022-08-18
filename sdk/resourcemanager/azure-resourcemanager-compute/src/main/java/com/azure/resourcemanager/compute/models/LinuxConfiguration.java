@@ -27,18 +27,15 @@ public final class LinuxConfiguration {
     private SshConfiguration ssh;
 
     /*
-     * Indicates whether virtual machine agent should be provisioned on the
-     * virtual machine. <br><br> When this property is not specified in the
-     * request body, default behavior is to set it to true.  This will ensure
-     * that VM Agent is installed on the VM so that extensions can be added to
-     * the VM later.
+     * Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this
+     * property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM
+     * Agent is installed on the VM so that extensions can be added to the VM later.
      */
     @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /*
-     * [Preview Feature] Specifies settings related to VM Guest Patching on
-     * Linux.
+     * [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
      */
     @JsonProperty(value = "patchSettings")
     private LinuxPatchSettings patchSettings;

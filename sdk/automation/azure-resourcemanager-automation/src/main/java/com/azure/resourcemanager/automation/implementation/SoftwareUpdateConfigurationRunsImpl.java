@@ -14,11 +14,10 @@ import com.azure.resourcemanager.automation.fluent.models.SoftwareUpdateConfigur
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationRun;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationRunListResult;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationRuns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class SoftwareUpdateConfigurationRunsImpl implements SoftwareUpdateConfigurationRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftwareUpdateConfigurationRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationRunsImpl.class);
 
     private final SoftwareUpdateConfigurationRunsClient innerClient;
 

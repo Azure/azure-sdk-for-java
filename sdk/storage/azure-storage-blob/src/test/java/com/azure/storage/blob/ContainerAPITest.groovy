@@ -1811,7 +1811,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
-        blobItem.isPrefix() == (delimiter ? true : null)
+        blobItem.isPrefix() == delimiter
 
         where:
         delimiter | _
@@ -1903,10 +1903,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
-                .iterableByPage()) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE).iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }
@@ -1924,10 +1921,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
-                .iterableByPage(PAGE_RESULTS)) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE).iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }

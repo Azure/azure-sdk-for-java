@@ -39,8 +39,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private VpnType vpnType;
 
     /*
-     * The generation for this VirtualNetworkGateway. Must be None if
-     * gatewayType is not VPN.
+     * The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN.
      */
     @JsonProperty(value = "vpnGatewayGeneration")
     private VpnGatewayGeneration vpnGatewayGeneration;
@@ -52,8 +51,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean enableBgp;
 
     /*
-     * Whether private IP needs to be enabled on this gateway for connections
-     * or not.
+     * Whether private IP needs to be enabled on this gateway for connections or not.
      */
     @JsonProperty(value = "enablePrivateIpAddress")
     private Boolean enablePrivateIpAddress;
@@ -71,23 +69,21 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean disableIpSecReplayProtection;
 
     /*
-     * The reference to the LocalNetworkGateway resource which represents local
-     * network site having default routes. Assign Null value in case of
-     * removing existing default site setting.
+     * The reference to the LocalNetworkGateway resource which represents local network site having default routes.
+     * Assign Null value in case of removing existing default site setting.
      */
     @JsonProperty(value = "gatewayDefaultSite")
     private SubResource gatewayDefaultSite;
 
     /*
-     * The reference to the VirtualNetworkGatewaySku resource which represents
-     * the SKU selected for Virtual network gateway.
+     * The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network
+     * gateway.
      */
     @JsonProperty(value = "sku")
     private VirtualNetworkGatewaySku sku;
 
     /*
-     * The reference to the VpnClientConfiguration resource which represents
-     * the P2S VpnClient configurations.
+     * The reference to the VpnClientConfiguration resource which represents the P2S VpnClient configurations.
      */
     @JsonProperty(value = "vpnClientConfiguration")
     private VpnClientConfiguration vpnClientConfiguration;
@@ -99,9 +95,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private BgpSettings bgpSettings;
 
     /*
-     * The reference to the address space resource which represents the custom
-     * routes address space specified by the customer for virtual network
-     * gateway and VpnClient.
+     * The reference to the address space resource which represents the custom routes address space specified by the
+     * customer for virtual network gateway and VpnClient.
      */
     @JsonProperty(value = "customRoutes")
     private AddressSpace customRoutes;
@@ -125,15 +120,13 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean enableDnsForwarding;
 
     /*
-     * The IP address allocated by the gateway to which dns requests can be
-     * sent.
+     * The IP address allocated by the gateway to which dns requests can be sent.
      */
     @JsonProperty(value = "inboundDnsForwardingEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String inboundDnsForwardingEndpoint;
 
     /*
-     * Customer vnet resource id. VirtualNetworkGateway of type local gateway
-     * is associated with the customer vnet.
+     * Customer vnet resource id. VirtualNetworkGateway of type local gateway is associated with the customer vnet.
      */
     @JsonProperty(value = "vNetExtendedLocationResourceId")
     private String vNetExtendedLocationResourceId;

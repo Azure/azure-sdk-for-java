@@ -10,6 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceResourceTypes;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.Format;
@@ -19,6 +20,7 @@ import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentP
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import org.junit.jupiter.api.Assertions;
@@ -31,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
     private static final String SSH_KEY = sshPublicKey();
@@ -411,5 +414,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
         Assertions.assertTrue(kubernetesCluster.isAzureRbacEnabled());
         Assertions.assertTrue(kubernetesCluster.enableRBAC());
+    }
+
+    @Test
+    public void canListOrchestrators() {
+        List<OrchestratorVersionProfile> profiles = containerServiceManager.kubernetesClusters()
+            .listOrchestrators(Region.US_WEST3, ContainerServiceResourceTypes.MANAGED_CLUSTERS)
+            .stream().collect(Collectors.toList());
+        Assertions.assertFalse(profiles.isEmpty());
+        Assertions.assertEquals("Kubernetes", profiles.iterator().next().orchestratorType());
     }
 }

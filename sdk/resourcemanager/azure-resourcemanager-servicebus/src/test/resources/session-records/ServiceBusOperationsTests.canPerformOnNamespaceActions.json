@@ -1,33 +1,33 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceBus/CheckNameAvailability?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ServiceBus/CheckNameAvailability?api-version=2021-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.servicebus/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fd68b936-8785-4c85-810a-928ddee19085",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.servicebus/2.17.0 (11.0.15.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6b76efe0-ed71-4b35-928b-1364995ac9bd",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "53",
       "Server" : "Service-Bus-Resource-Provider/CH3,Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "b65d4e65-3048-450c-aa25-499986cd2da6",
-      "Date" : "Wed, 24 Mar 2021 07:12:48 GMT",
+      "x-ms-correlation-request-id" : "875344b0-8606-4408-8beb-2abdb72013ed",
+      "Date" : "Thu, 04 Aug 2022 07:51:00 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
       "Server-SB" : "Service-Bus-Resource-Provider/CH3",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210324T071248Z:b65d4e65-3048-450c-aa25-499986cd2da6",
+      "x-ms-routing-request-id" : "KOREASOUTH:20220804T075100Z:875344b0-8606-4408-8beb-2abdb72013ed",
       "Expires" : "-1",
-      "Content-Length" : "53",
-      "x-ms-request-id" : "594ccacb-242a-4eeb-b960-68d54ca79ea9_M6CH3_M6CH3",
+      "x-ms-request-id" : "15c024c9-b53e-412b-84db-002535d0a3f7_M0CH3_M0CH3",
       "Body" : "{\"nameAvailable\":true,\"reason\":\"None\",\"message\":null}",
-      "x-ms-client-request-id" : "fd68b936-8785-4c85-810a-928ddee19085",
+      "x-ms-client-request-id" : "6b76efe0-ed71-4b35-928b-1364995ac9bd",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "javasb229490499", "jvsbns05029b8" ]
+  "variables" : [ "javasb380181fbb", "jvsbns9464322" ]
 }

@@ -61,6 +61,10 @@ public final class ConfigurationProfileImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConfigurationProfileInner innerModel() {
         return this.innerObject;
     }

@@ -90,7 +90,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public byte[] getBinaryValue() {
+    public byte[] getBinary() {
         if (currentToken() == JsonToken.NULL) {
             return null;
         } else {
@@ -103,7 +103,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean getBooleanValue() {
+    public boolean getBoolean() {
         try {
             return parser.getBooleanValue();
         } catch (IOException e) {
@@ -112,7 +112,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public double getDoubleValue() {
+    public double getDouble() {
         try {
             return parser.getDoubleValue();
         } catch (IOException e) {
@@ -121,7 +121,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public float getFloatValue() {
+    public float getFloat() {
         try {
             return parser.getFloatValue();
         } catch (IOException e) {
@@ -130,7 +130,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public int getIntValue() {
+    public int getInt() {
         try {
             return parser.getIntValue();
         } catch (IOException e) {
@@ -139,7 +139,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public long getLongValue() {
+    public long getLong() {
         try {
             return parser.getLongValue();
         } catch (IOException e) {
@@ -148,7 +148,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public String getStringValue() {
+    public String getString() {
         try {
             return parser.getValueAsString();
         } catch (IOException e) {
@@ -204,13 +204,13 @@ public final class DefaultJsonReader extends JsonReader {
                 } else {
                     if (token == JsonToken.STRING) {
                         // String fields need to have quotes added.
-                        bufferedObject.append("\"").append(getStringValue()).append("\"");
+                        bufferedObject.append("\"").append(getString()).append("\"");
                     } else if (isStartArrayOrObject()) {
                         // Structures use readChildren.
                         readChildren(bufferedObject);
                     } else {
                         // All other value types use text value.
-                        bufferedObject.append(getTextValue());
+                        bufferedObject.append(getText());
                     }
 
                     // Comas should happen after a field value.

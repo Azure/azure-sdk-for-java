@@ -138,7 +138,8 @@
     "dir": "azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
-    "args": "--tag=package-2019-09"
+    "args": "--tag=package-2021-10",
+    "note": "use local azure-rest-api-specs and remove keys.json, secrets.json in README.md tag"
   },
   "keyvault-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-keyvault",
@@ -174,7 +175,7 @@
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--tag=package-2021-08 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener"
+    "args": "--tag=package-2022-01 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener"
   },
   "network-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-network",
@@ -198,7 +199,7 @@
     "dir": "azure-resourcemanager-privatedns",
     "source": "specification/privatedns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.privatedns",
-    "args": "--tag=package-2018-09"
+    "args": "--tag=package-2020-06"
   },
   "redis": {
     "dir": "azure-resourcemanager-redis",
@@ -235,8 +236,8 @@
     "dir": "azure-resourcemanager-servicebus",
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
-    "args": "--tag=package-2017-04",
-    "note": "Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInner', 'SBQueueInner', 'SBSubscriptionInner'"
+    "args": "--tag=package-2021-11",
+    "note": "1. Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInnerProperties', 'SBTopicInnerProperties', 'SBTopicInnerProperties'; 2. Change parent class of class 'SBTopicInner', 'SBQueueInner' and 'SBSubscriptionInner' to 'Resource', not 'ProxyResource'"
   },
   "sql": {
     "dir": "azure-resourcemanager-sql",
@@ -249,7 +250,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--tag=package-2021-09"
+    "args": "--tag=package-2022-05"
   },
   "storage-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-storage",

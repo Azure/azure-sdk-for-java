@@ -23,8 +23,7 @@ public final class DeletedAccountProperties {
     private String location;
 
     /*
-     * Can be used to attempt recovering this deleted account via
-     * PutStorageAccount API.
+     * Can be used to attempt recovering this deleted account via PutStorageAccount API.
      */
     @JsonProperty(value = "restoreReference", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreReference;

@@ -21,15 +21,13 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     private String name;
 
     /*
-     * Describes a virtual machines IP Configuration's PublicIPAddress
-     * configuration
+     * Describes a virtual machines IP Configuration's PublicIPAddress configuration
      */
     @JsonProperty(value = "properties")
     private VirtualMachinePublicIpAddressConfigurationProperties innerProperties;
 
     /*
-     * Describes the public IP Sku. It can only be set with OrchestrationMode
-     * as Flexible.
+     * Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
      */
     @JsonProperty(value = "sku")
     private PublicIpAddressSku sku;
