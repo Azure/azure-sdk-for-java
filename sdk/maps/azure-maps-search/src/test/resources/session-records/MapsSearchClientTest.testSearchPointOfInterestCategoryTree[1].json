@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.microsoft.com/search/poi/category/tree/json?api-version=1.0&language=pizza",
+    "Uri" : "https://REDACTED.microsoft.com/search/poi/category/tree/json?api-version=1.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
     },
