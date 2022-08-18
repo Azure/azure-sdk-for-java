@@ -11,7 +11,7 @@ import com.azure.core.exception.AzureException;
 public final class EvaluationOperationException extends AzureException {
 
     /**
-     * Constructs a new DocumentModelOperationException
+     * Constructs a new EvaluationOperationException
      *
      * @param jobStatus the PersonalizerEvaluationJobStatus of the failed job.
      */

@@ -14,7 +14,7 @@ import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
 import com.azure.ai.personalizer.models.PersonalizerLogProperties;
 import com.azure.ai.personalizer.models.PersonalizerModelProperties;
 import com.azure.ai.personalizer.models.PersonalizerPolicy;
-import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
+import com.azure.ai.personalizer.implementation.models.PersonalizerPolicyReferenceOptions;
 import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
