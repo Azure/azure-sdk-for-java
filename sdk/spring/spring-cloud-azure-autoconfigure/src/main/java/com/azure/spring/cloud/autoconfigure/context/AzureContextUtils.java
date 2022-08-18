@@ -58,12 +58,6 @@ public abstract class AzureContextUtils {
         "springCloudAzureEventHubsProducerClientBuilder";
 
     /**
-     * Service Bus processor client bean name.
-     */
-    public static final String SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME =
-            "springCloudAzureServiceBusProcessorClient";
-
-    /**
      * Azure global properties bean name.
      */
     public static final String AZURE_GLOBAL_PROPERTY_BEAN_NAME =

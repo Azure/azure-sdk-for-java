@@ -25,8 +25,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
-import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME;
-
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
@@ -40,7 +38,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SER
 class AzureServiceBusProcessorClientConfiguration {
 
     @Bean
-    @ConditionalOnBean(value = ServiceBusProcessorClient.class, name = SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME)
+    @ConditionalOnBean(ServiceBusProcessorClient.class)
     @ConditionalOnMissingBean(ServiceBusProcessorClientLifecycleManager.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
         matchIfMissing = true)
@@ -91,7 +89,7 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME)
+        @Bean()
         @ConditionalOnMissingBean
         public ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
@@ -141,7 +139,7 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME)
+        @Bean()
         @ConditionalOnMissingBean
         public ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder) {

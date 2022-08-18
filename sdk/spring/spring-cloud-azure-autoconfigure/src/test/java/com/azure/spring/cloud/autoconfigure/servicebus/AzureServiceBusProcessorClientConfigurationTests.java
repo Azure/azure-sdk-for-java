@@ -277,7 +277,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     }
 
     @Test
-    void externalProcessorBeanShouldNotConfigureLifecycleManager() {
+    void externalProcessorBeanShouldConfigureLifecycleManager() {
         contextRunner
                 .withPropertyValues(
                         "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
@@ -291,7 +291,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
                     assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
-                    assertThat(context).doesNotHaveBean(ServiceBusProcessorClientLifecycleManager.class);
+                    assertThat(context).hasSingleBean(ServiceBusProcessorClientLifecycleManager.class);
                 });
     }
 
