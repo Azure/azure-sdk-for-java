@@ -16,10 +16,10 @@ public class GsonJsonReader extends JsonReader {
     private static boolean initialized = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
     private static Class<?> gsonTokenEnum = null;
-    private static Class<?> gsonReaderClass = null;
 
     private static MethodHandle gsonReaderConstructor;
     private static MethodHandle peek;
+    private static MethodHandle close;
     private static MethodHandle beginObject;
     private static MethodHandle endObject;
     private static MethodHandle beginArray;
@@ -94,11 +94,12 @@ public class GsonJsonReader extends JsonReader {
     private static void initializeMethodHandles() {
         try {
             gsonTokenEnum = Class.forName("com.google.gson.stream.JsonToken");
-            gsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
+            Class<?> gsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
 
             MethodType voidMT = methodType(void.class);
             gsonReaderConstructor = publicLookup.findConstructor(gsonReaderClass, methodType(void.class, Reader.class));
             peek = publicLookup.findVirtual(gsonReaderClass, "peek", methodType(gsonTokenEnum));
+            close = publicLookup.findVirtual(gsonReaderClass, "close", voidMT);
             beginObject = publicLookup.findVirtual(gsonReaderClass, "beginObject", voidMT);
             endObject = publicLookup.findVirtual(gsonReaderClass, "endObject", voidMT);
             beginArray = publicLookup.findVirtual(gsonReaderClass, "beginArray", voidMT);
@@ -353,9 +354,13 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public void close() throws IOException {
         try {
-            publicLookup.findVirtual(gsonReaderClass, "close", methodType(Boolean.class)).invoke();
+            close.invoke();
         } catch (Throwable e) {
-            throw new IOException(e);
+            if (e instanceof IOException) {
+                throw new UncheckedIOException((IOException) e);
+            } else {
+                throw new RuntimeException(e);
+            }
         }
     }
 
