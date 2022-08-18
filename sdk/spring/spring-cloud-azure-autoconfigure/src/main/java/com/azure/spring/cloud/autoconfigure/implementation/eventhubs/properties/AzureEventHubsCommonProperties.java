@@ -9,12 +9,12 @@ import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConn
 /**
  * Azure Event Hubs related properties.
  */
-public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpConfigurationProperties {
+abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
     /**
      * The domain name of an Event Hub namespace.
      */
-    private String domainName = "servicebus.windows.net";
+    private String domainName;
     /**
      * The namespace of an event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
@@ -33,6 +33,11 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
      * intermediary. For example: https://my.custom.endpoint.com:55300.
      */
     private String customEndpointAddress;
+
+    AzureEventHubsCommonProperties() {
+        // if the profile has value, will make it impossible to merge between
+        this.profile.setCloudType(null);
+    }
 
     protected String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {

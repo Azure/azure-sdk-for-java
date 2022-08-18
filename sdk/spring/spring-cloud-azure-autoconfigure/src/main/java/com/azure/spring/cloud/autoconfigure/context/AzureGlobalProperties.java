@@ -10,9 +10,9 @@ import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingCo
 import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 

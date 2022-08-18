@@ -10,14 +10,14 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 /**
  *
  */
-public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
+abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
     // https://docs.microsoft.com/rest/api/servicebus/addressing-and-protocol
     /**
      * The domain name of a Service Bus namespace.
      */
-    private String domainName = "servicebus.windows.net";
+    private String domainName;
     /**
      * The namespace of a service bus, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
@@ -34,6 +34,10 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
      * The type of Service Bus entity, which is a Queue or a Topic.
      */
     private ServiceBusEntityType entityType;
+
+    AzureServiceBusCommonProperties() {
+        this.profile.setCloudType(null);
+    }
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
