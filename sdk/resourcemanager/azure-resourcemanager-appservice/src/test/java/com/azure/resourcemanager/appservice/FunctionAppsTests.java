@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -366,7 +365,6 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void canCRUDLinuxFunctionAppJava17() throws Exception {
         rgName2 = null;
 
