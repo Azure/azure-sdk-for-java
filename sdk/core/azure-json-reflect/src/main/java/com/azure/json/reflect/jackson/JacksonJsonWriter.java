@@ -1,11 +1,11 @@
-package com.azure.json.reflect.gson;
+package com.azure.json.reflect.jackson;
 
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
-public class JsonGsonWriter extends JsonWriter {
+public class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriteContext getWriteContext() {
         return null;
@@ -88,51 +88,6 @@ public class JsonGsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeRawValue(String value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeBinaryField(String fieldName, byte[] value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeBooleanField(String fieldName, boolean value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeDoubleField(String fieldName, double value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeFloatField(String fieldName, float value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeIntField(String fieldName, int value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeLongField(String fieldName, long value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeNullField(String fieldName) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeStringField(String fieldName, String value) {
-        return null;
-    }
-
-    @Override
-    public JsonWriter writeRawField(String fieldName, String value) {
         return null;
     }
 }
