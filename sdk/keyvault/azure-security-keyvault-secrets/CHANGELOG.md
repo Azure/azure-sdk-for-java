@@ -1,14 +1,9 @@
 # Release History
 
-## 4.5.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 4.4.6 (2022-08-17)
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed an issue where requests sent by sync clients that should include a body could have an empty body instead. ([#30512](https://github.com/Azure/azure-sdk-for-java/pull/30512))
 
 ## 4.4.5 (2022-08-15)
 
