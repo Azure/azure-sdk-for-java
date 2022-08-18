@@ -217,7 +217,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -246,7 +246,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp2);
-        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp2, FunctionRuntimeStack.JAVA_8);
 
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(functionApp2.appServicePlanId());
         Assertions.assertNotNull(plan2);
@@ -265,7 +265,7 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
                 .create();
         Assertions.assertNotNull(functionApp3);
-        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp3, FunctionRuntimeStack.JAVA_8);
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -309,8 +309,7 @@ public class FunctionAppsTests extends AppServiceTest {
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());
-        Assertions.assertTrue(plan1.innerModel().reserved());
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
 
         // wait for deploy
         if (!isPlaybackMode()) {
@@ -361,7 +360,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11);
 
         assertRunning(functionApp1);
     }
@@ -381,7 +380,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17.getLinuxFxVersion());
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17);
 
         assertRunning(functionApp1);
     }
@@ -401,8 +400,8 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
-    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {
-        Assertions.assertEquals(linuxFxVersion, functionApp.linuxFxVersion());
+    private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, FunctionRuntimeStack stack) {
+        Assertions.assertEquals(stack.getLinuxFxVersion(), functionApp.linuxFxVersion());
         Assertions
             .assertTrue(
                 Arrays
@@ -414,10 +413,9 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertNotNull(appSettings);
         Assertions.assertNotNull(appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE));
         Assertions
-            .assertEquals(FunctionRuntimeStack.JAVA_8.runtime(), appSettings.get(KEY_FUNCTIONS_WORKER_RUNTIME).value());
+            .assertEquals(stack.runtime(), appSettings.get(KEY_FUNCTIONS_WORKER_RUNTIME).value());
         Assertions
-            .assertEquals(
-                FunctionRuntimeStack.JAVA_8.version(), appSettings.get(KEY_FUNCTIONS_EXTENSION_VERSION).value());
+            .assertEquals(stack.version(), appSettings.get(KEY_FUNCTIONS_EXTENSION_VERSION).value());
 
         return appSettings;
     }
