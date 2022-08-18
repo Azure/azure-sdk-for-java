@@ -370,11 +370,11 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCRUDLinuxFunctionAppJava17() throws Exception {
         rgName2 = null;
 
-        // function app with dedicated plan
+        // function app with consumption plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName1)
-            .withNewLinuxAppServicePlan(PricingTier.PREMIUM_P1V3)
+            .withNewLinuxConsumptionPlan()
             .withBuiltInImage(FunctionRuntimeStack.JAVA_17)
             .withHttpsOnly(true)
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
