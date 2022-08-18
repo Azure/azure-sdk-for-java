@@ -51,6 +51,10 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
+        this(connectionId, hostname, linkName, entityPath, AmqpMetricsProvider.noop());
+    }
+
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");

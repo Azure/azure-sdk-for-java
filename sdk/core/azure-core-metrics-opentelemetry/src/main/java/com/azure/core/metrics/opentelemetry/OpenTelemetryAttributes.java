@@ -16,7 +16,7 @@ import java.util.Objects;
  * OpenTelemetry-specific implementation of {@link TelemetryAttributes}
  */
 class OpenTelemetryAttributes implements TelemetryAttributes {
-    private final static Map<String, String> ATTRIBUTE_MAPPING = getMappings();
+    private static final Map<String, String> ATTRIBUTE_MAPPING = getMappings();
 
     private static Map<String, String> getMappings() {
         Map<String, String> mappings = new HashMap<>();

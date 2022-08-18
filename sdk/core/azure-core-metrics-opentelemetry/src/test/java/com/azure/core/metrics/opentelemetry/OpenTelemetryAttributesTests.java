@@ -37,8 +37,8 @@ public class OpenTelemetryAttributesTests {
                 put("boolean", true);
                 put("double", 0.42d);
                 put("float", 4.2f);
-                put("short", (short)1);
-                put("byte", (byte)2);
+                put("short", (short) 1);
+                put("byte", (byte) 2);
                 put("int", 3);
                 put("unknown", this); // will be ignored
             }});
@@ -51,21 +51,22 @@ public class OpenTelemetryAttributesTests {
         assertEquals(42L, attributes.get(AttributeKey.longKey("long")));
         assertTrue(attributes.get(AttributeKey.booleanKey("boolean")));
         assertEquals(0.42d, attributes.get(AttributeKey.doubleKey("double")));
-        assertEquals(4.2d, attributes.get(AttributeKey.doubleKey("float")));
-        assertEquals(1, attributes.get(AttributeKey.doubleKey("short")));
-        assertEquals(2, attributes.get(AttributeKey.doubleKey("byte")));
-        assertEquals(3, attributes.get(AttributeKey.doubleKey("int")));
+        assertEquals(4.2d, attributes.get(AttributeKey.doubleKey("float")), 0.00001);
+        assertEquals(1, attributes.get(AttributeKey.longKey("short")));
+        assertEquals(2, attributes.get(AttributeKey.longKey("byte")));
+        assertEquals(3, attributes.get(AttributeKey.longKey("int")));
+
     }
 
     @Test
     public void attributeMappings() {
         TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {{
-            put("foobar", "value");
-            put("hostName", "host");
-            put("entityName", "entity");
-            put("entityPath", "path");
-            put("amqpError", "amqp::error::code");
-        }});
+                put("foobar", "value");
+                put("hostName", "host");
+                put("entityName", "entity");
+                put("entityPath", "path");
+                put("amqpError", "amqp::error::code");
+            }});
 
         assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
         Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
