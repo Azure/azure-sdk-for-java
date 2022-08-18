@@ -72,17 +72,6 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    /**
-     * Request a list of actions to be ranked.
-     *
-     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
-     * actions should be used by your application, in rewardActionId.
-     *
-     * @param rankRequest A Personalizer Rank request.
-     * @param context The context to associate with this operation.
-     * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
         if (rankRequest == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
@@ -126,17 +115,6 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    /**
-     * Send a reward for an event.
-     *
-     * <p>Report reward between 0 and 1 that resulted from using the action specified in rewardActionId, for the
-     * specified event.
-     *
-     * @param eventId The event id this reward applies to.
-     * @param rewardValue The reward should be a floating point number, typically between 0 and 1.
-     * @param context The context to associate with this operation.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<Void>> rewardWithResponse(String eventId, float rewardValue, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
@@ -178,16 +156,6 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    /**
-     * Activate Event.
-     *
-     * <p>Report that the specified event was actually used (e.g. by being displayed to the user) and a reward should be
-     * expected for it.
-     *
-     * @param eventId The event ID to be activated.
-     * @param context The context to associate with this operation.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<Void>> activateWithResponse(String eventId, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
@@ -229,16 +197,6 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    /**
-     * Post multi-slot Rank.
-     *
-     * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
-     * Returns which of the provided actions should be used in each slot, in each rewardActionId.
-     *
-     * @param rankRequest A Personalizer multi-slot Rank request.
-     * @param context The context to associate with this operation.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
         if (rankRequest == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
@@ -282,17 +240,6 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    /**
-     * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
-     * @param eventId The event id this reward applies to.
-     * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
-     * @param context The context to associate with this operation.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
@@ -337,16 +284,6 @@ public final class PersonalizerAsyncClient {
         }
     }
 
-    /**
-     * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
-     * @param eventId The event ID this activation applies to.
-     * @param context The context to associate with this operation.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<Void>> activateMultiSlotWithResponse(String eventId, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));

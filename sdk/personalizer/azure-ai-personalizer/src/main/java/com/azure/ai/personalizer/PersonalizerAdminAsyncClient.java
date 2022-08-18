@@ -78,87 +78,6 @@ public final class PersonalizerAdminAsyncClient {
         return createEvaluation(evaluationOptions, Context.NONE);
     }
 
-    PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> createEvaluation(
-        PersonalizerEvaluationOptions evaluationOptions,
-        Context context) {
-        return new PollerFlux<EvaluationOperationResult, PersonalizerEvaluation>(
-            Duration.ofMinutes(1),
-            createEvaluationInternal(evaluationOptions, context),
-            createEvaluationPollOperation(context),
-            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchEvaluationResultOperation(context));
-    }
-
-    Function<PollingContext<EvaluationOperationResult>, Mono<PersonalizerEvaluation>> fetchEvaluationResultOperation(
-        Context context) {
-        return (pollingContext) -> {
-            try {
-                final String evaluationId = pollingContext.getLatestResponse().getValue().getEvaluationId();
-                return service.getEvaluations().getAsync(evaluationId, context)
-                    .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<EvaluationOperationResult>, Mono<PollResponse<EvaluationOperationResult>>> createEvaluationPollOperation(Context context) {
-        return (pollingContext) -> {
-            try {
-                PollResponse<EvaluationOperationResult> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
-                String evaluationId = operationResultPollResponse.getValue().getEvaluationId();
-                return service.getEvaluations().getAsync(evaluationId, context)
-                    .flatMap(evaluationResponse ->
-                        processRunEvaluationResponse(evaluationResponse, operationResultPollResponse))
-                    .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
-            }  catch (HttpResponseException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Mono<PollResponse<EvaluationOperationResult>> processRunEvaluationResponse(
-        PersonalizerEvaluation getOperationResponse,
-        PollResponse<EvaluationOperationResult> evaluationOperationResponse) {
-        LongRunningOperationStatus status;
-        if (PENDING.equals(getOperationResponse.getStatus()) || NOT_SUBMITTED.equals(getOperationResponse.getStatus())) {
-            status = LongRunningOperationStatus.IN_PROGRESS;
-        } else if (COMPLETED.equals(getOperationResponse.getStatus()) || OPTIMAL_POLICY_APPLIED.equals(getOperationResponse.getStatus()) || ONLINE_POLICY_RETAINED.equals(getOperationResponse.getStatus())) {
-            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if (FAILED.equals(getOperationResponse.getStatus())) {
-            throw logger.logExceptionAsError(
-                Transforms.toEvaluationFailedException(getOperationResponse.getStatus()));
-        } else {
-            status = LongRunningOperationStatus.fromString(
-                getOperationResponse.getStatus().toString(), true);
-        }
-        return Mono.just(new PollResponse<>(status,
-            evaluationOperationResponse.getValue()));
-    }
-
-    private Function<PollingContext<EvaluationOperationResult>, Mono<EvaluationOperationResult>> createEvaluationInternal(
-        PersonalizerEvaluationOptions evaluationOptions, Context context) {
-        return (pollingContext) -> createEvaluationWithResponse(evaluationOptions, context)
-            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new EvaluationOperationResult().setEvaluationId(Utility.parseResultId(response.getDeserializedHeaders().getLocation())));
-    }
-
-    /**
-     * Submit a new Offline Evaluation job.
-     * @param evaluationOptions The Offline Evaluation job definition.
-     * @param context The context to associate with this operation.
-     * @throws NullPointerException thrown if evaluationOptions is null.
-     * @return a counterfactual evaluation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createEvaluationWithResponse(
-        PersonalizerEvaluationOptions evaluationOptions, Context context) {
-        Objects.requireNonNull(evaluationOptions, "'evaluationOptions' is required and can not be null.");
-        return service.getEvaluations().createWithResponseAsync(evaluationOptions, context)
-            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> response);
-    }
-
     /**
      * Get the Offline Evaluation associated with the Id.
      * @param evaluationId Id of the Offline Evaluation.
@@ -184,23 +103,6 @@ public final class PersonalizerAdminAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Get the Offline Evaluation associated with the Id.
-     * @param evaluationId Id of the Offline Evaluation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if the evaluationId is empty.
-     * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    Mono<Response<PersonalizerEvaluation>> getEvaluationWithResponse(String evaluationId, Context context) {
-        if (CoreUtils.isNullOrEmpty(evaluationId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null or empty"));
-        }
-        return service.getEvaluations().getWithResponseAsync(evaluationId, context)
-            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
@@ -230,31 +132,6 @@ public final class PersonalizerAdminAsyncClient {
     }
 
     /**
-     * Delete the Offline Evaluation associated with the Id.
-     * @param evaluationId Id of the Offline Evaluation to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if the evaluationId is empty.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    Mono<Response<Void>> deleteEvaluationWithResponse(String evaluationId, Context context) {
-        if (CoreUtils.isNullOrEmpty(evaluationId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null or empty"));
-        }
-        return service.getEvaluations().deleteWithResponseAsync(evaluationId, context)
-            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    /**
-     * List Offline Evaluations with paging.
-     * @param context The context to associate with this operation.
-     * @return List Evaluations along with {@link Response} on successful completion of {@link Mono}.
-     */
-    PagedFlux<PersonalizerEvaluation> getEvaluations(Context context) {
-        return new PagedFlux<>(() -> getEvaluationsSinglePageAsync(context), null);
-    }
-
-    /**
      * Get properties of the Personalizer logs.
      * @return properties of the Personalizer logs on successful completion of {@link Mono}.
      */
@@ -276,12 +153,7 @@ public final class PersonalizerAdminAsyncClient {
         }
     }
 
-    /**
-     * Get properties of the Personalizer logs.
-     * @param context The context to associate with this operation.
-     * @return properties of the Personalizer logs along with {@link Response} on successful completion of {@link Mono}.
-     */
-    public Mono<Response<PersonalizerLogProperties>> getLogsPropertiesWithResponse(Context context) {
+    Mono<Response<PersonalizerLogProperties>> getLogsPropertiesWithResponse(Context context) {
         return service.getLogs().getPropertiesWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -309,24 +181,6 @@ public final class PersonalizerAdminAsyncClient {
         }
     }
 
-    Mono<PagedResponse<PersonalizerEvaluation>> getEvaluationsSinglePageAsync(Context context) {
-        // return the service call wrapped in PagedResponseBase
-        return service.getEvaluations().listWithResponseAsync(context)
-            .map(
-                res -> new PagedResponseBase<>(
-                    res.getRequest(),
-                    res.getStatusCode(),
-                    res.getHeaders(),
-                    res.getValue(),
-                    "",
-                    null));
-    }
-
-    /**
-     * Delete all logs of Rank and Reward calls stored by Personalizer.
-     * @param context The context to associate with this operation.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
     Mono<Response<Void>> deleteLogsWithResponse(Context context) {
         return service.getLogs().deleteWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
@@ -413,25 +267,27 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceOptions Reference to the policy within the evaluation.
+     * @param evaluationId EvaluationId of the evaluation.
+     * @param policyName PolicyName of the policy within the evaluation.
      * @return the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> applyEvaluation(PersonalizerPolicyReferenceOptions policyReferenceOptions) {
-        return applyEvaluationWithResponse(policyReferenceOptions).flatMap(FluxUtil::toMono);
+    public Mono<Void> applyEvaluation(String evaluationId, String policyName) {
+        return applyEvaluationWithResponse(evaluationId, policyName).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceOptions Reference to the policy within the evaluation.
+     * @param evaluationId EvaluationId of the evaluation.
+     * @param policyName PolicyName of the policy within the evaluation.
      * @throws IllegalArgumentException thrown if policyReferenceOptions is empty.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions) {
+    public Mono<Response<Void>> applyEvaluationWithResponse(String evaluationId, String policyName) {
         try {
-            return withContext(context -> applyEvaluationWithResponse(policyReferenceOptions, context));
+            return withContext(context -> applyEvaluationWithResponse(evaluationId, policyName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -440,16 +296,24 @@ public final class PersonalizerAdminAsyncClient {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceOptions Reference to the policy within the evaluation.
+     * @param evaluationId EvaluationId of the evaluation.
+     * @param policyName PolicyName of the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if policyReferenceOptions is empty.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    Mono<Response<Void>> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions, Context context) {
-        if (policyReferenceOptions == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'policyReferenceOptions' is required and cannot be null"));
+    Mono<Response<Void>> applyEvaluationWithResponse(String evaluationId, String policyName, Context context) {
+        if (evaluationId == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null"));
         }
-        return service.getServiceConfigurations().applyFromEvaluationWithResponseAsync(policyReferenceOptions, context)
+        if (policyName == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'policyName' is required and cannot be null"));
+        }
+
+        PersonalizerPolicyReferenceOptions options = new PersonalizerPolicyReferenceOptions()
+            .setEvaluationId(evaluationId)
+            .setPolicyName(policyName);
+        return service.getServiceConfigurations().applyFromEvaluationWithResponseAsync(options, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -646,17 +510,6 @@ public final class PersonalizerAdminAsyncClient {
     }
 
     /**
-     * Resets the model file generated by Personalizer service.
-     * @param context The context to associate with this operation.
-     * @return {@link Response} on successful completion of {@link Mono}.
-     */
-    Mono<Response<Void>> resetModelWithResponse(Context context) {
-        return service.getModels().resetWithResponseAsync(context)
-            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    /**
      * Import the digitally signed model file. The input file is obtained by calling the exportModel api.
      * @param signedModel The signed model file.
      * @return completion of {@link Mono}.
@@ -680,15 +533,132 @@ public final class PersonalizerAdminAsyncClient {
         }
     }
 
-    /**
-     * Import the digitally signed model file. The input file is obtained by calling the exportModel api.
-     * @param signedModel The signed model file.
-     * @param context The context to associate with this operation.
-     * @return {@link Response} on successful completion of {@link Mono}.
-     */
+    Mono<Response<Void>> resetModelWithResponse(Context context) {
+        return service.getModels().resetWithResponseAsync(context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
     Mono<Response<Void>> importModelWithResponse(BinaryData signedModel, Context context) {
         return service.getModels().importMethodWithResponseAsync(signedModel, signedModel.getLength(), context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Get list of evaluations with paging.
+     * @return {@link PagedFlux} of {@link PersonalizerEvaluation}.
+     */
+    public PagedFlux<PersonalizerEvaluation> getEvaluations() {
+        return new PagedFlux<>(() -> getEvaluationsSinglePageAsync(Context.NONE), null);
+    }
+
+    PagedFlux<PersonalizerEvaluation> getEvaluations(Context context) {
+        return new PagedFlux<>(() -> getEvaluationsSinglePageAsync(context), null);
+    }
+
+    Mono<PagedResponse<PersonalizerEvaluation>> getEvaluationsSinglePageAsync(Context context) {
+        // return the service call wrapped in PagedResponseBase
+        return service.getEvaluations().listWithResponseAsync(context)
+            .map(
+                res -> new PagedResponseBase<>(
+                    res.getRequest(),
+                    res.getStatusCode(),
+                    res.getHeaders(),
+                    res.getValue(),
+                    "",
+                    null));
+    }
+
+    Mono<Response<PersonalizerEvaluation>> getEvaluationWithResponse(String evaluationId, Context context) {
+        if (CoreUtils.isNullOrEmpty(evaluationId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null or empty"));
+        }
+        return service.getEvaluations().getWithResponseAsync(evaluationId, context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
+    }
+
+    Mono<Response<Void>> deleteEvaluationWithResponse(String evaluationId, Context context) {
+        if (CoreUtils.isNullOrEmpty(evaluationId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null or empty"));
+        }
+        return service.getEvaluations().deleteWithResponseAsync(evaluationId, context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    Function<PollingContext<EvaluationOperationResult>, Mono<PollResponse<EvaluationOperationResult>>> createEvaluationPollOperation(Context context) {
+        return (pollingContext) -> {
+            try {
+                PollResponse<EvaluationOperationResult> operationResultPollResponse =
+                    pollingContext.getLatestResponse();
+                String evaluationId = operationResultPollResponse.getValue().getEvaluationId();
+                return service.getEvaluations().getAsync(evaluationId, context)
+                    .flatMap(evaluationResponse ->
+                        processRunEvaluationResponse(evaluationResponse, operationResultPollResponse))
+                    .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
+            }  catch (HttpResponseException ex) {
+                return monoError(logger, ex);
+            }
+        };
+    }
+
+    Mono<PollResponse<EvaluationOperationResult>> processRunEvaluationResponse(
+        PersonalizerEvaluation getOperationResponse,
+        PollResponse<EvaluationOperationResult> evaluationOperationResponse) {
+        LongRunningOperationStatus status;
+        if (PENDING.equals(getOperationResponse.getStatus()) || NOT_SUBMITTED.equals(getOperationResponse.getStatus())) {
+            status = LongRunningOperationStatus.IN_PROGRESS;
+        } else if (COMPLETED.equals(getOperationResponse.getStatus()) || OPTIMAL_POLICY_APPLIED.equals(getOperationResponse.getStatus()) || ONLINE_POLICY_RETAINED.equals(getOperationResponse.getStatus())) {
+            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (FAILED.equals(getOperationResponse.getStatus())) {
+            throw logger.logExceptionAsError(
+                Transforms.toEvaluationFailedException(getOperationResponse.getStatus()));
+        } else {
+            status = LongRunningOperationStatus.fromString(
+                getOperationResponse.getStatus().toString(), true);
+        }
+        return Mono.just(new PollResponse<>(status,
+            evaluationOperationResponse.getValue()));
+    }
+
+    Function<PollingContext<EvaluationOperationResult>, Mono<EvaluationOperationResult>> createEvaluationInternal(
+        PersonalizerEvaluationOptions evaluationOptions, Context context) {
+        return (pollingContext) -> createEvaluationWithResponse(evaluationOptions, context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> new EvaluationOperationResult().setEvaluationId(Utility.parseResultId(response.getDeserializedHeaders().getLocation())));
+    }
+
+    Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createEvaluationWithResponse(
+        PersonalizerEvaluationOptions evaluationOptions, Context context) {
+        Objects.requireNonNull(evaluationOptions, "'evaluationOptions' is required and can not be null.");
+        return service.getEvaluations().createWithResponseAsync(evaluationOptions, context)
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(response -> response);
+    }
+
+    PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> createEvaluation(
+        PersonalizerEvaluationOptions evaluationOptions,
+        Context context) {
+        return new PollerFlux<EvaluationOperationResult, PersonalizerEvaluation>(
+            Duration.ofMinutes(1),
+            createEvaluationInternal(evaluationOptions, context),
+            createEvaluationPollOperation(context),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchEvaluationResultOperation(context));
+    }
+
+    Function<PollingContext<EvaluationOperationResult>, Mono<PersonalizerEvaluation>> fetchEvaluationResultOperation(
+        Context context) {
+        return (pollingContext) -> {
+            try {
+                final String evaluationId = pollingContext.getLatestResponse().getValue().getEvaluationId();
+                return service.getEvaluations().getAsync(evaluationId, context)
+                    .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 }

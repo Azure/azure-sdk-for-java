@@ -5,10 +5,10 @@ package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
-import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.ai.personalizer.models.PersonalizerRankableAction;
+import com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerSlotReward;
 import com.azure.core.annotation.ReturnType;
@@ -37,13 +37,13 @@ public final class PersonalizerClient {
      * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
-     * @param rankRequest A Personalizer Rank request.
+     * @param rankOptions A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      *     of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerRankResult rank(PersonalizerRankOptions rankRequest) {
-        return rankWithResponse(rankRequest, Context.NONE).getValue();
+    public PersonalizerRankResult rank(PersonalizerRankOptions rankOptions) {
+        return rankWithResponse(rankOptions, Context.NONE).getValue();
     }
 
     /**
@@ -52,14 +52,14 @@ public final class PersonalizerClient {
      * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
-     * @param rankRequest A Personalizer Rank request.
+     * @param rankOptions A Personalizer Rank request.
      * @param context The context to associate with this operation.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      *     of a Rank request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
-        return client.rankWithResponse(rankRequest, context).block();
+    public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankOptions, Context context) {
+        return client.rankWithResponse(rankOptions, context).block();
     }
 
     /**
@@ -143,12 +143,12 @@ public final class PersonalizerClient {
      * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
      *
-     * @param rankRequest A Personalizer multi-slot Rank request.
+     * @param multiSlotOptions A Personalizer multi-slot Rank request.
      * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerRankMultiSlotResult rankMultiSlot(PersonalizerRankMultiSlotOptions rankRequest) {
-        return rankMultiSlotWithResponse(rankRequest, Context.NONE).getValue();
+    public PersonalizerRankMultiSlotResult rankMultiSlot(PersonalizerRankMultiSlotOptions multiSlotOptions) {
+        return rankMultiSlotWithResponse(multiSlotOptions, Context.NONE).getValue();
     }
 
     /**
@@ -157,13 +157,13 @@ public final class PersonalizerClient {
      * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
      *
-     * @param rankRequest A Personalizer multi-slot Rank request.
+     * @param multiSlotOptions A Personalizer multi-slot Rank request.
      * @param context The context to associate with this operation.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerRankMultiSlotResult> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
-        return client.rankMultiSlotWithResponse(rankRequest, context).block();
+    public Response<PersonalizerRankMultiSlotResult> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions multiSlotOptions, Context context) {
+        return client.rankMultiSlotWithResponse(multiSlotOptions, context).block();
     }
 
     /**
@@ -192,12 +192,12 @@ public final class PersonalizerClient {
      * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
-     * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically
+     * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically
      *                      between 0 and 1.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest) {
-        rewardMultiSlotWithResponse(eventId, rewardRequest, Context.NONE).getValue();
+    public void rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
+        rewardMultiSlotWithResponse(eventId, rewardMultiSlotOptions, Context.NONE).getValue();
     }
 
     /**
@@ -206,14 +206,14 @@ public final class PersonalizerClient {
      * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
-     * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically
+     * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically
      *                      between 0 and 1.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
-        return client.rewardMultiSlotWithResponse(eventId, rewardRequest, context).block();
+    public Response<Void> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
+        return client.rewardMultiSlotWithResponse(eventId, rewardMultiSlotOptions, context).block();
     }
 
     /**

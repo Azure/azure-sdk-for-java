@@ -203,7 +203,7 @@ public final class ServiceConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(
-        PersonalizerServiceProperties config, Context context) {
+            PersonalizerServiceProperties config, Context context) {
         final String accept = "application/json";
         return service.update(this.client.getEndpoint(), config, accept, context);
     }
@@ -271,7 +271,7 @@ public final class ServiceConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerServiceProperties> updateWithResponse(
-        PersonalizerServiceProperties config, Context context) {
+            PersonalizerServiceProperties config, Context context) {
         return updateWithResponseAsync(config, context).block();
     }
 

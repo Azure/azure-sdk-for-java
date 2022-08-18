@@ -105,8 +105,7 @@ public class RankTests extends PersonalizerTestBase {
     private void rankWithNoOptions(PersonalizerClient client) {
         List<Object> contextFeatures = new ArrayList<Object>() {
             {
-                add(new Object() { Object features = new Object() { String day = "tuesday"; String time = "night"; String weather = "rainy"; }; });
-                add(new Object() { Object features = new Object() { String userId = "tuesday"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });
+                add(new Object() { Object features = new Object() { String day = "tuesday"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });
             }
         };
 

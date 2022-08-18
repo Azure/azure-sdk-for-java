@@ -15,7 +15,7 @@ public class LogsTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void logTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerAdminClient client = getAdministrationClient(httpClient, serviceVersion, true);
+        PersonalizerAdminClient client = getAdministrationClient(httpClient, serviceVersion, false);
         deleteLogs(client);
         getLogProperties(client);
     }

@@ -8,7 +8,6 @@ import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
 import com.azure.ai.personalizer.models.PersonalizerLogProperties;
 import com.azure.ai.personalizer.models.PersonalizerModelProperties;
 import com.azure.ai.personalizer.models.PersonalizerPolicy;
-import com.azure.ai.personalizer.models.PersonalizerPolicyReferenceOptions;
 import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -100,7 +99,7 @@ public final class PersonalizerAdminClient {
 
     /**
      * List of Offline Evaluations with paging.
-     * @return Evaluations with paging.
+     * @return {@link PagedIterable} of {@link PersonalizerEvaluation}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PersonalizerEvaluation> getEvaluations() {
@@ -110,7 +109,7 @@ public final class PersonalizerAdminClient {
     /**
      * List of Offline Evaluations with paging.
      * @param context The context to associate with this operation.
-     * @return Evaluations with paging.
+     * @return {@link PagedIterable} of {@link PersonalizerEvaluation}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PersonalizerEvaluation> getEvaluations(Context context) {
@@ -200,24 +199,26 @@ public final class PersonalizerAdminClient {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceOptions Reference to the policy within the evaluation.
+     * @param evaluationId EvaluationId of the evaluation.
+     * @param policyName PolicyName of the policy within the evaluation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void applyEvaluation(PersonalizerPolicyReferenceOptions policyReferenceOptions) {
-        applyEvaluationWithResponse(policyReferenceOptions, Context.NONE).getValue();
+    public void applyEvaluation(String evaluationId, String policyName) {
+        applyEvaluationWithResponse(evaluationId, policyName, Context.NONE).getValue();
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     * @param policyReferenceOptions Reference to the policy within the evaluation.
+     * @param evaluationId EvaluationId of the evaluation.
+     * @param policyName PolicyName of the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if the policyReferenceOptions is empty.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> applyEvaluationWithResponse(PersonalizerPolicyReferenceOptions policyReferenceOptions, Context context) {
-        return client.applyEvaluationWithResponse(policyReferenceOptions, context).block();
+    public Response<Void> applyEvaluationWithResponse(String evaluationId, String policyName, Context context) {
+        return client.applyEvaluationWithResponse(evaluationId, policyName, context).block();
     }
 
     /**
