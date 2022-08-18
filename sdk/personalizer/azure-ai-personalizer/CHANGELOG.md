@@ -9,4 +9,4 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 - It uses the Personalizer service `v1.1-preview.3` API.
 - There are two clients:
     - `PersonalizerClient/PersonalizerAsyncClient` to rank, activate and reward the events. The data sent using this is used to score and train the model. 
-    - `PersonalizerAdminClient/PersonalizerAdminAsyncClient` manage configuration and run counterfactual evaluations.
+    - `PersonalizerAdministrationClient/PersonalizerAdministrationAsyncClient` manage configuration and run counterfactual evaluations.

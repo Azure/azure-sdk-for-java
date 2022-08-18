@@ -30,10 +30,10 @@ public abstract class PersonalizerTestBase extends TestBase {
         durationTestMode = interceptorManager.isPlaybackMode() ? ONE_NANO_DURATION : DEFAULT_POLL_INTERVAL;
     }
 
-    public PersonalizerAdminClientBuilder setBuilderProperties(PersonalizerAdminClientBuilder builder,
-                                                          HttpClient httpClient,
-                                                          PersonalizerServiceVersion serviceVersion,
-                                                          boolean isSingleSlot) {
+    public PersonalizerAdministrationClientBuilder setBuilderProperties(PersonalizerAdministrationClientBuilder builder,
+                                                                        HttpClient httpClient,
+                                                                        PersonalizerServiceVersion serviceVersion,
+                                                                        boolean isSingleSlot) {
         String endpoint = getEndpoint(isSingleSlot);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
@@ -97,7 +97,7 @@ public abstract class PersonalizerTestBase extends TestBase {
         HttpClient httpClient,
         PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
-        PersonalizerAdminClient adminClient = getAdministrationClient(httpClient, serviceVersion, isSingleSlot);
+        PersonalizerAdministrationClient adminClient = getAdministrationClient(httpClient, serviceVersion, isSingleSlot);
         if (!isSingleSlot) {
             enableMultiSlot(adminClient);
         }
@@ -106,15 +106,15 @@ public abstract class PersonalizerTestBase extends TestBase {
             .buildClient();
     }
 
-    protected PersonalizerAdminClientBuilder getAdministrationClientBuilder(
+    protected PersonalizerAdministrationClientBuilder getAdministrationClientBuilder(
         HttpClient httpClient,
         PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
-        PersonalizerAdminClientBuilder builder = new PersonalizerAdminClientBuilder();
+        PersonalizerAdministrationClientBuilder builder = new PersonalizerAdministrationClientBuilder();
         return setBuilderProperties(builder, httpClient, serviceVersion, isSingleSlot);
     }
 
-    protected PersonalizerAdminAsyncClient getAdministrationAsyncClient(
+    protected PersonalizerAdministrationAsyncClient getAdministrationAsyncClient(
         HttpClient httpClient,
         PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
@@ -122,7 +122,7 @@ public abstract class PersonalizerTestBase extends TestBase {
             .buildAsyncClient();
     }
 
-    protected PersonalizerAdminClient getAdministrationClient(
+    protected PersonalizerAdministrationClient getAdministrationClient(
         HttpClient httpClient,
         PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
@@ -130,7 +130,7 @@ public abstract class PersonalizerTestBase extends TestBase {
             .buildClient();
     }
 
-    private void enableMultiSlot(PersonalizerAdminClient adminClient) {
+    private void enableMultiSlot(PersonalizerAdministrationClient adminClient) {
         PersonalizerPolicy policy = adminClient.getPolicy();
         if (policy.getArguments().contains("--ccb_explore_adf")) {
             return;

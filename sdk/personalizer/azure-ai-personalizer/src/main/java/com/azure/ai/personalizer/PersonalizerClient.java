@@ -27,7 +27,14 @@ import java.util.List;
  *
  * <p><strong>Instantiating a synchronous Personalizer Client</strong></p>
  *
- * {@codesnippet com.azure.ai.personalizer.PersonalizerClient.instantiation}
+ * <!-- src_embed com.azure.ai.personalizer.PersonalizerClient.instantiation -->
+ * <pre>
+ * PersonalizerClient personalizerClient = new PersonalizerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.personalizer.PersonalizerClient.instantiation -->
  *
  * @see PersonalizerClientBuilder
  */

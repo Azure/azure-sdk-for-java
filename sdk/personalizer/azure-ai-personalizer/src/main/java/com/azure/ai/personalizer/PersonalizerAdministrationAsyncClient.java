@@ -56,17 +56,24 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Personalizer Admin Client</strong></p>
  *
- * {@codesnippet com.azure.ai.personalizer.PersonalizerAdminAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.personalizer.PersonalizerAdministrationAsyncClient.instantiation -->
+ * <pre>
+ * PersonalizerAdministrationAsyncClient adminClient = new PersonalizerAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.personalizer.PersonalizerAdministrationAsyncClient.instantiation -->
  *
- * @see PersonalizerAdminClientBuilder
+ * @see PersonalizerAdministrationClientBuilder
  */
 @ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = true)
-public final class PersonalizerAdminAsyncClient {
+public final class PersonalizerAdministrationAsyncClient {
 
     private final PersonalizerClientV1Preview3Impl service;
-    private final ClientLogger logger = new ClientLogger(PersonalizerAdminAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(PersonalizerAdministrationAsyncClient.class);
 
-    PersonalizerAdminAsyncClient(PersonalizerClientV1Preview3Impl service) {
+    PersonalizerAdministrationAsyncClient(PersonalizerClientV1Preview3Impl service) {
         this.service = service;
     }
 

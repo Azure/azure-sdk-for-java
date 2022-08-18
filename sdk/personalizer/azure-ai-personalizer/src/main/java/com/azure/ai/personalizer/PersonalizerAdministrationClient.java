@@ -24,16 +24,23 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating a synchronous Personalizer Admin Client</strong></p>
  *
- * {@codesnippet com.azure.ai.personalizer.PersonalizerAdminClient.instantiation}
+ * <!-- src_embed com.azure.ai.personalizer.PersonalizerAdministrationClient.instantiation -->
+ * <pre>
+ * PersonalizerAdministrationClient adminClient = new PersonalizerAdministrationClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.personalizer.PersonalizerAdministrationClient.instantiation -->
  *
- * @see PersonalizerAdminClientBuilder
+ * @see PersonalizerAdministrationClientBuilder
  */
 @ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = false)
-public final class PersonalizerAdminClient {
+public final class PersonalizerAdministrationClient {
 
-    private final PersonalizerAdminAsyncClient client;
+    private final PersonalizerAdministrationAsyncClient client;
 
-    PersonalizerAdminClient(PersonalizerAdminAsyncClient client) {
+    PersonalizerAdministrationClient(PersonalizerAdministrationAsyncClient client) {
         this.client = client;
     }
 

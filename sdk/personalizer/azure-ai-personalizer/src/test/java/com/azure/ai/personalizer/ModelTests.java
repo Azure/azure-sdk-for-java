@@ -16,7 +16,7 @@ public class ModelTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void modelTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerAdminClient client = getAdministrationClient(httpClient, serviceVersion, true);
+        PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
         exportModel(false, client);
         exportModel(true, client);
         getModelProperties(client);
@@ -26,25 +26,25 @@ public class ModelTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void exportImportModelTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerAdminClient client = getAdministrationClient(httpClient, serviceVersion, true);
+        PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
         BinaryData model = exportModel(true, client);
         importSignedModel(model, client);
     }
 
-    private BinaryData exportModel(boolean isSigned, PersonalizerAdminClient client) {
+    private BinaryData exportModel(boolean isSigned, PersonalizerAdministrationClient client) {
         return client.exportModel(isSigned);
     }
 
-    private void importSignedModel(BinaryData modelBody, PersonalizerAdminClient client) {
+    private void importSignedModel(BinaryData modelBody, PersonalizerAdministrationClient client) {
         client.importModel(modelBody);
     }
 
 
-    private void resetModel(PersonalizerAdminClient client) {
+    private void resetModel(PersonalizerAdministrationClient client) {
         client.resetModel();
     }
 
-    private void getModelProperties(PersonalizerAdminClient client) {
+    private void getModelProperties(PersonalizerAdministrationClient client) {
         PersonalizerModelProperties modelProperties = client.getModelProperties();
         assertTrue(modelProperties.getCreationTime() != null);
         assertTrue(modelProperties.getLastModifiedTime() != null);

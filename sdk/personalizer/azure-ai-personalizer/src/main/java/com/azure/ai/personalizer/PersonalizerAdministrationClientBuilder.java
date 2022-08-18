@@ -33,15 +33,15 @@ import java.util.Objects;
 
 
 /**
- * A builder for creating a new instance of PersonalizerAdminAsyncClient and PersonalizerAdminClient.
+ * A builder for creating a new instance of PersonalizerAdministrationAsyncClient and PersonalizerAdministrationClient.
  */
-@ServiceClientBuilder(serviceClients = {PersonalizerAdminAsyncClient.class, PersonalizerAdminClient.class})
-public final class PersonalizerAdminClientBuilder implements
-    AzureKeyCredentialTrait<PersonalizerAdminClientBuilder>,
-    ConfigurationTrait<PersonalizerAdminClientBuilder>,
-    EndpointTrait<PersonalizerAdminClientBuilder>,
-    HttpTrait<PersonalizerAdminClientBuilder>,
-    TokenCredentialTrait<PersonalizerAdminClientBuilder> {
+@ServiceClientBuilder(serviceClients = {PersonalizerAdministrationAsyncClient.class, PersonalizerAdministrationClient.class})
+public final class PersonalizerAdministrationClientBuilder implements
+    AzureKeyCredentialTrait<PersonalizerAdministrationClientBuilder>,
+    ConfigurationTrait<PersonalizerAdministrationClientBuilder>,
+    EndpointTrait<PersonalizerAdministrationClientBuilder>,
+    HttpTrait<PersonalizerAdministrationClientBuilder>,
+    TokenCredentialTrait<PersonalizerAdministrationClientBuilder> {
     private ClientLogger logger;
 
     protected void setLogger(ClientLogger logger) {
@@ -102,7 +102,7 @@ public final class PersonalizerAdminClientBuilder implements
     }
 
     @Override
-    public PersonalizerAdminClientBuilder endpoint(String endpoint) {
+    public PersonalizerAdministrationClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
@@ -121,31 +121,31 @@ public final class PersonalizerAdminClientBuilder implements
     }
 
     @Override
-    public PersonalizerAdminClientBuilder credential(AzureKeyCredential azureKeyCredential) {
+    public PersonalizerAdministrationClientBuilder credential(AzureKeyCredential azureKeyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
     }
 
     @Override
-    public PersonalizerAdminClientBuilder credential(TokenCredential tokenCredential) {
+    public PersonalizerAdministrationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 
     @Override
-    public PersonalizerAdminClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public PersonalizerAdministrationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
     }
 
     @Override
-    public PersonalizerAdminClientBuilder clientOptions(ClientOptions clientOptions) {
+    public PersonalizerAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
     @Override
-    public PersonalizerAdminClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public PersonalizerAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -157,7 +157,7 @@ public final class PersonalizerAdminClientBuilder implements
     }
 
     @Override
-    public PersonalizerAdminClientBuilder httpClient(HttpClient client) {
+    public PersonalizerAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -167,7 +167,7 @@ public final class PersonalizerAdminClientBuilder implements
     }
 
     @Override
-    public PersonalizerAdminClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public PersonalizerAdministrationClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -177,7 +177,7 @@ public final class PersonalizerAdminClientBuilder implements
     }
 
     @Override
-    public PersonalizerAdminClientBuilder configuration(Configuration configuration) {
+    public PersonalizerAdministrationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -186,15 +186,15 @@ public final class PersonalizerAdminClientBuilder implements
      * Set the retry policy to be used by the clients that are returned by this builder.
      *
      * @param retryPolicy The retry policy to be used when making network calls.
-     * @return the PersonalizerAdminClientBuilder object itself.
+     * @return the PersonalizerAdministrationClientBuilder object itself.
      */
-    public PersonalizerAdminClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public PersonalizerAdministrationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     @Override
-    public PersonalizerAdminClientBuilder retryOptions(RetryOptions retryOptions) {
+    public PersonalizerAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -203,9 +203,9 @@ public final class PersonalizerAdminClientBuilder implements
      * Set the service version to be used by the clients that are returned by this builder.
      *
      * @param version The service version to be used when calling Personalizer service.
-     * @return the PersonalizerAdminClientBuilder object itself.
+     * @return the PersonalizerAdministrationClientBuilder object itself.
      */
-    public PersonalizerAdminClientBuilder serviceVersion(PersonalizerServiceVersion version) {
+    public PersonalizerAdministrationClientBuilder serviceVersion(PersonalizerServiceVersion version) {
         this.version = version;
         return this;
     }
@@ -214,29 +214,29 @@ public final class PersonalizerAdminClientBuilder implements
      * Set the azure cloud to be used by the clients that are returned by this builder.
      *
      * @param audience The azure cloud that the Personalizer instance belongs to.
-     * @return the PersonalizerAdminClientBuilder object itself.
+     * @return the PersonalizerAdministrationClientBuilder object itself.
      */
-    public PersonalizerAdminClientBuilder audience(PersonalizerAudience audience) {
+    public PersonalizerAdministrationClientBuilder audience(PersonalizerAudience audience) {
         Objects.requireNonNull(audience, "'audience' is required and can not be null");
         this.audience = audience;
         return this;
     }
 
     /**
-     * Create a {@link PersonalizerAdminClient} object to invoke the Personalizer service.
+     * Create a {@link PersonalizerAdministrationClient} object to invoke the Personalizer service.
      *
      * @return the created object.
      */
-    public PersonalizerAdminClient buildClient() {
-        return new PersonalizerAdminClient(buildAsyncClient());
+    public PersonalizerAdministrationClient buildClient() {
+        return new PersonalizerAdministrationClient(buildAsyncClient());
     }
 
     /**
-     * Create a {@link PersonalizerAdminAsyncClient} object to invoke the Personalizer service in an asynchronous manner.
+     * Create a {@link PersonalizerAdministrationAsyncClient} object to invoke the Personalizer service in an asynchronous manner.
      *
      * @return the created object.
      */
-    public PersonalizerAdminAsyncClient buildAsyncClient() {
-        return new PersonalizerAdminAsyncClient(getService());
+    public PersonalizerAdministrationAsyncClient buildAsyncClient() {
+        return new PersonalizerAdministrationAsyncClient(getService());
     }
 }

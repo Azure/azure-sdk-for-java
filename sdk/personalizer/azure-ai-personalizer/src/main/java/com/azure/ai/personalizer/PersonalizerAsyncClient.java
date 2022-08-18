@@ -32,7 +32,14 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Personalizer Client</strong></p>
  *
- * {@codesnippet com.azure.ai.personalizer.PersonalizerAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.personalizer.PersonalizerAsyncClient.instantiation -->
+ * <pre>
+ * PersonalizerAsyncClient personalizerClient = new PersonalizerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.personalizer.PersonalizerAsyncClient.instantiation -->
  *
  * @see PersonalizerClientBuilder
  */

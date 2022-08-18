@@ -30,8 +30,8 @@ This table shows the relationship between SDK versions and supported API version
 |1.0.0-beta.1 | 1.1-preview.3
 
 ## Key concepts
-The [PersonalizerAdminClient][personalizer_admin_sync_client] and
-[PersonalizerAdminAsyncClient][personalizer_admin_async_client] provide both synchronous and asynchronous operations to:
+The [PersonalizerAdministrationClient][personalizer_admin_sync_client] and
+[PersonalizerAdministrationAsyncClient][personalizer_admin_async_client] provide both synchronous and asynchronous operations to:
 - Manage the machine learning model and learning settings for the Personalizer service.
 - Manage the properties of the Personalizer service such as the [learning mode][learning_mode], [exploration percentage][exploration].
 - Run counterfactual evaluations on prior historical event data.
@@ -64,8 +64,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [personalizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[personalizer_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAdminClient.java
-[personalizer_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAdminAsyncClient.java
+[personalizer_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAdministrationClient.java
+[personalizer_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAdministrationAsyncClient.java
 [personalizer_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerClient.java
 [personalizer_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAsyncClient.java
 [learning_mode]: https://docs.microsoft.com/en-us/azure/cognitive-services/personalizer/what-is-personalizer#learning-modes
