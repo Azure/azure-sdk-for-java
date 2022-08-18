@@ -51,18 +51,12 @@ extends:
             - name: azure-identity-providers-jdbc
               groupId: com.azure
               safeName: azureidentityprovidersjdbc
-              skipPublishDocMs: true
-              skipVerifyChangelog: true
               releaseInBatch: ${{ parameters.release_azureidentityprovidersjdbc }}
             - name: azure-identity-providers-jdbc-mysql
               groupId: com.azure
               safeName: azureidentityprovidersjdbcmysql
-              skipPublishDocMs: true
-              skipVerifyChangelog: true
               releaseInBatch: ${{ parameters.release_azureidentityprovidersjdbcmysql }}
             - name: azure-identity-providers-jdbc-postgresql
               groupId: com.azure
               safeName: azureidentityprovidersjdbcpostgresql
-              skipPublishDocMs: true
-              skipVerifyChangelog: true
               releaseInBatch: ${{ parameters.release_azureidentityprovidersjdbcpostgresql }}
