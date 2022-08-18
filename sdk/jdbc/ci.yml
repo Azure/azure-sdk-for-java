@@ -31,7 +31,7 @@ parameters:
       displayName: 'azure-identity-providers-jdbc'
       type: boolean
       default: true
-    - name: azureidentityprovidersjdbcmysql
+    - name: release_azureidentityprovidersjdbcmysql
       displayName: 'azure-identity-providers-jdbc-mysql'
       type: boolean
       default: true
