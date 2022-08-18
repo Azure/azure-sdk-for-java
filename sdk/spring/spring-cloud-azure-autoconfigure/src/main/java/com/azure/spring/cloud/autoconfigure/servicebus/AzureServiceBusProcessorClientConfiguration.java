@@ -15,7 +15,7 @@ import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceB
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
-import com.azure.spring.messaging.servicebus.implementation.core.ServiceBusProcessorClientSupport;
+import com.azure.spring.messaging.servicebus.implementation.core.ServiceBusProcessorClientLifecycleManager;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME;
 
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
@@ -37,12 +39,13 @@ import org.springframework.util.StringUtils;
 })
 class AzureServiceBusProcessorClientConfiguration {
 
-    @ConditionalOnBean(ServiceBusProcessorClient.class)
-    @ConditionalOnMissingBean(ServiceBusProcessorClientSupport.class)
+    @Bean
+    @ConditionalOnBean(value = ServiceBusProcessorClient.class, name = SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME)
+    @ConditionalOnMissingBean(ServiceBusProcessorClientLifecycleManager.class)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
         matchIfMissing = true)
-    ServiceBusProcessorClientSupport processorClientSupport(ServiceBusProcessorClient processorClient) {
-        return new ServiceBusProcessorClientSupport(processorClient);
+    ServiceBusProcessorClientLifecycleManager processorClientLifecycleManager(ServiceBusProcessorClient processorClient) {
+        return new ServiceBusProcessorClientLifecycleManager(processorClient);
     }
 
     @Configuration(proxyBeanMethods = false)
@@ -88,7 +91,7 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean
+        @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME)
         @ConditionalOnMissingBean
         public ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
@@ -138,7 +141,7 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean
+        @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BEAN_NAME)
         @ConditionalOnMissingBean
         public ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder) {

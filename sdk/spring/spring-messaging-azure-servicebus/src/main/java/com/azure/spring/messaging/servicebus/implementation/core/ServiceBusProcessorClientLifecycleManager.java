@@ -17,18 +17,18 @@ import java.util.Objects;
  * NOTE, there is not need to call {@link #start()} or {@link #stop()} explicitly, as the {@link ServiceBusProcessorClient} will be started and stopped automatically.
  * And since the {@link ServiceBusProcessorClient} is a {@link AutoCloseable}, there is no need to call {@link ServiceBusProcessorClient#close()} explicitly.
  */
-public class ServiceBusProcessorClientSupport implements SmartLifecycle {
-    private final Logger logger = LoggerFactory.getLogger(ServiceBusProcessorClientSupport.class);
+public class ServiceBusProcessorClientLifecycleManager implements SmartLifecycle {
+    private final Logger logger = LoggerFactory.getLogger(ServiceBusProcessorClientLifecycleManager.class);
     /**
      * The {@link ServiceBusProcessorClient} to be controlled.
      */
     private final ServiceBusProcessorClient processorClient;
 
     /**
-     * Construct the {@link ServiceBusProcessorClientSupport} with the {@link ServiceBusProcessorClient}.
+     * Construct the {@link ServiceBusProcessorClientLifecycleManager} with the {@link ServiceBusProcessorClient}.
      * @param processorClient
      */
-    public ServiceBusProcessorClientSupport(ServiceBusProcessorClient processorClient) {
+    public ServiceBusProcessorClientLifecycleManager(ServiceBusProcessorClient processorClient) {
         Objects.requireNonNull(processorClient);
         this.processorClient = processorClient;
     }
