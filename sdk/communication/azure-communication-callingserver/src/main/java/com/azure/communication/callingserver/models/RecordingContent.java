@@ -5,7 +5,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecordingContent. */
@@ -22,7 +21,6 @@ public final class RecordingContent extends ExpandableStringEnum<RecordingConten
      * @param name a name to look for.
      * @return the corresponding RecordingContent.
      */
-    @JsonCreator
     public static RecordingContent fromString(String name) {
         return fromString(name, RecordingContent.class);
     }
