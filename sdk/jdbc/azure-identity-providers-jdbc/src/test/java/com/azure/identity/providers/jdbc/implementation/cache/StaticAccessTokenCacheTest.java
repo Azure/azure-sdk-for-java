@@ -1,5 +1,7 @@
-package com.azure.identity.providers.jdbc.implementation.cache;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.identity.providers.jdbc.implementation.cache;
 
 import com.azure.core.credential.AccessToken;
 import org.junit.jupiter.api.Assertions;

@@ -43,19 +43,14 @@ class SpringTokenCredentialProviderTest {
     void testCustomizedCredentialBean() {
         ApplicationContext context = mock(ApplicationContext.class);
         TokenCredential credential = mock(TokenCredential.class);
-        when(context.getBean(CUSTOMIZED_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class)).thenReturn(credential);
-
-        SpringTokenCredentialProvider provider01 = new SpringTokenCredentialProvider(null);
-        provider01.setApplicationContext(context);
-        assertTrue(provider01.get() instanceof DefaultAzureCredential);
-        assertNotEquals(credential, provider01.get());
 
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         options.setTokenCredentialBeanName(CUSTOMIZED_TOKEN_CREDENTIAL_BEAN_NAME);
+        when(context.getBean(CUSTOMIZED_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class)).thenReturn(credential);
 
-        SpringTokenCredentialProvider provider02 = new SpringTokenCredentialProvider(options);
-        provider02.setApplicationContext(context);
-        assertEquals(credential, provider02.get());
+        SpringTokenCredentialProvider provider = new SpringTokenCredentialProvider(options);
+        provider.setApplicationContext(context);
+        assertEquals(credential, provider.get());
     }
 
     @Test
