@@ -38,7 +38,7 @@ public class ConfigurationTests extends PersonalizerTestBase {
     }
 
     private void testGetProperties(PersonalizerAdministrationClient client, PersonalizerServiceProperties properties) {
-        PersonalizerServiceProperties result = client.getProperties();
+        PersonalizerServiceProperties result = client.getServiceProperties();
         assertEquals(properties.getDefaultReward(), result.getDefaultReward());
         assertTrue(Math.abs(properties.getExplorationPercentage() - result.getExplorationPercentage()) < 1e-3);
         assertEquals(properties.getModelExportFrequency(), result.getModelExportFrequency());

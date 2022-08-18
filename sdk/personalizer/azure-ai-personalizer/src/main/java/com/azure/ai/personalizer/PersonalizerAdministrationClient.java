@@ -3,6 +3,7 @@
 
 package com.azure.ai.personalizer;
 
+import com.azure.ai.personalizer.models.EvaluationOperationResult;
 import com.azure.ai.personalizer.models.PersonalizerEvaluation;
 import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
 import com.azure.ai.personalizer.models.PersonalizerLogProperties;
@@ -16,6 +17,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Mono;
 
 /**
@@ -35,7 +37,7 @@ import reactor.core.publisher.Mono;
  *
  * @see PersonalizerAdministrationClientBuilder
  */
-@ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = false)
+@ServiceClient(builder = PersonalizerAdministrationClientBuilder.class, isAsync = false)
 public final class PersonalizerAdministrationClient {
 
     private final PersonalizerAdministrationAsyncClient client;
@@ -47,11 +49,11 @@ public final class PersonalizerAdministrationClient {
     /**
      * Submit a new Offline Evaluation job.
      * @param evaluationOptions The Offline Evaluation job definition.
-     * @return a counterfactual evaluation.
+     * @return a {@link SyncPoller} that will return counterfactual evaluation when polled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerEvaluation createEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
-        return createEvaluationWithResponse(evaluationOptions, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+        return beginCreateEvaluation(evaluationOptions, Context.NONE);
     }
 
     /**
@@ -59,11 +61,13 @@ public final class PersonalizerAdministrationClient {
      * @param evaluationOptions The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
      * @throws NullPointerException thrown if evaluationOptions is null.
-     * @return a counterfactual evaluation along with {@link Response}.
+     * @return a {@link SyncPoller} that will return counterfactual evaluation when polled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerEvaluation> createEvaluationWithResponse(PersonalizerEvaluationOptions evaluationOptions, Context context) {
-        return client.createEvaluationWithResponse(evaluationOptions, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions, Context context) {
+        return client
+            .beginCreateEvaluation(evaluationOptions, context)
+            .getSyncPoller();
     }
 
     /**
@@ -116,8 +120,8 @@ public final class PersonalizerAdministrationClient {
      * @return {@link PagedIterable} of {@link PersonalizerEvaluation}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PersonalizerEvaluation> getEvaluations() {
-        return getEvaluations(Context.NONE);
+    public PagedIterable<PersonalizerEvaluation> listEvaluations() {
+        return listEvaluations(Context.NONE);
     }
 
     /**
@@ -126,8 +130,8 @@ public final class PersonalizerAdministrationClient {
      * @return {@link PagedIterable} of {@link PersonalizerEvaluation}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PersonalizerEvaluation> getEvaluations(Context context) {
-        return new PagedIterable<>(client.getEvaluations(context));
+    public PagedIterable<PersonalizerEvaluation> listEvaluations(Context context) {
+        return new PagedIterable<>(client.listEvaluations(context));
     }
 
     /**
@@ -195,8 +199,8 @@ public final class PersonalizerAdministrationClient {
      * @return The properties of the personalizer service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerServiceProperties getProperties() {
-        return getPropertiesWithResponse(Context.NONE).getValue();
+    public PersonalizerServiceProperties getServiceProperties() {
+        return getServicePropertiesWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -205,8 +209,8 @@ public final class PersonalizerAdministrationClient {
      * @return The properties of the personalizer service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerServiceProperties> getPropertiesWithResponse(Context context) {
-        return client.getPropertiesWithResponse(context).block();
+    public Response<PersonalizerServiceProperties> getServicePropertiesWithResponse(Context context) {
+        return client.getServicePropertiesWithResponse(context).block();
     }
 
 

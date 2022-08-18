@@ -27,7 +27,7 @@ public class EvaluationTests extends PersonalizerTestBase {
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void listEvaluationsTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
-        client.getEvaluations();
+        client.listEvaluations();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -40,7 +40,7 @@ public class EvaluationTests extends PersonalizerTestBase {
             .setEndTime(OffsetDateTime.now().minusDays(1))
             .setPolicies(new ArrayList<PersonalizerPolicy>());
         PersonalizerAdministrationAsyncClient client = getAdministrationAsyncClient(httpClient, serviceVersion, true);
-        SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> syncPoller = client.createEvaluation(evaluationOptions).getSyncPoller();
+        SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> syncPoller = client.beginCreateEvaluation(evaluationOptions).getSyncPoller();
         syncPoller.waitForCompletion();
 
         PersonalizerEvaluation evaluationResult = syncPoller.getFinalResult();

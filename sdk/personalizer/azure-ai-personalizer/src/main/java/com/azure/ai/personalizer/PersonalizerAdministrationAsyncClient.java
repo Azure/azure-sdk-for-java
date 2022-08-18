@@ -67,7 +67,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * @see PersonalizerAdministrationClientBuilder
  */
-@ServiceClient(builder = PersonalizerClientBuilder.class, isAsync = true)
+@ServiceClient(builder = PersonalizerAdministrationClientBuilder.class, isAsync = true)
 public final class PersonalizerAdministrationAsyncClient {
 
     private final PersonalizerClientV1Preview3Impl service;
@@ -88,8 +88,8 @@ public final class PersonalizerAdministrationAsyncClient {
      * @throws NullPointerException thrown if evaluationOptions is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> createEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
-        return createEvaluation(evaluationOptions, Context.NONE);
+    public PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+        return beginCreateEvaluation(evaluationOptions, Context.NONE);
     }
 
     /**
@@ -248,8 +248,8 @@ public final class PersonalizerAdministrationAsyncClient {
      * @return The properties of the personalizer service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PersonalizerServiceProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+    public Mono<PersonalizerServiceProperties> getServiceProperties() {
+        return getServicePropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -258,9 +258,9 @@ public final class PersonalizerAdministrationAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerServiceProperties>> getPropertiesWithResponse() {
+    public Mono<Response<PersonalizerServiceProperties>> getServicePropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(context));
+            return withContext(context -> getServicePropertiesWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -272,7 +272,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * @return The properties of the personalizer service along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    Mono<Response<PersonalizerServiceProperties>> getPropertiesWithResponse(Context context) {
+    Mono<Response<PersonalizerServiceProperties>> getServicePropertiesWithResponse(Context context) {
         return service.getServiceConfigurations().getWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -563,15 +563,15 @@ public final class PersonalizerAdministrationAsyncClient {
      * Get list of evaluations with paging.
      * @return {@link PagedFlux} of {@link PersonalizerEvaluation}.
      */
-    public PagedFlux<PersonalizerEvaluation> getEvaluations() {
-        return new PagedFlux<>(() -> getEvaluationsSinglePageAsync(Context.NONE), null);
+    public PagedFlux<PersonalizerEvaluation> listEvaluations() {
+        return new PagedFlux<>(() -> listEvaluationsSinglePageAsync(Context.NONE), null);
     }
 
-    PagedFlux<PersonalizerEvaluation> getEvaluations(Context context) {
-        return new PagedFlux<>(() -> getEvaluationsSinglePageAsync(context), null);
+    PagedFlux<PersonalizerEvaluation> listEvaluations(Context context) {
+        return new PagedFlux<>(() -> listEvaluationsSinglePageAsync(context), null);
     }
 
-    Mono<PagedResponse<PersonalizerEvaluation>> getEvaluationsSinglePageAsync(Context context) {
+    Mono<PagedResponse<PersonalizerEvaluation>> listEvaluationsSinglePageAsync(Context context) {
         // return the service call wrapped in PagedResponseBase
         return service.getEvaluations().listWithResponseAsync(context)
             .map(
@@ -652,7 +652,7 @@ public final class PersonalizerAdministrationAsyncClient {
             .map(response -> response);
     }
 
-    PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> createEvaluation(
+    PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(
         PersonalizerEvaluationOptions evaluationOptions,
         Context context) {
         return new PollerFlux<EvaluationOperationResult, PersonalizerEvaluation>(

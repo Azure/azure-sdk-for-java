@@ -136,7 +136,7 @@ public abstract class PersonalizerTestBase extends TestBase {
             return;
         }
 
-        PersonalizerServiceProperties serviceProperties = adminClient.getProperties();
+        PersonalizerServiceProperties serviceProperties = adminClient.getServiceProperties();
         if (!serviceProperties.isAutoOptimizationEnabled()) {
             serviceProperties.setIsAutoOptimizationEnabled(false);
             adminClient.updateProperties(serviceProperties);
