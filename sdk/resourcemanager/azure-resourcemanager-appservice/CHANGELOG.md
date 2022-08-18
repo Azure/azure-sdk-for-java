@@ -4,18 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
 
 ## 2.17.0 (2022-07-25)
 
 ### Features Added
 
 - Supported `getDeploymentStatus` in `SupportsOneDeploy`.
-- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
 
 ### Breaking Changes
 

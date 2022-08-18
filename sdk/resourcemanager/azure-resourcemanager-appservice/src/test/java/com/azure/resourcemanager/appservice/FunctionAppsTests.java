@@ -371,7 +371,7 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCRUDLinuxFunctionAppJava17() throws Exception {
         rgName2 = null;
 
-        // function app with consumption plan
+        // function app with dedicated plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName1)
