@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.eventhubs.implementatin.core.config;
+package com.azure.spring.messaging.eventhubs.implementation.core.config;
 
 import com.azure.spring.messaging.eventhubs.implementation.core.annotation.EventHubsListener;
 import com.azure.spring.messaging.eventhubs.implementation.core.annotation.EventHubsListeners;

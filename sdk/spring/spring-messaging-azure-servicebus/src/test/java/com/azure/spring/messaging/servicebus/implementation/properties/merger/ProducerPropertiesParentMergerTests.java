@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.core.properties.merger;
+package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.messaging.servicebus.implementation.properties.merger.SenderPropertiesParentMerger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 
 public class ProducerPropertiesParentMergerTests {
     private final SenderPropertiesParentMerger merger = new SenderPropertiesParentMerger();
@@ -19,11 +22,17 @@ public class ProducerPropertiesParentMergerTests {
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
+        parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        parent.setDomainName("parent-domain");
 
         ProducerProperties result = merger.merge(child, parent);
 
         Assertions.assertEquals("parent-connection-str", result.getConnectionString());
         Assertions.assertEquals("parent-hostname", result.getProxy().getHostname());
+        Assertions.assertEquals(AZURE_US_GOVERNMENT, result.getProfile().getCloudType());
+        Assertions.assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
+            result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals("parent-domain", result.getDomainName());
     }
 
     @Test
@@ -32,15 +41,24 @@ public class ProducerPropertiesParentMergerTests {
         child.setConnectionString("child-connection-str");
         child.getProxy().setHostname("child-hostname");
         child.setEntityName("test");
+        child.getProfile().setCloudType(AZURE_CHINA);
+        child.setDomainName("child-domain");
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
+        parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        parent.setDomainName("parent-domain");
 
         ProducerProperties result = merger.merge(child, parent);
 
         Assertions.assertEquals("child-connection-str", result.getConnectionString());
         Assertions.assertEquals("child-hostname", result.getProxy().getHostname());
         Assertions.assertEquals("test", result.getEntityName());
+        Assertions.assertEquals("child-domain", result.getDomainName());
+        Assertions.assertEquals(AZURE_CHINA, result.getProfile().getCloudType());
+        Assertions.assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
+            result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
     }
+
 }
