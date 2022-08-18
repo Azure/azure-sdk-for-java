@@ -36,8 +36,6 @@ import com.azure.spring.cloud.config.implementation.properties.AppConfigurationP
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 public class AppConfigurationBootstrapConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBootstrapConfiguration.class);
-    
     @Autowired
     private transient ApplicationContext context;
 
@@ -89,7 +87,6 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
-     * @param env used to check it if it is a dev environment
      * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App
      * Configuration.
      * @param clientProviderOptional Optional client for overriding Client Connections to App Configuration stores.

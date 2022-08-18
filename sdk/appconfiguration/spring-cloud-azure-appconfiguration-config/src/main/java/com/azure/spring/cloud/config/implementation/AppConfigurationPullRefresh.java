@@ -23,9 +23,7 @@ import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 /**
  * Enables checking of Configuration updates.
@@ -36,8 +34,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
     private final AtomicBoolean running = new AtomicBoolean(false);
-
-    private final List<ConfigStore> configStores;
 
     private ApplicationEventPublisher publisher;
 
@@ -56,11 +52,10 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
      * minimum backoff time
      */
-    public AppConfigurationPullRefresh(AppConfigurationProperties properties,
-        AppConfigurationReplicaClientFactory clientFactory, Long defaultMinBackoff) {
+    public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
+        Long defaultMinBackoff) {
         this.defaultMinBackoff = defaultMinBackoff;
-        this.configStores = properties.getStores();
-        this.refreshInterval = properties.getRefreshInterval();
+        this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
 
     }
@@ -86,7 +81,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
      * unless value is less than the amount of time to the next refresh check.
      * @param endpoint Config Store endpoint to expire refresh interval on.
-     * @param syncToken syncToken to verify latest changes are available on pull
+     * @param syncToken syncToken to verify the latest changes are available on pull
      */
     public void expireRefreshInterval(String endpoint, String syncToken) {
         LOGGER.debug("Expiring refresh interval for " + endpoint);
@@ -111,7 +106,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
-
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory, configStores,
                     refreshInterval, profiles, defaultMinBackoff);
                 if (eventData.getDoRefresh()) {
@@ -136,7 +130,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
 
     @Override
     public void setEnvironment(Environment environment) {
-        Arrays.asList(environment.getActiveProfiles());
+        profiles = Arrays.asList(environment.getActiveProfiles());
     }
 
 }

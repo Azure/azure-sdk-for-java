@@ -68,34 +68,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     /**
-     * @param tokenCredentialProvider the tokenCredentialProvider to set
-     */
-    public void setTokenCredentialProvider(AppConfigurationCredentialProvider tokenCredentialProvider) {
-        this.tokenCredentialProvider = tokenCredentialProvider;
-    }
-
-    /**
-     * @param clientProvider the clientProvider to set
-     */
-    public void setClientProvider(ConfigurationClientBuilderSetup clientProvider) {
-        this.clientProvider = clientProvider;
-    }
-
-    /**
-     * @param isKeyVaultConfigured the isKeyVaultConfigured to set
-     */
-    public void setKeyVaultConfigured(boolean isKeyVaultConfigured) {
-        this.isKeyVaultConfigured = isKeyVaultConfigured;
-    }
-
-    /**
-     * @param clientId the clientId to set
-     */
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    /**
      * Given a connection string, returns the endpoint inside of it.
      * @param connectionString connection string to app configuration
      * @return endpoint
@@ -117,6 +89,41 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     /**
+     * @param tokenCredentialProvider the tokenCredentialProvider to set
+     */
+    public void setTokenCredentialProvider(AppConfigurationCredentialProvider tokenCredentialProvider) {
+        this.tokenCredentialProvider = tokenCredentialProvider;
+    }
+
+    /**
+     * @param clientProvider the clientProvider to set
+     */
+    public void setClientProvider(ConfigurationClientBuilderSetup clientProvider) {
+        this.clientProvider = clientProvider;
+    }
+
+    /**
+     * @param isDev the isDev to set
+     */
+    public void setDev(boolean isDev) {
+        this.isDev = isDev;
+    }
+
+    /**
+     * @param isKeyVaultConfigured the isKeyVaultConfigured to set
+     */
+    public void setKeyVaultConfigured(boolean isKeyVaultConfigured) {
+        this.isKeyVaultConfigured = isKeyVaultConfigured;
+    }
+
+    /**
+     * @param clientId the clientId to set
+     */
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    /**
      * Builds all the clients for a connection.
      * @throws IllegalArgumentException when more than 1 connection method is given.
      */
@@ -130,7 +137,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
             throw new IllegalArgumentException(
-                "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Connection method was set for connecting to App Configuration.");
         }
 
         TokenCredential tokenCredential = null;
@@ -146,10 +153,10 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         if ((tokenCredentialIsPresent || clientIdIsPresent)
             && connectionStringIsPresent) {
             throw new IllegalArgumentException(
-                "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Connection method was set for connecting to App Configuration.");
         } else if (tokenCredential != null && clientIdIsPresent) {
             throw new IllegalArgumentException(
-                "More than 1 Conncetion method was set for connecting to App Configuration.");
+                "More than 1 Connection method was set for connecting to App Configuration.");
         }
 
         ConfigurationClientBuilder builder = getBuilder();
@@ -191,7 +198,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 .clientId(clientId);
             builder.credential(micBuilder.build());
         } else {
-            // System Assigned Identity. Needs to be checked last as all of the above should have a Endpoint.
+            // System Assigned Identity. Needs to be checked last as all of the above should have an Endpoint.
             LOGGER.debug("Connecting to " + endpoint
                 + " using Azure System Assigned Identity or Azure User Assigned Identity.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();

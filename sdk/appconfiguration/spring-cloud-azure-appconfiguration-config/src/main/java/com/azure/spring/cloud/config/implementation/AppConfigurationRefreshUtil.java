@@ -104,8 +104,8 @@ class AppConfigurationRefreshUtil {
                 } else {
                     LOGGER.debug("Skipping feature flag refresh check for " + originEndpoint);
                 }
-            }
 
+            }
         } catch (Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
             StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, defaultMinBackoff);
@@ -115,7 +115,7 @@ class AppConfigurationRefreshUtil {
     }
 
     static boolean checkStoreAfterRefreshFailed(AppConfigurationReplicaClient client,
-        AppConfigurationReplicaClientFactory clientFactory, List<String> profiles) {
+        AppConfigurationReplicaClientFactory clientFactory, FeatureFlagStore featureStore, List<String> profiles) {
         return refreshStoreCheck(client, clientFactory.findOriginForEndpoint(client.getEndpoint()))
             || refreshStoreFeatureFlagCheck(featureStore, client, profiles);
     }
@@ -124,7 +124,9 @@ class AppConfigurationRefreshUtil {
      * This is for a <b>refresh fail only</b>.
      * @param configStores
      * @param originEndpoint
-     * @return
+     * @param client Client checking for refresh
+     * @param originEndpoint origin of the client
+     * @return A refresh should be triggered.
      */
     private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
         RefreshEventData eventData = new RefreshEventData();
@@ -139,7 +141,10 @@ class AppConfigurationRefreshUtil {
      * @param featureStore
      * @param clientFactory
      * @param profiles
-     * @return
+     * @param featureStore Feature info for the store
+     * @param client Client checking for refresh
+     * @param profiles Current configured profiles, can be used as labels.
+     * @return true if a refresh should be triggered.
      */
     private static boolean refreshStoreFeatureFlagCheck(FeatureFlagStore featureStore,
         AppConfigurationReplicaClient client, List<String> profiles) {
@@ -159,9 +164,8 @@ class AppConfigurationRefreshUtil {
      * Checks refresh trigger for etag changes. If they have changed a RefreshEventData is published.
      *
      * @param state The refresh state of the endpoint being checked.
-     * @param endpoint The App Config Endpoint being checked for refresh.
      * @param refreshInterval Amount of time to wait until next check of this endpoint.
-     * @return Refresh event was triggered. No other sources need to be checked.
+     * @param eventData Info for this refresh event.
      */
     private static void refreshWithTime(AppConfigurationReplicaClient client, State state, Duration refreshInterval,
         RefreshEventData eventData) throws AppConfigurationStatusException {
@@ -170,7 +174,8 @@ class AppConfigurationRefreshUtil {
             refreshWithoutTime(client, state.getWatchKeys(), eventData);
 
             if (eventData.getDoRefresh()) {
-                // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new
+                // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the
+                // new
                 // configurations.
                 StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
             }
@@ -180,10 +185,9 @@ class AppConfigurationRefreshUtil {
     /**
      * Checks refresh trigger for etag changes. If they have changed a RefreshEventData is published.
      *
-     * @param state The refresh state of the endpoint being checked.
-     * @param endpoint The App Config Endpoint being checked for refresh.
-     * @param refreshInterval Amount of time to wait until next check of this endpoint.
-     * @return Refresh event was triggered. No other sources need to be checked.
+     * @param client Client checking for refresh
+     * @param watchKeys Watch keys for the store.
+     * @param eventData Refresh event info
      */
     private static void refreshWithoutTime(AppConfigurationReplicaClient client,
         List<ConfigurationSetting> watchKeys, RefreshEventData eventData) throws AppConfigurationStatusException {
@@ -245,7 +249,7 @@ class AppConfigurationRefreshUtil {
                 }
             }
 
-            // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new
+            // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the new
             // configurations.
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
@@ -289,8 +293,6 @@ class AppConfigurationRefreshUtil {
                 eventData.setMessage(eventDataInfo);
             }
         }
-
-        return;
     }
 
     private static void checkETag(ConfigurationSetting watchSetting, ConfigurationSetting currentTriggerConfiguration,

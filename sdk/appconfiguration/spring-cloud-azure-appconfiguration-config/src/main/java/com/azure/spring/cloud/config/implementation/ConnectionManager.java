@@ -11,6 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
+<<<<<<< HEAD
+=======
+import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
+>>>>>>> afebced172d6914fd3335bcf193c158c13e96e70
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
@@ -39,6 +43,9 @@ public class ConnectionManager {
      * Creates a set of connections to a app configuration store.
      * @param clientBuilder
      * @param configStore Connection info for the store
+     * @param clientBuilder Builder for App Configuration Clients
+     * @param configStore Connection info for the store
+     * @param appProperties Properties for setting up the connection
      */
     ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore) {
         this.clientBuilder = clientBuilder;
@@ -69,17 +76,17 @@ public class ConnectionManager {
 
     /**
      * Returns a client.
-     * @return ConfiguraitonClient
+     * @return ConfigurationClient
      */
-    List<AppConfigurationReplicaClient> getAvalibleClients() {
-        return getAvalibleClients(false);
+    List<AppConfigurationReplicaClient> getAvailableClients() {
+        return getAvailableClients(false);
     }
 
     /**
      * Returns a client.
-     * @return ConfiguraitonClient
+     * @return ConfigurationClient
      */
-    List<AppConfigurationReplicaClient> getAvalibleClients(Boolean useCurrent) {
+    List<AppConfigurationReplicaClient> getAvailableClients(Boolean useCurrent) {
         if (clients == null) {
             clients = clientBuilder.buildClients(configStore);
 
@@ -88,11 +95,11 @@ public class ConnectionManager {
             }
         }
 
-        List<AppConfigurationReplicaClient> avalibleClients = new ArrayList<>();
+        List<AppConfigurationReplicaClient> availableClients = new ArrayList<>();
         boolean foundCurrent = !useCurrent;
 
         if (clients.size() == 1) {
-            avalibleClients.add(clients.get(0));
+            availableClients.add(clients.get(0));
         } else if (clients.size() > 0) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getEndpoint().equals(currentReplica)) {
@@ -100,17 +107,17 @@ public class ConnectionManager {
                 }
                 if (foundCurrent && replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
-                    avalibleClients.add(replicaClient);
+                    availableClients.add(replicaClient);
                 }
             }
-            if (avalibleClients.size() == 0) {
+            if (availableClients.size() == 0) {
                 this.health = AppConfigurationStoreHealth.DOWN;
             } else {
                 this.health = AppConfigurationStoreHealth.UP;
             }
         }
 
-        return avalibleClients;
+        return availableClients;
     }
 
     List<String> getAllEndpoints() {
@@ -134,8 +141,8 @@ public class ConnectionManager {
 
     /**
      * Updates the sync token of the client. Only works if no replicas are being used.
-     * 
-     * @param syncToken App Configuraiton sync token
+     *
+     * @param syncToken App Configuration sync token
      */
     void updateSyncToken(String syncToken) {
         // Currently sync tokens aren't supported in geo-replication
@@ -144,6 +151,14 @@ public class ConnectionManager {
         }
     }
 
+    AppConfigurationStoreMonitoring getMonitoring() {
+        return configStore.getMonitoring();
+    }
+
+    FeatureFlagStore getFeatureFlagStore() {
+        return configStore.getFeatureFlags();
+    }
+    
     AppConfigurationStoreMonitoring getMonitoring() {
         return configStore.getMonitoring();
     }

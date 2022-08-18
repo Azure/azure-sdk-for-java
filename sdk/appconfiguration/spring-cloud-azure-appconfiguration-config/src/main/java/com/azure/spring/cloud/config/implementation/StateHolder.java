@@ -126,14 +126,16 @@ final class StateHolder {
     }
 
     /**
-     * @param name the loadState name to set
+     * @param originEndpoint the configuration store connected to.
+     * @param loaded true if the configuration store was loaded.
      */
     void setLoadState(String originEndpoint, Boolean loaded) {
         loadState.put(originEndpoint, loaded);
     }
 
     /**
-     * @param name the loadState feature flag name to set
+     * @param originEndpoint the configuration store connected to.
+     * @param loaded true if the configuration store was loaded and uses feature flags.
      */
     void setLoadStateFeatureFlag(String originEndpoint, Boolean loaded) {
         setLoadState(originEndpoint + FEATURE_ENDPOINT, loaded);

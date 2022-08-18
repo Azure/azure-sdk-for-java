@@ -70,7 +70,8 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void buildClientFromEndpointTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
 
@@ -88,7 +89,8 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void buildClientFromEndpointWithTokenCredentialTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -111,8 +113,9 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void buildClientFromEndpointClientIdTest() {
-        String clientId = "1234-5678-9012-3456";
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, clientId, 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
+        clientBuilder.setClientId("1234-5678-9012-3456");
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -137,7 +140,8 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
 
@@ -156,7 +160,9 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void modifyClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, modifierMock, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
+        clientBuilder.setClientProvider(modifierMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -187,7 +193,8 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -213,7 +220,8 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
         Mockito.doReturn(builderMock).when(spy).getBuilder();
@@ -238,12 +246,13 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(tokenProviderMock, null, false, "", 0);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
+        clientBuilder.setTokenCredentialProvider(tokenProviderMock);
 
         String message = assertThrows(IllegalArgumentException.class,
             () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
 
-        assertEquals("More than 1 Conncetion method was set for connecting to App Configuration.", message);
+        assertEquals("More than 1 Connection method was set for connecting to App Configuration.", message);
     }
 
 }

@@ -27,7 +27,7 @@ public class StateHolderTest {
 
     private AppConfigurationProviderProperties providerProperties;
 
-    private List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+    private List<ConfigurationSetting> watchKeys = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -37,7 +37,7 @@ public class StateHolderTest {
         providerProperties.setDefaultMaxBackoff((long) 10);
         providerProperties.setDefaultMinBackoff((long) 0);
 
-        ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
+        ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinel").setValue("0").setETag("current");
 
         watchKeys.add(watchKey);
     }
@@ -87,10 +87,10 @@ public class StateHolderTest {
 
         StateHolder.updateState(expiredNegativeDurationStateHolder);
 
-        State originalExpireNagativeState = StateHolder.getState(endpoint);
+        State originalExpireNegativeState = StateHolder.getState(endpoint);
         expiredNegativeDurationStateHolder.expireState(endpoint);
         StateHolder.updateState(expiredNegativeDurationStateHolder);
-        assertEquals(originalExpireNagativeState, StateHolder.getState(endpoint));
+        assertEquals(originalExpireNegativeState, StateHolder.getState(endpoint));
     }
 
     private void updateNextRefreshTimeNoRefreshTest(TestInfo testInfo) {

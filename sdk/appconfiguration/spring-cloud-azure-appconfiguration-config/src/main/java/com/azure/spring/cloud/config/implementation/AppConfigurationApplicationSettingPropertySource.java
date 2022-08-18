@@ -72,8 +72,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * @throws JsonProcessingException 
-     * @throws IOException Thrown when failed to process Json Content type.
+     * @throws JsonProcessingException
      */
     public void initProperties() throws JsonProcessingException {
         List<String> labels = Arrays.asList(labelFilter);
@@ -143,7 +142,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
             }
             secretValue = secret.getValue();
         } catch (RuntimeException | IOException e) {
-            LOGGER.error("Error Retreiving Key Vault Entry");
+            LOGGER.error("Error Retrieving Key Vault Entry");
             ReflectionUtils.rethrowRuntimeException(e);
         }
         return secretValue;

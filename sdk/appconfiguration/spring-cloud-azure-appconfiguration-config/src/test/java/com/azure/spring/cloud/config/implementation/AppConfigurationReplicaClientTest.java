@@ -26,14 +26,14 @@ public class AppConfigurationReplicaClientTest {
 
     @Mock
     private HttpResponseException exceptionMock;
-    
+
     @Mock
     private HttpResponse responseMock;
-    
+
     @Mock
     private PagedIterable<ConfigurationSetting> settingsMock;
 
-    private String endpoint = "clienttest.azconfig.io";
+    private final String endpoint = "clienttest.azconfig.io";
 
     @BeforeEach
     public void setup() {
@@ -55,18 +55,18 @@ public class AppConfigurationReplicaClientTest {
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0"));
-        
+
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0"));
-        
+
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0"));
-        
+
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.getWatchKey("watch", "\0"));
     }
-    
+
     @Test
     public void listSettingsTest() {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
@@ -79,14 +79,14 @@ public class AppConfigurationReplicaClientTest {
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
-        
+
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
-        
+
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
-        
+
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector()));
     }
