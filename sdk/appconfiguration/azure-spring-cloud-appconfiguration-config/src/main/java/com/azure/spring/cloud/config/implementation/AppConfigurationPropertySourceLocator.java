@@ -20,7 +20,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
@@ -228,7 +227,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 .setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
 
-            PagedIterable<ConfigurationSetting> watchKeys = client.listConfigurationSettings(settingSelector);
+            List<ConfigurationSetting> watchKeys = client.listConfigurationSettings(settingSelector);
 
             watchKeys
                 .forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));

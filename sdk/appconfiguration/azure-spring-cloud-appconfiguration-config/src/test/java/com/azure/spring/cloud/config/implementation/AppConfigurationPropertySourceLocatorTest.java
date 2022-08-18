@@ -39,7 +39,6 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -111,7 +110,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationProperties properties;
 
     @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> configurationListMock;
 
     private AppConfigurationPropertySourceLocator locator;
 
@@ -169,12 +168,12 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(iteratorMock.next()).thenReturn(pagedMock);
         when(pagedMock.getItems()).thenReturn(new ArrayList<ConfigurationSetting>());
 
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator());
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator());
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true)))
             .thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         when(replicaClientMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         appProperties = new AppConfigurationProviderProperties();
