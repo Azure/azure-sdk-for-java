@@ -6,10 +6,12 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,10 +21,10 @@ import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientsBuilder;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientFactory;
 
 /**
  * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when
@@ -35,46 +37,29 @@ import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClien
 public class AppConfigurationBootstrapConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBootstrapConfiguration.class);
+    
+    @Autowired
+    private transient ApplicationContext context;
 
     /**
      *
      * @param properties Client properties
      * @param appProperties Library properties
      * @param clientFactory Store Connections
-     * @param keyVaultCredentialProviderOptional Optional credentials for connecting to KeyVault
-     * @param keyVaultClientProviderOptional Optional client for connecting to Key Vault
-     * @param keyVaultSecretProviderOptional Secret Resolver
      * @return AppConfigurationPropertySourceLocator
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
-        Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
-        Optional<KeyVaultSecretProvider> keyVaultSecretProviderOptional) throws IllegalArgumentException {
+        AppConfigurationProviderProperties appProperties,
+        AppConfigurationReplicaClientFactory clientFactory) throws IllegalArgumentException {
 
-        KeyVaultCredentialProvider keyVaultCredentialProvider = null;
-        SecretClientBuilderSetup keyVaultClientProvider = null;
-        KeyVaultSecretProvider keyVaultSecretProvider = null;
-
-        if (!keyVaultCredentialProviderOptional.isPresent()) {
-            LOGGER.debug("No KeyVaultCredentialProvider found.");
-        } else {
-            keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get();
-        }
-
-        if (!keyVaultClientProviderOptional.isPresent()) {
-            LOGGER.debug("No KeyVaultCredentialProvider found.");
-        } else {
-            keyVaultClientProvider = keyVaultClientProviderOptional.get();
-        }
-
-        if (!keyVaultSecretProviderOptional.isPresent()) {
-            LOGGER.debug("No KeyVaultSecretProvider found.");
-        } else {
-            keyVaultSecretProvider = keyVaultSecretProviderOptional.get();
-        }
+        KeyVaultCredentialProvider keyVaultCredentialProvider = context
+            .getBeanProvider(KeyVaultCredentialProvider.class).getIfAvailable();
+        SecretClientBuilderSetup keyVaultClientProvider = context.getBeanProvider(SecretClientBuilderSetup.class)
+            .getIfAvailable();
+        KeyVaultSecretProvider keyVaultSecretProvider = context.getBeanProvider(KeyVaultSecretProvider.class)
+            .getIfAvailable();
 
         if (keyVaultClientProvider != null && keyVaultSecretProvider != null) {
             throw new IllegalArgumentException(
@@ -90,14 +75,13 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param clientBuilder Builder for configuration clients
      * @param properties Client configurations for setting up connections to each config store.
-     * @param appProperties Library configurations for setting up connections to each config store.
      * @return AppConfigurationReplicaClientFactory
      */
     @Bean
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
-        AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
-        return new AppConfigurationReplicaClientFactory(clientBuilder, properties, appProperties);
+        AppConfigurationProperties properties) {
+        return new AppConfigurationReplicaClientFactory(clientBuilder, properties);
     }
 
     /**
@@ -116,34 +100,26 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientsBuilder replicaClientBuilder(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties,
-        Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
-        Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
-        Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
-        Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
+        AppConfigurationProviderProperties appProperties) {
 
-        AppConfigurationCredentialProvider tokenCredentialProvider = null;
-        ConfigurationClientBuilderSetup clientProvider = null;
+        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
+            appProperties.getMaxRetries());
 
-        if (!tokenCredentialProviderOptional.isPresent()) {
-            LOGGER.debug("No AppConfigurationCredentialProvider found.");
-        } else {
-            tokenCredentialProvider = tokenCredentialProviderOptional.get();
+        clientBuilder.setTokenCredentialProvider(
+            context.getBeanProvider(AppConfigurationCredentialProvider.class).getIfAvailable());
+        clientBuilder
+            .setClientProvider(context.getBeanProvider(ConfigurationClientBuilderSetup.class).getIfAvailable());
+        clientBuilder.setClientId(properties.getClientId());
+
+        KeyVaultCredentialProvider keyVaultCredentialProvider = context
+            .getBeanProvider(KeyVaultCredentialProvider.class).getIfAvailable();
+        SecretClientBuilderSetup keyVaultClientProvider = context.getBeanProvider(SecretClientBuilderSetup.class)
+            .getIfAvailable();
+
+        if (keyVaultCredentialProvider != null || keyVaultClientProvider != null) {
+            clientBuilder.setKeyVaultConfigured(true);
         }
 
-        if (!clientProviderOptional.isPresent()) {
-            LOGGER.debug("No AppConfigurationClientProvider found.");
-        } else {
-            clientProvider = clientProviderOptional.get();
-        }
-
-        boolean isKeyVaultConfigured = false;
-
-        if (keyVaultCredentialProviderOptional.isPresent() || keyVaultClientProviderOptional.isPresent()) {
-            isKeyVaultConfigured = true;
-        }
-
-        return new AppConfigurationReplicaClientsBuilder(tokenCredentialProvider, clientProvider, isKeyVaultConfigured,
-            properties.getClientId(), appProperties.getMaxRetries());
+        return clientBuilder;
     }
 }

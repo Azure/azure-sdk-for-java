@@ -2,16 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.util.StringUtils;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.util.StringUtils;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 final class JsonConfigurationParser {
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -41,15 +43,15 @@ final class JsonConfigurationParser {
         return false;
     }
 
-    static HashMap<String, Object> parseJsonSetting(ConfigurationSetting setting)
+    static Map<String, Object> parseJsonSetting(ConfigurationSetting setting)
         throws JsonProcessingException {
-        HashMap<String, Object> settings = new HashMap<>();
+        Map<String, Object> settings = new HashMap<>();
         JsonNode json = MAPPER.readTree(setting.getValue());
         parseSetting(setting.getKey(), json, settings);
         return settings;
     }
 
-    static void parseSetting(String currentKey, JsonNode currentValue, HashMap<String, Object> settings) {
+    static void parseSetting(String currentKey, JsonNode currentValue, Map<String, Object> settings) {
         switch (currentValue.getNodeType()) {
             case ARRAY:
                 for (int i = 0; i < currentValue.size(); i++) {

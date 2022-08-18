@@ -24,7 +24,7 @@ public class AppConfigurationReplicaClientFactory {
      * Sets up Connections to all configuration stores.
      * 
      * @param properties client properties
-     * @param appProperties library properties  
+     * @param appProperties library properties
      */
     public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
@@ -38,6 +38,20 @@ public class AppConfigurationReplicaClientFactory {
     }
 
     /**
+     * @return the connections
+     */
+    public Map<String, ConnectionManager> getConnections() {
+        return CONNECTIONS;
+    }
+
+    /**
+     * @return the configStores
+     */
+    List<ConfigStore> getConfigStores() {
+        return configStores;
+    }
+
+    /**
      * Returns the current used endpoint for a given config store.
      * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @return ConfigurationClient for accessing App Configuration
@@ -45,7 +59,7 @@ public class AppConfigurationReplicaClientFactory {
     List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
         return CONNECTIONS.get(originEndpoint).getAvalibleClients();
     }
-    
+
     /**
      * Returns the current used endpoint for a given config store.
      * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
@@ -118,7 +132,7 @@ public class AppConfigurationReplicaClientFactory {
     void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
         CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
     }
-    
+
     void updateSyncToken(String originEndpoint, String syncToken) {
         ConnectionManager manager = CONNECTIONS.get(originEndpoint);
         if (manager.getAllEndpoints().size() > 1) {

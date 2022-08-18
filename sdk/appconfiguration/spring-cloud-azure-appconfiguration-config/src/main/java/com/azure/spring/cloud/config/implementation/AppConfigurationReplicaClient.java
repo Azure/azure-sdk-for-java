@@ -78,7 +78,6 @@ class AppConfigurationReplicaClient {
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
-     * @param endpoint Endpoint of the App Configuration store to query against.
      * @return The first returned configuration.
      */
     ConfigurationSetting getWatchKey(String key, String label)
@@ -102,10 +101,9 @@ class AppConfigurationReplicaClient {
      * Gets a list of Configuration Settings from the given config store that match the Setting Selector criteria.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
-     * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
-    PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
+    PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector settingSelector)
         throws HttpResponseException, AppConfigurationStatusException {
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);

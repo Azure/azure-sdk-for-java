@@ -41,24 +41,24 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
 
     private ApplicationEventPublisher publisher;
 
-    private final AppConfigurationProviderProperties appProperties;
+    private final Long defaultMinBackoff;
 
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final Duration refreshInterval;
-    
+
     private List<String> profiles;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
      *
      * @param properties Client properties to check against.
-     * @param appProperties Library properties for configuring backoff
-     * @param clientFactory Clients stores used to connect to App Configuration.
+     * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
+     * minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
-        this.appProperties = appProperties;
+        AppConfigurationReplicaClientFactory clientFactory, Long defaultMinBackoff) {
+        this.defaultMinBackoff = defaultMinBackoff;
         this.configStores = properties.getStores();
         this.refreshInterval = properties.getRefreshInterval();
         this.clientFactory = clientFactory;
@@ -112,15 +112,15 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
 
-                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(appProperties,
-                    clientFactory, configStores, refreshInterval, profiles);
+                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory, configStores,
+                    refreshInterval, profiles, defaultMinBackoff);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;
                 }
             } catch (Exception e) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
+                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, defaultMinBackoff);
                 throw e;
             } finally {
                 running.set(false);

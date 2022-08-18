@@ -5,6 +5,7 @@ package com.azure.spring.cloud.config.implementation;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
@@ -29,9 +29,9 @@ class AppConfigurationRefreshUtil {
      *
      * @return If a refresh event is called.
      */
-    static RefreshEventData refreshStoresCheck(AppConfigurationProviderProperties appProperties,
-        AppConfigurationReplicaClientFactory clientFactory, List<ConfigStore> configStores, Duration refreshInterval,
-        List<String> profiles) {
+    static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
+        List<ConfigStore> configStores, Duration refreshInterval,
+        List<String> profiles, Long defaultMinBackoff) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
@@ -45,94 +45,89 @@ class AppConfigurationRefreshUtil {
                 eventData.setMessage(eventDataInfo);
             }
 
-            for (ConfigStore configStore : configStores) {
-                if (configStore.isEnabled()) {
-                    // For safety reset current used replica.
-                    clientFactory.setCurrentConfigStoreClient(configStore.getEndpoint(), configStore.getEndpoint());
+            for (Entry<String, ConnectionManager> entry : clientFactory.getConnections().entrySet()) {
+                String originEndpoint = entry.getKey();
+                ConnectionManager connection = entry.getValue();
+                // For safety reset current used replica.
+                clientFactory.setCurrentConfigStoreClient(originEndpoint, originEndpoint);
 
-                    String originEndpoint = configStore.getEndpoint();
-                    AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
+                AppConfigurationStoreMonitoring monitor = connection.getMonitoring();
 
-                    List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
+                List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
 
-                    if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
-                        for (AppConfigurationReplicaClient client : clients) {
-                            try {
-                                refreshWithTime(client, StateHolder.getState(originEndpoint), originEndpoint,
-                                    monitor.getRefreshInterval(), eventData);
-                                if (eventData.getDoRefresh()) {
-                                    clientFactory.setCurrentConfigStoreClient(configStore.getEndpoint(),
-                                        client.getEndpoint());
-                                    return eventData;
-                                }
-                                // If check didn't throw an error other clients don't need to be checked.
-                                break;
-                            } catch (AppConfigurationStatusException e) {
-                                LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                    + " durring refresh check.");
-
-                                clientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
-                                continue;
+                if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
+                    for (AppConfigurationReplicaClient client : clients) {
+                        try {
+                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(),
+                                eventData);
+                            if (eventData.getDoRefresh()) {
+                                clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
+                                return eventData;
                             }
+                            // If check didn't throw an error other clients don't need to be checked.
+                            break;
+                        } catch (AppConfigurationStatusException e) {
+                            LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
+                                + " durring refresh check.");
+
+                            clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
+                            continue;
                         }
-                    } else {
-                        LOGGER.debug("Skipping configuration refresh check for " + originEndpoint);
                     }
+                } else {
+                    LOGGER.debug("Skipping configuration refresh check for " + originEndpoint);
+                }
 
-                    FeatureFlagStore featureStore = configStore.getFeatureFlags();
+                FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
-                    if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(originEndpoint)) {
-                        for (AppConfigurationReplicaClient client : clients) {
-                            try {
-                                refreshWithTimeFeatureFlags(client, configStore.getFeatureFlags(),
-                                    StateHolder.getStateFeatureFlag(originEndpoint),
-                                    monitor.getFeatureFlagRefreshInterval(),
-                                    eventData, profiles);
-                                if (eventData.getDoRefresh()) {
-                                    clientFactory.setCurrentConfigStoreClient(configStore.getEndpoint(),
-                                        client.getEndpoint());
-                                    return eventData;
-                                }
-                                // If check didn't throw an error other clients don't need to be checked.
-                                break;
-                            } catch (AppConfigurationStatusException e) {
-                                LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                    + " durring refresh check.");
-
-                                clientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
-                                continue;
+                if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(originEndpoint)) {
+                    for (AppConfigurationReplicaClient client : clients) {
+                        try {
+                            refreshWithTimeFeatureFlags(client, featureStore,
+                                StateHolder.getStateFeatureFlag(originEndpoint),
+                                monitor.getFeatureFlagRefreshInterval(),
+                                eventData, profiles);
+                            if (eventData.getDoRefresh()) {
+                                clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
+                                return eventData;
                             }
+                            // If check didn't throw an error other clients don't need to be checked.
+                            break;
+                        } catch (AppConfigurationStatusException e) {
+                            LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
+                                + " durring refresh check.");
+
+                            clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
+                            continue;
                         }
-                    } else {
-                        LOGGER.debug("Skipping feature flag refresh check for " + originEndpoint);
                     }
+                } else {
+                    LOGGER.debug("Skipping feature flag refresh check for " + originEndpoint);
                 }
             }
+
         } catch (Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
-            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, appProperties);
+            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, defaultMinBackoff);
             throw e;
         }
         return eventData;
     }
 
-    static boolean checkStoreAfterRefreshFailed(ConfigStore configStore, AppConfigurationReplicaClient client,
+    static boolean checkStoreAfterRefreshFailed(AppConfigurationReplicaClient client,
         AppConfigurationReplicaClientFactory clientFactory, List<String> profiles) {
-        return refreshStoreCheck(client, clientFactory)
-            || refreshStoreFeatureFlagCheck(configStore, client, clientFactory, profiles);
+        return refreshStoreCheck(client, clientFactory.findOriginForEndpoint(client.getEndpoint()))
+            || refreshStoreFeatureFlagCheck(featureStore, client, profiles);
     }
 
     /**
      * This is for a <b>refresh fail only</b>.
      * @param configStores
-     * @param clientFactory
+     * @param originEndpoint
      * @return
      */
-    private static boolean refreshStoreCheck(AppConfigurationReplicaClient client,
-        AppConfigurationReplicaClientFactory clientFactory) {
+    private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
         RefreshEventData eventData = new RefreshEventData();
-        String endpoint = client.getEndpoint();
-        String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
         if (StateHolder.getLoadState(originEndpoint)) {
             refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData);
         }
@@ -141,17 +136,18 @@ class AppConfigurationRefreshUtil {
 
     /**
      * This is for a <b>refresh fail only</b>.
-     * @param configStores
+     * @param featureStore
      * @param clientFactory
+     * @param profiles
      * @return
      */
-    private static boolean refreshStoreFeatureFlagCheck(ConfigStore configStore, AppConfigurationReplicaClient client,
-        AppConfigurationReplicaClientFactory clientFactory, List<String> profiles) {
+    private static boolean refreshStoreFeatureFlagCheck(FeatureFlagStore featureStore,
+        AppConfigurationReplicaClient client, List<String> profiles) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
-        if (configStore.getFeatureFlags().getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint)) {
-            refreshWithoutTimeFeatureFlags(client, configStore.getFeatureFlags(),
+        if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint)) {
+            refreshWithoutTimeFeatureFlags(client, featureStore,
                 StateHolder.getStateFeatureFlag(endpoint).getWatchKeys(), eventData, profiles);
         } else {
             LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
@@ -167,8 +163,8 @@ class AppConfigurationRefreshUtil {
      * @param refreshInterval Amount of time to wait until next check of this endpoint.
      * @return Refresh event was triggered. No other sources need to be checked.
      */
-    private static void refreshWithTime(AppConfigurationReplicaClient client, State state, String endpoint,
-        Duration refreshInterval, RefreshEventData eventData) throws AppConfigurationStatusException {
+    private static void refreshWithTime(AppConfigurationReplicaClient client, State state, Duration refreshInterval,
+        RefreshEventData eventData) throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
 
             refreshWithoutTime(client, state.getWatchKeys(), eventData);
@@ -207,8 +203,7 @@ class AppConfigurationRefreshUtil {
 
     private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client,
         FeatureFlagStore featureStore, State state, Duration refreshInterval, RefreshEventData eventData,
-        List<String> profiles)
-        throws AppConfigurationStatusException {
+        List<String> profiles) throws AppConfigurationStatusException {
         Instant date = Instant.now();
         if (date.isAfter(state.getNextRefreshCheck())) {
 
@@ -258,9 +253,7 @@ class AppConfigurationRefreshUtil {
 
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
         FeatureFlagStore featureStore, List<ConfigurationSetting> watchKeys, RefreshEventData eventData,
-        List<String> profiles)
-        throws AppConfigurationStatusException {
-
+        List<String> profiles) throws AppConfigurationStatusException {
         for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
             SettingSelector selector = new SettingSelector().setKeyFilter(watchKey.getKeyFilter())
                 .setLabelFilter(watchKey.getLabelFilterText(profiles));

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
@@ -25,7 +26,6 @@ import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.stores.AppConfigurationSecretClientManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -43,7 +43,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
     private final AppConfigurationProperties appConfigurationProperties;
 
-    private final HashMap<String, AppConfigurationSecretClientManager> keyVaultClients;
+    private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
@@ -51,17 +51,17 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
-    private final AppConfigurationProviderProperties appProperties;
+    private final int maxRetryTime;
 
     AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient, String keyFilter,
         String[] labelFilter, AppConfigurationProperties appConfigurationProperties,
-        AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
+        int maxRetryTime, KeyVaultCredentialProvider keyVaultCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(originEndpoint, replicaClient, keyFilter, labelFilter);
         this.appConfigurationProperties = appConfigurationProperties;
-        this.appProperties = appProperties;
+        this.maxRetryTime = maxRetryTime;
         this.keyVaultClients = new HashMap<>();
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
@@ -98,7 +98,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                     }
                 } else if (StringUtils.hasText(setting.getContentType())
                     && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
-                    HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+                    Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
                         key = jsonSetting.getKey().trim().substring(keyFilter.length());
                         properties.put(key, jsonSetting.getValue());
@@ -137,7 +137,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                     keyVaultClientProvider, keyVaultSecretProvider);
                 keyVaultClients.put(uri.getHost(), client);
             }
-            KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
+            KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, maxRetryTime);
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }
