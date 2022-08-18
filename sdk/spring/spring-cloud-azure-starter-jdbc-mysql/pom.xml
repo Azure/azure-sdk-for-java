@@ -97,7 +97,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-mysql;current} -->
     </dependency>
   </dependencies>
 
