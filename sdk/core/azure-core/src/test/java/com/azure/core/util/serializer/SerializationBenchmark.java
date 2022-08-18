@@ -86,6 +86,10 @@ public class SerializationBenchmark {
         }
 
         @JsonAnyGetter
+        public Map<String, String> getAny() {
+            return any;
+        }
+
         @JsonAnySetter
         private Map<String, String> any;
     }

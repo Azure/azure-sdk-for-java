@@ -152,6 +152,24 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#exists()}
+     */
+    public void existsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.exists
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.exists
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.existsWithResponse
+    }
+
+    /**
      * Code snippet for {@link DataLakeFileSystemAsyncClient#setMetadata(Map)}
      */
     public void setMetadata() {
