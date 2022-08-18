@@ -36,8 +36,7 @@ public class EmailClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         assertNotNull(response.getMessageId());
@@ -68,8 +67,7 @@ public class EmailClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         assertNotNull(response.getMessageId());
@@ -99,8 +97,7 @@ public class EmailClientTests extends EmailTestBase {
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients)
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
             .setAttachments(attachmentList);
 
         SendEmailResult response = emailClient.send(emailMessage);
@@ -122,8 +119,7 @@ public class EmailClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         SendEmailResult sendEmailResult = emailClient.send(emailMessage);
         SendStatusResult sendStatusResult = emailClient.getSendStatus(sendEmailResult.getMessageId());

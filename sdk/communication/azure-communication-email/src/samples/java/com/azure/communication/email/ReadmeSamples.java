@@ -61,8 +61,7 @@ public class ReadmeSamples {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());
@@ -93,8 +92,7 @@ public class ReadmeSamples {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());
@@ -132,8 +130,7 @@ public class ReadmeSamples {
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-            .setRecipients(emailRecipients)
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients)
             .setAttachments(attachmentList);
 
         SendEmailResult response = emailClient.send(emailMessage);

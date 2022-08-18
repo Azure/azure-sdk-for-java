@@ -104,8 +104,7 @@ EmailRecipients emailRecipients = new EmailRecipients(addressList);
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-    .setRecipients(emailRecipients);
+EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
 SendEmailResult response = emailClient.send(emailMessage);
 System.out.println("Message Id: " + response.getMessageId());
@@ -136,8 +135,7 @@ EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-    .setRecipients(emailRecipients);
+EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
 SendEmailResult response = emailClient.send(emailMessage);
 System.out.println("Message Id: " + response.getMessageId());
@@ -174,8 +172,7 @@ EmailAttachment attachment = new EmailAttachment("attachment.txt", EmailAttachme
 ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
 attachmentList.add(attachment);
 
-EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-    .setRecipients(emailRecipients)
+EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients)
     .setAttachments(attachmentList);
 
 SendEmailResult response = emailClient.send(emailMessage);

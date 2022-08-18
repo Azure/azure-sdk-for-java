@@ -37,8 +37,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -72,8 +71,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -106,8 +104,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients)
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
             .setAttachments(attachmentList);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
