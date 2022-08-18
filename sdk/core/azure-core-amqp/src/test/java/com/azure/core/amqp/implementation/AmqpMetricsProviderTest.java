@@ -126,7 +126,7 @@ public class AmqpMetricsProviderTest {
         assertEquals("Accepted", measurement2.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
 
         TestMeasurement<Double> measurement3 = histogram.getMeasurements().get(2);
-        assertEquals("other", measurement3.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
+        assertEquals("unknown_error", measurement3.getAttributes().get(ClientConstants.AMQP_ERROR_KEY));
     }
 
     @Test

@@ -52,7 +52,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final String entityPath;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        this(connectionId, hostname, linkName, entityPath, AmqpMetricsProvider.noop());
+        this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(hostname, entityPath));
     }
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {

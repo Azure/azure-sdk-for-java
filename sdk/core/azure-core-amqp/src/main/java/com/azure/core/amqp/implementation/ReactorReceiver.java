@@ -45,6 +45,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
 public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoCloseable {
+    private static final Message EMPTY_MESSAGE = Proton.message();
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -70,7 +71,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
                               ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
                               AmqpRetryOptions retryOptions) {
-        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions, null);
+        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
+            new AmqpMetricsProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
     }
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
@@ -104,8 +106,10 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                 return;
                             }
                             final Message message = decodeDelivery(delivery);
-                            // TODO (lmolkova)  can this message represent a batch?
-                            metricsProvider.recordReceivedMessage();
+                            if (message.getBody() != null) {
+                                // ignore servicebus disposition replies
+                                metricsProvider.recordReceivedMessage();
+                            }
 
                             final int creditsLeft = receiver.getRemoteCredit();
 

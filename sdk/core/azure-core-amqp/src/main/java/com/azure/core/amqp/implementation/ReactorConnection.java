@@ -401,7 +401,7 @@ public class ReactorConnection implements AmqpConnection {
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer, senderSettleMode, receiverSettleMode))
+                messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath)))
             .doOnNext(e -> {
                 logger.atInfo()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)

@@ -63,7 +63,8 @@ public class ConnectionHandler extends Handler {
     @Deprecated
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
                              SslPeerDetails peerDetails) {
-        this(connectionId, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        this(connectionId, connectionOptions, peerDetails,
+            new AmqpMetricsProvider(connectionOptions.getFullyQualifiedNamespace(), null));
     }
 
     /**

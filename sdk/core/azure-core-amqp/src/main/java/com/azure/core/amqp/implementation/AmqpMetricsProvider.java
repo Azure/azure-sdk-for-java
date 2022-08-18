@@ -67,7 +67,7 @@ public class AmqpMetricsProvider {
             this.commonAttributes = meter.createAttributes(commonAttributesMap);
             this.sendDeliveryAttributeCache = new AttributeCache(meter, ClientConstants.AMQP_ERROR_KEY, commonAttributesMap);
             this.amqpErrorAttributeCache = new AttributeCache(meter, ClientConstants.AMQP_ERROR_KEY, commonAttributesMap);
-            this.sendDuration = meter.createDoubleHistogram("messaging.az.amqp.producer.send.duration", "Send AMQP message duration", "ms");
+            this.sendDuration = meter.createDoubleHistogram("messaging.az.amqp.client.duration", "AMQP request client call duration", "ms");
             this.activeConnections = meter.createLongUpDownCounter("messaging.az.amqp.client.connections.usage", "Active connections", "connections");
             this.closedConnections = meter.createLongCounter("messaging.az.amqp.client.connections.closed", "Closed connections", "connections");
             this.sessionErrors = meter.createLongCounter("messaging.az.amqp.client.session.errors", "AMQP session errors", "errors");
@@ -75,6 +75,10 @@ public class AmqpMetricsProvider {
             this.receivedMessages = meter.createLongCounter("messaging.az.amqp.consumer.messages.received", "Number of received messages", "messages");
             this.addCredits = meter.createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits", "credits");
         }
+    }
+
+    public AmqpMetricsProvider(String namespace, String entityPath) {
+        this(null, namespace, entityPath);
     }
 
     public static AmqpMetricsProvider noop() {
@@ -86,7 +90,7 @@ public class AmqpMetricsProvider {
      */
     public void recordSendDelivery(long start, DeliveryState.DeliveryStateType deliveryState) {
         if (isEnabled && sendDuration.isEnabled()) {
-            String deliveryStateStr = deliveryState != null ? deliveryState.toString() : "other";
+            String deliveryStateStr = deliveryState != null ? deliveryState.toString() : "unknown_error";
             TelemetryAttributes attributes = sendDeliveryAttributeCache.getOrCreate(deliveryStateStr);
             sendDuration.record(Instant.now().toEpochMilli() - start, attributes, Context.NONE);
         }

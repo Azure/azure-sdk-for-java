@@ -36,8 +36,10 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.context.Context;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -47,9 +49,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -101,6 +103,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     // The provider exposes ReactorDispatcher that can schedule such calls on the ReactorThread.
     private final ReactorProvider provider;
 
+    private final AmqpMetricsProvider metricsProvider;
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
@@ -122,7 +125,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
         AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode) {
+        ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider) {
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(LINK_NAME_KEY, linkName);
@@ -166,6 +169,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             linkName, entityPath);
         BaseHandler.setHandler(receiveLink, receiveLinkHandler);
 
+        this.metricsProvider = metricsProvider;
         // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
         //
         //@formatter:off
@@ -317,7 +321,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
 
         return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
-            .then(Mono.create(sink -> {
+            .then(trackSendMetric(Mono.create(sink -> {
                 try {
                     logger.atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
@@ -355,9 +359,25 @@ public class RequestResponseChannel implements AsyncCloseable {
                 } catch (IOException | RejectedExecutionException e) {
                     sink.error(e);
                 }
-            }));
+            })));
     }
 
+    private Mono<Message> trackSendMetric(Mono<Message> publisher) {
+        return publisher
+            .doOnEach(signal -> {
+                Object start = signal.getContextView().get("start");
+                if (!(start instanceof Long)) {
+                    return;
+                }
+
+                if (signal.hasError()) {
+                    metricsProvider.recordSendDelivery((Long) start, null);
+                } else {
+                    metricsProvider.recordSendDelivery((Long) start, DeliveryState.DeliveryStateType.Accepted);
+                }
+            })
+            .contextWrite(Context.of("start", Instant.now().toEpochMilli()));
+    }
     /**
      * Gets the error context for the channel.
      *
