@@ -134,7 +134,7 @@ client.getCopyrightForWorld(true);
 ## Troubleshooting
 When you interact with the Azure Maps Services, errors returned by the Language service correspond to the same HTTP status codes returned for REST API requests.
 
-For example, if you ...., a error is returned, indicating "Bad Request".400
+For example, if you search with an invalid coordinate, a error is returned, indicating "Bad Request".400
 
 ## Next steps
 
