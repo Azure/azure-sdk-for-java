@@ -126,14 +126,13 @@ public class AadOAuth2ClientConfiguration {
     JwtBearerOAuth2AuthorizedClientProvider azureAdJwtBearerProvider(ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         JwtBearerOAuth2AuthorizedClientProvider provider = new JwtBearerOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
+        AadJwtBearerGrantRequestEntityConverter jwtBearerConverter = new AadJwtBearerGrantRequestEntityConverter();
         if (resolver != null) {
-            AadJwtBearerGrantRequestEntityConverter jwtBearerConverter = new AadJwtBearerGrantRequestEntityConverter();
             jwtBearerConverter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-
-            DefaultJwtBearerTokenResponseClient responseClient = new DefaultJwtBearerTokenResponseClient();
-            responseClient.setRequestEntityConverter(jwtBearerConverter);
-            provider.setAccessTokenResponseClient(responseClient);
         }
+        DefaultJwtBearerTokenResponseClient responseClient = new DefaultJwtBearerTokenResponseClient();
+        responseClient.setRequestEntityConverter(jwtBearerConverter);
+        provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
 

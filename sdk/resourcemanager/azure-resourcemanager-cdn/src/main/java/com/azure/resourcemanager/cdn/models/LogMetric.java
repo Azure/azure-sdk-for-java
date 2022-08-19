@@ -39,7 +39,11 @@ public final class LogMetric extends ExpandableStringEnum<LogMetric> {
         return fromString(name, LogMetric.class);
     }
 
-    /** @return known LogMetric values. */
+    /**
+     * Gets known LogMetric values.
+     *
+     * @return known LogMetric values.
+     */
     public static Collection<LogMetric> values() {
         return values(LogMetric.class);
     }

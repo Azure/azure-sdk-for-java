@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.13</version>
+    <version>3.1.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

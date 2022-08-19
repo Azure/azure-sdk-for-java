@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedCassandraResourceIdentityType. */
+/** The type of the resource. */
 public final class ManagedCassandraResourceIdentityType
     extends ExpandableStringEnum<ManagedCassandraResourceIdentityType> {
     /** Static value SystemAssigned for ManagedCassandraResourceIdentityType. */
