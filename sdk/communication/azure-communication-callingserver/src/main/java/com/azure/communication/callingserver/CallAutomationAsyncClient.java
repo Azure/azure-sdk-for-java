@@ -38,6 +38,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -152,7 +153,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUri) {
+    public Mono<AnswerCallResult> answerCall(String incomingCallContext, URI callbackUri) {
         return answerCallWithResponse(incomingCallContext, callbackUri).flatMap(FluxUtil::toMono);
     }
 
@@ -166,19 +167,18 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
-                                                                           String callbackUri) {
+    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext, URI callbackUri) {
         return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUri, context));
     }
 
-    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
+    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, URI callbackUri,
                                                                             Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(incomingCallContext)
-                .setCallbackUri(callbackUri);
+                .setCallbackUri(callbackUri.toString());
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)

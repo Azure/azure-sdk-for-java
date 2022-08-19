@@ -1,28 +1,17 @@
 # Release History
 
-## 5.13.0-beta.2 (Unreleased)
+## 5.13.0 (2022-08-18)
 
 ### Features Added
 
 - Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
-## 5.13.0-beta.1 (2022-08-01)
+#### Dependency Updates
 
-### Features Added
-
-- Added algorithm for mapping partition keys to partition ids.
-- Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
-
-### Bugs Fixed
-
-- Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
-- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-amqp` to `2.7.0`.
 
 ## 5.12.2 (2022-07-07)
 
