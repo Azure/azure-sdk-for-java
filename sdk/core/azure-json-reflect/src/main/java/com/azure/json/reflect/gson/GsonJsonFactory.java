@@ -1,19 +1,16 @@
-package com.azure.json.reflect;
+package com.azure.json.reflect.gson;
 
 import com.azure.json.JsonWriter;
 import com.azure.json.JsonReader;
-import com.azure.json.reflect.gson.GsonJsonReader;
+import com.azure.json.reflect.JsonFactory;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class GsonJsonFactory implements JsonFactory {
-    private Version version;
-
-    protected GsonJsonFactory(Package jsonPackage) {
-        if (!"com.fasterxml.jackson.core".equals(jsonPackage.getName())) {
-            throw new IllegalArgumentException("Incorrect package passed, please pass in com.fasterxml.jackson.core");
-        }
-        this.version = new Version(jsonPackage.getImplementationVersion());
+    public GsonJsonFactory() throws ReflectiveOperationException {
+        GsonJsonReader.initialize();
+        GsonJsonWriter.initialize();
     }
 
     @Override
@@ -32,8 +29,8 @@ public class GsonJsonFactory implements JsonFactory {
     }
 
     @Override
-    public JsonWriter getJsonWriter() {
-        return null;
+    public JsonWriter getJsonWriter(OutputStream stream) {
+        return GsonJsonWriter.toStream(stream);
     }
 
     @Override

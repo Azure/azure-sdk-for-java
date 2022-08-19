@@ -9,19 +9,16 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
-import java.rmi.server.ExportException;
 import java.util.Base64;
 import java.util.Objects;
 
 import static java.lang.invoke.MethodType.methodType;
 
 public class GsonJsonWriter extends JsonWriter {
-    private static boolean init = false;
+    private static boolean initialized = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-    private Object gsonWriter;
-    private JsonWriteContext context = JsonWriteContext.ROOT;
-    private static MethodHandle gsonWriterConstructor;
 
+    private static MethodHandle gsonWriterConstructor;
     private static MethodHandle closeMethod;
     private static MethodHandle flushMethod;
     private static MethodHandle beginObjectMethod;
@@ -29,26 +26,25 @@ public class GsonJsonWriter extends JsonWriter {
     private static MethodHandle beginArrayMethod;
     private static MethodHandle endArrayMethod;
     private static MethodHandle nameMethod;
-    private static MethodHandle valueBinaryMethod;
     private static MethodHandle valueBooleanMethod;
     private static MethodHandle valueDoubleMethod;
-    private static MethodHandle valueFloatMethod;
-    private static MethodHandle valueIntMethod;
     private static MethodHandle valueLongMethod;
     private static MethodHandle valueNullMethod;
     private static MethodHandle valueStringMethod;
     private static MethodHandle valueRawMethod;
+
+    private final Object gsonWriter;
+    private JsonWriteContext context = JsonWriteContext.ROOT;
 
     public static JsonWriter toStream(OutputStream stream) {
         return new GsonJsonWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8));
     }
 
     private GsonJsonWriter(OutputStreamWriter writer) {
-        if (!init) {
-            initMethods();
-        }
-
         try {
+            if (!initialized) {
+                initialize();
+            }
             gsonWriter = gsonWriterConstructor.invoke(writer);
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
@@ -59,34 +55,25 @@ public class GsonJsonWriter extends JsonWriter {
         }
     }
 
-    private static void initMethods() {
-        try {
-            Class<?> gsonWriterClass = Class.forName("com.google.gson.stream.JsonWriter");
-            MethodType voidMethodType = methodType(void.class);
-            gsonWriterConstructor = publicLookup.findConstructor(gsonWriterClass, methodType(void.class, Writer.class));
+    static void initialize() throws ReflectiveOperationException {
+        Class<?> gsonWriterClass = Class.forName("com.google.gson.stream.JsonWriter");
+        gsonWriterConstructor = publicLookup.findConstructor(gsonWriterClass, methodType(void.class, Writer.class));
 
-            closeMethod = publicLookup.findVirtual(gsonWriterClass, "close", voidMethodType);
-            flushMethod = publicLookup.findVirtual(gsonWriterClass, "flush", voidMethodType);
-            beginObjectMethod = publicLookup.findVirtual(gsonWriterClass, "beginObject", methodType(gsonWriterClass));
-            endObjectMethod = publicLookup.findVirtual(gsonWriterClass, "endObject", methodType(gsonWriterClass));
-            beginArrayMethod = publicLookup.findVirtual(gsonWriterClass, "beginArray", methodType(gsonWriterClass));
-            endArrayMethod = publicLookup.findVirtual(gsonWriterClass, "endArray", methodType(gsonWriterClass));
-            nameMethod = publicLookup.findVirtual(gsonWriterClass, "name", methodType(gsonWriterClass, String.class));
-            valueBinaryMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, String.class));
-            valueBooleanMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, boolean.class));
-            valueDoubleMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, double.class));
-            valueFloatMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, Number.class));
-            valueIntMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, long.class));
-            valueLongMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, long.class));
-            valueNullMethod = publicLookup.findVirtual(gsonWriterClass, "nullValue", methodType(gsonWriterClass));
-            valueStringMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, String.class));
-            valueRawMethod = publicLookup.findVirtual(gsonWriterClass, "jsonValue", methodType(gsonWriterClass, String.class));
+        closeMethod = publicLookup.findVirtual(gsonWriterClass, "close", methodType(void.class));
+        flushMethod = publicLookup.findVirtual(gsonWriterClass, "flush", methodType(void.class));
+        beginObjectMethod = publicLookup.findVirtual(gsonWriterClass, "beginObject", methodType(gsonWriterClass));
+        endObjectMethod = publicLookup.findVirtual(gsonWriterClass, "endObject", methodType(gsonWriterClass));
+        beginArrayMethod = publicLookup.findVirtual(gsonWriterClass, "beginArray", methodType(gsonWriterClass));
+        endArrayMethod = publicLookup.findVirtual(gsonWriterClass, "endArray", methodType(gsonWriterClass));
+        nameMethod = publicLookup.findVirtual(gsonWriterClass, "name", methodType(gsonWriterClass, String.class));
+        valueBooleanMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, boolean.class));
+        valueDoubleMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, double.class));
+        valueLongMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, long.class));
+        valueNullMethod = publicLookup.findVirtual(gsonWriterClass, "nullValue", methodType(gsonWriterClass));
+        valueStringMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, String.class));
+        valueRawMethod = publicLookup.findVirtual(gsonWriterClass, "jsonValue", methodType(gsonWriterClass, String.class));
 
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
-            throw new IllegalStateException("Incorrect Library Present");
-        }
-
-        init = true;
+        initialized = true;
     }
 
     @Override
@@ -225,7 +212,7 @@ public class GsonJsonWriter extends JsonWriter {
             if (value == null) {
                 valueNullMethod.invoke(gsonWriter);
             } else {
-                valueBinaryMethod.invoke(gsonWriter, Base64.getEncoder().encodeToString(value));
+                valueStringMethod.invoke(gsonWriter, Base64.getEncoder().encodeToString(value));
             }
         } catch (Throwable e) {
             if (e instanceof IOException) {
@@ -280,7 +267,7 @@ public class GsonJsonWriter extends JsonWriter {
         context.validateToken(JsonToken.NUMBER);
 
         try {
-            valueFloatMethod.invoke(gsonWriter, value);
+            valueDoubleMethod.invoke(gsonWriter, value);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -298,7 +285,7 @@ public class GsonJsonWriter extends JsonWriter {
         context.validateToken(JsonToken.NUMBER);
 
         try {
-            valueIntMethod.invoke(gsonWriter, value);
+            valueLongMethod.invoke(gsonWriter, value);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);

@@ -18,20 +18,20 @@ public class GsonJsonReader extends JsonReader {
     private static Class<?> gsonTokenEnum = null;
 
     private static MethodHandle gsonReaderConstructor;
-    private static MethodHandle peek;
-    private static MethodHandle close;
-    private static MethodHandle beginObject;
-    private static MethodHandle endObject;
-    private static MethodHandle beginArray;
-    private static MethodHandle endArray;
-    private static MethodHandle nextNull;
-    private static MethodHandle nextBoolean;
-    private static MethodHandle nextString;
-    private static MethodHandle nextDouble;
-    private static MethodHandle nextInt;
-    private static MethodHandle nextLong;
-    private static MethodHandle nextName;
-    private static MethodHandle skipValue;
+    private static MethodHandle peekMethod;
+    private static MethodHandle closeMethod;
+    private static MethodHandle beginObjectMethod;
+    private static MethodHandle endObjectMethod;
+    private static MethodHandle beginArrayMethod;
+    private static MethodHandle endArrayMethod;
+    private static MethodHandle nextNullMethod;
+    private static MethodHandle nextBooleanMethod;
+    private static MethodHandle nextStringMethod;
+    private static MethodHandle nextDoubleMethod;
+    private static MethodHandle nextIntMethod;
+    private static MethodHandle nextLongMethod;
+    private static MethodHandle nextNameMethod;
+    private static MethodHandle skipValueMethod;
 
     private final byte[] jsonBytes;
     private final String jsonString;
@@ -72,11 +72,10 @@ public class GsonJsonReader extends JsonReader {
     }
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString) {
-        if (!initialized) {
-            initializeMethodHandles();
-        }
-
         try {
+            if (!initialized) {
+                initialize();
+            }
             gsonReader = gsonReaderConstructor.invoke(reader);
         } catch (Throwable e) {
             if (e instanceof RuntimeException) {
@@ -91,30 +90,26 @@ public class GsonJsonReader extends JsonReader {
         this.jsonString = jsonString;
     }
 
-    private static void initializeMethodHandles() {
-        try {
-            gsonTokenEnum = Class.forName("com.google.gson.stream.JsonToken");
-            Class<?> gsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
+    static void initialize() throws ReflectiveOperationException {
+        gsonTokenEnum = Class.forName("com.google.gson.stream.JsonToken");
+        Class<?> gsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
 
-            MethodType voidMT = methodType(void.class);
-            gsonReaderConstructor = publicLookup.findConstructor(gsonReaderClass, methodType(void.class, Reader.class));
-            peek = publicLookup.findVirtual(gsonReaderClass, "peek", methodType(gsonTokenEnum));
-            close = publicLookup.findVirtual(gsonReaderClass, "close", voidMT);
-            beginObject = publicLookup.findVirtual(gsonReaderClass, "beginObject", voidMT);
-            endObject = publicLookup.findVirtual(gsonReaderClass, "endObject", voidMT);
-            beginArray = publicLookup.findVirtual(gsonReaderClass, "beginArray", voidMT);
-            endArray = publicLookup.findVirtual(gsonReaderClass, "endArray", voidMT);
-            nextNull = publicLookup.findVirtual(gsonReaderClass, "nextNull", voidMT);
-            nextBoolean = publicLookup.findVirtual(gsonReaderClass, "nextBoolean", methodType(boolean.class));
-            nextString = publicLookup.findVirtual(gsonReaderClass, "nextString", methodType(String.class));
-            nextDouble = publicLookup.findVirtual(gsonReaderClass, "nextDouble", methodType(double.class));
-            nextInt = publicLookup.findVirtual(gsonReaderClass, "nextInt", methodType(int.class));
-            nextLong = publicLookup.findVirtual(gsonReaderClass, "nextLong", methodType(long.class));
-            nextName = publicLookup.findVirtual(gsonReaderClass, "nextName", methodType(String.class));
-            skipValue = publicLookup.findVirtual(gsonReaderClass, "skipValue", voidMT);
-        } catch (IllegalAccessException | NoSuchMethodException | ClassNotFoundException e) {
-            throw new IllegalStateException("Incorrect library present.");
-        }
+        MethodType voidMT = methodType(void.class);
+        gsonReaderConstructor = publicLookup.findConstructor(gsonReaderClass, methodType(void.class, Reader.class));
+        peekMethod = publicLookup.findVirtual(gsonReaderClass, "peek", methodType(gsonTokenEnum));
+        closeMethod = publicLookup.findVirtual(gsonReaderClass, "close", voidMT);
+        beginObjectMethod = publicLookup.findVirtual(gsonReaderClass, "beginObject", voidMT);
+        endObjectMethod = publicLookup.findVirtual(gsonReaderClass, "endObject", voidMT);
+        beginArrayMethod = publicLookup.findVirtual(gsonReaderClass, "beginArray", voidMT);
+        endArrayMethod = publicLookup.findVirtual(gsonReaderClass, "endArray", voidMT);
+        nextNullMethod = publicLookup.findVirtual(gsonReaderClass, "nextNull", voidMT);
+        nextBooleanMethod = publicLookup.findVirtual(gsonReaderClass, "nextBoolean", methodType(boolean.class));
+        nextStringMethod = publicLookup.findVirtual(gsonReaderClass, "nextString", methodType(String.class));
+        nextDoubleMethod = publicLookup.findVirtual(gsonReaderClass, "nextDouble", methodType(double.class));
+        nextIntMethod = publicLookup.findVirtual(gsonReaderClass, "nextInt", methodType(int.class));
+        nextLongMethod = publicLookup.findVirtual(gsonReaderClass, "nextLong", methodType(long.class));
+        nextNameMethod = publicLookup.findVirtual(gsonReaderClass, "nextName", methodType(String.class));
+        skipValueMethod = publicLookup.findVirtual(gsonReaderClass, "skipValue", voidMT);
 
         initialized = true;
     }
@@ -130,18 +125,18 @@ public class GsonJsonReader extends JsonReader {
         // The contract of JsonReader implicitly overlooks these properties.
         try {
             if (currentToken == JsonToken.START_OBJECT) {
-                beginObject.invoke(gsonReader);
+                beginObjectMethod.invoke(gsonReader);
             } else if (currentToken == JsonToken.END_OBJECT) {
-                endObject.invoke(gsonReader);
+                endObjectMethod.invoke(gsonReader);
             } else if (currentToken == JsonToken.START_ARRAY) {
-                beginArray.invoke(gsonReader);
+                beginArrayMethod.invoke(gsonReader);
             } else if (currentToken == JsonToken.END_ARRAY) {
-                endArray.invoke(gsonReader);
+                endArrayMethod.invoke(gsonReader);
             } else if (currentToken == JsonToken.NULL) {
-                nextNull.invoke(gsonReader);
+                nextNullMethod.invoke(gsonReader);
             }
 
-            currentToken = mapToken((Enum<?>) peek.invoke(gsonReader));
+            currentToken = mapToken((Enum<?>) peekMethod.invoke(gsonReader));
             return currentToken;
         } catch (Throwable e) {
             if (e instanceof IOException) {
@@ -156,10 +151,10 @@ public class GsonJsonReader extends JsonReader {
     public byte[] getBinary() {
         try {
             if (currentToken == JsonToken.NULL) {
-                nextNull.invoke(gsonReader);
+                nextNullMethod.invoke(gsonReader);
                 return null;
             } else {
-                return Base64.getDecoder().decode((String) nextString.invoke(gsonReader));
+                return Base64.getDecoder().decode((String) nextStringMethod.invoke(gsonReader));
             }
         } catch (Throwable e) {
             if (e instanceof IOException) {
@@ -173,7 +168,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public boolean getBoolean() {
         try {
-            return (boolean) nextBoolean.invoke(gsonReader);
+            return (boolean) nextBooleanMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -186,7 +181,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public float getFloat() {
         try {
-            return (float) (double) nextDouble.invoke(gsonReader);
+            return (float) (double) nextDoubleMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -199,7 +194,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public double getDouble() {
         try {
-            return (double) nextDouble.invoke(gsonReader);
+            return (double) nextDoubleMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -212,7 +207,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public int getInt() {
         try {
-            return (int) nextInt.invoke(gsonReader);
+            return (int) nextIntMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -225,7 +220,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public long getLong() {
         try {
-            return (long) nextLong.invoke(gsonReader);
+            return (long) nextLongMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -241,7 +236,7 @@ public class GsonJsonReader extends JsonReader {
             if (currentToken == JsonToken.NULL) {
                 return null;
             } else {
-                return (String) nextString.invoke(gsonReader);
+                return (String) nextStringMethod.invoke(gsonReader);
             }
         } catch (Throwable e) {
             if (e instanceof IOException) {
@@ -255,7 +250,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public String getFieldName() {
         try {
-            return (String) nextName.invoke(gsonReader);
+            return (String) nextNameMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -268,7 +263,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public void skipChildren() {
         try {
-            skipValue.invoke(gsonReader);
+            skipValueMethod.invoke(gsonReader);
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -354,7 +349,7 @@ public class GsonJsonReader extends JsonReader {
     @Override
     public void close() throws IOException {
         try {
-            close.invoke();
+            closeMethod.invoke();
         } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
