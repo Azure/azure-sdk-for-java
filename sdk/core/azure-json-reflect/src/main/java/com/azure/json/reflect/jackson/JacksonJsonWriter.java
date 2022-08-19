@@ -34,6 +34,7 @@ public class JacksonJsonWriter extends JsonWriter {
     private static MethodHandle constructorGen;
     private static MethodHandle constructorFactory;
     private final MethodHandle flush;
+    private final MethodHandle close;
     //private final MethodHandle validateToken;
     private JsonToken currentToken;
 
@@ -51,6 +52,7 @@ public class JacksonJsonWriter extends JsonWriter {
 
 
             flush = publicLookup.findVirtual(jacksonGeneratorClass, "flush", MethodType.methodType(void.class));
+            close = publicLookup.findVirtual(jacksonGeneratorClass, "close", MethodType.methodType(void.class));
 
         }
         catch (RuntimeException | ClassNotFoundException | NoSuchMethodException | InstantiationException |
@@ -76,14 +78,19 @@ public class JacksonJsonWriter extends JsonWriter {
 
     @Override
     public void close() throws IOException {
+        if (context != JsonWriteContext.COMPLETED) {
+            throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
+                + "closed. Current writing state is '" + context.getWriteState() + "'.");
+        }
         try {
-
+            close.invoke(generator);
+            
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
-        
+
     }
 
     @Override
