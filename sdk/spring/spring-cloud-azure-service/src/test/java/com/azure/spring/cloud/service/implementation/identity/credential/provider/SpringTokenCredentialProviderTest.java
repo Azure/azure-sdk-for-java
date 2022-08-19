@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +23,7 @@ class SpringTokenCredentialProviderTest {
     @Test
     void testDefaultConstructor() {
         SpringTokenCredentialProvider provider = new SpringTokenCredentialProvider(null);
-        assertThrowsExactly(NullPointerException.class, () -> provider.get());
+        assertThrows(NullPointerException.class, () -> provider.get());
     }
 
     @Test
