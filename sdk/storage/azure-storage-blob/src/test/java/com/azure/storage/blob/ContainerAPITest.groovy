@@ -1866,6 +1866,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly(expiryTime = "2022-08-28")
     def "Find blobs marker"() {
         setup:
         def tags = Collections.singletonMap(tagKey, tagValue)
