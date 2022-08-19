@@ -257,6 +257,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          */
         private Integer maxConcurrentSessions;
 
+        /**
+         * Whether to automatically start the processor after initialization.
+         */
+        private boolean autoStartup = true;
+
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
         }
@@ -271,6 +276,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setMaxConcurrentSessions(Integer maxConcurrentSessions) {
             this.maxConcurrentSessions = maxConcurrentSessions;
+        }
+
+        public boolean isAutoStartup() {
+            return autoStartup;
+        }
+
+        public void setAutoStartup(boolean autoStartup) {
+            this.autoStartup = autoStartup;
         }
     }
 
